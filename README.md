@@ -1,10 +1,15 @@
 ProtoBuf.js - protobuf for JavaScript
 =====================================
+
 Till now: Provides a parser for .proto files in plain JavaScript. More is planned.
 
 Parser
 ------
 Should be compliant with protoc. No validation of type references yet, just parsing.
+
+```
+npm install protobufjs
+```
 
 ```javascript
 var ProtoBuf = require("protobufjs"),

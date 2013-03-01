@@ -463,14 +463,14 @@
 
     // Enable module loading if available
     if (typeof module != 'undefined' && module["exports"]) { // CommonJS
-        module["exports"] = loadProtoBuf(require("bytebuffer"), require("xregexp"));
+        module["exports"] = loadProtoBuf(require("bytebuffer"));
     } else if (typeof define != 'undefined' && define["amd"]) { // AMD
-        define("ProtoBuf", ["ByteBuffer", "xregexp"], loadProtoBuf);
+        define("ProtoBuf", ["ByteBuffer"], loadProtoBuf);
     } else { // Shim
         if (!global["dcodeIO"]) {
             global["dcodeIO"] = {};
         }
-        global["dcodeIO"]["ProtoBuf"] = loadProtoBuf(global["dcodeIO"]["ByteBuffer"], global["XRegExp"]);
+        global["dcodeIO"]["ProtoBuf"] = loadProtoBuf(global["dcodeIO"]["ByteBuffer"]);
     }    
     
 })(this);
