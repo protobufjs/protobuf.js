@@ -1,0 +1,27 @@
+package My;
+
+message TestMessage {
+
+    required int32 a = 1;
+    optional string b = 2 [default = 10, something = 123];
+    
+    enum TestEnum { // Some comment
+        TYPE_A = 0;
+        TPYE_B = 1;
+    }
+    required TestEnum c = 3;
+    
+    message SubMessage {
+        required int32 sub_a = 1;
+        required TestEnum sub_b = 2;
+        
+        message SubSubMessage {
+            required TestEnum a = 0;
+        }
+        optional SubSubMessage sub_c = 3 [default = 5];
+    }
+    required SubMessage d = 4;
+}
+
+message TestMessage2 {
+}

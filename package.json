@@ -1,0 +1,27 @@
+{
+    "name": "protobufjs",
+    "version": "0.0.0",
+    "author": "Daniel Wirtz <dcode@dcode.io>",
+    "description": "",
+    "contributors": [
+        { "name": "Daniel Wirtz", "email": "dcode@dcode.io" }
+    ],
+    "main": "ProtoBuf.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/ProtoBuf.js.git"
+    },
+    "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
+    "dependencies": {
+        "bytebuffer": ">=1"
+    },
+    "devDependencies": {
+        "nodeunit": ">=0.7"
+    },
+    "license": "Apache License, Version 2.0",
+    "engines": {
+        "node": ">=0.6"
+    },
+    "scripts": {
+    }
+}
