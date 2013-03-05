@@ -229,6 +229,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @expose
      */
     Namespace.prototype.build = function() {
+        /** @dict */
         var ns = {};
         var children = this.getChildren(), child;
         for (var i=0; i<children.length; i++) {
@@ -289,9 +290,17 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @constructor
              * @throws {Error} If the message cannot be created
              */
-            var Message = null;
-            eval("Message = function "+T.name+"() { __construct.apply(this, arguments); };"); // Any better way to create a named function?
-            var __construct = function(values) {
+
+            /**
+             * @type {!Function}
+             */
+            var Message = eval("(function "+T.name+"() { this.__construct.apply(this, arguments); })");
+            // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
+            
+            /**
+             * @expose
+             */
+            Message.prototype.__construct = function(values) {
                 var i, field;
 
                 // Create fields on the object itself to allow setting and getting through Message#fieldname
@@ -836,10 +845,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     Field.prototype.encodeValue = function(value, buffer) {
         if (value === null) return; // Nothing to encode
         // Tag has already been written
-        if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"] || this.type == ProtoBuf.TYPES["fixed32"]) {
+        if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"]) {
             buffer.writeVarint32(value);
-        } else if (this.type == ProtoBuf.TYPES["sint32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
+        } else if (this.type == ProtoBuf.TYPES["sint32"]) {
             buffer.writeVarint32(ByteBuffer.zigZagEncode32(value));
+        } else if (this.type == ProtoBuf.TYPES["fixed32"]) {
+            buffer.writeUint32(value);
+        } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
+            buffer.writeUint32(ByteBuffer.zigZagEncode32(value));
         } else if (this.type == ProtoBuf.TYPES["bool"]) {
             buffer.writeVarint32(value ? 1 : 0);
         } else if (this.type == ProtoBuf.TYPES["enum"]) {

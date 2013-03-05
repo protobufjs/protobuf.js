@@ -23,7 +23,7 @@
  * File to use.
  * @type {string}
  */
-var FILE = "ProtoBuf.js";
+var FILE = "ProtoBuf.min.js";
 
 /**
  * ProtoBuf.
