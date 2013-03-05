@@ -1,7 +1,8 @@
 ProtoBuf.js - protobuf for JavaScript [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 =====================================
 A protobuf implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) including a .proto parser,
-reflection, message class building and simple encoding and decoding in plain JavaScript.
+reflection, message class building and simple encoding and decoding in plain JavaScript. No compilation step required,
+works out of the box on .proto files.
 
 Builder
 -------
@@ -56,10 +57,10 @@ Compliant with the protobuf parser to the following extend:
 
   ```protobuf
   message Test {
-    required int32 a = 1;
-    optional int32 b = 2 [default=100];
-    repeated int32 c = 3;
-    repeated int32 c = 4 [packed=true];
+      required int32 a = 1;
+      optional int32 b = 2 [default=100];
+      repeated int32 c = 3;
+      repeated int32 c = 4 [packed=true];
   }
   ```
 
