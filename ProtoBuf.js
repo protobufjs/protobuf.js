@@ -60,6 +60,7 @@
          * @type {Object.<string, string>}
          */
         ProtoBuf.VERSION = "0.9.0";
+
         /**
          * Wire types.
          * @type {Object.<string,number>}
