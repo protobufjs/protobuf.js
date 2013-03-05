@@ -187,6 +187,20 @@ var buffer = ...; // E.g. a buffer received on a WebSocket
 var myMessage = YourMessage.decode(buffer);
 ```
 
+Downloads
+---------
+* [ZIP-Archive](https://github.com/dcodeIO/ProtoBuf.js/archive/master.zip)
+* [Tarball](https://github.com/dcodeIO/ProtoBuf.js/tarball/master)
+
+Documentation
+-------------
+* [View documentation](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
+
+Tests (& Examples)
+------------------
+* [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
+* [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+
 Features
 --------
 * [CommonJS](http://www.commonjs.org/) compatible
