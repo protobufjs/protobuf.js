@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "0.0.0",
+    "version": "0.9.0",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "description": "",
     "contributors": [
@@ -13,15 +13,23 @@
     },
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "dependencies": {
-        "bytebuffer": ">=1"
+        "bytebuffer": ">=1.1.0"
     },
     "devDependencies": {
-        "nodeunit": ">=0.7"
+        "nodeunit": ">=0.7",
+        "preprocessor": ">=0.9.6"
     },
     "license": "Apache License, Version 2.0",
     "engines": {
         "node": ">=0.6"
     },
     "scripts": {
+        "prepublish": "npm test",
+        "test": "nodeunit tests/suite.js",
+        
+        "make": "npm run-script build && npm run-script compile && npm test && npm run-script jsdoc",
+        "build": "node build.js",
+        "compile": "java -jar closure-compiler/compiler.jar --create_source_map ProtoBuf.min.map --compilation_level SIMPLE_OPTIMIZATIONS --js ProtoBuf.js --js_output_file ProtoBuf.min.js && java -jar closure-compiler/compiler.jar --create_source_map ProtoBuf.noparse.min.map --compilation_level SIMPLE_OPTIMIZATIONS --js ProtoBuf.noparse.js --js_output_file ProtoBuf.noparse.min.js",
+        "jsdoc": "jsdoc -c jsdoc.json"
     }
 }
