@@ -1,4 +1,4 @@
-ProtoBuf.js - protobuf for JavaScript
+ProtoBuf.js - protobuf for JavaScript [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 =====================================
 A protobuf implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) including a .proto parser,
 reflection, message class building and simple encoding and decoding in plain JavaScript.
