@@ -9,7 +9,8 @@ Probably the core component of ProtoBuf.js. Resolves all type references, perfor
 ready to use classes. Can be created from a .proto file or from a JSON definition. The later does not even require the
 .proto parser to be included (see: `ProtoBuf.noparse.js`).
 
-Example: [tests/complex.proto](https://github.com/dcodeIO/ByteBuffer.js/tree/master/tests/complex.proto)
+Example: [tests/complex.proto](https://github.com/dcodeIO/ProtoBuf.js/tree/master/tests/complex.proto)
+
 Install: `npm install protobufjs`
 
 ```javascript
@@ -51,7 +52,6 @@ Parser
 ------
 Compliant with the protobuf parser to the following extend:
 
-#### In ####
 * Required, optional, repeated and packed repeated fields:
 
   ```protobuf
@@ -67,30 +67,30 @@ Compliant with the protobuf parser to the following extend:
   
   ```protobuf
   message Test {
-    required int32 a = 1; // Varint encoded
-    required uint32 b = 2; // Varint encoded
-    required sint32 c = 3; // Varint zigzag encoded
-    required bool d = 4; // Varint encoded
+      required int32 a = 1; // Varint encoded
+      required uint32 b = 2; // Varint encoded
+      required sint32 c = 3; // Varint zigzag encoded
+      required bool d = 4; // Varint encoded
     
-    enum Priority {
-        LOW = 1;
-        MEDIUM = 2;
-        HIGH = 3;
-    }
+      enum Priority {
+          LOW = 1;
+          MEDIUM = 2;
+          HIGH = 3;
+      }
     
-    optional Priority e = 5 [default=MEDIUM]; // Varint encoded
-    required string f = 6; // Varint length delimited
-    required bytes g = 7; // Varint length delimited
-    required Embedded h = 8; // Varint length delimited
+      optional Priority e = 5 [default=MEDIUM]; // Varint encoded
+      required string f = 6; // Varint length delimited
+      required bytes g = 7; // Varint length delimited
+      required Embedded h = 8; // Varint length delimited
     
-    message Embedded {
-        repeated int32 a = 1; // Multiple tags
-        repeated int32 b = 2 [packed=true]; // One tag, length delimited
-        required fixed32 c = 3; // Fixed 4 bytes
-        required sfixed32 d = 4; // Fixed 4 bytes zigzag encoded
-        required float e = 5; // Fixed 4 bytes
-        required double f = 6; // Fixed 8 bytes
-    }
+      message Embedded {
+          repeated int32 a = 1; // Multiple tags
+          repeated int32 b = 2 [packed=true]; // One tag, length delimited
+          required fixed32 c = 3; // Fixed 4 bytes
+          required sfixed32 d = 4; // Fixed 4 bytes zigzag encoded
+          required float e = 5; // Fixed 4 bytes
+          required double f = 6; // Fixed 8 bytes
+      }
   }
   ```
   
@@ -100,11 +100,11 @@ Compliant with the protobuf parser to the following extend:
   package My.Game;
   
   message Test {
-    ...
+      ...
   }
   
   message Test2 {
-    required My.Game.Test test = 1;
+      required My.Game.Test test = 1;
   }
   ```
   
@@ -114,18 +114,18 @@ Compliant with the protobuf parser to the following extend:
   package My.Game;
   
   message Test {
-    ...
-    
-    enum Priority {
-        LOW = 1;
-        MEDIUM = 2;
-        HIGH = 3;
-    }
+      ...
+      
+      enum Priority {
+          LOW = 1;
+          MEDIUM = 2;
+          HIGH = 3;
+      }
   }
   
   message Test2 {
-    required .My.Game.Test.Priority priority_fqn = 1 [default=LOW];
-    required Test.Priority priority_qn = 2 [default=MEDIUM];
+      required .My.Game.Test.Priority priority_fqn = 1 [default=LOW];
+      required Test.Priority priority_qn = 2 [default=MEDIUM];
   }
   ```  
 
@@ -136,15 +136,15 @@ Compliant with the protobuf parser to the following extend:
   option toplevel_2 = "Hello!";
   
   message Test {
-    option inmessage = "World!";
-    optional int32 somenumber = 1 [default=123]; // Actually the only one used
+      option inmessage = "World!";
+      optional int32 somenumber = 1 [default=123]; // Actually the only one used
   }
 
-#### Not (yet) in ####
+#### Not (yet) supported ####
 * Extensions (what for?), imports (put everything into one builder instead) and services (you roll your own, don't you?).
   
-  However, if you need anything of the above, please drop me a note how you'd like to see it implemented. It's just that
-  I have no idea how to benefit from that and therefore I am not sure how to design it.
+However, if you need anything of the above, please drop me a note how you'd like to see it implemented. It's just that
+I have no idea how to benefit from that and therefore I am not sure how to design it.
 
 #### Calling the parser on your own ####
   
