@@ -9,7 +9,7 @@ Probably the core component of ProtoBuf.js. Resolves all type references, perfor
 ready to use classes. Can be created from a .proto file or from a JSON definition. The later does not even require the
 .proto parser to be included (see: `ProtoBuf.noparse.js`).
 
-Example: `[tests/complex.proto](https://github.com/dcodeIO/ByteBuffer.js/tree/master/tests/complex.proto)`
+Example: [tests/complex.proto](https://github.com/dcodeIO/ByteBuffer.js/tree/master/tests/complex.proto)
 Install: `npm install protobufjs`
 
 ```javascript
