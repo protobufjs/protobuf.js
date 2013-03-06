@@ -8,7 +8,7 @@ Builder
 -------
 Probably the core component of ProtoBuf.js. Resolves all type references, performs all the necessary checks and returns
 ready to use classes. Can be created from a .proto file or from a JSON definition. The later does not even require the
-.proto parser to be included (see: `ProtoBuf.noparse.js`).
+.proto parser to be included ([see](https://github.com/dcodeIO/ProtoBuf.js#using-json-without-the-proto-parser)).
 
 Install: `npm install protobufjs`
 
