@@ -20,7 +20,7 @@
     },
     "devDependencies": {
         "nodeunit": ">=0.7",
-        "preprocessor": ">=0.9.6"
+        "preprocessor": ">=0.9.7"
     },
     "license": "Apache License, Version 2.0",
     "engines": {
