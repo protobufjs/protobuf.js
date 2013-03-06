@@ -1,12 +1,15 @@
 {
     "name": "protobufjs",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "description": "",
     "contributors": [
         { "name": "Daniel Wirtz", "email": "dcode@dcode.io" }
     ],
     "main": "ProtoBuf.js",
+    "bin": {
+        "proto2js": "./bin/proto2js"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/dcodeIO/ProtoBuf.js.git"

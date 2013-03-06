@@ -71,6 +71,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Defines a package on top of the current pointer position and places the pointer on it.
+     * @return {ProtoBuf.Builder} this
      * @throws {Error} If the package name is invalid
      * @expose
      */
@@ -90,6 +91,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             }
             this.ptr = this.ptr.getChild(part[i]);
         }
+        return this;
     };
 
     /**
@@ -213,6 +215,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Creates ths specified protocol types at the current pointer position.
+     * @return {ProtoBuf.Builder} this
      * @throws {Error} If a message definition is invalid
      * @expose
      */
@@ -298,6 +301,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         }
         this.resolved = false; // Require re-resolve
         this.result = null; // Require re-build
+        return this;
     };
 
     /**

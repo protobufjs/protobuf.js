@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+/*
+ Copyright 2013 Daniel Wirtz <dcode@dcode.io>
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+/**
+ * ProtoBuf.js: proto2js Command Line Utility (c) 2013 Daniel Wirtz <dcode@dcode.io>
+ * Released under the Apache License, Version 2.0
+ * see: https://github.com/dcodeIO/Preprocessor.js for details
+ */
+
+var ProtoBuf = require(__dirname+"/../ProtoBuf.js"),
+    fs = require("fs"),
+    path = require("path"),
+    pkg = require(__dirname+"/../package.json");
+
+if (process.argv.length < 3) {
+    console.log("ProtoBuf.js "+pkg.version+" - https://github.com/dcodeIO/ProtoBuf.js\n");
+    console.log("  Usage: "+path.basename(process.argv[1])+" protoFile [-class[=My.Package]] [-min] [> outFile]\n");
+    console.log("  Options:\n");
+    console.log("    -class[=My.Package]  Creates the class instead of just a JSON definition.");
+    console.log("                         If you do not specifiy a package, the package");
+    console.log("                         declaration from the .proto file is used instead.\n");
+    console.log("    -min                 Minifies the generated output\n");
+    process.exit(11);
+}
+var options = {};
+for (var i=3; i<process.argv.length; i++) {
+    var option = process.argv[i];
+    if (option.substring(0,1) == "-") {
+        var opt = option.split("=", 2);
+        options[opt[0].substring(1)] = opt.length == 2 ? opt[1] : true;
+    }
+}
+
+var sourceFile = process.argv[2];
+var source = fs.readFileSync(sourceFile);
+var parser = new ProtoBuf.DotProto.Parser(source);
+var ast = parser.parse();
+var pkg = !!ast["package"] ? ast["package"] : null;
+var out = JSON.stringify(ast['messages'], undefined, !!options["min"] ? 0 : 2);
+if (!!options["class"]) {
+    if (options["class"] === true) {
+        if (!pkg) {
+            console.log("The parsed .proto file does not contain a package definition. Please provide one to the -class argument.");
+            process.exit(12);
+        }
+        // use pkg
+    } else {
+        if (!ProtoBuf.Lang.TYPEREF.test(options["class"])) {
+            console.log("Not a valid package definition: "+options["class"]);
+        }
+        pkg = options["class"];
+    }
+    var ws = !!options["min"] ? "" : " ";
+    var nl = !!options["min"] ? "" : "\n";
+    var part = pkg.split(".");
+    var vars = 'var ';
+    var path = "";
+    for (var i=0; i<part.length-1; i++) {
+        vars += path+part[i]+ws+'='+ws+'{};'+ws;
+        path += part[i]+".";
+    }
+    vars += path+part[part.length-1]+ws+'='+ws;
+    out = vars+'ProtoBuf.newBuilder("'+pkg+'").create('+out+').build("'+pkg+'");\n'
+}
+console.log(out);
+process.exit(0);

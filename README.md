@@ -103,6 +103,36 @@ When using JSON only, you can use [ProtoBuf.noparse.js](https://github.com/dcode
 / [ProtoBuf.noparse.min.js](https://github.com/dcodeIO/ProtoBuf.js/blob/master/ProtoBuf.noparse.min.js) instead, which
 do NOT include the `ProtoBuf.DotProto` package for parsing and are therefore even smaller.
 
+Command line utility
+--------------------
+It's also possible to transform .proto files into their JSON counterpart or to entire message classes by using the
+`proto2js` command line utility.
+
+```
+Usage: proto2js protoFile [-class[=My.Package]] [-min] [> outFile]
+
+Options:
+
+  -class[=My.Package]  Creates the class instead of just a JSON definition.
+                       If you do not specifiy a package, the package
+                       declaration from the .proto file is used instead.
+  
+  -min                 Minifies the generated output
+```
+
+So, to create a JSON definition from the [tests/complex.proto](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/complex.proto)
+file, run:
+
+```bash
+proto2js tests/complex.proto > tests/complex.json
+```
+
+Or to create the entire namespace as a class, run:
+
+```bash
+proto2js tests/complex.proto -class=Game > tests/complex.js
+```
+
 Parser
 ------
 Only available in the full build (i.e. not in "noparse" builds). Compliant with the protobuf parser to the following extend:
@@ -213,9 +243,11 @@ var ast = parser.parse();
 console.log(util.inspect(ast, false, null, true));
 ```
 
-Encoder
--------
-Built into all message classes. Just call `YourMessage#encode([buffer])`.
+Encoder / Decoder
+-----------------
+Built into all message classes. Just call `YourMessage#encode([buffer])` respectively `YourMessage.decode(buffer)`.
+
+#### Encoding a message ####
 
 ```javascript
 ...
@@ -231,9 +263,7 @@ var socket = ...; // E.g. a WebSocket
 socket.send(buffer);
 ```
 
-Decoder
--------
-Built into all message classes. Just call `YourMessage.decode(buffer)`.
+#### Decoding from an ArrayBuffer/ByteBuffer ####
 
 ```javascript
 ...
