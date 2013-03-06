@@ -22,6 +22,20 @@
 ProtoBuf.Util = (function() {
     "use strict";
 
+    // Object.create polyfill
+    // ref: https://developer.mozilla.org/de/docs/JavaScript/Reference/Global_Objects/Object/create
+    if (!Object.create) {
+        /** @expose */
+        Object.create = function (o) {
+            if (arguments.length > 1) {
+                throw new Error('Object.create implementation only accepts the first parameter.');
+            }
+            function F() {}
+            F.prototype = o;
+            return new F();
+        };
+    }
+
     /**
      * ProtoBuf utilities.
      * @exports ProtoBuf.Util

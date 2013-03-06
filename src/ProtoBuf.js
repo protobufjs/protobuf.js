@@ -20,6 +20,7 @@
  * see: https://github.com/dcodeIO/ProtoBuf.js for details
  */
 (function(global) {
+    "use strict";
     
     function loadProtoBuf(ByteBuffer) {
         if (!ByteBuffer || !ByteBuffer.calculateUTF8String || !ByteBuffer.zigZagEncode32) {
@@ -31,20 +32,6 @@
                 ByteBuffer = require("ByteBuffer");
             }
             if (!ByteBuffer) throw(new Error("ProtoBuf.js requires ByteBuffer.js >=1.1.0: Get it at https://github.com/dcodeIO/ByteBuffer.js"));
-        }
-
-        // Object.create polyfill
-        // ref: https://developer.mozilla.org/de/docs/JavaScript/Reference/Global_Objects/Object/create
-        if (!Object.create) {
-            /** @expose */
-            Object.create = function (o) {
-                if (arguments.length > 1) {
-                    throw new Error('Object.create implementation only accepts the first parameter.');
-                }
-                function F() {}
-                F.prototype = o;
-                return new F();
-            };
         }
 
         /**
