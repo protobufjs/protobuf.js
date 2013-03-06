@@ -67,6 +67,7 @@ if (!!options["class"]) {
     var ws = !!options["min"] ? "" : " ";
     var nl = !!options["min"] ? "" : "\n";
     var part = pkg.split(".");
+    if (part[0] == "") part = part.slice(1);
     var vars = 'var ';
     var path = "";
     for (var i=0; i<part.length-1; i++) {
