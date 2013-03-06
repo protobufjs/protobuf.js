@@ -213,7 +213,7 @@ ProtoBuf.Reflect.Reflect = {};
 
 /**
  * @constructor
- * @param {ProtoBuf.Reflect.T} parent Parent object
+ * @param {ProtoBuf.Reflect.T} parent
  * @param {string} name Object name
  */
 ProtoBuf.Reflect.T = function(parent, name) {};
@@ -487,7 +487,7 @@ ProtoBuf.Builder.isValidEnum = function(def) {};
 
 /**
  * @param {Array.<Object.<string,*>>} messages
- * @return {ProtoBuf.Builder} this
+ * @return {ProtoBuf.Builder}
  * @throws {Error}
  */
 ProtoBuf.Builder.prototype.create = function(messages) {};
@@ -499,7 +499,7 @@ ProtoBuf.Builder.prototype.resolveAll = function() {};
 
 /**
  * @param {string=} path
- * @return {!ProtoBuf.Builder} this
+ * @return {!ProtoBuf.Builder}
  * @throws {string}
  */
 ProtoBuf.Builder.prototype.build = function(path) {};
