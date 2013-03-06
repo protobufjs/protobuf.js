@@ -32,16 +32,14 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
         /**
          * Namespace.
-         * @type {Object.<string,ProtoBuf.Reflect.Message>}
-         * @dict
+         * @type {ProtoBuf.Reflect.Namespace}
          * @expose
          */
         this.ns = new Reflect.Namespace(null, ""); // Global namespace
 
         /**
          * Namespace pointer.
-         * @type {Object.<string, *>}
-         * @dict
+         * @type {ProtoBuf.Reflect.T}
          * @expose
          */
         this.ptr = this.ns;
@@ -55,7 +53,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
         /**
          * The current building result.
-         * @type {*|null}
+         * @type {Object.<string,ProtoBuf.Builder.Message|Object>|null}
          * @expose
          */
         this.result = null;
@@ -71,6 +69,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Defines a package on top of the current pointer position and places the pointer on it.
+     * @param {string} pkg
      * @return {ProtoBuf.Builder} this
      * @throws {Error} If the package name is invalid
      * @expose
@@ -96,7 +95,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Tests if a definition is a valid message definition.
-     * @param {Object} def Definition
+     * @param {Object.<string,*>} def Definition
      * @return {boolean} true if valid, else false
      * @expose
      */
@@ -215,6 +214,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Creates ths specified protocol types at the current pointer position.
+     * @param {Array.<Object.<string,*>>} messages Messages to create
      * @return {ProtoBuf.Builder} this
      * @throws {Error} If a message definition is invalid
      * @expose
@@ -305,7 +305,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     };
 
     /**
-     * Resolves the namespace.
+     * Resolves all namespace objects.
      * @throws {Error} If a type cannot be resolved
      * @expose
      */
@@ -384,7 +384,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Returns a string representation of this object.
-     * @returns {string} String representation as of "Builder"
+     * @return {string} String representation as of "Builder"
      * @expose
      */
     Builder.prototype.toString = function() {

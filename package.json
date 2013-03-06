@@ -1,8 +1,8 @@
 {
     "name": "protobufjs",
-    "version": "0.9.3",
+    "version": "0.9.4",
     "author": "Daniel Wirtz <dcode@dcode.io>",
-    "description": "",
+    "description": "protobuf for JavaScript",
     "contributors": [
         { "name": "Daniel Wirtz", "email": "dcode@dcode.io" }
     ],

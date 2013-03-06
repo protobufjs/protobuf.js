@@ -41,7 +41,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
 
     /**
      * Runs the parser.
-     * @return {{package: string, messages: Array.<Object>}}
+     * @return {{package: string|null, messages: Array.<object>, options: object<string,*>}}
      * @throws {Error} If the source cannot be parsed
      * @expose
      */
@@ -353,6 +353,14 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         if (token != Lang.END) {
             throw(new Error("Illegal enum value delimiter in enum "+enm.name+": "+token+" ('"+Lang.END+"' expected)"));
         }
+    };
+
+    /**
+     * Returns a string representation of this object.
+     * @returns {string} String representation as of "Parser"
+     */
+    Parser.prototype.toString = function() {
+        return "Parser";
     };
     
     return Parser;

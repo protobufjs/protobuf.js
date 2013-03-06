@@ -57,7 +57,9 @@
         
         /**
          * ProtoBuf.js version.
-         * @type {Object.<string, string>}
+         * @type {string}
+         * @const
+         * @expose
          */
         ProtoBuf.VERSION = // #put '"'+VERSION+'";'
 
@@ -79,6 +81,7 @@
         /**
          * Fixed 64 bits wire type.
          * @type {number}
+         * @const
          * @expose
          */
         ProtoBuf.WIRE_TYPES.BITS64 = 1;
@@ -86,6 +89,7 @@
         /**
          * Length delimited wire type.
          * @type {number}
+         * @const
          * @expose
          */
         ProtoBuf.WIRE_TYPES.LDELIM = 2;
@@ -93,7 +97,8 @@
         /**
          * Start group wire type.
          * @type {number}
-         * @deprecated
+         * @const
+         * @deprecated Not supported.
          * @expose
          */
         ProtoBuf.WIRE_TYPES.STARTGROUP = 3;
@@ -101,7 +106,8 @@
         /**
          * End group wire type.
          * @type {number}
-         * @deprecated
+         * @const
+         * @deprecated Not supported.
          * @expose
          */
         ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
@@ -109,12 +115,13 @@
         /**
          * Fixed 32 bits wire type.
          * @type {number}
+         * @const
          * @expose
          */
         ProtoBuf.WIRE_TYPES.BITS32 = 5;
 
         /**
-         * Native types.
+         * Types.
          * @dict
          * @type {Object.<string,{name: string, wireType: number}>}
          * @const

@@ -138,7 +138,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
 
     /**
      * Returns a string representation of this object.
-     * @returns {string} String representation as of "Tokenizer(index/length)"
+     * @return {string} String representation as of "Tokenizer(index/length)"
      * @expose
      */
     Tokenizer.prototype.toString = function() {

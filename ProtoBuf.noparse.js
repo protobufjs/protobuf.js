@@ -57,9 +57,11 @@
         
         /**
          * ProtoBuf.js version.
-         * @type {Object.<string, string>}
+         * @type {string}
+         * @const
+         * @expose
          */
-        ProtoBuf.VERSION = "0.9.2";
+        ProtoBuf.VERSION = "0.9.4";
 
         /**
          * Wire types.
@@ -79,6 +81,7 @@
         /**
          * Fixed 64 bits wire type.
          * @type {number}
+         * @const
          * @expose
          */
         ProtoBuf.WIRE_TYPES.BITS64 = 1;
@@ -86,6 +89,7 @@
         /**
          * Length delimited wire type.
          * @type {number}
+         * @const
          * @expose
          */
         ProtoBuf.WIRE_TYPES.LDELIM = 2;
@@ -93,7 +97,8 @@
         /**
          * Start group wire type.
          * @type {number}
-         * @deprecated
+         * @const
+         * @deprecated Not supported.
          * @expose
          */
         ProtoBuf.WIRE_TYPES.STARTGROUP = 3;
@@ -101,7 +106,8 @@
         /**
          * End group wire type.
          * @type {number}
-         * @deprecated
+         * @const
+         * @deprecated Not supported.
          * @expose
          */
         ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
@@ -109,12 +115,13 @@
         /**
          * Fixed 32 bits wire type.
          * @type {number}
+         * @const
          * @expose
          */
         ProtoBuf.WIRE_TYPES.BITS32 = 5;
 
         /**
-         * Native types.
+         * Types.
          * @dict
          * @type {Object.<string,{name: string, wireType: number}>}
          * @const
@@ -292,11 +299,11 @@
         
             /**
              * Builds this type.
-             * @throws {string} Exception if this type cannot be built directly
+             * @throws {Error} If this type cannot be built directly
              * @expose
              */
             T.prototype.build = function() {
-                throw(this.toString(true)+" cannot be built directly");
+                throw(new Error(this.toString(true)+" cannot be built directly"));
             };
         
             /**
@@ -308,7 +315,7 @@
             /**
              * Constructs a new Namespace.
              * @exports ProtoBuf.Reflect.Namespace
-             * @param {?Reflect.Reflect.Namespace} parent Parent
+             * @param {ProtoBuf.Reflect.Namespace|null} parent Parent
              * @param {string} name
              * @constructor
              * @extends ProtoBuf.Reflect.T
@@ -452,7 +459,7 @@
             /**
              * Constructs a new Message.
              * @exports ProtoBuf.Reflect.Message
-             * @param {!ProtoBuf.Reflect.Message|!ProtoBuf.Reflect.Namespace} parent Parent message or namespace
+             * @param {ProtoBuf.Reflect.Namespace} parent Parent message or namespace
              * @param {string} name Message name
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
@@ -474,7 +481,7 @@
             /**
              * Builds the message and returns the built counterpart, which is a fully functional class.
              * @see ProtoBuf.Builder.Message
-             * @return {Function} Message class
+             * @return {ProtoBuf.Reflect.Message} Message class
              * @throws {Error} If the message cannot be built
              * @expose
              */
@@ -543,19 +550,19 @@
                      * @function
                      * @param {string} key Field name
                      * @param {*} value Value to add
-                     * @throws {string} If the value cannot be added
+                     * @throws {Error} If the value cannot be added
                      * @expose
                      */
                     Message.prototype.add = function(key, value) {
                         var field = T.getChild(key);
                         if (!field) {
-                            throw(this+"#"+key+" is undefined");
+                            throw(new Error(this+"#"+key+" is undefined"));
                         }
                         if (!(field instanceof Reflect.Message.Field)) {
-                            throw(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
+                            throw(new Error(this+"#"+key+" is not a field: "+field.toString(true))); // May throw if it's an enum or embedded message
                         }
                         if (!field.repeated) {
-                            throw(this+"#"+key+" is not a repeated field");
+                            throw(new Error(this+"#"+key+" is not a repeated field"));
                         }
                         if (this[field.name] === null) this[field.name] = [];
                         this[field.name].push(field.verifyValue(value));
@@ -567,16 +574,16 @@
                      * @function
                      * @param {string} key Key
                      * @param {*} value Value to set
-                     * @throws {string} If the value cannot be set
+                     * @throws {Error} If the value cannot be set
                      * @expose
                      */
                     Message.prototype.set = function(key, value) {
                         var field = T.getChild(key);
                         if (!field) {
-                            throw(this+"#"+key+" is not a field: undefined");
+                            throw(new Error(this+"#"+key+" is not a field: undefined"));
                         }
                         if (!(field instanceof Reflect.Message.Field)) {
-                            throw(this+"#"+key+" is not a field: "+field.toString(true));
+                            throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                         }
                         this[field.name] = field.verifyValue(value); // May throw
                     };
@@ -587,16 +594,16 @@
                      * @function
                      * @param {string} key Key
                      * @return {*} Value
-                     * @throws {string} If there is no such field
+                     * @throws {Error} If there is no such field
                      * @expose
                      */
                     Message.prototype.get = function(key) {
                         var field = T.getChild(key);
                         if (!field || !(field instanceof Reflect.Message.Field)) {
-                            throw(this+"#"+key+" is not a field: undefined");
+                            throw(new Error(this+"#"+key+" is not a field: undefined"));
                         }
                         if (!(field instanceof Reflect.Message.Field)) {
-                            throw(this+"#"+key+" is not a field: "+field.toString(true));
+                            throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                         }
                         return this[field.name];
                     };
@@ -629,7 +636,7 @@
                              * @function
                              * @param {*} value Value to set
                              * @abstract
-                             * @throws {string} If the value cannot be set
+                             * @throws {Error} If the value cannot be set
                              */
                             if (!T.hasChild("set"+Name)) {
                                 Message.prototype["set"+Name] = function(value) {
@@ -644,7 +651,7 @@
                              * @function
                              * @param {*} value Value to set
                              * @abstract
-                             * @throws {string} If the value cannot be set
+                             * @throws {Error} If the value cannot be set
                              */
                             if (!T.hasChild("set_"+name)) {
                                 Message.prototype["set_"+name] = function(value) {
@@ -662,7 +669,7 @@
                              */
                             if (!T.hasChild("get"+Name)) {
                                 Message.prototype["get"+Name] = function() {
-                                    return this.get(field.name);
+                                    return this.get(field.name); // Does not throw, field exists
                                 }
                             }
             
@@ -676,7 +683,7 @@
                              */
                             if (!T.hasChild("get_"+name)) {
                                 Message.prototype["get_"+name] = function() {
-                                    return this.get(field.name);
+                                    return this.get(field.name); // Does not throw, field exists
                                 };
                             }
                             
@@ -691,7 +698,7 @@
                      * @function
                      * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
                      * @return {ByteBuffer} Encoded message
-                     * @throws {string} If the message cannot be encoded
+                     * @throws {Error} If the message cannot be encoded
                      * @expose
                      */
                     Message.prototype.encode = function(buffer) {
@@ -705,7 +712,7 @@
                      * @name ProtoBuf.Builder.Message#toArrayBuffer
                      * @function
                      * @return {ArrayBuffer} Encoded message as ArrayBuffer
-                     * @throws {string} If the message cannot be encoded
+                     * @throws {Error} If the message cannot be encoded
                      * @expose
                      */
                     Message.prototype.toArrayBuffer = function() {
@@ -718,7 +725,7 @@
                      * @function
                      * @param {ByteBuffer} buffer ByteBuffer to decode from
                      * @return {ProtoBuf.Builder.Message} Decoded message
-                     * @throws {string} If the message cannot be decoded
+                     * @throws {Error} If the message cannot be decoded
                      * @expose
                      */
                     Message.decode = function(buffer) {
@@ -811,7 +818,7 @@
              * @param {string} rule Rule, one of requried, optional, repeated
              * @param {string} type Data type, e.g. int32
              * @param {string} name Field name
-             * @param {string} id Unique field id
+             * @param {number} id Unique field id
              * @param {Object.<string.*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.T
@@ -1190,16 +1197,14 @@
         
                 /**
                  * Namespace.
-                 * @type {Object.<string,ProtoBuf.Reflect.Message>}
-                 * @dict
+                 * @type {ProtoBuf.Reflect.Namespace}
                  * @expose
                  */
                 this.ns = new Reflect.Namespace(null, ""); // Global namespace
         
                 /**
                  * Namespace pointer.
-                 * @type {Object.<string, *>}
-                 * @dict
+                 * @type {ProtoBuf.Reflect.T}
                  * @expose
                  */
                 this.ptr = this.ns;
@@ -1213,7 +1218,7 @@
         
                 /**
                  * The current building result.
-                 * @type {*|null}
+                 * @type {Object.<string,ProtoBuf.Builder.Message|Object>|null}
                  * @expose
                  */
                 this.result = null;
@@ -1229,6 +1234,7 @@
         
             /**
              * Defines a package on top of the current pointer position and places the pointer on it.
+             * @param {string} pkg
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the package name is invalid
              * @expose
@@ -1254,7 +1260,7 @@
         
             /**
              * Tests if a definition is a valid message definition.
-             * @param {Object} def Definition
+             * @param {Object.<string,*>} def Definition
              * @return {boolean} true if valid, else false
              * @expose
              */
@@ -1373,6 +1379,7 @@
         
             /**
              * Creates ths specified protocol types at the current pointer position.
+             * @param {Array.<Object.<string,*>>} messages Messages to create
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If a message definition is invalid
              * @expose
@@ -1463,7 +1470,7 @@
             };
         
             /**
-             * Resolves the namespace.
+             * Resolves all namespace objects.
              * @throws {Error} If a type cannot be resolved
              * @expose
              */
@@ -1542,7 +1549,7 @@
         
             /**
              * Returns a string representation of this object.
-             * @returns {string} String representation as of "Builder"
+             * @return {string} String representation as of "Builder"
              * @expose
              */
             Builder.prototype.toString = function() {
