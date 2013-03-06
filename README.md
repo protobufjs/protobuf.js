@@ -293,11 +293,11 @@ Features
 * [RequireJS](http://requirejs.org/)/AMD compatible
 * Shim compatible (include the script, then use `var ProtoBuf = dcodeIO.ProtoBuf;`)
 * [node.js](http://nodejs.org) compatible, also available via [npm](https://npmjs.org/package/protobufjs)
-* [Closure Compiler](https://developers.google.com/closure/compiler/) ADVANCED_OPTIMIZATIONS compatible (fully annotated)
+* [Closure Compiler](https://developers.google.com/closure/compiler/) compatible (fully annotated, [externs](https://github.com/dcodeIO/ProtoBuf.js/tree/master/externs))
 * Fully documented using [jsdoc3](https://github.com/jsdoc3/jsdoc)
 * Well tested through [nodeunit](https://github.com/caolan/nodeunit)
 * [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
-* Small footprint (even smaller if you use JSON definitions instead of .proto files, because no parser is required)
+* Small footprint (even smaller if you use a noparse build)
 
 License
 -------
