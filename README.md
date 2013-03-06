@@ -6,6 +6,18 @@ reflection, message class building and simple encoding and decoding in plain Jav
 works out of the box on .proto files. It's also used for the cross-platform multiplayer component in
 [eSoccer](http://www.esoccer.me), an HTML5 game developed at [University of Applied Sciences Bonn](http://www.h-brs.de).
 
+Features
+--------
+* [CommonJS](http://www.commonjs.org/) compatible
+* [RequireJS](http://requirejs.org/)/AMD compatible
+* Shim compatible (include the script, then use `var ProtoBuf = dcodeIO.ProtoBuf;`)
+* [node.js](http://nodejs.org) compatible, also available via [npm](https://npmjs.org/package/protobufjs)
+* [Closure Compiler](https://developers.google.com/closure/compiler/) compatible (fully annotated, [externs](https://github.com/dcodeIO/ProtoBuf.js/tree/master/externs))
+* Fully documented using [jsdoc3](https://github.com/jsdoc3/jsdoc)
+* Well tested through [nodeunit](https://github.com/caolan/nodeunit)
+* [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
+* Small footprint (even smaller if you use a noparse build)
+
 Builder
 -------
 Probably the core component of ProtoBuf.js. Resolves all type references, performs all the necessary checks and returns
@@ -320,18 +332,6 @@ Tests (& Examples)
 ------------------
 * [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
 * [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
-
-Features
---------
-* [CommonJS](http://www.commonjs.org/) compatible
-* [RequireJS](http://requirejs.org/)/AMD compatible
-* Shim compatible (include the script, then use `var ProtoBuf = dcodeIO.ProtoBuf;`)
-* [node.js](http://nodejs.org) compatible, also available via [npm](https://npmjs.org/package/protobufjs)
-* [Closure Compiler](https://developers.google.com/closure/compiler/) compatible (fully annotated, [externs](https://github.com/dcodeIO/ProtoBuf.js/tree/master/externs))
-* Fully documented using [jsdoc3](https://github.com/jsdoc3/jsdoc)
-* Well tested through [nodeunit](https://github.com/caolan/nodeunit)
-* [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
-* Small footprint (even smaller if you use a noparse build)
 
 License
 -------
