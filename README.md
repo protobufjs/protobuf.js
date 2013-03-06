@@ -105,8 +105,8 @@ do NOT include the `ProtoBuf.DotProto` package for parsing and are therefore eve
 
 Command line utility
 --------------------
-It's also possible to transform .proto files into their JSON counterpart or to entire message classes by using the
-`proto2js` command line utility.
+It's also possible to transform .proto files into their JSON counterparts or to transform entire namespaces into
+ready-to-use message classes and enum objects by using the `proto2js` command line utility.
 
 ```
 Usage: proto2js protoFile [-class[=My.Package]] [-min] [> outFile]

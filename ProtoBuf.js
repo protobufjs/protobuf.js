@@ -59,7 +59,7 @@
          * ProtoBuf.js version.
          * @type {Object.<string, string>}
          */
-        ProtoBuf.VERSION = "0.9.1";
+        ProtoBuf.VERSION = "0.9.2";
 
         /**
          * Wire types.
@@ -1722,6 +1722,7 @@
         
             /**
              * Defines a package on top of the current pointer position and places the pointer on it.
+             * @return {ProtoBuf.Builder} this
              * @throws {Error} If the package name is invalid
              * @expose
              */
@@ -1741,6 +1742,7 @@
                     }
                     this.ptr = this.ptr.getChild(part[i]);
                 }
+                return this;
             };
         
             /**
@@ -1864,6 +1866,7 @@
         
             /**
              * Creates ths specified protocol types at the current pointer position.
+             * @return {ProtoBuf.Builder} this
              * @throws {Error} If a message definition is invalid
              * @expose
              */
@@ -1949,6 +1952,7 @@
                 }
                 this.resolved = false; // Require re-resolve
                 this.result = null; // Require re-build
+                return this;
             };
         
             /**
