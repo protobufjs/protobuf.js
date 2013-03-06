@@ -274,6 +274,34 @@ var buffer = ...; // E.g. a buffer received on a WebSocket
 var myMessage = YourMessage.decode(buffer);
 ```
 
+CommonJS, AMD and browser (shim)
+--------------------------------
+
+#### node.js / CommonJS ####
+
+```javascript
+var ProtoBuf = require("protobufjs");
+...
+```
+
+#### RequireJS / AMD ####
+
+```javascript
+var ProtoBuf = require("/path/to/ProtoBuf.js");
+...
+```
+
+#### Browser (shim) ####
+
+```html
+<script src="//raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.min.js"></script>
+```
+
+```javascript
+var ProtoBuf = dcodeIO.ProtoBuf;
+...
+```
+
 Downloads
 ---------
 * [ZIP-Archive](https://github.com/dcodeIO/ProtoBuf.js/archive/master.zip)
