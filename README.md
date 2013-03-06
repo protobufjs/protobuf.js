@@ -228,8 +228,9 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   }
 
 #### Not (yet) supported ####
-* Extensions (what for?), imports (put everything into one builder instead) and services (you roll your own, don't you?).
-  
+* Extensions (what for?), imports (put everything into one builder instead by calling `Builder#define(package)` and
+`Builder#create([messages])` multiple times) and services (you roll your own, don't you?).
+
 However, if you need anything of the above, please drop me a note how you'd like to see it implemented. It's just that
 I have no idea how to benefit from that and therefore I am not sure how to design it.
 
