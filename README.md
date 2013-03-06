@@ -86,10 +86,8 @@ builder.create([
                       {
                           "name": "FAST",
                           "id": 1
-                      },{
-                          "name": "SUPERFAST",
-                          "id": 2
-                      }
+                      },
+                      ...
                   ]
               }
           ]
@@ -101,8 +99,9 @@ var Car = Game.Cars.Car;
 ... actually the same as above ...
 ```
 
-When using JSON only, you can use `ProtoBuf.noparse.js` and `ProtoBuf.noparse.min.js` instead, which do not include
-the ProtoBuf.DotProto package for parsing and are therefore even smaller.
+When using JSON only, you can use [ProtoBuf.noparse.js](https://github.com/dcodeIO/ProtoBuf.js/blob/master/ProtoBuf.noparse.js)
+/ [ProtoBuf.noparse.min.js](https://github.com/dcodeIO/ProtoBuf.js/blob/master/ProtoBuf.noparse.min.js) instead, which
+do NOT include the `ProtoBuf.DotProto` package for parsing and are therefore even smaller.
 
 Parser
 ------
