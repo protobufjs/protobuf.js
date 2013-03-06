@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-    
+
 /**
  * @fileoverview Definitions for node's "fs" module.
  * @see http://nodejs.org/api/fs.html
@@ -142,36 +142,42 @@ fs.lchmodSync = function(path, mode) {};
 /**
  * @param {string} path
  * @param {function(string, fs.Stats)=} callback
+ * @nosideeffects
  */
 fs.stat = function(path, callback) {};
 
 /**
  * @param {string} path
  * @return {fs.Stats}
+ * @nosideeffects
  */
 fs.statSync = function(path) {}
 
 /**
  * @param {*} fd
  * @param {function(string, fs.Stats)=} callback
+ * @nosideeffects
  */
 fs.fstat = function(fd, callback) {};
 
 /**
  * @param {*} fd
  * @return {fs.Stats}
+ * @nosideeffects
  */
 fs.fstatSync = function(fd) {}
 
 /**
  * @param {string} path
  * @param {function(string, fs.Stats)=} callback
+ * @nosideeffects
  */
 fs.lstat = function(path, callback) {};
 
 /**
  * @param {string} path
  * @return {fs.Stats}
+ * @nosideeffects
  */
 fs.lstatSync = function(path) {}
 
@@ -206,12 +212,14 @@ fs.symlinkSync = function(srcpath, dstpath, type) {};
 /**
  * @param {string} path
  * @param {function(string, string)=} callback
+ * @nosideeffects
  */
 fs.readlink = function(path, callback) {};
 
 /**
  * @param {string} path
  * @return {string}
+ * @nosideeffects
  */
 fs.readlinkSync = function(path) {};
 
@@ -219,6 +227,7 @@ fs.readlinkSync = function(path) {};
  * @param {string} path
  * @param {object.<string,string>=|function(string, string)=} cache
  * @param {function(string, string)=} callback
+ * @nosideeffects
  */
 fs.realpath = function(path, cache, callback) {};
 
@@ -226,6 +235,7 @@ fs.realpath = function(path, cache, callback) {};
  * @param {string} path
  * @param {object.<string,string>=} cache
  * @return {string}
+ * @nosideeffects
  */
 fs.realpathSync = function(path, cache) {};
 
@@ -267,12 +277,14 @@ fs.mkdirSync = function(path, mode) {};
 /**
  * @param {string} path
  * @param {function(string,array.<string>)=} callback
+ * @nosideeffects
  */
 fs.readdir = function(path, callback) {};
 
 /**
  * @param {string} path
  * @return {array.<string>}
+ * @nosideeffects
  */
 fs.readdirSync = function(path) {};
 
@@ -292,6 +304,7 @@ fs.closeSync = function(fd) {};
  * @param {string} flags
  * @param {number=} mode
  * @param {function(string, *)=} callback
+ * @nosideeffects
  */
 fs.open = function(path, flags, mode, callback) {};
 
@@ -300,6 +313,7 @@ fs.open = function(path, flags, mode, callback) {};
  * @param {string} flags
  * @param {number=} mode
  * @return {*}
+ * @nosideeffects
  */
 fs.openSync = function(path, flags, mode) {};
 
@@ -308,6 +322,7 @@ fs.openSync = function(path, flags, mode) {};
  * @param {number} atime
  * @param {number} mtime
  * @param {function(...)=} callback
+ * @nosideeffects
  */
 fs.utimes = function(path, atime, mtime, callback) {};
 
@@ -315,6 +330,7 @@ fs.utimes = function(path, atime, mtime, callback) {};
  * @param {string} path
  * @param {number} atime
  * @param {number} mtime
+ * @nosideeffects
  */
 fs.utimesSync = function(path, atime, mtime) {};
 
@@ -323,6 +339,7 @@ fs.utimesSync = function(path, atime, mtime) {};
  * @param {number} atime
  * @param {number} mtime
  * @param {function(...)=} callback
+ * @nosideeffects
  */
 fs.futimes = function(fd, atime, mtime, callback) {};
 
@@ -330,6 +347,7 @@ fs.futimes = function(fd, atime, mtime, callback) {};
  * @param {*} fd
  * @param {number} atime
  * @param {number} mtime
+ * @nosideeffects
  */
 fs.futimesSync = function(fd, atime, mtime) {};
 
@@ -371,6 +389,7 @@ fs.writeSync = function(fd, buffer, offset, length, position) {};
  * @param {number} length
  * @param {number} position
  * @param {function(string, number, *)=} callback
+ * @nosideeffects
  */
 fs.read = function(fd, buffer, offset, length, position, callback) {};
 
@@ -381,6 +400,7 @@ fs.read = function(fd, buffer, offset, length, position, callback) {};
  * @param {number} length
  * @param {number} position
  * @return {number}
+ * @nosideeffects
  */
 fs.readSync = function(fd, buffer, offset, length, position) {};
 
@@ -388,12 +408,14 @@ fs.readSync = function(fd, buffer, offset, length, position) {};
  * @param {string} filename
  * @param {string=|function(string, *)=}encoding
  * @param {function(string, *)=} callback
+ * @nosideeffects
  */
 fs.readFile = function(filename, encoding, callback) {};
 
 /**
  * @param {string} filename
  * @param {string=} encoding
+ * @nosideeffects
  */
 fs.readFileSync = function(filename, encoding) {};
 
@@ -452,11 +474,13 @@ fs.watch = function(filename, options, listener) {};
 /**
  * @param {string} path
  * @param {function(boolean)} callback
+ * @nosideeffects
  */
 fs.exists = function(path, callback) {};
 
 /**
  * @param {string} path
+ * @nosideeffects
  */
 fs.existsSync = function(path) {};
 
@@ -467,36 +491,43 @@ fs.Stats = function() {};
 
 /**
  * @return {boolean}
+ * @nosideeffects
  */
 fs.Stats.prototype.isFile = function() {};
 
 /**
  * @return {boolean}
+ * @nosideeffects
  */
 fs.Stats.prototype.isDirectory = function() {};
 
 /**
  * @return {boolean}
+ * @nosideeffects
  */
 fs.Stats.prototype.isBlockDevice = function() {};
 
 /**
  * @return {boolean}
+ * @nosideeffects
  */
 fs.Stats.prototype.isCharacterDevice = function() {};
 
 /**
  * @return {boolean}
+ * @nosideeffects
  */
 fs.Stats.prototype.isSymbolicLink = function() {};
 
 /**
  * @return {boolean}
+ * @nosideeffects
  */
 fs.Stats.prototype.isFIFO = function() {};
 
 /**
  * @return {boolean}
+ * @nosideeffects
  */
 fs.Stats.prototype.isSocket = function() {};
 
@@ -568,6 +599,7 @@ fs.Stats.prototype.ctime = 0;
 /**
  * @param {string} path
  * @param {{flags: string, encoding: ?string, fd: *, mode: number, bufferSize: number}=} options
+ * @nosideeffects
  */
 fs.createReadStream = function(path, options) {};
 
@@ -580,6 +612,7 @@ fs.ReadStream = function() {};
 /**
  * @param {string} path
  * @param {{flags: string, encoding: ?string, mode: number}=} options
+ * @nosideeffects
  */
 fs.createWriteStream = function(path, options) {};
 
