@@ -97,6 +97,9 @@
         
             <dt><a href="namespaces.html#ProtoBuf.Reflect"><a href="ProtoBuf.Reflect.html">Reflect</a></a></dt>
             <dd></dd>
+        
+            <dt><a href="namespaces.html#ProtoBuf.Util"><a href="ProtoBuf.Util.html">Util</a></a></dt>
+            <dd></dd>
         </dl>
     
     
@@ -668,12 +671,7 @@ builder will only contain a global namespace.</p></td>
     
     
     <div class="description">
-        <p>Builds a .proto file and returns the Builder.
-&lt;p&gt;Node.js: If no callback is specified, this will read the file synchronously using the &quot;fs&quot; module and
-return the Builder. If a callback is specified, this will read the file asynchronously and call the callback
-with the Builder as its first argument afterwards.&lt;/p&gt;
-&lt;p&gt;Browser: Will read the file asynchronously and call the callback with the Builder as its first argument
-afterwards.&lt;/p&gt;</p>
+        <p>Builds a .proto file and returns the Builder.</p>
     </div>
     
 
@@ -762,7 +760,9 @@ afterwards.&lt;/p&gt;</p>
             
             
             
-            <td class="description last"><p>Callback that will receive the Builder as its first argument</p></td>
+            <td class="description last"><p>Callback that will receive the Builder as its first argument.
+  If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+  function will return the Builder or NULL if the request has failed.</p></td>
         </tr>
 	
 	
@@ -801,35 +801,14 @@ afterwards.&lt;/p&gt;</p>
     
     
     
-    <h5>Throws:</h5>
-    
-            
-<div class="param-desc">
-    If the file cannot be read or cannot be parsed
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Error</span>
-
-
-	</dd>
-</dl>
-
-        
     
     
     <h5>Returns:</h5>
     
             
 <div class="param-desc">
-    <p>The Builder if synchronous (no callback), else undefined</p>
+    <p>The Builder if synchronous (no callback specified, will be NULL if the
+  request has failed), else undefined</p>
 </div>
 
 
@@ -1021,7 +1000,7 @@ afterwards.&lt;/p&gt;</p>
 
 <nav>
     <nav-inner>
-        <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li></ul>
+        <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
     </nav-inner>
 </nav>
 

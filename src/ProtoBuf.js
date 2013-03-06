@@ -179,6 +179,8 @@
             }
         };
         
+        // #include "ProtoBuf/Util.js"
+        
         // #include "ProtoBuf/Lang.js"
         
         // #ifndef NOPARSE
@@ -223,60 +225,24 @@
 
         /**
          * Builds a .proto file and returns the Builder.
-         * <p>Node.js: If no callback is specified, this will read the file synchronously using the "fs" module and
-         * return the Builder. If a callback is specified, this will read the file asynchronously and call the callback
-         * with the Builder as its first argument afterwards.</p>
-         * <p>Browser: Will read the file asynchronously and call the callback with the Builder as its first argument
-         * afterwards.</p>
          * @param {string} filename Path to proto filename
-         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument
-         * @return {ProtoBuf.Builder|undefined} The Builder if synchronous (no callback), else undefined
-         * @throws {Error} If the file cannot be read or cannot be parsed
+         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
+         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+         *   function will return the Builder or NULL if the request has failed.
+         * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
+         *   request has failed), else undefined
          * @expose
          */
         ProtoBuf.protoFromFile = function(filename, callback) {
-            // #ifdef NOPARSE
-            throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
-            // #else
-            if ((typeof window == 'undefined' || !window.window) && typeof require == 'function') { // Node.js
-                var fs = require("fs");
-                if (typeof callback == 'function') {
-                    fs.readFile(filename, function(err, data) {
-                        callback(ProtoBuf.protoFromString(data));
-                    });
-                } else {
-                    return ProtoBuf.protoFromString(require("fs").readFileSync(filename));
-                }
-            } else { // Browser, no dependencies please, ref: http://www.quirksmode.org/js/xmlhttp.html
-                if (typeof callback != 'function') {
-                    throw(new Error("Cannot read '"+filename+"': ProtoBuf.protoFromFile requires a callback"));
-                }
-                var XMLHttpFactories = [
-                    function () {return new XMLHttpRequest()},
-                    function () {return new ActiveXObject("Msxml2.XMLHTTP")},
-                    function () {return new ActiveXObject("Msxml3.XMLHTTP")},
-                    function () {return new ActiveXObject("Microsoft.XMLHTTP")}
-                ];
-                var xhr = false;
-                for (var i=0;i<XMLHttpFactories.length;i++) {
-                    try { xhr = XMLHttpFactories[i](); }
-                    catch (e) { continue; }
-                    break;
-                }
-                if (!xhr) throw(new Error("Cannot read '"+filename+"': Your browser does not support XMLHttpRequest"));
-                xhr.open('GET', filename, true);
-                xhr.setRequestHeader('User-Agent', 'XMLHTTP/1.0');
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState != 4) return;
-                    if (xhr.status != 200 && xhr.status != 304) {
-                        throw(new Error("Failed to read '"+filename+"': Server returned status code "+xhr.status));
-                    }
-                    callback(ProtoBuf.protoFromString(xhr.responseText));
-                };
-                if (xhr.readyState == 4) return;
-                xhr.send();
+            if (callback && typeof callback != 'function') callback = null;
+            if (callback) {
+                ProtoBuf.Util.fetch(filename, function(contents) {
+                    callback(ProtoBuf.protoFromString(contents));
+                });
+            } else {
+                var contents = ProtoBuf.Util.fetch(filename);
+                return contents !== null ? ProtoBuf.protoFromString(contents) : null;
             }
-            // #endif
         };
 
         /**
