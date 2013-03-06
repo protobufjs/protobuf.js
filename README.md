@@ -3,7 +3,8 @@ ProtoBuf.js - protobuf for JavaScript [![Build Status](https://travis-ci.org/dco
 
 A protobuf implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) including a .proto parser,
 reflection, message class building and simple encoding and decoding in plain JavaScript. No compilation step required,
-works out of the box on .proto files.
+works out of the box on .proto files. It's also used for the cross-platform multiplayer component in
+[eSoccer](http://www.esoccer.me), a cross-platform multiplayer HTML5 game developed at [University of Applied Sciences Bonn](http://www.h-brs.de).
 
 Builder
 -------
