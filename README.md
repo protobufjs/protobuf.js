@@ -10,9 +10,11 @@ Probably the core component of ProtoBuf.js. Resolves all type references, perfor
 ready to use classes. Can be created from a .proto file or from a JSON definition. The later does not even require the
 .proto parser to be included (see: `ProtoBuf.noparse.js`).
 
-Example: [tests/complex.proto](https://github.com/dcodeIO/ProtoBuf.js/tree/master/tests/complex.proto)
-
 Install: `npm install protobufjs`
+
+#### Using .proto files ####
+
+Example: [tests/complex.proto](https://github.com/dcodeIO/ProtoBuf.js/tree/master/tests/complex.proto)
 
 ```javascript
 var ProtoBuf = require("protobufjs");
@@ -49,9 +51,62 @@ socket.send(buffer.toArrayBuffer());
 socket.send(car.toArrayBuffer());
 ```
 
+#### Using JSON without the .proto parser ####
+
+Example: [tests/complex.json](https://github.com/dcodeIO/ProtoBuf.js/tree/master/tests/complex.json)
+
+```javascript
+var ProtoBuf = require("protobufjs");
+
+var builder = ProtoBuf.newBuilder();    // Alternatively:
+builder.define("Game");                 // var builder = ProtoBuf.newBuilder("Game");
+builder.create([
+      {
+          "name": "Car",
+          "fields": [
+              {
+                  "rule": "required",
+                  "type": "string",
+                  "name": "model",
+                  "id": 1
+              },
+              ...
+          ],
+          "messages": [
+              {
+                  "name": "Vendor",
+                  "fields": ...,
+              },
+              ...
+          ],
+          "enums": [
+              {
+                  "name": "Speed",
+                  "values": [
+                      {
+                          "name": "FAST",
+                          "id": 1
+                      },{
+                          "name": "SUPERFAST",
+                          "id": 2
+                      }
+                  ]
+              }
+          ]
+      }
+]);
+
+var Game = builder.build("Game");
+var Car = Game.Cars.Car;
+... actually the same as above ...
+```
+
+When using JSON only, you can use `ProtoBuf.noparse.js` and `ProtoBuf.noparse.min.js` instead, which do not include
+the ProtoBuf.DotProto package for parsing and are therefore even smaller.
+
 Parser
 ------
-Compliant with the protobuf parser to the following extend:
+Only available in the full build (i.e. not in "noparse" builds). Compliant with the protobuf parser to the following extend:
 
 * Required, optional, repeated and packed repeated fields:
 
