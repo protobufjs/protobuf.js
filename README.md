@@ -127,7 +127,7 @@ file, run:
 proto2js tests/complex.proto > tests/complex.json
 ```
 
-Or to create the entire namespace as a class, run:
+Or to create classes for the entire `Game` namespace, run:
 
 ```bash
 proto2js tests/complex.proto -class=Game > tests/complex.js
