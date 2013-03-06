@@ -279,6 +279,10 @@ CommonJS, AMD and browser (shim)
 
 #### node.js / CommonJS ####
 
+```bash
+npm install protobufjs
+```
+
 ```javascript
 var ProtoBuf = require("protobufjs");
 ...
