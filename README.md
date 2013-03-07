@@ -238,6 +238,7 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
       option inmessage = "World!";
       optional int32 somenumber = 1 [default=123]; // Actually the only one used
   }
+  ```
 
 #### Not (yet) supported ####
 * Extensions (what for?), imports (put everything into one builder instead by calling `Builder#define(package)` and
