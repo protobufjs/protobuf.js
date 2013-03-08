@@ -1,4 +1,4 @@
-ProtoBuf.js - protobuf for JavaScript [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+![ProtoBuf.js - protobuf for JavaScript](https://raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.png)
 =====================================
 
 A protobuf implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) including a .proto parser,
@@ -329,7 +329,7 @@ Documentation
 -------------
 * [View documentation](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
 
-Tests (& Examples)
+Tests (& Examples) [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 ------------------
 * [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
 * [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)

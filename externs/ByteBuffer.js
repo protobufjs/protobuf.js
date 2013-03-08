@@ -44,7 +44,7 @@ ByteBuffer.prototype.array;
 ByteBuffer.prototype.offset;
 
 /**
- * @type {length}
+ * @type {number}
  */
 ByteBuffer.prototype.length;
 
@@ -90,6 +90,16 @@ ByteBuffer.allocate = function(capacity, littleEndian) {};
 ByteBuffer.wrap = function(buffer, littleEndian) {};
 
 /**
+ * @return {ByteBuffer}
+ */
+ByteBuffer.prototype.LE = function() {};
+
+/**
+ * @return {ByteBuffer}
+ */
+ByteBuffer.prototype.BE = function() {};
+
+/**
  * @param {number} capacity
  * @return {boolean}
  */
@@ -100,6 +110,7 @@ ByteBuffer.prototype.resize = function(capacity) {};
  * @param {number} end
  * @return {!ByteBuffer}
  * @throws {Error}
+ * @nosideeffects
  */
 ByteBuffer.prototype.slice = function(begin, end) {};
 
@@ -108,6 +119,7 @@ ByteBuffer.prototype.slice = function(begin, end) {};
  * @param {number} end
  * @returns {!ByteBuffer}
  * @throws {Error}
+ * @nosideeffects
  */
 ByteBuffer.prototype.sliceAndCompact = function(begin, end) {};
 
@@ -129,21 +141,25 @@ ByteBuffer.prototype.reset = function() {};
 
 /**
  * @return {!ByteBuffer}
+ * @nosideeffects
  */
 ByteBuffer.prototype.clone = function() {};
 
 /**
  * @return {!ByteBuffer}
+ * @nosideeffects
  */
 ByteBuffer.prototype.copy = function() {};
 
 /**
  * @return {number}
+ * @nosideeffects
  */
 ByteBuffer.prototype.remaining = function() {};
 
 /**
  * @return {number}
+ * @nosideeffects
  */
 ByteBuffer.prototype.capacity = function() {};
 
@@ -377,15 +393,6 @@ ByteBuffer.prototype.writeLong = function(value, offset) {};
 ByteBuffer.prototype.readLong = function(offset) {};
 
 /**
- * @param {Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array|Float64Array} fromType
- * @param {Int8Array|Uint8Array|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array|Float64Array} toType
- * @param {number} value
- * @return {number}
- * @nosideeffects
- */
-ByteBuffer.cast = function(fromType, toType, value) {};
-
-/**
  * @param {number} value
  * @param {number=} offset
  * @return {!ByteBuffer|number}
@@ -522,9 +529,10 @@ ByteBuffer.prototype.writeJSON = function(data, offset, stringify) {};
 ByteBuffer.prototype.readJSON = function(offset, parse) {};
 
 /**
+ * @param {function(string)=} out
  * @nosideeffects
  */
-ByteBuffer.prototype.printDebug = function() {};
+ByteBuffer.prototype.printDebug = function(out) {};
 
 /**
  * @param {number=} wrap
@@ -559,6 +567,7 @@ ByteBuffer.prototype.toArrayBuffer = function(forceCopy) {};
  * @param {!ByteBuffer} src
  * @param {number} offset
  * @return {!{char: number, length: number}}
+ * @nosideeffects
  */
 ByteBuffer.decodeUTF8Char = function(src, offset) {};
 
