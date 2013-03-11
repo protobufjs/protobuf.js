@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "0.9.5",
+    "version": "0.9.6",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "description": "protobuf for JavaScript",
     "main": "ProtoBuf.js",
