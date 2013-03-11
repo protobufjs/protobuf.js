@@ -324,8 +324,9 @@ var ProtoBuf = require("protobufjs");
 #### RequireJS / AMD ####
 
 ```javascript
-var ProtoBuf = require("/path/to/ProtoBuf.js");
-...
+define(["ProtoBuf"], function(ProtoBuf) {
+    ...
+});
 ```
 
 #### Browser (shim) ####

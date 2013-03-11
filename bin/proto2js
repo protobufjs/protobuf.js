@@ -57,48 +57,37 @@ var parser = new ProtoBuf.DotProto.Parser(source);
 var ast = parser.parse();
 var pkg = !!ast["package"] ? ast["package"] : null;
 var out = JSON.stringify(ast['messages'], undefined, !!options["min"] ? 0 : 2);
+var isJSON = false;
+var min = !!options['min'];
 
 // Switches
-if (!!options["class"]) {
-    out = build_shim(options["class"], ast);
-} else if (!!options["commonjs"]) {
-    out = build_commonjs(options["commonjs"], ast);
-} else if (!!options["amd"]) {
-    out = build_amd(options["amd"], ast);
-} else {
-    out = build_json(ast);
+try {
+    if (!!options["class"]) {
+        out = build_shim(options["class"], ast, min);
+    } else if (!!options["commonjs"]) {
+        out = build_commonjs(options["commonjs"], ast, min);
+    } else if (!!options["amd"]) {
+        out = build_amd(options["amd"], ast, min);
+    } else {
+        out = build_json(ast, min);
+        isJSON = true;
+    }
+} catch (e) {
+    console.error(""+e);
+    process.exit(2);
 }
 
-// Minify through ClosureCompiler.js
-if (!!options["min"]) {
-    var ClosureCompiler = require("closurecompiler");
-    fs.writeFileSync('_temp.js', out);
-    ClosureCompiler.compile(
-        ['_temp.js'],
-        {
-            "compilation_level": "SIMPLE_OPTIMIZATIONS"
-        },
-        function(error, result) {
-            fs.unlink('_temp.js');
-            if (result.length > 0) {
-                process.stdout.write(result);
-                process.stderr.write(error);
-            } else {
-                throw(error);
-            }
-        }
-    );
-} else {
-    console.log(out);
-}
+// Output
+console.log(out);
 
 /**
  * Builds the JSON representation.
  * @param {Object} defs Definitions
+ * @param {boolean=} min true to minify, false for pretty print
  * @return {string} JSON representation
  */
-function build_json(defs) {
-    return JSON.stringify(ast, null, 4);
+function build_json(defs, min) {
+    return JSON.stringify(defs, null, min ? 0 : 4);
 }
 
 /**
@@ -109,6 +98,9 @@ function build_json(defs) {
  */
 function is_valid_package(pkg, ast) {
     if (pkg === null) return true;
+    if (!ProtoBuf.Lang.TYPEREF.test(pkg)) {
+        return false;
+    }
     var part = pkg.split(".");
     if (part[0] == "") part = part.slice(1);
     var ptrs = [ast['messages']];
@@ -140,65 +132,68 @@ function is_valid_package(pkg, ast) {
 }
 
 /**
+ * Builds the builder.
+ * @param {string} pkg Package
+ * @param {Object} defs Definitions
+ * @param {boolean=} min true to minify, false for pretty print
+ * @return {string} Builder code
+ * @throws {Error} If the package is not a valid namespace
+ */
+function build_builder(pkg, defs, min) {
+    if (pkg !== null) {
+        if (!is_valid_package(pkg, defs)) {
+            throw(new Error("Not a valid namespace: "+pkg));
+        }
+    }
+    return 'newBuilder('+(typeof defs['package'] == 'string' ? '"'+defs['package']+'"' : '')+').create('+build_json(defs['messages'], min)+').build('+(pkg !== null ? '"'+pkg+'"' : '')+');'
+}
+
+/**
  * Builds shim classes.
  * @param {string} pkg Package
  * @param {Object} defs Definitions
+ * @param {boolean=} min true to minify, false for pretty print
  * @return {string} Built classes
+ * @throws {Error} If classes cannot be built
  */
-function build_shim(pkg, defs) {
+function build_shim(pkg, defs, min) {
     if (pkg === true) {
-        if (!defs['package']) {
-            console.error("The parsed .proto file does not contain a package definition. Please provide one to the -class argument.");
-            process.exit(11);
-        }
-        pkg = defs['package'];
+        pkg = typeof defs['package'] == 'string' ? defs['package'] : null;
+    }
+    var builder = build_builder(pkg, defs, min);
+    var WHITESPACE = min ? '' : ' ';
+    if (pkg === null) {
+        vars = 'var _root'+WHITESPACE+'='+WHITESPACE;
     } else {
-        if (!ProtoBuf.Lang.TYPEREF.test(pkg)) {
-            console.error("Not a valid package definition: "+pkg);
-            process.exit(12);
+        var part = pkg.split(".");
+        if (part[0] == "") part = part.slice(1);
+        var vars = 'var ';
+        var path = "";
+        for (var i=0; i<part.length-1; i++) {
+            vars += path+part[i]+WHITESPACE+'='+WHITESPACE+'{};'+WHITESPACE;
+            path += part[i]+".";
         }
+        path += part[part.length-1];
+        vars += path+WHITESPACE+'='+WHITESPACE;
     }
-    if (!is_valid_package(pkg, defs)) {
-        console.error("Not a valid namespace: "+pkg);
-        process.exit(13);
-    }
-    var part = pkg.split(".");
-    if (part[0] == "") part = part.slice(1);
-    var vars = 'var ';
-    var path = "";
-    for (var i=0; i<part.length-1; i++) {
-        vars += path+part[i]+' = '+'{}; ';
-        path += part[i]+".";
-    }
-    path += part[part.length-1];
-    vars += path+' = ';
-    return vars+'ProtoBuf.newBuilder("'+defs['package']+'").create('+JSON.stringify(defs['messages'], null, 4)+').build("'+pkg+'");';
+    return vars+'dcodeIO.ProtoBuf.'+builder;
 }
 
 /**
  * Builds CommonJS exports.
  * @param {string} pkg Package
  * @param {Object} defs Definitions
+ * @param {boolean=} min true to minify, false for pretty print
  * @return {string} Built exports
+ * @throws {Error} If exports cannot be built
  */
-function build_commonjs(pkg, defs) {
+function build_commonjs(pkg, defs, min) {
     if (pkg === true) {
-        if(!defs['package']) {
-            console.error("The parsed .proto file does not contain a package definition. Please provide one to the -commonjs argument.");
-            process.exit(21);
-        }
-        pkg = defs['package'];
-    } else {
-        if (!ProtoBuf.Lang.TYPEREF.test(pkg)) {
-            console.error("Not a valid package definition: "+pkg);
-            process.exit(22);
-        }
+        pkg = typeof defs['package'] == 'string' ? defs['package'] : null;
     }
-    if (!is_valid_package(pkg, defs)) {
-        console.error("Not a valid namespace: "+pkg);
-        process.exit(23);
-    }
-    return 'module.exports = require("protobufjs").newBuilder("'+defs['package']+'").create('+JSON.stringify(defs['messages'], null, 4)+').build("'+pkg+'");';
+    var builder = build_builder(pkg, defs, min);
+    var WHITESPACE = min ? '' : ' ';
+    return 'module.exports'+WHITESPACE+'='+WHITESPACE+'require("protobufjs").'+builder;
 }
 
 /**
@@ -209,20 +204,9 @@ function build_commonjs(pkg, defs) {
  */
 function build_amd(pkg, defs) {
     if (pkg === true) {
-        if (!defs['package']) {
-            console.error("The parsed .proto file does not contain a package definition. Please provide one to the -amd argument.");
-            process.exit(31);
-        }
-        pkg = defs['package'];
-    } else {
-        if (!ProtoBuf.Lang.TYPEREF.test(pkg)) {
-            console.error("Not a valid package definition: "+pkg);
-            process.exit(32);
-        }
+        pkg = typeof defs['package'] == 'string' ? defs['package'] : null;
     }
-    if (!is_valid_package(pkg, defs)) {
-        console.error("Not a valid namespace: "+pkg);
-        process.exit(33);
-    }
-    return 'define("'+pkg.replace(/\./g, '/').replace(/^\//, "")+'", ["ProtoBuf"], function(ProtoBuf) { return ProtoBuf.newBuilder("'+defs['package']+'").create('+JSON.stringify(defs['messages'], null, 4)+').build("'+pkg+'"); });';
+    var builder = build_builder(pkg, defs, min);
+    var WHITESPACE = min ? '' : ' ';
+    return 'define('+(pkg !== null ? '"'+pkg.replace(/\./g, '/').replace(/^\//, "")+'",'+WHITESPACE : '')+'["ProtoBuf"],'+WHITESPACE+'function(ProtoBuf)'+WHITESPACE+'{'+WHITESPACE+'return ProtoBuf.'+builder+''+WHITESPACE+'});';
 }
