@@ -2,7 +2,7 @@
     "name": "protobufjs",
     "version": "0.9.7",
     "author": "Daniel Wirtz <dcode@dcode.io>",
-    "description": "protobuf for JavaScript",
+    "description": "ProtoBuf.js: protobuf for JavaScript. No compilation step required, works out of the box.",
     "main": "ProtoBuf.js",
     "bin": {
         "proto2js": "./bin/proto2js"
