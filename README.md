@@ -329,9 +329,12 @@ define(["ProtoBuf"], function(ProtoBuf) {
 });
 ```
 
+Requires [ByteBuffer.js](http://github.com/dcodeIO/ByteBuffer.js) via `["ByteBuffer"]`
+
 #### Browser (shim) ####
 
 ```html
+<script src="//raw.github.com/dcodeIO/ByteBuffer.js/master/ByteBuffer.min.js"></script>
 <script src="//raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.min.js"></script>
 ```
 
