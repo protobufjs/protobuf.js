@@ -65,6 +65,20 @@ socket.send(buffer.toArrayBuffer());
 socket.send(car.toArrayBuffer());
 ```
 
+#### Putting multiple .proto files into a common namespace ####
+
+Example: [tests/example1.proto](https://github.com/dcodeIO/ProtoBuf.js/tree/master/tests/example1.proto),
+[tests/example2.proto](https://github.com/dcodeIO/ProtoBuf.js/tree/master/tests/example2.proto)
+
+```javascript
+var builder = ProtoBuf.protoFromFile("tests/example1.proto");
+ProtoBuf.protoFromFile("tests/example2.proto", builder);
+var root = builder.build();
+var test1 = new root.Test1(123);
+var test2 = new root.Test2("123");
+...
+```
+
 #### Using JSON without the .proto parser ####
 
 Example: [tests/complex.json](https://github.com/dcodeIO/ProtoBuf.js/tree/master/tests/complex.json)
@@ -323,13 +337,29 @@ var ProtoBuf = require("protobufjs");
 
 #### RequireJS / AMD ####
 
+Requires [ByteBuffer.js](http://github.com/dcodeIO/ByteBuffer.js). [RequireJS](http://requirejs.org) example:
+
 ```javascript
-define(["ProtoBuf"], function(ProtoBuf) {
+require.config({
+    ...
+    "paths": {
+        "ByteBuffer": "/path/to/ByteBuffer.js",
+        "ProtoBuf": "/path/to/ProtoBuf.js"
+    },
+    ...
+});
+require(["ProtoBuf"], function(ProtoBuf) {
     ...
 });
 ```
 
-Requires [ByteBuffer.js](http://github.com/dcodeIO/ByteBuffer.js) via `["ByteBuffer"]`
+Or as a module dependency:
+
+```javascript
+define("MyModule", ["ProtoBuf"], function(ProtoBuf) {
+    ...
+});
+```
 
 #### Browser (shim) ####
 

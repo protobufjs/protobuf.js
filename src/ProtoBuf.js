@@ -188,17 +188,18 @@
         /**
          * Builds a .proto definition and returns the Builder.
          * @param {string} proto .proto file contents
+         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
          */
-        ProtoBuf.protoFromString = function(proto) {
+        ProtoBuf.protoFromString = function(proto, builder) {
             // #ifdef NOPARSE
             throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
             // #else
             var parser = new ProtoBuf.DotProto.Parser(proto+"");
             var parsed = parser.parse();
-            var builder = new ProtoBuf.Builder();
+            var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
             if (parsed['package'] !== null) {
                 builder.define(parsed['package']); // Define the package
             }
@@ -216,19 +217,25 @@
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
          *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
          *   function will return the Builder or NULL if the request has failed.
+         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
          * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
          *   request has failed), else undefined
          * @expose
          */
-        ProtoBuf.protoFromFile = function(filename, callback) {
-            if (callback && typeof callback != 'function') callback = null;
+        ProtoBuf.protoFromFile = function(filename, callback, builder) {
+            if (callback && typeof callback == 'object') {
+                builder = callback;
+                callback = null;
+            } else if (!callback || typeof callback != 'function') {
+                callback = null;
+            }
             if (callback) {
                 ProtoBuf.Util.fetch(filename, function(contents) {
-                    callback(ProtoBuf.protoFromString(contents));
+                    callback(ProtoBuf.protoFromString(contents, builder));
                 });
             } else {
                 var contents = ProtoBuf.Util.fetch(filename);
-                return contents !== null ? ProtoBuf.protoFromString(contents) : null;
+                return contents !== null ? ProtoBuf.protoFromString(contents, builder) : null;
             }
         };
 

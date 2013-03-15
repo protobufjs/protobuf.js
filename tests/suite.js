@@ -228,6 +228,20 @@ var suite = {
         }
         test.done();
     },
+    
+    // Builder reused to add definitions from multiple sources
+    "multibuilder": function(test) {
+        try {
+            var builder = ProtoBuf.protoFromFile(__dirname+"/example1.proto");
+            ProtoBuf.protoFromFile(__dirname+"/example2.proto", builder);
+            var ns = builder.build();
+            test.ok(!!ns.Test1);
+            test.ok(!!ns.Test2);
+        } catch (e) {
+            fail(e);
+        }
+        test.done();
+    },
 
     "commonjs": function(test) {
         var fs = require("fs")
