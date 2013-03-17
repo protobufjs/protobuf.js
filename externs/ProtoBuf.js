@@ -319,6 +319,7 @@ ProtoBuf.Reflect.Message.prototype.build = function() {};
 /**
  * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
+ * @return {!ByteBuffer}
  * @throws {string}
  */
 ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
@@ -380,6 +381,7 @@ ProtoBuf.Reflect.Message.Field.prototype.verifyValue = function(value, skipRepea
 /**
  * @param {*} value
  * @param {!ByteBuffer} buffer
+ * @return {!ByteBuffer}
  * @throws {Error}
  * @nosideeffects
  */
@@ -397,6 +399,7 @@ ProtoBuf.Reflect.Message.Field.prototype.decode = function(wireType, buffer) {};
 /**
  * @param {*} value
  * @param {!ByteBuffer} buffer
+ * @return {!ByteBuffer}
  * @throws {Error}
  * @nosideeffects
  */

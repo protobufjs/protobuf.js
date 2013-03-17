@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.9.8";
+        ProtoBuf.VERSION = "0.9.10";
 
         /**
          * Wire types.
@@ -663,7 +663,7 @@
                             throw(new Error(this+"#"+key+" is not a repeated field"));
                         }
                         if (this[field.name] === null) this[field.name] = [];
-                        this[field.name].push(field.verifyValue(value));
+                        this[field.name].push(field.verifyValue(value, true));
                     };
         
                     /**
@@ -801,8 +801,7 @@
                      */
                     Message.prototype.encode = function(buffer) {
                         buffer = buffer || new ByteBuffer();
-                        T.encode(this, buffer);
-                        return buffer.flip();
+                        return T.encode(this, buffer).flip();
                     };
         
                     /**
@@ -867,7 +866,8 @@
             /**
              * Encodes a built message's contents to the specified buffer.
              * @param {ProtoBuf.Builder.Message} message Built message to encode
-             * @param {ByteBuffer} buffer BufferBuffer to write to
+             * @param {ByteBuffer} buffer ByteBuffer to write to
+             * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {string} If the message cannot be encoded
              * @expose
              */
@@ -876,6 +876,7 @@
                 for (var i=0; i<fields.length; i++) {
                     fields[i].encode(message.get(fields[i].name), buffer);
                 }
+                return buffer;
             };
         
             /**
@@ -898,7 +899,11 @@
                     if (!field) {
                         throw(new Error("Illegal field id in "+this.toString(true)+"#decode: "+id));
                     }
-                    msg.set(field.name, field.decode(wireType, buffer));
+                    if (field.repeated) {
+                        msg.add(field.name, field.decode(wireType, buffer));
+                    } else{
+                        msg.set(field.name, field.decode(wireType, buffer));
+                    }
                 }
                 return msg;
             };
@@ -1044,6 +1049,7 @@
              * Encodes the specified field value to the specified buffer.
              * @param {*} value Field value
              * @param {ByteBuffer} buffer ByteBuffer to encode to
+             * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {Error} If the field cannot be encoded
              * @expose
              */
@@ -1052,7 +1058,7 @@
                 if (this.type == null || typeof this.type != 'object') {
                     throw(new Error("[INTERNAL ERROR] Unresolved type in "+this.toString(true)+": "+this.type));
                 }
-                if (value === null) return; // Optional omitted
+                if (value === null || (this.options["packed"] && value.length == 0)) return buffer; // Optional omitted
                 try {
                     if (this.repeated) {
                         var i;
@@ -1079,6 +1085,7 @@
                 } catch (e) {
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")"));
                 }
+                return buffer;
             };
         
             /**
@@ -1140,6 +1147,7 @@
              * Encodes a value to the specified buffer. Does not encode the key.
              * @param {*} value Field value
              * @param {ByteBuffer} buffer ByteBuffer to encode to
+             * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {Error} If the value cannot be encoded
              * @expose
              */
@@ -1190,6 +1198,7 @@
                     // We should never end here
                     throw(new Error("[INTERNAL ERROR] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
                 }
+                return buffer;
             };
         
             /**

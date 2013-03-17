@@ -262,6 +262,28 @@ var suite = {
         }
         test.done();
     },
+    
+    // Inner messages test
+    "innerrepeated": function(test) {
+        try {
+            var builder = ProtoBuf.protoFromFile(__dirname+"/innerrepeated.proto");
+            var root = builder.build();
+            var Outer = root.Outer;
+            var Inner = root.Inner;
+            var outer = new Outer({ inner: [new Inner(1), new Inner(2)] });
+            var bb = new ByteBuffer(8);
+            outer.encode(bb);
+            test.equal("<0A 02 08 01 0A 02 08 02>", bb.toHex());
+            var douter = Outer.decode(bb);
+            test.ok(douter.inner instanceof Array);
+            test.equal(douter.inner.length, 2);
+            test.equal(douter.inner[0].inner_value, 1);
+            test.equal(douter.inner[1].inner_value, 2);
+        } catch (e) {
+            fail(e);
+        }
+        test.done();
+    },
 
     "commonjs": function(test) {
         var fs = require("fs")
