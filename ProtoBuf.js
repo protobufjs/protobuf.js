@@ -1602,9 +1602,7 @@
                 if (this.type == ProtoBuf.TYPES["int32"]) {
                     return buffer.readVarint32();
                 } else if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    value = buffer.readVarint32();
-                    UINT32[0] = value;
-                    return UINT32[0];
+                    return buffer.readVarint32();
                 } else if (this.type == ProtoBuf.TYPES["sint32"]) {
                     return buffer.readZigZagVarint32();
                 } else if (this.type == ProtoBuf.TYPES["bool"]) {
