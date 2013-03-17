@@ -571,18 +571,20 @@ ProtoBuf.Builder.Message.prototype.toString = function() {};
 
 /**
  * @param {string} proto
+ * @param {ProtoBuf.Builder=} builder
  * @return {!ProtoBuf.Builder}
  * @throws {Error}
  */
-ProtoBuf.protoFromString = function(proto) {};
+ProtoBuf.protoFromString = function(proto, builder) {};
 
 /**
  * @param {string} filename
- * @param {function(ProtoBuf.Builder)=} callback 
+ * @param {(function(ProtoBuf.Builder)|ProtoBuf.Builder)=} callback
+ * @param {ProtoBuf.Builder=} builder
  * @return {ProtoBuf.Builder|undefined}
  * @throws {Error}
  */
-ProtoBuf.protoFromFile = function(filename, callback) {};
+ProtoBuf.protoFromFile = function(filename, callback, builder) {};
 
 /**
  * @param {string=} pkg

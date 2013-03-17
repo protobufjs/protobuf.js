@@ -71,6 +71,60 @@ ByteBuffer.LITTLE_ENDIAN = true;
  */
 ByteBuffer.BIG_ENDIAN = false;
 
+/**
+ * @type {Int8Array}
+ * @const
+ */
+ByteBuffer.INT8;
+
+/**
+ * @type {Uint8Array}
+ * @const
+ */
+ByteBuffer.UINT8;
+
+/**
+ * @type {Int16Array}
+ * @const
+ */
+ByteBuffer.INT16;
+
+/**
+ * @type {Uint16Array}
+ * @const
+ */
+ByteBuffer.UINT16;
+
+/**
+ * @type {Int32Array}
+ * @const
+ */
+ByteBuffer.INT32;
+
+/**
+ * @type {Uint32Array}
+ * @const
+ */
+ByteBuffer.UINT32;
+
+/**
+ * @type {Float32Array}
+ * @const
+ */
+ByteBuffer.FLOAT32;
+
+/**
+ * @type {Float64Array}
+ * @const
+ */
+ByteBuffer.FLOAT64;
+
+/**
+ * @param {Uint8Array|Int8Array|Uint16Array|Int16Array|Uint32Array|Int32Array|Float32Array|Float64Array} type
+ * @param {number} value
+ * @return {number}
+ */
+ByteBuffer.cast = function(type, value) {};
 
 /**
  * @param {number=} capacity

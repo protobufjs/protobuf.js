@@ -1002,11 +1002,7 @@
                     return parseInt(value, 10);
                 }
                 if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    value = parseInt(value, 10);
-                    if (value < 0) {
-                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (must not be negative)"));
-                    }
-                    return value;
+                    return ByteBuffer.cast(ByteBuffer.UINT32, parseInt(value, 10));
                 }
                 if (this.type == ProtoBuf.TYPES["bool"]) {
                     return !!value;
@@ -1101,9 +1097,7 @@
                 if (this.type == ProtoBuf.TYPES["int32"]) {
                     return buffer.readVarint32();
                 } else if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    value = buffer.readVarint32();
-                    UINT32[0] = value;
-                    return UINT32[0];
+                    return ByteBuffer.cast(ByteBuffer.UINT32, buffer.readVarint32());
                 } else if (this.type == ProtoBuf.TYPES["sint32"]) {
                     return buffer.readZigZagVarint32();
                 } else if (this.type == ProtoBuf.TYPES["bool"]) {

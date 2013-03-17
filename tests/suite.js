@@ -150,6 +150,26 @@ var suite = {
         }
         test.done();
     },
+
+    // Basically the same as example1, but with an unsigned value.
+    "example1u": function(test) {
+        try{
+            var builder = ProtoBuf.protoFromFile(__dirname+"/example1u.proto");
+            var Test1u = builder.build("Test1u");
+            test.ok(typeof Test1u == 'function');
+            var inst = new Test1u(-1);
+            test.equal(inst.a, 4294967295);
+            var bb = new ByteBuffer(6);
+            inst.encode(bb);
+            test.equal(bb.toHex(), "<08 FF FF FF FF 7F>");
+            var instDec = Test1u.decode(bb);
+            test.equal(instDec.a, 4294967295);
+            
+        } catch (e) {
+            fail(e);
+        }
+        test.done();
+    },
     
     // Example "Strings" from the protobuf docs
     // https://developers.google.com/protocol-buffers/docs/encoding#types
