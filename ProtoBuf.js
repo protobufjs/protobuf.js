@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.9.10";
+        ProtoBuf.VERSION = "0.9.11";
 
         /**
          * Wire types.
@@ -1128,7 +1128,9 @@
                             }
                         }
                         // Set field values from a values object
-                        if (typeof values == 'object' && /* not another Message */ typeof values.encode != 'function') {
+                        if (typeof values == 'object' &&
+                            /* not another Message */ typeof values.encode != 'function' &&
+                            /* not a repeated field */ !(values instanceof Array)) {
                             var keys = Object.keys(values);
                             for (i=0; i<keys.length; i++) {
                                 this.set(keys[i], values[keys[i]]); // May throw
@@ -1400,9 +1402,9 @@
                     if (!field) {
                         throw(new Error("Illegal field id in "+this.toString(true)+"#decode: "+id));
                     }
-                    if (field.repeated) {
+                    if (field.repeated && !field.options["packed"]) {
                         msg.add(field.name, field.decode(wireType, buffer));
-                    } else{
+                    } else {
                         msg.set(field.name, field.decode(wireType, buffer));
                     }
                 }
@@ -1489,7 +1491,7 @@
                 var i, values;
                 if (this.repeated && !skipRepeated) { // Repeated values as arrays
                     if (!(value instanceof Array)) {
-                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not an array)"));
+                        value = [value];
                     }
                     var res = [];
                     for (i=0; i<value.length; i++) {
@@ -1559,7 +1561,7 @@
                 if (this.type == null || typeof this.type != 'object') {
                     throw(new Error("[INTERNAL ERROR] Unresolved type in "+this.toString(true)+": "+this.type));
                 }
-                if (value === null || (this.options["packed"] && value.length == 0)) return buffer; // Optional omitted
+                if (value === null || (this.repeated && value.length == 0)) return buffer; // Optional omitted
                 try {
                     if (this.repeated) {
                         var i;
@@ -1568,9 +1570,20 @@
                             // (length-delimited). Each element is encoded the same way it would be normally, except without a
                             // tag preceding it." 
                             buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
+                            buffer.ensureCapacity(buffer.offset += 1); // We do not know the length yet, so let's assume a varint of length 1
+                            var start = buffer.offset; // Remember where the contents begin
                             for (i=0; i<value.length; i++) {
                                 this.encodeValue(value[i], buffer);
                             }
+                            var len = buffer.offset-start;
+                            var varintLen = ByteBuffer.calculateVarint32(len);
+                            if (varintLen > 1) { // We need to move the contents
+                                var contents = buffer.slice(start, buffer.offset);
+                                start += varintLen-1;
+                                buffer.offset = start;
+                                buffer.append(contents);
+                            }
+                            buffer.writeVarint32(len, start-varintLen);
                         } else {
                             // "If your message definition has repeated elements (without the [packed=true] option), the encoded
                             // message has zero or more key-value pairs with the same tag number"
@@ -1587,61 +1600,6 @@
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")"));
                 }
                 return buffer;
-            };
-        
-            /**
-             * Decode the field value from the specified buffer.
-             * @param {number} wireType Wire type
-             * @param {ByteBuffer} buffer ByteBuffer to decode from
-             * @return {*} Decoded value
-             * @throws {Error} If the field cannot be decoded
-             * @expose
-             */
-            Field.prototype.decode = function(wireType, buffer) {
-                var value, nBytes;
-                if (wireType != this.type.wireType) {
-                    throw(new Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)"));
-                }
-                if (this.type == ProtoBuf.TYPES["int32"]) {
-                    return buffer.readVarint32();
-                } else if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    return ByteBuffer.cast(ByteBuffer.UINT32, buffer.readVarint32());
-                } else if (this.type == ProtoBuf.TYPES["sint32"]) {
-                    return buffer.readZigZagVarint32();
-                } else if (this.type == ProtoBuf.TYPES["bool"]) {
-                    return !!buffer.readVarint32();
-                } else if (this.type == ProtoBuf.TYPES["enum"]) {
-                    return buffer.readVarint32(); // The following Builder.Message#set will already throw
-                } else if (this.type == ProtoBuf.TYPES["double"]) {
-                    return buffer.readDouble();
-                } else if (this.type == ProtoBuf.TYPES["string"]){
-                    return buffer.readVString();
-                } else if (this.type == ProtoBuf.TYPES["bytes"]) {
-                    nBytes = buffer.readVarint32();
-                    value = buffer.clone(); // Offset already set
-                    value.length = value.offset+nBytes;
-                    return value;
-                } else if (this.type == ProtoBuf.TYPES["message"]) {
-                    nBytes = buffer.readVarint32();
-                    return this.resolvedType.decode(buffer, nBytes);
-                } else if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated) {
-                    nBytes = buffer.readVarint32();
-                    nBytes = buffer.offset + nBytes; // Limit
-                    var values = [];
-                    while (buffer.offset < nBytes) {
-                        this.decode(this.type.wireType, buffer);
-                    }
-                    return values;
-                } else if (this.type == ProtoBuf.TYPES["fixed32"]) {
-                    return buffer.readInt32();
-                } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    return ByteBuffer.zigZagDecode32(buffer.readUint32());
-                } else if (this.type == ProtoBuf.TYPES["float"]) {
-                    return buffer.readFloat();
-                } else {
-                    // We should never end here
-                    throw(new Error("[INTERNAL ERROR] Illegal wire type for "+this.toString(true)+": "+wireType));
-                }
             };
         
             /**
@@ -1700,6 +1658,77 @@
                     throw(new Error("[INTERNAL ERROR] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
                 }
                 return buffer;
+            };
+        
+            /**
+             * Decode the field value from the specified buffer.
+             * @param {number} wireType Leading wire type
+             * @param {ByteBuffer} buffer ByteBuffer to decode from
+             * @param {boolean=} skipRepeated Whether to skip the repeated check or not. Defaults to false.
+             * @return {*} Decoded value
+             * @throws {Error} If the field cannot be decoded
+             * @expose
+             */
+            Field.prototype.decode = function(wireType, buffer, skipRepeated) {
+                var value, nBytes;
+                if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated))) {
+                    throw(new Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)"));
+                }
+                if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"]) {
+                    if (!skipRepeated) {
+                        nBytes = buffer.readVarint32();
+                        nBytes = buffer.offset + nBytes; // Limit
+                        var values = [];
+                        while (buffer.offset < nBytes) {
+                            values.push(this.decode(this.type.wireType, buffer, true));
+                        }
+                        return values;
+                    }
+                    // Read the next value otherwise...
+                    
+                }
+                if (this.type == ProtoBuf.TYPES["int32"]) {
+                    return buffer.readVarint32();
+                }
+                if (this.type == ProtoBuf.TYPES["uint32"]) {
+                    return ByteBuffer.cast(ByteBuffer.UINT32, buffer.readVarint32());
+                }
+                if (this.type == ProtoBuf.TYPES["sint32"]) {
+                    return buffer.readZigZagVarint32();
+                }
+                if (this.type == ProtoBuf.TYPES["bool"]) {
+                    return !!buffer.readVarint32();
+                }
+                if (this.type == ProtoBuf.TYPES["enum"]) {
+                    return buffer.readVarint32(); // The following Builder.Message#set will already throw
+                }
+                if (this.type == ProtoBuf.TYPES["double"]) {
+                    return buffer.readDouble();
+                }
+                if (this.type == ProtoBuf.TYPES["string"]){
+                    return buffer.readVString();
+                }
+                if (this.type == ProtoBuf.TYPES["bytes"]) {
+                    nBytes = buffer.readVarint32();
+                    value = buffer.clone(); // Offset already set
+                    value.length = value.offset+nBytes;
+                    return value;
+                }
+                if (this.type == ProtoBuf.TYPES["message"]) {
+                    nBytes = buffer.readVarint32();
+                    return this.resolvedType.decode(buffer, nBytes);
+                }
+                if (this.type == ProtoBuf.TYPES["fixed32"]) {
+                    return buffer.readInt32();
+                }
+                if (this.type == ProtoBuf.TYPES["sfixed32"]) {
+                    return ByteBuffer.zigZagDecode32(buffer.readUint32());
+                }
+                if (this.type == ProtoBuf.TYPES["float"]) {
+                    return buffer.readFloat();
+                }
+                // We should never end here
+                throw(new Error("[INTERNAL ERROR] Illegal wire type for "+this.toString(true)+": "+wireType));
             };
         
             /**

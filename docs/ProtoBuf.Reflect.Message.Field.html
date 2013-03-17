@@ -790,7 +790,7 @@
         
             
 <dt>
-    <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(wireType, buffer)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(wireType, buffer, <span class="optional">skipRepeated</span>)</span><span class="type-signature"> &rarr; {*}</span></h4>
     
     
 </dt>
@@ -820,6 +820,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -845,10 +847,16 @@
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Wire type</p></td>
+            
+            <td class="description last"><p>Leading wire type</p></td>
         </tr>
 	
 	
@@ -868,10 +876,47 @@
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
             
             
             
             <td class="description last"><p>ByteBuffer to decode from</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>skipRepeated</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Whether to skip the repeated check or not. Defaults to false.</p></td>
         </tr>
 	
 	

@@ -23,7 +23,7 @@
  * File to use.
  * @type {string}
  */
-var FILE = "ProtoBuf.min.js";
+var FILE = "ProtoBuf.js";
 
 /**
  * ProtoBuf.
@@ -210,6 +210,25 @@ var suite = {
         test.done();
     },
     
+    "example4": function(test) {
+        try {
+            var builder = ProtoBuf.protoFromFile(__dirname+"/example4.proto");
+            var Test4 = builder.build("Test4");
+            var inst = new Test4([3, 270, 86942]);
+            var bb = new ByteBuffer(8);
+            test.equal(inst.d.length, 3);
+            inst.encode(bb);
+            test.equal(bb.toHex(), "<22 06 03 8E 02 9E A7 05>");
+            var instDec = Test4.decode(bb);
+            test.equal(bb.toHex(), " 22 06 03 8E 02 9E A7 05|");
+            test.equal(instDec.d.length, 3);
+            test.equal(instDec.d[2], 86942);
+        } catch(e) {
+            fail(e);
+        }
+        test.done();
+    },
+    
     // Options on all levels
     "options": function(test) {
         try {
@@ -264,25 +283,94 @@ var suite = {
     },
     
     // Inner messages test
-    "innerrepeated": function(test) {
-        try {
-            var builder = ProtoBuf.protoFromFile(__dirname+"/innerrepeated.proto");
-            var root = builder.build();
-            var Outer = root.Outer;
-            var Inner = root.Inner;
-            var outer = new Outer({ inner: [new Inner(1), new Inner(2)] });
-            var bb = new ByteBuffer(8);
-            outer.encode(bb);
-            test.equal("<0A 02 08 01 0A 02 08 02>", bb.toHex());
-            var douter = Outer.decode(bb);
-            test.ok(douter.inner instanceof Array);
-            test.equal(douter.inner.length, 2);
-            test.equal(douter.inner[0].inner_value, 1);
-            test.equal(douter.inner[1].inner_value, 2);
-        } catch (e) {
-            fail(e);
+    "repeated": {
+        "legacy": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                var root = builder.build();
+                var Outer = root.Outer;
+                var Inner = root.Inner;
+                var outer = new Outer({ inner: [new Inner(1), new Inner(2)] });
+                var bb = new ByteBuffer(8);
+                outer.encode(bb);
+                test.equal("<0A 02 08 01 0A 02 08 02>", bb.toHex());
+                var douter = Outer.decode(bb);
+                test.ok(douter.inner instanceof Array);
+                test.equal(douter.inner.length, 2);
+                test.equal(douter.inner[0].inner_value, 1);
+                test.equal(douter.inner[1].inner_value, 2);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "packed": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                var root = builder.build();
+                var Outer = root.Outer;
+                var Inner = root.Inner;
+                var outer = new Outer({ innerPacked: [new Inner(1), new Inner(2)] });
+                var bb = new ByteBuffer(8);
+                outer.encode(bb);
+                test.equal("<12 06 02 08 01 02 08 02>", bb.toHex());
+                var douter = Outer.decode(bb);
+                test.ok(douter.innerPacked instanceof Array);
+                test.equal(douter.innerPacked.length, 2);
+                test.equal(douter.innerPacked[0].inner_value, 1);
+                test.equal(douter.innerPacked[1].inner_value, 2);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "both": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                var root = builder.build();
+                var Outer = root.Outer;
+                var Inner = root.Inner;
+                var outer = new Outer({ inner: [new Inner(1), new Inner(2)], innerPacked: [new Inner(3), new Inner(4)] });
+                var bb = new ByteBuffer(16);
+                outer.encode(bb);
+                test.equal("<0A 02 08 01 0A 02 08 02 12 06 02 08 03 02 08 04>", bb.toHex());
+                var douter = Outer.decode(bb);
+                test.ok(douter.inner instanceof Array);
+                test.equal(douter.inner.length, 2);
+                test.equal(douter.inner[0].inner_value, 1);
+                test.equal(douter.inner[1].inner_value, 2);
+                test.ok(douter.innerPacked instanceof Array);
+                test.equal(douter.innerPacked.length, 2);
+                test.equal(douter.innerPacked[0].inner_value, 3);
+                test.equal(douter.innerPacked[1].inner_value, 4);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "none": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                var root = builder.build();
+                var Outer = root.Outer;
+                var Inner = root.Inner;
+                var outer = new Outer();
+                var bb = new ByteBuffer(1);
+                outer.encode(bb);
+                test.equal("|00 ", bb.toHex());
+                var douter = Outer.decode(bb);
+                test.ok(douter.inner instanceof Array);
+                test.equal(douter.inner.length, 0);
+                test.ok(douter.innerPacked instanceof Array);
+                test.equal(douter.innerPacked.length, 0);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
         }
-        test.done();
     },
 
     "commonjs": function(test) {
