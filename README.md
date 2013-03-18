@@ -223,7 +223,7 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
           required sfixed32 d = 4; // Fixed 4 bytes zigzag encoded
           required float e = 5; // Fixed 4 bytes
           required double f = 6; // Fixed 8 bytes
-          required sfixed64 g = 7; // Fixed 8 bytes (int64, [see](https://github.com/dcodeIO/ByteBuffer.js#on-long-int64-support))
+          required sfixed64 g = 7; // Fixed 8 bytes (int64 through Long.js)
       }
   }
   ```
