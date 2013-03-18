@@ -195,7 +195,8 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   }
   ```
 
-* Data types: int32, uint32, sint32, bool, enum, string, bytes, messages, embedded messages, fixed32, sfixed32, float, double:
+* Data types: int32, uint32, sint32, bool, enum, string, bytes, messages, embedded messages, fixed32, sfixed32, float,
+  double, sfixed64:
   
   ```protobuf
   message Test {
@@ -222,6 +223,7 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
           required sfixed32 d = 4; // Fixed 4 bytes zigzag encoded
           required float e = 5; // Fixed 4 bytes
           required double f = 6; // Fixed 8 bytes
+          required sfixed64 g = 7; // Fixed 8 bytes (int64, [see](https://github.com/dcodeIO/ByteBuffer.js#on-long-int64-support))
       }
   }
   ```
@@ -337,12 +339,15 @@ var ProtoBuf = require("protobufjs");
 
 #### RequireJS / AMD ####
 
-Requires [ByteBuffer.js](http://github.com/dcodeIO/ByteBuffer.js). [RequireJS](http://requirejs.org) example:
+Requires [ByteBuffer.js](http://github.com/dcodeIO/ByteBuffer.js). Optionally depends on [Long.js](https://github.com/dcodeIO/Long.js)
+for long (int64) support. If you do not require long support, you can skip the Long.js config. [Require.js](http://requirejs.org/)
+example:
 
 ```javascript
 require.config({
     ...
     "paths": {
+        "Long": "/path/to/Long.js",
         "ByteBuffer": "/path/to/ByteBuffer.js",
         "ProtoBuf": "/path/to/ProtoBuf.js"
     },
@@ -363,7 +368,11 @@ define("MyModule", ["ProtoBuf"], function(ProtoBuf) {
 
 #### Browser (shim) ####
 
+Requires [ByteBuffer.js](http://github.com/dcodeIO/ByteBuffer.js). Optionally depends on [Long.js](https://github.com/dcodeIO/Long.js)
+for long (int64) support. If you do not require long support, you can skip the Long.js include.
+
 ```html
+<script src="//raw.github.com/dcodeIO/Long.js/master/Long.min.js"></script>
 <script src="//raw.github.com/dcodeIO/ByteBuffer.js/master/ByteBuffer.min.js"></script>
 <script src="//raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.min.js"></script>
 ```
