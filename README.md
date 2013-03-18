@@ -142,15 +142,15 @@ ready-to-use message classes and enum objects by using the `proto2js` command li
   Options:
 
     -class[=My.Package]     Creates the classes instead of just a JSON definition.
-                            If you do not specifiy a package, the package
+                            If you do not specify a package, the package
                             declaration from the .proto file is used instead.
 
     -commonjs[=My.Package]  Creates a CommonJS export instead of just a JSON def.
-                            If you do not specifiy a package, the package
+                            If you do not specify a package, the package
                             declaration from the .proto file is used instead.
 
     -amd[=My.Package]       Creates an AMD define instead of just a JSON def.
-                            If you do not specifiy a package, the package
+                            If you do not specify a package, the package
                             declaration from the .proto file is used instead.
 
     -min                    Minifies the output.

@@ -31,13 +31,13 @@ if (process.argv.length < 3) {
     console.log("  Usage: "+path.basename(process.argv[1])+" protoFile [-class[=My.Package]|-commonjs[=My.Package]|-amd[=My.Package]] [-min] [> outFile]\n");
     console.log("  Options:\n");
     console.log("    -class[=My.Package]     Creates the classes instead of just a JSON definition.");
-    console.log("                            If you do not specifiy a package, the package");
+    console.log("                            If you do not specify a package, the package");
     console.log("                            declaration from the .proto file is used instead.\n");
     console.log("    -commonjs[=My.Package]  Creates a CommonJS export instead of just a JSON def.");
-    console.log("                            If you do not specifiy a package, the package");
+    console.log("                            If you do not specify a package, the package");
     console.log("                            declaration from the .proto file is used instead.\n");
     console.log("    -amd[=My.Package]       Creates an AMD define instead of just a JSON def.");
-    console.log("                            If you do not specifiy a package, the package");
+    console.log("                            If you do not specify a package, the package");
     console.log("                            declaration from the .proto file is used instead.\n");
     console.log("    -min                    Minifies the output.\n");
     process.exit(1);

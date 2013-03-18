@@ -46,6 +46,11 @@ ByteBuffer.prototype.offset;
 /**
  * @type {number}
  */
+ByteBuffer.prototype.markedOffset;
+
+/**
+ * @type {number}
+ */
 ByteBuffer.prototype.length;
 
 /**
@@ -187,6 +192,13 @@ ByteBuffer.prototype.ensureCapacity = function(capacity) {};
  * @return {!ByteBuffer}
  */
 ByteBuffer.prototype.flip = function() {};
+
+/**
+ * @param {number=} offset
+ * @return {!ByteBuffer}
+ * @throws {Error}
+ */
+ByteBuffer.prototype.mark = function(offset) {};
 
 /**
  * @return {!ByteBuffer} this

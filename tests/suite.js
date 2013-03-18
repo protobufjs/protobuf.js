@@ -299,6 +299,8 @@ var suite = {
                 test.equal(douter.inner.length, 2);
                 test.equal(douter.inner[0].inner_value, 1);
                 test.equal(douter.inner[1].inner_value, 2);
+                test.ok(douter.innerPacked instanceof Array);
+                test.equal(douter.innerPacked.length, 0);
             } catch (e) {
                 fail(e);
             }
@@ -316,6 +318,8 @@ var suite = {
                 outer.encode(bb);
                 test.equal("<12 06 02 08 01 02 08 02>", bb.toHex());
                 var douter = Outer.decode(bb);
+                test.ok(douter.inner instanceof Array);
+                test.equal(douter.inner.length, 0);
                 test.ok(douter.innerPacked instanceof Array);
                 test.equal(douter.innerPacked.length, 2);
                 test.equal(douter.innerPacked[0].inner_value, 1);
@@ -354,9 +358,7 @@ var suite = {
         "none": function(test) {
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
-                var root = builder.build();
-                var Outer = root.Outer;
-                var Inner = root.Inner;
+                var Outer = builder.build("Outer");
                 var outer = new Outer();
                 var bb = new ByteBuffer(1);
                 outer.encode(bb);
@@ -371,6 +373,26 @@ var suite = {
             }
             test.done();
         }
+    },
+    
+    "sfixed64": function(test) {
+        try {
+            var builder = ProtoBuf.protoFromFile(__dirname+"/sfixed64.proto");
+            var Test = builder.build("Test");
+            var myTest = new Test();
+            test.ok(myTest.longVal instanceof ByteBuffer.Long);
+            test.equal(myTest.longVal, 1);
+            myTest.setLongVal(2);
+            var bb = new ByteBuffer(9); // Tag+int64
+            myTest.encode(bb);
+            test.equal(bb.toHex(), "<09 00 00 00 00 00 00 00 02>"); // Wiretype 1, id 1
+            myTest = Test.decode(bb);
+            test.ok(myTest.longVal instanceof ByteBuffer.Long);
+            test.equal(myTest.longVal, 2);
+        } catch (e) {
+            fail(e);
+        }
+        test.done();
     },
 
     "commonjs": function(test) {

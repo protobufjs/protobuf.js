@@ -152,6 +152,10 @@
                 name: "sfixed32",
                 wireType: ProtoBuf.WIRE_TYPES.BITS32
             },
+            "sfixed64": {
+                name: "sfixed64",
+                wireType: ProtoBuf.WIRE_TYPES.BITS64
+            },
             "float": {
                 name: "float",
                 wireType: ProtoBuf.WIRE_TYPES.BITS32
@@ -165,6 +169,11 @@
                 wireType: ProtoBuf.WIRE_TYPES.LDELIM
             }
         };
+
+        /**
+         * @type {?Long}
+         */
+        ProtoBuf.Long = ByteBuffer.Long;
         
         // #include "ProtoBuf/Util.js"
         

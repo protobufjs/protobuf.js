@@ -694,12 +694,24 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         if (!this.repeated && value instanceof Array) {
             throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (is array)"));
         }
-        if (this.type != ProtoBuf.TYPES["message"] && value instanceof Object) {
+        if (this.type != ProtoBuf.TYPES["message"] && !(ProtoBuf.Long && value instanceof ProtoBuf.Long) && value instanceof Object) {
             throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (is object)"));
         }
         if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["sint32"] ||
             this.type == ProtoBuf.TYPES["fixed32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
             return parseInt(value, 10);
+        }
+        // if (this.type == ProtoBuf.TYPES["fixed64"] && ProtoBuf.Long) {
+        //     if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
+        //         value = ProtoBuf.Long.fromNumber(value, true); // Not yet supported
+        //     }
+        //     return value;
+        // }
+        if (this.type == ProtoBuf.TYPES["sfixed64"] && ProtoBuf.Long) {
+            if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
+                value = ProtoBuf.Long.fromNumber(value);
+            }
+            return value;
         }
         if (this.type == ProtoBuf.TYPES["uint32"]) {
             return ByteBuffer.cast(ByteBuffer.UINT32, parseInt(value, 10));
@@ -812,7 +824,11 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         } else if (this.type == ProtoBuf.TYPES["fixed32"]) {
             buffer.writeUint32(value);
         } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
-            buffer.writeUint32(ByteBuffer.zigZagEncode32(value));
+            buffer.writeInt32(value);
+        // } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
+        //     buffer.writeUint64(value); // Not yet supported
+        } else if (this.type == ProtoBuf.TYPES["sfixed64"]) {
+            buffer.writeInt64(value);
         } else if (this.type == ProtoBuf.TYPES["bool"]) {
             buffer.writeVarint32(value ? 1 : 0);
         } else if (this.type == ProtoBuf.TYPES["enum"]) {
@@ -911,10 +927,16 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             return this.resolvedType.decode(buffer, nBytes);
         }
         if (this.type == ProtoBuf.TYPES["fixed32"]) {
-            return buffer.readInt32();
+            return buffer.readUint32();
         }
         if (this.type == ProtoBuf.TYPES["sfixed32"]) {
-            return ByteBuffer.zigZagDecode32(buffer.readUint32());
+            return buffer.readInt32();
+        }
+        // if (this.type == ProtoBuf.TYPES["fixed64"]) {
+        //     return buffer.readUint64(); // Not yet supported
+        // }
+        if (this.type == ProtoBuf.TYPES["sfixed64"]) {
+            return buffer.readInt64();
         }
         if (this.type == ProtoBuf.TYPES["float"]) {
             return buffer.readFloat();
