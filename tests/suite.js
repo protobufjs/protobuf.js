@@ -244,24 +244,24 @@ var suite = {
             var f_vals = [
                 // hex values are big-endian following IEEE754 notation
                 // protobuf is little-endian
-                { f: -0.0         , b: "<80 00 00 00 0D>" },
-                { f: +0.0         , b: "<00 00 00 00 0D>" },
-                { f: -1e-10       , b: "<AE DB E6 FF 0D>" },
-                { f: +1e-10       , b: "<2E DB E6 FF 0D>" },
-                { f: -2e+10       , b: "<D0 95 02 F9 0D>" },
-                { f: +2e+10       , b: "<50 95 02 F9 0D>" },
-                { f: -3e-30       , b: "<8E 73 63 90 0D>" },
-                { f: +3e-30       , b: "<0E 73 63 90 0D>" },
-                { f: -4e+30       , b: "<F2 49 F2 CA 0D>" },
-                { f: +4e+30       , b: "<72 49 F2 CA 0D>" },
-                { f: -123456789.0 , b: "<CC EB 79 A3 0D>" },
-                { f: +123456789.0 , b: "<4C EB 79 A3 0D>" },
-                { f: -0.987654321 , b: "<BF 7C D6 EA 0D>" },
-                { f: +0.987654321 , b: "<3F 7C D6 EA 0D>" },
-                { f: -Infinity    , b: "<FF 80 00 00 0D>" },
-                { f: +Infinity    , b: "<7F 80 00 00 0D>" },
-                { f: -NaN         , b: "<FF FF FF FF 0D>" },
-                { f: +NaN         , b: "<7F FF FF FF 0D>" }
+                { f: -0.0         , b: "<80 00 00 00>" },
+                { f: +0.0         , b: "<00 00 00 00>" },
+                { f: -1e-10       , b: "<AE DB E6 FF>" },
+                { f: +1e-10       , b: "<2E DB E6 FF>" },
+                { f: -2e+10       , b: "<D0 95 02 F9>" },
+                { f: +2e+10       , b: "<50 95 02 F9>" },
+                { f: -3e-30       , b: "<8E 73 63 90>" },
+                { f: +3e-30       , b: "<0E 73 63 90>" },
+                { f: -4e+30       , b: "<F2 49 F2 CA>" },
+                { f: +4e+30       , b: "<72 49 F2 CA>" },
+                { f: -123456789.0 , b: "<CC EB 79 A3>" },
+                { f: +123456789.0 , b: "<4C EB 79 A3>" },
+                { f: -0.987654321 , b: "<BF 7C D6 EA>" },
+                { f: +0.987654321 , b: "<3F 7C D6 EA>" },
+                { f: -Infinity    , b: "<FF 80 00 00>" },
+                { f: +Infinity    , b: "<7F 80 00 00>" },
+                { f: -NaN         , b: "<FF FF FF FF>" },
+                { f: +NaN         , b: "<7F FF FF FF>" }
             ];
 
             f_vals.map( function(x) {
@@ -273,7 +273,7 @@ var suite = {
                 m1.encode(b1);
                 m2.decode(b1);
                 m2.encode(b2);
-                test.strictEqual(x.b,b2.reverse().tohex());
+                test.strictEqual(x.b,b2.slice(1,5).reverse().tohex());
             });
         } catch(e) {
             fail(e);
