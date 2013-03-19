@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.10.0";
+        ProtoBuf.VERSION = "0.11.1";
 
         /**
          * Wire types.
@@ -1153,9 +1153,12 @@
                             }
                         }
                         // Set field values from a values object
-                        if (typeof values == 'object' &&
+                        if (arguments.length == 1 && typeof values == 'object' &&
                             /* not another Message */ typeof values.encode != 'function' &&
-                            /* not a repeated field */ !(values instanceof Array)) {
+                            /* not a repeated field */ !(values instanceof Array) &&
+                            /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
+                            /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
+                            /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
                             var keys = Object.keys(values);
                             for (i=0; i<keys.length; i++) {
                                 this.set(keys[i], values[keys[i]]); // May throw
@@ -1530,11 +1533,9 @@
                     }
                     return res;
                 }
+                // All non-repeated fields expect no array
                 if (!this.repeated && value instanceof Array) {
-                    throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (is array)"));
-                }
-                if (this.type != ProtoBuf.TYPES["message"] && !(ProtoBuf.Long && value instanceof ProtoBuf.Long) && value instanceof Object) {
-                    throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (is object)"));
+                    throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
                 }
                 // Signed 32bit
                 if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["sint32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
@@ -1572,8 +1573,11 @@
                 if (this.type == ProtoBuf.TYPES["string"]) {
                     return ""+value;
                 }
-                // Length-delimited byte
+                // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
+                    if (typeof value == 'object' && value instanceof ByteBuffer) {
+                        return value;
+                    }
                     return ByteBuffer.wrap(value);
                 }
                 // Constant enum value
@@ -1590,13 +1594,14 @@
                 }
                 // Embedded message
                 if (this.type == ProtoBuf.TYPES["message"]) {
+                    if (typeof value != 'object') {
+                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
+                    }
                     if (value instanceof this.resolvedType.built) {
                         return value;
                     }
-                    if (typeof value == 'object') { // Let's try to create one from keys and values
-                        return new (this.resolvedType.built)(value); // May throw for a hundred of reasons
-                    }
-                    throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not an instance of "+this.resolvedType+")"));
+                    // Else let's try to construct one from a key-value object
+                    return new (this.resolvedType.built)(value); // May throw for a hundred of reasons
                 }
                 // We should never end here
                 throw(new Error("[INTERNAL ERROR] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
@@ -1859,6 +1864,7 @@
                     nBytes = buffer.readVarint32();
                     value = buffer.clone(); // Offset already set
                     value.length = value.offset+nBytes;
+                    buffer.offset += nBytes;
                     return value;
                 }
                 

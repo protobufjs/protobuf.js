@@ -272,7 +272,7 @@ var suite = {
                 { f: -Infinity , b: "FF 80 00 00" },
                 { f: +Infinity , b: "7F 80 00 00" },
                 // { f: -NaN , b: "FF C0 00 00>" },
-                { f: +NaN , b: "7F C0 00 00" },
+                { f: +NaN , b: "7F C0 00 00" }
             ];
 
             f_vals.map( function(x) {
@@ -307,6 +307,25 @@ var suite = {
                 };
             });
         } catch(e) {
+            fail(e);
+        }
+        test.done();
+    },
+    
+    "bytes": function(test) {
+        try {
+            var str_proto = "message Test { required bytes b = 0; }";
+            var builder = ProtoBuf.protoFromString(str_proto);
+            var Test = builder.build("Test");
+            var bb = new ByteBuffer(4).writeUint32(0x12345678).flip();
+            var myTest = new Test(bb);
+            test.strictEqual(myTest.b.array, bb.array);
+            var bb2 = new ByteBuffer(6);
+            myTest.encode(bb2);
+            test.equal(bb2.toHex(), "<02 04 12 34 56 78>");
+            myTest = Test.decode(bb2);
+            test.equal(myTest.b.BE().readUint32(), 0x12345678);
+        } catch (e) {
             fail(e);
         }
         test.done();
