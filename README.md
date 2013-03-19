@@ -394,6 +394,13 @@ On long (int64) support
 Full 64bit support is available since 0.10.0 and requires ByteBuffer.js >=1.2.3 with Long.js >=1.1.2.
 * [See also](https://github.com/dcodeIO/ByteBuffer.js#on-long-int64-support)
 
+On endianess before 0.11.0
+--------------------------
+Till 0.10.0, ProtoBuf.js mistakenly used big endian byte order when en-/decoding non-varint values as [reported by
+bertdouglas](https://github.com/dcodeIO/ProtoBuf.js/pull/5). This has been corrected in 0.11.0. However, versions before
+0.11.0 are now to consider **incompatible** with later versions when using non-varint values, so please upgrade to 0.11.0
+to ensure compatibility with the official protobuf specification.
+
 Downloads
 ---------
 * [ZIP-Archive](https://github.com/dcodeIO/ProtoBuf.js/archive/master.zip)
