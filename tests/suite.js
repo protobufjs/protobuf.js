@@ -375,31 +375,69 @@ var suite = {
         }
     },
     
-    "x64": function(test) {
+    "x64_fixed": function(test) {
         try {
             var builder = ProtoBuf.protoFromFile(__dirname+"/x64.proto");
             var Test = builder.build("Test");
             var myTest = new Test();
             test.ok(myTest.val instanceof ByteBuffer.Long);
             test.equal(myTest.val.unsigned, false);
-            test.equal(myTest.val, -1);
+            test.equal(myTest.val.toNumber(), -1);
             test.ok(myTest.uval instanceof ByteBuffer.Long);
             test.equal(myTest.uval.unsigned, true);
-            test.equal(myTest.uval, 1);
+            test.equal(myTest.uval.toNumber(), 1);
             
             myTest.setVal(-2);
             myTest.setUval(2);
-            var bb = new ByteBuffer(18); // 2x tag + 2x64bit
+            var bb = new ByteBuffer(18); // 2x tag + 2x 64bit
             myTest.encode(bb);
             test.equal(bb.toHex(20), "<09 FF FF FF FF FF FF FF FE 11 00 00 00 00 00 00 00 02>");
-                                    // ^ wireType=1, id=1         ^ wireType=1, id=2
+            //                         ^ wireType=1, id=1         ^ wireType=1, id=2
             myTest = Test.decode(bb);
             test.ok(myTest.val instanceof ByteBuffer.Long);
             test.equal(myTest.val.unsigned, false);
-            test.equal(myTest.val, -2);
+            test.equal(myTest.val.toNumber(), -2);
             test.ok(myTest.uval instanceof ByteBuffer.Long);
             test.equal(myTest.uval.unsigned, true);
-            test.equal(myTest.uval, 2);
+            test.equal(myTest.uval.toNumber(), 2);
+        } catch (e) {
+            fail(e);
+        }
+        test.done();
+    },
+
+    "x64_varint": function(test) {
+        try {
+            var builder = ProtoBuf.protoFromFile(__dirname+"/x64.proto");
+            var Test = builder.build("Test2");
+            var myTest = new Test();
+            test.ok(myTest.val instanceof ByteBuffer.Long);
+            test.equal(myTest.val.unsigned, false);
+            test.equal(myTest.val.toNumber(), -1);
+            test.ok(myTest.uval instanceof ByteBuffer.Long);
+            test.equal(myTest.uval.unsigned, true);
+            test.equal(myTest.uval.toNumber(), 1);
+            test.ok(myTest.sval instanceof ByteBuffer.Long);
+            test.equal(myTest.sval.unsigned, false);
+            test.equal(myTest.sval.toNumber(), -2);
+
+            myTest.setVal(-2);
+            myTest.setUval(2);
+            myTest.setSval(-3);
+            var bb = new ByteBuffer(3+10+2); // 3x tag + 1x varint 10byte + 2x varint 1byte
+            myTest.encode(bb);
+            test.equal(bb.toHex(20), "<08 FE FF FF FF FF FF FF FF FF 01 10 02 18 05>");
+            // 08: wireType=0, id=1, 18: wireType=0, id=2, ?: wireType=0, id=3
+            myTest = Test.decode(bb);
+            test.ok(myTest.val instanceof ByteBuffer.Long);
+            test.equal(myTest.val.unsigned, false);
+            test.equal(myTest.val.toNumber(), -2);
+            test.ok(myTest.uval instanceof ByteBuffer.Long);
+            test.equal(myTest.uval.unsigned, true);
+            test.equal(myTest.uval.toNumber(), 2);
+            test.ok(myTest.sval instanceof ByteBuffer.Long);
+            test.equal(myTest.sval.unsigned, false);
+            test.equal(myTest.sval.toNumber(), -3);
         } catch (e) {
             fail(e);
         }

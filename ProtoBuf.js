@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.9.13";
+        ProtoBuf.VERSION = "0.10.0";
 
         /**
          * Wire types.
@@ -126,6 +126,18 @@
             },
             "sint32": {
                 name: "sint32",
+                wireType: ProtoBuf.WIRE_TYPES.VARINT
+            },
+            "int64": {
+                name: "int64",
+                wireType: ProtoBuf.WIRE_TYPES.VARINT
+            },
+            "uint64": {
+                name: "uint64",
+                wireType: ProtoBuf.WIRE_TYPES.VARINT
+            },
+            "sint64": {
+                name: "sint64",
                 wireType: ProtoBuf.WIRE_TYPES.VARINT
             },
             "bool": {
@@ -317,7 +329,7 @@
                 DELIM: /[\s\{\}=;\[\],"]/g,
                 KEYWORD: /package|option|message|enum/,
                 RULE: /required|optional|repeated/,
-                TYPE: /double|float|int32|uint32|sint32|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
+                TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
                 TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
@@ -329,11 +341,6 @@
                 STRINGOPEN: '"',
                 STRINGCLOSE: '"'
             };
-            
-            // Note on 64bit values:
-            // int64, uint64, sint64: TODO: Not yet supported because ByteBuffer.js does not yet support 64bit varint encoding
-            // sfixed64: Supported since 0.9.12 if ByteBuffer.js >=1.2.0 has been loaded with Long.js
-            // fixed64: Supported since 0.9.13 if ByteBuffer.js >=1.2.1 has been loaded with Long.js >=1.1.0
             
             return Lang;
         })();
@@ -1523,37 +1530,47 @@
                 if (this.type != ProtoBuf.TYPES["message"] && !(ProtoBuf.Long && value instanceof ProtoBuf.Long) && value instanceof Object) {
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (is object)"));
                 }
-                if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["sint32"] ||
-                    this.type == ProtoBuf.TYPES["fixed32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    return parseInt(value, 10);
+                // Signed 32bit
+                if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["sint32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
+                    return parseInt(value, 10) | 0;
                 }
-                if (this.type == ProtoBuf.TYPES["fixed64"] && ProtoBuf.Long) {
-                    if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-                        value = ProtoBuf.Long.fromNumber(value, true);
+                // Unsigned 32bit
+                if (this.type == ProtoBuf.TYPES["uint32"] || this.type == ProtoBuf.TYPES["fixed32"]) {
+                    return parseInt(value, 10) >>> 0;
+                }
+                if (ProtoBuf.Long) {
+                    // Signed 64bit
+                    if (this.type == ProtoBuf.TYPES["int64"] || this.type == ProtoBuf.TYPES["sint64"] || this.type == ProtoBuf.TYPES["sfixed64"]) {
+                        if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
+                            return ProtoBuf.Long.fromNumber(value, false);
+                        }
+                        return value.unsigned ? value.toSigned() : value;
                     }
-                    return value;
-                }
-                if (this.type == ProtoBuf.TYPES["sfixed64"] && ProtoBuf.Long) {
-                    if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-                        value = ProtoBuf.Long.fromNumber(value, false);
+                    // Unsigned 64bit
+                    if (this.type == ProtoBuf.TYPES["uint64"] || this.type == ProtoBuf.TYPES["fixed64"]) {
+                        if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
+                            return ProtoBuf.Long.fromNumber(value, true);
+                        }
+                        return value.unsigned ? value : value.toUnsigned();
                     }
-                    return value;
                 }
-                if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    return ByteBuffer.cast(ByteBuffer.UINT32, parseInt(value, 10));
-                }
+                // Bool
                 if (this.type == ProtoBuf.TYPES["bool"]) {
                     return !!value;
                 }
+                // 64bit float
                 if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {
                     return parseFloat(value);
                 }
+                // Length-delimited string
                 if (this.type == ProtoBuf.TYPES["string"]) {
                     return ""+value;
                 }
+                // Length-delimited byte
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     return ByteBuffer.wrap(value);
                 }
+                // Constant enum value
                 if (this.type == ProtoBuf.TYPES["enum"]) {
                     var values = this.resolvedType.getChildren(Enum.Value);
                     for (i=0; i<values.length; i++) {
@@ -1565,6 +1582,7 @@
                     }
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a valid enum value)"));
                 }
+                // Embedded message
                 if (this.type == ProtoBuf.TYPES["message"]) {
                     if (value instanceof this.resolvedType.built) {
                         return value;
@@ -1643,34 +1661,68 @@
             Field.prototype.encodeValue = function(value, buffer) {
                 if (value === null) return; // Nothing to encode
                 // Tag has already been written
+                
+                // 32bit varint as-is
                 if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"]) {
                     buffer.writeVarint32(value);
+                    
+                // 32bit varint zig-zag
                 } else if (this.type == ProtoBuf.TYPES["sint32"]) {
-                    buffer.writeVarint32(ByteBuffer.zigZagEncode32(value));
+                    buffer.writeZigZagVarint32(value);
+                    
+                // Fixed unsigned 32bit
                 } else if (this.type == ProtoBuf.TYPES["fixed32"]) {
                     buffer.writeUint32(value);
+                    
+                // Fixed signed 32bit
                 } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
                     buffer.writeInt32(value);
+                
+                // 64bit varint as-is
+                } else if (this.type == ProtoBuf.TYPES["int64"] || this.type == ProtoBuf.TYPES["uint64"]) {
+                    buffer.writeVarint64(value); // throws
+                    
+                // 64bit varint zig-zag
+                } else if (this.type == ProtoBuf.TYPES["sint64"]) {
+                    buffer.writeZigZagVarint64(value); // throws
+                    
+                // Fixed unsigned 64bit
                 } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
-                    buffer.writeUint64(value);
+                    buffer.writeUint64(value); // throws
+                    
+                // Fixed signed 64bit
                 } else if (this.type == ProtoBuf.TYPES["sfixed64"]) {
-                    buffer.writeInt64(value);
+                    buffer.writeInt64(value); // throws
+                    
+                // Bool
                 } else if (this.type == ProtoBuf.TYPES["bool"]) {
                     buffer.writeVarint32(value ? 1 : 0);
+                    
+                // Constant enum value
                 } else if (this.type == ProtoBuf.TYPES["enum"]) {
                     buffer.writeVarint32(value);
+                    
+                // 32bit float
                 } else if (this.type == ProtoBuf.TYPES["float"]) {
                     buffer.writeFloat32(value);
+                    
+                // 64bit float
                 } else if (this.type == ProtoBuf.TYPES["double"]) {
                     buffer.writeFloat64(value);
+                    
+                // Length-delimited string
                 } else if (this.type == ProtoBuf.TYPES["string"]) {
                     buffer.writeVString(value);
+                    
+                // Length-delimited bytes
                 } else if (this.type == ProtoBuf.TYPES["bytes"]) {
                     if (value.offset > value.length) { // Forgot to flip?
                         buffer = buffer.clone().flip();
                     }
                     buffer.writeVarint32(value.remaining());
                     buffer.append(value);
+                    
+                // Embedded message
                 } else if (this.type == ProtoBuf.TYPES["message"]) {
                     // We do not know the length of the embedded message yet. To avoid creating a second buffer, let's assume
                     // the length varint might consist of one byte and encode the embedded message to the current offset+1.
@@ -1721,52 +1773,94 @@
                     // Read the next value otherwise...
                     
                 }
+                // 32bit signed varint
                 if (this.type == ProtoBuf.TYPES["int32"]) {
-                    return buffer.readVarint32();
+                    return buffer.readVarint32() | 0;
                 }
+                
+                // 32bit unsigned varint
                 if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    return ByteBuffer.cast(ByteBuffer.UINT32, buffer.readVarint32());
+                    return  buffer.readVarint32() >>> 0;
                 }
+                
+                // 32bit signed varint zig-zag
                 if (this.type == ProtoBuf.TYPES["sint32"]) {
-                    return buffer.readZigZagVarint32();
+                    return buffer.readZigZagVarint32() | 0;
                 }
+                
+                // Fixed 32bit unsigned
+                if (this.type == ProtoBuf.TYPES["fixed32"]) {
+                    return buffer.readUint32() >>> 0;
+                }
+                
+                // Fixed 32bit signed
+                if (this.type == ProtoBuf.TYPES["sfixed32"]) {
+                    return buffer.readInt32() | 0;
+                }
+                
+                // 64bit signed varint
+                if (this.type == ProtoBuf.TYPES["int64"]) {
+                    return buffer.readVarint64();
+                }
+                
+                // 64bit unsigned varint
+                if (this.type == ProtoBuf.TYPES["uint64"]) {
+                    return buffer.readVarint64().toUnsigned();
+                }
+                
+                // 64bit signed varint zig-zag
+                if (this.type == ProtoBuf.TYPES["sint64"]) {
+                    return buffer.readZigZagVarint64();
+                }
+        
+                // Fixed 64bit unsigned
+                if (this.type == ProtoBuf.TYPES["fixed64"]) {
+                    return buffer.readUint64();
+                }
+                
+                // Fixed 64bit signed
+                if (this.type == ProtoBuf.TYPES["sfixed64"]) {
+                    return buffer.readInt64();
+                }
+                
+                // Bool varint
                 if (this.type == ProtoBuf.TYPES["bool"]) {
                     return !!buffer.readVarint32();
                 }
+                
+                // Constant enum value varint)
                 if (this.type == ProtoBuf.TYPES["enum"]) {
                     return buffer.readVarint32(); // The following Builder.Message#set will already throw
                 }
+                
+                // 32bit float
+                if (this.type == ProtoBuf.TYPES["float"]) {
+                    return buffer.readFloat();
+                }
+                // 64bit float
                 if (this.type == ProtoBuf.TYPES["double"]) {
                     return buffer.readDouble();
                 }
+                
+                // Length-delimited string
                 if (this.type == ProtoBuf.TYPES["string"]){
                     return buffer.readVString();
                 }
+                
+                // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     nBytes = buffer.readVarint32();
                     value = buffer.clone(); // Offset already set
                     value.length = value.offset+nBytes;
                     return value;
                 }
+                
+                // Length-delimited embedded message
                 if (this.type == ProtoBuf.TYPES["message"]) {
                     nBytes = buffer.readVarint32();
                     return this.resolvedType.decode(buffer, nBytes);
                 }
-                if (this.type == ProtoBuf.TYPES["fixed32"]) {
-                    return buffer.readUint32();
-                }
-                if (this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    return buffer.readInt32();
-                }
-                if (this.type == ProtoBuf.TYPES["fixed64"]) {
-                    return buffer.readUint64();
-                }
-                if (this.type == ProtoBuf.TYPES["sfixed64"]) {
-                    return buffer.readInt64();
-                }
-                if (this.type == ProtoBuf.TYPES["float"]) {
-                    return buffer.readFloat();
-                }
+                
                 // We should never end here
                 throw(new Error("[INTERNAL ERROR] Illegal wire type for "+this.toString(true)+": "+wireType));
             };

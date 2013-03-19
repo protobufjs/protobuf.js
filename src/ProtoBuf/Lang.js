@@ -42,7 +42,7 @@ ProtoBuf.Lang = (function() {
         DELIM: /[\s\{\}=;\[\],"]/g,
         KEYWORD: /package|option|message|enum/,
         RULE: /required|optional|repeated/,
-        TYPE: /double|float|int32|uint32|sint32|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
+        TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
         NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
         TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
         TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
@@ -54,11 +54,6 @@ ProtoBuf.Lang = (function() {
         STRINGOPEN: '"',
         STRINGCLOSE: '"'
     };
-    
-    // Note on 64bit values:
-    // int64, uint64, sint64: TODO: Not yet supported because ByteBuffer.js does not yet support 64bit varint encoding
-    // sfixed64: Supported since 0.9.12 if ByteBuffer.js >=1.2.0 has been loaded with Long.js
-    // fixed64: Supported since 0.9.13 if ByteBuffer.js >=1.2.1 has been loaded with Long.js >=1.1.0
     
     return Lang;
 })();
