@@ -701,15 +701,15 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             this.type == ProtoBuf.TYPES["fixed32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
             return parseInt(value, 10);
         }
-        // if (this.type == ProtoBuf.TYPES["fixed64"] && ProtoBuf.Long) {
-        //     if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-        //         value = ProtoBuf.Long.fromNumber(value, true); // Not yet supported
-        //     }
-        //     return value;
-        // }
+        if (this.type == ProtoBuf.TYPES["fixed64"] && ProtoBuf.Long) {
+            if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
+                value = ProtoBuf.Long.fromNumber(value, true);
+            }
+            return value;
+        }
         if (this.type == ProtoBuf.TYPES["sfixed64"] && ProtoBuf.Long) {
             if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-                value = ProtoBuf.Long.fromNumber(value);
+                value = ProtoBuf.Long.fromNumber(value, false);
             }
             return value;
         }
@@ -825,8 +825,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             buffer.writeUint32(value);
         } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
             buffer.writeInt32(value);
-        // } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
-        //     buffer.writeUint64(value); // Not yet supported
+        } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
+            buffer.writeUint64(value);
         } else if (this.type == ProtoBuf.TYPES["sfixed64"]) {
             buffer.writeInt64(value);
         } else if (this.type == ProtoBuf.TYPES["bool"]) {
@@ -932,9 +932,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         if (this.type == ProtoBuf.TYPES["sfixed32"]) {
             return buffer.readInt32();
         }
-        // if (this.type == ProtoBuf.TYPES["fixed64"]) {
-        //     return buffer.readUint64(); // Not yet supported
-        // }
+        if (this.type == ProtoBuf.TYPES["fixed64"]) {
+            return buffer.readUint64();
+        }
         if (this.type == ProtoBuf.TYPES["sfixed64"]) {
             return buffer.readInt64();
         }

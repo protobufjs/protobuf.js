@@ -152,6 +152,10 @@
                 name: "sfixed32",
                 wireType: ProtoBuf.WIRE_TYPES.BITS32
             },
+            "fixed64": {
+                name: "fixed64",
+                wireType: ProtoBuf.WIRE_TYPES.BITS64
+            },
             "sfixed64": {
                 name: "sfixed64",
                 wireType: ProtoBuf.WIRE_TYPES.BITS64

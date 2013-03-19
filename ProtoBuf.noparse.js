@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.9.12";
+        ProtoBuf.VERSION = "0.9.13";
 
         /**
          * Wire types.
@@ -151,6 +151,10 @@
             "sfixed32": {
                 name: "sfixed32",
                 wireType: ProtoBuf.WIRE_TYPES.BITS32
+            },
+            "fixed64": {
+                name: "fixed64",
+                wireType: ProtoBuf.WIRE_TYPES.BITS64
             },
             "sfixed64": {
                 name: "sfixed64",
@@ -313,7 +317,7 @@
                 DELIM: /[\s\{\}=;\[\],"]/g,
                 KEYWORD: /package|option|message|enum/,
                 RULE: /required|optional|repeated/,
-                TYPE: /double|float|int32|uint32|sint32|fixed32|sfixed32|sfixed64|bool|string|bytes/,
+                TYPE: /double|float|int32|uint32|sint32|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
                 TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
@@ -327,9 +331,9 @@
             };
             
             // Note on 64bit values:
-            // int64, sint64: TODO: Not yet supported because ByteBuffer.js does not yet support 64bit varint encoding
-            // uint64, fixed64: TODO: Not yet supported because Long.js/goog.math.Long does not yet support unsigned values
-            // sfixed64: Supported since 0.9.12 if ByteBuffer.js since 1.2.0 has been loaded with Long.js
+            // int64, uint64, sint64: TODO: Not yet supported because ByteBuffer.js does not yet support 64bit varint encoding
+            // sfixed64: Supported since 0.9.12 if ByteBuffer.js >=1.2.0 has been loaded with Long.js
+            // fixed64: Supported since 0.9.13 if ByteBuffer.js >=1.2.1 has been loaded with Long.js >=1.1.0
             
             return Lang;
         })();
@@ -1022,15 +1026,15 @@
                     this.type == ProtoBuf.TYPES["fixed32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
                     return parseInt(value, 10);
                 }
-                // if (this.type == ProtoBuf.TYPES["fixed64"] && ProtoBuf.Long) {
-                //     if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-                //         value = ProtoBuf.Long.fromNumber(value, true); // Not yet supported
-                //     }
-                //     return value;
-                // }
+                if (this.type == ProtoBuf.TYPES["fixed64"] && ProtoBuf.Long) {
+                    if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
+                        value = ProtoBuf.Long.fromNumber(value, true);
+                    }
+                    return value;
+                }
                 if (this.type == ProtoBuf.TYPES["sfixed64"] && ProtoBuf.Long) {
                     if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-                        value = ProtoBuf.Long.fromNumber(value);
+                        value = ProtoBuf.Long.fromNumber(value, false);
                     }
                     return value;
                 }
@@ -1146,8 +1150,8 @@
                     buffer.writeUint32(value);
                 } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
                     buffer.writeInt32(value);
-                // } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
-                //     buffer.writeUint64(value); // Not yet supported
+                } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
+                    buffer.writeUint64(value);
                 } else if (this.type == ProtoBuf.TYPES["sfixed64"]) {
                     buffer.writeInt64(value);
                 } else if (this.type == ProtoBuf.TYPES["bool"]) {
@@ -1253,9 +1257,9 @@
                 if (this.type == ProtoBuf.TYPES["sfixed32"]) {
                     return buffer.readInt32();
                 }
-                // if (this.type == ProtoBuf.TYPES["fixed64"]) {
-                //     return buffer.readUint64(); // Not yet supported
-                // }
+                if (this.type == ProtoBuf.TYPES["fixed64"]) {
+                    return buffer.readUint64();
+                }
                 if (this.type == ProtoBuf.TYPES["sfixed64"]) {
                     return buffer.readInt64();
                 }

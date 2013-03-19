@@ -389,6 +389,34 @@ ByteBuffer.prototype.writeUint32 = function(value, offset) {};
 ByteBuffer.prototype.readUint32 = function(offset) {};
 
 /**
+ * @param {number|Long} value
+ * @param {number=} offset
+ * @return {!ByteBuffer}
+ */
+ByteBuffer.prototype.writeInt64 = function(value, offset) {};
+
+/**
+ * @param {number=} offset
+ * @return {Long}
+ * @throws {Error}
+ */
+ByteBuffer.prototype.readInt64 = function(offset) {};
+
+/**
+ * @param {number|Long} value
+ * @param {number=} offset
+ * @return {!ByteBuffer}
+ */
+ByteBuffer.prototype.writeUint64 = function(value, offset) {};
+
+/**
+ * @param {number=} offset
+ * @return {Long}
+ * @throws {Error}
+ */
+ByteBuffer.prototype.readUint64 = function(offset) {};
+
+/**
  * @param {number} value
  * @param {number=} offset
  * @return {!ByteBuffer}

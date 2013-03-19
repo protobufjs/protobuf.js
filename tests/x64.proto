@@ -1,0 +1,4 @@
+message Test {
+    required sfixed64 val = 1 [default=-1];
+    required fixed64 uval = 2 [default=1];
+}

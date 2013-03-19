@@ -29,35 +29,40 @@
 /**
  * @param {number} low
  * @param {number} high
+ * @param {boolean=} unsigned
  * @constructor
  */
-var Long = function(low, high) {};
+var Long = function(low, high, unsigned) {};
 
 /**
  * @param {number} value
+ * @param {boolean=} unsigned
  * @return {!Long}
  */
-Long.fromInt = function(value) {};
+Long.fromInt = function(value, unsigned) {};
 
 /**
  * @param {number} value
+ * @param {boolean=} unsigned
  * @return {!Long}
  */
-Long.fromNumber = function(value) {};
+Long.fromNumber = function(value, unsigned) {};
 
 /**
  * @param {number} lowBits
  * @param {number} highBits
+ * @param {boolean=} unsigned
  * @return {!Long}
  */
-Long.fromBits = function(lowBits, highBits) {};
+Long.fromBits = function(lowBits, highBits, unsigned) {};
 
 /**
  * @param {string} str
- * @param {number=} opt_radix
+ * @param {(boolean|number)=} unsigned
+ * @param {number=} radix
  * @return {!Long}
  */
-Long.fromString = function(str, opt_radix) {};
+Long.fromString = function(str, unsigned, radix) {};
 
 /**
  * @type {!Long}
@@ -77,12 +82,47 @@ Long.NEG_ONE;
 /**
  * @type {!Long}
  */
+Long.MAX_SIGNED_VALUE;
+
+/**
+ * @type {!Long}
+ */
+Long.MIN_SIGNED_VALUE;
+
+/**
+ * @type {!Long}
+ */
+Long.MAX_UNSIGNED_VALUE;
+
+/**
+ * @type {!Long}
+ */
+Long.MIN_UNSIGNED_VALUE;
+
+/**
+ * @type {!Long}
+ */
 Long.MAX_VALUE;
 
 /**
  * @type {!Long}
  */
 Long.MIN_VALUE;
+
+/**
+ * @type {number}
+ */
+Long.prototype.low;
+
+/**
+ * @type {number}
+ */
+Long.prototype.high;
+
+/**
+ * @type {boolean}
+ */
+Long.prototype.unsigned;
 
 /**
  * @return {number}
@@ -95,15 +135,20 @@ Long.prototype.toInt = function() {};
 Long.prototype.toNumber = function() {};
 
 /**
- * @param {number=} opt_radix
+ * @param {number=} radix
  * @return {string}
  */
-Long.prototype.toString = function(opt_radix) {};
+Long.prototype.toString = function(radix) {};
 
 /**
  * @return {number}
  */
 Long.prototype.getHighBits = function() {};
+
+/**
+ * @return {number}
+ */
+Long.prototype.getHighBitsUnsigned = function() {};
 
 /**
  * @return {number}

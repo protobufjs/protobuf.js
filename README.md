@@ -196,7 +196,7 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   ```
 
 * Data types: int32, uint32, sint32, bool, enum, string, bytes, messages, embedded messages, fixed32, sfixed32, float,
-  double, sfixed64:
+  double, fixed64, sfixed64:
   
   ```protobuf
   message Test {
@@ -224,6 +224,7 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
           required float e = 5; // Fixed 4 bytes
           required double f = 6; // Fixed 8 bytes
           required sfixed64 g = 7; // Fixed 8 bytes (int64 through Long.js)
+          required fixed64 h = 8; // Fixed 8 bytes (uint64 through Long.js)
       }
   }
   ```
