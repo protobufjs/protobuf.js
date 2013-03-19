@@ -496,7 +496,10 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              */
             Message.prototype.encode = function(buffer) {
                 buffer = buffer || new ByteBuffer();
-                return T.encode(this, buffer).flip();
+                var le = buffer.littleEndian;
+                var bb = T.encode(this, buffer.LE()).flip();
+                buffer.littleEndian = le;
+                return bb;
             };
 
             /**
@@ -522,7 +525,10 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              */
             Message.decode = function(buffer) {
                 buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer)) : new ByteBuffer();
-                return T.decode(buffer);
+                var le = buffer.littleEndian;
+                var msg = T.decode(buffer.LE());
+                buffer.littleEndian = le;
+                return msg;
             };
 
             // Utility
@@ -812,6 +818,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 this.encodeValue(value, buffer);
             }
         } catch (e) {
+            buffer.littleEndian = le;
             throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")"));
         }
         return buffer;
