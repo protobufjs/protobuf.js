@@ -242,7 +242,7 @@ var suite = {
             var Float = root.Float;
 
             var f_vals = [
-                // hex values are big-endian following IEEE754 notation
+                // hex values are shown here in big-endian following IEEE754 notation
                 // protobuf is little-endian
                 { f: -0.0         , b: "<80 00 00 00>" },
                 { f: +0.0         , b: "<00 00 00 00>" },
@@ -260,20 +260,23 @@ var suite = {
                 { f: +0.987654321 , b: "<3F 7C D6 EA>" },
                 { f: -Infinity    , b: "<FF 80 00 00>" },
                 { f: +Infinity    , b: "<7F 80 00 00>" },
-                { f: -NaN         , b: "<FF FF FF FF>" },
-                { f: +NaN         , b: "<7F FF FF FF>" }
+                { f: -NaN         , b: "<FF C0 00 00>" },
+                { f: +NaN         , b: "<7F C0 00 00>" }
             ];
 
             f_vals.map( function(x) {
                 var m1 = new Float();
                 var m2 = new Float();
-                var b1 = new ByteBuffer);
-                var b2 = new ByteBuffer);
+                var b1 = new ByteBuffer();
+                var b2 = new ByteBuffer();
                 m1.f = x.f;
                 m1.encode(b1);
-                m2.decode(b1);
+                m2 = Float.decode(b1);
+                console.log(m1.f,m2.f);
                 m2.encode(b2);
-                test.strictEqual(x.b,b2.slice(1,5).reverse().tohex());
+                b3 = b2.slice(1,5).compact().toHex();
+                console.log(x.b,b3);
+                test.strictEqual(x.b, b3);
             });
         } catch(e) {
             fail(e);
