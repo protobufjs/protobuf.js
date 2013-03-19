@@ -209,7 +209,7 @@ var suite = {
         }
         test.done();
     },
-    
+
     "example4": function(test) {
         try {
             var builder = ProtoBuf.protoFromFile(__dirname+"/example4.proto");
@@ -228,7 +228,59 @@ var suite = {
         }
         test.done();
     },
-    
+
+    // Take a list of float values and check that encoding is correct.
+    // Do encode/decode/encode, this ensures that all values are exactly 
+    // preserved for full round trip.
+    "float1": function(test) {
+        try {
+            var str_proto =   "message Float {"
+                            + "   required float f = 1;"
+                            + "}";
+            var builder = ProtoBuf.protoFromString(str_proto);
+            var root = builder.build();
+            var Float = root.Float;
+
+            var f_vals = [
+                // hex values are big-endian following IEEE754 notation
+                // protobuf is little-endian
+                { f: -0.0         , b: "<80 00 00 00 0D>" },
+                { f: +0.0         , b: "<00 00 00 00 0D>" },
+                { f: -1e-10       , b: "<AE DB E6 FF 0D>" },
+                { f: +1e-10       , b: "<2E DB E6 FF 0D>" },
+                { f: -2e+10       , b: "<D0 95 02 F9 0D>" },
+                { f: +2e+10       , b: "<50 95 02 F9 0D>" },
+                { f: -3e-30       , b: "<8E 73 63 90 0D>" },
+                { f: +3e-30       , b: "<0E 73 63 90 0D>" },
+                { f: -4e+30       , b: "<F2 49 F2 CA 0D>" },
+                { f: +4e+30       , b: "<72 49 F2 CA 0D>" },
+                { f: -123456789.0 , b: "<CC EB 79 A3 0D>" },
+                { f: +123456789.0 , b: "<4C EB 79 A3 0D>" },
+                { f: -0.987654321 , b: "<BF 7C D6 EA 0D>" },
+                { f: +0.987654321 , b: "<3F 7C D6 EA 0D>" },
+                { f: -Infinity    , b: "<FF 80 00 00 0D>" },
+                { f: +Infinity    , b: "<7F 80 00 00 0D>" },
+                { f: -NaN         , b: "<FF FF FF FF 0D>" },
+                { f: +NaN         , b: "<7F FF FF FF 0D>" }
+            ];
+
+            f_vals.map( function(x) {
+                var m1 = new Float();
+                var m2 = new Float();
+                var b1 = new ByteBuffer);
+                var b2 = new ByteBuffer);
+                m1.f = x.f;
+                m1.encode(b1);
+                m2.decode(b1);
+                m2.encode(b2);
+                test.strictEqual(x.b,b2.reverse().tohex());
+            });
+        } catch(e) {
+            fail(e);
+        }
+        test.done();
+    },
+
     // Options on all levels
     "options": function(test) {
         try {
