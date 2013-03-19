@@ -229,9 +229,8 @@ var suite = {
         test.done();
     },
 
-    // Take a list of float values and check that encoding is correct.
-    // Do encode/decode/encode, this ensures that all values are exactly 
-    // preserved for full round trip.
+    // Check encode/decode against a table of known correct pairs.
+    // Note that javascript ArrayBuffer does not support signed Zero or NaN
     "float1": function(test) {
         try {
             var str_proto =   "message Float {"
@@ -241,42 +240,69 @@ var suite = {
             var root = builder.build();
             var Float = root.Float;
 
+            var in_tolerance = function (reference,actual) {
+               var tol = 1e-6;
+               var scale = 1.0;
+               if (reference != 0.0 ) {
+                 scale = reference;
+               };
+               var err = Math.abs(reference - actual)/scale;
+               return err < tol;            
+            };
+
             var f_vals = [
                 // hex values are shown here in big-endian following IEEE754 notation
                 // protobuf is little-endian
-                { f: -0.0         , b: "<80 00 00 00>" },
-                { f: +0.0         , b: "<00 00 00 00>" },
-                { f: -1e-10       , b: "<AE DB E6 FF>" },
-                { f: +1e-10       , b: "<2E DB E6 FF>" },
-                { f: -2e+10       , b: "<D0 95 02 F9>" },
-                { f: +2e+10       , b: "<50 95 02 F9>" },
-                { f: -3e-30       , b: "<8E 73 63 90>" },
-                { f: +3e-30       , b: "<0E 73 63 90>" },
-                { f: -4e+30       , b: "<F2 49 F2 CA>" },
-                { f: +4e+30       , b: "<72 49 F2 CA>" },
-                { f: -123456789.0 , b: "<CC EB 79 A3>" },
-                { f: +123456789.0 , b: "<4C EB 79 A3>" },
-                { f: -0.987654321 , b: "<BF 7C D6 EA>" },
-                { f: +0.987654321 , b: "<3F 7C D6 EA>" },
-                { f: -Infinity    , b: "<FF 80 00 00>" },
-                { f: +Infinity    , b: "<7F 80 00 00>" },
-                { f: -NaN         , b: "<FF C0 00 00>" },
-                { f: +NaN         , b: "<7F C0 00 00>" }
+                // { f: -0.0         , b: "80 00 00 00" },
+                { f: +0.0         , b: "00 00 00 00" },
+                { f: -1e-10       , b: "AE DB E6 FF" },
+                { f: +1e-10       , b: "2E DB E6 FF" },
+                { f: -2e+10       , b: "D0 95 02 F9" },
+                { f: +2e+10       , b: "50 95 02 F9" },
+                { f: -3e-30       , b: "8E 73 63 90" },
+                { f: +3e-30       , b: "0E 73 63 90" },
+                { f: -4e+30       , b: "F2 49 F2 CA" },
+                { f: +4e+30       , b: "72 49 F2 CA" },
+                { f: -123456789.0 , b: "CC EB 79 A3" },
+                { f: +123456789.0 , b: "4C EB 79 A3" },
+                { f: -0.987654321 , b: "BF 7C D6 EA" },
+                { f: +0.987654321 , b: "3F 7C D6 EA" },
+                { f: -Infinity    , b: "FF 80 00 00" },
+                { f: +Infinity    , b: "7F 80 00 00" },
+                // { f: -NaN         , b: "FF C0 00 00>" },
+                { f: +NaN         , b: "7F C0 00 00" },
             ];
 
             f_vals.map( function(x) {
+                // check encode
                 var m1 = new Float();
-                var m2 = new Float();
                 var b1 = new ByteBuffer();
-                var b2 = new ByteBuffer();
                 m1.f = x.f;
                 m1.encode(b1);
-                m2 = Float.decode(b1);
-                console.log(m1.f,m2.f);
-                m2.encode(b2);
-                b3 = b2.slice(1,5).compact().toHex();
-                console.log(x.b,b3);
-                test.strictEqual(x.b, b3);
+                var q1 = b1.slice(1,5).compact().reverse().toHex();
+                test.strictEqual('<' + x.b + '>', q1 );
+
+                // check decode
+                var b2 = new ByteBuffer();
+                var s1 = x.b + ' 0D';
+                var s2 = s1.split(" ");
+                var s3 = s2.reverse();
+                var i1 = s3.map(function(y) { return parseInt(y,16) } );
+                i1.map(function(y) { b2.writeUint8(y) });
+                b2.length = b2.offset;
+                b2.offset = 0;
+                var m2 = Float.decode(b2);
+                
+                var s4 = "" + x.f +" " + m2.f;
+                if ( isNaN(x.f) ) {
+                  test.ok( isNaN(m2.f), s4 );
+                } 
+                else if ( ! isFinite( x.f) ) {
+                  test.ok( x.f === m2.f, s4 );
+                } 
+                else {
+                  test.ok( in_tolerance(x.f, m2.f), s4 );
+                };
             });
         } catch(e) {
             fail(e);
