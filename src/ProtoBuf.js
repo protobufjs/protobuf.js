@@ -128,6 +128,18 @@
                 name: "sint32",
                 wireType: ProtoBuf.WIRE_TYPES.VARINT
             },
+            "int64": {
+                name: "int64",
+                wireType: ProtoBuf.WIRE_TYPES.VARINT
+            },
+            "uint64": {
+                name: "uint64",
+                wireType: ProtoBuf.WIRE_TYPES.VARINT
+            },
+            "sint64": {
+                name: "sint64",
+                wireType: ProtoBuf.WIRE_TYPES.VARINT
+            },
             "bool": {
                 name: "bool",
                 wireType: ProtoBuf.WIRE_TYPES.VARINT
@@ -151,6 +163,10 @@
             "sfixed32": {
                 name: "sfixed32",
                 wireType: ProtoBuf.WIRE_TYPES.BITS32
+            },
+            "fixed64": {
+                name: "fixed64",
+                wireType: ProtoBuf.WIRE_TYPES.BITS64
             },
             "sfixed64": {
                 name: "sfixed64",

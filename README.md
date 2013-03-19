@@ -195,8 +195,8 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   }
   ```
 
-* Data types: int32, uint32, sint32, bool, enum, string, bytes, messages, embedded messages, fixed32, sfixed32, float,
-  double, sfixed64:
+* Data types: int32, uint32, sint32, fixed32, sfixed32, int64, uint64, sint64, fixed64, sfixed64, bool, enum, string,
+  bytes, messages, embedded messages, float, double
   
   ```protobuf
   message Test {
@@ -219,11 +219,18 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
       message Embedded {
           repeated int32 a = 1; // Multiple tags
           repeated int32 b = 2 [packed=true]; // One tag, length delimited
-          required fixed32 c = 3; // Fixed 4 bytes
-          required sfixed32 d = 4; // Fixed 4 bytes zigzag encoded
+          
+          required sfixed32 c = 3; // Fixed 4 bytes int32
+          required fixed32 d = 4; // Fixed 4 bytes uint32
           required float e = 5; // Fixed 4 bytes
           required double f = 6; // Fixed 8 bytes
-          required sfixed64 g = 7; // Fixed 8 bytes (int64 through Long.js)
+          
+          // Through ByteBuffer.js loaded with Long.js:
+          optional int64 g = 7; // Varint encoded
+          optional uint64 h = 8; // Varint encoded
+          optional sint64 i = 9; // Varint zigzag encoded
+          required sfixed64 j = 10; // Fixed 8 bytes int64
+          required fixed64 k = 11; // Fixed 8 bytes uint64
       }
   }
   ```
@@ -381,6 +388,11 @@ for long (int64) support. If you do not require long support, you can skip the L
 var ProtoBuf = dcodeIO.ProtoBuf;
 ...
 ```
+
+On long (int64) support
+-----------------------
+Full 64bit support is available since 0.10.0 and requires ByteBuffer.js >=1.2.3 with Long.js >=1.1.2.
+* [See also](https://github.com/dcodeIO/ByteBuffer.js#on-long-int64-support)
 
 Downloads
 ---------

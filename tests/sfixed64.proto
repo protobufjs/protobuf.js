@@ -1,3 +1,0 @@
-message Test {
-    required sfixed64 longVal = 1 [default=1];
-}
