@@ -341,9 +341,6 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   are also always fetched *synchronously*, so it's a good idea to package everything into a single file when using it in
   the browser.
   
-  Imports respectively the underlying XHR implementation have not yet been tested in the browser. Please let me know if
-  it is working as expected.
-  
 #### Not (yet) supported ####
 * *Extensions* (what for?) and *services* (you roll your own, don't you?). If you need anything of this, please open an
   issue and explain your exact requirements. It's just that I have no idea how to benefit from that and therefore I am
@@ -444,7 +441,8 @@ Documentation
 Tests (& Examples) [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 ------------------
 * [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
-* [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+* [View node report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+* [View browser report](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/tests/suite.html)
 
 License
 -------

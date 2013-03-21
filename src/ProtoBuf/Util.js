@@ -103,6 +103,7 @@ ProtoBuf.Util = (function() {
             var xhr = Util.XHR();
             xhr.open('GET', path, callback ? true : false);
             xhr.setRequestHeader('User-Agent', 'XMLHTTP/1.0');
+            xhr.setRequestHeader('Accept', 'text/plain');
             if (callback) {
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState != 4) return;
@@ -116,11 +117,7 @@ ProtoBuf.Util = (function() {
                 xhr.send(null);
             } else {
                 xhr.send(null);
-                if (xhr.status == 200) {
-                    return xhr.responseText;
-                } else {
-                    return null;
-                }
+                return xhr.responseText;
             }
         }
     };
