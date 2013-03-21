@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.11.1";
+        ProtoBuf.VERSION = "0.12.0";
 
         /**
          * Wire types.
@@ -291,6 +291,7 @@
                         if (xhr.readyState == 4) return;
                         xhr.send(null);
                     } else {
+                        xhr.send(null);
                         if (xhr.status == 200) {
                             return xhr.responseText;
                         } else {
@@ -327,7 +328,7 @@
                 END: ";",
         
                 DELIM: /[\s\{\}=;\[\],"]/g,
-                KEYWORD: /package|option|message|enum/,
+                KEYWORD: /package|option|import|message|enum/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
@@ -1684,6 +1685,9 @@
                                         if (!Builder.isValidMessageField(def["fields"][i])) {
                                             throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
                                         }
+                                        if (obj.hasChild(def['fields'][i]['id'])) {
+                                            throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
+                                        }
                                         if (def["fields"][i]["options"]) {
                                             subObj = Object.keys(def["fields"][i]["options"]);
                                             for (j=0; j<subObj.length; j++) { // j=Option names
@@ -1743,6 +1747,43 @@
                 }
                 this.resolved = false; // Require re-resolve
                 this.result = null; // Require re-build
+                return this;
+            };
+        
+            /**
+             * Imports another builder into this one.
+             * @param {Object.<string,*>} parsed Parsed import
+             * @param {string} filename Imported file name
+             * @return {ProtoBuf.Builder} this
+             * @throws {Error} If there is a naming conflict
+             * @expose
+             */
+            Builder.prototype["import"] = function(parsed, filename) {
+                if (!!parsed['package']) {
+                    this.define(parsed['package']);
+                }
+                if (!!parsed['messages']) {
+                    this.create(parsed['messages']);
+                }
+                this.reset();
+                if (!!parsed['imports'] && parsed['imports'].length > 0) {
+                    if (!filename) {
+                        throw(new Error("Cannot determine import root: File name is unknown"));
+                    }
+                    var importRoot = filename.replace(/[\/\\][^\/\\]*$/, "");
+                    for (var i=0; i<parsed['imports'].length; i++) {
+                        var importFilename = importRoot+"/"+parsed['imports'][i];
+                        if (/\.json$/i.test(importFilename)) { // Always possible
+                            var json = ProtoBuf.Util.fetch(importFilename);
+                            if (json === null) {
+                                throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                            }
+                            this["import"](JSON.parse(json), importFilename); // Throws on its own
+                        } else {
+                            throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
+                        }
+                    }
+                }
                 return this;
             };
         
@@ -1840,12 +1881,13 @@
         /**
          * Builds a .proto definition and returns the Builder.
          * @param {string} proto .proto file contents
-         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
+         * @param {string=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
          */
-        ProtoBuf.protoFromString = function(proto, builder) {
+        ProtoBuf.protoFromString = function(proto, builder, filename) {
             throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
         };
 
@@ -1869,11 +1911,11 @@
             }
             if (callback) {
                 ProtoBuf.Util.fetch(filename, function(contents) {
-                    callback(ProtoBuf.protoFromString(contents, builder));
+                    callback(ProtoBuf.protoFromString(contents, builder, filename));
                 });
             } else {
                 var contents = ProtoBuf.Util.fetch(filename);
-                return contents !== null ? ProtoBuf.protoFromString(contents, builder) : null;
+                return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
         };
 

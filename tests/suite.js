@@ -545,6 +545,20 @@ var suite = {
         }
         test.done();
     },
+    
+    "imports": function(test) {
+        try {
+            var builder = ProtoBuf.protoFromFile(__dirname+"/imports.proto");
+            var root = builder.build();
+            test.ok(!!root.Test1);
+            test.ok(!!root.Test2);
+            test.ok(!!root.My.Test2);
+            test.notEqual(root.Test2, root.My.Test2);
+        } catch (e) {
+            fail(e);
+        }
+        test.done();
+    },
 
     "commonjs": function(test) {
         var fs = require("fs")

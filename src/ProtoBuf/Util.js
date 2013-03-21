@@ -115,6 +115,7 @@ ProtoBuf.Util = (function() {
                 if (xhr.readyState == 4) return;
                 xhr.send(null);
             } else {
+                xhr.send(null);
                 if (xhr.status == 200) {
                     return xhr.responseText;
                 } else {

@@ -908,7 +908,7 @@ builder will only contain a global namespace.</p></td>
         
             
 <dt>
-    <h4 class="name" id="protoFromString"><span class="type-signature">&lt;static> </span>protoFromString<span class="signature">(proto, <span class="optional">builder</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
+    <h4 class="name" id="protoFromString"><span class="type-signature">&lt;static> </span>protoFromString<span class="signature">(proto, <span class="optional">builder</span>, <span class="optional">filename</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
     
     
 </dt>
@@ -988,6 +988,9 @@ builder will only contain a global namespace.</p></td>
             
                 
 <span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+|
+
+<span class="param-type">string</span>
 
 
             
@@ -1006,6 +1009,37 @@ builder will only contain a global namespace.</p></td>
             
             
             <td class="description last"><p>Builder to append to. Will create a new one if omitted.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The corresponding file name if known. Must be specified for imports.</p></td>
         </tr>
 	
 	

@@ -213,15 +213,20 @@
         /**
          * Builds a .proto definition and returns the Builder.
          * @param {string} proto .proto file contents
-         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
+         * @param {string=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
          */
-        ProtoBuf.protoFromString = function(proto, builder) {
+        ProtoBuf.protoFromString = function(proto, builder, filename) {
             // #ifdef NOPARSE
             throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
             // #else
+            if (typeof builder == 'string') {
+                filename = builder;
+                builder = null;
+            }
             var parser = new ProtoBuf.DotProto.Parser(proto+"");
             var parsed = parser.parse();
             var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
@@ -230,6 +235,11 @@
             }
             builder.create(parsed['messages']); // Create the messages
             builder.reset();
+            if (filename && parsed['imports'].length > 0) {
+                builder["import"]({
+                    "imports": parsed["imports"]
+                }, filename);
+            }
             builder.resolveAll();
             builder.build();
             return builder;
@@ -256,11 +266,11 @@
             }
             if (callback) {
                 ProtoBuf.Util.fetch(filename, function(contents) {
-                    callback(ProtoBuf.protoFromString(contents, builder));
+                    callback(ProtoBuf.protoFromString(contents, builder, filename));
                 });
             } else {
                 var contents = ProtoBuf.Util.fetch(filename);
-                return contents !== null ? ProtoBuf.protoFromString(contents, builder) : null;
+                return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
         };
 

@@ -46,7 +46,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
      * @expose
      */
     Parser.prototype.parse = function() {
-        var messages = [], pkg = null;
+        var messages = [], pkg = null, imports = [];
         var topLevel = {
             "name": "[ROOT]",
             "options": {}
@@ -65,6 +65,11 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                     throw(new Error("Illegal package definition: Package already declared"));
                 }
                 pkg = this._parsePackage(token);
+            } else if (token == 'import') {
+                if (!header) {
+                    throw(new Error("Illegal import definition: Must be declared before the first message"));
+                }
+                imports.push(this._parseImport(token));
             } else if (token == 'message') {
                 var msg = this._parseMessage(null, token);
                 messages.push(msg);
@@ -81,7 +86,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         return {
             "package": pkg,
             "options": topLevel["options"],
-            "messages": messages
+            "messages": messages,
+            "imports": imports
         };
     };
 
@@ -100,9 +106,36 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         var pkg = token;
         token = this.tn.next();
         if (token != Lang.END) {
-            throw(new Error("Illegal end of package definition: "+token+" ('"+Lang.END+"' expected)"))
+            throw(new Error("Illegal end of package definition: "+token+" ('"+Lang.END+"' expected)"));
         }
         return pkg;
+    };
+
+    /**
+     * Parses an import definition.
+     * @param {string} token Initial token
+     * @return {string} Import file name 
+     * @throws {Error} If the import definition cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseImport = function(token) {
+        token = this.tn.next();
+        if (token == "public") {
+            token = this.tn.next();
+        }
+        if (token != Lang.STRINGOPEN) {
+            throw(new Error("Illegal begin of import value: "+token+" ('"+Lang.STRINGOPEN+"' expected)"));
+        }
+        var imported = this.tn.next();
+        token = this.tn.next();
+        if (token != Lang.STRINGCLOSE) {
+            throw(new Error("Illegal end of import value: "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+        }
+        token = this.tn.next();
+        if (token != Lang.END) {
+            throw(new Error("Illegal end of import definition: "+token+" ('"+Lang.END+"' expected)"));
+        }
+        return imported;
     };
 
     /**

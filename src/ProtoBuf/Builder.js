@@ -242,6 +242,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                 if (!Builder.isValidMessageField(def["fields"][i])) {
                                     throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
                                 }
+                                if (obj.hasChild(def['fields'][i]['id'])) {
+                                    throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
+                                }
                                 if (def["fields"][i]["options"]) {
                                     subObj = Object.keys(def["fields"][i]["options"]);
                                     for (j=0; j<subObj.length; j++) { // j=Option names
@@ -301,6 +304,52 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         }
         this.resolved = false; // Require re-resolve
         this.result = null; // Require re-build
+        return this;
+    };
+
+    /**
+     * Imports another builder into this one.
+     * @param {Object.<string,*>} parsed Parsed import
+     * @param {string} filename Imported file name
+     * @return {ProtoBuf.Builder} this
+     * @throws {Error} If there is a naming conflict
+     * @expose
+     */
+    Builder.prototype["import"] = function(parsed, filename) {
+        if (!!parsed['package']) {
+            this.define(parsed['package']);
+        }
+        if (!!parsed['messages']) {
+            this.create(parsed['messages']);
+        }
+        this.reset();
+        if (!!parsed['imports'] && parsed['imports'].length > 0) {
+            if (!filename) {
+                throw(new Error("Cannot determine import root: File name is unknown"));
+            }
+            var importRoot = filename.replace(/[\/\\][^\/\\]*$/, "");
+            for (var i=0; i<parsed['imports'].length; i++) {
+                var importFilename = importRoot+"/"+parsed['imports'][i];
+                if (/\.json$/i.test(importFilename)) { // Always possible
+                    var json = ProtoBuf.Util.fetch(importFilename);
+                    if (json === null) {
+                        throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                    }
+                    this["import"](JSON.parse(json), importFilename); // Throws on its own
+                } else {
+                    // #ifdef NOPARSE
+                    throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
+                    // #else
+                    var proto = ProtoBuf.Util.fetch(importFilename);
+                    if (proto === null) {
+                        throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                    }
+                    var parser = new ProtoBuf.DotProto.Parser(proto+"");
+                    this["import"](parser.parse(), importFilename); // Throws on its own                    
+                    // #endif
+                }
+            }
+        }
         return this;
     };
 

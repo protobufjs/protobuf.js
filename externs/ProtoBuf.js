@@ -496,6 +496,16 @@ ProtoBuf.Builder.isValidEnum = function(def) {};
 ProtoBuf.Builder.prototype.create = function(messages) {};
 
 /**
+ * @name ProtoBuf.Builder.prototype.import
+ * @function
+ * @param {ProtoBuf.Builder} builder
+ * @param {string=} filename
+ * @return {!ProtoBuf.Builder}
+ * @throws {Error}
+ */
+ProtoBuf.Builder.prototype["import"] = function(builder, filename) {};
+
+/**
  * @throws {Error}
  */
 ProtoBuf.Builder.prototype.resolveAll = function() {};
@@ -574,11 +584,12 @@ ProtoBuf.Builder.Message.prototype.toString = function() {};
 
 /**
  * @param {string} proto
- * @param {ProtoBuf.Builder=} builder
+ * @param {(ProtoBuf.Builder|string)=} builder
+ * @param {string=} filename
  * @return {!ProtoBuf.Builder}
  * @throws {Error}
  */
-ProtoBuf.protoFromString = function(proto, builder) {};
+ProtoBuf.protoFromString = function(proto, builder, filename) {};
 
 /**
  * @param {string} filename
