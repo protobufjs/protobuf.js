@@ -131,6 +131,35 @@ When using JSON only, you can use [ProtoBuf.noparse.js](https://github.com/dcode
 / [ProtoBuf.noparse.min.js](https://github.com/dcodeIO/ProtoBuf.js/blob/master/ProtoBuf.noparse.min.js) instead, which
 do NOT include the `ProtoBuf.DotProto` package for parsing and are therefore even smaller.
 
+Encoder / Decoder
+-----------------
+Built into all message classes. Just call `YourMessage#encode([buffer])` respectively `YourMessage.decode(buffer)`.
+
+#### Encoding a message ####
+
+```javascript
+...
+var YourMessage = builder.build("YourMessage");
+var myMessage = new YourMessage(...);
+var byteBuffer = myMessage.encode();
+var buffer = byteBuffer.toArrayBuffer();
+
+// OR: Short...
+var buffer = myMessage.toArrayBuffer();
+
+var socket = ...; // E.g. a WebSocket
+socket.send(buffer);
+```
+
+#### Decoding from an ArrayBuffer/ByteBuffer ####
+
+```javascript
+...
+var YourMessage = builder.build("YourMessage");
+var buffer = ...; // E.g. a buffer received on a WebSocket
+var myMessage = YourMessage.decode(buffer);
+```
+
 Command line utility
 --------------------
 It's also possible to transform .proto files into their JSON counterparts or to transform entire namespaces into
@@ -332,35 +361,6 @@ var ast = parser.parse();
 console.log(util.inspect(ast, false, null, true));
 ```
 
-Encoder / Decoder
------------------
-Built into all message classes. Just call `YourMessage#encode([buffer])` respectively `YourMessage.decode(buffer)`.
-
-#### Encoding a message ####
-
-```javascript
-...
-var YourMessage = builder.build("YourMessage");
-var myMessage = new YourMessage(...);
-var byteBuffer = myMessage.encode();
-var buffer = byteBuffer.toArrayBuffer();
-
-// OR: Short...
-var buffer = myMessage.toArrayBuffer();
-
-var socket = ...; // E.g. a WebSocket
-socket.send(buffer);
-```
-
-#### Decoding from an ArrayBuffer/ByteBuffer ####
-
-```javascript
-...
-var YourMessage = builder.build("YourMessage");
-var buffer = ...; // E.g. a buffer received on a WebSocket
-var myMessage = YourMessage.decode(buffer);
-```
-
 CommonJS, AMD and browser (shim)
 --------------------------------
 
@@ -429,8 +429,8 @@ On endianess before 0.11
 --------------------------
 Till 0.10, ProtoBuf.js mistakenly used big endian byte order when en-/decoding non-varint values as [reported by
 bertdouglas](https://github.com/dcodeIO/ProtoBuf.js/pull/5). This has been corrected in 0.11.0. However, versions before
-0.11 are now to consider **incompatible** with later versions when using non-varint values, so please upgrade to 0.11
-to ensure compatibility with the official protobuf specification.
+0.11 are now to consider **incompatible** with later versions when using non-varint values, so please upgrade to the
+latest version to ensure compatibility with the official protobuf specification.
 
 Downloads
 ---------
