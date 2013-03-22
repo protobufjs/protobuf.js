@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.1";
+        ProtoBuf.VERSION = "0.12.2";
 
         /**
          * Wire types.
@@ -1654,7 +1654,7 @@
         
             /**
              * Creates ths specified protocol types at the current pointer position.
-             * @param {Array.<Object.<string,*>>} messages Messages to create
+             * @param {Array.<Object.<string,*>>} messages Messages or enums to create
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If a message definition is invalid
              * @expose

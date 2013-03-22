@@ -48,7 +48,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.1";
+        ProtoBuf.VERSION = "0.12.2";
 
         /**
          * Wire types.
@@ -520,14 +520,17 @@
         
             /**
              * Runs the parser.
-             * @return {{package: string|null, messages: Array.<object>, options: object<string,*>}}
+             * @return {{package: string|null, messages: Array.<object>, enums: Array.<object>, imports: Array.<string>, options: object<string,*>}}
              * @throws {Error} If the source cannot be parsed
              * @expose
              */
             Parser.prototype.parse = function() {
-                var messages = [], pkg = null, imports = [];
                 var topLevel = {
-                    "name": "[ROOT]",
+                    "name": "[ROOT]", // temporary
+                    "package": null,
+                    "messages": [],
+                    "enums": [],
+                    "imports": [],
                     "options": {}
                 };
                 var token, header = true;
@@ -538,36 +541,34 @@
                     }
                     if (token == 'package') {
                         if (!header) {
-                            throw(new Error("Illegal package definition: Must be declared before the first message"));
+                            throw(new Error("Illegal package definition: Must be declared before the first message or enum"));
                         }
-                        if (pkg !== null) {
+                        if (topLevel["package"] !== null) {
                             throw(new Error("Illegal package definition: Package already declared"));
                         }
-                        pkg = this._parsePackage(token);
+                        topLevel["package"] = this._parsePackage(token);
                     } else if (token == 'import') {
                         if (!header) {
-                            throw(new Error("Illegal import definition: Must be declared before the first message"));
+                            throw(new Error("Illegal import definition: Must be declared before the first message or enum"));
                         }
-                        imports.push(this._parseImport(token));
+                        topLevel.imports.push(this._parseImport(token));
                     } else if (token == 'message') {
-                        var msg = this._parseMessage(null, token);
-                        messages.push(msg);
+                        this._parseMessage(topLevel, token);
+                        header = false;
+                    } else if (token == 'enum') {
+                        this._parseEnum(topLevel, token);
                         header = false;
                     } else if (token == 'option') {
                         if (!header) {
-                            throw(new Error("Illegal option definition: Must be declared before the first message"));
+                            throw(new Error("Illegal option definition: Must be declared before the first message or enum"));
                         }
                         this._parseOption(topLevel, token);
                     } else {
                         throw(new Error("Illegal top level declaration: "+token));
                     }
                 } while (true);
-                return {
-                    "package": pkg,
-                    "options": topLevel["options"],
-                    "messages": messages,
-                    "imports": imports
-                };
+                delete topLevel["name"];
+                return topLevel;
             };
         
             /**
@@ -619,7 +620,7 @@
         
             /**
              * Parses a top level option.
-             * @param {?Object} parent Parent definition
+             * @param {Object} parent Parent definition
              * @param {string} token Initial token
              * @return {Object}
              * @throws {Error} If the option cannot be parsed
@@ -661,7 +662,7 @@
         
             /**
              * Parses a message.
-             * @param {?Object} parent Parent definition
+             * @param {Object} parent Parent definition
              * @param {string} token First token
              * @return {Object}
              * @throws {Error} If the message cannot be parsed
@@ -699,9 +700,7 @@
                         throw(new Error("Illegal token in message "+msg.name+": "+token));
                     }
                 } while (true);
-                if (parent != null) {
-                    parent["messages"].push(msg);
-                }
+                parent["messages"].push(msg);
                 return msg;
             };
         
@@ -2188,7 +2187,7 @@
         
             /**
              * Creates ths specified protocol types at the current pointer position.
-             * @param {Array.<Object.<string,*>>} messages Messages to create
+             * @param {Array.<Object.<string,*>>} messages Messages or enums to create
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If a message definition is invalid
              * @expose
@@ -2431,10 +2430,11 @@
             var parser = new ProtoBuf.DotProto.Parser(proto+"");
             var parsed = parser.parse();
             var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
-            if (parsed['package'] !== null) {
-                builder.define(parsed['package']); // Define the package
-            }
-            builder.create(parsed['messages']); // Create the messages
+            if (parsed['package'] !== null) builder.define(parsed['package']);
+            builder.create(parsed['messages']);
+            builder.reset();
+            if (parsed['package'] !== null) builder.define(parsed['package']);
+            builder.create(parsed['enums']);
             builder.reset();
             if (filename && parsed['imports'].length > 0) {
                 builder["import"]({

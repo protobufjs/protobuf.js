@@ -195,7 +195,7 @@ ProtoBuf.DotProto.Parser = function(proto) {};
 ProtoBuf.DotProto.Parser.prototype.tn;
 
 /**
- * @return {{package: string, messages: Array.<Object>, options: Object<string,*>}}
+ * @return {{package: string|null, messages: Array.<object>, enums: Array.<object>, imports: Array.<string>, options: object<string,*>}}
  * @throws {Error}
  */
 ProtoBuf.DotProto.Parser.prototype.parse = function() {};

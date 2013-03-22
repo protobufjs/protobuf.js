@@ -214,7 +214,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Creates ths specified protocol types at the current pointer position.
-     * @param {Array.<Object.<string,*>>} messages Messages to create
+     * @param {Array.<Object.<string,*>>} messages Messages or enums to create
      * @return {ProtoBuf.Builder} this
      * @throws {Error} If a message definition is invalid
      * @expose

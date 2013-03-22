@@ -230,10 +230,11 @@
             var parser = new ProtoBuf.DotProto.Parser(proto+"");
             var parsed = parser.parse();
             var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
-            if (parsed['package'] !== null) {
-                builder.define(parsed['package']); // Define the package
-            }
-            builder.create(parsed['messages']); // Create the messages
+            if (parsed['package'] !== null) builder.define(parsed['package']);
+            builder.create(parsed['messages']);
+            builder.reset();
+            if (parsed['package'] !== null) builder.define(parsed['package']);
+            builder.create(parsed['enums']);
             builder.reset();
             if (filename && parsed['imports'].length > 0) {
                 builder["import"]({

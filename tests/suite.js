@@ -558,6 +558,22 @@
             test.done();
         },
         
+        "toplevel": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/toplevel.proto");
+                var My = builder.build("My");
+                test.ok(!!My.MyEnum);
+                test.equal(My.MyEnum.ONE, 1);
+                test.equal(My.MyEnum.TWO, 2);
+                test.ok(!!My.Test);
+                var myTest = new My.Test();
+                test.equal(myTest.num, My.MyEnum.ONE);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         // Node.js only
         "loaders": BROWSER ? {} : {
             
