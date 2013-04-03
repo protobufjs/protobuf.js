@@ -23,15 +23,8 @@
     "use strict";
     
     function loadProtoBuf(ByteBuffer) {
-        if (!ByteBuffer || !ByteBuffer.calculateUTF8String || !ByteBuffer.zigZagEncode32) {
-            // Usually not neccessary, but to be sure...
-            if (typeof dcodeIO != 'undefined' && dcodeIO.ByteBuffer) {
-                ByteBuffer = dcodeIO.ByteBuffer;
-            }
-            if (!ByteBuffer && typeof require == 'function') {
-                ByteBuffer = require("ByteBuffer");
-            }
-            if (!ByteBuffer) throw(new Error("ProtoBuf.js requires ByteBuffer.js >=1.1.0: Get it at https://github.com/dcodeIO/ByteBuffer.js"));
+        if (!ByteBuffer || !ByteBuffer.zigZagEncode32) {
+            throw(new Error("ProtoBuf.js requires ByteBuffer.js >=1.1.0: Get it at https://github.com/dcodeIO/ByteBuffer.js"));
         }
 
         /**
@@ -48,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.2";
+        ProtoBuf.VERSION = "0.12.3";
 
         /**
          * Wire types.
