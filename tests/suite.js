@@ -112,7 +112,7 @@
             test.ok(typeof ProtoBuf.protoFromFile == "function");
             test.done();
         },
-        
+
         // Example "A Simple Message" from the protobuf docs
         // https://developers.google.com/protocol-buffers/docs/encoding#simple
         "example1": function(test) {
@@ -330,21 +330,42 @@
         },
         
         // Options on all levels
-        "options": function(test) {
-            try {
-                var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/options.proto"));
-                var root = parser.parse();
-                test.equal(root["package"], "My");
-                test.strictEqual(root["options"]["toplevel_1"], 10);
-                test.equal(root["options"]["toplevel_2"], "Hello world!");
-                test.equal(root["messages"][0]["fields"][0]["options"]["default"], "Max");
-                test.equal(root["messages"][0]["options"]["inmessage"], "My.Test")
-            } catch (e) {
-                fail(e);
+        "options": {
+            
+            "parse": function(test) {
+                try {
+                    var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/options.proto"));
+                    var root = parser.parse();
+                    test.equal(root["package"], "My");
+                    test.strictEqual(root["options"]["toplevel_1"], 10);
+                    test.equal(root["options"]["toplevel_2"], "Hello world!");
+                    test.equal(root["messages"][0]["fields"][0]["options"]["default"], "Max");
+                    test.equal(root["messages"][0]["options"]["inmessage"], "My.Test")
+                } catch (e) {
+                    fail(e);
+                }
+                test.done();
+            },
+            
+            "export": function(test) {
+                try {
+                    var builder = ProtoBuf.protoFromFile(__dirname+"/options.proto");
+                    var My = builder.build("My");
+                    test.deepEqual(My.$options, {
+                        "toplevel_1": 10,
+                        "toplevel_2": "Hello world!"
+                    });
+                    test.strictEqual(My.$options['toplevel_1'], 10);
+                    test.deepEqual(My.Test.$options, {
+                        "inmessage": "My.Test" // TODO: Options are not resolved, yet.
+                    });
+                } catch (e) {
+                    fail(e);
+                }
+                test.done();
             }
-            test.done();
         },
-
+        
         // Comments
         "comments": function(test) {
             try {

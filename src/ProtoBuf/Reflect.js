@@ -106,12 +106,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     /**
      * Constructs a new Namespace.
      * @exports ProtoBuf.Reflect.Namespace
-     * @param {ProtoBuf.Reflect.Namespace|null} parent Parent
-     * @param {string} name
+     * @param {ProtoBuf.Reflect.Namespace|null} parent Namespace parent
+     * @param {string} name Namespace name
+     * @param {Object.<string,*>} options Namespace options
      * @constructor
      * @extends ProtoBuf.Reflect.T
      */
-    var Namespace = function(parent, name) {
+    var Namespace = function(parent, name, options) {
         T.call(this, parent, name);
 
         /**
@@ -119,6 +120,12 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
          * @type {Array.<ProtoBuf.Reflect.T>}
          */
         this.children = [];
+
+        /**
+         * Options.
+         * @type {Object.<string, *>}
+         */
+        this.options = options || {};
     };
 
     // Extends T
@@ -238,7 +245,47 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 ns[child.name] = child.build();
             }
         }
+        if (Object.defineProperty) {
+            Object.defineProperty(ns, "$options", {
+                "value": this.buildOpt(),
+                "enumerable": false,
+                "configurable": false,
+                "writable": false
+            });
+        }
         return ns;
+    };
+
+    /**
+     * Builds the namespace's 'opt' property.
+     * @return {Object.<string,*>}
+     */
+    Namespace.prototype.buildOpt = function() {
+        var opt = {};
+        var keys = Object.keys(this.options);
+        for (var i=0; i<keys.length; i++) {
+            var key = keys[i];
+            var val = this.options[keys[i]];
+            // TODO: Options are not resolved, yet.
+            // if (val instanceof Namespace) {
+            //     opt[key] = val.build();
+            // } else {
+                opt[key] = val;
+            // }
+        }
+        return opt;
+    };
+
+    /**
+     * Gets the value assigned to the option with the specified name.
+     * @param {string=} name Returns the option value if specified, otherwise all options are returned.
+     * @return {*|Object.<string,*>}null} Option value or NULL if there is no such option
+     */
+    Namespace.prototype.getOption = function(name) {
+        if (typeof name == 'undefined') {
+            return this.options;
+        }
+        return typeof this.options[name] != 'undefined' ? this.options[name] : null;
     };
 
     /**
@@ -252,11 +299,12 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @exports ProtoBuf.Reflect.Message
      * @param {ProtoBuf.Reflect.Namespace} parent Parent message or namespace
      * @param {string} name Message name
+     * @param {Object.<string,*>} options Message options
      * @constructor
      * @extends ProtoBuf.Reflect.Namespace
      */
-    var Message = function(parent, name) {
-        Namespace.call(this, parent, name);
+    var Message = function(parent, name, options) {
+        Namespace.call(this, parent, name, options);
 
         /**
          * Last message build.
@@ -547,6 +595,25 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 return T.toString();
             };
 
+            // Static
+            
+            /**
+             * Options.
+             * @name ProtoBuf.Builder.Message.opt
+             * @type {Object.<string,*>}
+             * @expose
+             */
+            var helloClosure;
+            
+            if (Object.defineProperty) {
+                Object.defineProperty(Message, '$options', {
+                    'value': T.buildOpt(),
+                    'enumerable': false,
+                    'configurable': false,
+                    'writable': false
+                });
+            }
+            
             return Message;
 
         })(Reflect, this);
@@ -1056,11 +1123,12 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @exports ProtoBuf.Reflect.Enum
      * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
      * @param {string} name Enum name
+     * @param {Object.<string.*>=} options Enum options
      * @constructor
      * @extends ProtoBuf.Reflect.Namespace
      */
-    var Enum = function(parent, name) {
-        Namespace.call(this, parent, name);
+    var Enum = function(parent, name, options) {
+        Namespace.call(this, parent, name, options);
 
         /**
          * Last enum build.
@@ -1083,6 +1151,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         var values = this.getChildren(Enum.Value);
         for (var i=0; i<values.length; i++) {
             enm[values[i]['name']] = values[i]['id'];
+        }
+        if (Object.defineProperty) {
+            Object.defineProperty(enm, '$options', {
+                'value': this.buildOpt(),
+                'enumerable': false,
+                'configurable': false,
+                'writable': false
+            });
         }
         return this.built = enm;
     };

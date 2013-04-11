@@ -70,11 +70,12 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     /**
      * Defines a package on top of the current pointer position and places the pointer on it.
      * @param {string} pkg
+     * @param {Object.<string,*>=} options
      * @return {ProtoBuf.Builder} this
      * @throws {Error} If the package name is invalid
      * @expose
      */
-    Builder.prototype.define = function(pkg) {
+    Builder.prototype.define = function(pkg, options) {
         if (typeof pkg != 'string' || !Lang.TYPEDEF.test(pkg)) {
             throw(new Error("Illegal package name: "+pkg));
         }
@@ -86,7 +87,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         }
         for (i=0; i<part.length; i++) {
             if (!this.ptr.hasChild(part[i])) { // Keep existing namespace
-                this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i]));
+                this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
             }
             this.ptr = this.ptr.getChild(part[i]);
         }
@@ -235,7 +236,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 while (defs.length > 0) {
                     def = defs.shift(); // Namespace always contains an array of messages and enums
                     if (Builder.isValidMessage(def)) {
-                        obj = new Reflect.Message(this.ptr, def["name"]);
+                        obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
@@ -284,7 +285,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         subObj = null;
                         obj = null;
                     } else if (Builder.isValidEnum(def)) {
-                        obj = new Reflect.Enum(this.ptr, def["name"]);
+                        obj = new Reflect.Enum(this.ptr, def["name"], def["options"]);
                         for (i=0; i<def["values"].length; i++) {
                             obj.addChild(new Reflect.Enum.Value(obj, def["values"][i]["name"], def["values"][i]["id"]));
                         }
@@ -317,7 +318,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.prototype["import"] = function(parsed, filename) {
         if (!!parsed['package']) {
-            this.define(parsed['package']);
+            this.define(parsed['package'], parsed["options"]);
         }
         if (!!parsed['messages']) {
             this.create(parsed['messages']);

@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.4";
+        ProtoBuf.VERSION = "0.12.5";
 
         /**
          * Wire types.
@@ -317,7 +317,7 @@
                 EQUAL: "=",
                 END: ";",
         
-                DELIM: /[\s\{\}=;\[\],"]/g,
+                DELIM: /[\s\{\}=;\[\],"\(\)]/g,
                 KEYWORD: /package|option|import|message|enum/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
@@ -329,7 +329,9 @@
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
                 STRINGOPEN: '"',
-                STRINGCLOSE: '"'
+                STRINGCLOSE: '"',
+                COPTOPEN: '(',
+                COPTCLOSE: ')'
             };
             
             return Lang;
@@ -428,12 +430,13 @@
             /**
              * Constructs a new Namespace.
              * @exports ProtoBuf.Reflect.Namespace
-             * @param {ProtoBuf.Reflect.Namespace|null} parent Parent
-             * @param {string} name
+             * @param {ProtoBuf.Reflect.Namespace|null} parent Namespace parent
+             * @param {string} name Namespace name
+             * @param {Object.<string,*>} options Namespace options
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Namespace = function(parent, name) {
+            var Namespace = function(parent, name, options) {
                 T.call(this, parent, name);
         
                 /**
@@ -441,6 +444,12 @@
                  * @type {Array.<ProtoBuf.Reflect.T>}
                  */
                 this.children = [];
+        
+                /**
+                 * Options.
+                 * @type {Object.<string, *>}
+                 */
+                this.options = options || {};
             };
         
             // Extends T
@@ -560,7 +569,47 @@
                         ns[child.name] = child.build();
                     }
                 }
+                if (Object.defineProperty) {
+                    Object.defineProperty(ns, "$options", {
+                        "value": this.buildOpt(),
+                        "enumerable": false,
+                        "configurable": false,
+                        "writable": false
+                    });
+                }
                 return ns;
+            };
+        
+            /**
+             * Builds the namespace's 'opt' property.
+             * @return {Object.<string,*>}
+             */
+            Namespace.prototype.buildOpt = function() {
+                var opt = {};
+                var keys = Object.keys(this.options);
+                for (var i=0; i<keys.length; i++) {
+                    var key = keys[i];
+                    var val = this.options[keys[i]];
+                    // TODO: Options are not resolved, yet.
+                    // if (val instanceof Namespace) {
+                    //     opt[key] = val.build();
+                    // } else {
+                        opt[key] = val;
+                    // }
+                }
+                return opt;
+            };
+        
+            /**
+             * Gets the value assigned to the option with the specified name.
+             * @param {string=} name Returns the option value if specified, otherwise all options are returned.
+             * @return {*|Object.<string,*>}null} Option value or NULL if there is no such option
+             */
+            Namespace.prototype.getOption = function(name) {
+                if (typeof name == 'undefined') {
+                    return this.options;
+                }
+                return typeof this.options[name] != 'undefined' ? this.options[name] : null;
             };
         
             /**
@@ -574,11 +623,12 @@
              * @exports ProtoBuf.Reflect.Message
              * @param {ProtoBuf.Reflect.Namespace} parent Parent message or namespace
              * @param {string} name Message name
+             * @param {Object.<string,*>} options Message options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Message = function(parent, name) {
-                Namespace.call(this, parent, name);
+            var Message = function(parent, name, options) {
+                Namespace.call(this, parent, name, options);
         
                 /**
                  * Last message build.
@@ -869,6 +919,25 @@
                         return T.toString();
                     };
         
+                    // Static
+                    
+                    /**
+                     * Options.
+                     * @name ProtoBuf.Builder.Message.opt
+                     * @type {Object.<string,*>}
+                     * @expose
+                     */
+                    var helloClosure;
+                    
+                    if (Object.defineProperty) {
+                        Object.defineProperty(Message, '$options', {
+                            'value': T.buildOpt(),
+                            'enumerable': false,
+                            'configurable': false,
+                            'writable': false
+                        });
+                    }
+                    
                     return Message;
         
                 })(Reflect, this);
@@ -1378,11 +1447,12 @@
              * @exports ProtoBuf.Reflect.Enum
              * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
              * @param {string} name Enum name
+             * @param {Object.<string.*>=} options Enum options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Enum = function(parent, name) {
-                Namespace.call(this, parent, name);
+            var Enum = function(parent, name, options) {
+                Namespace.call(this, parent, name, options);
         
                 /**
                  * Last enum build.
@@ -1405,6 +1475,14 @@
                 var values = this.getChildren(Enum.Value);
                 for (var i=0; i<values.length; i++) {
                     enm[values[i]['name']] = values[i]['id'];
+                }
+                if (Object.defineProperty) {
+                    Object.defineProperty(enm, '$options', {
+                        'value': this.buildOpt(),
+                        'enumerable': false,
+                        'configurable': false,
+                        'writable': false
+                    });
                 }
                 return this.built = enm;
             };
@@ -1502,11 +1580,12 @@
             /**
              * Defines a package on top of the current pointer position and places the pointer on it.
              * @param {string} pkg
+             * @param {Object.<string,*>=} options
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the package name is invalid
              * @expose
              */
-            Builder.prototype.define = function(pkg) {
+            Builder.prototype.define = function(pkg, options) {
                 if (typeof pkg != 'string' || !Lang.TYPEDEF.test(pkg)) {
                     throw(new Error("Illegal package name: "+pkg));
                 }
@@ -1518,7 +1597,7 @@
                 }
                 for (i=0; i<part.length; i++) {
                     if (!this.ptr.hasChild(part[i])) { // Keep existing namespace
-                        this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i]));
+                        this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
                     }
                     this.ptr = this.ptr.getChild(part[i]);
                 }
@@ -1667,7 +1746,7 @@
                         while (defs.length > 0) {
                             def = defs.shift(); // Namespace always contains an array of messages and enums
                             if (Builder.isValidMessage(def)) {
-                                obj = new Reflect.Message(this.ptr, def["name"]);
+                                obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
                                     for (i=0; i<def["fields"].length; i++) { // i=Fields
@@ -1716,7 +1795,7 @@
                                 subObj = null;
                                 obj = null;
                             } else if (Builder.isValidEnum(def)) {
-                                obj = new Reflect.Enum(this.ptr, def["name"]);
+                                obj = new Reflect.Enum(this.ptr, def["name"], def["options"]);
                                 for (i=0; i<def["values"].length; i++) {
                                     obj.addChild(new Reflect.Enum.Value(obj, def["values"][i]["name"], def["values"][i]["id"]));
                                 }
@@ -1749,7 +1828,7 @@
              */
             Builder.prototype["import"] = function(parsed, filename) {
                 if (!!parsed['package']) {
-                    this.define(parsed['package']);
+                    this.define(parsed['package'], parsed["options"]);
                 }
                 if (!!parsed['messages']) {
                     this.create(parsed['messages']);
@@ -1912,13 +1991,14 @@
          * Constructs a new Builder with the specified package defined.
          * @param {string=} pkg Package name as fully qualified name, e.g. "My.Game". If no package is specified, the
          * builder will only contain a global namespace.
+         * @param {Object.<string,*>=} options Top level options
          * @return {ProtoBuf.Builder} New Builder
          * @expose
          */
-        ProtoBuf.newBuilder = function(pkg) {
+        ProtoBuf.newBuilder = function(pkg, options) {
             var builder = new ProtoBuf.Builder();
             if (typeof pkg != 'undefined') {
-                builder.define(pkg);
+                builder.define(pkg, options);
             }
             return builder;
         };

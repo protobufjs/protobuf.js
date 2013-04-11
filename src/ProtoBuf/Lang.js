@@ -39,7 +39,7 @@ ProtoBuf.Lang = (function() {
         EQUAL: "=",
         END: ";",
 
-        DELIM: /[\s\{\}=;\[\],"]/g,
+        DELIM: /[\s\{\}=;\[\],"\(\)]/g,
         KEYWORD: /package|option|import|message|enum/,
         RULE: /required|optional|repeated/,
         TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
@@ -51,7 +51,9 @@ ProtoBuf.Lang = (function() {
         WHITESPACE: /\s/,
         STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
         STRINGOPEN: '"',
-        STRINGCLOSE: '"'
+        STRINGCLOSE: '"',
+        COPTOPEN: '(',
+        COPTCLOSE: ')'
     };
     
     return Lang;

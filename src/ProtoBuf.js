@@ -223,10 +223,10 @@
             var parser = new ProtoBuf.DotProto.Parser(proto+"");
             var parsed = parser.parse();
             var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
-            if (parsed['package'] !== null) builder.define(parsed['package']);
+            if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
             builder.create(parsed['messages']);
             builder.reset();
-            if (parsed['package'] !== null) builder.define(parsed['package']);
+            if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
             builder.create(parsed['enums']);
             builder.reset();
             if (filename && parsed['imports'].length > 0) {
@@ -272,13 +272,14 @@
          * Constructs a new Builder with the specified package defined.
          * @param {string=} pkg Package name as fully qualified name, e.g. "My.Game". If no package is specified, the
          * builder will only contain a global namespace.
+         * @param {Object.<string,*>=} options Top level options
          * @return {ProtoBuf.Builder} New Builder
          * @expose
          */
-        ProtoBuf.newBuilder = function(pkg) {
+        ProtoBuf.newBuilder = function(pkg, options) {
             var builder = new ProtoBuf.Builder();
             if (typeof pkg != 'undefined') {
-                builder.define(pkg);
+                builder.define(pkg, options);
             }
             return builder;
         };

@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Namespace"><span class="type-signature"></span>new Namespace<span class="signature">(parent, name)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Namespace"><span class="type-signature"></span>new Namespace<span class="signature">(parent, name, options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -102,7 +102,7 @@
             
             
             
-            <td class="description last"><p>Parent</p></td>
+            <td class="description last"><p>Namespace parent</p></td>
         </tr>
 	
 	
@@ -125,7 +125,30 @@
             
             
             
-            <td class="description last"></td>
+            <td class="description last"><p>Namespace name</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string,*></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Namespace options</p></td>
         </tr>
 	
 	
@@ -264,6 +287,51 @@
     <dd class="inherited-from"><ul class="dummy"><li>
         <a href="ProtoBuf.Reflect.T.html#name">ProtoBuf.Reflect.T#name</a>
     </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="options"><span class="type-signature"></span>options<span class="type-signature"> :Object.&lt;string, *></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Options.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
     
     
     
@@ -607,6 +675,82 @@
         
             
 <dt>
+    <h4 class="name" id="buildOpt"><span class="type-signature"></span>buildOpt<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string,*>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Builds the namespace&#39;s &#39;opt&#39; property.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string,*></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="getChild"><span class="type-signature"></span>getChild<span class="signature">(nameOrId)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a>}</span></h4>
     
     
@@ -859,6 +1003,147 @@
 	<dd>
 		
 <span class="param-type">Array.&lt;ProtoBuf.Reflect.T></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getOption"><span class="type-signature"></span>getOption<span class="signature">(<span class="optional">name</span>)</span><span class="type-signature"> &rarr; {*|Object.&lt;string,*>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the value assigned to the option with the specified name.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Returns the option value if specified, otherwise all options are returned.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>null} Option value or NULL if there is no such option</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">*</span>
+|
+
+<span class="param-type">Object.&lt;string,*></span>
 
 
 	</dd>

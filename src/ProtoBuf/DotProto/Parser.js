@@ -149,11 +149,22 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
      */
     Parser.prototype._parseOption = function(parent, token) {
         token = this.tn.next();
+        var custom = false;
+        if (token == Lang.COPTOPEN) {
+            custom = true;
+            token = this.tn.next();
+        }
         if (!Lang.NAME.test(token)) {
             throw(new Error("Illegal option name in message "+parent.name+": "+token));
         }
         var name = token;
         token = this.tn.next();
+        if (custom) {
+            if (token != Lang.COPTCLOSE) {
+                throw(new Error("Illegal custom option delimiter in message "+parent.name+", option "+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
+            }
+            token = this.tn.next();
+        }
         if (token != Lang.EQUAL) {
             throw(new Error("Illegal option operator in message "+parent.name+", option "+name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
         }
