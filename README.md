@@ -310,6 +310,17 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
       optional int32 somenumber = 1 [default=123]; // Actually the only one used
   }
   ```
+  
+  Paranthesis around option names, like `option (inmessage) = ...` are ignored for compatibility with custom options.
+  Accessing arbitrary options on namespace objects emitted by a builder is also possible (requires an ECMAScript 5 /
+  Javascript 1.8.5 compatible environment):
+    
+  ```javascript
+  ...
+  var root = builder.build();
+  console.log(root.$options); // { 'toplevel_1' = 10, 'toplevel_2' = 'Hello!' }
+  console.log(root.Test.$options); // { 'inmessage' = 'World!' }
+  ```
 
 * Imports:
 
