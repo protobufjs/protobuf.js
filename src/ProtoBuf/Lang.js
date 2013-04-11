@@ -48,7 +48,6 @@ ProtoBuf.Lang = (function() {
         TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
         NUMBER: /-?([1-9][0-9]*)|0/,
         ID: /[0-9]+/,
-        COMMENT: "//",
         WHITESPACE: /\s/,
         STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
         STRINGOPEN: '"',

@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.3";
+        ProtoBuf.VERSION = "0.12.4";
 
         /**
          * Wire types.
@@ -326,7 +326,6 @@
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 NUMBER: /-?([1-9][0-9]*)|0/,
                 ID: /[0-9]+/,
-                COMMENT: "//",
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
                 STRINGOPEN: '"',

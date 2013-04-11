@@ -344,6 +344,22 @@
             }
             test.done();
         },
+
+        // Comments
+        "comments": function(test) {
+            try {
+                var tn = new ProtoBuf.DotProto.Tokenizer(ProtoBuf.Util.fetch(__dirname+'/comments.proto'));
+                var token, tokens = [];
+                do {
+                    token = tn.next();
+                    tokens.push(token);
+                } while (token !== null);
+                test.deepEqual(tokens, ['message', 'TestC', '{', 'required', 'int32', 'a', '=', '1', ';', '}', null]);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
     
         // A more or less complex proto with type references
         "complexProto": function(test) {

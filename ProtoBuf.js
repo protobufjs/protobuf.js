@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.3";
+        ProtoBuf.VERSION = "0.12.4";
 
         /**
          * Wire types.
@@ -326,7 +326,6 @@
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 NUMBER: /-?([1-9][0-9]*)|0/,
                 ID: /[0-9]+/,
-                COMMENT: "//",
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
                 STRINGOPEN: '"',
@@ -441,16 +440,25 @@
                         if (this.index == this.source.length) return null;
                     }
                     // Strip comments
-                    if (this.source.charAt(this.index) == Lang.COMMENT.charAt(0)) {
-                        if (this.source.charAt(++this.index) != Lang.COMMENT.charAt(1)) {
-                            throw(new Error("Invalid comment: /"+this.source.charAt(this.index)+" ('"+Lang.COMMENT.charAt(1)+"' expected)"));
-                        }
-                        while (this.source.charAt(this.index) != "\n") {
+                    if (this.source.charAt(this.index) == '/') {
+                        if (this.source.charAt(++this.index) == '/') { // Single line
+                            while (this.source.charAt(this.index) != "\n") {
+                                this.index++;
+                                if (this.index == this.source.length) return null;
+                            }
                             this.index++;
-                            if (this.index == this.source.length) return null;
+                            repeat = true;
+                        } else if (this.source.charAt(this.index) == '*') { /* Block */
+                            var last = '';
+                            while (last+(last=this.source.charAt(this.index)) != '*/') {
+                                this.index++;
+                                if (this.index == this.source.length) return null;
+                            }
+                            this.index++;
+                            repeat = true;
+                        } else {
+                            throw(new Error("Invalid comment: /"+this.source.charAt(this.index)+" ('/' or '*' expected)"));
                         }
-                        this.index++;
-                        repeat = true;
                     }
                 } while (repeat);
                 if (this.index == this.source.length) return null;
