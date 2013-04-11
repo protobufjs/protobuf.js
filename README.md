@@ -313,13 +313,13 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   
   Paranthesis around option names, like `option (inmessage) = ...` are ignored for compatibility with custom options.
   Accessing arbitrary options on namespace objects emitted by a builder is also possible (requires an ECMAScript 5 /
-  Javascript 1.8.5 compatible environment):
-    
+  Javascript 1.8.5 compatible environment, e.g. node.js or any modern browser):
+  
   ```javascript
   ...
   var root = builder.build();
-  console.log(root.$options); // { 'toplevel_1' = 10, 'toplevel_2' = 'Hello!' }
-  console.log(root.Test.$options); // { 'inmessage' = 'World!' }
+  console.log(root.$options); // { 'toplevel_1': 10, 'toplevel_2': 'Hello!' }
+  console.log(root.Test.$options); // { 'inmessage': 'World!' }
   ```
 
 * Imports:
