@@ -1,0 +1,5 @@
+import "custom-options-foo.proto";
+package bar;
+message MyMessage {
+  option (foo.my_option) = "Hello world!";
+}

@@ -1,0 +1,8 @@
+// single line comment
+
+/**
+ * Naranjas.
+ */
+message Test1 {
+    required int32 a = 1;
+}
