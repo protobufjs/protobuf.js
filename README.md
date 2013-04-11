@@ -352,6 +352,21 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   are also always fetched *synchronously*, so it's a good idea to package everything into a single file when using it in
   the browser.
   
+* Extensions:
+  
+  ```protobuf
+  extend something {
+      ...
+  }
+  ```
+  
+  ```protobuf
+  import "google/protobuf/descriptor.proto";
+  ```
+  
+  These statements are actually simply ignored to make existing definitions compile fine because low-level bootstrapping
+  is not required by ProtoBuf.js.
+  
 #### Not (yet) supported ####
 * *Extensions* (what for?) and *services* (you roll your own, don't you?). If you need anything of this, please open an
   issue and explain your exact requirements. It's just that I have no idea how to benefit from that and therefore I am
