@@ -84,6 +84,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                     throw(new Error("Illegal option definition: Must be declared before the first message or enum"));
                 }
                 this._parseOption(topLevel, token);
+            } else if (token == 'extend') {
+                this._parseExtend(topLevel, token);
             } else {
                 throw(new Error("Illegal top level declaration: "+token));
             }
@@ -193,6 +195,41 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     };
 
     /**
+     * Parses an extend directive which is actually ignored.
+     * @param {Object} parent Parent definition
+     * @param {string} token Initial token
+     * @return {Object}
+     * @throws {Error} If the extend directive cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseExtend = function(parent, token) {
+        token = this.tn.next();
+        if (!Lang.TYPEREF.test(token)) {
+            throw(new Error("Illegal extended type in "+parent.name+": "+token));
+        }
+        var name = token;
+        token = this.tn.next();
+        if (token != Lang.OPEN) {
+            throw(new Error("Illegal OPEN in "+parent.name+" after extend "+name+": "+token));
+        }
+        var depth = 1;
+        do {
+            token = this.tn.next();
+            if (token === null) {
+                throw(new Error("Illegal nesting in "+parent.name+", extend "+name+": EOF"));
+            }
+            if (token == Lang.OPEN) {
+                depth++;
+            } else if (token == Lang.CLOSE) {
+                depth--;
+                if (depth == 0) {
+                    break;
+                }
+            }
+        } while(true);
+    };
+
+    /**
      * Parses a message.
      * @param {Object} parent Parent definition
      * @param {string} token First token
@@ -210,7 +247,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         msg["name"] = token;
         token = this.tn.next();
         if (token != Lang.OPEN) {
-            throw(new Error("Illegal OPEN after message "+msg.name+": "+token));
+            throw(new Error("Illegal OPEN after message "+msg.name+": "+token+" ('"+Lang.OPEN+"' expected)"));
         }
         msg["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
         msg["enums"] = [];
@@ -218,7 +255,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         msg["options"] = {};
         do {
             token = this.tn.next();
-            if (token == "}") {
+            if (token == Lang.CLOSE) {
                 break;
             } else if (Lang.RULE.test(token)) {
                 this._parseMessageField(msg, token);
@@ -229,7 +266,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             } else if (token == "option") {
                 this._parseOption(msg, token);
             } else {
-                throw(new Error("Illegal token in message "+msg.name+": "+token));
+                throw(new Error("Illegal token in message "+msg.name+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
             }
         } while (true);
         parent["messages"].push(msg);

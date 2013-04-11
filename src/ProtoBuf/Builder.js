@@ -341,6 +341,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                     // #ifdef NOPARSE
                     throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
                     // #else
+                    if (/google\/protobuf\//.test(importFilename)) {
+                        // Ignore google/protobuf/descriptor.proto (for example) as it makes use of low-level
+                        // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
+                        continue;
+                    }
                     var proto = ProtoBuf.Util.fetch(importFilename);
                     if (proto === null) {
                         throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));

@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.5";
+        ProtoBuf.VERSION = "0.12.6";
 
         /**
          * Wire types.
@@ -318,7 +318,7 @@
                 END: ";",
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
-                KEYWORD: /package|option|import|message|enum/,
+                KEYWORD: /package|option|import|message|enum|extend/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
@@ -923,7 +923,7 @@
                     
                     /**
                      * Options.
-                     * @name ProtoBuf.Builder.Message.opt
+                     * @name ProtoBuf.Builder.Message.$options
                      * @type {Object.<string,*>}
                      * @expose
                      */

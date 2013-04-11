@@ -611,6 +611,17 @@
             test.done();
         },
         
+        "extend": function(test) {
+            try {
+                test.doesNotThrow(function() {
+                    ProtoBuf.protoFromFile(__dirname+"/extend.proto");
+                });
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         // Node.js only
         "loaders": BROWSER ? {} : {
             

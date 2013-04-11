@@ -599,7 +599,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             
             /**
              * Options.
-             * @name ProtoBuf.Builder.Message.opt
+             * @name ProtoBuf.Builder.Message.$options
              * @type {Object.<string,*>}
              * @expose
              */

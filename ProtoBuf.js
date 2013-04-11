@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.5";
+        ProtoBuf.VERSION = "0.12.6";
 
         /**
          * Wire types.
@@ -318,7 +318,7 @@
                 END: ";",
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
-                KEYWORD: /package|option|import|message|enum/,
+                KEYWORD: /package|option|import|message|enum|extend/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
@@ -566,6 +566,8 @@
                             throw(new Error("Illegal option definition: Must be declared before the first message or enum"));
                         }
                         this._parseOption(topLevel, token);
+                    } else if (token == 'extend') {
+                        this._parseExtend(topLevel, token);
                     } else {
                         throw(new Error("Illegal top level declaration: "+token));
                     }
@@ -675,6 +677,41 @@
             };
         
             /**
+             * Parses an extend directive which is actually ignored.
+             * @param {Object} parent Parent definition
+             * @param {string} token Initial token
+             * @return {Object}
+             * @throws {Error} If the extend directive cannot be parsed
+             * @private
+             */
+            Parser.prototype._parseExtend = function(parent, token) {
+                token = this.tn.next();
+                if (!Lang.TYPEREF.test(token)) {
+                    throw(new Error("Illegal extended type in "+parent.name+": "+token));
+                }
+                var name = token;
+                token = this.tn.next();
+                if (token != Lang.OPEN) {
+                    throw(new Error("Illegal OPEN in "+parent.name+" after extend "+name+": "+token));
+                }
+                var depth = 1;
+                do {
+                    token = this.tn.next();
+                    if (token === null) {
+                        throw(new Error("Illegal nesting in "+parent.name+", extend "+name+": EOF"));
+                    }
+                    if (token == Lang.OPEN) {
+                        depth++;
+                    } else if (token == Lang.CLOSE) {
+                        depth--;
+                        if (depth == 0) {
+                            break;
+                        }
+                    }
+                } while(true);
+            };
+        
+            /**
              * Parses a message.
              * @param {Object} parent Parent definition
              * @param {string} token First token
@@ -692,7 +729,7 @@
                 msg["name"] = token;
                 token = this.tn.next();
                 if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after message "+msg.name+": "+token));
+                    throw(new Error("Illegal OPEN after message "+msg.name+": "+token+" ('"+Lang.OPEN+"' expected)"));
                 }
                 msg["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
                 msg["enums"] = [];
@@ -700,7 +737,7 @@
                 msg["options"] = {};
                 do {
                     token = this.tn.next();
-                    if (token == "}") {
+                    if (token == Lang.CLOSE) {
                         break;
                     } else if (Lang.RULE.test(token)) {
                         this._parseMessageField(msg, token);
@@ -711,7 +748,7 @@
                     } else if (token == "option") {
                         this._parseOption(msg, token);
                     } else {
-                        throw(new Error("Illegal token in message "+msg.name+": "+token));
+                        throw(new Error("Illegal token in message "+msg.name+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
                     }
                 } while (true);
                 parent["messages"].push(msg);
@@ -1476,7 +1513,7 @@
                     
                     /**
                      * Options.
-                     * @name ProtoBuf.Builder.Message.opt
+                     * @name ProtoBuf.Builder.Message.$options
                      * @type {Object.<string,*>}
                      * @expose
                      */
@@ -2401,6 +2438,11 @@
                             }
                             this["import"](JSON.parse(json), importFilename); // Throws on its own
                         } else {
+                            if (/google\/protobuf\//.test(importFilename)) {
+                                // Ignore google/protobuf/descriptor.proto (for example) as it makes use of low-level
+                                // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
+                                continue;
+                            }
                             var proto = ProtoBuf.Util.fetch(importFilename);
                             if (proto === null) {
                                 throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
