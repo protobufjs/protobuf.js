@@ -365,13 +365,28 @@
                 var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options-bar.proto"));
                 var root = parser.parse();
                 test.equal(root["package"], "bar");
-                test.equal(root["messages"][0]["options"]["foo.my_option"], "Hello world!")
+                test.equal(root["messages"][0]["options"]["foo.my_option"], "Hello world!");
             } catch (e) {
                 fail(e);
             }
             test.done();
         },
-    
+
+        "comments": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/comments.proto");
+                var Test1 = builder.build("Test1");
+                test.ok(typeof Test1 == 'function');
+                var inst = new Test1(150);
+                test.equal(inst.a, 150);
+                test.equal(inst.getA(), 150);
+                test.equal(inst.get_a(), 150);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         // A more or less complex proto with type references
         "complexProto": function(test) {
             try {
