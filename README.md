@@ -364,7 +364,7 @@ Only available in the full build (i.e. not in "noparse" builds). Compliant with 
   import "google/protobuf/descriptor.proto";
   ```
   
-  These statements are actually simply ignored to make existing definitions compile fine because low-level bootstrapping
+  These statements are actually simply ignored to make existing definitions compile fine. Low-level bootstrapping
   is not required by ProtoBuf.js.
   
 #### Not (yet) supported ####

@@ -621,6 +621,22 @@
             }
             test.done();
         },
+
+        // Custom options on all levels
+        // victorr (https://github.com/victorr)
+        "customOptions": function(test) {
+            try {
+                var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
+                var root = parser.parse();
+                test.equal(root["options"]["my_file_option"], "Hello world!");
+                test.equal(root["messages"][0]["options"]["my_message_option"], 1234)
+                test.equal(root["messages"][0]["fields"][0]["options"]["my_field_option"], 4.5);
+                // TODO: add tests for my_enum_option, my_enum_value_option
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         // Node.js only
         "loaders": BROWSER ? {} : {

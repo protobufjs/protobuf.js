@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.6";
+        ProtoBuf.VERSION = "0.12.7";
 
         /**
          * Wire types.
@@ -318,13 +318,13 @@
                 END: ";",
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
-                KEYWORD: /package|option|import|message|enum|extend/,
+                KEYWORD: /package|option|import|message|enum|extend|service/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
                 TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
-                NUMBER: /-?([1-9][0-9]*)|0/,
+                NUMBER: /^-?([1-9][0-9]*)|0$/,
                 ID: /[0-9]+/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
@@ -566,8 +566,8 @@
                             throw(new Error("Illegal option definition: Must be declared before the first message or enum"));
                         }
                         this._parseOption(topLevel, token);
-                    } else if (token == 'extend') {
-                        this._parseExtend(topLevel, token);
+                    } else if (token == 'extend' || token == 'service') {
+                        this._parseIgnored(topLevel, token);
                     } else {
                         throw(new Error("Illegal top level declaration: "+token));
                     }
@@ -624,10 +624,9 @@
             };
         
             /**
-             * Parses a top level option.
+             * Parses a namespace option.
              * @param {Object} parent Parent definition
              * @param {string} token Initial token
-             * @return {Object}
              * @throws {Error} If the option cannot be parsed
              * @private
              */
@@ -645,7 +644,7 @@
                 token = this.tn.next();
                 if (custom) {
                     if (token != Lang.COPTCLOSE) {
-                        throw(new Error("Illegal custom option delimiter in message "+parent.name+", option "+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
+                        throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
                     }
                     token = this.tn.next();
                 }
@@ -677,28 +676,28 @@
             };
         
             /**
-             * Parses an extend directive which is actually ignored.
+             * Parses an ignored directive of the form ['keyword', 'typeref', '{' ... '}'].
              * @param {Object} parent Parent definition
-             * @param {string} token Initial token
+             * @param {string} keyword Initial token
              * @return {Object}
-             * @throws {Error} If the extend directive cannot be parsed
+             * @throws {Error} If the directive cannot be parsed
              * @private
              */
-            Parser.prototype._parseExtend = function(parent, token) {
-                token = this.tn.next();
+            Parser.prototype._parseIgnored = function(parent, keyword) {
+                var token = this.tn.next();
                 if (!Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal extended type in "+parent.name+": "+token));
+                    throw(new Error("Illegal "+keyword+" type in "+parent.name+": "+token));
                 }
                 var name = token;
                 token = this.tn.next();
                 if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN in "+parent.name+" after extend "+name+": "+token));
+                    throw(new Error("Illegal OPEN in "+parent.name+" after "+keyword+" "+name+": "+token));
                 }
                 var depth = 1;
                 do {
                     token = this.tn.next();
                     if (token === null) {
-                        throw(new Error("Illegal nesting in "+parent.name+", extend "+name+": EOF"));
+                        throw(new Error("Illegal nesting in "+parent.name+", "+keyword+" "+name+": EOF"));
                     }
                     if (token == Lang.OPEN) {
                         depth++;
@@ -789,7 +788,7 @@
                 fld["options"] = {};
                 token = this.tn.next();
                 if (token == Lang.OPTOPEN) {
-                    this._parseMessageFieldOptions(msg, fld, token);
+                    this._parseFieldOptions(msg, fld, token);
                     token = this.tn.next();
                 }
                 if (token != Lang.END) {
@@ -799,14 +798,14 @@
             };
         
             /**
-             * Parses a message field options defintion.
+             * Parses a set of field option defintions.
              * @param {Object} msg Message definition
              * @param {Object} fld Field definition
              * @param {string} token Initial token
              * @throws {Error} If the message field options cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessageFieldOptions = function(msg, fld, token) {
+            Parser.prototype._parseFieldOptions = function(msg, fld, token) {
                 var first = true;
                 do {
                     token = this.tn.next();
@@ -818,25 +817,36 @@
                         }
                         token = this.tn.next();
                     }
-                    if (!Lang.NAME.test(token)) {
-                        throw(new Error("Illegal field option in message "+msg.name+"#"+fld.name+": "+token));
-                    }
-                    this._parseMessageFieldOption(msg, fld, token);
+                    this._parseFieldOption(msg, fld, token);
                     first = false;
                 } while (true);
             };
         
             /**
-             * Parses a message field directive
+             * Parses a single field option.
              * @param {Object} msg Message definition
              * @param {Object} fld Field definition
              * @param {string} token Initial token
              * @throws {Error} If the mesage field option cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessageFieldOption = function(msg, fld, token) {
+            Parser.prototype._parseFieldOption = function(msg, fld, token) {
+                var custom = false;
+                if (token == Lang.COPTOPEN) {
+                    token = this.tn.next();
+                    custom = true;
+                }
+                if (!Lang.NAME.test(token)) {
+                    throw(new Error("Illegal field option in message "+msg.name+"#"+fld.name+": "+token));
+                }
                 var name = token;
                 token = this.tn.next();
+                if (custom) {
+                    if (token != Lang.COPTCLOSE) {
+                        throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+": "+token+" (')' expected)"));
+                    }
+                    token = this.tn.next();
+                }
                 if (token != Lang.EQUAL) {
                     throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+": "+token+" ('=' expected)"));
                 }
@@ -849,9 +859,9 @@
                         throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
                     }
                 } else if (Lang.NUMBER.test(token)) {
-                    value = parseInt(token, 10);
-                } else if (Lang.NAME.test(token)) {
-                    value = token;
+                    value = parseFloat(token);
+                } else if (Lang.TYPEREF.test(token)) {
+                    value = token; // TODO: Resolve?
                 } else {
                     throw(new Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+": "+token));
                 }
@@ -878,14 +888,20 @@
                     throw(new Error("Illegal OPEN after enum "+enm.name+": "+token));
                 }
                 enm["values"] = [];
+                enm["options"] = {};
                 do {
                     token = this.tn.next();
                     if (token == Lang.CLOSE) {
                         break;
-                    } else if (!Lang.NAME.test(token)) {
-                        throw(new Error("Illegal enum value name in enum "+enm.name+": "+token));
                     }
-                    this._parseEnumValue(enm, token);
+                    if (token == 'option') {
+                        this._parseOption(enm, token);
+                    } else {
+                        if (!Lang.NAME.test(token)) {
+                            throw(new Error("Illegal enum value name in enum "+enm.name+": "+token));
+                        }
+                        this._parseEnumValue(enm, token);
+                    }
                 } while (true);
                 msg["enums"].push(enm);
             };
@@ -912,6 +928,11 @@
                 val["id"] = parseInt(token, 10);
                 enm["values"].push(val);
                 token = this.tn.next();
+                if (token == Lang.OPTOPEN) {
+                    var opt = { 'options' : {} }; // TODO: Actually expose them somehow.
+                    this._parseFieldOptions(enm, opt, token);
+                    token = this.tn.next();
+                }
                 if (token != Lang.END) {
                     throw(new Error("Illegal enum value delimiter in enum "+enm.name+": "+token+" ('"+Lang.END+"' expected)"));
                 }

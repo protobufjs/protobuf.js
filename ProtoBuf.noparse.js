@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.6";
+        ProtoBuf.VERSION = "0.12.7";
 
         /**
          * Wire types.
@@ -318,13 +318,13 @@
                 END: ";",
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
-                KEYWORD: /package|option|import|message|enum|extend/,
+                KEYWORD: /package|option|import|message|enum|extend|service/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
                 TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
-                NUMBER: /-?([1-9][0-9]*)|0/,
+                NUMBER: /^-?([1-9][0-9]*)|0$/,
                 ID: /[0-9]+/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
