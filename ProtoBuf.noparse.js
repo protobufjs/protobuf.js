@@ -1834,6 +1834,15 @@
                     this.create(parsed['messages']);
                 }
                 this.reset();
+        
+                if (!!parsed['package']) {
+                    this.define(parsed['package'], parsed["options"]);
+                }
+                if (!!parsed['enums']) {
+                    this.create(parsed['enums']);
+                }
+                this.reset();
+        
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
                     if (!filename) {
                         throw(new Error("Cannot determine import root: File name is unknown"));
