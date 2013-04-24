@@ -611,6 +611,23 @@
             test.done();
         },
         
+        "imports-toplevel": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/imports-toplevel.proto");
+                var My = builder.build("My");
+                test.ok(!!My.MyEnum);
+                test.equal(My.MyEnum1.ONE, 1);
+                test.equal(My.MyEnum1.TWO, 2);
+                test.ok(!!My.Test1);
+                var myTest = new My.Test1();
+                test.equal(myTest.num, My.MyEnum.ONE);
+                test.equal(myTest.num1, My.MyEnum1.ONE);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         "extend": function(test) {
             try {
                 test.doesNotThrow(function() {
