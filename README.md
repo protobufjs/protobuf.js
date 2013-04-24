@@ -470,6 +470,10 @@ Tests (& Examples) [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.pn
 * [View node report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 * [View browser report](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/tests/suite.html)
 
+Contributors
+------------
+[Frank Xu](https://github.com/yyfrankyy)
+
 License
 -------
 Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0.html

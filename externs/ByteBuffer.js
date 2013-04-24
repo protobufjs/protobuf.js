@@ -662,14 +662,14 @@ ByteBuffer.prototype.readCString = function(offset) {};
 /**
  * @param {*} data
  * @param {number=} offset
- * @param {function=} stringify
+ * @param {(function(*):string)=} stringify
  * @return {!ByteBuffer|number}
  */
 ByteBuffer.prototype.writeJSON = function(data, offset, stringify) {};
 
 /**
  * @param {number=} offset
- * @param {function=} parse
+ * @param {(function(string):*)=} parse
  * @return {*|!{data: *, length: number}}
  * @throws {Error}
  */
