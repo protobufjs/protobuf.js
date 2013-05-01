@@ -328,6 +328,31 @@
             }
             test.done();
         },
+
+        // As mentioned by Bill Katz
+        "T139": function(test) {
+            try{
+                var builder = ProtoBuf.protoFromFile(__dirname+"/T139.proto");
+                var T139 = builder.build("T139");
+                test.ok(typeof T139 == 'function');
+                var inst = new T139(139,139);
+                test.equal(inst.a, 139);
+                test.equal(inst.b, 139);
+                inst.setA(139);
+                inst.setB(139);
+                test.equal(inst.a, 139);
+                test.equal(inst.b, 139);
+                var bb = new ByteBuffer(3);
+                inst.encode(bb);
+                test.equal(bb.toHex(), "<08 8B 01 10 8B 01>");
+                var instDec = T139.decode(bb);
+                test.equal(instDec.a, 139);
+                test.equal(instDec.b, 139);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         // Options on all levels
         "options": {
