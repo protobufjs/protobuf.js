@@ -354,6 +354,25 @@
             test.done();
         },
         
+        "innerStringLenGt70": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromString("message Test { required Inner a = 1; message Inner { required string b = 1; } }");
+                var Test = builder.build("Test");
+                var t = new Test();
+                var data = "0123456789"; // 10: 20, 40, 80, 160, 320 bytes
+                for (var i=0; i<5; i++) data += data;
+                test.equal(data.length, 320);
+                t.a = new Test.Inner(data);
+                var bb = t.encode();
+                var t2 = Test.decode(bb);
+                test.equal(t2.a.b.length, 320);
+                test.equal(data, t2.a.b);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         // Options on all levels
         "options": {
             
