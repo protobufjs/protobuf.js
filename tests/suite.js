@@ -98,14 +98,6 @@
      */
     var suite = {
     
-        setUp: function (callback) {
-            callback();
-        },
-        
-        tearDown: function (callback) {
-            callback();
-        },
-    
         "init": function(test) {
             test.ok(typeof ProtoBuf == "object");
             test.ok(typeof ProtoBuf.Reflect == 'object');
