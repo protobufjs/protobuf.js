@@ -160,6 +160,20 @@ var buffer = ...; // E.g. a buffer received on a WebSocket
 var myMessage = YourMessage.decode(buffer);
 ```
 
+#### Handling truncated messages
+If a message is missing a required field when decoding, the library will throw an `Error` that still contains the rest
+of the decoded message as its `msg` property. Example:
+
+```javascript
+try {
+    var myMessage = YourMessage.decode(bufferWithMisstingRequiredField);
+} catch (e) {
+    if (e.msg) { // Truncated
+        myMessage = e.msg; // Decoded message with missing required fields
+    }
+}
+```
+
 Command line utility
 --------------------
 It's also possible to transform .proto files into their JSON counterparts or to transform entire namespaces into
