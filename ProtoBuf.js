@@ -1914,10 +1914,21 @@
                     
                 // Embedded message
                 } else if (this.type == ProtoBuf.TYPES["message"]) {
-                    var bb = new ByteBuffer();
-                    this.resolvedType.encode(value, bb);
-                    buffer.writeVarint32(bb.offset);
-                    buffer.append(bb.flip());
+                    // We do not know the length of the embedded message yet. To avoid creating a second buffer, let's assume
+                    // the length varint might consist of one byte and encode the embedded message to the current offset+1.
+                    // When we know the length and it is one byte long, all we have to do is to write the length varint. If
+                    // it's longer than one byte, we need to copy. Finally we did it all with just one buffer.
+                    var start = buffer.offset;
+                    buffer.writeUint8(0x00); // Placeholder (calls ensureCapacity)
+                    this.resolvedType.encode(value, buffer);
+                    var messageBytes = buffer.offset - start - 1;
+                    var sizeBytes = ByteBuffer.calculateVarint32(messageBytes);
+                    if (sizeBytes > 1) { // We need to copy
+                        var bb = buffer.clone().flip();
+                        bb.offset = bb.length - messageBytes;
+                        buffer.append(bb, start + sizeBytes);
+                    }
+                    buffer.writeVarint32(messageBytes, start);
                 } else {
                     // We should never end here
                     throw(new Error("[INTERNAL ERROR] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));

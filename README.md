@@ -167,9 +167,13 @@ of the decoded message as its `msg` property. Example:
 ```javascript
 try {
     var myMessage = YourMessage.decode(bufferWithMisstingRequiredField);
+    ...
 } catch (e) {
     if (e.msg) { // Truncated
         myMessage = e.msg; // Decoded message with missing required fields
+        ...
+    } else { // General error
+        ...
     }
 }
 ```
