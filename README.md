@@ -14,7 +14,7 @@ Features
 * [node.js](http://nodejs.org) compatible, also available via [npm](https://npmjs.org/package/protobufjs)
 * [Closure Compiler](https://developers.google.com/closure/compiler/) compatible (fully annotated, [externs](https://github.com/dcodeIO/ProtoBuf.js/tree/master/externs))
 * Fully documented using [jsdoc3](https://github.com/jsdoc3/jsdoc)
-* Well tested through [nodeunit](https://github.com/caolan/nodeunit)
+* Well tested through [test.js](https://github.com/dcodeIO/test.js)
 * [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
 * Small footprint (even smaller if you use a noparse build)
 
