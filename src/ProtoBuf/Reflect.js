@@ -676,6 +676,15 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 msg.set(field.name, field.decode(wireType, buffer));
             }
         }
+        // Check if all required fields are present
+        var fields = this.getChildren(Reflect.Field);
+        for (var i=0; i<fields.length; i++) {
+            if (fields[i].required && msg[fields[i].name] === null) {
+                var err = new Error("Missing field "+fields[i].toString(true)+" in "+this.toString(true)+"#decode");
+                err.msg = msg;
+                throw(err);
+            }
+        }
         return msg;
     };
 

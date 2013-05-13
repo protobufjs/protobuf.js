@@ -373,6 +373,34 @@
             test.done();
         },
         
+        "truncated": function(test) {
+            try {
+                // Just `a`
+                var builder = ProtoBuf.protoFromString("message Test { required int32 a = 1; }");
+                var Test = builder.build("Test");
+                var t = new Test();
+                t.setA(1);
+                var bb = t.encode();
+                // Extend with `b`
+                builder = ProtoBuf.protoFromString("message Test { required int32 a = 1; required int32 b = 2; }");
+                Test = builder.build("Test");
+                var t2;
+                try /* to decode truncated message */ {
+                    t2 = Test.decode(bb);
+                    test.ok(false); // ^ throws
+                } catch (e) {
+                    // But still be able to access the rest
+                    var t3 = e.msg;
+                    test.strictEqual(t3.a, 1);
+                    test.strictEqual(t3.b, null);
+                }
+                test.strictEqual(t2, undefined);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         // Options on all levels
         "options": {
             
