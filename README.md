@@ -490,7 +490,7 @@ Tests (& Examples) [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.pn
 
 Contributors
 ------------
-[Frank Xu](https://github.com/yyfrankyy)
+[Frank Xu](https://github.com/yyfrankyy), [Dretch](https://github.com/Dretch), [shirmin](https://github.com/shirmin)
 
 License
 -------
