@@ -979,7 +979,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             
         // Embedded message
         } else if (this.type == ProtoBuf.TYPES["message"]) {
-            var bb = new ByteBuffer();
+            var bb = new ByteBuffer().LE();
             this.resolvedType.encode(value, bb);
             buffer.writeVarint32(bb.offset);
             buffer.append(bb.flip());

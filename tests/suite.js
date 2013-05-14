@@ -384,6 +384,21 @@
                     fail(e);
                 }
                 test.done();
+            },
+
+            "float": function(test) {
+                try {
+                    var builder = ProtoBuf.protoFromString("message Foo { required Bar bar = 1; } message Bar { required float baz = 1; }");
+                    var root = builder.build();
+                    var foo = new root.Foo(new root.Bar(4));
+                    var bb = foo.encode();
+                    var foo2 = root.Foo.decode(bb);
+                    test.equal(foo.bar.baz, 4);
+                    test.equal(foo2.bar.baz, foo.bar.baz);
+                } catch (e) {
+                    fail(e);
+                }
+                test.done();
             }
             
         },

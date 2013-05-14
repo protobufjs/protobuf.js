@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.12";
+        ProtoBuf.VERSION = "0.12.13";
 
         /**
          * Wire types.
@@ -1914,7 +1914,7 @@
                     
                 // Embedded message
                 } else if (this.type == ProtoBuf.TYPES["message"]) {
-                    var bb = new ByteBuffer();
+                    var bb = new ByteBuffer().LE();
                     this.resolvedType.encode(value, bb);
                     buffer.writeVarint32(bb.offset);
                     buffer.append(bb.flip());
