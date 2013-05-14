@@ -485,8 +485,7 @@ Documentation
 Tests (& Examples) [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 ------------------
 * [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
-* [View node report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
-* [View browser report](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/tests/suite.html)
+* [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 
 Contributors
 ------------
