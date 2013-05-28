@@ -757,6 +757,18 @@
             test.done();
         },
         
+        // Properly ignore "syntax" and "extensions" keywords
+        "gtfs-realtime": function(test) {
+            try {
+                test.doesNotThrow(function() {
+                    ProtoBuf.protoFromFile(__dirname+"/gtfs-realtime.proto");
+                });
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         // Node.js only
         "loaders": BROWSER ? {} : {
             

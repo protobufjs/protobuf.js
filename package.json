@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "0.12.13",
+    "version": "1.0.0-b1",
     "description": "ProtoBuf.js: protobuf for JavaScript. No compilation step required, works out of the box.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
@@ -19,14 +19,15 @@
     },
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "dependencies": {
-        "bytebuffer": ">=1.3.3"
+        "bytebuffer": ">=1.3.3",
+        "ascli": "latest"
     },
     "devDependencies": {
         "testjs": "latest",
         "preprocessor": "latest",
         "closurecompiler": "latest"
     },
-    "license": "Apache License, Version 2.0",
+    "license": "Apache-2.0",
     "engines": {
         "node": ">=0.8"
     },

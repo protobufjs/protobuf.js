@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "0.12.13";
+        ProtoBuf.VERSION = "1.0.0-b1";
 
         /**
          * Wire types.
@@ -318,7 +318,7 @@
                 END: ";",
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
-                KEYWORD: /package|option|import|message|enum|extend|service/,
+                KEYWORD: /package|option|import|message|enum|extend|service|syntax|extensions/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
@@ -567,7 +567,9 @@
                         }
                         this._parseOption(topLevel, token);
                     } else if (token == 'extend' || token == 'service') {
-                        this._parseIgnored(topLevel, token);
+                        this._parseIgnoredBlock(topLevel, token);
+                    } else if (token == 'syntax') {
+                        this._parseIgnoredStatement(topLevel, token);
                     } else {
                         throw(new Error("Illegal top level declaration: "+token));
                     }
@@ -676,14 +678,13 @@
             };
         
             /**
-             * Parses an ignored directive of the form ['keyword', 'typeref', '{' ... '}'].
+             * Parses an ignored block of the form ['keyword', 'typeref', '{' ... '}'].
              * @param {Object} parent Parent definition
              * @param {string} keyword Initial token
-             * @return {Object}
              * @throws {Error} If the directive cannot be parsed
              * @private
              */
-            Parser.prototype._parseIgnored = function(parent, keyword) {
+            Parser.prototype._parseIgnoredBlock = function(parent, keyword) {
                 var token = this.tn.next();
                 if (!Lang.TYPEREF.test(token)) {
                     throw(new Error("Illegal "+keyword+" type in "+parent.name+": "+token));
@@ -697,7 +698,7 @@
                 do {
                     token = this.tn.next();
                     if (token === null) {
-                        throw(new Error("Illegal nesting in "+parent.name+", "+keyword+" "+name+": EOF"));
+                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored), "+name));
                     }
                     if (token == Lang.OPEN) {
                         depth++;
@@ -708,6 +709,23 @@
                         }
                     }
                 } while(true);
+            };
+        
+            /**
+             * Parses an ignored statement of the form ['keyword', ..., ';'].
+             * @param {Object} parent Parent definition
+             * @param {string} keyword Initial token
+             * @throws {Error} If the directive cannot be parsed
+             * @private
+             */
+            Parser.prototype._parseIgnoredStatement = function(parent, keyword) {
+                do {
+                    var token = this.tn.next();
+                    if (token === null) {
+                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored)"));
+                    }
+                    if (token == Lang.END) break;
+                } while (true);
             };
         
             /**
@@ -746,6 +764,8 @@
                         this._parseMessage(msg, token);
                     } else if (token == "option") {
                         this._parseOption(msg, token);
+                    } else if (token == "extensions") {
+                        this._parseIgnoredStatement(msg, token);
                     } else {
                         throw(new Error("Illegal token in message "+msg.name+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
                     }
@@ -1700,7 +1720,7 @@
                     }
                     return null;
                 }
-                var i, values;
+                var i;
                 if (this.repeated && !skipRepeated) { // Repeated values as arrays
                     if (!(value instanceof Array)) {
                         value = [value];

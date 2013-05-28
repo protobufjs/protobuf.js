@@ -765,7 +765,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             }
             return null;
         }
-        var i, values;
+        var i;
         if (this.repeated && !skipRepeated) { // Repeated values as arrays
             if (!(value instanceof Array)) {
                 value = [value];

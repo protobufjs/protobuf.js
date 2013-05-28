@@ -85,7 +85,9 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 }
                 this._parseOption(topLevel, token);
             } else if (token == 'extend' || token == 'service') {
-                this._parseIgnored(topLevel, token);
+                this._parseIgnoredBlock(topLevel, token);
+            } else if (token == 'syntax') {
+                this._parseIgnoredStatement(topLevel, token);
             } else {
                 throw(new Error("Illegal top level declaration: "+token));
             }
@@ -194,14 +196,13 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     };
 
     /**
-     * Parses an ignored directive of the form ['keyword', 'typeref', '{' ... '}'].
+     * Parses an ignored block of the form ['keyword', 'typeref', '{' ... '}'].
      * @param {Object} parent Parent definition
      * @param {string} keyword Initial token
-     * @return {Object}
      * @throws {Error} If the directive cannot be parsed
      * @private
      */
-    Parser.prototype._parseIgnored = function(parent, keyword) {
+    Parser.prototype._parseIgnoredBlock = function(parent, keyword) {
         var token = this.tn.next();
         if (!Lang.TYPEREF.test(token)) {
             throw(new Error("Illegal "+keyword+" type in "+parent.name+": "+token));
@@ -215,7 +216,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         do {
             token = this.tn.next();
             if (token === null) {
-                throw(new Error("Illegal nesting in "+parent.name+", "+keyword+" "+name+": EOF"));
+                throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored), "+name));
             }
             if (token == Lang.OPEN) {
                 depth++;
@@ -226,6 +227,23 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 }
             }
         } while(true);
+    };
+
+    /**
+     * Parses an ignored statement of the form ['keyword', ..., ';'].
+     * @param {Object} parent Parent definition
+     * @param {string} keyword Initial token
+     * @throws {Error} If the directive cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseIgnoredStatement = function(parent, keyword) {
+        do {
+            var token = this.tn.next();
+            if (token === null) {
+                throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored)"));
+            }
+            if (token == Lang.END) break;
+        } while (true);
     };
 
     /**
@@ -264,6 +282,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 this._parseMessage(msg, token);
             } else if (token == "option") {
                 this._parseOption(msg, token);
+            } else if (token == "extensions") {
+                this._parseIgnoredStatement(msg, token);
             } else {
                 throw(new Error("Illegal token in message "+msg.name+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
             }
