@@ -342,7 +342,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             /**
              * @type {!Function}
              */
-            var Message = eval("(function "+T.name+"() { this.__construct.apply(this, arguments); })");
+            var Message = eval("0, (function "+T.name+"() { this.__construct.apply(this, arguments); })");
             // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
             
             /**

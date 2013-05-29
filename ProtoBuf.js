@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0-b2";
+        ProtoBuf.VERSION = "1.0.0-b3";
 
         /**
          * Wire types.
@@ -1297,7 +1297,7 @@
                     /**
                      * @type {!Function}
                      */
-                    var Message = eval("(function "+T.name+"() { this.__construct.apply(this, arguments); })");
+                    var Message = eval("0, (function "+T.name+"() { this.__construct.apply(this, arguments); })");
                     // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
                     
                     /**

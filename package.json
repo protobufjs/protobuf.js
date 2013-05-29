@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "1.0.0-b2",
+    "version": "1.0.0-b3",
     "description": "ProtoBuf.js: protobuf for JavaScript. No compilation step required, works out of the box.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
