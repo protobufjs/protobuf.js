@@ -309,6 +309,18 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     };
 
     /**
+     * Tests if the specified file is a valid import.
+     * @param {string} filename
+     * @returns {boolean} true if valid, false if it should be skipped
+     * @expose
+     */
+    Builder.isValidImport = function(filename) {
+        // Ignore google/protobuf/descriptor.proto (for example) as it makes use of low-level
+        // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
+        return !(/google\/protobuf\//.test(filename));
+    };
+
+    /**
      * Imports another builder into this one.
      * @param {Object.<string,*>} parsed Parsed import
      * @param {string} filename Imported file name
@@ -350,11 +362,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                     // #ifdef NOPARSE
                     throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
                     // #else
-                    if (/google\/protobuf\//.test(importFilename)) {
-                        // Ignore google/protobuf/descriptor.proto (for example) as it makes use of low-level
-                        // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
-                        continue;
-                    }
+                    if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
                     var proto = ProtoBuf.Util.fetch(importFilename);
                     if (proto === null) {
                         throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));

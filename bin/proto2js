@@ -102,7 +102,9 @@ function build_js(file, min) {
     var out = "";
     if (ast['imports']) {
         ast['imports'].forEach(function(ifile) {
-            out += (build_js(path.join(base, ifile), min))[1];
+            if (ProtoBuf.Builder.isValidImport(ifile)) {
+                out += (build_js(path.join(base, ifile), min))[1];
+            }
         });
         ast['imports'].length = 0;
     }

@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0-b1";
+        ProtoBuf.VERSION = "1.0.0-b2";
 
         /**
          * Wire types.
@@ -1814,6 +1814,18 @@
                 this.resolved = false; // Require re-resolve
                 this.result = null; // Require re-build
                 return this;
+            };
+        
+            /**
+             * Tests if the specified file is a valid import.
+             * @param {string} filename
+             * @returns {boolean} true if valid, false if it should be skipped
+             * @expose
+             */
+            Builder.isValidImport = function(filename) {
+                // Ignore google/protobuf/descriptor.proto (for example) as it makes use of low-level
+                // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
+                return !(/google\/protobuf\//.test(filename));
             };
         
             /**
