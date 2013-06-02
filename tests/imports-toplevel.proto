@@ -8,6 +8,6 @@ enum MyEnum1 {
 }
 
 message Test1 {
-    required MyEnum num = 0 [default=ONE];
-    required MyEnum1 num1 = 1 [default=ONE];
+    required MyEnum num = 1 [default=ONE];
+    required MyEnum1 num1 = 2 [default=ONE];
 }

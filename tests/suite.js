@@ -219,6 +219,23 @@
             test.done();
         },
     
+        "numberformats": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/numberformats.proto");
+                var Formats = builder.build("Formats");
+                test.strictEqual(Formats.DEC, 1);
+                test.strictEqual(Formats.HEX, 31);
+                test.strictEqual(Formats.OCT, 15);
+                var Msg = builder.build("Msg");
+                var msg = new Msg();
+                test.strictEqual(msg.dec, -1);
+                test.strictEqual(msg.hex, -31);
+                test.strictEqual(msg.oct, -15);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
     
         // Check encode/decode against a table of known correct pairs.
         // Note that javascript ArrayBuffer does not support signed Zero or NaN
@@ -304,7 +321,7 @@
         
         "bytes": function(test) {
             try {
-                var str_proto = "message Test { required bytes b = 0; }";
+                var str_proto = "message Test { required bytes b = 1; }";
                 var builder = ProtoBuf.protoFromString(str_proto);
                 var Test = builder.build("Test");
                 var bb = new ByteBuffer(4).writeUint32(0x12345678).flip();
@@ -312,7 +329,7 @@
                 test.strictEqual(myTest.b.array, bb.array);
                 var bb2 = new ByteBuffer(6);
                 myTest.encode(bb2);
-                test.equal(bb2.toHex(), "<02 04 12 34 56 78>");
+                test.equal(bb2.toHex(), "<0A 04 12 34 56 78>");
                 myTest = Test.decode(bb2);
                 test.equal(myTest.b.BE().readUint32(), 0x12345678);
             } catch (e) {
@@ -763,6 +780,23 @@
                 test.doesNotThrow(function() {
                     ProtoBuf.protoFromFile(__dirname+"/gtfs-realtime.proto");
                 });
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "fields": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/optional.proto");
+                var Test1 = builder.build("Test1");
+                var test1 = new Test1();
+                test.strictEqual(test1.a, null);
+                test.deepEqual(Object.keys(test1), ['a']);
+                var bb = test1.encode();
+                test1 = Test1.decode(bb);
+                test.strictEqual(test1.a, null);
+                test.deepEqual(Object.keys(test1), ['a']);
             } catch (e) {
                 fail(e);
             }

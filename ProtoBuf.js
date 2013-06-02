@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0-b3";
+        ProtoBuf.VERSION = "1.0.0-b4";
 
         /**
          * Wire types.
@@ -324,8 +324,12 @@
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
                 TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
-                NUMBER: /^-?([1-9][0-9]*)|0$/,
-                ID: /[0-9]+/,
+                NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|[0-9]*\.[0-9]+)$/,
+                NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
+                NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
+                NUMBER_OCT: /^0[0-7]+$/,
+                NUMBER_FLT: /^[0-9]*\.[0-9]+$/,
+                ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
                 STRINGOPEN: '"',
@@ -579,6 +583,50 @@
             };
         
             /**
+             * Parses a number value.
+             * @param {string} val Number value to parse
+             * @return {number} Number
+             * @throws {Error} If the number value is invalid
+             * @private
+             */
+            Parser.prototype._parseNumber = function(val) {
+                var sign = 1;
+                if (val.charAt(0) == '-') {
+                    sign = -1; val = val.substring(1);
+                }
+                if (Lang.NUMBER_DEC.test(val)) {
+                    return sign*parseInt(val, 10);
+                } else if (Lang.NUMBER_HEX.test(val)) {
+                    return sign*parseInt(val.substring(2), 16);
+                } else if (Lang.NUMBER_OCT.test(val)) {
+                    return sign*parseInt(val.substring(1), 8);
+                } else if (Lang.NUMBER_FLT.test(val)) {
+                    return sign*parseFloat(val);
+                }
+                throw(new Error("Illegal number value: "+(sign < 0 ? '-' : '')+val));
+            };
+        
+            /**
+             * Parses an ID value.
+             * @param {string} val ID value to parse
+             * @returns {number} ID
+             * @throws {Error} If the ID value is invalid
+             * @private
+             */
+            Parser.prototype._parseId = function(val) {
+                var id = -1;
+                if (Lang.NUMBER_DEC.test(val)) {
+                    id = parseInt(val);
+                } else if (Lang.NUMBER_HEX.test(val)) {
+                    id = parseInt(val.substring(2), 16);
+                } else if (Lang.NUMBER_OCT.test(val)) {
+                    id = parseInt(val.substring(1), 8);
+                }
+                if (id < 0) throw(new Error("Illegal ID value: "+(sign < 0 ? '-' : '')+val));
+                return id;
+            };
+        
+            /**
              * Parses the package definition.
              * @param {string} token Initial token
              * @return {string} Package name
@@ -663,7 +711,7 @@
                     }
                 } else {
                     if (Lang.NUMBER.test(token)) {
-                        value = parseInt(token);
+                        value = this._parseNumber(token, true);
                     } else if (Lang.NAME.test(token)) {
                         value = token;
                     } else {
@@ -800,10 +848,11 @@
                     throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 token = this.tn.next();
-                if (!Lang.ID.test(token)) {
-                    throw(new Error("Illegal field number in message "+msg.name+"#"+fld.name+": "+token));
+                try {
+                    fld["id"] = this._parseId(token);
+                } catch (e) {
+                    throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+": "+token));
                 }
-                fld["id"] = parseInt(token, 10);
                 /** @dict */
                 fld["options"] = {};
                 token = this.tn.next();
@@ -878,8 +927,8 @@
                     if (token != Lang.STRINGCLOSE) {
                         throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
                     }
-                } else if (Lang.NUMBER.test(token)) {
-                    value = parseFloat(token);
+                } else if (Lang.NUMBER.test(token, true)) {
+                    value = this._parseNumber(token, true);
                 } else if (Lang.TYPEREF.test(token)) {
                     value = token; // TODO: Resolve?
                 } else {
@@ -942,10 +991,11 @@
                     throw(new Error("Illegal enum value operator in enum "+enm.name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 token = this.tn.next();
-                if (!Lang.ID.test(token)) {
-                    throw(new Error("Illegal enum value value in enum "+enm.name+": "+token));
+                try {
+                    val["id"] = this._parseId(token);
+                } catch (e) {
+                    throw(new Error("Illegal enum value id in enum "+enm.name+": "+token));
                 }
-                val["id"] = parseInt(token, 10);
                 enm["values"].push(val);
                 token = this.tn.next();
                 if (token == Lang.OPTOPEN) {
@@ -2312,7 +2362,7 @@
                     // Options are <string,number|typeref>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.NAME.test(keys[i]) || (!Lang.ID.test(""+def["options"][keys[i]]) && !Lang.TYPEREF.test(def["options"][keys[i]]))) {
+                        if (!Lang.NAME.test(keys[i]) || (!Lang.NUMBER.test(""+def["options"][keys[i]]) && !Lang.TYPEREF.test(def["options"][keys[i]]))) {
                             return false;
                         }
                     }
@@ -2327,7 +2377,7 @@
              * @expose
              */
             Builder.isValidEnum = function(def) {
-                // Enums requrie a string name
+                // Enums require a string name
                 if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"])) {
                     return false;
                 }
@@ -2391,7 +2441,7 @@
                                                 if (!Lang.NAME.test(subObj[j])) {
                                                     throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
                                                 }
-                                                if (!Lang.ID.test(""+def["fields"][i]["options"][subObj[j]]) && !Lang.TYPEREF.test(def["fields"][i]["options"][subObj[j]])) {
+                                                if (!Lang.NUMBER.test(""+def["fields"][i]["options"][subObj[j]]) && !Lang.TYPEREF.test(def["fields"][i]["options"][subObj[j]])) {
                                                     throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
                                                 }
                                             }

@@ -97,6 +97,50 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     };
 
     /**
+     * Parses a number value.
+     * @param {string} val Number value to parse
+     * @return {number} Number
+     * @throws {Error} If the number value is invalid
+     * @private
+     */
+    Parser.prototype._parseNumber = function(val) {
+        var sign = 1;
+        if (val.charAt(0) == '-') {
+            sign = -1; val = val.substring(1);
+        }
+        if (Lang.NUMBER_DEC.test(val)) {
+            return sign*parseInt(val, 10);
+        } else if (Lang.NUMBER_HEX.test(val)) {
+            return sign*parseInt(val.substring(2), 16);
+        } else if (Lang.NUMBER_OCT.test(val)) {
+            return sign*parseInt(val.substring(1), 8);
+        } else if (Lang.NUMBER_FLT.test(val)) {
+            return sign*parseFloat(val);
+        }
+        throw(new Error("Illegal number value: "+(sign < 0 ? '-' : '')+val));
+    };
+
+    /**
+     * Parses an ID value.
+     * @param {string} val ID value to parse
+     * @returns {number} ID
+     * @throws {Error} If the ID value is invalid
+     * @private
+     */
+    Parser.prototype._parseId = function(val) {
+        var id = -1;
+        if (Lang.NUMBER_DEC.test(val)) {
+            id = parseInt(val);
+        } else if (Lang.NUMBER_HEX.test(val)) {
+            id = parseInt(val.substring(2), 16);
+        } else if (Lang.NUMBER_OCT.test(val)) {
+            id = parseInt(val.substring(1), 8);
+        }
+        if (id < 0) throw(new Error("Illegal ID value: "+(sign < 0 ? '-' : '')+val));
+        return id;
+    };
+
+    /**
      * Parses the package definition.
      * @param {string} token Initial token
      * @return {string} Package name
@@ -181,7 +225,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             }
         } else {
             if (Lang.NUMBER.test(token)) {
-                value = parseInt(token);
+                value = this._parseNumber(token, true);
             } else if (Lang.NAME.test(token)) {
                 value = token;
             } else {
@@ -318,10 +362,11 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
         }
         token = this.tn.next();
-        if (!Lang.ID.test(token)) {
-            throw(new Error("Illegal field number in message "+msg.name+"#"+fld.name+": "+token));
+        try {
+            fld["id"] = this._parseId(token);
+        } catch (e) {
+            throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+": "+token));
         }
-        fld["id"] = parseInt(token, 10);
         /** @dict */
         fld["options"] = {};
         token = this.tn.next();
@@ -396,8 +441,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             if (token != Lang.STRINGCLOSE) {
                 throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
             }
-        } else if (Lang.NUMBER.test(token)) {
-            value = parseFloat(token);
+        } else if (Lang.NUMBER.test(token, true)) {
+            value = this._parseNumber(token, true);
         } else if (Lang.TYPEREF.test(token)) {
             value = token; // TODO: Resolve?
         } else {
@@ -460,10 +505,11 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             throw(new Error("Illegal enum value operator in enum "+enm.name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
         }
         token = this.tn.next();
-        if (!Lang.ID.test(token)) {
-            throw(new Error("Illegal enum value value in enum "+enm.name+": "+token));
+        try {
+            val["id"] = this._parseId(token);
+        } catch (e) {
+            throw(new Error("Illegal enum value id in enum "+enm.name+": "+token));
         }
-        val["id"] = parseInt(token, 10);
         enm["values"].push(val);
         token = this.tn.next();
         if (token == Lang.OPTOPEN) {

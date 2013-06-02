@@ -6,5 +6,5 @@ enum MyEnum {
 }
 
 message Test {
-    required MyEnum num = 0 [default=ONE];
+    required MyEnum num = 1 [default=ONE];
 }

@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0-b3";
+        ProtoBuf.VERSION = "1.0.0-b4";
 
         /**
          * Wire types.
@@ -324,8 +324,12 @@
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
                 TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
                 TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
-                NUMBER: /^-?([1-9][0-9]*)|0$/,
-                ID: /[0-9]+/,
+                NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|[0-9]*\.[0-9]+)$/,
+                NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
+                NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
+                NUMBER_OCT: /^0[0-7]+$/,
+                NUMBER_FLT: /^[0-9]*\.[0-9]+$/,
+                ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
                 STRINGOPEN: '"',
@@ -1681,7 +1685,7 @@
                     // Options are <string,number|typeref>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.NAME.test(keys[i]) || (!Lang.ID.test(""+def["options"][keys[i]]) && !Lang.TYPEREF.test(def["options"][keys[i]]))) {
+                        if (!Lang.NAME.test(keys[i]) || (!Lang.NUMBER.test(""+def["options"][keys[i]]) && !Lang.TYPEREF.test(def["options"][keys[i]]))) {
                             return false;
                         }
                     }
@@ -1696,7 +1700,7 @@
              * @expose
              */
             Builder.isValidEnum = function(def) {
-                // Enums requrie a string name
+                // Enums require a string name
                 if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"])) {
                     return false;
                 }
@@ -1760,7 +1764,7 @@
                                                 if (!Lang.NAME.test(subObj[j])) {
                                                     throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
                                                 }
-                                                if (!Lang.ID.test(""+def["fields"][i]["options"][subObj[j]]) && !Lang.TYPEREF.test(def["fields"][i]["options"][subObj[j]])) {
+                                                if (!Lang.NUMBER.test(""+def["fields"][i]["options"][subObj[j]]) && !Lang.TYPEREF.test(def["fields"][i]["options"][subObj[j]])) {
                                                     throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
                                                 }
                                             }
