@@ -363,6 +363,21 @@
             test.done();
         },
         
+        "emptydefaultstring": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromString("message Test1 { optional string test = 1 [default = \"\"]; }");
+                var Test1;
+                test.doesNotThrow(function() {
+                    Test1 = builder.build("Test1");
+                });
+                var test1 = new Test1();
+                test.strictEqual(test1.test, "");
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         "inner": {
 
             "longstr": function(test) {

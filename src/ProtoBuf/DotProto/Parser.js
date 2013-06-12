@@ -381,7 +381,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     };
 
     /**
-     * Parses a set of field option defintions.
+     * Parses a set of field option definitions.
      * @param {Object} msg Message definition
      * @param {Object} fld Field definition
      * @param {string} token Initial token

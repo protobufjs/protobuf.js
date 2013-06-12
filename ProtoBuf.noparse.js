@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0-b4";
+        ProtoBuf.VERSION = "1.0.0-b5";
 
         /**
          * Wire types.
@@ -1625,6 +1625,7 @@
                 var i;
                 if (typeof def["fields"] != 'undefined') {
                     if (!(def["fields"] instanceof Array)) {
+                        console.log("3");
                         return false;
                     }
                     var ids = [], id; // IDs must be unique
@@ -1682,10 +1683,10 @@
                     if (typeof def["options"] != 'object') {
                         return false;
                     }
-                    // Options are <string,number|typeref>
+                    // Options are <string,*>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.NAME.test(keys[i]) || (!Lang.NUMBER.test(""+def["options"][keys[i]]) && !Lang.TYPEREF.test(def["options"][keys[i]]))) {
+                        if (!Lang.NAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
                             return false;
                         }
                     }
@@ -1764,7 +1765,7 @@
                                                 if (!Lang.NAME.test(subObj[j])) {
                                                     throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
                                                 }
-                                                if (!Lang.NUMBER.test(""+def["fields"][i]["options"][subObj[j]]) && !Lang.TYPEREF.test(def["fields"][i]["options"][subObj[j]])) {
+                                                if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
                                                     throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
                                                 }
                                             }
