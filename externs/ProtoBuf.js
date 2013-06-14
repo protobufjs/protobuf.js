@@ -172,10 +172,16 @@ ProtoBuf.DotProto.Tokenizer.prototype.stack;
 ProtoBuf.DotProto.Tokenizer.prototype.readingString;
 
 /**
- * @return {string}
+ * @return {?string}
  * @throws {Error}
  */
 ProtoBuf.DotProto.Tokenizer.prototype.next = function() {};
+
+/**
+ * @return {?string}
+ * @thorws {Error}
+ */
+ProtoBuf.DotProto.Tokenizer.prototype.peek = function() {};
 
 /**
  * @return {string}

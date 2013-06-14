@@ -219,7 +219,7 @@
             test.done();
         },
     
-        "numberformats": function(test) {
+        "numberFormats": function(test) {
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/numberformats.proto");
                 var Formats = builder.build("Formats");
@@ -363,7 +363,7 @@
             test.done();
         },
         
-        "emptydefaultstring": function(test) {
+        "emptyDefaultString": function(test) {
             try {
                 var builder = ProtoBuf.protoFromString("message Test1 { optional string test = 1 [default = \"\"]; }");
                 var Test1;
@@ -372,6 +372,18 @@
                 });
                 var test1 = new Test1();
                 test.strictEqual(test1.test, "");
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "trailingSemicolon": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromString("message Test1 { optional string test = 1; };");
+                test.doesNotThrow(function() {
+                    var Test1 = builder.build("Test1");
+                });
             } catch (e) {
                 fail(e);
             }
@@ -540,7 +552,7 @@
         },
         
         // Builder reused to add definitions from multiple sources
-        "multibuilder": function(test) {
+        "multiBuilder": function(test) {
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/example1.proto");
                 ProtoBuf.protoFromFile(__dirname+"/example2.proto", builder);
@@ -646,7 +658,7 @@
             }
         },
         
-        "x64_fixed": function(test) {
+        "x64Fixed": function(test) {
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/x64.proto");
                 var Test = builder.build("Test");
@@ -677,7 +689,7 @@
             test.done();
         },
     
-        "x64_varint": function(test) {
+        "x64Varint": function(test) {
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/x64.proto");
                 var Test = builder.build("Test2");
@@ -745,7 +757,7 @@
             test.done();
         },
         
-        "imports-toplevel": function(test) {
+        "importsToplevel": function(test) {
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/imports-toplevel.proto");
                 var My = builder.build("My");

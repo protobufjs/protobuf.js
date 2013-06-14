@@ -78,14 +78,14 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
     };
 
     /**
-     * Gets the next token.
-     * @return {string} Token
+     * Gets the next token and advances by one.
+     * @return {?string} Token or `null` on EOF
      * @throws {Error} If it's not a valid proto file
      * @expose
      */
     Tokenizer.prototype.next = function() {
         if (this.stack.length > 0) {
-            return this.stack.pop();
+            return this.stack.shift();
         }
         if (this.index >= this.source.length) {
             return null; // No more tokens
@@ -143,6 +143,21 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
             this.readingString = true;
         }
         return token;
+    };
+
+    /**
+     * Peeks for the next token.
+     * @return {?string} Token or `null` on EOF
+     * @throws {Error} If it's not a valid proto file
+     * @expose
+     */
+    Tokenizer.prototype.peek = function() {
+        if (this.stack.length == 0) {
+            var token = this.next();
+            if (token === null) return null;
+            this.stack.push(token);
+        }
+        return this.stack[0];
     };
 
     /**

@@ -265,6 +265,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             if (token == Lang.OPEN) {
                 depth++;
             } else if (token == Lang.CLOSE) {
+                token = this.tn.peek();
+                if (token == Lang.END) this.tn.next();
                 depth--;
                 if (depth == 0) {
                     break;
@@ -317,6 +319,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         do {
             token = this.tn.next();
             if (token == Lang.CLOSE) {
+                token = this.tn.peek();
+                if (token == Lang.END) this.tn.next();
                 break;
             } else if (Lang.RULE.test(token)) {
                 this._parseMessageField(msg, token);
@@ -475,6 +479,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         do {
             token = this.tn.next();
             if (token == Lang.CLOSE) {
+                token = this.tn.peek();
+                if (token == Lang.END) this.tn.next();
                 break;
             }
             if (token == 'option') {
