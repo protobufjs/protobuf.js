@@ -41,6 +41,7 @@ Features
 
 Documentation
 -------------
+* [Read the official protobuf guide](https://developers.google.com/protocol-buffers/docs/overview)
 * [Read our wiki](https://github.com/dcodeIO/ProtoBuf.js/wiki)
 * [Read the API docs](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
 

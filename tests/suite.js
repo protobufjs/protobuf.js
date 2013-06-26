@@ -475,6 +475,25 @@
             test.done();
         },
         
+        // Make sure that our example at https://github.com/dcodeIO/ProtoBuf.js/wiki is not nonsense
+        "pingexample": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/PingExample.proto");
+                var Message = builder.build("Message");
+                var msg = new Message();
+                msg.ping = new Message.Ping(123456789);
+                var bb = msg.encode();
+                test.strictEqual(bb.length, 7);
+                msg = Message.decode(bb);
+                test.ok(msg.ping);
+                test.notOk(msg.pong);
+                test.strictEqual(msg.ping.time, 123456789);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         // Options on all levels
         "options": {
             
