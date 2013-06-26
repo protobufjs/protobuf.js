@@ -1,7 +1,7 @@
 ![ProtoBuf.js - protobuf for JavaScript](https://raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.png)
 =====================================
 
-When working with binary data on the network level, Google's Protocol Buffers aka protobuf is probably the best tool for
+For de-/serialization of binary data on the network level, Google's Protocol Buffers aka protobuf is probably the best tool for
 the job as it supports putting together entire message and even sub-message structures assembled from a variety of
 useful data types while still remaining extensible for future cases.
 
@@ -35,6 +35,7 @@ Features
 * Fully documented using [jsdoc3](https://github.com/jsdoc3/jsdoc)
 * Well tested through [test.js](https://github.com/dcodeIO/test.js)
 * [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
+* Fully compatible to the official implementation including advanced features
 * Small footprint (even smaller if you use a noparse build)
 * proto2js command line tool
 
