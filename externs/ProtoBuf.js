@@ -575,7 +575,14 @@ ProtoBuf.Builder.Message.prototype.encode = function(buffer) {};
 ProtoBuf.Builder.Message.prototype.toArrayBuffer = function() {};
 
 /**
- * @param {!ByteBuffer} buffer
+ * @return {Buffer}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.toBuffer = function() {};
+
+/**
+ * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer
  * @return {!ProtoBuf.Builder.Message}
  * @throws {Error}
  * @nosideeffects

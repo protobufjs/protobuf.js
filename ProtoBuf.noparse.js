@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0-b6";
+        ProtoBuf.VERSION = "1.0.0";
 
         /**
          * Wire types.
@@ -894,11 +894,23 @@
                     };
         
                     /**
+                     * Directly encodes the message to a node Buffer.
+                     * @name ProtoBuf.Builder.Message#toBuffer
+                     * @function
+                     * @return {!Buffer}
+                     * @throws {Error} If the message cannot be encoded or not running under node.js
+                     * @expose
+                     */
+                    Message.prototype.toBuffer = function() {
+                        return this.encode().toBuffer();
+                    };
+        
+                    /**
                      * Decodes the message from the specified ByteBuffer.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
-                     * @param {ByteBuffer} buffer ByteBuffer to decode from
-                     * @return {ProtoBuf.Builder.Message} Decoded message
+                     * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
+                     * @return {!ProtoBuf.Builder.Message} Decoded message
                      * @throws {Error} If the message cannot be decoded
                      * @expose
                      */
@@ -931,7 +943,7 @@
                      * @type {Object.<string,*>}
                      * @expose
                      */
-                    var helloClosure;
+                    var O_o; // for cc
                     
                     if (Object.defineProperty) {
                         Object.defineProperty(Message, '$options', {
