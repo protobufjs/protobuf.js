@@ -16,8 +16,8 @@ a hawker's tray of tools I didn't want to use while missing features that I real
 a .proto parser, reflection, message class building and simple encoding and decoding in plain JavaScript. There is no
 compilation step required, it's super easy to use and it works out of the box on .proto files!
 
-Usage
------
+Getting started
+---------------
 In the process of ProtoBuf.js becoming mature, documentation had been extended to cover so many details, that it's best to
 split it up to a few easy to grasp sections. So:
 
