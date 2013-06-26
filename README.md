@@ -36,8 +36,23 @@ Features
 * Small footprint (even smaller if you use a noparse build)
 * proto2js command line tool
 
+Documentation
+-------------
+* [Read the wiki](https://github.com/dcodeIO/ProtoBuf.js/wiki/_pages) ([start here](https://github.com/dcodeIO/ProtoBuf.js/wiki/Builder:-Usage-&-Examples))
+* [Read the API docs](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
+
+Tests [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+------------------
+* [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
+* [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+
+Downloads
+---------
+* [ZIP-Archive](https://github.com/dcodeIO/ProtoBuf.js/archive/master.zip)
+* [Tarball](https://github.com/dcodeIO/ProtoBuf.js/tarball/master)
+
 Contributors
 ------------
-[Frank Xu](https://github.com/yyfrankyy), [Dretch](https://github.com/Dretch), [shirmin](https://github.com/shirmin)
+[Daniel Wirtz](https://github.com/dcodeIO) (maintainer), [Frank Xu](https://github.com/yyfrankyy), [Dretch](https://github.com/Dretch), [shirmin](https://github.com/shirmin)
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
