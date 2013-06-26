@@ -22,6 +22,7 @@ split it up to a few easy to grasp sections. So:
 
 * Step 1: Become familar with [Google's Protocol Buffers (protobuf)](https://developers.google.com/protocol-buffers/docs/overview)
 * Step 2: Head straight to our wiki for up to date [usage, examples and further documentation](https://github.com/dcodeIO/ProtoBuf.js/wiki)
+* Step 3: Build something cool! :-)
 
 Features
 --------
