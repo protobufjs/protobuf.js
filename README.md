@@ -5,7 +5,7 @@ When working with binary data on the network level, Google's Protocol Buffers ak
 the job as it supports putting together entire message and even sub-message structures assembled from a variety of
 useful data types while still remaining extensible for future cases.
 
-Unfortunately, Google's reference implementations are available for C and Java only. Because of this, some protobuf
+Unfortunately, Google's reference implementations are available for C, Java and Python only. Because of this, some protobuf
 implementations have popped up for JavaScript lately but most of them have some fundamental restrictions.
 Some of them implement just a subset of protobuf's functionality while others require some level of cross-compilation
 towards using Google's protoc. As a result I found myself compiling things that didn't work or, if they did, missing
