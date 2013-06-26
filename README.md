@@ -8,8 +8,9 @@ useful data types while still remaining extensible for future cases.
 Unfortunately, Google's reference implementations are available for C, Java and Python only. Because of this, some protobuf
 implementations have popped up for JavaScript lately but most of them have some fundamental restrictions.
 Some of them implement just a subset of protobuf's functionality while others require some level of cross-compilation
-towards using Google's protoc. As a result I found myself compiling things that didn't work or, if they did, missing
-features that I really need. **Fortunately, that's where ProtoBuf.js comes into play!**
+towards using Google's protoc. As a result I found myself compiling things that didn't work or, if they did, installing
+a hawker's tray of tools I didn't want to use while missing features that I really need.
+**Fortunately, that's where ProtoBuf.js comes into play!**
 
 **ProtoBuf.js** is a protobuf implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) including
 a .proto parser, reflection, message class building and simple encoding and decoding in plain JavaScript. There is no
