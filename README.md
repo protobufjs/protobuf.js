@@ -38,7 +38,7 @@ Features
 
 Documentation
 -------------
-* [Read the wiki](https://github.com/dcodeIO/ProtoBuf.js/wiki/_pages) ([start here](https://github.com/dcodeIO/ProtoBuf.js/wiki/Builder:-Usage-&-Examples))
+* [Read our wiki](https://github.com/dcodeIO/ProtoBuf.js/wiki)
 * [Read the API docs](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
 
 Tests [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
