@@ -48,4 +48,4 @@ Contributors
 ------------
 [Daniel Wirtz](https://github.com/dcodeIO) (maintainer), [Frank Xu](https://github.com/yyfrankyy), [Dretch](https://github.com/Dretch), [shirmin](https://github.com/shirmin)
 
-**License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+**License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html) - Logo derived from [W3C HTML5 Logos](http://www.w3.org/html/logo/) (CC A 3.0)
