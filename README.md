@@ -32,6 +32,7 @@ Documentation
 * [Read the official protobuf guide](https://developers.google.com/protocol-buffers/docs/overview)
 * [Read our wiki](https://github.com/dcodeIO/ProtoBuf.js/wiki)
 * [Read the API docs](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
+* [Check out the examples](https://github.com/dcodeIO/ProtoBuf.js/tree/master/examples)
 
 Tests [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 ------------------
