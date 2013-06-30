@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0";
+        ProtoBuf.VERSION = "1.0.1";
 
         /**
          * Wire types.
@@ -330,6 +330,7 @@
                 NUMBER_OCT: /^0[0-7]+$/,
                 NUMBER_FLT: /^[0-9]*\.[0-9]+$/,
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
+                NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
                 STRINGOPEN: '"',
@@ -624,20 +625,30 @@
             /**
              * Parses an ID value.
              * @param {string} val ID value to parse
+             * @param {boolean=} neg Whether the ID may be negative, defaults to `false`
              * @returns {number} ID
              * @throws {Error} If the ID value is invalid
              * @private
              */
-            Parser.prototype._parseId = function(val) {
+            Parser.prototype._parseId = function(val, neg) {
                 var id = -1;
+                var sign = 1;
+                if (val.charAt(0) == '-') {
+                    sign = -1; val = val.substring(1);
+                }
                 if (Lang.NUMBER_DEC.test(val)) {
                     id = parseInt(val);
                 } else if (Lang.NUMBER_HEX.test(val)) {
                     id = parseInt(val.substring(2), 16);
                 } else if (Lang.NUMBER_OCT.test(val)) {
                     id = parseInt(val.substring(1), 8);
+                } else {
+                    throw(new Error("Illegal ID value: "+(sign < 0 ? '-' : '')+val));
                 }
-                if (id < 0) throw(new Error("Illegal ID value: "+(sign < 0 ? '-' : '')+val));
+                id = (sign*id)|0; // Force to 32bit
+                if (!neg && id < 0) {
+                    throw(new Error("Illegal ID range: "+(sign < 0 ? '-' : '')+val));
+                }
                 return id;
             };
         
@@ -1013,7 +1024,7 @@
                 }
                 token = this.tn.next();
                 try {
-                    val["id"] = this._parseId(token);
+                    val["id"] = this._parseId(token, true);
                 } catch (e) {
                     throw(new Error("Illegal enum value id in enum "+enm.name+": "+token));
                 }
@@ -2428,7 +2439,7 @@
                     if (typeof def["values"][i]["name"] != 'string' || typeof def["values"][i]["id"] == 'undefined') {
                         return false;
                     }
-                    if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.ID.test(""+def["values"][i]["id"])) {
+                    if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"])) {
                         return false;
                     }
                 }

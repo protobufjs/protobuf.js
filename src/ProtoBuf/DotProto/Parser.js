@@ -123,20 +123,30 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     /**
      * Parses an ID value.
      * @param {string} val ID value to parse
+     * @param {boolean=} neg Whether the ID may be negative, defaults to `false`
      * @returns {number} ID
      * @throws {Error} If the ID value is invalid
      * @private
      */
-    Parser.prototype._parseId = function(val) {
+    Parser.prototype._parseId = function(val, neg) {
         var id = -1;
+        var sign = 1;
+        if (val.charAt(0) == '-') {
+            sign = -1; val = val.substring(1);
+        }
         if (Lang.NUMBER_DEC.test(val)) {
             id = parseInt(val);
         } else if (Lang.NUMBER_HEX.test(val)) {
             id = parseInt(val.substring(2), 16);
         } else if (Lang.NUMBER_OCT.test(val)) {
             id = parseInt(val.substring(1), 8);
+        } else {
+            throw(new Error("Illegal ID value: "+(sign < 0 ? '-' : '')+val));
         }
-        if (id < 0) throw(new Error("Illegal ID value: "+(sign < 0 ? '-' : '')+val));
+        id = (sign*id)|0; // Force to 32bit
+        if (!neg && id < 0) {
+            throw(new Error("Illegal ID range: "+(sign < 0 ? '-' : '')+val));
+        }
         return id;
     };
 
@@ -512,7 +522,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         token = this.tn.next();
         try {
-            val["id"] = this._parseId(token);
+            val["id"] = this._parseId(token, true);
         } catch (e) {
             throw(new Error("Illegal enum value id in enum "+enm.name+": "+token));
         }

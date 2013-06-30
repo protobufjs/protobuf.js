@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.0";
+        ProtoBuf.VERSION = "1.0.1";
 
         /**
          * Wire types.
@@ -330,6 +330,7 @@
                 NUMBER_OCT: /^0[0-7]+$/,
                 NUMBER_FLT: /^[0-9]*\.[0-9]+$/,
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
+                NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
                 STRINGOPEN: '"',
@@ -1730,7 +1731,7 @@
                     if (typeof def["values"][i]["name"] != 'string' || typeof def["values"][i]["id"] == 'undefined') {
                         return false;
                     }
-                    if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.ID.test(""+def["values"][i]["id"])) {
+                    if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"])) {
                         return false;
                     }
                 }

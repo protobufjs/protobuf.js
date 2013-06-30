@@ -206,7 +206,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (typeof def["values"][i]["name"] != 'string' || typeof def["values"][i]["id"] == 'undefined') {
                 return false;
             }
-            if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.ID.test(""+def["values"][i]["id"])) {
+            if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"])) {
                 return false;
             }
         }

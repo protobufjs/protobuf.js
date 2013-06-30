@@ -52,6 +52,7 @@ ProtoBuf.Lang = (function() {
         NUMBER_OCT: /^0[0-7]+$/,
         NUMBER_FLT: /^[0-9]*\.[0-9]+$/,
         ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
+        NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
         WHITESPACE: /\s/,
         STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
         STRINGOPEN: '"',
