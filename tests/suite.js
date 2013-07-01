@@ -867,6 +867,22 @@
             }
             test.done();
         },
+
+
+        "forwardComp": function(test) {
+            try {
+                var Message = ProtoBuf.protoFromString("message Message { required int32 a = 1; required string b = 2; required float c = 3; }").build("Message");
+                var msg = new Message(123, "abc", 0.123);
+                var bb = msg.encode();
+                Message = ProtoBuf.protoFromString("message Message {}").build("Message");
+                Message.decode(bb);
+                test.strictEqual(bb.offset, bb.length);
+            } catch (e) {
+                console.log(e.stack);
+                fail(e);
+            }
+            test.done();
+        },
         
         // Node.js only
         "loaders": BROWSER ? {} : {

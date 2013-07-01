@@ -680,7 +680,25 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 id = tag >> 3;
             var field = this.getChild(id); // Message.Field only
             if (!field) {
-                throw(new Error("Illegal field id in "+this.toString(true)+"#decode: "+id));
+                // "messages created by your new code can be parsed by your old code: old binaries simply ignore the new field when parsing."
+                switch (wireType) {
+                    case ProtoBuf.WIRE_TYPES.VARINT:
+                        buffer.readVarint32();
+                        break;
+                    case ProtoBuf.WIRE_TYPES.BITS32:
+                        buffer.offset += 4;
+                        break;
+                    case ProtoBuf.WIRE_TYPES.BITS64:
+                        buffer.offset += 8;
+                        break;
+                    case ProtoBuf.WIRE_TYPES.LDELIM:
+                        var len = buffer.readVarint32();
+                        buffer.offset += len;
+                        break;
+                    default:
+                        throw(new Error("Illegal wire type of ignored field "+id+" in "+this.toString(true)+"#decode: "+wireType));
+                }
+                continue;
             }
             if (field.repeated && !field.options["packed"]) {
                 msg.add(field.name, field.decode(wireType, buffer));
