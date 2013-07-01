@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Probably the most complete implementation of protobuf for JavaScript you can get.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
@@ -29,7 +29,7 @@
     },
     "license": "Apache-2.0",
     "engines": {
-        "node": ">=0.8"
+        "node": ">=0.6"
     },
     "scripts": {
         "prepublish": "npm test",
