@@ -696,7 +696,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                         buffer.offset += len;
                         break;
                     default:
-                        throw(new Error("Illegal wire type of ignored field "+id+" in "+this.toString(true)+"#decode: "+wireType));
+                        throw(new Error("Illegal wire type of unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType));
                 }
                 continue;
             }

@@ -875,7 +875,9 @@
                 var msg = new Message(123, "abc", 0.123);
                 var bb = msg.encode();
                 Message = ProtoBuf.protoFromString("message Message {}").build("Message");
-                Message.decode(bb);
+                test.doesNotThrow(function() {
+                    Message.decode(bb);
+                });
                 test.strictEqual(bb.offset, bb.length);
             } catch (e) {
                 console.log(e.stack);
