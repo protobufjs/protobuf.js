@@ -235,11 +235,6 @@ ProtoBuf.Reflect.T.prototype.parent;
 ProtoBuf.Reflect.T.prototype.name;
 
 /**
- * @type {?ProtoBuf.Reflect.T}
- */
-ProtoBuf.Reflect.T.prototype.resolvedType;
-
-/**
  * @param {boolean=} includeClass
  * @return
  * @nosideeffects
@@ -353,27 +348,32 @@ ProtoBuf.Reflect.Message.Field = function(message, rule, type, name, id, options
 /**
  * @type {boolean}
  */
-ProtoBuf.Reflect.Message.prototype.required;
+ProtoBuf.Reflect.Message.Field.prototype.required;
 
 /**
  * @type {boolean}
  */
-ProtoBuf.Reflect.Message.prototype.repeated;
+ProtoBuf.Reflect.Message.Field.prototype.repeated;
 
 /**
  * @type {string|{name: string, wireType: number}}
  */
-ProtoBuf.Reflect.Message.prototype.type;
+ProtoBuf.Reflect.Message.Field.prototype.type;
 
 /**
  * @type {number}
  */
-ProtoBuf.Reflect.Message.prototype.id;
+ProtoBuf.Reflect.Message.Field.prototype.id;
 
 /**
  * @type {!Object.<string,*>}
  */
-ProtoBuf.Reflect.Message.prototype.options;
+ProtoBuf.Reflect.Message.Field.prototype.options;
+
+/**
+ * @type {?ProtoBuf.Reflect.T}
+ */
+ProtoBuf.Reflect.Message.Field.prototype.resolvedType;
 
 /**
  * @param {*} value
