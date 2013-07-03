@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.0.3";
+        ProtoBuf.VERSION = "1.0.4";
 
         /**
          * Wire types.
@@ -1025,7 +1025,7 @@
                                 buffer.offset += len;
                                 break;
                             default:
-                                throw(new Error("Illegal wire type of ignored field "+id+" in "+this.toString(true)+"#decode: "+wireType));
+                                throw(new Error("Illegal wire type of unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType));
                         }
                         continue;
                     }
@@ -1955,10 +1955,10 @@
         
             /**
              * Builds the protocol. This will first try to resolve all definitions and, if this has been successful,
-             * return the builded package.
-             * @param {string=} path Specified what to return. If omitted, the entire namespace will be returned.
-             * @return {ProtoBuf.Builder} this
-             * @throws {string} Exception if a type could not be resolved
+             * return the built package.
+             * @param {string=} path Specifies what to return. If omitted, the entire namespace will be returned.
+             * @return {ProtoBuf.Builder.Message|Object.<string,*>}
+             * @throws {Error} If a type could not be resolved
              * @expose
              */
             Builder.prototype.build = function(path) {
@@ -1986,6 +1986,15 @@
                     }
                     return ptr;
                 }
+            };
+        
+            /**
+             * Similar to {@link ProtoBuf.Builder#build}, but looks up the internal reflection descriptor.
+             * @param {string=} path Specifies what to return. If omitted, the entire namespace wiil be returned.
+             * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
+             */
+            Builder.prototype.lookup = function(path) {
+                return path ? this.ns.resolve(path) : this.ns;
             };
         
             /**

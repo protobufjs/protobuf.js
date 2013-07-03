@@ -518,10 +518,16 @@ ProtoBuf.Builder.prototype.resolveAll = function() {};
 
 /**
  * @param {string=} path
- * @return {!ProtoBuf.Builder}
- * @throws {string}
+ * @return {ProtoBuf.Builder.Message|Object.<string,*>}
+ * @throws {Error}
  */
 ProtoBuf.Builder.prototype.build = function(path) {};
+
+/**
+ * @param {string=} path
+ * @return {?ProtoBuf.Reflect.T}
+ */
+ProtoBuf.Builder.prototype.lookup = function(path) {};
 
 /**
  * @return {string}

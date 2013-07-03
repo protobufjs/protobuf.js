@@ -995,7 +995,7 @@
         
             
 <dt>
-    <h4 class="name" id="build"><span class="type-signature"></span>build<span class="signature">(<span class="optional">path</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
+    <h4 class="name" id="build"><span class="type-signature"></span>build<span class="signature">(<span class="optional">path</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a>|Object.&lt;string,*>}</span></h4>
     
     
 </dt>
@@ -1004,7 +1004,7 @@
     
     <div class="description">
         <p>Builds the protocol. This will first try to resolve all definitions and, if this has been successful,
-return the builded package.</p>
+return the built package.</p>
     </div>
     
 
@@ -1064,7 +1064,7 @@ return the builded package.</p>
             
             
             
-            <td class="description last"><p>Specified what to return. If omitted, the entire namespace will be returned.</p></td>
+            <td class="description last"><p>Specifies what to return. If omitted, the entire namespace will be returned.</p></td>
         </tr>
 	
 	
@@ -1107,7 +1107,7 @@ return the builded package.</p>
     
             
 <div class="param-desc">
-    Exception if a type could not be resolved
+    If a type could not be resolved
 </div>
 
 
@@ -1118,7 +1118,7 @@ return the builded package.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">string</span>
+<span class="param-type">Error</span>
 
 
 	</dd>
@@ -1130,10 +1130,6 @@ return the builded package.</p>
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    <p>this</p>
-</div>
-
 
 
 <dl>
@@ -1142,7 +1138,10 @@ return the builded package.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+<span class="param-type"><a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a></span>
+|
+
+<span class="param-type">Object.&lt;string,*></span>
 
 
 	</dd>
@@ -1482,6 +1481,144 @@ return the builded package.</p>
 	<dd>
 		
 <span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="lookup"><span class="type-signature"></span>lookup<span class="signature">(<span class="optional">path</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Similar to <a href="ProtoBuf.Builder.html#build">ProtoBuf.Builder#build</a>, but looks up the internal reflection descriptor.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Specifies what to return. If omitted, the entire namespace wiil be returned.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Reflection descriptor or <code>null</code> if not found</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></span>
 
 
 	</dd>
