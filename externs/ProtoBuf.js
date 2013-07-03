@@ -314,7 +314,7 @@ ProtoBuf.Reflect.Message = function(parent, name) {};
 /**
  * @type {?ProtoBuf.Builder.Message}
  */
-ProtoBuf.Reflect.Message.prototype.built;
+ProtoBuf.Reflect.Message.prototype.clazz;
 
 /**
  * @return {!ProtoBuf.Builder.Message}
@@ -423,6 +423,11 @@ ProtoBuf.Reflect.Enum = function(parent, name) {};
  * @return {Object<string,*>}
  */
 ProtoBuf.Reflect.Enum.prototype.build = function() {};
+
+/**
+ * @type {?Object.<string,number>}
+ */
+ProtoBuf.Reflect.Enum.prototype.object;
 
 /**
  * @param {!ProtoBuf.Reflect.Enum} enm

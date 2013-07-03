@@ -222,14 +222,14 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="built"><span class="type-signature"></span>built<span class="type-signature"> :<a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a>|null</span></h4>
+    <h4 class="name" id="children"><span class="type-signature"></span>children<span class="type-signature"> :Array.&lt;ProtoBuf.Reflect.T></span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>Last message build.</p>
+        <p>Children inside the namespace.</p>
     </div>
     
     
@@ -241,6 +241,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.Namespace.html#children">ProtoBuf.Reflect.Namespace#children</a>
+    </li></dd>
     
     
     
@@ -267,14 +272,14 @@
         
             
 <dt>
-    <h4 class="name" id="children"><span class="type-signature"></span>children<span class="type-signature"> :Array.&lt;ProtoBuf.Reflect.T></span></h4>
+    <h4 class="name" id="clazz"><span class="type-signature"></span>clazz<span class="type-signature"> :<a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a>|null</span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>Children inside the namespace.</p>
+        <p>Runtime message class.</p>
     </div>
     
     
@@ -286,11 +291,6 @@
     
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="ProtoBuf.Reflect.Namespace.html#children">ProtoBuf.Reflect.Namespace#children</a>
-    </li></dd>
     
     
     
@@ -440,56 +440,6 @@
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
         <a href="ProtoBuf.Reflect.Namespace.html#parent">ProtoBuf.Reflect.Namespace#parent</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="resolvedType"><span class="type-signature"></span>resolvedType<span class="type-signature"> :<a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a>|null</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Resolved type reference.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="ProtoBuf.Reflect.Namespace.html#resolvedType">ProtoBuf.Reflect.Namespace#resolvedType</a>
     </li></dd>
     
     
@@ -718,7 +668,7 @@
     
     
     <div class="description">
-        <p>Builds the message and returns the built counterpart, which is a fully functional class.</p>
+        <p>Builds the message and returns the runtime counterpart, which is a fully functional class.</p>
     </div>
     
 
@@ -1097,7 +1047,7 @@
     
     
     <div class="description">
-        <p>Encodes a built message&#39;s contents to the specified buffer.</p>
+        <p>Encodes a runtime message&#39;s contents to the specified buffer.</p>
     </div>
     
 
@@ -1147,7 +1097,7 @@
             
             
             
-            <td class="description last"><p>Built message to encode</p></td>
+            <td class="description last"><p>Runtime message to encode</p></td>
         </tr>
 	
 	

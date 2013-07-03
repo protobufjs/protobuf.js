@@ -472,6 +472,10 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     Builder.prototype.toString = function() {
         return "Builder";
     };
+
+    // Pseudo type documented in Reflect.js.
+    // Exists for the sole purpose of being able to "... instanceof ProtoBuf.Builder.Message".
+    Builder.Message = function() {};
     
     return Builder;
     

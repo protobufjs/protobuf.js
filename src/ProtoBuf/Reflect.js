@@ -49,13 +49,6 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
          * @expose
          */
         this.name = name;
-
-        /**
-         * Resolved type reference.
-         * @type {ProtoBuf.Reflect.T|null}
-         * @expose
-         */
-        this.resolvedType = null;
     };
 
     /**
@@ -231,8 +224,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     };
 
     /**
-     * Builds the namespace and returns the built counterpart.
-     * @return {Object.<string,Function|Object>} Built namespace
+     * Builds the namespace and returns the runtime counterpart.
+     * @return {Object.<string,Function|Object>} Runtime namespace
      * @expose
      */
     Namespace.prototype.build = function() {
@@ -307,18 +300,18 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         Namespace.call(this, parent, name, options);
 
         /**
-         * Last message build.
+         * Runtime message class.
          * @type {ProtoBuf.Builder.Message|null}
          * @expose
          */
-        this.built = null;
+        this.clazz = null;
     };
 
     // Extends Namespace
     Message.prototype = Object.create(Namespace.prototype);
 
     /**
-     * Builds the message and returns the built counterpart, which is a fully functional class.
+     * Builds the message and returns the runtime counterpart, which is a fully functional class.
      * @see ProtoBuf.Builder.Message
      * @return {ProtoBuf.Reflect.Message} Message class
      * @throws {Error} If the message cannot be built
@@ -330,10 +323,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             var fields = T.getChildren(Reflect.Message.Field);
 
             /**
-             * Constructs a new Message.
+             * Constructs a new runtime Message.
              * @name ProtoBuf.Builder.Message
-             * @class Barebone of all built messages. This class does not actually exist and is here for
-             * documentation purposes only.
+             * @class Barebone of all runtime messages.
              * @param {Object.<string,*>} values Preset values
              * @constructor
              * @throws {Error} If the message cannot be created
@@ -342,13 +334,16 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             /**
              * @type {!Function}
              */
-            var Message = eval("0, (function "+T.name+"() { this.__construct.apply(this, arguments); })");
+            var Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); })");
             // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
+            
+            // Extends ProtoBuf.Builder.Message
+            Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
             
             /**
              * @expose
              */
-            Message.prototype.__construct = function(values) {
+            Message.prototype.__construct = function(values) {                
                 var i, field;
 
                 // Create fields on the object itself to allow setting and getting through Message#fieldname
@@ -643,12 +638,12 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 throw(new Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true)));
             }
         }
-        return this.built = clazz;
+        return this.clazz = clazz;
     };
 
     /**
-     * Encodes a built message's contents to the specified buffer.
-     * @param {ProtoBuf.Builder.Message} message Built message to encode
+     * Encodes a runtime message's contents to the specified buffer.
+     * @param {ProtoBuf.Builder.Message} message Runtime message to encode
      * @param {ByteBuffer} buffer ByteBuffer to write to
      * @return {ByteBuffer} The ByteBuffer for chaining
      * @throws {string} If the message cannot be encoded
@@ -673,7 +668,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     Message.prototype.decode = function(buffer, length) {
         length = length || -1;
         var start = buffer.offset;
-        var msg = new (this.built)();
+        var msg = new (this.clazz)();
         while (buffer.offset < start+length || (length == -1 && buffer.remaining() > 0)) {
             var tag = buffer.readVarint32();
             var wireType = tag & 0x07,
@@ -759,6 +754,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
          * @expose
          */
         this.type = type;
+
+        /**
+         * Resolved type reference inside the global namespace.
+         * @type {ProtoBuf.Reflect.T|null}
+         * @expose
+         */
+        this.resolvedType = null;
 
         /**
          * Unique message field id.
@@ -870,11 +872,11 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             if (typeof value != 'object') {
                 throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
             }
-            if (value instanceof this.resolvedType.built) {
+            if (value instanceof this.resolvedType.clazz) {
                 return value;
             }
             // Else let's try to construct one from a key-value object
-            return new (this.resolvedType.built)(value); // May throw for a hundred of reasons
+            return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
         }
         // We should never end here
         throw(new Error("[INTERNAL ERROR] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
@@ -1054,7 +1056,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         
         // 32bit unsigned varint
         if (this.type == ProtoBuf.TYPES["uint32"]) {
-            return  buffer.readVarint32() >>> 0;
+            return buffer.readVarint32() >>> 0;
         }
         
         // 32bit signed varint zig-zag
@@ -1159,18 +1161,18 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         Namespace.call(this, parent, name, options);
 
         /**
-         * Last enum build.
+         * Runtime enum object.
          * @type {Object.<string,number>|null}
          * @expose
          */
-        this.built = null;
+        this.object = null;
     };
 
     // Extends Namespace
     Enum.prototype = Object.create(Namespace.prototype);
 
     /**
-     * Builds this enum and returns the built counterpart.
+     * Builds this enum and returns the runtime counterpart.
      * @return {Object<string,*>}
      * @expose
      */
@@ -1188,7 +1190,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 'writable': false
             });
         }
-        return this.built = enm;
+        return this.object = enm;
     };
 
     /**

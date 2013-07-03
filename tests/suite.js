@@ -113,6 +113,7 @@
                 var Test1 = builder.build("Test1");
                 test.ok(typeof Test1 == 'function');
                 var inst = new Test1(150);
+                test.ok(inst instanceof ProtoBuf.Builder.Message);
                 test.equal(inst.a, 150);
                 test.equal(inst.getA(), 150);
                 test.equal(inst.get_a(), 150);
