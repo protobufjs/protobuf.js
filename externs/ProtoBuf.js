@@ -469,6 +469,11 @@ ProtoBuf.Builder.prototype.resolved;
 ProtoBuf.Builder.prototype.result;
 
 /**
+ * @type {Array.<string>}
+ */
+ProtoBuf.Builder.prototype.files;
+
+/**
  */
 ProtoBuf.Builder.prototype.reset = function() {};
 
