@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.2";
+        ProtoBuf.VERSION = "1.1.3";
 
         /**
          * Wire types.
@@ -995,7 +995,7 @@
              * @expose
              */
             Message.prototype.decode = function(buffer, length) {
-                length = length || -1;
+                length = typeof length === 'number' ? length : -1;
                 var start = buffer.offset;
                 var msg = new (this.clazz)();
                 while (buffer.offset < start+length || (length == -1 && buffer.remaining() > 0)) {
@@ -1658,7 +1658,6 @@
                 var i;
                 if (typeof def["fields"] != 'undefined') {
                     if (!(def["fields"] instanceof Array)) {
-                        console.log("3");
                         return false;
                     }
                     var ids = [], id; // IDs must be unique

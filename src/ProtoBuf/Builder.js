@@ -113,7 +113,6 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         var i;
         if (typeof def["fields"] != 'undefined') {
             if (!(def["fields"] instanceof Array)) {
-                console.log("3");
                 return false;
             }
             var ids = [], id; // IDs must be unique

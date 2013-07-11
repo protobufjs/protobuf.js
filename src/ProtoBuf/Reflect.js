@@ -666,7 +666,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @expose
      */
     Message.prototype.decode = function(buffer, length) {
-        length = length || -1;
+        length = typeof length === 'number' ? length : -1;
         var start = buffer.offset;
         var msg = new (this.clazz)();
         while (buffer.offset < start+length || (length == -1 && buffer.remaining() > 0)) {
