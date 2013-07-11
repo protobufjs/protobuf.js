@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.0";
+        ProtoBuf.VERSION = "1.1.1";
 
         /**
          * Wire types.
@@ -1867,14 +1867,29 @@
             };
         
             /**
-             * Imports another builder into this one.
+             * Imported files.
+             * @type {Array.<string>}
+             */
+            Builder.prototype.files = [];
+        
+            /**
+             * Imports another definition into this builder.
              * @param {Object.<string,*>} parsed Parsed import
              * @param {string} filename Imported file name
              * @return {ProtoBuf.Builder} this
-             * @throws {Error} If there is a naming conflict
+             * @throws {Error} If the definition or file cannot be imported
              * @expose
              */
             Builder.prototype["import"] = function(parsed, filename) {
+                if (ProtoBuf.Util.IS_NODE) {
+                    var path = require("path");
+                    filename = path.resolve(filename);
+                }
+                if (!!this.files[filename]) {
+                    this.reset();
+                    return this; // Skip duplicate imports
+                }
+                this.files[filename] = true;
                 if (!!parsed['package']) {
                     this.define(parsed['package'], parsed["options"]);
                 }

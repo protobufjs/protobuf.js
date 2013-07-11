@@ -775,6 +775,22 @@
             test.done();
         },
         
+        "importDuplicate": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/import_a.proto");
+                test.doesNotThrow(function() {
+                    ProtoBuf.protoFromFile(__dirname+"/import_b.proto", builder);
+                });
+                var root = builder.build();
+                test.ok(root.A);
+                test.ok(root.B);
+                test.ok(root.Common);                
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         "extend": function(test) {
             try {
                 test.doesNotThrow(function() {
