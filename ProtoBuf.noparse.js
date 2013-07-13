@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.3";
+        ProtoBuf.VERSION = "1.1.4";
 
         /**
          * Wire types.
@@ -872,9 +872,14 @@
                     Message.prototype.encode = function(buffer) {
                         buffer = buffer || new ByteBuffer();
                         var le = buffer.littleEndian;
-                        var bb = T.encode(this, buffer.LE()).flip();
-                        buffer.littleEndian = le;
-                        return bb;
+                        try {
+                            var bb = T.encode(this, buffer.LE()).flip();
+                            buffer.littleEndian = le;
+                            return bb;
+                        } catch (e) {
+                            buffer.littleEndian = le;
+                            throw(e);
+                        }
                     };
         
                     /**
@@ -913,9 +918,14 @@
                     Message.decode = function(buffer) {
                         buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer)) : new ByteBuffer();
                         var le = buffer.littleEndian;
-                        var msg = T.decode(buffer.LE());
-                        buffer.littleEndian = le;
-                        return msg;
+                        try {
+                            var msg = T.decode(buffer.LE());
+                            buffer.littleEndian = le;
+                            return msg;
+                        } catch (e) {
+                            buffer.littleEndian = le;
+                            throw(e);
+                        }
                     };
         
                     // Utility
@@ -1260,7 +1270,6 @@
                         this.encodeValue(value, buffer);
                     }
                 } catch (e) {
-                    buffer.littleEndian = le;
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")"));
                 }
                 return buffer;
