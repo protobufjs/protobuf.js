@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.4";
+        ProtoBuf.VERSION = "1.1.5";
 
         /**
          * Wire types.
@@ -271,7 +271,7 @@
                 } else {
                     var xhr = Util.XHR();
                     xhr.open('GET', path, callback ? true : false);
-                    xhr.setRequestHeader('User-Agent', 'XMLHTTP/1.0');
+                    // xhr.setRequestHeader('User-Agent', 'XMLHTTP/1.0');
                     xhr.setRequestHeader('Accept', 'text/plain');
                     if (callback) {
                         xhr.onreadystatechange = function() {
@@ -1153,11 +1153,19 @@
                 }
                 // Signed 32bit
                 if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["sint32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    return parseInt(value, 10) | 0;
+                    i = parseInt(value, 10);
+                    if (isNaN(i)) {
+                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a number)"));
+                    }
+                    return i | 0;
                 }
                 // Unsigned 32bit
                 if (this.type == ProtoBuf.TYPES["uint32"] || this.type == ProtoBuf.TYPES["fixed32"]) {
-                    return parseInt(value, 10) >>> 0;
+                    i = parseInt(value, 10);
+                    if (isNaN(i)) {
+                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a number)"));
+                    }
+                    return i >>> 0;
                 }
                 if (ProtoBuf.Long) {
                     // Signed 64bit
@@ -1179,9 +1187,13 @@
                 if (this.type == ProtoBuf.TYPES["bool"]) {
                     return !!value;
                 }
-                // 64bit float
+                // Float
                 if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {
-                    return parseFloat(value);
+                    i = parseFloat(value);
+                    if (isNaN(i)) {
+                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a number)"));
+                    }
+                    return i;
                 }
                 // Length-delimited string
                 if (this.type == ProtoBuf.TYPES["string"]) {

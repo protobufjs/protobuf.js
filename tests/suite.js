@@ -280,7 +280,7 @@
                     { f: -Infinity , b: "FF 80 00 00" },
                     { f: +Infinity , b: "7F 80 00 00" },
                     // { f: -NaN , b: "FF C0 00 00>" },
-                    { f: +NaN , b: "7F C0 00 00" }
+                    // { f: +NaN , b: "7F C0 00 00" }
                 ];
     
                 f_vals.map( function(x) {
