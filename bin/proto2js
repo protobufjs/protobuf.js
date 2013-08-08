@@ -55,6 +55,7 @@ for (var i=3; i<process.argv.length; i++) {
 
 var sourceFile = process.argv[2];
 var min = !!options['min'];
+var importedFiles = []; // Already imported files
 
 // Switch cases
 try {
@@ -102,11 +103,14 @@ function build_js(file, min) {
     var out = "";
     if (ast['imports']) {
         ast['imports'].forEach(function(ifile) {
-            if (ProtoBuf.Builder.isValidImport(ifile)) {
-                out += (build_js(path.join(base, ifile), min))[1];
+            var pfile = path.resolve(base, ifile);
+            if (importedFiles.indexOf(pfile) < 0 && ProtoBuf.Builder.isValidImport(ifile)) {
+                out += (build_js(pfile, min))[1];
+                importedFiles.push(pfile);
             }
         });
         ast['imports'].length = 0;
+        
     }
     out += '.import('+JSON.stringify(ast, null, min ? 0 : 4)+')';
     return [ast, out];
