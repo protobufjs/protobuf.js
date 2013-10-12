@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.6";
+        ProtoBuf.VERSION = "1.1.7";
 
         /**
          * Wire types.
@@ -218,7 +218,7 @@
              * @const
              * @expose
              */
-            Util.IS_NODE = (typeof window == 'undefined' || !window.window) && typeof require == 'function';
+            Util.IS_NODE = (typeof window == 'undefined' || !window.window) && typeof require == 'function' && typeof process !== 'undefined' && typeof process.nextTick === 'function';
             
             /**
              * Constructs a XMLHttpRequest object.
@@ -1371,8 +1371,14 @@
                     /**
                      * @type {!Function}
                      */
-                    var Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); })");
-                    // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
+                    var Message;
+                    try {
+                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); })");
+                        // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
+                    } catch (err) {
+                        Message = function() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); };
+                        // Chrome extensions prohibit the usage of eval, see #58 FIXME: Does this work?
+                    }
                     
                     // Extends ProtoBuf.Builder.Message
                     Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);

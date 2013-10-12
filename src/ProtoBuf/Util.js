@@ -49,7 +49,7 @@ ProtoBuf.Util = (function() {
      * @const
      * @expose
      */
-    Util.IS_NODE = (typeof window == 'undefined' || !window.window) && typeof require == 'function';
+    Util.IS_NODE = (typeof window == 'undefined' || !window.window) && typeof require == 'function' && typeof process !== 'undefined' && typeof process.nextTick === 'function';
     
     /**
      * Constructs a XMLHttpRequest object.
