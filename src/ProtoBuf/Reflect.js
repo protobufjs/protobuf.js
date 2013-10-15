@@ -166,7 +166,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     Namespace.prototype.hasChild = function(nameOrId) {
         var i;
         if (typeof nameOrId == 'number') {
-            for (i=0; i<this.children.length; i++) if (this.children[i] instanceof Message.Field && this.children[i].id == nameOrId) return true;
+            for (i=0; i<this.children.length; i++) if (this.children[i].id == nameOrId) return true;
         } else {
             for (i=0; i<this.children.length; i++) if (this.children[i].name == nameOrId) return true;
         }
