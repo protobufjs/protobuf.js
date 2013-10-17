@@ -793,9 +793,11 @@
         
         "extend": function(test) {
             try {
-                test.doesNotThrow(function() {
-                    ProtoBuf.protoFromFile(__dirname+"/extend.proto");
-                });
+              var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/extend.proto"));
+              var root = parser.parse();
+              console.log('root', root);
+              test.equal(root["extends"][0]["messageToExtend"], "google.protobuf.MessageOptions");
+              test.equal(root["extends"][0]["fields"][0]["name"], "foo");
             } catch (e) {
                 fail(e);
             }
