@@ -1,0 +1,8 @@
+
+message Foo {
+  extensions 1000 to max;
+}
+
+extend Foo {
+  optional int32 bar = 1001;
+}

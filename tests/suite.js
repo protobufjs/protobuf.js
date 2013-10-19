@@ -795,7 +795,6 @@
             try {
               var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/extend.proto"));
               var root = parser.parse();
-              console.log('root', root);
               test.equal(root["extends"][0]["messageToExtend"], "google.protobuf.MessageOptions");
               test.equal(root["extends"][0]["fields"][0]["name"], "foo");
             } catch (e) {
@@ -849,6 +848,22 @@
             test.done();
         },
 
+        "extendexample": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/extend2.proto");
+
+
+                var Foo = builder.build("Foo");
+                var foo = new Foo({
+                    "bar": 12
+                });
+
+                test.strictEqual(foo.bar, 12);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         // Make sure that our example at https://github.com/dcodeIO/ProtoBuf.js/wiki is not nonsense
         "pingexample": function(test) {

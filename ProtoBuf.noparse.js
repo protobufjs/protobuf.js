@@ -1121,6 +1121,7 @@
                  * @expose
                  */
                 this.options = options || {};
+        
             };
         
             // Extends T
@@ -1556,6 +1557,83 @@
             Reflect.Enum = Enum;
         
             /**
+             * Constructs a new Extend.
+             * @exports ProtoBuf.Reflect.Extend
+             * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
+             * @param {string} name Extend name
+             * @param {Object} fields Extend fields
+             * @constructor
+             * @extends ProtoBuf.Reflect.Namespace
+             */
+            var Extend = function(parent, name, fields) {
+                Namespace.call(this, parent, name, fields);
+        
+                /**
+                 * Runtime Extend object.
+                 * @type {Object.<string,number>|null}
+                 * @expose
+                 */
+                this.object = null;
+            };
+        
+            // Extends Namespace
+            Extend.prototype = Object.create(Namespace.prototype);
+        
+            /**
+             * Builds this Extend and returns the runtime counterpart.
+             * @return {Object<string,*>}
+             * @expose
+             */
+            Extend.prototype.build = function() {
+                var extend = {};
+                var fields = this.getChildren(Extend.Field);
+                for (var i=0; i<fields.length; i++) {
+                    extend[fields[i]['name']] = fields[i];
+                }
+                if (Object.defineProperty) {
+                    Object.defineProperty(extend, '$fields', {
+                        'value': this.buildOpt(),
+                        'Extenderable': false,
+                        'configurable': false,
+                        'writable': false
+                    });
+                }
+                return this.object = extend;
+            };
+        
+            /**
+             * @alias ProtoBuf.Reflect.Extend
+             * @expose
+             */
+            Reflect.Extend = Extend;
+        
+            /**
+             * Constructs a new Extensions Registry
+             * @exports ProtoBuf.Reflect.ExtensionsRegistry
+             * @constructor
+             * @extends ProtoBuf.Reflect.T
+             */
+            var ExtensionsRegistry = function(enm, name, id) {
+                T.call(this, enm, name);
+        
+                /**
+                 * Unique enum value id.
+                 * @type {number}
+                 * @expose
+                 */
+                this.id = id;
+            };
+        
+            // Extends T
+            ExtensionsRegistry.prototype = Object.create(T.prototype);
+        
+            /**
+             * @alias ProtoBuf.Reflect.Enum.Value
+             * @expose
+             */
+            Reflect.ExtensionsRegistry = ExtensionsRegistry;
+        
+            /**
              * Constructs a new Enum Value.
              * @exports ProtoBuf.Reflect.Enum.Value
              * @param {!ProtoBuf.Reflect.Enum} enm Enum reference
@@ -1786,6 +1864,54 @@
             };
         
             /**
+             * Tests if a definition is a valid extend definition.
+             * @param {Object} def Definition
+             * @return {boolean} true if valid, else false
+             * @expose
+             */
+            Builder.isValidExtend = function(def) {
+                if (typeof def["messageToExtend"] != 'string' || !Lang.NAME.test(def["messageToExtend"])) {
+                    return false;
+                }
+                if (typeof def["fields"] == 'undefined' || !(def["fields"] instanceof Array) || def["fields"].length == 0) {
+                    return false;
+                }
+                for (var i=0; i<def["fields"].length; i++) {
+                    if (!Builder.isValidMessageField(def["fields"][i])) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+        
+            Builder.prototype.addFieldsToMessage = function (def, message) {
+        
+                var i, j, subObj;
+                var fields = def["fields"];
+                for (i = 0; i < fields.length; i++) { // i=Fields
+                    if (!Builder.isValidMessageField(fields[i])) {
+                        throw(new Error("Not a valid message field definition in message " + message.name + ": " + JSON.stringify(fields[i])));
+                    }
+                    if (message.hasChild(fields[i]['id'])) {
+                        throw(new Error("Duplicate field id in message " + message.name + ": " + fields[i]['id']));
+                    }
+                    if (fields[i]["options"]) {
+                        subObj = Object.keys(fields[i]["options"]);
+                        for (j = 0; j < subObj.length; j++) { // j=Option names
+                            if (!Lang.NAME.test(subObj[j])) {
+                                throw(new Error("Illegal field option name in message " + message.name + "#" + fields[i]["name"] + ": " + subObj[j]));
+                            }
+                            if (typeof fields[i]["options"][subObj[j]] != 'string' && typeof fields[i]["options"][subObj[j]] != 'number') {
+                                throw(new Error("Illegal field option value in message " + message.name + "#" + fields[i]["name"] + "#" + subObj[j] + ": " + fields[i]["options"][subObj[j]]));
+                            }
+                        }
+                        subObj = null;
+                    }
+                    message.addChild(new Reflect.Message.Field(message, fields[i]["rule"], fields[i]["type"], fields[i]["name"], fields[i]["id"], fields[i]["options"]));
+                }
+            };
+        
+            /**
              * Creates ths specified protocol types at the current pointer position.
              * @param {Array.<Object.<string,*>>} messages Messages or enums to create
              * @return {ProtoBuf.Builder} this
@@ -1811,27 +1937,7 @@
                                 obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
-                                    for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                        if (!Builder.isValidMessageField(def["fields"][i])) {
-                                            throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
-                                        }
-                                        if (obj.hasChild(def['fields'][i]['id'])) {
-                                            throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
-                                        }
-                                        if (def["fields"][i]["options"]) {
-                                            subObj = Object.keys(def["fields"][i]["options"]);
-                                            for (j=0; j<subObj.length; j++) { // j=Option names
-                                                if (!Lang.NAME.test(subObj[j])) {
-                                                    throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
-                                                }
-                                                if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
-                                                    throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
-                                                }
-                                            }
-                                            subObj = null;
-                                        }
-                                        obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
-                                    }
+                                    this.addFieldsToMessage(def, obj);
                                 }
                                 // Push enums and messages to stack
                                 subObj = [];
@@ -1862,6 +1968,18 @@
                                     obj.addChild(new Reflect.Enum.Value(obj, def["values"][i]["name"], def["values"][i]["id"]));
                                 }
                                 this.ptr.addChild(obj);
+                                obj = null;
+                            } else if (Builder.isValidExtend(def)) {
+                                // extend blocks don't get added to the message. Instead they are just referenced
+                                // straight off the builder.
+                                var extensions = this.extensions || (this.extensions = {});
+                                obj = new Reflect.Extend(this.ptr, def["messageToExtend"], def["fields"]);
+                                for (i=0; i<def["fields"].length; i++) {
+                                    obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                }
+                                extensions[obj.name] = obj;
+                                console.log('obj', obj);
+        
                                 obj = null;
                             } else {
                                 throw(new Error("Not a valid message or enum definition: "+JSON.stringify(def)));
@@ -1956,6 +2074,18 @@
                 return this;
             };
         
+            Builder.prototype.setExtension = function(field, value) {
+                console.log('setExtension', field, value);
+            };
+        
+            Builder.prototype.hasExtension = function(field) {
+                return !!this.getExtension(field);
+            };
+        
+            Builder.prototype.getExtension = function(field) {
+                return null;
+            };
+        
             /**
              * Resolves all namespace objects.
              * @throws {Error} If a type cannot be resolved
@@ -2040,6 +2170,7 @@
              * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
              */
             Builder.prototype.lookup = function(path) {
+                console.log('Lookup for ' + path);
                 return path ? this.ns.resolve(path) : this.ns;
             };
         
