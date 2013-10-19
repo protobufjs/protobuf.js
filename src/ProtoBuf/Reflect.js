@@ -792,7 +792,6 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
          * @expose
          */
         this.options = options || {};
-
     };
 
     // Extends T

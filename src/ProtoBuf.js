@@ -235,13 +235,11 @@
                 }, filename);
             }
             if (parsed['extends'].length > 0) {
-                builder['extensions'] = parsed['extends'];
                 for (var i = 0; i < parsed['extends'].length; i++) {
                     var extend = parsed['extends'][i];
                     var message = builder.ns.resolve(extend.messageToExtend);
                     builder.addFieldsToMessage(extend["fields"], message);
                 }
-
             }
 
             builder.resolveAll();

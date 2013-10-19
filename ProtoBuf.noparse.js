@@ -1121,7 +1121,6 @@
                  * @expose
                  */
                 this.options = options || {};
-        
             };
         
             // Extends T
