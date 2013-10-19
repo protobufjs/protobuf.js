@@ -852,13 +852,26 @@
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/extend2.proto");
 
-
                 var Foo = builder.build("Foo");
                 var foo = new Foo({
-                    "bar": 12
+                    "blah": "blahValue",
+                    "bar": 12,
+                    person: {
+                        "name": "Nancy",
+                        "id": 123
+                    }
                 });
 
+                test.strictEqual(foo.blah, "blahValue");
                 test.strictEqual(foo.bar, 12);
+                test.deepEqual(foo.person, { name: "Nancy", id: 123, email: null});
+
+                var encoded = foo.encode();
+                var decoded = Foo.decode(encoded);
+
+                test.strictEqual(decoded.blah, "blahValue");
+                test.strictEqual(decoded.bar, 12);
+                test.deepEqual(decoded.person, { name: "Nancy", id: 123, email: null});
             } catch (e) {
                 fail(e);
             }

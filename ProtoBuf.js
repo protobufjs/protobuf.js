@@ -577,7 +577,7 @@
                         }
                         topLevel.imports.push(this._parseImport(token));
                     } else if (token == 'message') {
-                        this._parseMessage(topLevel, token);
+                        this._parseMessage(topLevel, token, topLevel);
                         header = false;
                     } else if (token == 'extend') {
                         this._parseExtend(topLevel, token);
@@ -811,11 +811,12 @@
              * Parses a message.
              * @param {Object} parent Parent definition
              * @param {string} token First token
+             * @param {Object} topLevel The top level definition
              * @return {Object}
              * @throws {Error} If the message cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessage = function(parent, token) {
+            Parser.prototype._parseMessage = function(parent, token, topLevel) {
                 /** @dict */
                 var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
                 token = this.tn.next();
@@ -842,9 +843,11 @@
                     } else if (token == "enum") {
                         this._parseEnum(msg, token);
                     } else if (token == "message") {
-                        this._parseMessage(msg, token);
+                        this._parseMessage(msg, token, topLevel);
                     } else if (token == "option") {
                         this._parseOption(msg, token);
+                    } else if (token == "extend") {
+                        this._parseExtend(topLevel, token);
                     } else if (token == "extensions") {
                         this._parseIgnoredStatement(msg, token);
                     } else {
@@ -855,42 +858,42 @@
                 return msg;
             };
         
-          /**
-           * Parses an extend block.
-           * @param {Object} parent Parent definition
-           * @param {string} token First token
-           * @return {Object}
-           * @throws {Error} If the message cannot be parsed
-           * @private
-           */
-          Parser.prototype._parseExtend = function(parent, token) {
-            /** @dict */
-            var extend = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
-            token = this.tn.next();
-            if (!Lang.NAME.test(token)) {
-              throw(new Error("Illegal message name"+(parent ? " in message "+parent["name"] : "")+": "+token));
-            }
-            extend["messageToExtend"] = token;
-            token = this.tn.next();
-            if (token != Lang.OPEN) {
-              throw(new Error("Illegal OPEN after message "+extend.name+": "+token+" ('"+Lang.OPEN+"' expected)"));
-            }
-            extend["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
-            do {
-              token = this.tn.next();
-              if (token == Lang.CLOSE) {
-                token = this.tn.peek();
-                if (token == Lang.END) this.tn.next();
-                break;
-              } else if (Lang.RULE.test(token)) {
-                this._parseMessageField(extend, token);
-              } else {
-                throw(new Error("Illegal token in message "+extend.name+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
-              }
-            } while (true);
-            parent["extends"].push(extend);
-            return extend;
-          };
+            /**
+             * Parses an extend block.
+             * @param {Object} parent Parent definition
+             * @param {string} token First token
+             * @return {Object}
+             * @throws {Error} If the message cannot be parsed
+             * @private
+             */
+            Parser.prototype._parseExtend = function (parent, token) {
+                /** @dict */
+                var extend = {};
+                token = this.tn.next();
+                if (!Lang.NAME.test(token)) {
+                    throw(new Error("Illegal message name" + (parent ? " in message " + parent["name"] : "") + ": " + token));
+                }
+                extend["messageToExtend"] = token;
+                token = this.tn.next();
+                if (token != Lang.OPEN) {
+                    throw(new Error("Illegal OPEN after message " + extend.name + ": " + token + " ('" + Lang.OPEN + "' expected)"));
+                }
+                extend["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
+                do {
+                    token = this.tn.next();
+                    if (token == Lang.CLOSE) {
+                        token = this.tn.peek();
+                        if (token == Lang.END) this.tn.next();
+                        break;
+                    } else if (Lang.RULE.test(token)) {
+                        this._parseMessageField(extend, token);
+                    } else {
+                        throw(new Error("Illegal token in message " + extend.name + ": " + token + " (type or '" + Lang.CLOSE + "' expected)"));
+                    }
+                } while (true);
+                parent["extends"].push(extend);
+                return extend;
+            };
         
             /**
              * Parses a message field.
@@ -2710,6 +2713,14 @@
                 return this;
             };
         
+            Builder.prototype.extendMessages = function (extendBlocks) {
+                for (var i = 0; i < extendBlocks.length; i++) {
+                    var extend = extendBlocks[i];
+                    var message = this.ns.resolve(extend.messageToExtend);
+                    this.addFieldsToMessage(extend["fields"], message);
+                }
+            };
+        
             /**
              * Tests if the specified file is a valid import.
              * @param {string} filename
@@ -2926,11 +2937,7 @@
                 }, filename);
             }
             if (parsed['extends'].length > 0) {
-                for (var i = 0; i < parsed['extends'].length; i++) {
-                    var extend = parsed['extends'][i];
-                    var message = builder.ns.resolve(extend.messageToExtend);
-                    builder.addFieldsToMessage(extend["fields"], message);
-                }
+                builder.extendMessages(parsed['extends']);
             }
 
             builder.resolveAll();

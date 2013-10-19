@@ -1962,6 +1962,14 @@
                 return this;
             };
         
+            Builder.prototype.extendMessages = function (extendBlocks) {
+                for (var i = 0; i < extendBlocks.length; i++) {
+                    var extend = extendBlocks[i];
+                    var message = this.ns.resolve(extend.messageToExtend);
+                    this.addFieldsToMessage(extend["fields"], message);
+                }
+            };
+        
             /**
              * Tests if the specified file is a valid import.
              * @param {string} filename

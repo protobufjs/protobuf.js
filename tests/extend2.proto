@@ -1,8 +1,17 @@
-
-message Foo {
-  extensions 1000 to max;
-}
+import "extend.proto";
 
 extend Foo {
   optional int32 bar = 1001;
+}
+
+message Person {
+
+  extend Foo {
+      optional Person person = 1002;
+  }
+
+  required string name = 1;
+  required int32 id = 2;
+  optional string email = 3;
+
 }
