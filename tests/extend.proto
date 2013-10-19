@@ -1,8 +1,4 @@
-import "google/protobuf/descriptor.proto";
-
-extend google.protobuf.MessageOptions {
-  optional int32 foo = 123;
-}
+package sample.basepackage;
 
 message Foo {
   optional string blah = 1;

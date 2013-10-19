@@ -793,10 +793,10 @@
         
         "extend": function(test) {
             try {
-              var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/extend.proto"));
+              var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/extend2.proto"));
               var root = parser.parse();
-              test.equal(root["extends"][0]["messageToExtend"], "google.protobuf.MessageOptions");
-              test.equal(root["extends"][0]["fields"][0]["name"], "foo");
+              test.equal(root["extends"][0]["messageToExtend"], "sample.basepackage.Foo");
+              test.equal(root["extends"][0]["fields"][0]["name"], "bar");
             } catch (e) {
                 fail(e);
             }
@@ -850,9 +850,39 @@
 
         "extendexample": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/extend2.proto");
+                var root = ProtoBuf.protoFromFile(__dirname+"/extend2.proto").build();
 
-                var Foo = builder.build("Foo");
+                var Foo = root.sample.basepackage.Foo;
+                var foo = new Foo({
+                    "blah": "blahValue",
+                    "bar": 12,
+                    person: {
+                        "name": "Nancy",
+                        "id": 123
+                    }
+                });
+
+                test.strictEqual(foo.blah, "blahValue");
+                test.strictEqual(foo.bar, 12);
+                test.deepEqual(foo.person, { name: "Nancy", id: 123, email: null});
+
+                var encoded = foo.encode();
+                var decoded = Foo.decode(encoded);
+
+                test.strictEqual(decoded.blah, "blahValue");
+                test.strictEqual(decoded.bar, 12);
+                test.deepEqual(decoded.person, { name: "Nancy", id: 123, email: null});
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "extendfromcommonjs": function(test) {
+            try {
+                var root = require(__dirname+"/extend2.js");
+
+                var Foo = root.basepackage.Foo;
                 var foo = new Foo({
                     "blah": "blahValue",
                     "bar": 12,

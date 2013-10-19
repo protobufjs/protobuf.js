@@ -1,13 +1,15 @@
 import "extend.proto";
 
-extend Foo {
+package sample.package;
+
+extend sample.basepackage.Foo {
   optional int32 bar = 1001;
 }
 
 message Person {
 
-  extend Foo {
-      optional Person person = 1002;
+  extend sample.basepackage.Foo {
+      optional sample.package.Person person = 1002;
   }
 
   required string name = 1;

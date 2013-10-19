@@ -847,6 +847,7 @@
                     } else if (token == "option") {
                         this._parseOption(msg, token);
                     } else if (token == "extend") {
+                        // all extend directives are put on the top level nested and top-level extend blocks act the same way
                         this._parseExtend(topLevel, token);
                     } else if (token == "extensions") {
                         this._parseIgnoredStatement(msg, token);
@@ -2717,6 +2718,9 @@
                 for (var i = 0; i < extendBlocks.length; i++) {
                     var extend = extendBlocks[i];
                     var message = this.ns.resolve(extend.messageToExtend);
+                    if (!message) {
+                        throw(new Error("Couldn't find message to extend: " + extend.messageToExtend));
+                    }
                     this.addFieldsToMessage(extend["fields"], message);
                 }
             };
@@ -2799,6 +2803,11 @@
                             this["import"](parser.parse(), importFilename); // Throws on its own                    
                         }
                     }
+                }
+        
+                this.reset();
+                if (parsed['extends'] && parsed['extends'].length > 0) {
+                    this.extendMessages(parsed['extends']);
                 }
                 return this;
             };

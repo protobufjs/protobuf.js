@@ -317,6 +317,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         for (var i = 0; i < extendBlocks.length; i++) {
             var extend = extendBlocks[i];
             var message = this.ns.resolve(extend.messageToExtend);
+            if (!message) {
+                throw(new Error("Couldn't find message to extend: " + extend.messageToExtend));
+            }
             this.addFieldsToMessage(extend["fields"], message);
         }
     };
@@ -403,6 +406,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                     // #endif
                 }
             }
+        }
+
+        this.reset();
+        if (parsed['extends'] && parsed['extends'].length > 0) {
+            this.extendMessages(parsed['extends']);
         }
         return this;
     };
