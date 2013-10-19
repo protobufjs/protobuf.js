@@ -229,9 +229,6 @@
             if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
             builder.create(parsed['enums']);
             builder.reset();
-//            if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-//            builder.create(parsed['extends']);
-//            builder.reset();
             if (filename && parsed['imports'].length > 0) {
                 builder["import"]({
                     "imports": parsed["imports"]
@@ -239,12 +236,10 @@
             }
             if (parsed['extends'].length > 0) {
                 builder['extensions'] = parsed['extends'];
-               // console.log('extending ' + JSON.stringify(builder['extensions'], null, 2));
                 for (var i = 0; i < parsed['extends'].length; i++) {
                     var extend = parsed['extends'][i];
                     var message = builder.ns.resolve(extend.messageToExtend);
-                    builder.addFieldsToMessage(extend, message);
-                    console.log('message:', message);
+                    builder.addFieldsToMessage(extend["fields"], message);
                 }
 
             }

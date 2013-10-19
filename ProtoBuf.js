@@ -2611,31 +2611,8 @@
                 return true;
             };
         
-            /**
-             * Tests if a definition is a valid extend definition.
-             * @param {Object} def Definition
-             * @return {boolean} true if valid, else false
-             * @expose
-             */
-            Builder.isValidExtend = function(def) {
-                if (typeof def["messageToExtend"] != 'string' || !Lang.NAME.test(def["messageToExtend"])) {
-                    return false;
-                }
-                if (typeof def["fields"] == 'undefined' || !(def["fields"] instanceof Array) || def["fields"].length == 0) {
-                    return false;
-                }
-                for (var i=0; i<def["fields"].length; i++) {
-                    if (!Builder.isValidMessageField(def["fields"][i])) {
-                        return false;
-                    }
-                }
-                return true;
-            };
-        
-            Builder.prototype.addFieldsToMessage = function (def, message) {
-        
+            Builder.prototype.addFieldsToMessage = function (fields, message) {
                 var i, j, subObj;
-                var fields = def["fields"];
                 for (i = 0; i < fields.length; i++) { // i=Fields
                     if (!Builder.isValidMessageField(fields[i])) {
                         throw(new Error("Not a valid message field definition in message " + message.name + ": " + JSON.stringify(fields[i])));
@@ -2685,7 +2662,7 @@
                                 obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
-                                    this.addFieldsToMessage(def, obj);
+                                    this.addFieldsToMessage(def["fields"], obj);
                                 }
                                 // Push enums and messages to stack
                                 subObj = [];
@@ -2716,18 +2693,6 @@
                                     obj.addChild(new Reflect.Enum.Value(obj, def["values"][i]["name"], def["values"][i]["id"]));
                                 }
                                 this.ptr.addChild(obj);
-                                obj = null;
-                            } else if (Builder.isValidExtend(def)) {
-                                // extend blocks don't get added to the message. Instead they are just referenced
-                                // straight off the builder.
-                                var extensions = this.extensions || (this.extensions = {});
-                                obj = new Reflect.Extend(this.ptr, def["messageToExtend"], def["fields"]);
-                                for (i=0; i<def["fields"].length; i++) {
-                                    obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
-                                }
-                                extensions[obj.name] = obj;
-                                console.log('obj', obj);
-        
                                 obj = null;
                             } else {
                                 throw(new Error("Not a valid message or enum definition: "+JSON.stringify(def)));
@@ -2826,18 +2791,6 @@
                     }
                 }
                 return this;
-            };
-        
-            Builder.prototype.setExtension = function(field, value) {
-                console.log('setExtension', field, value);
-            };
-        
-            Builder.prototype.hasExtension = function(field) {
-                return !!this.getExtension(field);
-            };
-        
-            Builder.prototype.getExtension = function(field) {
-                return null;
             };
         
             /**
@@ -2968,9 +2921,6 @@
             if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
             builder.create(parsed['enums']);
             builder.reset();
-//            if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-//            builder.create(parsed['extends']);
-//            builder.reset();
             if (filename && parsed['imports'].length > 0) {
                 builder["import"]({
                     "imports": parsed["imports"]
@@ -2978,12 +2928,10 @@
             }
             if (parsed['extends'].length > 0) {
                 builder['extensions'] = parsed['extends'];
-               // console.log('extending ' + JSON.stringify(builder['extensions'], null, 2));
                 for (var i = 0; i < parsed['extends'].length; i++) {
                     var extend = parsed['extends'][i];
                     var message = builder.ns.resolve(extend.messageToExtend);
-                    builder.addFieldsToMessage(extend, message);
-                    console.log('message:', message);
+                    builder.addFieldsToMessage(extend["fields"], message);
                 }
 
             }
