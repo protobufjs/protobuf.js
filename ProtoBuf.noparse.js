@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.7";
+        ProtoBuf.VERSION = "1.1.8";
 
         /**
          * Wire types.
@@ -495,9 +495,9 @@
             Namespace.prototype.hasChild = function(nameOrId) {
                 var i;
                 if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (this.children[i] instanceof Message.Field && this.children[i].id == nameOrId) return true;
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return true;
                 } else {
-                    for (i=0; i<this.children.length; i++) if (this.children[i].name == nameOrId) return true;
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return true;
                 }
                 return false;
             };
@@ -511,9 +511,9 @@
             Namespace.prototype.getChild = function(nameOrId) {
                 var i;
                 if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (this.children[i] instanceof Message.Field && this.children[i].id == nameOrId) return this.children[i];
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return this.children[i];
                 } else {
-                    for (i=0; i<this.children.length; i++) if (this.children[i].name == nameOrId) return this.children[i];
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return this.children[i];
                 }
                 return null;
             };
