@@ -1,6 +1,6 @@
 import "extend.proto";
 
-package sample.package;
+package sample.mypackage;
 
 extend sample.basepackage.Foo {
   optional int32 bar = 1001;
@@ -9,7 +9,7 @@ extend sample.basepackage.Foo {
 message Person {
 
   extend sample.basepackage.Foo {
-      optional sample.package.Person person = 1002;
+      optional sample.mypackage.Person person = 1002;
   }
 
   required string name = 1;

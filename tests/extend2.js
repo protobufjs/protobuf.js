@@ -22,7 +22,7 @@ module.exports = require("../ProtoBuf.js").newBuilder().import({
     "options": {},
     "extends": []
 }).import({
-    "package": "sample.package",
+    "package": "sample.mypackage",
     "messages": [
         {
             "name": "Person",
@@ -75,7 +75,7 @@ module.exports = require("../ProtoBuf.js").newBuilder().import({
             "fields": [
                 {
                     "rule": "optional",
-                    "type": "sample.package.Person",
+                    "type": "sample.mypackage.Person",
                     "name": "person",
                     "id": 1002,
                     "options": {}
