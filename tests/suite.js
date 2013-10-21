@@ -830,6 +830,7 @@
                 test.equal(root["options"]["my_file_option"], "Hello world!");
                 test.equal(root["messages"][0]["options"]["my_message_option"], 1234)
                 test.equal(root["messages"][0]["fields"][0]["options"]["my_field_option"], 4.5);
+                test.equal(root["services"]["MyService"]["options"]["my_service_option"], "FOO");
                 // TODO: add tests for my_enum_option, my_enum_value_option
             } catch (e) {
                 fail(e);

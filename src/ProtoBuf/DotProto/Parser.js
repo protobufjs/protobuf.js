@@ -52,7 +52,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "messages": [],
             "enums": [],
             "imports": [],
-            "options": {}
+            "options": {},
+            "services": {}
         };
         var token, header = true;
         do {
@@ -84,7 +85,9 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                     throw(new Error("Illegal option definition: Must be declared before the first message or enum"));
                 }
                 this._parseOption(topLevel, token);
-            } else if (token == 'extend' || token == 'service') {
+            } else if (token == 'service') {
+                this._parseService(topLevel, token);
+            } else if (token == 'extend') {
                 this._parseIgnoredBlock(topLevel, token);
             } else if (token == 'syntax') {
                 this._parseIgnoredStatement(topLevel, token);
@@ -303,7 +306,106 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     };
 
     /**
-     * Parses a message.
+     * Parses a service definition.
+     * @param {Object} parent Parent definition
+     * @param {string} keyword Initial token
+     * @throws {Error} If the service cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseService = function(parent, keyword) {
+        var token = this.tn.next();
+        if (!Lang.NAME.test(token)) {
+            throw(new Error("Illegal service name: "+token));
+        }
+        var name = token,
+            svc = {};
+        svc["options"] = {};
+        token = this.tn.next();
+        if (token != Lang.OPEN) {
+            throw(new Error("Illegal OPEN after service "+name+": "+token+" ('"+Lang.OPEN+"' expected)"));
+        }
+        do {
+            token = this.tn.next();
+            if (token == "option") {
+                this._parseOption(svc, token);
+            } else if (token == 'rpc') {
+                this._parseServiceRPC(svc, token);
+            } else if (token != Lang.CLOSE) {
+                throw(new Error("Illegal type for service "+name+": "+token));
+            }
+        } while (token != Lang.CLOSE);
+        parent["services"][name] = svc;
+    };
+
+    /**
+     * Parses a RPC service definition of the form ['rpc', name, (request), 'returns', (response)].
+     * @param {Object} svc Parent definition
+     * @param {string} token Initial token
+     * @private
+     */
+    Parser.prototype._parseServiceRPC = function(svc, token) {
+        var type = token;
+        token = this.tn.next();
+        if (!Lang.NAME.test(token)) {
+            throw(new Error("Illegal RPC method name in service "+svc["name"]+": "+token));
+        }
+        var name = token;
+        var method = {
+            "request": null,
+            "response": null,
+            "options": {}
+        };
+        token = this.tn.next();
+        if (token != Lang.COPTOPEN) {
+            throw(new Error("Illegal start of request type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
+        }
+        token = this.tn.next();
+        if (!Lang.TYPEREF.test(token)) {
+            throw(new Error("Illegal request type in RPC service "+svc["name"]+"#"+name+": "+token));
+        }
+        method["request"] = token;
+        token = this.tn.next();
+        if (token != Lang.COPTCLOSE) {
+            throw(new Error("Illegal end of request type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
+        }
+        token = this.tn.next();
+        if (token.toLowerCase() != "returns") {
+            throw(new Error("Illegal request/response delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('returns' expected)"));
+        }
+        token = this.tn.next();
+        if (token != Lang.COPTOPEN) {
+            throw(new Error("Illegal start of response type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
+        }
+        token = this.tn.next();
+        method["response"] = token;
+        token = this.tn.next();
+        if (token != Lang.COPTCLOSE) {
+            throw(new Error("Illegal end of response type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
+        }
+        token = this.tn.next();
+        if (token == Lang.OPEN) {
+            // FIXME: Options on methods are not correctly supported as of the custom-options.proto example, so these are skipped
+            do {
+                token = this.tn.next();
+            } while (token != Lang.CLOSE);
+            // Else we could do something like this:
+            // do {
+            //     token = this.tn.next();
+            //     if (token == 'option') {
+            //         this._parseOption(method, token); // <- will fail for the custom-options example
+            //     } else {
+            //         throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+": "+token+" ('option' expected)"));
+            //     }
+            // } while (token != Lang.CLOSE);
+        } else if (token != Lang.END) {
+            throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
+        }
+        if (typeof svc[type] === 'undefined') svc[type] = {};
+        svc[type][name] = method;
+    };
+
+    /**
+     * Parses a message definition.
      * @param {Object} parent Parent definition
      * @param {string} token First token
      * @return {Object}
