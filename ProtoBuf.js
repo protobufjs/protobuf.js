@@ -344,7 +344,6 @@
                 
         /**
          * Utilities to parse .proto files.
-         * @exports ProtoBuf.DotProto
          * @namespace
          * @expose
          */
