@@ -57,6 +57,13 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
          * @expose
          */
         this.result = null;
+
+        /**
+         * Imported files.
+         * @type {Array.<string>}
+         * @expose
+         */
+        this.files = {};
     };
 
     /**
@@ -319,13 +326,6 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
         return !(/google\/protobuf\//.test(filename));
     };
-
-    /**
-     * Imported files.
-     * @type {Array.<string>}
-     * @expose
-     */
-    Builder.prototype.files = [];
 
     /**
      * Imports another definition into this builder.

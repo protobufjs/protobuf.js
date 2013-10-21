@@ -790,6 +790,25 @@
             }
             test.done();
         },
+
+        "importDuplicateDifferentBuilder": function(test) {
+            try {
+                var builderA = ProtoBuf.protoFromFile(__dirname+"/import_a.proto");
+                var builderB;
+                test.doesNotThrow(function() {
+                    builderB = ProtoBuf.protoFromFile(__dirname+"/import_b.proto");
+                });
+                var rootA = builderA.build();
+                var rootB = builderB.build();
+                test.ok(rootA.A);
+                test.ok(rootB.B);
+                test.ok(rootA.Common);                
+                test.ok(rootB.Common);                
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         "extend": function(test) {
             try {
