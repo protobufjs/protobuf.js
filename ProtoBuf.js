@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.8";
+        ProtoBuf.VERSION = "1.1.9";
 
         /**
          * Wire types.
@@ -2337,6 +2337,13 @@
                  * @expose
                  */
                 this.result = null;
+        
+                /**
+                 * Imported files.
+                 * @type {Array.<string>}
+                 * @expose
+                 */
+                this.files = {};
             };
         
             /**
@@ -2599,13 +2606,6 @@
                 // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
                 return !(/google\/protobuf\//.test(filename));
             };
-        
-            /**
-             * Imported files.
-             * @type {Array.<string>}
-             * @expose
-             */
-            Builder.prototype.files = [];
         
             /**
              * Imports another definition into this builder.
