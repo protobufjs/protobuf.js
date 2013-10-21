@@ -343,22 +343,13 @@
         })();
                 
         /**
-         * @alias ProtoBuf.DotProto
+         * Utilities to parse .proto files.
+         * @exports ProtoBuf.DotProto
+         * @namespace
          * @expose
          */
-        ProtoBuf.DotProto = (function() {
-            "use strict";
+        ProtoBuf.DotProto = {}; // Not present in "noparse" builds
         
-            /**
-             * Utilities to parse .proto files.
-             * @exports ProtoBuf.DotProto
-             * @namespace
-             */
-            var DotProto = {};
-            
-            return DotProto;
-        })();
-                
         /**
          * @alias ProtoBuf.DotProto.Tokenizer
          * @expose
@@ -1160,7 +1151,7 @@
             return Parser;
             
         })(ProtoBuf, ProtoBuf.Lang, ProtoBuf.DotProto.Tokenizer);
-                
+                        
         /**
          * @alias ProtoBuf.Reflect
          * @expose

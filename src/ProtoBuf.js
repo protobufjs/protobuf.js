@@ -191,10 +191,6 @@
         // #ifndef NOPARSE
         // #include "ProtoBuf/DotProto.js"
         
-        // #include "ProtoBuf/DotProto/Tokenizer.js"
-        
-        // #include "ProtoBuf/DotProto/Parser.js"
-        
         // #else
         // This build of ProtoBuf.js does not include DotProto support.
         
