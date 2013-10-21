@@ -842,27 +842,60 @@
             try {
                 var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
                 var root = parser.parse();
-                test.deepEqual(root["services"], {
-                    "MyService": {
-                        "options": {
-                            "(my_service_option)": "FOO"
-                        },
-                        "rpc": {
-                            "MyMethod": {
-                                "request": "RequestType",
-                                "response": "ResponseType",
-                                "options": {
-                                    "(my_method_option).foo": 567,
-                                    "(my_method_option).bar": "Some string"
-                                }
+                test.deepEqual(root["services"], [{
+                    "name": "MyService",
+                    "rpc": {
+                        "MyMethod": {
+                            "request": "RequestType",
+                            "response": "ResponseType",
+                            "options": {
+                                "(my_method_option).foo": 567,
+                                "(my_method_option).bar": "Some string"
                             }
                         }
+                    },
+                    "options": {
+                        "(my_service_option)": "FOO"
                     }
+                }]);
+                
+                // A simple local example of implementing and using services:
+                var builder = ProtoBuf.protoFromFile(__dirname+"/custom-options.proto");
+                var root = builder.build(),
+                    MyService = root.MyService,
+                    RequestType = root.RequestType,
+                    ResponseType = root.ResponseType,
+                    request = new RequestType(),
+                    response = new ResponseType(),
+                    called = false;
+                
+                // Provide the service with your actual RPC implementation based on whatever framework you like most.
+                var myService = new MyService(function(method, req, callback) {
+                    test.strictEqual(method, "MyMethod");
+                    test.strictEqual(req, request);
+                    called = true;
+                    
+                    // In this case we just return no error and our pre-built response. This must be properly async!
+                    setTimeout(callback.bind(this, null, response));
+                });
+                
+                // Call the service with your request message and provide a callback. This will call your actual service
+                // implementation to perform the request and gather a response before calling the callback. If the
+                // request or response type is invalid i.e. not an instance of RequestType or ResponseType, your
+                // implementation will not be called as ProtoBuf.js handles this case internally and directly hands the
+                // error to your callback below.
+                myService.MyMethod(request, function(err, res) {
+                    // We get: err = null, res = our prebuilt response. And that's it.
+                    if (err !== null) {
+                        fail(err);
+                    }
+                    test.strictEqual(called, true);
+                    test.strictEqual(res, response);
+                    test.done();
                 });
             } catch (e) {
                 fail(e);
             }
-            test.done();
         },
         
         // Properly ignore "syntax" and "extensions" keywords

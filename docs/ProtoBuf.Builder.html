@@ -113,6 +113,9 @@
         <dl>
             <dt><a href="ProtoBuf.Builder.Message.html">Message</a></dt>
             <dd></dd>
+        
+            <dt><a href="ProtoBuf.Builder.Service.html">Service</a></dt>
+            <dd></dd>
         </dl>
     
     
@@ -867,6 +870,134 @@
         
             
 <dt>
+    <h4 class="name" id="isValidService"><span class="type-signature">&lt;static> </span>isValidService<span class="signature">(def)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Tests if a definition is a valid service definition.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>def</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Object.html">Object</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Definition</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>true if valid, else false</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="["import"]"><span class="type-signature"></span>["import"]<span class="signature">(parsed, <span class="optional">filename</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
     
     
@@ -1216,7 +1347,7 @@ return the built package.</p>
         
             
 <dt>
-    <h4 class="name" id="create"><span class="type-signature"></span>create<span class="signature">(messages)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
+    <h4 class="name" id="create"><span class="type-signature"></span>create<span class="signature">(defs)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
     
     
 </dt>
@@ -1258,7 +1389,7 @@ return the built package.</p>
 	
         <tr>
             
-                <td class="name"><code>messages</code></td>
+                <td class="name"><code>defs</code></td>
             
             
             <td class="type">
@@ -1274,7 +1405,7 @@ return the built package.</p>
             
             
             
-            <td class="description last"><p>Messages or enums to create</p></td>
+            <td class="description last"><p>Messages, enums or services to create</p></td>
         </tr>
 	
 	
@@ -1925,7 +2056,7 @@ return the built package.</p>
 
 <nav>
     <nav-inner>
-        <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
+        <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
     </nav-inner>
 </nav>
 

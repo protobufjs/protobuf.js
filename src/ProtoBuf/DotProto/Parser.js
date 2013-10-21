@@ -53,7 +53,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "enums": [],
             "imports": [],
             "options": {},
-            "services": {}
+            "services": []
         };
         var token, header = true;
         do {
@@ -322,9 +322,12 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         if (!Lang.NAME.test(token)) {
             throw(new Error("Illegal service name: "+token));
         }
-        var name = token,
-            svc = {};
-        svc["options"] = {};
+        var name = token;
+        var svc = {
+            "name": name,
+            "rpc": {},
+            "options": {}
+        };
         token = this.tn.next();
         if (token != Lang.OPEN) {
             throw(new Error("Illegal OPEN after service "+name+": "+token+" ('"+Lang.OPEN+"' expected)"));
@@ -339,7 +342,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 throw(new Error("Illegal type for service "+name+": "+token));
             }
         } while (token != Lang.CLOSE);
-        parent["services"][name] = svc;
+        parent["services"].push(svc);
     };
 
     /**
