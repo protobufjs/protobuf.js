@@ -1335,6 +1335,16 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 };
                 
             };
+
+            /**
+             * Asynchronously performs an RPC call using your RPC implementation.
+             * @name ProtoBuf.Builder.Service#[Method]
+             * @function
+             * @param {ProtoBuf.Builder.Message} req Request
+             * @param {function(Error, (ProtoBuf.Builder.Message|ByteBuffer|Buffer|string)=)} callback Callback receiving
+             *  the error if any and the response either as a pre-parsed message or as its raw bytes
+             * @abstract
+             */
             
             // service#Method(message)
             var rpc = T.getChildren(Reflect.Service.RPCMethod);
@@ -1350,6 +1360,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                                     callback(err);
                                     return;
                                 }
+                                try { res = method.resolvedResponseType.clazz.decode(res); } catch (notABuffer) {}
                                 if (!res || !(res instanceof method.resolvedResponseType.clazz)) {
                                     callback(new Error("Illegal response type received in service method "+ T.name+"#"+method.name));
                                     return;

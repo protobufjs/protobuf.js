@@ -865,18 +865,16 @@
                     MyService = root.MyService,
                     RequestType = root.RequestType,
                     ResponseType = root.ResponseType,
-                    request = new RequestType(),
-                    response = new ResponseType(),
                     called = false;
                 
                 // Provide the service with your actual RPC implementation based on whatever framework you like most.
                 var myService = new MyService(function(method, req, callback) {
                     test.strictEqual(method, "MyMethod");
-                    test.strictEqual(req, request);
+                    test.ok(req instanceof RequestType);
                     called = true;
                     
                     // In this case we just return no error and our pre-built response. This must be properly async!
-                    setTimeout(callback.bind(this, null, response));
+                    setTimeout(callback.bind(this, null, (new ResponseType()).encode() /* as raw bytes for debugging */ ));
                 });
                 
                 // Call the service with your request message and provide a callback. This will call your actual service
@@ -884,13 +882,13 @@
                 // request or response type is invalid i.e. not an instance of RequestType or ResponseType, your
                 // implementation will not be called as ProtoBuf.js handles this case internally and directly hands the
                 // error to your callback below.
-                myService.MyMethod(request, function(err, res) {
+                myService.MyMethod(new RequestType(), function(err, res) {
                     // We get: err = null, res = our prebuilt response. And that's it.
                     if (err !== null) {
                         fail(err);
                     }
                     test.strictEqual(called, true);
-                    test.strictEqual(res, response);
+                    test.ok(res instanceof ResponseType);
                     test.done();
                 });
             } catch (e) {
