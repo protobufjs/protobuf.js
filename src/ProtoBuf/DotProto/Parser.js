@@ -219,11 +219,16 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         var name = token;
         token = this.tn.next();
-        if (custom) {
+        if (custom) { // (my_method_option).foo, (my_method_option), some_method_option
             if (token != Lang.COPTCLOSE) {
                 throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
             }
+            name = '('+name+')';
             token = this.tn.next();
+            if (Lang.FQTYPEREF.test(token)) {
+                name += token;
+                token = this.tn.next();
+            }
         }
         if (token != Lang.EQUAL) {
             throw(new Error("Illegal option operator in message "+parent.name+", option "+name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
@@ -327,8 +332,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         do {
             token = this.tn.next();
             if (token == "option") {
-                this._parseIgnoredStatement(svc, token);
-                // this._parseOption(svc, token);
+                this._parseOption(svc, token);
             } else if (token == 'rpc') {
                 this._parseServiceRPC(svc, token);
             } else if (token != Lang.CLOSE) {
@@ -385,25 +389,14 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         token = this.tn.next();
         if (token == Lang.OPEN) {
-            // FIXME: Options on methods are not correctly supported as of the custom-options.proto example, so these are skipped
-            token = this.tn.next();
             do {
-                if (token == "option") {
-                    this._parseIgnoredStatement(method, token);
-                    token = this.tn.next();
-                } else {
-                    throw(new Error("Illegal ignored statement in RPC service "+svc["name"]+"#"+name+": "+token));
+                token = this.tn.next();
+                if (token == 'option') {
+                    this._parseOption(method, token); // <- will fail for the custom-options example
+                } else if (token != Lang.CLOSE) {
+                    throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+": "+token+" ('option' expected)"));
                 }
             } while (token != Lang.CLOSE);
-            // Else we could do something like this:
-            // do {
-            //     token = this.tn.next();
-            //     if (token == 'option') {
-            //         this._parseOption(method, token); // <- will fail for the custom-options example
-            //     } else {
-            //         throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+": "+token+" ('option' expected)"));
-            //     }
-            // } while (token != Lang.CLOSE);
         } else if (token != Lang.END) {
             throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
         }
@@ -551,7 +544,12 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             if (token != Lang.COPTCLOSE) {
                 throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+": "+token+" (')' expected)"));
             }
+            name = '('+name+')';
             token = this.tn.next();
+            if (Lang.FQTYPEREF.test(token)) {
+                name += token;
+                token = this.tn.next();
+            }
         }
         if (token != Lang.EQUAL) {
             throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+": "+token+" ('=' expected)"));

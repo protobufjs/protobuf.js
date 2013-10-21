@@ -316,14 +316,20 @@
                 OPTEND: ",",
                 EQUAL: "=",
                 END: ";",
+                STRINGOPEN: '"',
+                STRINGCLOSE: '"',
+                COPTOPEN: '(',
+                COPTCLOSE: ')',
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
+                
                 KEYWORD: /package|option|import|message|enum|extend|service|syntax|extensions/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
-                TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
+                TYPEDEF: /[a-zA-Z][a-zA-Z_0-9]*/,
+                TYPEREF: /(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+/,
+                FQTYPEREF: /(?:\.[a-zA-Z][a-zA-Z_0-9]*)+/,
                 NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|[0-9]*\.[0-9]+)$/,
                 NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
                 NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
@@ -332,13 +338,8 @@
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
-                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
-                STRINGOPEN: '"',
-                STRINGCLOSE: '"',
-                COPTOPEN: '(',
-                COPTCLOSE: ')'
+                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g
             };
-            
             return Lang;
         })();
                 
@@ -711,11 +712,16 @@
                 }
                 var name = token;
                 token = this.tn.next();
-                if (custom) {
+                if (custom) { // (my_method_option).foo, (my_method_option), some_method_option
                     if (token != Lang.COPTCLOSE) {
                         throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
                     }
+                    name = '('+name+')';
                     token = this.tn.next();
+                    if (Lang.FQTYPEREF.test(token)) {
+                        name += token;
+                        token = this.tn.next();
+                    }
                 }
                 if (token != Lang.EQUAL) {
                     throw(new Error("Illegal option operator in message "+parent.name+", option "+name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
@@ -819,8 +825,7 @@
                 do {
                     token = this.tn.next();
                     if (token == "option") {
-                        this._parseIgnoredStatement(svc, token);
-                        // this._parseOption(svc, token);
+                        this._parseOption(svc, token);
                     } else if (token == 'rpc') {
                         this._parseServiceRPC(svc, token);
                     } else if (token != Lang.CLOSE) {
@@ -877,25 +882,14 @@
                 }
                 token = this.tn.next();
                 if (token == Lang.OPEN) {
-                    // FIXME: Options on methods are not correctly supported as of the custom-options.proto example, so these are skipped
-                    token = this.tn.next();
                     do {
-                        if (token == "option") {
-                            this._parseIgnoredStatement(method, token);
-                            token = this.tn.next();
-                        } else {
-                            throw(new Error("Illegal ignored statement in RPC service "+svc["name"]+"#"+name+": "+token));
+                        token = this.tn.next();
+                        if (token == 'option') {
+                            this._parseOption(method, token); // <- will fail for the custom-options example
+                        } else if (token != Lang.CLOSE) {
+                            throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+": "+token+" ('option' expected)"));
                         }
                     } while (token != Lang.CLOSE);
-                    // Else we could do something like this:
-                    // do {
-                    //     token = this.tn.next();
-                    //     if (token == 'option') {
-                    //         this._parseOption(method, token); // <- will fail for the custom-options example
-                    //     } else {
-                    //         throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+": "+token+" ('option' expected)"));
-                    //     }
-                    // } while (token != Lang.CLOSE);
                 } else if (token != Lang.END) {
                     throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
                 }
@@ -1043,7 +1037,12 @@
                     if (token != Lang.COPTCLOSE) {
                         throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+": "+token+" (')' expected)"));
                     }
+                    name = '('+name+')';
                     token = this.tn.next();
+                    if (Lang.FQTYPEREF.test(token)) {
+                        name += token;
+                        token = this.tn.next();
+                    }
                 }
                 if (token != Lang.EQUAL) {
                     throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+": "+token+" ('=' expected)"));

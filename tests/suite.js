@@ -484,10 +484,10 @@
                     var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/options.proto"));
                     var root = parser.parse();
                     test.equal(root["package"], "My");
-                    test.strictEqual(root["options"]["toplevel_1"], 10);
-                    test.equal(root["options"]["toplevel_2"], "Hello world!");
+                    test.strictEqual(root["options"]["(toplevel_1)"], 10);
+                    test.equal(root["options"]["(toplevel_2)"], "Hello world!");
                     test.equal(root["messages"][0]["fields"][0]["options"]["default"], "Max");
-                    test.equal(root["messages"][0]["options"]["inmessage"], "My.Test")
+                    test.equal(root["messages"][0]["options"]["(inmessage)"], "My.Test")
                 } catch (e) {
                     fail(e);
                 }
@@ -499,12 +499,12 @@
                     var builder = ProtoBuf.protoFromFile(__dirname+"/options.proto");
                     var My = builder.build("My");
                     test.deepEqual(My.$options, {
-                        "toplevel_1": 10,
-                        "toplevel_2": "Hello world!"
+                        "(toplevel_1)": 10,
+                        "(toplevel_2)": "Hello world!"
                     });
-                    test.strictEqual(My.$options['toplevel_1'], 10);
+                    test.strictEqual(My.$options['(toplevel_1)'], 10);
                     test.deepEqual(My.Test.$options, {
-                        "inmessage": "My.Test" // TODO: Options are not resolved, yet.
+                        "(inmessage)": "My.Test" // TODO: Options are not resolved, yet.
                     });
                 } catch (e) {
                     fail(e);
@@ -827,11 +827,38 @@
             try {
                 var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
                 var root = parser.parse();
-                test.equal(root["options"]["my_file_option"], "Hello world!");
-                test.equal(root["messages"][0]["options"]["my_message_option"], 1234)
-                test.equal(root["messages"][0]["fields"][0]["options"]["my_field_option"], 4.5);
+                test.equal(root["options"]["(my_file_option)"], "Hello world!");
+                test.equal(root["messages"][0]["options"]["(my_message_option)"], 1234)
+                test.equal(root["messages"][0]["fields"][0]["options"]["(my_field_option)"], 4.5);
                 // test.equal(root["services"]["MyService"]["options"]["my_service_option"], "FOO");
                 // TODO: add tests for my_enum_option, my_enum_value_option
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "services": function(test) {
+            try {
+                var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
+                var root = parser.parse();
+                test.deepEqual(root["services"], {
+                    "MyService": {
+                        "options": {
+                            "(my_service_option)": "FOO"
+                        },
+                        "rpc": {
+                            "MyMethod": {
+                                "request": "RequestType",
+                                "response": "ResponseType",
+                                "options": {
+                                    "(my_method_option).foo": 567,
+                                    "(my_method_option).bar": "Some string"
+                                }
+                            }
+                        }
+                    }
+                });
             } catch (e) {
                 fail(e);
             }
@@ -904,7 +931,6 @@
             }
             test.done();
         },
-
 
         "forwardComp": function(test) {
             try {
