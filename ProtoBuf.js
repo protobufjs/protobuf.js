@@ -829,7 +829,8 @@
                 do {
                     token = this.tn.next();
                     if (token == "option") {
-                        this._parseOption(svc, token);
+                        this._parseIgnoredStatement(svc, token);
+                        // this._parseOption(svc, token);
                     } else if (token == 'rpc') {
                         this._parseServiceRPC(svc, token);
                     } else if (token != Lang.CLOSE) {
@@ -887,8 +888,14 @@
                 token = this.tn.next();
                 if (token == Lang.OPEN) {
                     // FIXME: Options on methods are not correctly supported as of the custom-options.proto example, so these are skipped
+                    token = this.tn.next();
                     do {
-                        token = this.tn.next();
+                        if (token == "option") {
+                            this._parseIgnoredStatement(method, token);
+                            token = this.tn.next();
+                        } else {
+                            throw(new Error("Illegal ignored statement in RPC service "+svc["name"]+"#"+name+": "+token));
+                        }
                     } while (token != Lang.CLOSE);
                     // Else we could do something like this:
                     // do {
