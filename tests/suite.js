@@ -934,6 +934,32 @@
             }
             test.done();
         },
+        
+        "setarray": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/setarray.proto");
+                var root = builder.build(),
+                    Outer = root.Outer,
+                    Inner = root.Inner,
+                    inners = [];
+                
+                // Array of repeated messages
+                inners.push(new Inner("a"), new Inner("b"), new Inner("c"));
+                var outer = new Outer();
+                outer.setInners(inners);
+                test.deepEqual(outer.inners, inners);
+                
+                // Array of repeated message objects
+                inners = [];
+                inners.push({ str: 'a' }, { str: 'b' }, { str: 'c' });
+                outer.setInners(inners); // Converts
+                test.ok(outer.inners[0] instanceof Inner);
+                test.deepEqual(outer.inners, inners);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
 
         // Make sure that our example at https://github.com/dcodeIO/ProtoBuf.js/wiki is not nonsense
