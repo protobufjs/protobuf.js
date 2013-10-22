@@ -2411,7 +2411,6 @@
              * @exports ProtoBuf.Reflect.Service
              * @param {!ProtoBuf.Reflect.Namespace} root Root
              * @param {string} name Service name
-             * @param {{rpc: Array.<ProtoBuf.Reflect.Service.RPCMethod>}} methods Methods
              * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
@@ -2577,8 +2576,8 @@
              * Abstract service method.
              * @exports ProtoBuf.Reflect.Service.Method
              * @param {!ProtoBuf.Reflect.Service} svc Service
-             * @param {Object.<string,*>=} options Options
              * @param {string} name Method name
+             * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
