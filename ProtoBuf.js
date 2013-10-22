@@ -2407,10 +2407,10 @@
                 Namespace.call(this, root, name, options);
         
                 /**
-                 * Built service.
+                 * Built runtime service class.
                  * @type {ProtoBuf.Builder.Service}
                  */
-                this.service = null;
+                this.clazz = null;
             };
             
             // Extends Namespace
@@ -2424,7 +2424,7 @@
              * @expose
              */
             Service.prototype.build = function() {
-                return this.service = (function(T) {
+                return this.clazz = (function(T) {
         
                     /**
                      * Constructs a new runtime Service.
