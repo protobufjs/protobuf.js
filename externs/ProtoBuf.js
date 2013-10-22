@@ -662,12 +662,27 @@ ProtoBuf.Builder.Message.prototype.toArrayBuffer = function() {};
 ProtoBuf.Builder.Message.prototype.toBuffer = function() {};
 
 /**
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.toBase64 = function() {};
+
+/**
  * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer
  * @return {!ProtoBuf.Builder.Message}
  * @throws {Error}
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.decode = function(buffer) {};
+
+/**
+ * @param {string} str
+ * @return {!ProtoBuf.Builder.Message}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.decode64 = function(str) {};
 
 /**
  * @return {string}

@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.2.0-pre";
+        ProtoBuf.VERSION = "1.2.0";
 
         /**
          * Wire types.
@@ -935,6 +935,18 @@
                     };
         
                     /**
+                     * Directly encodes the message to a base64 encoded string.
+                     * @name ProtoBuf.Builder.Message#toBase64
+                     * @function
+                     * @return {string} Base64 encoded string
+                     * @throws {Error} If the underlying buffer cannot be encoded
+                     * @expose
+                     */
+                    Message.prototype.toBase64 = function() {
+                        return this.encode().toBase64();
+                    };
+        
+                    /**
                      * Decodes the message from the specified ByteBuffer.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
@@ -954,6 +966,19 @@
                             buffer.littleEndian = le;
                             throw(e);
                         }
+                    };
+        
+                    /**
+                     * Decodes the message from the specified base64 encoded string.
+                     * @name ProtoBuf.Builder.Message.decode64
+                     * @function
+                     * @param {string} str String to decode from
+                     * @return {!ProtoBuf.Builder.Message} Decoded message
+                     * @throws {Error} If the message cannot be decoded
+                     * @expose
+                     */
+                    Message.decode64 = function(str) {
+                        return Message.decode(ByteBuffer.decode64(str));
                     };
         
                     // Utility

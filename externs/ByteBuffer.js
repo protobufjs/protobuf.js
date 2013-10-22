@@ -701,7 +701,20 @@ ByteBuffer.prototype.toASCII = function(wrap, asArray) {};
  * @return {string}
  * @nosideeffects
  */
-ByteBuffer.prototype.toString = function() {};
+ByteBuffer.prototype.toUTF8 = function() {};
+
+/**
+ * @return {string}
+ * @nosideeffects
+ */
+ByteBuffer.prototype.toBase64 = function() {};
+
+/**
+ * @param {string=} enc
+ * @return {string}
+ * @nosideeffects
+ */
+ByteBuffer.prototype.toString = function(enc) {};
 
 /**
  * @param {boolean=} forceCopy

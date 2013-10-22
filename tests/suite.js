@@ -998,6 +998,20 @@
             }
             test.done();
         },
+        
+        "base64": function(test) {
+            try {
+                var Message = ProtoBuf.protoFromString("message Message { required string s = 1; }").build("Message");
+                var msg = new Message("ProtoBuf.js");
+                var b64 = msg.toBase64();
+                test.strictEqual(b64, "CgtQcm90b0J1Zi5qcw==");
+                var msg2 = Message.decode64(b64);
+                test.deepEqual(msg, msg2);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         "forwardComp": function(test) {
             try {
