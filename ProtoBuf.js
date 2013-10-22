@@ -546,6 +546,7 @@
                     "enums": [],
                     "imports": [],
                     "options": {},
+                    "extends": [],
                     "services": []
                 };
                 var token, header = true;
@@ -568,8 +569,10 @@
                         }
                         topLevel.imports.push(this._parseImport(token));
                     } else if (token == 'message') {
-                        this._parseMessage(topLevel, token);
+                        this._parseMessage(topLevel, token, topLevel);
                         header = false;
+                    } else if (token == 'extend') {
+                        this._parseExtend(topLevel, token);
                     } else if (token == 'enum') {
                         this._parseEnum(topLevel, token);
                         header = false;
@@ -580,8 +583,6 @@
                         this._parseOption(topLevel, token);
                     } else if (token == 'service') {
                         this._parseService(topLevel, token);
-                    } else if (token == 'extend') {
-                        this._parseIgnoredBlock(topLevel, token);
                     } else if (token == 'syntax') {
                         this._parseIgnoredStatement(topLevel, token);
                     } else {
@@ -900,15 +901,17 @@
                 svc[type][name] = method;
             };
         
+        
             /**
-             * Parses a message definition.
+             * Parses a message.
              * @param {Object} parent Parent definition
              * @param {string} token First token
+             * @param {Object} topLevel The top level definition
              * @return {Object}
              * @throws {Error} If the message cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessage = function(parent, token) {
+            Parser.prototype._parseMessage = function(parent, token, topLevel) {
                 /** @dict */
                 var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
                 token = this.tn.next();
@@ -935,9 +938,12 @@
                     } else if (token == "enum") {
                         this._parseEnum(msg, token);
                     } else if (token == "message") {
-                        this._parseMessage(msg, token);
+                        this._parseMessage(msg, token, topLevel);
                     } else if (token == "option") {
                         this._parseOption(msg, token);
+                    } else if (token == "extend") {
+                        // all extend directives are put on the top level nested and top-level extend blocks act the same way
+                        this._parseExtend(topLevel, token);
                     } else if (token == "extensions") {
                         this._parseIgnoredStatement(msg, token);
                     } else {
@@ -1066,6 +1072,43 @@
                     throw(new Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+": "+token));
                 }
                 fld["options"][name] = value;
+            };
+        
+            /**
+             * Parses an extend block.
+             * @param {Object} parent Parent definition
+             * @param {string} token First token
+             * @return {Object}
+             * @throws {Error} If the message cannot be parsed
+             * @private
+             */
+            Parser.prototype._parseExtend = function (parent, token) {
+                /** @dict */
+                var extend = {};
+                token = this.tn.next();
+                if (!Lang.NAME.test(token)) {
+                    throw(new Error("Illegal message name" + (parent ? " in message " + parent["name"] : "") + ": " + token));
+                }
+                extend["messageToExtend"] = token;
+                token = this.tn.next();
+                if (token != Lang.OPEN) {
+                    throw(new Error("Illegal OPEN after message " + extend.name + ": " + token + " ('" + Lang.OPEN + "' expected)"));
+                }
+                extend["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
+                do {
+                    token = this.tn.next();
+                    if (token == Lang.CLOSE) {
+                        token = this.tn.peek();
+                        if (token == Lang.END) this.tn.next();
+                        break;
+                    } else if (Lang.RULE.test(token)) {
+                        this._parseMessageField(extend, token);
+                    } else {
+                        throw(new Error("Illegal token in message " + extend.name + ": " + token + " (type or '" + Lang.CLOSE + "' expected)"));
+                    }
+                } while (true);
+                parent["extends"].push(extend);
+                return extend;
             };
         
             /**
@@ -2365,6 +2408,83 @@
             Reflect.Enum = Enum;
         
             /**
+             * Constructs a new Extend.
+             * @exports ProtoBuf.Reflect.Extend
+             * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
+             * @param {string} name Extend name
+             * @param {Object} fields Extend fields
+             * @constructor
+             * @extends ProtoBuf.Reflect.Namespace
+             */
+            var Extend = function(parent, name, fields) {
+                Namespace.call(this, parent, name, fields);
+        
+                /**
+                 * Runtime Extend object.
+                 * @type {Object.<string,number>|null}
+                 * @expose
+                 */
+                this.object = null;
+            };
+        
+            // Extends Namespace
+            Extend.prototype = Object.create(Namespace.prototype);
+        
+            /**
+             * Builds this Extend and returns the runtime counterpart.
+             * @return {Object<string,*>}
+             * @expose
+             */
+            Extend.prototype.build = function() {
+                var extend = {};
+                var fields = this.getChildren(Extend.Field);
+                for (var i=0; i<fields.length; i++) {
+                    extend[fields[i]['name']] = fields[i];
+                }
+                if (Object.defineProperty) {
+                    Object.defineProperty(extend, '$fields', {
+                        'value': this.buildOpt(),
+                        'Extenderable': false,
+                        'configurable': false,
+                        'writable': false
+                    });
+                }
+                return this.object = extend;
+            };
+        
+            /**
+             * @alias ProtoBuf.Reflect.Extend
+             * @expose
+             */
+            Reflect.Extend = Extend;
+        
+            /**
+             * Constructs a new Extensions Registry
+             * @exports ProtoBuf.Reflect.ExtensionsRegistry
+             * @constructor
+             * @extends ProtoBuf.Reflect.T
+             */
+            var ExtensionsRegistry = function(enm, name, id) {
+                T.call(this, enm, name);
+        
+                /**
+                 * Unique enum value id.
+                 * @type {number}
+                 * @expose
+                 */
+                this.id = id;
+            };
+        
+            // Extends T
+            ExtensionsRegistry.prototype = Object.create(T.prototype);
+        
+            /**
+             * @alias ProtoBuf.Reflect.Enum.Value
+             * @expose
+             */
+            Reflect.ExtensionsRegistry = ExtensionsRegistry;
+        
+            /**
              * Constructs a new Enum Value.
              * @exports ProtoBuf.Reflect.Enum.Value
              * @param {!ProtoBuf.Reflect.Enum} enm Enum reference
@@ -2856,6 +2976,31 @@
                 return true;
             };
         
+            Builder.prototype.addFieldsToMessage = function (fields, message) {
+                var i, j, subObj;
+                for (i = 0; i < fields.length; i++) { // i=Fields
+                    if (!Builder.isValidMessageField(fields[i])) {
+                        throw(new Error("Not a valid message field definition in message " + message.name + ": " + JSON.stringify(fields[i])));
+                    }
+                    if (message.hasChild(fields[i]['id'])) {
+                        throw(new Error("Duplicate field id in message " + message.name + ": " + fields[i]['id']));
+                    }
+                    if (fields[i]["options"]) {
+                        subObj = Object.keys(fields[i]["options"]);
+                        for (j = 0; j < subObj.length; j++) { // j=Option names
+                            if (!Lang.NAME.test(subObj[j])) {
+                                throw(new Error("Illegal field option name in message " + message.name + "#" + fields[i]["name"] + ": " + subObj[j]));
+                            }
+                            if (typeof fields[i]["options"][subObj[j]] != 'string' && typeof fields[i]["options"][subObj[j]] != 'number') {
+                                throw(new Error("Illegal field option value in message " + message.name + "#" + fields[i]["name"] + "#" + subObj[j] + ": " + fields[i]["options"][subObj[j]]));
+                            }
+                        }
+                        subObj = null;
+                    }
+                    message.addChild(new Reflect.Message.Field(message, fields[i]["rule"], fields[i]["type"], fields[i]["name"], fields[i]["id"], fields[i]["options"]));
+                }
+            };
+        
             /**
              * Creates ths specified protocol types at the current pointer position.
              * @param {Array.<Object.<string,*>>} defs Messages, enums or services to create
@@ -2882,27 +3027,7 @@
                                 obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
-                                    for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                        if (!Builder.isValidMessageField(def["fields"][i])) {
-                                            throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
-                                        }
-                                        if (obj.hasChild(def['fields'][i]['id'])) {
-                                            throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
-                                        }
-                                        if (def["fields"][i]["options"]) {
-                                            subObj = Object.keys(def["fields"][i]["options"]);
-                                            for (j=0; j<subObj.length; j++) { // j=Option names
-                                                if (!Lang.NAME.test(subObj[j])) {
-                                                    throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
-                                                }
-                                                if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
-                                                    throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
-                                                }
-                                            }
-                                            subObj = null;
-                                        }
-                                        obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
-                                    }
+                                    this.addFieldsToMessage(def["fields"], obj);
                                 }
                                 // Push enums and messages to stack
                                 subObj = [];
@@ -2958,6 +3083,17 @@
                 this.resolved = false; // Require re-resolve
                 this.result = null; // Require re-build
                 return this;
+            };
+        
+            Builder.prototype.extendMessages = function (extendBlocks) {
+                for (var i = 0; i < extendBlocks.length; i++) {
+                    var extend = extendBlocks[i];
+                    var message = this.ns.resolve(extend.messageToExtend);
+                    if (!message) {
+                        throw(new Error("Couldn't find message to extend: " + extend.messageToExtend));
+                    }
+                    this.addFieldsToMessage(extend["fields"], message);
+                }
             };
         
             /**
@@ -3031,6 +3167,11 @@
                             this["import"](parser.parse(), importFilename); // Throws on its own                    
                         }
                     }
+                }
+        
+                this.reset();
+                if (parsed['extends'] && parsed['extends'].length > 0) {
+                    this.extendMessages(parsed['extends']);
                 }
                 return this;
             };
@@ -3150,6 +3291,7 @@
              * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
              */
             Builder.prototype.lookup = function(path) {
+                console.log('Lookup for ' + path);
                 return path ? this.ns.resolve(path) : this.ns;
             };
         
@@ -3208,6 +3350,10 @@
                     "imports": parsed["imports"]
                 }, filename);
             }
+            if (parsed['extends'].length > 0) {
+                builder.extendMessages(parsed['extends']);
+            }
+
             builder.resolveAll();
             builder.build();
             return builder;
