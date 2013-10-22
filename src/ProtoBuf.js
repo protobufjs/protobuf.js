@@ -240,7 +240,7 @@
                 }, filename);
             }
             if (parsed['extends'].length > 0) {
-                builder.extendMessages(parsed['extends']);
+                builder.extendMessages(parsed['extends'], parsed['package']);
             }
 
             builder.resolveAll();

@@ -10,6 +10,8 @@ message Person {
 
   extend sample.basepackage.Foo {
       optional sample.mypackage.Person person = 1002;
+      optional Person anotherPerson = 1003;
+
   }
 
   required string name = 1;

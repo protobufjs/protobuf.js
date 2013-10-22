@@ -3085,14 +3085,32 @@
                 return this;
             };
         
-            Builder.prototype.extendMessages = function (extendBlocks) {
+            Builder.prototype.extendMessages = function (extendBlocks, packageName) {
                 for (var i = 0; i < extendBlocks.length; i++) {
                     var extend = extendBlocks[i];
                     var message = this.ns.resolve(extend.messageToExtend);
                     if (!message) {
                         throw(new Error("Couldn't find message to extend: " + extend.messageToExtend));
                     }
-                    this.addFieldsToMessage(extend["fields"], message);
+                    var fields = extend["fields"];
+                    for (var j = 0; j < fields.length; j++) {
+                        // This whole for loop is a hack. What is happening is that an extension, for example Person, lives in
+                        // a package, say peoplePackage. The full name is therefore peoplePackage.Person, however where it is
+                        // defined it is within the peoplePackage namespace, so the package name is omitted. However, when this
+                        // is transplanted into another type in another package, then suddenly Person without a package makes no
+                        // sense. There must be a better way, but I haven't been able to make it work. For now it just guesses
+                        // the full name using the Package, but this could be incorrect. Ideally, it would resolve the type
+                        // by using the namespace that it was declared in, but that doesn't seem to work at this point.
+                        var f = fields[j];
+                        var originalType = f.type;
+                        if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
+                            f.type = packageName + '.' + f.type;
+                            if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
+                                throw(new Error("Couldn't find field type: " + originalType + " (tried " + f.type + ")"));
+                            }
+                        }
+                    }
+                    this.addFieldsToMessage(fields, message);
                 }
             };
         
@@ -3171,7 +3189,7 @@
         
                 this.reset();
                 if (parsed['extends'] && parsed['extends'].length > 0) {
-                    this.extendMessages(parsed['extends']);
+                    this.extendMessages(parsed['extends'], parsed['package']);
                 }
                 return this;
             };
@@ -3351,7 +3369,7 @@
                 }, filename);
             }
             if (parsed['extends'].length > 0) {
-                builder.extendMessages(parsed['extends']);
+                builder.extendMessages(parsed['extends'], parsed['package']);
             }
 
             builder.resolveAll();

@@ -947,6 +947,11 @@
                     person: {
                         "name": "Nancy",
                         "id": 123
+                    },
+                    anotherPerson: {
+                        "name": "Dan",
+                        "id": 112,
+                        email: "dan@example.org"
                     }
                 });
 
@@ -960,6 +965,7 @@
                 test.strictEqual(decoded.blah, "blahValue");
                 test.strictEqual(decoded.bar, 12);
                 test.deepEqual(decoded.person, { name: "Nancy", id: 123, email: null});
+                test.deepEqual(decoded.anotherPerson, { name: "Dan", id: 112, email: "dan@example.org"});
             } catch (e) {
                 fail(e);
             }
