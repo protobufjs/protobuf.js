@@ -1217,7 +1217,7 @@
                     name = ptr.name+"."+name;
                 } while (true);
                 if (includeClass) {
-                    if (this instanceof Reflect.Message) {
+                    if (this instanceof Message) {
                         name = "Message "+name;
                     } else if (this instanceof Message.Field) {
                         name = "Message.Field "+name;
@@ -1225,6 +1225,14 @@
                         name = "Enum "+name;
                     } else if (this instanceof Enum.Value) {
                         name = "Enum.Value "+name;
+                    } else if (this instanceof Service) {
+                        name = "Service "+name;
+                    } else if (this instanceof Service.Method) {
+                        if (this instanceof Service.RPCMethod) {
+                            name = "Service.RPCMethod "+name;
+                        } else {
+                            name = "Service.Method "+name; // Should not happen as it is abstract
+                        }
                     } else if (this instanceof Namespace) {
                         name = "Namespace "+name;
                     }
@@ -2611,6 +2619,7 @@
         
             /**
              * RPC service method.
+             * @exports ProtoBuf.Reflect.Service.RPCMethod
              * @param {!ProtoBuf.Reflect.Service} svc Service
              * @param {string} name Method name
              * @param {string} request Request message name

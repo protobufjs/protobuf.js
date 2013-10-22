@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: Method</title>
+    <title>Class: RPCMethod</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: Method</h1>
+    <h1 class="page-title">Class: RPCMethod</h1>
     
     
 
@@ -29,7 +29,7 @@
     <h2>
         <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.Reflect.html">.Reflect</a><a href="ProtoBuf.Reflect.Service.html">.Service</a>.</span>
     
-    Method
+    RPCMethod
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Method"><span class="type-signature"></span>new Method<span class="signature">(svc, name, <span class="optional">options</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="RPCMethod"><span class="type-signature"></span>new RPCMethod<span class="signature">(svc, name, request, response, <span class="optional">options</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,7 +49,7 @@
     
     
     <div class="description">
-        <p>Abstract service method.</p>
+        <p>RPC service method.</p>
     </div>
     
 
@@ -143,6 +143,64 @@
 	
         <tr>
             
+                <td class="name"><code>request</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Request message name</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Response message name</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>options</code></td>
             
             
@@ -219,7 +277,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></li>
+            <li><a href="ProtoBuf.Reflect.Service.Method.html">ProtoBuf.Reflect.Service.Method</a></li>
         </ul>
     
     
@@ -259,7 +317,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="ProtoBuf.Reflect.T.html#name">ProtoBuf.Reflect.T#name</a>
+        <a href="ProtoBuf.Reflect.Service.Method.html#name">ProtoBuf.Reflect.Service.Method#name</a>
     </li></dd>
     
     
@@ -306,6 +364,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.Service.Method.html#options">ProtoBuf.Reflect.Service.Method#options</a>
+    </li></dd>
     
     
     
@@ -354,8 +417,188 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="ProtoBuf.Reflect.T.html#parent">ProtoBuf.Reflect.T#parent</a>
+        <a href="ProtoBuf.Reflect.Service.Method.html#parent">ProtoBuf.Reflect.Service.Method#parent</a>
     </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="requestName"><span class="type-signature"></span>requestName<span class="type-signature"> :string</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Request message name.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="resolvedRequestType"><span class="type-signature"></span>resolvedRequestType<span class="type-signature"> :<a href="ProtoBuf.Reflect.Message.html">ProtoBuf.Reflect.Message</a></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Resolved request message type.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="resolvedResponseType"><span class="type-signature"></span>resolvedResponseType<span class="type-signature"> :<a href="ProtoBuf.Reflect.Message.html">ProtoBuf.Reflect.Message</a></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Resolved response message type.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="responseName"><span class="type-signature"></span>responseName<span class="type-signature"> :string</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Response message name.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
     
     
     
@@ -417,7 +660,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="ProtoBuf.Reflect.T.html#build">ProtoBuf.Reflect.T#build</a>
+        <a href="ProtoBuf.Reflect.Service.Method.html#build">ProtoBuf.Reflect.Service.Method#build</a>
     </li></dd>
     
     
@@ -499,6 +742,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.Service.Method.html#buildOpt">ProtoBuf.Reflect.Service.Method#buildOpt</a>
+    </li></dd>
     
     
     
@@ -636,7 +884,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="ProtoBuf.Reflect.T.html#toString">ProtoBuf.Reflect.T#toString</a>
+        <a href="ProtoBuf.Reflect.Service.Method.html#toString">ProtoBuf.Reflect.Service.Method#toString</a>
     </li></dd>
     
     

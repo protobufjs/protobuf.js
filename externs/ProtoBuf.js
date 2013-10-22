@@ -501,7 +501,7 @@ ProtoBuf.Reflect.Service.RPCMethod.prototype.responseName;
 /**
  * @type {ProtoBuf.Reflect.Message}
  */
-ProtoBuf.Reflect.Service.RPCMethod.prototype.resolvedRequestTame;
+ProtoBuf.Reflect.Service.RPCMethod.prototype.resolvedRequestType;
 
 /**
  * @type {ProtoBuf.Reflect.Message}
