@@ -43,7 +43,7 @@
     
         
 <dt>
-    <h4 class="name" id="Service"><span class="type-signature"></span>new Service<span class="signature">(<span class="optional">impl</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Service"><span class="type-signature"></span>new Service<span class="signature">(<span class="optional">rpcImpl</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -87,7 +87,7 @@
 	
         <tr>
             
-                <td class="name"><code>impl</code></td>
+                <td class="name"><code>rpcImpl</code></td>
             
             
             <td class="type">
@@ -111,7 +111,7 @@
             
             
             
-            <td class="description last"><p>Service implementation receiving the method name and the message</p></td>
+            <td class="description last"><p>RPC implementation receiving the method name and the message</p></td>
         </tr>
 	
 	
@@ -248,6 +248,168 @@
         <dl>
             
 <dt>
+    <h4 class="name" id="[Method]"><span class="type-signature">&lt;virtual, static> </span>[Method]<span class="signature">(rpcImpl, req, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Asynchronously performs an RPC call using the given RPC implementation.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>rpcImpl</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>RPC implementation</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Request</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function(Error, (ProtoBuf.Builder.Message</span>
+|
+
+<span class="param-type">ByteBuffer</span>
+|
+
+<span class="param-type">Buffer</span>
+|
+
+<span class="param-type">string)=)</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Callback receiving
+ the error if any and the response either as a pre-parsed message or as its raw bytes</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="[Method]"><span class="type-signature">&lt;virtual> </span>[Method]<span class="signature">(req, callback)</span><span class="type-signature"></span></h4>
     
     
@@ -256,7 +418,7 @@
     
     
     <div class="description">
-        <p>Asynchronously performs an RPC call using your RPC implementation.</p>
+        <p>Asynchronously performs an RPC call using the instance&#39;s RPC implementation.</p>
     </div>
     
 

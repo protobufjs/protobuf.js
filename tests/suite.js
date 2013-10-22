@@ -859,13 +859,20 @@
                     }
                 }]);
                 
-                // A simple local example of implementing and using services:
                 var builder = ProtoBuf.protoFromFile(__dirname+"/custom-options.proto");
                 var root = builder.build(),
                     MyService = root.MyService,
                     RequestType = root.RequestType,
                     ResponseType = root.ResponseType,
                     called = false;
+                
+                test.deepEqual(MyService.$options, {
+                    "(my_service_option)": "FOO"
+                });
+                test.deepEqual(MyService.MyMethod.$options, {
+                    "(my_method_option).foo": 567,
+                    "(my_method_option).bar": "Some string"
+                });
                 
                 // Provide the service with your actual RPC implementation based on whatever framework you like most.
                 var myService = new MyService(function(method, req, callback) {
@@ -876,6 +883,9 @@
                     // In this case we just return no error and our pre-built response. This must be properly async!
                     setTimeout(callback.bind(this, null, (new ResponseType()).encode() /* as raw bytes for debugging */ ));
                 });
+                
+                test.deepEqual(myService.$options, MyService.$options);
+                test.deepEqual(myService.MyMethod.$options, MyService.MyMethod.$options);
                 
                 // Call the service with your request message and provide a callback. This will call your actual service
                 // implementation to perform the request and gather a response before calling the callback. If the
