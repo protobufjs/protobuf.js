@@ -16,18 +16,12 @@
  */
 // #endif
 /**
- * @alias ProtoBuf.DotProto
+ * Utilities to parse .proto files.
+ * @namespace
  * @expose
  */
-ProtoBuf.DotProto = (function() {
-    "use strict";
+ProtoBuf.DotProto = {}; // Not present in "noparse" builds
 
-    /**
-     * Utilities to parse .proto files.
-     * @exports ProtoBuf.DotProto
-     * @namespace
-     */
-    var DotProto = {};
-    
-    return DotProto;
-})();
+// #include "ProtoBuf/DotProto/Tokenizer.js"
+
+// #include "ProtoBuf/DotProto/Parser.js"

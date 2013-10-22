@@ -191,10 +191,6 @@
         // #ifndef NOPARSE
         // #include "ProtoBuf/DotProto.js"
         
-        // #include "ProtoBuf/DotProto/Tokenizer.js"
-        
-        // #include "ProtoBuf/DotProto/Parser.js"
-        
         // #else
         // This build of ProtoBuf.js does not include DotProto support.
         
@@ -223,12 +219,21 @@
             var parser = new ProtoBuf.DotProto.Parser(proto+"");
             var parsed = parser.parse();
             var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
-            if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-            builder.create(parsed['messages']);
-            builder.reset();
-            if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-            builder.create(parsed['enums']);
-            builder.reset();
+            if (parsed['messages'].length > 0) {
+                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
+                builder.create(parsed['messages']);
+                builder.reset();
+            }
+            if (parsed['enums'].length > 0) {
+                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
+                builder.create(parsed['enums']);
+                builder.reset();
+            }
+            if (parsed['services'].length > 0) {
+                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
+                builder.create(parsed['services']);
+                builder.reset();
+            }
             if (filename && parsed['imports'].length > 0) {
                 builder["import"]({
                     "imports": parsed["imports"]

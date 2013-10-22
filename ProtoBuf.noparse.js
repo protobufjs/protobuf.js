@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.1.7";
+        ProtoBuf.VERSION = "1.2.0-pre";
 
         /**
          * Wire types.
@@ -316,14 +316,20 @@
                 OPTEND: ",",
                 EQUAL: "=",
                 END: ";",
+                STRINGOPEN: '"',
+                STRINGCLOSE: '"',
+                COPTOPEN: '(',
+                COPTCLOSE: ')',
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
+                
                 KEYWORD: /package|option|import|message|enum|extend|service|syntax|extensions/,
                 RULE: /required|optional|repeated/,
                 TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
                 NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEDEF: /[a-zA-Z](\.?[a-zA-Z_0-9])*/,
-                TYPEREF: /\.?[a-zA-Z](\.?[a-zA-Z_0-9])*/,
+                TYPEDEF: /[a-zA-Z][a-zA-Z_0-9]*/,
+                TYPEREF: /(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+/,
+                FQTYPEREF: /(?:\.[a-zA-Z][a-zA-Z_0-9]*)+/,
                 NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|[0-9]*\.[0-9]+)$/,
                 NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
                 NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
@@ -332,13 +338,8 @@
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
-                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
-                STRINGOPEN: '"',
-                STRINGCLOSE: '"',
-                COPTOPEN: '(',
-                COPTCLOSE: ')'
+                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g
             };
-            
             return Lang;
         })();
                 
@@ -495,9 +496,9 @@
             Namespace.prototype.hasChild = function(nameOrId) {
                 var i;
                 if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (this.children[i] instanceof Message.Field && this.children[i].id == nameOrId) return true;
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return true;
                 } else {
-                    for (i=0; i<this.children.length; i++) if (this.children[i].name == nameOrId) return true;
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return true;
                 }
                 return false;
             };
@@ -511,9 +512,9 @@
             Namespace.prototype.getChild = function(nameOrId) {
                 var i;
                 if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (this.children[i] instanceof Message.Field && this.children[i].id == nameOrId) return this.children[i];
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return this.children[i];
                 } else {
-                    for (i=0; i<this.children.length; i++) if (this.children[i].name == nameOrId) return this.children[i];
+                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return this.children[i];
                 }
                 return null;
             };
@@ -579,7 +580,7 @@
             };
         
             /**
-             * Builds the namespace's 'opt' property.
+             * Builds the namespace's '$options' property.
              * @return {Object.<string,*>}
              */
             Namespace.prototype.buildOpt = function() {
@@ -678,7 +679,7 @@
                     /**
                      * @expose
                      */
-                    Message.prototype.__construct = function(values) {                
+                    Message.prototype.__construct = function(values) {
                         var i, field;
         
                         // Create fields on the object itself to allow setting and getting through Message#fieldname
@@ -1661,6 +1662,261 @@
              */
             Reflect.Enum.Value = Value;
         
+            /**
+             * Constructs a new Service.
+             * @exports ProtoBuf.Reflect.Service
+             * @param {!ProtoBuf.Reflect.Namespace} root Root
+             * @param {string} name Service name
+             * @param {{rpc: Array.<ProtoBuf.Reflect.Service.RPCMethod>}} methods Methods
+             * @param {Object.<string,*>=} options Options
+             * @constructor
+             * @extends ProtoBuf.Reflect.Namespace
+             */
+            var Service = function(root, name, options) {
+                Namespace.call(this, root, name, options);
+        
+                /**
+                 * Built runtime service class.
+                 * @type {ProtoBuf.Builder.Service}
+                 */
+                this.clazz = null;
+            };
+            
+            // Extends Namespace
+            Service.prototype = Object.create(Namespace.prototype);
+        
+            /**
+             * Builds the service and returns the runtime counterpart, which is a fully functional class.
+             * @see ProtoBuf.Builder.Service
+             * @return {Function} Service class
+             * @throws {Error} If the message cannot be built
+             * @expose
+             */
+            Service.prototype.build = function() {
+                return this.clazz = (function(T) {
+        
+                    /**
+                     * Constructs a new runtime Service.
+                     * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))=} rpcImpl RPC implementation receiving the method name and the message
+                     * @name ProtoBuf.Builder.Service
+                     * @class Barebone of all runtime services.
+                     * @constructor
+                     * @throws {Error} If the service cannot be created
+                     */
+        
+                    /**
+                     * @type {!Function}
+                     */
+                    var Service;
+                    try {
+                        Service = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); })");
+                    } catch (err) {
+                        Service = function() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); };
+                    }
+                    
+                    // Extends ProtoBuf.Builder.Service
+                    Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
+        
+                    /**
+                     * @expose
+                     */
+                    Service.prototype.__construct = function(rpcImpl) {
+                        
+                        /**
+                         * Service implementation.
+                         * @name ProtoBuf.Builder.Service#rpcImpl
+                         * @type {!function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))}
+                         * @expose
+                         */
+                        this.rpcImpl = rpcImpl || function(name, msg, callback) {
+                            // This is what a user has to implement: A function receiving the method name, the actual message to
+                            // send (type checked) and the callback that's either provided with the error as its first
+                            // argument or null and the actual response message.
+                            setTimeout(callback.bind(this, new Error("Not implemented, see: https://github.com/dcodeIO/ProtoBuf.js/wiki/Services")), 0); // Must be async!
+                        };
+                        
+                    };
+                    
+                    if (Object.defineProperty) {
+                        Object.defineProperty(Service, "$options", {
+                            "value": T.buildOpt(),
+                            "enumerable": false,
+                            "configurable": false,
+                            "writable": false
+                        });
+                        Object.defineProperty(Service.prototype, "$options", {
+                            "value": Service["$options"],
+                            "enumerable": false,
+                            "configurable": false,
+                            "writable": false
+                        });
+                    }
+        
+                    /**
+                     * Asynchronously performs an RPC call using the given RPC implementation.
+                     * @name ProtoBuf.Builder.Service.[Method]
+                     * @function
+                     * @param {!function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))} rpcImpl RPC implementation
+                     * @param {ProtoBuf.Builder.Message} req Request
+                     * @param {function(Error, (ProtoBuf.Builder.Message|ByteBuffer|Buffer|string)=)} callback Callback receiving
+                     *  the error if any and the response either as a pre-parsed message or as its raw bytes
+                     * @abstract
+                     */
+        
+                    /**
+                     * Asynchronously performs an RPC call using the instance's RPC implementation.
+                     * @name ProtoBuf.Builder.Service#[Method]
+                     * @function
+                     * @param {ProtoBuf.Builder.Message} req Request
+                     * @param {function(Error, (ProtoBuf.Builder.Message|ByteBuffer|Buffer|string)=)} callback Callback receiving
+                     *  the error if any and the response either as a pre-parsed message or as its raw bytes
+                     * @abstract
+                     */
+                    
+                    var rpc = T.getChildren(Reflect.Service.RPCMethod);
+                    for (var i=0; i<rpc.length; i++) {
+                        (function(method) {
+                            
+                            // service#Method(message, callback)
+                            Service.prototype[method.name] = function(req, callback) {
+                                try {
+                                    if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
+                                        setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)));
+                                    }
+                                    this.rpcImpl(method.name, req, function(err, res) { // Assumes that this is properly async
+                                        if (err) {
+                                            callback(err);
+                                            return;
+                                        }
+                                        try { res = method.resolvedResponseType.clazz.decode(res); } catch (notABuffer) {}
+                                        if (!res || !(res instanceof method.resolvedResponseType.clazz)) {
+                                            callback(new Error("Illegal response type received in service method "+ T.name+"#"+method.name));
+                                            return;
+                                        }
+                                        callback(null, res);
+                                    });
+                                } catch (err) {
+                                    setTimeout(callback.bind(this, err), 0);
+                                }
+                            };
+        
+                            // Service.Method(rpcImpl, message, callback)
+                            Service[method.name] = function(rpcImpl, req, callback) {
+                                new Service(rpcImpl)[method.name](req, callback);
+                            };
+        
+                            if (Object.defineProperty) {
+                                Object.defineProperty(Service[method.name], "$options", {
+                                    "value": method.buildOpt(),
+                                    "enumerable": false,
+                                    "configurable": false,
+                                    "writable": false
+                                });
+                                Object.defineProperty(Service.prototype[method.name], "$options", {
+                                    "value": Service[method.name]["$options"],
+                                    "enumerable": false,
+                                    "configurable": false,
+                                    "writable": false
+                                });
+                            }
+                        })(rpc[i]);
+                    }
+                    
+                    return Service;
+                    
+                })(this);
+            };
+            
+            Reflect.Service = Service;
+        
+            /**
+             * Abstract service method.
+             * @exports ProtoBuf.Reflect.Service.Method
+             * @param {!ProtoBuf.Reflect.Service} svc Service
+             * @param {Object.<string,*>=} options Options
+             * @param {string} name Method name
+             * @constructor
+             * @extends ProtoBuf.Reflect.T
+             */
+            var Method = function(svc, name, options) {
+                T.call(this, svc, name);
+        
+                /**
+                 * Options.
+                 * @type {Object.<string, *>}
+                 * @expose
+                 */
+                this.options = options || {};
+            };
+            
+            // Extends T
+            Method.prototype = Object.create(T.prototype);
+        
+            /**
+             * Builds the method's '$options' property.
+             * @name ProtoBuf.Reflect.Service.Method#buildOpt
+             * @function
+             * @return {Object.<string,*>}
+             */
+            Method.prototype.buildOpt = Namespace.prototype.buildOpt;
+        
+            /**
+             * @alias ProtoBuf.Reflect.Service.Method
+             * @expose
+             */
+            Reflect.Service.Method = Method;
+        
+            /**
+             * RPC service method.
+             * @param {!ProtoBuf.Reflect.Service} svc Service
+             * @param {string} name Method name
+             * @param {string} request Request message name
+             * @param {string} response Response message name
+             * @param {Object.<string,*>=} options Options
+             * @constructor
+             * @extends ProtoBuf.Reflect.Service.Method
+             */
+            var RPCMethod = function(svc, name, request, response, options) {
+                Method.call(this, svc, name, options);
+        
+                /**
+                 * Request message name.
+                 * @type {string}
+                 * @expose
+                 */
+                this.requestName = request;
+        
+                /**
+                 * Response message name.
+                 * @type {string}
+                 * @expose
+                 */
+                this.responseName = response;
+        
+                /**
+                 * Resolved request message type.
+                 * @type {ProtoBuf.Reflect.Message}
+                 * @expose
+                 */
+                this.resolvedRequestType = null;
+        
+                /**
+                 * Resolved response message type.
+                 * @type {ProtoBuf.Reflect.Message}
+                 * @expose
+                 */
+                this.resolvedResponseType = null;
+            };
+            
+            // Extends Method
+            RPCMethod.prototype = Object.create(Method.prototype);
+        
+            /**
+             * @alias ProtoBuf.Reflect.Service.RPCMethod
+             * @expose
+             */
+            Reflect.Service.RPCMethod = RPCMethod;
+            
             return Reflect;
         })(ProtoBuf);
                 
@@ -1706,6 +1962,13 @@
                  * @expose
                  */
                 this.result = null;
+        
+                /**
+                 * Imported files.
+                 * @type {Array.<string>}
+                 * @expose
+                 */
+                this.files = {};
             };
         
             /**
@@ -1754,8 +2017,8 @@
                 if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"])) {
                     return false;
                 }
-                // Messages must not contain values (that'd be an enum)
-                if (typeof def["values"] != 'undefined') {
+                // Messages must not contain values (that'd be an enum) or methods (that'd be a service)
+                if (typeof def["values"] != 'undefined' || typeof def["rpc"] != 'undefined') {
                     return false;
                 }
                 // Fields, enums and messages are arrays if provided
@@ -1889,26 +2152,26 @@
         
             /**
              * Creates ths specified protocol types at the current pointer position.
-             * @param {Array.<Object.<string,*>>} messages Messages or enums to create
+             * @param {Array.<Object.<string,*>>} defs Messages, enums or services to create
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If a message definition is invalid
              * @expose
              */
-            Builder.prototype.create = function(messages) {
-                if (!messages) return; // Nothing to create
-                if (!(messages instanceof Array)) {
-                    messages = [messages];
+            Builder.prototype.create = function(defs) {
+                if (!defs) return; // Nothing to create
+                if (!(defs instanceof Array)) {
+                    defs = [defs];
                 }
-                if (messages.length == 0) return;
-        
+                if (defs.length == 0) return;
+                
                 // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
-                var stack = [], defs, def, obj, subObj, i, j;
-                stack.push(messages); // One level [a, b, c]
+                var stack = [], def, obj, subObj, i, j;
+                stack.push(defs); // One level [a, b, c]
                 while (stack.length > 0) {
                     defs = stack.pop();
                     if (defs instanceof Array) { // Stack always contains entire namespaces
                         while (defs.length > 0) {
-                            def = defs.shift(); // Namespace always contains an array of messages and enums
+                            def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
                                 obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                                 // Create fields
@@ -1945,8 +2208,17 @@
                                 }
                                 this.ptr.addChild(obj);
                                 obj = null;
+                            } else if (Builder.isValidService(def)) {
+                                obj = new Reflect.Service(this.ptr, def["name"], def["options"]);
+                                for (i in def["rpc"]) {
+                                    if (def["rpc"].hasOwnProperty(i)) {
+                                        obj.addChild(new Reflect.Service.RPCMethod(obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
+                                    }
+                                }
+                                this.ptr.addChild(obj);
+                                obj = null;
                             } else {
-                                throw(new Error("Not a valid message or enum definition: "+JSON.stringify(def)));
+                                throw(new Error("Not a valid message, enum or service definition: "+JSON.stringify(def)));
                             }
                             def = null;
                         }
@@ -1986,13 +2258,6 @@
             };
         
             /**
-             * Imported files.
-             * @type {Array.<string>}
-             * @expose
-             */
-            Builder.prototype.files = [];
-        
-            /**
              * Imports another definition into this builder.
              * @param {Object.<string,*>} parsed Parsed import
              * @param {string=} filename Imported file name
@@ -2012,21 +2277,21 @@
                     }
                     this.files[filename] = true;
                 }
-                if (!!parsed['package']) {
-                    this.define(parsed['package'], parsed["options"]);
-                }
                 if (!!parsed['messages']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
                     this.create(parsed['messages']);
-                }
-                this.reset();
-        
-                if (!!parsed['package']) {
-                    this.define(parsed['package'], parsed["options"]);
+                    this.reset();
                 }
                 if (!!parsed['enums']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
                     this.create(parsed['enums']);
+                    this.reset();
                 }
-                this.reset();
+                if (!!parsed['services']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
+                    this.create(parsed['services']);
+                    this.reset();
+                }
         
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
                     if (!filename) {
@@ -2055,12 +2320,27 @@
             };
         
             /**
+             * Tests if a definition is a valid service definition.
+             * @param {Object} def Definition
+             * @return {boolean} true if valid, else false
+             * @expose
+             */
+            Builder.isValidService = function(def) {
+                // Services require a string name
+                if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"]) || typeof def["rpc"] != 'object') {
+                    return false;
+                }
+                return true;
+            };
+        
+            /**
              * Resolves all namespace objects.
              * @throws {Error} If a type cannot be resolved
              * @expose
              */
             Builder.prototype.resolveAll = function() {
                 // Resolve all reflected objects
+                var res;
                 if (this.ptr == null || typeof this.ptr.type == 'object') return; // Done (already resolved)
                 if (this.ptr instanceof Reflect.Namespace) {
                     // Build all children
@@ -2074,7 +2354,7 @@
                         if (!Lang.TYPEREF.test(this.ptr.type)) {
                             throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                         }
-                        var res = this.ptr.parent.resolve(this.ptr.type);
+                        res = this.ptr.parent.resolve(this.ptr.type);
                         if (!res) {
                             throw(new Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                         }
@@ -2091,6 +2371,22 @@
                     }
                 } else if (this.ptr instanceof ProtoBuf.Reflect.Enum.Value) {
                     // No need to build enum values (built in enum)
+                } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {
+                    if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
+                        res = this.ptr.parent.resolve(this.ptr.requestName);
+                        if (!res || !(res instanceof ProtoBuf.Reflect.Message)) {
+                            throw(new Error("Illegal request type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName));
+                        }
+                        this.ptr.resolvedRequestType = res;
+                        res = this.ptr.parent.resolve(this.ptr.responseName);
+                        if (!res || !(res instanceof ProtoBuf.Reflect.Message)) {
+                            throw(new Error("Illegal response type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName));
+                        }
+                        this.ptr.resolvedResponseType = res;
+                    } else {
+                        // Should not happen as nothing else is implemented
+                        throw(new Error("Illegal service method type in "+this.ptr.toString(true)));
+                    }
                 } else {
                     throw(new Error("Illegal object type in namespace: "+typeof(this.ptr)+":"+this.ptr));
                 }
@@ -2151,9 +2447,10 @@
                 return "Builder";
             };
         
-            // Pseudo type documented in Reflect.js.
-            // Exists for the sole purpose of being able to "... instanceof ProtoBuf.Builder.Message".
+            // Pseudo types documented in Reflect.js.
+            // Exist for the sole purpose of being able to "... instanceof ProtoBuf.Builder.Message" etc.
             Builder.Message = function() {};
+            Builder.Service = function() {};
             
             return Builder;
             

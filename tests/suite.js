@@ -484,10 +484,10 @@
                     var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/options.proto"));
                     var root = parser.parse();
                     test.equal(root["package"], "My");
-                    test.strictEqual(root["options"]["toplevel_1"], 10);
-                    test.equal(root["options"]["toplevel_2"], "Hello world!");
+                    test.strictEqual(root["options"]["(toplevel_1)"], 10);
+                    test.equal(root["options"]["(toplevel_2)"], "Hello world!");
                     test.equal(root["messages"][0]["fields"][0]["options"]["default"], "Max");
-                    test.equal(root["messages"][0]["options"]["inmessage"], "My.Test")
+                    test.equal(root["messages"][0]["options"]["(inmessage)"], "My.Test")
                 } catch (e) {
                     fail(e);
                 }
@@ -499,12 +499,12 @@
                     var builder = ProtoBuf.protoFromFile(__dirname+"/options.proto");
                     var My = builder.build("My");
                     test.deepEqual(My.$options, {
-                        "toplevel_1": 10,
-                        "toplevel_2": "Hello world!"
+                        "(toplevel_1)": 10,
+                        "(toplevel_2)": "Hello world!"
                     });
-                    test.strictEqual(My.$options['toplevel_1'], 10);
+                    test.strictEqual(My.$options['(toplevel_1)'], 10);
                     test.deepEqual(My.Test.$options, {
-                        "inmessage": "My.Test" // TODO: Options are not resolved, yet.
+                        "(inmessage)": "My.Test" // TODO: Options are not resolved, yet.
                     });
                 } catch (e) {
                     fail(e);
@@ -790,6 +790,25 @@
             }
             test.done();
         },
+
+        "importDuplicateDifferentBuilder": function(test) {
+            try {
+                var builderA = ProtoBuf.protoFromFile(__dirname+"/import_a.proto");
+                var builderB;
+                test.doesNotThrow(function() {
+                    builderB = ProtoBuf.protoFromFile(__dirname+"/import_b.proto");
+                });
+                var rootA = builderA.build();
+                var rootB = builderB.build();
+                test.ok(rootA.A);
+                test.ok(rootB.B);
+                test.ok(rootA.Common);                
+                test.ok(rootB.Common);                
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         "extend": function(test) {
             try {
@@ -809,14 +828,83 @@
             try {
                 var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
                 var root = parser.parse();
-                test.equal(root["options"]["my_file_option"], "Hello world!");
-                test.equal(root["messages"][0]["options"]["my_message_option"], 1234)
-                test.equal(root["messages"][0]["fields"][0]["options"]["my_field_option"], 4.5);
+                test.equal(root["options"]["(my_file_option)"], "Hello world!");
+                test.equal(root["messages"][0]["options"]["(my_message_option)"], 1234)
+                test.equal(root["messages"][0]["fields"][0]["options"]["(my_field_option)"], 4.5);
+                // test.equal(root["services"]["MyService"]["options"]["my_service_option"], "FOO");
                 // TODO: add tests for my_enum_option, my_enum_value_option
             } catch (e) {
                 fail(e);
             }
             test.done();
+        },
+        
+        "services": function(test) {
+            try {
+                var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
+                var root = parser.parse();
+                test.deepEqual(root["services"], [{
+                    "name": "MyService",
+                    "rpc": {
+                        "MyMethod": {
+                            "request": "RequestType",
+                            "response": "ResponseType",
+                            "options": {
+                                "(my_method_option).foo": 567,
+                                "(my_method_option).bar": "Some string"
+                            }
+                        }
+                    },
+                    "options": {
+                        "(my_service_option)": "FOO"
+                    }
+                }]);
+                
+                var builder = ProtoBuf.protoFromFile(__dirname+"/custom-options.proto");
+                var root = builder.build(),
+                    MyService = root.MyService,
+                    RequestType = root.RequestType,
+                    ResponseType = root.ResponseType,
+                    called = false;
+                
+                test.deepEqual(MyService.$options, {
+                    "(my_service_option)": "FOO"
+                });
+                test.deepEqual(MyService.MyMethod.$options, {
+                    "(my_method_option).foo": 567,
+                    "(my_method_option).bar": "Some string"
+                });
+                
+                // Provide the service with your actual RPC implementation based on whatever framework you like most.
+                var myService = new MyService(function(method, req, callback) {
+                    test.strictEqual(method, "MyMethod");
+                    test.ok(req instanceof RequestType);
+                    called = true;
+                    
+                    // In this case we just return no error and our pre-built response. This must be properly async!
+                    setTimeout(callback.bind(this, null, (new ResponseType()).encode() /* as raw bytes for debugging */ ));
+                });
+                
+                test.deepEqual(myService.$options, MyService.$options);
+                test.deepEqual(myService.MyMethod.$options, MyService.MyMethod.$options);
+                
+                // Call the service with your request message and provide a callback. This will call your actual service
+                // implementation to perform the request and gather a response before calling the callback. If the
+                // request or response type is invalid i.e. not an instance of RequestType or ResponseType, your
+                // implementation will not be called as ProtoBuf.js handles this case internally and directly hands the
+                // error to your callback below.
+                myService.MyMethod(new RequestType(), function(err, res) {
+                    // We get: err = null, res = our prebuilt response. And that's it.
+                    if (err !== null) {
+                        fail(err);
+                    }
+                    test.strictEqual(called, true);
+                    test.ok(res instanceof ResponseType);
+                    test.done();
+                });
+            } catch (e) {
+                fail(e);
+            }
         },
         
         // Properly ignore "syntax" and "extensions" keywords
@@ -944,7 +1032,6 @@
             }
             test.done();
         },
-
 
         "forwardComp": function(test) {
             try {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Class: T</title>
+    <title>Class: Method</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: T</h1>
+    <h1 class="page-title">Class: Method</h1>
     
     
 
@@ -27,9 +27,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.Reflect.html">.Reflect</a>.</span>
+        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.Reflect.html">.Reflect</a><a href="ProtoBuf.Reflect.Service.html">.Service</a>.</span>
     
-    T
+    Method
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="T"><span class="type-signature"></span>new T<span class="signature">(parent, name)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Method"><span class="type-signature"></span>new Method<span class="signature">(svc, <span class="optional">options</span>, name)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,7 +49,7 @@
     
     
     <div class="description">
-        <p>Constructs a Reflect base class.</p>
+        <p>Abstract service method.</p>
     </div>
     
 
@@ -71,6 +71,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -83,23 +85,60 @@
 	
         <tr>
             
-                <td class="name"><code>parent</code></td>
+                <td class="name"><code>svc</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></span>
+<span class="param-type"><a href="ProtoBuf.Reflect.Service.html">ProtoBuf.Reflect.Service</a></span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Parent object</p></td>
+            
+            <td class="description last"><p>Service</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string,*></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Options</p></td>
         </tr>
 	
 	
@@ -119,10 +158,16 @@
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Object name</p></td>
+            
+            <td class="description last"><p>Method name</p></td>
         </tr>
 	
 	
@@ -171,6 +216,12 @@
     </div>
     
     
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></li>
+        </ul>
+    
     
     
     
@@ -194,6 +245,56 @@
     
     <div class="description">
         <p>Object name in namespace.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#name">ProtoBuf.Reflect.T#name</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="options"><span class="type-signature"></span>options<span class="type-signature"> :Object.&lt;string, *></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Options.</p>
     </div>
     
     
@@ -250,6 +351,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#parent">ProtoBuf.Reflect.T#parent</a>
+    </li></dd>
     
     
     
@@ -309,6 +415,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#build">ProtoBuf.Reflect.T#build</a>
+    </li></dd>
+    
     
     
     
@@ -355,6 +466,82 @@
         
     
     
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="buildOpt"><span class="type-signature"></span>buildOpt<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string,*>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Builds the method&#39;s &#39;$options&#39; property.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string,*></span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -446,6 +633,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#toString">ProtoBuf.Reflect.T#toString</a>
+    </li></dd>
     
     
     

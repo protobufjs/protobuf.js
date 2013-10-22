@@ -53,7 +53,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "enums": [],
             "imports": [],
             "options": {},
-            "extends": []
+            "extends": [],
+            "services": []
         };
         var token, header = true;
         do {
@@ -88,7 +89,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 }
                 this._parseOption(topLevel, token);
             } else if (token == 'service') {
-                this._parseIgnoredBlock(topLevel, token);
+                this._parseService(topLevel, token);
             } else if (token == 'syntax') {
                 this._parseIgnoredStatement(topLevel, token);
             } else {
@@ -219,11 +220,16 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         var name = token;
         token = this.tn.next();
-        if (custom) {
+        if (custom) { // (my_method_option).foo, (my_method_option), some_method_option
             if (token != Lang.COPTCLOSE) {
                 throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
             }
+            name = '('+name+')';
             token = this.tn.next();
+            if (Lang.FQTYPEREF.test(token)) {
+                name += token;
+                token = this.tn.next();
+            }
         }
         if (token != Lang.EQUAL) {
             throw(new Error("Illegal option operator in message "+parent.name+", option "+name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
@@ -306,6 +312,104 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     };
 
     /**
+     * Parses a service definition.
+     * @param {Object} parent Parent definition
+     * @param {string} keyword Initial token
+     * @throws {Error} If the service cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseService = function(parent, keyword) {
+        var token = this.tn.next();
+        if (!Lang.NAME.test(token)) {
+            throw(new Error("Illegal service name: "+token));
+        }
+        var name = token;
+        var svc = {
+            "name": name,
+            "rpc": {},
+            "options": {}
+        };
+        token = this.tn.next();
+        if (token != Lang.OPEN) {
+            throw(new Error("Illegal OPEN after service "+name+": "+token+" ('"+Lang.OPEN+"' expected)"));
+        }
+        do {
+            token = this.tn.next();
+            if (token == "option") {
+                this._parseOption(svc, token);
+            } else if (token == 'rpc') {
+                this._parseServiceRPC(svc, token);
+            } else if (token != Lang.CLOSE) {
+                throw(new Error("Illegal type for service "+name+": "+token));
+            }
+        } while (token != Lang.CLOSE);
+        parent["services"].push(svc);
+    };
+
+    /**
+     * Parses a RPC service definition of the form ['rpc', name, (request), 'returns', (response)].
+     * @param {Object} svc Parent definition
+     * @param {string} token Initial token
+     * @private
+     */
+    Parser.prototype._parseServiceRPC = function(svc, token) {
+        var type = token;
+        token = this.tn.next();
+        if (!Lang.NAME.test(token)) {
+            throw(new Error("Illegal RPC method name in service "+svc["name"]+": "+token));
+        }
+        var name = token;
+        var method = {
+            "request": null,
+            "response": null,
+            "options": {}
+        };
+        token = this.tn.next();
+        if (token != Lang.COPTOPEN) {
+            throw(new Error("Illegal start of request type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
+        }
+        token = this.tn.next();
+        if (!Lang.TYPEREF.test(token)) {
+            throw(new Error("Illegal request type in RPC service "+svc["name"]+"#"+name+": "+token));
+        }
+        method["request"] = token;
+        token = this.tn.next();
+        if (token != Lang.COPTCLOSE) {
+            throw(new Error("Illegal end of request type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
+        }
+        token = this.tn.next();
+        if (token.toLowerCase() != "returns") {
+            throw(new Error("Illegal request/response delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('returns' expected)"));
+        }
+        token = this.tn.next();
+        if (token != Lang.COPTOPEN) {
+            throw(new Error("Illegal start of response type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
+        }
+        token = this.tn.next();
+        method["response"] = token;
+        token = this.tn.next();
+        if (token != Lang.COPTCLOSE) {
+            throw(new Error("Illegal end of response type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
+        }
+        token = this.tn.next();
+        if (token == Lang.OPEN) {
+            do {
+                token = this.tn.next();
+                if (token == 'option') {
+                    this._parseOption(method, token); // <- will fail for the custom-options example
+                } else if (token != Lang.CLOSE) {
+                    throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+": "+token+" ('option' expected)"));
+                }
+            } while (token != Lang.CLOSE);
+        } else if (token != Lang.END) {
+            throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
+        }
+        if (typeof svc[type] === 'undefined') svc[type] = {};
+        svc[type][name] = method;
+    };
+
+
+    /**
      * Parses a message.
      * @param {Object} parent Parent definition
      * @param {string} token First token
@@ -355,43 +459,6 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         } while (true);
         parent["messages"].push(msg);
         return msg;
-    };
-
-    /**
-     * Parses an extend block.
-     * @param {Object} parent Parent definition
-     * @param {string} token First token
-     * @return {Object}
-     * @throws {Error} If the message cannot be parsed
-     * @private
-     */
-    Parser.prototype._parseExtend = function (parent, token) {
-        /** @dict */
-        var extend = {};
-        token = this.tn.next();
-        if (!Lang.NAME.test(token)) {
-            throw(new Error("Illegal message name" + (parent ? " in message " + parent["name"] : "") + ": " + token));
-        }
-        extend["messageToExtend"] = token;
-        token = this.tn.next();
-        if (token != Lang.OPEN) {
-            throw(new Error("Illegal OPEN after message " + extend.name + ": " + token + " ('" + Lang.OPEN + "' expected)"));
-        }
-        extend["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
-        do {
-            token = this.tn.next();
-            if (token == Lang.CLOSE) {
-                token = this.tn.peek();
-                if (token == Lang.END) this.tn.next();
-                break;
-            } else if (Lang.RULE.test(token)) {
-                this._parseMessageField(extend, token);
-            } else {
-                throw(new Error("Illegal token in message " + extend.name + ": " + token + " (type or '" + Lang.CLOSE + "' expected)"));
-            }
-        } while (true);
-        parent["extends"].push(extend);
-        return extend;
     };
 
     /**
@@ -486,7 +553,12 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             if (token != Lang.COPTCLOSE) {
                 throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+": "+token+" (')' expected)"));
             }
+            name = '('+name+')';
             token = this.tn.next();
+            if (Lang.FQTYPEREF.test(token)) {
+                name += token;
+                token = this.tn.next();
+            }
         }
         if (token != Lang.EQUAL) {
             throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+": "+token+" ('=' expected)"));
@@ -507,6 +579,43 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             throw(new Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+": "+token));
         }
         fld["options"][name] = value;
+    };
+
+    /**
+     * Parses an extend block.
+     * @param {Object} parent Parent definition
+     * @param {string} token First token
+     * @return {Object}
+     * @throws {Error} If the message cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseExtend = function (parent, token) {
+        /** @dict */
+        var extend = {};
+        token = this.tn.next();
+        if (!Lang.NAME.test(token)) {
+            throw(new Error("Illegal message name" + (parent ? " in message " + parent["name"] : "") + ": " + token));
+        }
+        extend["messageToExtend"] = token;
+        token = this.tn.next();
+        if (token != Lang.OPEN) {
+            throw(new Error("Illegal OPEN after message " + extend.name + ": " + token + " ('" + Lang.OPEN + "' expected)"));
+        }
+        extend["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
+        do {
+            token = this.tn.next();
+            if (token == Lang.CLOSE) {
+                token = this.tn.peek();
+                if (token == Lang.END) this.tn.next();
+                break;
+            } else if (Lang.RULE.test(token)) {
+                this._parseMessageField(extend, token);
+            } else {
+                throw(new Error("Illegal token in message " + extend.name + ": " + token + " (type or '" + Lang.CLOSE + "' expected)"));
+            }
+        } while (true);
+        parent["extends"].push(extend);
+        return extend;
     };
 
     /**
