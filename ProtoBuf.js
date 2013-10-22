@@ -290,6 +290,19 @@
                     }
                 }
             };
+        
+            /**
+             * Tests if an object is an array.
+             * @param {*} obj Object to test
+             * @returns {boolean} true if it is an array, else false
+             * @expose
+             */
+            Util.isArray = function(obj) {
+                if (!obj) return false;
+                if (obj instanceof Array) return true;
+                if (Array.isArray) return Array.isArray(obj);
+                return Object.prototype.toString.call(obj) === "[object Array]";
+            };
             
             return Util;
         })();        
@@ -1509,7 +1522,7 @@
                         // Set field values from a values object
                         if (arguments.length == 1 && typeof values == 'object' &&
                             /* not another Message */ typeof values.encode != 'function' &&
-                            /* not a repeated field */ !(values instanceof Array) &&
+                            /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
                             /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
@@ -1953,7 +1966,7 @@
                 }
                 var i;
                 if (this.repeated && !skipRepeated) { // Repeated values as arrays
-                    if (!(value instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(value)) {
                         value = [value];
                     }
                     var res = [];
@@ -1963,7 +1976,7 @@
                     return res;
                 }
                 // All non-repeated fields expect no array
-                if (!this.repeated && value instanceof Array) {
+                if (!this.repeated && ProtoBuf.Util.isArray(value)) {
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
                 }
                 // Signed 32bit
@@ -2755,7 +2768,7 @@
                 // Fields, enums and messages are arrays if provided
                 var i;
                 if (typeof def["fields"] != 'undefined') {
-                    if (!(def["fields"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["fields"])) {
                         return false;
                     }
                     var ids = [], id; // IDs must be unique
@@ -2772,7 +2785,7 @@
                     ids = null;
                 }
                 if (typeof def["enums"] != 'undefined') {
-                    if (!(def["enums"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["enums"])) {
                         return false;
                     }
                     for (i=0; i<def["enums"].length; i++) {
@@ -2782,7 +2795,7 @@
                     }
                 }
                 if (typeof def["messages"] != 'undefined') {
-                    if (!(def["messages"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["messages"])) {
                         return false;
                     }
                     for (i=0; i<def["messages"].length; i++) {
@@ -2836,7 +2849,7 @@
                     return false;
                 }
                 // Enums require at least one value
-                if (typeof def["values"] == 'undefined' || !(def["values"] instanceof Array) || def["values"].length == 0) {
+                if (typeof def["values"] == 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
                     return false;
                 }
                 for (var i=0; i<def["values"].length; i++) {
@@ -2865,7 +2878,7 @@
              */
             Builder.prototype.create = function(defs) {
                 if (!defs) return; // Nothing to create
-                if (!(defs instanceof Array)) {
+                if (!ProtoBuf.Util.isArray(defs)) {
                     defs = [defs];
                 }
                 if (defs.length == 0) return;
@@ -2875,7 +2888,7 @@
                 stack.push(defs); // One level [a, b, c]
                 while (stack.length > 0) {
                     defs = stack.pop();
-                    if (defs instanceof Array) { // Stack always contains entire namespaces
+                    if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
                         while (defs.length > 0) {
                             def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {

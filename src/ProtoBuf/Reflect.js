@@ -371,7 +371,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 // Set field values from a values object
                 if (arguments.length == 1 && typeof values == 'object' &&
                     /* not another Message */ typeof values.encode != 'function' &&
-                    /* not a repeated field */ !(values instanceof Array) &&
+                    /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
                     /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                     /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                     /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
@@ -815,7 +815,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         }
         var i;
         if (this.repeated && !skipRepeated) { // Repeated values as arrays
-            if (!(value instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(value)) {
                 value = [value];
             }
             var res = [];
@@ -825,7 +825,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             return res;
         }
         // All non-repeated fields expect no array
-        if (!this.repeated && value instanceof Array) {
+        if (!this.repeated && ProtoBuf.Util.isArray(value)) {
             throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
         }
         // Signed 32bit

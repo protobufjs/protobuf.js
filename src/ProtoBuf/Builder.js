@@ -119,7 +119,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         // Fields, enums and messages are arrays if provided
         var i;
         if (typeof def["fields"] != 'undefined') {
-            if (!(def["fields"] instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(def["fields"])) {
                 return false;
             }
             var ids = [], id; // IDs must be unique
@@ -136,7 +136,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             ids = null;
         }
         if (typeof def["enums"] != 'undefined') {
-            if (!(def["enums"] instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(def["enums"])) {
                 return false;
             }
             for (i=0; i<def["enums"].length; i++) {
@@ -146,7 +146,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             }
         }
         if (typeof def["messages"] != 'undefined') {
-            if (!(def["messages"] instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(def["messages"])) {
                 return false;
             }
             for (i=0; i<def["messages"].length; i++) {
@@ -200,7 +200,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             return false;
         }
         // Enums require at least one value
-        if (typeof def["values"] == 'undefined' || !(def["values"] instanceof Array) || def["values"].length == 0) {
+        if (typeof def["values"] == 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
             return false;
         }
         for (var i=0; i<def["values"].length; i++) {
@@ -229,7 +229,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.prototype.create = function(defs) {
         if (!defs) return; // Nothing to create
-        if (!(defs instanceof Array)) {
+        if (!ProtoBuf.Util.isArray(defs)) {
             defs = [defs];
         }
         if (defs.length == 0) return;
@@ -239,7 +239,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         stack.push(defs); // One level [a, b, c]
         while (stack.length > 0) {
             defs = stack.pop();
-            if (defs instanceof Array) { // Stack always contains entire namespaces
+            if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
                 while (defs.length > 0) {
                     def = defs.shift(); // Namespace always contains an array of messages, enums and services
                     if (Builder.isValidMessage(def)) {
