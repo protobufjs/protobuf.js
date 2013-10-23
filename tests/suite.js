@@ -1024,7 +1024,24 @@
                 });
                 test.strictEqual(bb.offset, bb.length);
             } catch (e) {
-                console.log(e.stack);
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "tokenizerLine": function(test) {
+            try {
+                var parser = new ProtoBuf.DotProto.Parser("package test;\n\nmessage Message {\n\trequired string invalid = 1;}ERROR\n"),
+                    ast = null, err = null;
+                try {
+                    ast = parser.parse();
+                } catch (caught) {
+                    err = caught;
+                }
+                test.ok(err);
+                test.notOk(ast);
+                test.ok(err.message.indexOf("line 4:") >= 0);
+            } catch (e) {
                 fail(e);
             }
             test.done();

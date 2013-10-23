@@ -162,6 +162,11 @@ ProtoBuf.DotProto.Tokenizer.prototype.source;
 ProtoBuf.DotProto.Tokenizer.prototype.index;
 
 /**
+ * @type {number}
+ */
+ProtoBuf.DotProto.Tokenizer.prototype.line;
+
+/**
  * @type {array.<string>}
  */
 ProtoBuf.DotProto.Tokenizer.prototype.stack;

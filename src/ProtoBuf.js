@@ -23,9 +23,6 @@
     "use strict";
     
     function loadProtoBuf(ByteBuffer) {
-        if (!ByteBuffer || !ByteBuffer.zigZagEncode32) {
-            throw(new Error("ProtoBuf.js requires ByteBuffer.js >=1.1.0: Get it at https://github.com/dcodeIO/ByteBuffer.js"));
-        }
 
         /**
          * The ProtoBuf namespace.

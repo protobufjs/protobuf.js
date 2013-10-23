@@ -763,6 +763,22 @@ ByteBuffer.zigZagEncode32 = function(n) {};
 ByteBuffer.zigZagDecode32 = function(n) {};
 
 /**
+ * @param {ByteBuffer} bb
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ByteBuffer.encode64 = function(bb) {};
+
+/**
+ * @param {string} str
+ * @return {!ByteBuffer}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ByteBuffer.decode64 = function(str) {};
+
+/**
  * @type {number}
  * @const
  */

@@ -45,6 +45,13 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
         this.index = 0;
 
         /**
+         * Current line.
+         * @type {number}
+         * @expose
+         */
+        this.line = 1; // FIXME: Is this counting correctly?
+
+        /**
          * Stacked values.
          * @type {Array}
          * @expose
@@ -74,7 +81,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
             this.stack.push(Lang.STRINGCLOSE);
             return s;
         }
-        throw(new Error("Illegal string value at index "+this.index));
+        throw(new Error("Illegal string value at line "+this.line+", index "+this.index));
     };
 
     /**
@@ -94,12 +101,13 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
             this.readingString = false;
             return this._readString();
         }
-        var repeat;
+        var repeat, last;
         do {
             repeat = false;
             // Strip white spaces
-            while (Lang.WHITESPACE.test(this.source.charAt(this.index))) {
+            while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
                 this.index++;
+                if (last == "\n") this.line++;
                 if (this.index == this.source.length) return null;
             }
             // Strip comments
@@ -110,17 +118,19 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
                         if (this.index == this.source.length) return null;
                     }
                     this.index++;
+                    this.line++;
                     repeat = true;
                 } else if (this.source.charAt(this.index) == '*') { /* Block */
-                    var last = '';
+                    last = '';
                     while (last+(last=this.source.charAt(this.index)) != '*/') {
                         this.index++;
+                        if (last == "\n") this.line++;
                         if (this.index == this.source.length) return null;
                     }
                     this.index++;
                     repeat = true;
                 } else {
-                    throw(new Error("Invalid comment: /"+this.source.charAt(this.index)+" ('/' or '*' expected)"));
+                    throw(new Error("Invalid comment at line "+this.line+": /"+this.source.charAt(this.index)+" ('/' or '*' expected)"));
                 }
             }
         } while (repeat);

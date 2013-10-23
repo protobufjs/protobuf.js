@@ -23,9 +23,6 @@
     "use strict";
     
     function loadProtoBuf(ByteBuffer) {
-        if (!ByteBuffer || !ByteBuffer.zigZagEncode32) {
-            throw(new Error("ProtoBuf.js requires ByteBuffer.js >=1.1.0: Get it at https://github.com/dcodeIO/ByteBuffer.js"));
-        }
 
         /**
          * The ProtoBuf namespace.
@@ -652,7 +649,7 @@
         
                 /**
                  * Runtime message class.
-                 * @type {ProtoBuf.Builder.Message|null}
+                 * @type {?function(new:ProtoBuf.Builder.Message)}
                  * @expose
                  */
                 this.clazz = null;
@@ -715,7 +712,7 @@
                                 try {
                                     this.set(field.name, field.options['default']); // Should not throw
                                 } catch (e) {
-                                    throw(new Error("[INTERNAL ERROR] "+e));
+                                    throw(new Error("[INTERNAL] "+e));
                                 }
                             }
                         }
@@ -1283,7 +1280,7 @@
                     return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
                 }
                 // We should never end here
-                throw(new Error("[INTERNAL ERROR] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
+                throw(new Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
             };
         
             /**
@@ -1297,7 +1294,7 @@
             Field.prototype.encode = function(value, buffer) {
                 value = this.verifyValue(value); // May throw
                 if (this.type == null || typeof this.type != 'object') {
-                    throw(new Error("[INTERNAL ERROR] Unresolved type in "+this.toString(true)+": "+this.type));
+                    throw(new Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type));
                 }
                 if (value === null || (this.repeated && value.length == 0)) return buffer; // Optional omitted
                 try {
@@ -1420,7 +1417,7 @@
                     buffer.append(bb.flip());
                 } else {
                     // We should never end here
-                    throw(new Error("[INTERNAL ERROR] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
+                    throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
                 }
                 return buffer;
             };
@@ -1542,7 +1539,7 @@
                 }
                 
                 // We should never end here
-                throw(new Error("[INTERNAL ERROR] Illegal wire type for "+this.toString(true)+": "+wireType));
+                throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
             };
         
             /**
@@ -1645,7 +1642,7 @@
         
                 /**
                  * Built runtime service class.
-                 * @type {ProtoBuf.Builder.Service}
+                 * @type {?function(new:ProtoBuf.Builder.Service)}
                  */
                 this.clazz = null;
             };
