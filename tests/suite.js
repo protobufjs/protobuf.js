@@ -347,7 +347,13 @@
             new Test(bb).encode(encoded);
             test.equal(encoded.toHex(), "<0A 04 12 34 56 78>");
             encoded = encoded.slice(0, 5); // chop off the last byte
-            test.throws(function() { Test.decode(encoded); }, Error);
+            var err = null;
+            try {
+                Test.decode(encoded);
+            } catch (caught) {
+                err = caught;
+            }
+            test.ok(err && err.message && err.message.indexOf(": 4 required but got only 3") >= 0);
             test.done();
         },
 
