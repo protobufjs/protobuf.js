@@ -1526,6 +1526,9 @@
                 // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     nBytes = buffer.readVarint32();
+                    if (buffer.remaining() < nBytes) {
+                        throw(new Error("Prematurely terminated bytes: at least " + nBytes + " are required but only " + buffer.remaining() + " are available"));
+                    }
                     value = buffer.clone(); // Offset already set
                     value.length = value.offset+nBytes;
                     buffer.offset += nBytes;
