@@ -394,7 +394,7 @@
                  * @type {number}
                  * @expose
                  */
-                this.line = 1; // FIXME: Is this counting correctly?
+                this.line = 1;
         
                 /**
                  * Stacked values.
@@ -2345,7 +2345,7 @@
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     nBytes = buffer.readVarint32();
                     if (buffer.remaining() < nBytes) {
-                        throw(new Error("Prematurely terminated bytes: at least " + nBytes + " are required but only " + buffer.remaining() + " are available"));
+                        throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
                     }
                     value = buffer.clone(); // Offset already set
                     value.length = value.offset+nBytes;

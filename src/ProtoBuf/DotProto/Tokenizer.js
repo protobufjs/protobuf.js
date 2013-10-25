@@ -49,7 +49,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
          * @type {number}
          * @expose
          */
-        this.line = 1; // FIXME: Is this counting correctly?
+        this.line = 1;
 
         /**
          * Stacked values.
