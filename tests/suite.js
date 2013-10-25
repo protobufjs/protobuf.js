@@ -338,6 +338,18 @@
             }
             test.done();
         },
+        
+        "notEnoughBytes": function(test) {
+            var builder = ProtoBuf.protoFromString("message Test { required bytes b = 1; }");
+            var Test = builder.build("Test");
+            var bb = new ByteBuffer().writeUint32(0x12345678).flip();
+            var encoded = new ByteBuffer(6);
+            new Test(bb).encode(encoded);
+            test.equal(encoded.toHex(), "<0A 04 12 34 56 78>");
+            encoded = encoded.slice(0, 5); // chop off the last byte
+            test.throws(function() { Test.decode(encoded); }, Error);
+            test.done();
+        },
 
         // As mentioned by Bill Katz
         "T139": function(test) {
