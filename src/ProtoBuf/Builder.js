@@ -83,7 +83,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @expose
      */
     Builder.prototype.define = function(pkg, options) {
-        if (typeof pkg != 'string' || !Lang.TYPEDEF.test(pkg)) {
+        if (typeof pkg != 'string' || !Lang.TYPEREF.test(pkg)) {
             throw(new Error("Illegal package name: "+pkg));
         }
         var part = pkg.split("."), i;
@@ -180,7 +180,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             // Options are <string,*>
             var keys = Object.keys(def["options"]);
             for (var i=0; i<keys.length; i++) {
-                if (!Lang.NAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
+                if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
                     return false;
                 }
             }
@@ -256,7 +256,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                 if (def["fields"][i]["options"]) {
                                     subObj = Object.keys(def["fields"][i]["options"]);
                                     for (j=0; j<subObj.length; j++) { // j=Option names
-                                        if (!Lang.NAME.test(subObj[j])) {
+                                        if (!Lang.OPTNAME.test(subObj[j])) {
                                             throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
                                         }
                                         if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {

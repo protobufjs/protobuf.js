@@ -162,7 +162,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
      */
     Parser.prototype._parsePackage = function(token) {
         token = this.tn.next();
-        if (!Lang.TYPEDEF.test(token)) {
+        if (!Lang.TYPEREF.test(token)) {
             throw(new Error("Illegal package name at line "+this.tn.line+": "+token));
         }
         var pkg = token;
@@ -244,7 +244,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         } else {
             if (Lang.NUMBER.test(token)) {
                 value = this._parseNumber(token, true);
-            } else if (Lang.NAME.test(token)) {
+            } else if (Lang.TYPEREF.test(token)) {
                 value = token;
             } else {
                 throw(new Error("Illegal option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token));

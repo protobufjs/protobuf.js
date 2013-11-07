@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.2.0";
+        ProtoBuf.VERSION = "1.3.0";
 
         /**
          * Wire types.
@@ -333,13 +333,14 @@
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
                 
-                KEYWORD: /package|option|import|message|enum|extend|service|syntax|extensions/,
-                RULE: /required|optional|repeated/,
-                TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
-                NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEDEF: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEREF: /(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+/,
-                FQTYPEREF: /(?:\.[a-zA-Z][a-zA-Z_0-9]*)+/,
+                KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions)$/,
+                RULE: /^(?:required|optional|repeated)$/,
+                TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
+                NAME: /^[a-zA-Z][a-zA-Z_0-9]*$/,
+                OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,
+                TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
+                TYPEREF: /^(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+$/,
+                FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
                 NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|[0-9]*\.[0-9]+)$/,
                 NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
                 NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
@@ -675,7 +676,7 @@
              */
             Parser.prototype._parsePackage = function(token) {
                 token = this.tn.next();
-                if (!Lang.TYPEDEF.test(token)) {
+                if (!Lang.TYPEREF.test(token)) {
                     throw(new Error("Illegal package name at line "+this.tn.line+": "+token));
                 }
                 var pkg = token;
@@ -757,7 +758,7 @@
                 } else {
                     if (Lang.NUMBER.test(token)) {
                         value = this._parseNumber(token, true);
-                    } else if (Lang.NAME.test(token)) {
+                    } else if (Lang.TYPEREF.test(token)) {
                         value = token;
                     } else {
                         throw(new Error("Illegal option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token));
@@ -2775,7 +2776,7 @@
              * @expose
              */
             Builder.prototype.define = function(pkg, options) {
-                if (typeof pkg != 'string' || !Lang.TYPEDEF.test(pkg)) {
+                if (typeof pkg != 'string' || !Lang.TYPEREF.test(pkg)) {
                     throw(new Error("Illegal package name: "+pkg));
                 }
                 var part = pkg.split("."), i;
@@ -2872,7 +2873,7 @@
                     // Options are <string,*>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.NAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
+                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
                             return false;
                         }
                     }
@@ -2948,7 +2949,7 @@
                                         if (def["fields"][i]["options"]) {
                                             subObj = Object.keys(def["fields"][i]["options"]);
                                             for (j=0; j<subObj.length; j++) { // j=Option names
-                                                if (!Lang.NAME.test(subObj[j])) {
+                                                if (!Lang.OPTNAME.test(subObj[j])) {
                                                     throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
                                                 }
                                                 if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
