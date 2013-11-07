@@ -325,10 +325,11 @@ ProtoBuf.Reflect.Message.prototype.build = function() {};
 /**
  * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
+ * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {string}
  */
-ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
+ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer, doNotThrow) {};
 
 /**
  * @param {!ByteBuffer} buffer
@@ -646,11 +647,12 @@ ProtoBuf.Builder.Message.prototype.get = function(key) {};
 
 /**
  * @param {ByteBuffer=} buffer
+ * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {Error}
  * @nosideeffects
  */
-ProtoBuf.Builder.Message.prototype.encode = function(buffer) {};
+ProtoBuf.Builder.Message.prototype.encode = function(buffer, doNotThrow) {};
 
 /**
  * @return {ArrayBuffer}
