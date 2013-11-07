@@ -694,14 +694,21 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * Encodes a runtime message's contents to the specified buffer.
      * @param {ProtoBuf.Builder.Message} message Runtime message to encode
      * @param {ByteBuffer} buffer ByteBuffer to write to
+     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing
      * @return {ByteBuffer} The ByteBuffer for chaining
-     * @throws {string} If the message cannot be encoded
+     * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
      * @expose
      */
-    Message.prototype.encode = function(message, buffer) {
-        var fields = this.getChildren(Message.Field);
+    Message.prototype.encode = function(message, buffer, doNotThrow) {
+        var fields = this.getChildren(Message.Field),
+            offset = buffer.offset;
         for (var i=0; i<fields.length; i++) {
-            fields[i].encode(message.get(fields[i].name), buffer);
+            var val = message.get(fields[i].name);
+            if (fields[i].required && val === null && !doNotThrow) {
+                buffer.offset = offset;
+                throw(new Error("Missing required field for "+this.toString(true)+": "+fields[i].name));
+            }
+            fields[i].encode(val, buffer);
         }
         return buffer;
     };
