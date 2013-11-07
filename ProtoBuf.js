@@ -1709,15 +1709,16 @@
                      * @name ProtoBuf.Builder.Message#encode
                      * @function
                      * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+                     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
                      * @return {ByteBuffer} Encoded message
-                     * @throws {Error} If the message cannot be encoded
+                     * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
                      * @expose
                      */
-                    Message.prototype.encode = function(buffer) {
+                    Message.prototype.encode = function(buffer, doNotThrow) {
                         buffer = buffer || new ByteBuffer();
                         var le = buffer.littleEndian;
                         try {
-                            var bb = T.encode(this, buffer.LE()).flip();
+                            var bb = T.encode(this, buffer.LE(), doNotThrow).flip();
                             buffer.littleEndian = le;
                             return bb;
                         } catch (e) {
@@ -1853,7 +1854,7 @@
              * Encodes a runtime message's contents to the specified buffer.
              * @param {ProtoBuf.Builder.Message} message Runtime message to encode
              * @param {ByteBuffer} buffer ByteBuffer to write to
-             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing
+             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
              * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
              * @expose

@@ -695,7 +695,7 @@
         
             
 <dt>
-    <h4 class="name" id="encode"><span class="type-signature"></span>encode<span class="signature">(<span class="optional">buffer</span>)</span><span class="type-signature"> &rarr; {ByteBuffer}</span></h4>
+    <h4 class="name" id="encode"><span class="type-signature"></span>encode<span class="signature">(<span class="optional">buffer</span>, <span class="optional">doNotThrow</span>)</span><span class="type-signature"> &rarr; {ByteBuffer}</span></h4>
     
     
 </dt>
@@ -767,6 +767,37 @@
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>doNotThrow</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Forces encoding even if required fields are missing, defaults to false</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -806,7 +837,7 @@
     
             
 <div class="param-desc">
-    If the message cannot be encoded
+    If required fields are missing or the message cannot be encoded for another reason
 </div>
 
 
