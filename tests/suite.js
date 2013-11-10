@@ -289,8 +289,8 @@
                     var b1 = new ByteBuffer();
                     m1.f = x.f;
                     m1.encode(b1);
-                    var q1 = b1.slice(1,5).compact().reverse().toHex();
-                    test.strictEqual('<' + x.b + '>', q1 );
+                    var q1 = b1.slice(1,5).compact().reverse();
+                    test.strictEqual('<' + x.b + '>', q1.toHex());
     
                     // check decode
                     var b2 = new ByteBuffer();
