@@ -593,7 +593,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         /** @dict */
         var extend = {};
         token = this.tn.next();
-        if (!Lang.NAME.test(token)) {
+        if (!Lang.TYPEREF.test(token)) {
             throw(new Error("Illegal message name" + (parent ? " in message " + parent["name"] : "") + ": " + token));
         }
         extend["messageToExtend"] = token;
