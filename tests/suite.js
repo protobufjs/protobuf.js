@@ -830,9 +830,10 @@
         
         "extend": function(test) {
             try {
-                test.doesNotThrow(function() {
-                    ProtoBuf.protoFromFile(__dirname+"/extend.proto");
-                });
+              var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/extend2.proto"));
+              var root = parser.parse();
+              test.equal(root["extends"][0]["messageToExtend"], "sample.basepackage.Foo");
+              test.equal(root["extends"][0]["fields"][0]["name"], "bar");
             } catch (e) {
                 fail(e);
             }
@@ -846,8 +847,8 @@
                 var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
                 var root = parser.parse();
                 test.equal(root["options"]["(my_file_option)"], "Hello world!");
-                test.equal(root["messages"][0]["options"]["(my_message_option)"], 1234)
-                test.equal(root["messages"][0]["fields"][0]["options"]["(my_field_option)"], 4.5);
+                test.equal(root["messages"][7]["options"]["(my_message_option)"], 1234)
+                test.equal(root["messages"][7]["fields"][0]["options"]["(my_field_option)"], 4.5);
                 // test.equal(root["services"]["MyService"]["options"]["my_service_option"], "FOO");
                 // TODO: add tests for my_enum_option, my_enum_value_option
             } catch (e) {
@@ -979,6 +980,71 @@
             test.done();
         },
 
+        "extendexample": function(test) {
+            try {
+                var root = ProtoBuf.protoFromFile(__dirname+"/extend2.proto").build();
+
+                var Foo = root.sample.basepackage.Foo;
+                var foo = new Foo({
+                    "blah": "blahValue",
+                    "bar": 12,
+                    person: {
+                        "name": "Nancy",
+                        "id": 123
+                    },
+                    anotherPerson: {
+                        "name": "Dan",
+                        "id": 112,
+                        email: "dan@example.org"
+                    }
+                });
+
+                test.strictEqual(foo.blah, "blahValue");
+                test.strictEqual(foo.bar, 12);
+                test.deepEqual(foo.person, { name: "Nancy", id: 123, email: null});
+
+                var encoded = foo.encode();
+                var decoded = Foo.decode(encoded);
+
+                test.strictEqual(decoded.blah, "blahValue");
+                test.strictEqual(decoded.bar, 12);
+                test.deepEqual(decoded.person, { name: "Nancy", id: 123, email: null});
+                test.deepEqual(decoded.anotherPerson, { name: "Dan", id: 112, email: "dan@example.org"});
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "extendfromcommonjs": function(test) {
+            try {
+                var root = require(__dirname+"/extend2.js");
+
+                var Foo = root.basepackage.Foo;
+                var foo = new Foo({
+                    "blah": "blahValue",
+                    "bar": 12,
+                    person: {
+                        "name": "Nancy",
+                        "id": 123
+                    }
+                });
+
+                test.strictEqual(foo.blah, "blahValue");
+                test.strictEqual(foo.bar, 12);
+                test.deepEqual(foo.person, { name: "Nancy", id: 123, email: null});
+
+                var encoded = foo.encode();
+                var decoded = Foo.decode(encoded);
+
+                test.strictEqual(decoded.blah, "blahValue");
+                test.strictEqual(decoded.bar, 12);
+                test.deepEqual(decoded.person, { name: "Nancy", id: 123, email: null});
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         // Make sure that our example at https://github.com/dcodeIO/ProtoBuf.js/wiki is not nonsense
         "pingexample": function(test) {

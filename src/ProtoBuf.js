@@ -236,6 +236,10 @@
                     "imports": parsed["imports"]
                 }, filename);
             }
+            if (parsed['extends'].length > 0) {
+                builder.extendMessages(parsed['extends'], parsed['package']);
+            }
+
             builder.resolveAll();
             builder.build();
             return builder;

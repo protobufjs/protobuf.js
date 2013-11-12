@@ -1,28 +1,49 @@
-import "google/protobuf/descriptor.proto";
+option (my_file_option) = "Hello world!";
 
-extend google.protobuf.FileOptions {
+
+message FileOptions {
+  extensions 1000 to max;
+}
+message MessageOptions {
+  extensions 1000 to max;
+}
+message FieldOptions {
+  extensions 1000 to max;
+}
+message EnumOptions {
+  extensions 1000 to max;
+}
+message EnumValueOptions {
+  extensions 1000 to max;
+}
+message ServiceOptions {
+  extensions 1000 to max;
+}
+message MethodOptions {
+  extensions 1000 to max;
+}
+
+extend FileOptions {
   optional string my_file_option = 50000;
 }
-extend google.protobuf.MessageOptions {
+extend MessageOptions {
   optional int32 my_message_option = 50001;
 }
-extend google.protobuf.FieldOptions {
+extend FieldOptions {
   optional float my_field_option = 50002;
 }
-extend google.protobuf.EnumOptions {
+extend EnumOptions {
   optional bool my_enum_option = 50003;
 }
-extend google.protobuf.EnumValueOptions {
+extend EnumValueOptions {
   optional uint32 my_enum_value_option = 50004;
 }
-extend google.protobuf.ServiceOptions {
+extend ServiceOptions {
   optional MyEnum my_service_option = 50005;
 }
-extend google.protobuf.MethodOptions {
+extend MethodOptions {
   optional MyMessage my_method_option = 50006;
 }
-
-option (my_file_option) = "Hello world!";
 
 message MyMessage {
   option (my_message_option) = 1234;

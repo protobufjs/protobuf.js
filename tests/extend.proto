@@ -1,5 +1,6 @@
-import "google/protobuf/descriptor.proto";
+package sample.basepackage;
 
-extend google.protobuf.MessageOptions {
-  optional int32 foo = 123;
+message Foo {
+  optional string blah = 1;
+  extensions 1000 to max;
 }

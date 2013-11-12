@@ -53,6 +53,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "enums": [],
             "imports": [],
             "options": {},
+            "extends": [],
             "services": []
         };
         var token, header = true;
@@ -75,8 +76,10 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 }
                 topLevel.imports.push(this._parseImport(token));
             } else if (token == 'message') {
-                this._parseMessage(topLevel, token);
+                this._parseMessage(topLevel, token, topLevel);
                 header = false;
+            } else if (token == 'extend') {
+                this._parseExtend(topLevel, token);
             } else if (token == 'enum') {
                 this._parseEnum(topLevel, token);
                 header = false;
@@ -87,8 +90,6 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 this._parseOption(topLevel, token);
             } else if (token == 'service') {
                 this._parseService(topLevel, token);
-            } else if (token == 'extend') {
-                this._parseIgnoredBlock(topLevel, token);
             } else if (token == 'syntax') {
                 this._parseIgnoredStatement(topLevel, token);
             } else {
@@ -407,15 +408,17 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         svc[type][name] = method;
     };
 
+
     /**
-     * Parses a message definition.
+     * Parses a message.
      * @param {Object} parent Parent definition
      * @param {string} token First token
+     * @param {Object} topLevel The top level definition
      * @return {Object}
      * @throws {Error} If the message cannot be parsed
      * @private
      */
-    Parser.prototype._parseMessage = function(parent, token) {
+    Parser.prototype._parseMessage = function(parent, token, topLevel) {
         /** @dict */
         var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
         token = this.tn.next();
@@ -442,9 +445,12 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             } else if (token == "enum") {
                 this._parseEnum(msg, token);
             } else if (token == "message") {
-                this._parseMessage(msg, token);
+                this._parseMessage(msg, token, topLevel);
             } else if (token == "option") {
                 this._parseOption(msg, token);
+            } else if (token == "extend") {
+                // all extend directives are put on the top level nested and top-level extend blocks act the same way
+                this._parseExtend(topLevel, token);
             } else if (token == "extensions") {
                 this._parseIgnoredStatement(msg, token);
             } else {
@@ -573,6 +579,43 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             throw(new Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token));
         }
         fld["options"][name] = value;
+    };
+
+    /**
+     * Parses an extend block.
+     * @param {Object} parent Parent definition
+     * @param {string} token First token
+     * @return {Object}
+     * @throws {Error} If the message cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseExtend = function (parent, token) {
+        /** @dict */
+        var extend = {};
+        token = this.tn.next();
+        if (!Lang.TYPEREF.test(token)) {
+            throw(new Error("Illegal message name" + (parent ? " in message " + parent["name"] : "") + ": " + token));
+        }
+        extend["messageToExtend"] = token;
+        token = this.tn.next();
+        if (token != Lang.OPEN) {
+            throw(new Error("Illegal OPEN after message " + extend.name + ": " + token + " ('" + Lang.OPEN + "' expected)"));
+        }
+        extend["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
+        do {
+            token = this.tn.next();
+            if (token == Lang.CLOSE) {
+                token = this.tn.peek();
+                if (token == Lang.END) this.tn.next();
+                break;
+            } else if (Lang.RULE.test(token)) {
+                this._parseMessageField(extend, token);
+            } else {
+                throw(new Error("Illegal token in message " + extend.name + ": " + token + " (type or '" + Lang.CLOSE + "' expected)"));
+            }
+        } while (true);
+        parent["extends"].push(extend);
+        return extend;
     };
 
     /**

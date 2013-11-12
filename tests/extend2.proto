@@ -1,0 +1,21 @@
+import "extend.proto";
+
+package sample.mypackage;
+
+extend sample.basepackage.Foo {
+  optional int32 bar = 1001;
+}
+
+message Person {
+
+  extend sample.basepackage.Foo {
+      optional sample.mypackage.Person person = 1002;
+      optional Person anotherPerson = 1003;
+
+  }
+
+  required string name = 1;
+  required int32 id = 2;
+  optional string email = 3;
+
+}

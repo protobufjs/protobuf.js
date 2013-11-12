@@ -220,6 +220,31 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         return true;
     };
 
+    Builder.prototype.addFieldsToMessage = function (fields, message) {
+        var i, j, subObj;
+        for (i = 0; i < fields.length; i++) { // i=Fields
+            if (!Builder.isValidMessageField(fields[i])) {
+                throw(new Error("Not a valid message field definition in message " + message.name + ": " + JSON.stringify(fields[i])));
+            }
+            if (message.hasChild(fields[i]['id'])) {
+                throw(new Error("Duplicate field id in message " + message.name + ": " + fields[i]['id']));
+            }
+            if (fields[i]["options"]) {
+                subObj = Object.keys(fields[i]["options"]);
+                for (j = 0; j < subObj.length; j++) { // j=Option names
+                    if (!Lang.OPTNAME.test(subObj[j])) {
+                        throw(new Error("Illegal field option name in message " + message.name + "#" + fields[i]["name"] + ": " + subObj[j]));
+                    }
+                    if (typeof fields[i]["options"][subObj[j]] != 'string' && typeof fields[i]["options"][subObj[j]] != 'number') {
+                        throw(new Error("Illegal field option value in message " + message.name + "#" + fields[i]["name"] + "#" + subObj[j] + ": " + fields[i]["options"][subObj[j]]));
+                    }
+                }
+                subObj = null;
+            }
+            message.addChild(new Reflect.Message.Field(message, fields[i]["rule"], fields[i]["type"], fields[i]["name"], fields[i]["id"], fields[i]["options"]));
+        }
+    };
+
     /**
      * Creates ths specified protocol types at the current pointer position.
      * @param {Array.<Object.<string,*>>} defs Messages, enums or services to create
@@ -246,27 +271,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
-                            for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                if (!Builder.isValidMessageField(def["fields"][i])) {
-                                    throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
-                                }
-                                if (obj.hasChild(def['fields'][i]['id'])) {
-                                    throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
-                                }
-                                if (def["fields"][i]["options"]) {
-                                    subObj = Object.keys(def["fields"][i]["options"]);
-                                    for (j=0; j<subObj.length; j++) { // j=Option names
-                                        if (!Lang.OPTNAME.test(subObj[j])) {
-                                            throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
-                                        }
-                                        if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
-                                            throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
-                                        }
-                                    }
-                                    subObj = null;
-                                }
-                                obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
-                            }
+                            this.addFieldsToMessage(def["fields"], obj);
                         }
                         // Push enums and messages to stack
                         subObj = [];
@@ -322,6 +327,35 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         this.resolved = false; // Require re-resolve
         this.result = null; // Require re-build
         return this;
+    };
+
+    Builder.prototype.extendMessages = function (extendBlocks, packageName) {
+        for (var i = 0; i < extendBlocks.length; i++) {
+            var extend = extendBlocks[i];
+            var message = this.ns.resolve(extend.messageToExtend);
+            if (!message) {
+                throw(new Error("Couldn't find message to extend: " + extend.messageToExtend));
+            }
+            var fields = extend["fields"];
+            for (var j = 0; j < fields.length; j++) {
+                // This whole for loop is a hack. What is happening is that an extension, for example Person, lives in
+                // a package, say peoplePackage. The full name is therefore peoplePackage.Person, however where it is
+                // defined it is within the peoplePackage namespace, so the package name is omitted. However, when this
+                // is transplanted into another type in another package, then suddenly Person without a package makes no
+                // sense. There must be a better way, but I haven't been able to make it work. For now it just guesses
+                // the full name using the Package, but this could be incorrect. Ideally, it would resolve the type
+                // by using the namespace that it was declared in, but that doesn't seem to work at this point.
+                var f = fields[j];
+                var originalType = f.type;
+                if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
+                    f.type = packageName + '.' + f.type;
+                    if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
+                        throw(new Error("Couldn't find field type: " + originalType + " (tried " + f.type + ")"));
+                    }
+                }
+            }
+            this.addFieldsToMessage(fields, message);
+        }
     };
 
     /**
@@ -399,6 +433,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                     // #endif
                 }
             }
+        }
+
+        this.reset();
+        if (parsed['extends'] && parsed['extends'].length > 0) {
+            this.extendMessages(parsed['extends'], parsed['package']);
         }
         return this;
     };
