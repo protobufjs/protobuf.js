@@ -66,7 +66,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             name = ptr.name+"."+name;
         } while (true);
         if (includeClass) {
-            if (this instanceof Reflect.Message) {
+            if (this instanceof Message) {
                 name = "Message "+name;
             } else if (this instanceof Message.Field) {
                 name = "Message.Field "+name;
@@ -74,6 +74,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 name = "Enum "+name;
             } else if (this instanceof Enum.Value) {
                 name = "Enum.Value "+name;
+            } else if (this instanceof Service) {
+                name = "Service "+name;
+            } else if (this instanceof Service.Method) {
+                if (this instanceof Service.RPCMethod) {
+                    name = "Service.RPCMethod "+name;
+                } else {
+                    name = "Service.Method "+name; // Should not happen as it is abstract
+                }
             } else if (this instanceof Namespace) {
                 name = "Namespace "+name;
             }
@@ -301,7 +309,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
         /**
          * Runtime message class.
-         * @type {ProtoBuf.Builder.Message|null}
+         * @type {?function(new:ProtoBuf.Builder.Message)}
          * @expose
          */
         this.clazz = null;
@@ -364,14 +372,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                         try {
                             this.set(field.name, field.options['default']); // Should not throw
                         } catch (e) {
-                            throw(new Error("[INTERNAL ERROR] "+e));
+                            throw(new Error("[INTERNAL] "+e));
                         }
                     }
                 }
                 // Set field values from a values object
                 if (arguments.length == 1 && typeof values == 'object' &&
                     /* not another Message */ typeof values.encode != 'function' &&
-                    /* not a repeated field */ !(values instanceof Array) &&
+                    /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
                     /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                     /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                     /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
@@ -542,15 +550,16 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @name ProtoBuf.Builder.Message#encode
              * @function
              * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
              * @return {ByteBuffer} Encoded message
-             * @throws {Error} If the message cannot be encoded
+             * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(buffer) {
+            Message.prototype.encode = function(buffer, doNotThrow) {
                 buffer = buffer || new ByteBuffer();
                 var le = buffer.littleEndian;
                 try {
-                    var bb = T.encode(this, buffer.LE()).flip();
+                    var bb = T.encode(this, buffer.LE(), doNotThrow).flip();
                     buffer.littleEndian = le;
                     return bb;
                 } catch (e) {
@@ -584,6 +593,18 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             };
 
             /**
+             * Directly encodes the message to a base64 encoded string.
+             * @name ProtoBuf.Builder.Message#toBase64
+             * @function
+             * @return {string} Base64 encoded string
+             * @throws {Error} If the underlying buffer cannot be encoded
+             * @expose
+             */
+            Message.prototype.toBase64 = function() {
+                return this.encode().toBase64();
+            };
+
+            /**
              * Decodes the message from the specified ByteBuffer.
              * @name ProtoBuf.Builder.Message.decode
              * @function
@@ -603,6 +624,19 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                     buffer.littleEndian = le;
                     throw(e);
                 }
+            };
+
+            /**
+             * Decodes the message from the specified base64 encoded string.
+             * @name ProtoBuf.Builder.Message.decode64
+             * @function
+             * @param {string} str String to decode from
+             * @return {!ProtoBuf.Builder.Message} Decoded message
+             * @throws {Error} If the message cannot be decoded
+             * @expose
+             */
+            Message.decode64 = function(str) {
+                return Message.decode(ByteBuffer.decode64(str));
             };
 
             // Utility
@@ -661,14 +695,21 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * Encodes a runtime message's contents to the specified buffer.
      * @param {ProtoBuf.Builder.Message} message Runtime message to encode
      * @param {ByteBuffer} buffer ByteBuffer to write to
+     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
      * @return {ByteBuffer} The ByteBuffer for chaining
-     * @throws {string} If the message cannot be encoded
+     * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
      * @expose
      */
-    Message.prototype.encode = function(message, buffer) {
-        var fields = this.getChildren(Message.Field);
+    Message.prototype.encode = function(message, buffer, doNotThrow) {
+        var fields = this.getChildren(Message.Field),
+            offset = buffer.offset;
         for (var i=0; i<fields.length; i++) {
-            fields[i].encode(message.get(fields[i].name), buffer);
+            var val = message.get(fields[i].name);
+            if (fields[i].required && val === null && !doNotThrow) {
+                buffer.offset = offset;
+                throw(new Error("Missing required field for "+this.toString(true)+": "+fields[i].name));
+            }
+            fields[i].encode(val, buffer);
         }
         return buffer;
     };
@@ -815,7 +856,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         }
         var i;
         if (this.repeated && !skipRepeated) { // Repeated values as arrays
-            if (!(value instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(value)) {
                 value = [value];
             }
             var res = [];
@@ -825,7 +866,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             return res;
         }
         // All non-repeated fields expect no array
-        if (!this.repeated && value instanceof Array) {
+        if (!this.repeated && ProtoBuf.Util.isArray(value)) {
             throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
         }
         // Signed 32bit
@@ -907,7 +948,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
         }
         // We should never end here
-        throw(new Error("[INTERNAL ERROR] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
+        throw(new Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
     };
 
     /**
@@ -921,7 +962,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     Field.prototype.encode = function(value, buffer) {
         value = this.verifyValue(value); // May throw
         if (this.type == null || typeof this.type != 'object') {
-            throw(new Error("[INTERNAL ERROR] Unresolved type in "+this.toString(true)+": "+this.type));
+            throw(new Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type));
         }
         if (value === null || (this.repeated && value.length == 0)) return buffer; // Optional omitted
         try {
@@ -1044,7 +1085,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             buffer.append(bb.flip());
         } else {
             // We should never end here
-            throw(new Error("[INTERNAL ERROR] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
+            throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
         }
         return buffer;
     };
@@ -1153,6 +1194,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         // Length-delimited bytes
         if (this.type == ProtoBuf.TYPES["bytes"]) {
             nBytes = buffer.readVarint32();
+            if (buffer.remaining() < nBytes) {
+                throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
+            }
             value = buffer.clone(); // Offset already set
             value.length = value.offset+nBytes;
             buffer.offset += nBytes;
@@ -1166,7 +1210,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         }
         
         // We should never end here
-        throw(new Error("[INTERNAL ERROR] Illegal wire type for "+this.toString(true)+": "+wireType));
+        throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
     };
 
     /**
@@ -1337,7 +1381,6 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @exports ProtoBuf.Reflect.Service
      * @param {!ProtoBuf.Reflect.Namespace} root Root
      * @param {string} name Service name
-     * @param {{rpc: Array.<ProtoBuf.Reflect.Service.RPCMethod>}} methods Methods
      * @param {Object.<string,*>=} options Options
      * @constructor
      * @extends ProtoBuf.Reflect.Namespace
@@ -1347,7 +1390,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
         /**
          * Built runtime service class.
-         * @type {ProtoBuf.Builder.Service}
+         * @type {?function(new:ProtoBuf.Builder.Service)}
          */
         this.clazz = null;
     };
@@ -1503,8 +1546,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * Abstract service method.
      * @exports ProtoBuf.Reflect.Service.Method
      * @param {!ProtoBuf.Reflect.Service} svc Service
-     * @param {Object.<string,*>=} options Options
      * @param {string} name Method name
+     * @param {Object.<string,*>=} options Options
      * @constructor
      * @extends ProtoBuf.Reflect.T
      */
@@ -1538,6 +1581,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * RPC service method.
+     * @exports ProtoBuf.Reflect.Service.RPCMethod
      * @param {!ProtoBuf.Reflect.Service} svc Service
      * @param {string} name Method name
      * @param {string} request Request message name

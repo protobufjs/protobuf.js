@@ -121,6 +121,19 @@ ProtoBuf.Util = (function() {
             }
         }
     };
+
+    /**
+     * Tests if an object is an array.
+     * @param {*} obj Object to test
+     * @returns {boolean} true if it is an array, else false
+     * @expose
+     */
+    Util.isArray = function(obj) {
+        if (!obj) return false;
+        if (obj instanceof Array) return true;
+        if (Array.isArray) return Array.isArray(obj);
+        return Object.prototype.toString.call(obj) === "[object Array]";
+    };
     
     return Util;
 })();

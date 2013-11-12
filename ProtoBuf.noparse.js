@@ -23,9 +23,6 @@
     "use strict";
     
     function loadProtoBuf(ByteBuffer) {
-        if (!ByteBuffer || !ByteBuffer.zigZagEncode32) {
-            throw(new Error("ProtoBuf.js requires ByteBuffer.js >=1.1.0: Get it at https://github.com/dcodeIO/ByteBuffer.js"));
-        }
 
         /**
          * The ProtoBuf namespace.
@@ -41,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.2.0-pre";
+        ProtoBuf.VERSION = "1.3.2";
 
         /**
          * Wire types.
@@ -290,6 +287,19 @@
                     }
                 }
             };
+        
+            /**
+             * Tests if an object is an array.
+             * @param {*} obj Object to test
+             * @returns {boolean} true if it is an array, else false
+             * @expose
+             */
+            Util.isArray = function(obj) {
+                if (!obj) return false;
+                if (obj instanceof Array) return true;
+                if (Array.isArray) return Array.isArray(obj);
+                return Object.prototype.toString.call(obj) === "[object Array]";
+            };
             
             return Util;
         })();        
@@ -323,13 +333,14 @@
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
                 
-                KEYWORD: /package|option|import|message|enum|extend|service|syntax|extensions/,
-                RULE: /required|optional|repeated/,
-                TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
-                NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEDEF: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEREF: /(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+/,
-                FQTYPEREF: /(?:\.[a-zA-Z][a-zA-Z_0-9]*)+/,
+                KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions)$/,
+                RULE: /^(?:required|optional|repeated)$/,
+                TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
+                NAME: /^[a-zA-Z][a-zA-Z_0-9]*$/,
+                OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,
+                TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
+                TYPEREF: /^(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+$/,
+                FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
                 NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|[0-9]*\.[0-9]+)$/,
                 NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
                 NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
@@ -396,7 +407,7 @@
                     name = ptr.name+"."+name;
                 } while (true);
                 if (includeClass) {
-                    if (this instanceof Reflect.Message) {
+                    if (this instanceof Message) {
                         name = "Message "+name;
                     } else if (this instanceof Message.Field) {
                         name = "Message.Field "+name;
@@ -404,6 +415,14 @@
                         name = "Enum "+name;
                     } else if (this instanceof Enum.Value) {
                         name = "Enum.Value "+name;
+                    } else if (this instanceof Service) {
+                        name = "Service "+name;
+                    } else if (this instanceof Service.Method) {
+                        if (this instanceof Service.RPCMethod) {
+                            name = "Service.RPCMethod "+name;
+                        } else {
+                            name = "Service.Method "+name; // Should not happen as it is abstract
+                        }
                     } else if (this instanceof Namespace) {
                         name = "Namespace "+name;
                     }
@@ -631,7 +650,7 @@
         
                 /**
                  * Runtime message class.
-                 * @type {ProtoBuf.Builder.Message|null}
+                 * @type {?function(new:ProtoBuf.Builder.Message)}
                  * @expose
                  */
                 this.clazz = null;
@@ -694,14 +713,14 @@
                                 try {
                                     this.set(field.name, field.options['default']); // Should not throw
                                 } catch (e) {
-                                    throw(new Error("[INTERNAL ERROR] "+e));
+                                    throw(new Error("[INTERNAL] "+e));
                                 }
                             }
                         }
                         // Set field values from a values object
                         if (arguments.length == 1 && typeof values == 'object' &&
                             /* not another Message */ typeof values.encode != 'function' &&
-                            /* not a repeated field */ !(values instanceof Array) &&
+                            /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
                             /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
@@ -872,15 +891,16 @@
                      * @name ProtoBuf.Builder.Message#encode
                      * @function
                      * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+                     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
                      * @return {ByteBuffer} Encoded message
-                     * @throws {Error} If the message cannot be encoded
+                     * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
                      * @expose
                      */
-                    Message.prototype.encode = function(buffer) {
+                    Message.prototype.encode = function(buffer, doNotThrow) {
                         buffer = buffer || new ByteBuffer();
                         var le = buffer.littleEndian;
                         try {
-                            var bb = T.encode(this, buffer.LE()).flip();
+                            var bb = T.encode(this, buffer.LE(), doNotThrow).flip();
                             buffer.littleEndian = le;
                             return bb;
                         } catch (e) {
@@ -914,6 +934,18 @@
                     };
         
                     /**
+                     * Directly encodes the message to a base64 encoded string.
+                     * @name ProtoBuf.Builder.Message#toBase64
+                     * @function
+                     * @return {string} Base64 encoded string
+                     * @throws {Error} If the underlying buffer cannot be encoded
+                     * @expose
+                     */
+                    Message.prototype.toBase64 = function() {
+                        return this.encode().toBase64();
+                    };
+        
+                    /**
                      * Decodes the message from the specified ByteBuffer.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
@@ -933,6 +965,19 @@
                             buffer.littleEndian = le;
                             throw(e);
                         }
+                    };
+        
+                    /**
+                     * Decodes the message from the specified base64 encoded string.
+                     * @name ProtoBuf.Builder.Message.decode64
+                     * @function
+                     * @param {string} str String to decode from
+                     * @return {!ProtoBuf.Builder.Message} Decoded message
+                     * @throws {Error} If the message cannot be decoded
+                     * @expose
+                     */
+                    Message.decode64 = function(str) {
+                        return Message.decode(ByteBuffer.decode64(str));
                     };
         
                     // Utility
@@ -991,14 +1036,21 @@
              * Encodes a runtime message's contents to the specified buffer.
              * @param {ProtoBuf.Builder.Message} message Runtime message to encode
              * @param {ByteBuffer} buffer ByteBuffer to write to
+             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
              * @return {ByteBuffer} The ByteBuffer for chaining
-             * @throws {string} If the message cannot be encoded
+             * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(message, buffer) {
-                var fields = this.getChildren(Message.Field);
+            Message.prototype.encode = function(message, buffer, doNotThrow) {
+                var fields = this.getChildren(Message.Field),
+                    offset = buffer.offset;
                 for (var i=0; i<fields.length; i++) {
-                    fields[i].encode(message.get(fields[i].name), buffer);
+                    var val = message.get(fields[i].name);
+                    if (fields[i].required && val === null && !doNotThrow) {
+                        buffer.offset = offset;
+                        throw(new Error("Missing required field for "+this.toString(true)+": "+fields[i].name));
+                    }
+                    fields[i].encode(val, buffer);
                 }
                 return buffer;
             };
@@ -1145,7 +1197,7 @@
                 }
                 var i;
                 if (this.repeated && !skipRepeated) { // Repeated values as arrays
-                    if (!(value instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(value)) {
                         value = [value];
                     }
                     var res = [];
@@ -1155,7 +1207,7 @@
                     return res;
                 }
                 // All non-repeated fields expect no array
-                if (!this.repeated && value instanceof Array) {
+                if (!this.repeated && ProtoBuf.Util.isArray(value)) {
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
                 }
                 // Signed 32bit
@@ -1237,7 +1289,7 @@
                     return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
                 }
                 // We should never end here
-                throw(new Error("[INTERNAL ERROR] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
+                throw(new Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
             };
         
             /**
@@ -1251,7 +1303,7 @@
             Field.prototype.encode = function(value, buffer) {
                 value = this.verifyValue(value); // May throw
                 if (this.type == null || typeof this.type != 'object') {
-                    throw(new Error("[INTERNAL ERROR] Unresolved type in "+this.toString(true)+": "+this.type));
+                    throw(new Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type));
                 }
                 if (value === null || (this.repeated && value.length == 0)) return buffer; // Optional omitted
                 try {
@@ -1374,7 +1426,7 @@
                     buffer.append(bb.flip());
                 } else {
                     // We should never end here
-                    throw(new Error("[INTERNAL ERROR] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
+                    throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
                 }
                 return buffer;
             };
@@ -1483,6 +1535,9 @@
                 // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     nBytes = buffer.readVarint32();
+                    if (buffer.remaining() < nBytes) {
+                        throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
+                    }
                     value = buffer.clone(); // Offset already set
                     value.length = value.offset+nBytes;
                     buffer.offset += nBytes;
@@ -1496,7 +1551,7 @@
                 }
                 
                 // We should never end here
-                throw(new Error("[INTERNAL ERROR] Illegal wire type for "+this.toString(true)+": "+wireType));
+                throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
             };
         
             /**
@@ -1557,83 +1612,6 @@
             Reflect.Enum = Enum;
         
             /**
-             * Constructs a new Extend.
-             * @exports ProtoBuf.Reflect.Extend
-             * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
-             * @param {string} name Extend name
-             * @param {Object} fields Extend fields
-             * @constructor
-             * @extends ProtoBuf.Reflect.Namespace
-             */
-            var Extend = function(parent, name, fields) {
-                Namespace.call(this, parent, name, fields);
-        
-                /**
-                 * Runtime Extend object.
-                 * @type {Object.<string,number>|null}
-                 * @expose
-                 */
-                this.object = null;
-            };
-        
-            // Extends Namespace
-            Extend.prototype = Object.create(Namespace.prototype);
-        
-            /**
-             * Builds this Extend and returns the runtime counterpart.
-             * @return {Object<string,*>}
-             * @expose
-             */
-            Extend.prototype.build = function() {
-                var extend = {};
-                var fields = this.getChildren(Extend.Field);
-                for (var i=0; i<fields.length; i++) {
-                    extend[fields[i]['name']] = fields[i];
-                }
-                if (Object.defineProperty) {
-                    Object.defineProperty(extend, '$fields', {
-                        'value': this.buildOpt(),
-                        'Extenderable': false,
-                        'configurable': false,
-                        'writable': false
-                    });
-                }
-                return this.object = extend;
-            };
-        
-            /**
-             * @alias ProtoBuf.Reflect.Extend
-             * @expose
-             */
-            Reflect.Extend = Extend;
-        
-            /**
-             * Constructs a new Extensions Registry
-             * @exports ProtoBuf.Reflect.ExtensionsRegistry
-             * @constructor
-             * @extends ProtoBuf.Reflect.T
-             */
-            var ExtensionsRegistry = function(enm, name, id) {
-                T.call(this, enm, name);
-        
-                /**
-                 * Unique enum value id.
-                 * @type {number}
-                 * @expose
-                 */
-                this.id = id;
-            };
-        
-            // Extends T
-            ExtensionsRegistry.prototype = Object.create(T.prototype);
-        
-            /**
-             * @alias ProtoBuf.Reflect.Enum.Value
-             * @expose
-             */
-            Reflect.ExtensionsRegistry = ExtensionsRegistry;
-        
-            /**
              * Constructs a new Enum Value.
              * @exports ProtoBuf.Reflect.Enum.Value
              * @param {!ProtoBuf.Reflect.Enum} enm Enum reference
@@ -1667,7 +1645,6 @@
              * @exports ProtoBuf.Reflect.Service
              * @param {!ProtoBuf.Reflect.Namespace} root Root
              * @param {string} name Service name
-             * @param {{rpc: Array.<ProtoBuf.Reflect.Service.RPCMethod>}} methods Methods
              * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
@@ -1677,7 +1654,7 @@
         
                 /**
                  * Built runtime service class.
-                 * @type {ProtoBuf.Builder.Service}
+                 * @type {?function(new:ProtoBuf.Builder.Service)}
                  */
                 this.clazz = null;
             };
@@ -1833,8 +1810,8 @@
              * Abstract service method.
              * @exports ProtoBuf.Reflect.Service.Method
              * @param {!ProtoBuf.Reflect.Service} svc Service
-             * @param {Object.<string,*>=} options Options
              * @param {string} name Method name
+             * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
@@ -1868,6 +1845,7 @@
         
             /**
              * RPC service method.
+             * @exports ProtoBuf.Reflect.Service.RPCMethod
              * @param {!ProtoBuf.Reflect.Service} svc Service
              * @param {string} name Method name
              * @param {string} request Request message name
@@ -1988,7 +1966,7 @@
              * @expose
              */
             Builder.prototype.define = function(pkg, options) {
-                if (typeof pkg != 'string' || !Lang.TYPEDEF.test(pkg)) {
+                if (typeof pkg != 'string' || !Lang.TYPEREF.test(pkg)) {
                     throw(new Error("Illegal package name: "+pkg));
                 }
                 var part = pkg.split("."), i;
@@ -2024,7 +2002,7 @@
                 // Fields, enums and messages are arrays if provided
                 var i;
                 if (typeof def["fields"] != 'undefined') {
-                    if (!(def["fields"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["fields"])) {
                         return false;
                     }
                     var ids = [], id; // IDs must be unique
@@ -2041,7 +2019,7 @@
                     ids = null;
                 }
                 if (typeof def["enums"] != 'undefined') {
-                    if (!(def["enums"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["enums"])) {
                         return false;
                     }
                     for (i=0; i<def["enums"].length; i++) {
@@ -2051,7 +2029,7 @@
                     }
                 }
                 if (typeof def["messages"] != 'undefined') {
-                    if (!(def["messages"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["messages"])) {
                         return false;
                     }
                     for (i=0; i<def["messages"].length; i++) {
@@ -2085,7 +2063,7 @@
                     // Options are <string,*>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.NAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
+                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
                             return false;
                         }
                     }
@@ -2105,7 +2083,7 @@
                     return false;
                 }
                 // Enums require at least one value
-                if (typeof def["values"] == 'undefined' || !(def["values"] instanceof Array) || def["values"].length == 0) {
+                if (typeof def["values"] == 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
                     return false;
                 }
                 for (var i=0; i<def["values"].length; i++) {
@@ -2125,31 +2103,6 @@
                 return true;
             };
         
-            Builder.prototype.addFieldsToMessage = function (fields, message) {
-                var i, j, subObj;
-                for (i = 0; i < fields.length; i++) { // i=Fields
-                    if (!Builder.isValidMessageField(fields[i])) {
-                        throw(new Error("Not a valid message field definition in message " + message.name + ": " + JSON.stringify(fields[i])));
-                    }
-                    if (message.hasChild(fields[i]['id'])) {
-                        throw(new Error("Duplicate field id in message " + message.name + ": " + fields[i]['id']));
-                    }
-                    if (fields[i]["options"]) {
-                        subObj = Object.keys(fields[i]["options"]);
-                        for (j = 0; j < subObj.length; j++) { // j=Option names
-                            if (!Lang.NAME.test(subObj[j])) {
-                                throw(new Error("Illegal field option name in message " + message.name + "#" + fields[i]["name"] + ": " + subObj[j]));
-                            }
-                            if (typeof fields[i]["options"][subObj[j]] != 'string' && typeof fields[i]["options"][subObj[j]] != 'number') {
-                                throw(new Error("Illegal field option value in message " + message.name + "#" + fields[i]["name"] + "#" + subObj[j] + ": " + fields[i]["options"][subObj[j]]));
-                            }
-                        }
-                        subObj = null;
-                    }
-                    message.addChild(new Reflect.Message.Field(message, fields[i]["rule"], fields[i]["type"], fields[i]["name"], fields[i]["id"], fields[i]["options"]));
-                }
-            };
-        
             /**
              * Creates ths specified protocol types at the current pointer position.
              * @param {Array.<Object.<string,*>>} defs Messages, enums or services to create
@@ -2159,7 +2112,7 @@
              */
             Builder.prototype.create = function(defs) {
                 if (!defs) return; // Nothing to create
-                if (!(defs instanceof Array)) {
+                if (!ProtoBuf.Util.isArray(defs)) {
                     defs = [defs];
                 }
                 if (defs.length == 0) return;
@@ -2169,14 +2122,34 @@
                 stack.push(defs); // One level [a, b, c]
                 while (stack.length > 0) {
                     defs = stack.pop();
-                    if (defs instanceof Array) { // Stack always contains entire namespaces
+                    if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
                         while (defs.length > 0) {
                             def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
                                 obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
-                                    this.addFieldsToMessage(def["fields"], obj);
+                                    for (i=0; i<def["fields"].length; i++) { // i=Fields
+                                        if (!Builder.isValidMessageField(def["fields"][i])) {
+                                            throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
+                                        }
+                                        if (obj.hasChild(def['fields'][i]['id'])) {
+                                            throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
+                                        }
+                                        if (def["fields"][i]["options"]) {
+                                            subObj = Object.keys(def["fields"][i]["options"]);
+                                            for (j=0; j<subObj.length; j++) { // j=Option names
+                                                if (!Lang.OPTNAME.test(subObj[j])) {
+                                                    throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
+                                                }
+                                                if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
+                                                    throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
+                                                }
+                                            }
+                                            subObj = null;
+                                        }
+                                        obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                    }
                                 }
                                 // Push enums and messages to stack
                                 subObj = [];
@@ -2232,35 +2205,6 @@
                 this.resolved = false; // Require re-resolve
                 this.result = null; // Require re-build
                 return this;
-            };
-        
-            Builder.prototype.extendMessages = function (extendBlocks, packageName) {
-                for (var i = 0; i < extendBlocks.length; i++) {
-                    var extend = extendBlocks[i];
-                    var message = this.ns.resolve(extend.messageToExtend);
-                    if (!message) {
-                        throw(new Error("Couldn't find message to extend: " + extend.messageToExtend));
-                    }
-                    var fields = extend["fields"];
-                    for (var j = 0; j < fields.length; j++) {
-                        // This whole for loop is a hack. What is happening is that an extension, for example Person, lives in
-                        // a package, say peoplePackage. The full name is therefore peoplePackage.Person, however where it is
-                        // defined it is within the peoplePackage namespace, so the package name is omitted. However, when this
-                        // is transplanted into another type in another package, then suddenly Person without a package makes no
-                        // sense. There must be a better way, but I haven't been able to make it work. For now it just guesses
-                        // the full name using the Package, but this could be incorrect. Ideally, it would resolve the type
-                        // by using the namespace that it was declared in, but that doesn't seem to work at this point.
-                        var f = fields[j];
-                        var originalType = f.type;
-                        if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
-                            f.type = packageName + '.' + f.type;
-                            if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
-                                throw(new Error("Couldn't find field type: " + originalType + " (tried " + f.type + ")"));
-                            }
-                        }
-                    }
-                    this.addFieldsToMessage(fields, message);
-                }
             };
         
             /**
@@ -2328,11 +2272,6 @@
                             throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
                         }
                     }
-                }
-        
-                this.reset();
-                if (parsed['extends'] && parsed['extends'].length > 0) {
-                    this.extendMessages(parsed['extends'], parsed['package']);
                 }
                 return this;
             };
@@ -2452,7 +2391,6 @@
              * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
              */
             Builder.prototype.lookup = function(path) {
-                console.log('Lookup for ' + path);
                 return path ? this.ns.resolve(path) : this.ns;
             };
         

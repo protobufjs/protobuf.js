@@ -23,9 +23,6 @@
     "use strict";
     
     function loadProtoBuf(ByteBuffer) {
-        if (!ByteBuffer || !ByteBuffer.zigZagEncode32) {
-            throw(new Error("ProtoBuf.js requires ByteBuffer.js >=1.1.0: Get it at https://github.com/dcodeIO/ByteBuffer.js"));
-        }
 
         /**
          * The ProtoBuf namespace.
@@ -41,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.2.0-pre";
+        ProtoBuf.VERSION = "1.3.2";
 
         /**
          * Wire types.
@@ -290,6 +287,19 @@
                     }
                 }
             };
+        
+            /**
+             * Tests if an object is an array.
+             * @param {*} obj Object to test
+             * @returns {boolean} true if it is an array, else false
+             * @expose
+             */
+            Util.isArray = function(obj) {
+                if (!obj) return false;
+                if (obj instanceof Array) return true;
+                if (Array.isArray) return Array.isArray(obj);
+                return Object.prototype.toString.call(obj) === "[object Array]";
+            };
             
             return Util;
         })();        
@@ -323,13 +333,14 @@
         
                 DELIM: /[\s\{\}=;\[\],"\(\)]/g,
                 
-                KEYWORD: /package|option|import|message|enum|extend|service|syntax|extensions/,
-                RULE: /required|optional|repeated/,
-                TYPE: /double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes/,
-                NAME: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEDEF: /[a-zA-Z][a-zA-Z_0-9]*/,
-                TYPEREF: /(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+/,
-                FQTYPEREF: /(?:\.[a-zA-Z][a-zA-Z_0-9]*)+/,
+                KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions)$/,
+                RULE: /^(?:required|optional|repeated)$/,
+                TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
+                NAME: /^[a-zA-Z][a-zA-Z_0-9]*$/,
+                OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,
+                TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
+                TYPEREF: /^(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+$/,
+                FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
                 NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|[0-9]*\.[0-9]+)$/,
                 NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
                 NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
@@ -380,6 +391,13 @@
                 this.index = 0;
         
                 /**
+                 * Current line.
+                 * @type {number}
+                 * @expose
+                 */
+                this.line = 1;
+        
+                /**
                  * Stacked values.
                  * @type {Array}
                  * @expose
@@ -409,7 +427,7 @@
                     this.stack.push(Lang.STRINGCLOSE);
                     return s;
                 }
-                throw(new Error("Illegal string value at index "+this.index));
+                throw(new Error("Illegal string value at line "+this.line+", index "+this.index));
             };
         
             /**
@@ -429,12 +447,13 @@
                     this.readingString = false;
                     return this._readString();
                 }
-                var repeat;
+                var repeat, last;
                 do {
                     repeat = false;
                     // Strip white spaces
-                    while (Lang.WHITESPACE.test(this.source.charAt(this.index))) {
+                    while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
                         this.index++;
+                        if (last == "\n") this.line++;
                         if (this.index == this.source.length) return null;
                     }
                     // Strip comments
@@ -445,17 +464,19 @@
                                 if (this.index == this.source.length) return null;
                             }
                             this.index++;
+                            this.line++;
                             repeat = true;
                         } else if (this.source.charAt(this.index) == '*') { /* Block */
-                            var last = '';
+                            last = '';
                             while (last+(last=this.source.charAt(this.index)) != '*/') {
                                 this.index++;
+                                if (last == "\n") this.line++;
                                 if (this.index == this.source.length) return null;
                             }
                             this.index++;
                             repeat = true;
                         } else {
-                            throw(new Error("Invalid comment: /"+this.source.charAt(this.index)+" ('/' or '*' expected)"));
+                            throw(new Error("Invalid comment at line "+this.line+": /"+this.source.charAt(this.index)+" ('/' or '*' expected)"));
                         }
                     }
                 } while (repeat);
@@ -546,7 +567,6 @@
                     "enums": [],
                     "imports": [],
                     "options": {},
-                    "extends": [],
                     "services": []
                 };
                 var token, header = true;
@@ -557,36 +577,36 @@
                     }
                     if (token == 'package') {
                         if (!header) {
-                            throw(new Error("Illegal package definition: Must be declared before the first message or enum"));
+                            throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
                         }
                         if (topLevel["package"] !== null) {
-                            throw(new Error("Illegal package definition: Package already declared"));
+                            throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
                         }
                         topLevel["package"] = this._parsePackage(token);
                     } else if (token == 'import') {
                         if (!header) {
-                            throw(new Error("Illegal import definition: Must be declared before the first message or enum"));
+                            throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
                         }
                         topLevel.imports.push(this._parseImport(token));
                     } else if (token == 'message') {
-                        this._parseMessage(topLevel, token, topLevel);
+                        this._parseMessage(topLevel, token);
                         header = false;
-                    } else if (token == 'extend') {
-                        this._parseExtend(topLevel, token);
                     } else if (token == 'enum') {
                         this._parseEnum(topLevel, token);
                         header = false;
                     } else if (token == 'option') {
                         if (!header) {
-                            throw(new Error("Illegal option definition: Must be declared before the first message or enum"));
+                            throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
                         }
                         this._parseOption(topLevel, token);
                     } else if (token == 'service') {
                         this._parseService(topLevel, token);
+                    } else if (token == 'extend') {
+                        this._parseIgnoredBlock(topLevel, token);
                     } else if (token == 'syntax') {
                         this._parseIgnoredStatement(topLevel, token);
                     } else {
-                        throw(new Error("Illegal top level declaration: "+token));
+                        throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
                     }
                 } while (true);
                 delete topLevel["name"];
@@ -614,7 +634,7 @@
                 } else if (Lang.NUMBER_FLT.test(val)) {
                     return sign*parseFloat(val);
                 }
-                throw(new Error("Illegal number value: "+(sign < 0 ? '-' : '')+val));
+                throw(new Error("Illegal number value at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val));
             };
         
             /**
@@ -638,11 +658,11 @@
                 } else if (Lang.NUMBER_OCT.test(val)) {
                     id = parseInt(val.substring(1), 8);
                 } else {
-                    throw(new Error("Illegal ID value: "+(sign < 0 ? '-' : '')+val));
+                    throw(new Error("Illegal ID value at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val));
                 }
                 id = (sign*id)|0; // Force to 32bit
                 if (!neg && id < 0) {
-                    throw(new Error("Illegal ID range: "+(sign < 0 ? '-' : '')+val));
+                    throw(new Error("Illegal ID range at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val));
                 }
                 return id;
             };
@@ -656,13 +676,13 @@
              */
             Parser.prototype._parsePackage = function(token) {
                 token = this.tn.next();
-                if (!Lang.TYPEDEF.test(token)) {
-                    throw(new Error("Illegal package name: "+token));
+                if (!Lang.TYPEREF.test(token)) {
+                    throw(new Error("Illegal package name at line "+this.tn.line+": "+token));
                 }
                 var pkg = token;
                 token = this.tn.next();
                 if (token != Lang.END) {
-                    throw(new Error("Illegal end of package definition: "+token+" ('"+Lang.END+"' expected)"));
+                    throw(new Error("Illegal end of package definition at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
                 return pkg;
             };
@@ -680,16 +700,16 @@
                     token = this.tn.next();
                 }
                 if (token != Lang.STRINGOPEN) {
-                    throw(new Error("Illegal begin of import value: "+token+" ('"+Lang.STRINGOPEN+"' expected)"));
+                    throw(new Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' expected)"));
                 }
                 var imported = this.tn.next();
                 token = this.tn.next();
                 if (token != Lang.STRINGCLOSE) {
-                    throw(new Error("Illegal end of import value: "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+                    throw(new Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
                 }
                 token = this.tn.next();
                 if (token != Lang.END) {
-                    throw(new Error("Illegal end of import definition: "+token+" ('"+Lang.END+"' expected)"));
+                    throw(new Error("Illegal end of import definition at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
                 return imported;
             };
@@ -709,13 +729,13 @@
                     token = this.tn.next();
                 }
                 if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal option name in message "+parent.name+": "+token));
+                    throw(new Error("Illegal option name in message "+parent.name+" at line "+this.tn.line+": "+token));
                 }
                 var name = token;
                 token = this.tn.next();
                 if (custom) { // (my_method_option).foo, (my_method_option), some_method_option
                     if (token != Lang.COPTCLOSE) {
-                        throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
+                        throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
                     }
                     name = '('+name+')';
                     token = this.tn.next();
@@ -725,7 +745,7 @@
                     }
                 }
                 if (token != Lang.EQUAL) {
-                    throw(new Error("Illegal option operator in message "+parent.name+", option "+name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
+                    throw(new Error("Illegal option operator in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 var value;
                 token = this.tn.next();
@@ -733,20 +753,20 @@
                     value = this.tn.next();
                     token = this.tn.next();
                     if (token != Lang.STRINGCLOSE) {
-                        throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+                        throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
                     }
                 } else {
                     if (Lang.NUMBER.test(token)) {
                         value = this._parseNumber(token, true);
-                    } else if (Lang.NAME.test(token)) {
+                    } else if (Lang.TYPEREF.test(token)) {
                         value = token;
                     } else {
-                        throw(new Error("Illegal option value in message "+parent.name+", option "+name+": "+token));
+                        throw(new Error("Illegal option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token));
                     }
                 }
                 token = this.tn.next();
                 if (token != Lang.END) {
-                    throw(new Error("Illegal end of option in message "+parent.name+", option "+name+": "+token+" ('"+Lang.END+"' expected)"));
+                    throw(new Error("Illegal end of option in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
                 parent["options"][name] = value;
             };
@@ -766,13 +786,13 @@
                 var name = token;
                 token = this.tn.next();
                 if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN in "+parent.name+" after "+keyword+" "+name+": "+token));
+                    throw(new Error("Illegal OPEN in "+parent.name+" after "+keyword+" "+name+" at line "+this.tn.line+": "+token));
                 }
                 var depth = 1;
                 do {
                     token = this.tn.next();
                     if (token === null) {
-                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored), "+name));
+                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored) at line "+this.tn.line+": "+name));
                     }
                     if (token == Lang.OPEN) {
                         depth++;
@@ -798,7 +818,7 @@
                 do {
                     var token = this.tn.next();
                     if (token === null) {
-                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored)"));
+                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored) at line "+this.tn.line));
                     }
                     if (token == Lang.END) break;
                 } while (true);
@@ -814,7 +834,7 @@
             Parser.prototype._parseService = function(parent, keyword) {
                 var token = this.tn.next();
                 if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal service name: "+token));
+                    throw(new Error("Illegal service name at line "+this.tn.line+": "+token));
                 }
                 var name = token;
                 var svc = {
@@ -824,7 +844,7 @@
                 };
                 token = this.tn.next();
                 if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after service "+name+": "+token+" ('"+Lang.OPEN+"' expected)"));
+                    throw(new Error("Illegal OPEN after service "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
                 }
                 do {
                     token = this.tn.next();
@@ -833,7 +853,7 @@
                     } else if (token == 'rpc') {
                         this._parseServiceRPC(svc, token);
                     } else if (token != Lang.CLOSE) {
-                        throw(new Error("Illegal type for service "+name+": "+token));
+                        throw(new Error("Illegal type for service "+name+" at line "+this.tn.line+": "+token));
                     }
                 } while (token != Lang.CLOSE);
                 parent["services"].push(svc);
@@ -849,7 +869,7 @@
                 var type = token;
                 token = this.tn.next();
                 if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal RPC method name in service "+svc["name"]+": "+token));
+                    throw(new Error("Illegal RPC method name in service "+svc["name"]+" at line "+this.tn.line+": "+token));
                 }
                 var name = token;
                 var method = {
@@ -859,30 +879,30 @@
                 };
                 token = this.tn.next();
                 if (token != Lang.COPTOPEN) {
-                    throw(new Error("Illegal start of request type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
+                    throw(new Error("Illegal start of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
                 }
                 token = this.tn.next();
                 if (!Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal request type in RPC service "+svc["name"]+"#"+name+": "+token));
+                    throw(new Error("Illegal request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token));
                 }
                 method["request"] = token;
                 token = this.tn.next();
                 if (token != Lang.COPTCLOSE) {
-                    throw(new Error("Illegal end of request type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
+                    throw(new Error("Illegal end of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
                 }
                 token = this.tn.next();
                 if (token.toLowerCase() != "returns") {
-                    throw(new Error("Illegal request/response delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('returns' expected)"));
+                    throw(new Error("Illegal request/response delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('returns' expected)"));
                 }
                 token = this.tn.next();
                 if (token != Lang.COPTOPEN) {
-                    throw(new Error("Illegal start of response type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
+                    throw(new Error("Illegal start of response type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
                 }
                 token = this.tn.next();
                 method["response"] = token;
                 token = this.tn.next();
                 if (token != Lang.COPTCLOSE) {
-                    throw(new Error("Illegal end of response type in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
+                    throw(new Error("Illegal end of response type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
                 }
                 token = this.tn.next();
                 if (token == Lang.OPEN) {
@@ -891,37 +911,35 @@
                         if (token == 'option') {
                             this._parseOption(method, token); // <- will fail for the custom-options example
                         } else if (token != Lang.CLOSE) {
-                            throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+": "+token+" ('option' expected)"));
+                            throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('option' expected)"));
                         }
                     } while (token != Lang.CLOSE);
                 } else if (token != Lang.END) {
-                    throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
+                    throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
                 }
                 if (typeof svc[type] === 'undefined') svc[type] = {};
                 svc[type][name] = method;
             };
         
-        
             /**
-             * Parses a message.
+             * Parses a message definition.
              * @param {Object} parent Parent definition
              * @param {string} token First token
-             * @param {Object} topLevel The top level definition
              * @return {Object}
              * @throws {Error} If the message cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessage = function(parent, token, topLevel) {
+            Parser.prototype._parseMessage = function(parent, token) {
                 /** @dict */
                 var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
                 token = this.tn.next();
                 if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal message name"+(parent ? " in message "+parent["name"] : "")+": "+token));
+                    throw(new Error("Illegal message name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
                 }
                 msg["name"] = token;
                 token = this.tn.next();
                 if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after message "+msg.name+": "+token+" ('"+Lang.OPEN+"' expected)"));
+                    throw(new Error("Illegal OPEN after message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
                 }
                 msg["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
                 msg["enums"] = [];
@@ -938,16 +956,13 @@
                     } else if (token == "enum") {
                         this._parseEnum(msg, token);
                     } else if (token == "message") {
-                        this._parseMessage(msg, token, topLevel);
+                        this._parseMessage(msg, token);
                     } else if (token == "option") {
                         this._parseOption(msg, token);
-                    } else if (token == "extend") {
-                        // all extend directives are put on the top level nested and top-level extend blocks act the same way
-                        this._parseExtend(topLevel, token);
                     } else if (token == "extensions") {
                         this._parseIgnoredStatement(msg, token);
                     } else {
-                        throw(new Error("Illegal token in message "+msg.name+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
+                        throw(new Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
                     }
                 } while (true);
                 parent["messages"].push(msg);
@@ -967,23 +982,23 @@
                 fld["rule"] = token;
                 token = this.tn.next();
                 if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal field type in message "+msg.name+": "+token));
+                    throw(new Error("Illegal field type in message "+msg.name+" at line "+this.tn.line+": "+token));
                 }
                 fld["type"] = token;
                 token = this.tn.next();
                 if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal field name in message "+msg.name+": "+token));
+                    throw(new Error("Illegal field name in message "+msg.name+" at line "+this.tn.line+": "+token));
                 }
                 fld["name"] = token;
                 token = this.tn.next();
                 if (token != Lang.EQUAL) {
-                    throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
+                    throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 token = this.tn.next();
                 try {
                     fld["id"] = this._parseId(token);
                 } catch (e) {
-                    throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+": "+token));
+                    throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
                 }
                 /** @dict */
                 fld["options"] = {};
@@ -993,7 +1008,7 @@
                     token = this.tn.next();
                 }
                 if (token != Lang.END) {
-                    throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+": "+token+" ('"+Lang.END+"' expected)"));
+                    throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
                 msg["fields"].push(fld);
             };
@@ -1014,7 +1029,7 @@
                         break;
                     } else if (token == Lang.OPTEND) {
                         if (first) {
-                            throw(new Error("Illegal start of message field options in message "+msg.name+"#"+fld.name+": "+token));
+                            throw(new Error("Illegal start of message field options in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
                         }
                         token = this.tn.next();
                     }
@@ -1038,13 +1053,13 @@
                     custom = true;
                 }
                 if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal field option in message "+msg.name+"#"+fld.name+": "+token));
+                    throw(new Error("Illegal field option in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
                 }
                 var name = token;
                 token = this.tn.next();
                 if (custom) {
                     if (token != Lang.COPTCLOSE) {
-                        throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+": "+token+" (')' expected)"));
+                        throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" (')' expected)"));
                     }
                     name = '('+name+')';
                     token = this.tn.next();
@@ -1054,7 +1069,7 @@
                     }
                 }
                 if (token != Lang.EQUAL) {
-                    throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+": "+token+" ('=' expected)"));
+                    throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('=' expected)"));
                 }
                 var value;
                 token = this.tn.next();
@@ -1062,53 +1077,16 @@
                     value = this.tn.next();
                     token = this.tn.next();
                     if (token != Lang.STRINGCLOSE) {
-                        throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+                        throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
                     }
                 } else if (Lang.NUMBER.test(token, true)) {
                     value = this._parseNumber(token, true);
                 } else if (Lang.TYPEREF.test(token)) {
                     value = token; // TODO: Resolve?
                 } else {
-                    throw(new Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+": "+token));
+                    throw(new Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token));
                 }
                 fld["options"][name] = value;
-            };
-        
-            /**
-             * Parses an extend block.
-             * @param {Object} parent Parent definition
-             * @param {string} token First token
-             * @return {Object}
-             * @throws {Error} If the message cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseExtend = function (parent, token) {
-                /** @dict */
-                var extend = {};
-                token = this.tn.next();
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal message name" + (parent ? " in message " + parent["name"] : "") + ": " + token));
-                }
-                extend["messageToExtend"] = token;
-                token = this.tn.next();
-                if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after message " + extend.name + ": " + token + " ('" + Lang.OPEN + "' expected)"));
-                }
-                extend["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
-                do {
-                    token = this.tn.next();
-                    if (token == Lang.CLOSE) {
-                        token = this.tn.peek();
-                        if (token == Lang.END) this.tn.next();
-                        break;
-                    } else if (Lang.RULE.test(token)) {
-                        this._parseMessageField(extend, token);
-                    } else {
-                        throw(new Error("Illegal token in message " + extend.name + ": " + token + " (type or '" + Lang.CLOSE + "' expected)"));
-                    }
-                } while (true);
-                parent["extends"].push(extend);
-                return extend;
             };
         
             /**
@@ -1123,12 +1101,12 @@
                 var enm = {};
                 token = this.tn.next();
                 if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal enum name in message "+msg.name+": "+token));
+                    throw(new Error("Illegal enum name in message "+msg.name+" at line "+this.tn.line+": "+token));
                 }
                 enm["name"] = token;
                 token = this.tn.next();
                 if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after enum "+enm.name+": "+token));
+                    throw(new Error("Illegal OPEN after enum "+enm.name+" at line "+this.tn.line+": "+token));
                 }
                 enm["values"] = [];
                 enm["options"] = {};
@@ -1143,7 +1121,7 @@
                         this._parseOption(enm, token);
                     } else {
                         if (!Lang.NAME.test(token)) {
-                            throw(new Error("Illegal enum value name in enum "+enm.name+": "+token));
+                            throw(new Error("Illegal enum value name in enum "+enm.name+" at line "+this.tn.line+": "+token));
                         }
                         this._parseEnumValue(enm, token);
                     }
@@ -1164,13 +1142,13 @@
                 val["name"] = token;
                 token = this.tn.next();
                 if (token != Lang.EQUAL) {
-                    throw(new Error("Illegal enum value operator in enum "+enm.name+": "+token+" ('"+Lang.EQUAL+"' expected)"));
+                    throw(new Error("Illegal enum value operator in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 token = this.tn.next();
                 try {
                     val["id"] = this._parseId(token, true);
                 } catch (e) {
-                    throw(new Error("Illegal enum value id in enum "+enm.name+": "+token));
+                    throw(new Error("Illegal enum value id in enum "+enm.name+" at line "+this.tn.line+": "+token));
                 }
                 enm["values"].push(val);
                 token = this.tn.next();
@@ -1180,7 +1158,7 @@
                     token = this.tn.next();
                 }
                 if (token != Lang.END) {
-                    throw(new Error("Illegal enum value delimiter in enum "+enm.name+": "+token+" ('"+Lang.END+"' expected)"));
+                    throw(new Error("Illegal enum value delimiter in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
             };
         
@@ -1247,7 +1225,7 @@
                     name = ptr.name+"."+name;
                 } while (true);
                 if (includeClass) {
-                    if (this instanceof Reflect.Message) {
+                    if (this instanceof Message) {
                         name = "Message "+name;
                     } else if (this instanceof Message.Field) {
                         name = "Message.Field "+name;
@@ -1255,6 +1233,14 @@
                         name = "Enum "+name;
                     } else if (this instanceof Enum.Value) {
                         name = "Enum.Value "+name;
+                    } else if (this instanceof Service) {
+                        name = "Service "+name;
+                    } else if (this instanceof Service.Method) {
+                        if (this instanceof Service.RPCMethod) {
+                            name = "Service.RPCMethod "+name;
+                        } else {
+                            name = "Service.Method "+name; // Should not happen as it is abstract
+                        }
                     } else if (this instanceof Namespace) {
                         name = "Namespace "+name;
                     }
@@ -1482,7 +1468,7 @@
         
                 /**
                  * Runtime message class.
-                 * @type {ProtoBuf.Builder.Message|null}
+                 * @type {?function(new:ProtoBuf.Builder.Message)}
                  * @expose
                  */
                 this.clazz = null;
@@ -1545,14 +1531,14 @@
                                 try {
                                     this.set(field.name, field.options['default']); // Should not throw
                                 } catch (e) {
-                                    throw(new Error("[INTERNAL ERROR] "+e));
+                                    throw(new Error("[INTERNAL] "+e));
                                 }
                             }
                         }
                         // Set field values from a values object
                         if (arguments.length == 1 && typeof values == 'object' &&
                             /* not another Message */ typeof values.encode != 'function' &&
-                            /* not a repeated field */ !(values instanceof Array) &&
+                            /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
                             /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
@@ -1723,15 +1709,16 @@
                      * @name ProtoBuf.Builder.Message#encode
                      * @function
                      * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+                     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
                      * @return {ByteBuffer} Encoded message
-                     * @throws {Error} If the message cannot be encoded
+                     * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
                      * @expose
                      */
-                    Message.prototype.encode = function(buffer) {
+                    Message.prototype.encode = function(buffer, doNotThrow) {
                         buffer = buffer || new ByteBuffer();
                         var le = buffer.littleEndian;
                         try {
-                            var bb = T.encode(this, buffer.LE()).flip();
+                            var bb = T.encode(this, buffer.LE(), doNotThrow).flip();
                             buffer.littleEndian = le;
                             return bb;
                         } catch (e) {
@@ -1765,6 +1752,18 @@
                     };
         
                     /**
+                     * Directly encodes the message to a base64 encoded string.
+                     * @name ProtoBuf.Builder.Message#toBase64
+                     * @function
+                     * @return {string} Base64 encoded string
+                     * @throws {Error} If the underlying buffer cannot be encoded
+                     * @expose
+                     */
+                    Message.prototype.toBase64 = function() {
+                        return this.encode().toBase64();
+                    };
+        
+                    /**
                      * Decodes the message from the specified ByteBuffer.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
@@ -1784,6 +1783,19 @@
                             buffer.littleEndian = le;
                             throw(e);
                         }
+                    };
+        
+                    /**
+                     * Decodes the message from the specified base64 encoded string.
+                     * @name ProtoBuf.Builder.Message.decode64
+                     * @function
+                     * @param {string} str String to decode from
+                     * @return {!ProtoBuf.Builder.Message} Decoded message
+                     * @throws {Error} If the message cannot be decoded
+                     * @expose
+                     */
+                    Message.decode64 = function(str) {
+                        return Message.decode(ByteBuffer.decode64(str));
                     };
         
                     // Utility
@@ -1842,14 +1854,21 @@
              * Encodes a runtime message's contents to the specified buffer.
              * @param {ProtoBuf.Builder.Message} message Runtime message to encode
              * @param {ByteBuffer} buffer ByteBuffer to write to
+             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
              * @return {ByteBuffer} The ByteBuffer for chaining
-             * @throws {string} If the message cannot be encoded
+             * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(message, buffer) {
-                var fields = this.getChildren(Message.Field);
+            Message.prototype.encode = function(message, buffer, doNotThrow) {
+                var fields = this.getChildren(Message.Field),
+                    offset = buffer.offset;
                 for (var i=0; i<fields.length; i++) {
-                    fields[i].encode(message.get(fields[i].name), buffer);
+                    var val = message.get(fields[i].name);
+                    if (fields[i].required && val === null && !doNotThrow) {
+                        buffer.offset = offset;
+                        throw(new Error("Missing required field for "+this.toString(true)+": "+fields[i].name));
+                    }
+                    fields[i].encode(val, buffer);
                 }
                 return buffer;
             };
@@ -1996,7 +2015,7 @@
                 }
                 var i;
                 if (this.repeated && !skipRepeated) { // Repeated values as arrays
-                    if (!(value instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(value)) {
                         value = [value];
                     }
                     var res = [];
@@ -2006,7 +2025,7 @@
                     return res;
                 }
                 // All non-repeated fields expect no array
-                if (!this.repeated && value instanceof Array) {
+                if (!this.repeated && ProtoBuf.Util.isArray(value)) {
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
                 }
                 // Signed 32bit
@@ -2088,7 +2107,7 @@
                     return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
                 }
                 // We should never end here
-                throw(new Error("[INTERNAL ERROR] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
+                throw(new Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
             };
         
             /**
@@ -2102,7 +2121,7 @@
             Field.prototype.encode = function(value, buffer) {
                 value = this.verifyValue(value); // May throw
                 if (this.type == null || typeof this.type != 'object') {
-                    throw(new Error("[INTERNAL ERROR] Unresolved type in "+this.toString(true)+": "+this.type));
+                    throw(new Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type));
                 }
                 if (value === null || (this.repeated && value.length == 0)) return buffer; // Optional omitted
                 try {
@@ -2225,7 +2244,7 @@
                     buffer.append(bb.flip());
                 } else {
                     // We should never end here
-                    throw(new Error("[INTERNAL ERROR] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
+                    throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
                 }
                 return buffer;
             };
@@ -2334,6 +2353,9 @@
                 // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     nBytes = buffer.readVarint32();
+                    if (buffer.remaining() < nBytes) {
+                        throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
+                    }
                     value = buffer.clone(); // Offset already set
                     value.length = value.offset+nBytes;
                     buffer.offset += nBytes;
@@ -2347,7 +2369,7 @@
                 }
                 
                 // We should never end here
-                throw(new Error("[INTERNAL ERROR] Illegal wire type for "+this.toString(true)+": "+wireType));
+                throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
             };
         
             /**
@@ -2408,83 +2430,6 @@
             Reflect.Enum = Enum;
         
             /**
-             * Constructs a new Extend.
-             * @exports ProtoBuf.Reflect.Extend
-             * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
-             * @param {string} name Extend name
-             * @param {Object} fields Extend fields
-             * @constructor
-             * @extends ProtoBuf.Reflect.Namespace
-             */
-            var Extend = function(parent, name, fields) {
-                Namespace.call(this, parent, name, fields);
-        
-                /**
-                 * Runtime Extend object.
-                 * @type {Object.<string,number>|null}
-                 * @expose
-                 */
-                this.object = null;
-            };
-        
-            // Extends Namespace
-            Extend.prototype = Object.create(Namespace.prototype);
-        
-            /**
-             * Builds this Extend and returns the runtime counterpart.
-             * @return {Object<string,*>}
-             * @expose
-             */
-            Extend.prototype.build = function() {
-                var extend = {};
-                var fields = this.getChildren(Extend.Field);
-                for (var i=0; i<fields.length; i++) {
-                    extend[fields[i]['name']] = fields[i];
-                }
-                if (Object.defineProperty) {
-                    Object.defineProperty(extend, '$fields', {
-                        'value': this.buildOpt(),
-                        'Extenderable': false,
-                        'configurable': false,
-                        'writable': false
-                    });
-                }
-                return this.object = extend;
-            };
-        
-            /**
-             * @alias ProtoBuf.Reflect.Extend
-             * @expose
-             */
-            Reflect.Extend = Extend;
-        
-            /**
-             * Constructs a new Extensions Registry
-             * @exports ProtoBuf.Reflect.ExtensionsRegistry
-             * @constructor
-             * @extends ProtoBuf.Reflect.T
-             */
-            var ExtensionsRegistry = function(enm, name, id) {
-                T.call(this, enm, name);
-        
-                /**
-                 * Unique enum value id.
-                 * @type {number}
-                 * @expose
-                 */
-                this.id = id;
-            };
-        
-            // Extends T
-            ExtensionsRegistry.prototype = Object.create(T.prototype);
-        
-            /**
-             * @alias ProtoBuf.Reflect.Enum.Value
-             * @expose
-             */
-            Reflect.ExtensionsRegistry = ExtensionsRegistry;
-        
-            /**
              * Constructs a new Enum Value.
              * @exports ProtoBuf.Reflect.Enum.Value
              * @param {!ProtoBuf.Reflect.Enum} enm Enum reference
@@ -2518,7 +2463,6 @@
              * @exports ProtoBuf.Reflect.Service
              * @param {!ProtoBuf.Reflect.Namespace} root Root
              * @param {string} name Service name
-             * @param {{rpc: Array.<ProtoBuf.Reflect.Service.RPCMethod>}} methods Methods
              * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
@@ -2528,7 +2472,7 @@
         
                 /**
                  * Built runtime service class.
-                 * @type {ProtoBuf.Builder.Service}
+                 * @type {?function(new:ProtoBuf.Builder.Service)}
                  */
                 this.clazz = null;
             };
@@ -2684,8 +2628,8 @@
              * Abstract service method.
              * @exports ProtoBuf.Reflect.Service.Method
              * @param {!ProtoBuf.Reflect.Service} svc Service
-             * @param {Object.<string,*>=} options Options
              * @param {string} name Method name
+             * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
@@ -2719,6 +2663,7 @@
         
             /**
              * RPC service method.
+             * @exports ProtoBuf.Reflect.Service.RPCMethod
              * @param {!ProtoBuf.Reflect.Service} svc Service
              * @param {string} name Method name
              * @param {string} request Request message name
@@ -2839,7 +2784,7 @@
              * @expose
              */
             Builder.prototype.define = function(pkg, options) {
-                if (typeof pkg != 'string' || !Lang.TYPEDEF.test(pkg)) {
+                if (typeof pkg != 'string' || !Lang.TYPEREF.test(pkg)) {
                     throw(new Error("Illegal package name: "+pkg));
                 }
                 var part = pkg.split("."), i;
@@ -2875,7 +2820,7 @@
                 // Fields, enums and messages are arrays if provided
                 var i;
                 if (typeof def["fields"] != 'undefined') {
-                    if (!(def["fields"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["fields"])) {
                         return false;
                     }
                     var ids = [], id; // IDs must be unique
@@ -2892,7 +2837,7 @@
                     ids = null;
                 }
                 if (typeof def["enums"] != 'undefined') {
-                    if (!(def["enums"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["enums"])) {
                         return false;
                     }
                     for (i=0; i<def["enums"].length; i++) {
@@ -2902,7 +2847,7 @@
                     }
                 }
                 if (typeof def["messages"] != 'undefined') {
-                    if (!(def["messages"] instanceof Array)) {
+                    if (!ProtoBuf.Util.isArray(def["messages"])) {
                         return false;
                     }
                     for (i=0; i<def["messages"].length; i++) {
@@ -2936,7 +2881,7 @@
                     // Options are <string,*>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.NAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
+                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
                             return false;
                         }
                     }
@@ -2956,7 +2901,7 @@
                     return false;
                 }
                 // Enums require at least one value
-                if (typeof def["values"] == 'undefined' || !(def["values"] instanceof Array) || def["values"].length == 0) {
+                if (typeof def["values"] == 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
                     return false;
                 }
                 for (var i=0; i<def["values"].length; i++) {
@@ -2976,31 +2921,6 @@
                 return true;
             };
         
-            Builder.prototype.addFieldsToMessage = function (fields, message) {
-                var i, j, subObj;
-                for (i = 0; i < fields.length; i++) { // i=Fields
-                    if (!Builder.isValidMessageField(fields[i])) {
-                        throw(new Error("Not a valid message field definition in message " + message.name + ": " + JSON.stringify(fields[i])));
-                    }
-                    if (message.hasChild(fields[i]['id'])) {
-                        throw(new Error("Duplicate field id in message " + message.name + ": " + fields[i]['id']));
-                    }
-                    if (fields[i]["options"]) {
-                        subObj = Object.keys(fields[i]["options"]);
-                        for (j = 0; j < subObj.length; j++) { // j=Option names
-                            if (!Lang.NAME.test(subObj[j])) {
-                                throw(new Error("Illegal field option name in message " + message.name + "#" + fields[i]["name"] + ": " + subObj[j]));
-                            }
-                            if (typeof fields[i]["options"][subObj[j]] != 'string' && typeof fields[i]["options"][subObj[j]] != 'number') {
-                                throw(new Error("Illegal field option value in message " + message.name + "#" + fields[i]["name"] + "#" + subObj[j] + ": " + fields[i]["options"][subObj[j]]));
-                            }
-                        }
-                        subObj = null;
-                    }
-                    message.addChild(new Reflect.Message.Field(message, fields[i]["rule"], fields[i]["type"], fields[i]["name"], fields[i]["id"], fields[i]["options"]));
-                }
-            };
-        
             /**
              * Creates ths specified protocol types at the current pointer position.
              * @param {Array.<Object.<string,*>>} defs Messages, enums or services to create
@@ -3010,7 +2930,7 @@
              */
             Builder.prototype.create = function(defs) {
                 if (!defs) return; // Nothing to create
-                if (!(defs instanceof Array)) {
+                if (!ProtoBuf.Util.isArray(defs)) {
                     defs = [defs];
                 }
                 if (defs.length == 0) return;
@@ -3020,14 +2940,34 @@
                 stack.push(defs); // One level [a, b, c]
                 while (stack.length > 0) {
                     defs = stack.pop();
-                    if (defs instanceof Array) { // Stack always contains entire namespaces
+                    if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
                         while (defs.length > 0) {
                             def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
                                 obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
-                                    this.addFieldsToMessage(def["fields"], obj);
+                                    for (i=0; i<def["fields"].length; i++) { // i=Fields
+                                        if (!Builder.isValidMessageField(def["fields"][i])) {
+                                            throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
+                                        }
+                                        if (obj.hasChild(def['fields'][i]['id'])) {
+                                            throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
+                                        }
+                                        if (def["fields"][i]["options"]) {
+                                            subObj = Object.keys(def["fields"][i]["options"]);
+                                            for (j=0; j<subObj.length; j++) { // j=Option names
+                                                if (!Lang.OPTNAME.test(subObj[j])) {
+                                                    throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
+                                                }
+                                                if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
+                                                    throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
+                                                }
+                                            }
+                                            subObj = null;
+                                        }
+                                        obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                    }
                                 }
                                 // Push enums and messages to stack
                                 subObj = [];
@@ -3083,35 +3023,6 @@
                 this.resolved = false; // Require re-resolve
                 this.result = null; // Require re-build
                 return this;
-            };
-        
-            Builder.prototype.extendMessages = function (extendBlocks, packageName) {
-                for (var i = 0; i < extendBlocks.length; i++) {
-                    var extend = extendBlocks[i];
-                    var message = this.ns.resolve(extend.messageToExtend);
-                    if (!message) {
-                        throw(new Error("Couldn't find message to extend: " + extend.messageToExtend));
-                    }
-                    var fields = extend["fields"];
-                    for (var j = 0; j < fields.length; j++) {
-                        // This whole for loop is a hack. What is happening is that an extension, for example Person, lives in
-                        // a package, say peoplePackage. The full name is therefore peoplePackage.Person, however where it is
-                        // defined it is within the peoplePackage namespace, so the package name is omitted. However, when this
-                        // is transplanted into another type in another package, then suddenly Person without a package makes no
-                        // sense. There must be a better way, but I haven't been able to make it work. For now it just guesses
-                        // the full name using the Package, but this could be incorrect. Ideally, it would resolve the type
-                        // by using the namespace that it was declared in, but that doesn't seem to work at this point.
-                        var f = fields[j];
-                        var originalType = f.type;
-                        if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
-                            f.type = packageName + '.' + f.type;
-                            if (!ProtoBuf.TYPES[f.type] && !this.ns.resolve(f.type)) {
-                                throw(new Error("Couldn't find field type: " + originalType + " (tried " + f.type + ")"));
-                            }
-                        }
-                    }
-                    this.addFieldsToMessage(fields, message);
-                }
             };
         
             /**
@@ -3185,11 +3096,6 @@
                             this["import"](parser.parse(), importFilename); // Throws on its own                    
                         }
                     }
-                }
-        
-                this.reset();
-                if (parsed['extends'] && parsed['extends'].length > 0) {
-                    this.extendMessages(parsed['extends'], parsed['package']);
                 }
                 return this;
             };
@@ -3309,7 +3215,6 @@
              * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
              */
             Builder.prototype.lookup = function(path) {
-                console.log('Lookup for ' + path);
                 return path ? this.ns.resolve(path) : this.ns;
             };
         
@@ -3368,10 +3273,6 @@
                     "imports": parsed["imports"]
                 }, filename);
             }
-            if (parsed['extends'].length > 0) {
-                builder.extendMessages(parsed['extends'], parsed['package']);
-            }
-
             builder.resolveAll();
             builder.build();
             return builder;

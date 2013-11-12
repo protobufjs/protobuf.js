@@ -289,8 +289,8 @@
                     var b1 = new ByteBuffer();
                     m1.f = x.f;
                     m1.encode(b1);
-                    var q1 = b1.slice(1,5).compact().reverse().toHex();
-                    test.strictEqual('<' + x.b + '>', q1 );
+                    var q1 = b1.slice(1,5).compact().reverse();
+                    test.strictEqual('<' + x.b + '>', q1.toHex());
     
                     // check decode
                     var b2 = new ByteBuffer();
@@ -336,6 +336,24 @@
             } catch (e) {
                 fail(e);
             }
+            test.done();
+        },
+        
+        "notEnoughBytes": function(test) {
+            var builder = ProtoBuf.protoFromString("message Test { required bytes b = 1; }");
+            var Test = builder.build("Test");
+            var bb = new ByteBuffer().writeUint32(0x12345678).flip();
+            var encoded = new ByteBuffer(6);
+            new Test(bb).encode(encoded);
+            test.equal(encoded.toHex(), "<0A 04 12 34 56 78>");
+            encoded = encoded.slice(0, 5); // chop off the last byte
+            var err = null;
+            try {
+                Test.decode(encoded);
+            } catch (caught) {
+                err = caught;
+            }
+            test.ok(err && err.message && err.message.indexOf(": 4 required but got only 3") >= 0);
             test.done();
         },
 
@@ -935,6 +953,32 @@
             }
             test.done();
         },
+        
+        "setarray": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile(__dirname+"/setarray.proto");
+                var root = builder.build(),
+                    Outer = root.Outer,
+                    Inner = root.Inner,
+                    inners = [];
+                
+                // Array of repeated messages
+                inners.push(new Inner("a"), new Inner("b"), new Inner("c"));
+                var outer = new Outer();
+                outer.setInners(inners);
+                test.deepEqual(outer.inners, inners);
+                
+                // Array of repeated message objects
+                inners = [];
+                inners.push({ str: 'a' }, { str: 'b' }, { str: 'c' });
+                outer.setInners(inners); // Converts
+                test.ok(outer.inners[0] instanceof Inner);
+                test.deepEqual(outer.inners, inners);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         "extendexample": function(test) {
             try {
@@ -1038,6 +1082,20 @@
             }
             test.done();
         },
+        
+        "base64": function(test) {
+            try {
+                var Message = ProtoBuf.protoFromString("message Message { required string s = 1; }").build("Message");
+                var msg = new Message("ProtoBuf.js");
+                var b64 = msg.toBase64();
+                test.strictEqual(b64, "CgtQcm90b0J1Zi5qcw==");
+                var msg2 = Message.decode64(b64);
+                test.deepEqual(msg, msg2);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         "forwardComp": function(test) {
             try {
@@ -1050,7 +1108,24 @@
                 });
                 test.strictEqual(bb.offset, bb.length);
             } catch (e) {
-                console.log(e.stack);
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "tokenizerLine": function(test) {
+            try {
+                var parser = new ProtoBuf.DotProto.Parser("package test;\n\nmessage Message {\n\trequired string invalid = 1;}ERROR\n"),
+                    ast = null, err = null;
+                try {
+                    ast = parser.parse();
+                } catch (caught) {
+                    err = caught;
+                }
+                test.ok(err);
+                test.notOk(ast);
+                test.ok(err.message.indexOf("line 4:") >= 0);
+            } catch (e) {
                 fail(e);
             }
             test.done();

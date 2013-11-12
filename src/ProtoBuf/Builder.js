@@ -83,7 +83,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @expose
      */
     Builder.prototype.define = function(pkg, options) {
-        if (typeof pkg != 'string' || !Lang.TYPEDEF.test(pkg)) {
+        if (typeof pkg != 'string' || !Lang.TYPEREF.test(pkg)) {
             throw(new Error("Illegal package name: "+pkg));
         }
         var part = pkg.split("."), i;
@@ -119,7 +119,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         // Fields, enums and messages are arrays if provided
         var i;
         if (typeof def["fields"] != 'undefined') {
-            if (!(def["fields"] instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(def["fields"])) {
                 return false;
             }
             var ids = [], id; // IDs must be unique
@@ -136,7 +136,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             ids = null;
         }
         if (typeof def["enums"] != 'undefined') {
-            if (!(def["enums"] instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(def["enums"])) {
                 return false;
             }
             for (i=0; i<def["enums"].length; i++) {
@@ -146,7 +146,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             }
         }
         if (typeof def["messages"] != 'undefined') {
-            if (!(def["messages"] instanceof Array)) {
+            if (!ProtoBuf.Util.isArray(def["messages"])) {
                 return false;
             }
             for (i=0; i<def["messages"].length; i++) {
@@ -180,7 +180,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             // Options are <string,*>
             var keys = Object.keys(def["options"]);
             for (var i=0; i<keys.length; i++) {
-                if (!Lang.NAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
+                if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
                     return false;
                 }
             }
@@ -200,7 +200,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             return false;
         }
         // Enums require at least one value
-        if (typeof def["values"] == 'undefined' || !(def["values"] instanceof Array) || def["values"].length == 0) {
+        if (typeof def["values"] == 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
             return false;
         }
         for (var i=0; i<def["values"].length; i++) {
@@ -232,7 +232,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (fields[i]["options"]) {
                 subObj = Object.keys(fields[i]["options"]);
                 for (j = 0; j < subObj.length; j++) { // j=Option names
-                    if (!Lang.NAME.test(subObj[j])) {
+                    if (!Lang.OPTNAME.test(subObj[j])) {
                         throw(new Error("Illegal field option name in message " + message.name + "#" + fields[i]["name"] + ": " + subObj[j]));
                     }
                     if (typeof fields[i]["options"][subObj[j]] != 'string' && typeof fields[i]["options"][subObj[j]] != 'number') {
@@ -254,7 +254,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.prototype.create = function(defs) {
         if (!defs) return; // Nothing to create
-        if (!(defs instanceof Array)) {
+        if (!ProtoBuf.Util.isArray(defs)) {
             defs = [defs];
         }
         if (defs.length == 0) return;
@@ -264,7 +264,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         stack.push(defs); // One level [a, b, c]
         while (stack.length > 0) {
             defs = stack.pop();
-            if (defs instanceof Array) { // Stack always contains entire namespaces
+            if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
                 while (defs.length > 0) {
                     def = defs.shift(); // Namespace always contains an array of messages, enums and services
                     if (Builder.isValidMessage(def)) {
@@ -557,7 +557,6 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
      */
     Builder.prototype.lookup = function(path) {
-        console.log('Lookup for ' + path);
         return path ? this.ns.resolve(path) : this.ns;
     };
 

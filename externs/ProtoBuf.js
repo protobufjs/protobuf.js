@@ -162,6 +162,11 @@ ProtoBuf.DotProto.Tokenizer.prototype.source;
 ProtoBuf.DotProto.Tokenizer.prototype.index;
 
 /**
+ * @type {number}
+ */
+ProtoBuf.DotProto.Tokenizer.prototype.line;
+
+/**
  * @type {array.<string>}
  */
 ProtoBuf.DotProto.Tokenizer.prototype.stack;
@@ -320,10 +325,11 @@ ProtoBuf.Reflect.Message.prototype.build = function() {};
 /**
  * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
+ * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {string}
  */
-ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
+ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer, doNotThrow) {};
 
 /**
  * @param {!ByteBuffer} buffer
@@ -444,6 +450,71 @@ ProtoBuf.Reflect.Enum.Value = function(enm, name, id) {};
 ProtoBuf.Reflect.Enum.Value.prototype.id;
 
 /**
+ * @param {!ProtoBuf.Reflect.Namespace} root
+ * @param {string} name Service name
+ * @param {Object.<string,*>=} options
+ * @constructor
+ * @extends ProtoBuf.Reflect.Namespace
+ */
+ProtoBuf.Reflect.Service = function(root, name, options) {};
+
+/**
+ * @type {ProtoBuf.Builder.Service}
+ */
+ProtoBuf.Reflect.Service.prototype.clazz;
+
+/**
+ * @return {!ProtoBuf.Builder.Service}
+ * @throws {Error}
+ */
+ProtoBuf.Reflect.Service.prototype.build = function() {};
+
+/**
+ * @param {!ProtoBuf.Reflect.Service} svc
+ * @param {string} name
+ * @param {Object.<string,*>=} options
+ * @constructor
+ * @extends ProtoBuf.Reflect.T
+ */
+ProtoBuf.Reflect.Service.Method = function(svc, name, options) {};
+
+/**
+ * @return {Object.<string,*>}
+ */
+ProtoBuf.Reflect.Service.Method.prototype.buildOpt = function() {};
+
+/**
+ * @param {!ProtoBuf.Reflect.Service} svc
+ * @param {string} name
+ * @param {string} request
+ * @param {string} response
+ * @param {Object.<string,*>=} options
+ * @constructor
+ * @extends ProtoBuf.Reflect.Service.Method
+ */
+ProtoBuf.Reflect.Service.RPCMethod = function(svc, name, request, response, options) {};
+
+/**
+ * @type {string}
+ */
+ProtoBuf.Reflect.Service.RPCMethod.prototype.requestName;
+
+/**
+ * @type {string}
+ */
+ProtoBuf.Reflect.Service.RPCMethod.prototype.responseName;
+
+/**
+ * @type {ProtoBuf.Reflect.Message}
+ */
+ProtoBuf.Reflect.Service.RPCMethod.prototype.resolvedRequestType;
+
+/**
+ * @type {ProtoBuf.Reflect.Message}
+ */
+ProtoBuf.Reflect.Service.RPCMethod.prototype.resolvedResponseType;
+
+/**
  * @constructor
  */
 ProtoBuf.Builder = function() {};
@@ -545,7 +616,6 @@ ProtoBuf.Builder.prototype.lookup = function(path) {};
  */
 ProtoBuf.Builder.prototype.toString = function() {};
 
-
 /**
  * @param {Object.<string,*>} values
  * @constructor
@@ -577,11 +647,12 @@ ProtoBuf.Builder.Message.prototype.get = function(key) {};
 
 /**
  * @param {ByteBuffer=} buffer
+ * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {Error}
  * @nosideeffects
  */
-ProtoBuf.Builder.Message.prototype.encode = function(buffer) {};
+ProtoBuf.Builder.Message.prototype.encode = function(buffer, doNotThrow) {};
 
 /**
  * @return {ArrayBuffer}
@@ -598,6 +669,13 @@ ProtoBuf.Builder.Message.prototype.toArrayBuffer = function() {};
 ProtoBuf.Builder.Message.prototype.toBuffer = function() {};
 
 /**
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.toBase64 = function() {};
+
+/**
  * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer
  * @return {!ProtoBuf.Builder.Message}
  * @throws {Error}
@@ -606,10 +684,29 @@ ProtoBuf.Builder.Message.prototype.toBuffer = function() {};
 ProtoBuf.Builder.Message.decode = function(buffer) {};
 
 /**
+ * @param {string} str
+ * @return {!ProtoBuf.Builder.Message}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.decode64 = function(str) {};
+
+/**
  * @return {string}
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.prototype.toString = function() {};
+
+/**
+ * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))} rpcImpl
+ * @constructor
+ */
+ProtoBuf.Builder.Service = function(rpcImpl) {};
+
+/**
+ * @type {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))}
+ */
+ProtoBuf.Builder.prototype.rpcImpl;
 
 /**
  * @param {string} proto
@@ -634,3 +731,28 @@ ProtoBuf.protoFromFile = function(filename, callback, builder) {};
  * @return {!ProtoBuf.Builder}
  */
 ProtoBuf.newBuilder = function(pkg) {};
+
+ProtoBuf.Util = {};
+
+/**
+ * @type {boolean}
+ */
+ProtoBuf.Util.IS_NODE;
+
+/**
+ * @return {XMLHttpRequest}
+ */
+ProtoBuf.Util.XHR = function() {};
+
+/**
+ * @param {string} path
+ * @param {function(?string)=} callback
+ * @return {?string|undefined}
+ */
+ProtoBuf.Util.fetch = function(path, callback) {};
+
+/**
+ * @param {*} obj
+ * @return {boolean}
+ */
+ProtoBuf.Util.isArray = function(obj) {};

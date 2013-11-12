@@ -701,7 +701,20 @@ ByteBuffer.prototype.toASCII = function(wrap, asArray) {};
  * @return {string}
  * @nosideeffects
  */
-ByteBuffer.prototype.toString = function() {};
+ByteBuffer.prototype.toUTF8 = function() {};
+
+/**
+ * @return {string}
+ * @nosideeffects
+ */
+ByteBuffer.prototype.toBase64 = function() {};
+
+/**
+ * @param {string=} enc
+ * @return {string}
+ * @nosideeffects
+ */
+ByteBuffer.prototype.toString = function(enc) {};
 
 /**
  * @param {boolean=} forceCopy
@@ -748,6 +761,22 @@ ByteBuffer.zigZagEncode32 = function(n) {};
  * @nosideeffects
  */
 ByteBuffer.zigZagDecode32 = function(n) {};
+
+/**
+ * @param {ByteBuffer} bb
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ByteBuffer.encode64 = function(bb) {};
+
+/**
+ * @param {string} str
+ * @return {!ByteBuffer}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ByteBuffer.decode64 = function(str) {};
 
 /**
  * @type {number}
