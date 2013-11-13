@@ -107,25 +107,25 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
             // Strip white spaces
             while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
                 this.index++;
-                if (last == "\n") this.line++;
-                if (this.index == this.source.length) return null;
+                if (last === "\n") this.line++;
+                if (this.index === this.source.length) return null;
             }
             // Strip comments
-            if (this.source.charAt(this.index) == '/') {
-                if (this.source.charAt(++this.index) == '/') { // Single line
-                    while (this.source.charAt(this.index) != "\n") {
+            if (this.source.charAt(this.index) === '/') {
+                if (this.source.charAt(++this.index) === '/') { // Single line
+                    while (this.source.charAt(this.index) !== "\n") {
                         this.index++;
                         if (this.index == this.source.length) return null;
                     }
                     this.index++;
                     this.line++;
                     repeat = true;
-                } else if (this.source.charAt(this.index) == '*') { /* Block */
+                } else if (this.source.charAt(this.index) === '*') { /* Block */
                     last = '';
-                    while (last+(last=this.source.charAt(this.index)) != '*/') {
+                    while (last+(last=this.source.charAt(this.index)) !== '*/') {
                         this.index++;
-                        if (last == "\n") this.line++;
-                        if (this.index == this.source.length) return null;
+                        if (last === "\n") this.line++;
+                        if (this.index === this.source.length) return null;
                     }
                     this.index++;
                     repeat = true;
@@ -134,7 +134,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
                 }
             }
         } while (repeat);
-        if (this.index == this.source.length) return null;
+        if (this.index === this.source.length) return null;
 
         // Read the next token
         var end = this.index;
@@ -149,7 +149,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
             end++;
         }
         var token = this.source.substring(this.index, this.index = end);
-        if (token == Lang.STRINGOPEN) {
+        if (token === Lang.STRINGOPEN) {
             this.readingString = true;
         }
         return token;
@@ -176,7 +176,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
      * @expose
      */
     Tokenizer.prototype.toString = function() {
-        return "Tokenizer("+this.index+"/"+this.source.length+")";
+        return "Tokenizer("+this.index+"/"+this.source.length+" at line "+this.line+")";
     };
     
     return Tokenizer;

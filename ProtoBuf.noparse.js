@@ -349,7 +349,10 @@
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
-                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g
+                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
+        
+                ID_MIN: 1,
+                ID_MAX: 0x1FFFFFFF
             };
             return Lang;
         })();
@@ -2254,7 +2257,6 @@
                     this.create(parsed['services']);
                     this.reset();
                 }
-        
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
                     if (!filename) {
                         throw(new Error("Cannot determine import root: File name is unknown"));
@@ -2272,6 +2274,11 @@
                             throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
                         }
                     }
+                }
+                if (!!parsed['extends']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
+                    this.create(parsed['extends']);
+                    this.reset();
                 }
                 return this;
             };

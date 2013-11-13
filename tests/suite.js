@@ -830,9 +830,53 @@
         
         "extend": function(test) {
             try {
-                test.doesNotThrow(function() {
-                    ProtoBuf.protoFromFile(__dirname+"/extend.proto");
+                var ast = new ProtoBuf.DotProto.Parser(fs.readFileSync(__dirname+"/extend.proto")).parse();
+                test.deepEqual(ast,  {
+                    "package": null,
+                    "messages": [
+                        {
+                            "name": "Foo",
+                            "fields": [],
+                            "enums": [],
+                            "messages": [],
+                            "options": {},
+                            "extends": [],
+                            "extensions": [2,536870911]
+                        }
+                    ],
+                    "enums": [],
+                    "imports": [
+                        "google/protobuf/descriptor.proto"
+                    ],
+                    "options": {},
+                    "services": [],
+                    "extends":[
+                        {
+                            "name": "google.protobuf.MessageOptions",
+                            "fields": [
+                                {
+                                    "rule": "optional",
+                                    "type": "int32",
+                                    "name": "foo",
+                                    "id": 123,
+                                    "options": {}}
+                            ]
+                        },
+                        {
+                            "name": "Foo",
+                            "fields":[
+                                {
+                                    "rule": "optional",
+                                    "type": "string",
+                                    "name": "bar",
+                                    "id": 2,
+                                    "options": {}
+                                }
+                            ]
+                        }
+                    ]
                 });
+                ProtoBuf.protoFromFile(__dirname+"/extend.proto");
             } catch (e) {
                 fail(e);
             }

@@ -662,12 +662,13 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
      * @private
      */
     Parser.prototype._parseExtensions = function(msg, token) {
+        /** @type {Array.<number>} */
         var range = [];
         token = this.tn.next();
         if (token === "min") { // FIXME: Does the official implementation support this?
-            range.push(1);
+            range.push(Lang.ID_MIN);
         } else if (token === "max") {
-            range.push(0x1FFFFFFF);
+            range.push(Lang.ID_MAX);
         } else {
             range.push(this._parseNumber(token));
         }
@@ -677,9 +678,9 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         token = this.tn.next();
         if (token === "min") {
-            range.push(1);
+            range.push(Lang.ID_MIN);
         } else if (token === "max") {
-            range.push(0x1FFFFFFF);
+            range.push(Lang.ID_MAX);
         } else {
             range.push(this._parseNumber(token));
         }
@@ -702,10 +703,10 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         if (!Lang.TYPEREF.test(token)) {
             throw(new Error("Illegal extended message name at line "+this.tn.line+": "+token));
         }
+        /** @dict */
         var ext = {};
         ext["name"] = token;
         ext["fields"] = [];
-        ext["options"] = {};
         token = this.tn.next();
         if (token !== Lang.OPEN) {
             throw(new Error("Illegal OPEN in extend "+ext.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
@@ -718,11 +719,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 break;
             } else if (Lang.RULE.test(token)) {
                 this._parseMessageField(ext, token);
-            /* } else if (token == "option") {
-                // FIXME: May an extend block contain options? Or anything else like messages or enums?
-                // If so, what is the actual effect of, let's say, an option? 
-                this._parseOption(ext, token);
-            */ } else {
+            } else {
                 throw(new Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token+" (rule or '"+Lang.CLOSE+"' expected)"));
             }
         } while (true);

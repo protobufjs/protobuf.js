@@ -349,7 +349,10 @@
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
-                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g
+                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
+        
+                ID_MIN: 1,
+                ID_MAX: 0x1FFFFFFF
             };
             return Lang;
         })();
@@ -453,25 +456,25 @@
                     // Strip white spaces
                     while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
                         this.index++;
-                        if (last == "\n") this.line++;
-                        if (this.index == this.source.length) return null;
+                        if (last === "\n") this.line++;
+                        if (this.index === this.source.length) return null;
                     }
                     // Strip comments
-                    if (this.source.charAt(this.index) == '/') {
-                        if (this.source.charAt(++this.index) == '/') { // Single line
-                            while (this.source.charAt(this.index) != "\n") {
+                    if (this.source.charAt(this.index) === '/') {
+                        if (this.source.charAt(++this.index) === '/') { // Single line
+                            while (this.source.charAt(this.index) !== "\n") {
                                 this.index++;
                                 if (this.index == this.source.length) return null;
                             }
                             this.index++;
                             this.line++;
                             repeat = true;
-                        } else if (this.source.charAt(this.index) == '*') { /* Block */
+                        } else if (this.source.charAt(this.index) === '*') { /* Block */
                             last = '';
-                            while (last+(last=this.source.charAt(this.index)) != '*/') {
+                            while (last+(last=this.source.charAt(this.index)) !== '*/') {
                                 this.index++;
-                                if (last == "\n") this.line++;
-                                if (this.index == this.source.length) return null;
+                                if (last === "\n") this.line++;
+                                if (this.index === this.source.length) return null;
                             }
                             this.index++;
                             repeat = true;
@@ -480,7 +483,7 @@
                         }
                     }
                 } while (repeat);
-                if (this.index == this.source.length) return null;
+                if (this.index === this.source.length) return null;
         
                 // Read the next token
                 var end = this.index;
@@ -495,7 +498,7 @@
                     end++;
                 }
                 var token = this.source.substring(this.index, this.index = end);
-                if (token == Lang.STRINGOPEN) {
+                if (token === Lang.STRINGOPEN) {
                     this.readingString = true;
                 }
                 return token;
@@ -522,7 +525,7 @@
              * @expose
              */
             Tokenizer.prototype.toString = function() {
-                return "Tokenizer("+this.index+"/"+this.source.length+")";
+                return "Tokenizer("+this.index+"/"+this.source.length+" at line "+this.line+")";
             };
             
             return Tokenizer;
@@ -1176,12 +1179,13 @@
              * @private
              */
             Parser.prototype._parseExtensions = function(msg, token) {
+                /** @type {Array.<number>} */
                 var range = [];
                 token = this.tn.next();
                 if (token === "min") { // FIXME: Does the official implementation support this?
-                    range.push(1);
+                    range.push(Lang.ID_MIN);
                 } else if (token === "max") {
-                    range.push(0x1FFFFFFF);
+                    range.push(Lang.ID_MAX);
                 } else {
                     range.push(this._parseNumber(token));
                 }
@@ -1191,9 +1195,9 @@
                 }
                 token = this.tn.next();
                 if (token === "min") {
-                    range.push(1);
+                    range.push(Lang.ID_MIN);
                 } else if (token === "max") {
-                    range.push(0x1FFFFFFF);
+                    range.push(Lang.ID_MAX);
                 } else {
                     range.push(this._parseNumber(token));
                 }
@@ -1216,10 +1220,10 @@
                 if (!Lang.TYPEREF.test(token)) {
                     throw(new Error("Illegal extended message name at line "+this.tn.line+": "+token));
                 }
+                /** @dict */
                 var ext = {};
                 ext["name"] = token;
                 ext["fields"] = [];
-                ext["options"] = {};
                 token = this.tn.next();
                 if (token !== Lang.OPEN) {
                     throw(new Error("Illegal OPEN in extend "+ext.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
@@ -1232,11 +1236,7 @@
                         break;
                     } else if (Lang.RULE.test(token)) {
                         this._parseMessageField(ext, token);
-                    /* } else if (token == "option") {
-                        // FIXME: May an extend block contain options? Or anything else like messages or enums?
-                        // If so, what is the actual effect of, let's say, an option? 
-                        this._parseOption(ext, token);
-                    */ } else {
+                    } else {
                         throw(new Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token+" (rule or '"+Lang.CLOSE+"' expected)"));
                     }
                 } while (true);
@@ -3154,7 +3154,6 @@
                     this.create(parsed['services']);
                     this.reset();
                 }
-        
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
                     if (!filename) {
                         throw(new Error("Cannot determine import root: File name is unknown"));
@@ -3178,6 +3177,11 @@
                             this["import"](parser.parse(), importFilename); // Throws on its own                    
                         }
                     }
+                }
+                if (!!parsed['extends']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
+                    this.create(parsed['extends']);
+                    this.reset();
                 }
                 return this;
             };

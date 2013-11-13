@@ -371,7 +371,6 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             this.create(parsed['services']);
             this.reset();
         }
-
         if (!!parsed['imports'] && parsed['imports'].length > 0) {
             if (!filename) {
                 throw(new Error("Cannot determine import root: File name is unknown"));
@@ -399,6 +398,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                     // #endif
                 }
             }
+        }
+        if (!!parsed['extends']) {
+            if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
+            this.create(parsed['extends']);
+            this.reset();
         }
         return this;
     };
