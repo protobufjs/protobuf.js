@@ -576,6 +576,18 @@ ProtoBuf.Builder.isValidMessageField = function(def) {};
 ProtoBuf.Builder.isValidEnum = function(def) {};
 
 /**
+ * @param {Object.<string,*>} def
+ * @return {boolean}
+ */
+ProtoBuf.Builder.isValidService = function(def) {};
+
+/**
+ * @param {Object.<string,*>} def
+ * @return {boolean}
+ */
+ProtoBuf.Builder.isValidExtend = function(def) {};
+
+/**
  * @param {Array.<Object.<string,*>>} messages
  * @return {ProtoBuf.Builder}
  * @throws {Error}

@@ -11,3 +11,9 @@ message Foo {
 extend Foo {
     optional string bar = 2;
 }
+
+message Bar {
+    extend Foo {
+        optional Bar bar2 = 3;
+    }
+}

@@ -53,8 +53,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "enums": [],
             "imports": [],
             "options": {},
-            "services": [],
-            "extends": []
+            "services": []
         };
         var token, header = true;
         do {
@@ -433,7 +432,6 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         msg["enums"] = [];
         msg["messages"] = [];
         msg["options"] = {};
-        msg["extends"] = [];
         // msg["extensions"] = undefined
         do {
             token = this.tn.next();
@@ -705,7 +703,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         /** @dict */
         var ext = {};
-        ext["name"] = token;
+        ext["ref"] = token;
         ext["fields"] = [];
         token = this.tn.next();
         if (token !== Lang.OPEN) {
@@ -723,7 +721,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 throw(new Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token+" (rule or '"+Lang.CLOSE+"' expected)"));
             }
         } while (true);
-        parent["extends"].push(ext);
+        parent["messages"].push(ext);
         return ext;
     };
 

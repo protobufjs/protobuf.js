@@ -835,35 +835,27 @@
                     "package": null,
                     "messages": [
                         {
-                            "name": "Foo",
-                            "fields": [],
-                            "enums": [],
-                            "messages": [],
-                            "options": {},
-                            "extends": [],
-                            "extensions": [2,536870911]
-                        }
-                    ],
-                    "enums": [],
-                    "imports": [
-                        "google/protobuf/descriptor.proto"
-                    ],
-                    "options": {},
-                    "services": [],
-                    "extends":[
-                        {
-                            "name": "google.protobuf.MessageOptions",
+                            "ref": "google.protobuf.MessageOptions",
                             "fields": [
                                 {
                                     "rule": "optional",
                                     "type": "int32",
                                     "name": "foo",
                                     "id": 123,
-                                    "options": {}}
+                                    "options": {}
+                                }
                             ]
                         },
                         {
                             "name": "Foo",
+                            "fields": [],
+                            "enums": [],
+                            "messages": [],
+                            "options": {},
+                            "extensions": [2,536870911]
+                        },
+                        {
+                            "ref": "Foo",
                             "fields":[
                                 {
                                     "rule": "optional",
@@ -873,10 +865,52 @@
                                     "options": {}
                                 }
                             ]
+                        },
+                        {
+                            "name": "Bar",
+                            "fields": [],
+                            "enums": [],
+                            "messages": [
+                                {
+                                    "ref": "Foo",
+                                    "fields": [
+                                        {
+                                            "rule": "optional",
+                                            "type": "Bar",
+                                            "name": "bar2",
+                                            "id": 3,
+                                            "options": {}
+                                        }
+                                    ]
+                                }
+                            ],
+                            "options": {}
                         }
-                    ]
+                    ],
+                    "enums": [],
+                    "imports": [
+                        "google/protobuf/descriptor.proto"
+                    ],
+                    "options": {},
+                    "services": []
                 });
-                ProtoBuf.protoFromFile(__dirname+"/extend.proto");
+                
+                var builder = ProtoBuf.protoFromFile(__dirname+"/extend.proto");
+                var TFoo = builder.lookup("Foo"),
+                    fields = TFoo.getChildren(ProtoBuf.Reflect.Message.Field);
+                test.strictEqual(fields.length, 2);
+                test.strictEqual(fields[0].name, "bar");
+                test.strictEqual(fields[0].id, 2);
+                test.strictEqual(fields[1].name, "bar2");
+                test.strictEqual(fields[1].id, 3);
+                var root = builder.build();
+                var foo = new root.Foo(),
+                    bar = new root.Bar();
+                test.ok(typeof foo.setBar === 'function');
+                test.ok(foo instanceof root.Bar.Foo);
+                foo.bar = "123";
+                foo.bar2 = bar;
+                test.equal(foo.encode().compact().toHex(), "<12 03 31 32 33 1A 00>");
             } catch (e) {
                 fail(e);
             }
@@ -890,8 +924,8 @@
                 var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
                 var root = parser.parse();
                 test.equal(root["options"]["(my_file_option)"], "Hello world!");
-                test.equal(root["messages"][0]["options"]["(my_message_option)"], 1234)
-                test.equal(root["messages"][0]["fields"][0]["options"]["(my_field_option)"], 4.5);
+                test.equal(root["messages"][7]["options"]["(my_message_option)"], 1234);
+                test.equal(root["messages"][7]["fields"][0]["options"]["(my_field_option)"], 4.5);
                 // test.equal(root["services"]["MyService"]["options"]["my_service_option"], "FOO");
                 // TODO: add tests for my_enum_option, my_enum_value_option
             } catch (e) {

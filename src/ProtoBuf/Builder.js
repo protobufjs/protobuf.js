@@ -109,16 +109,16 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.isValidMessage = function(def) {
         // Messages require a string name
-        if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"])) {
+        if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"])) {
             return false;
         }
         // Messages must not contain values (that'd be an enum) or methods (that'd be a service)
-        if (typeof def["values"] != 'undefined' || typeof def["rpc"] != 'undefined') {
+        if (typeof def["values"] !== 'undefined' || typeof def["rpc"] !== 'undefined') {
             return false;
         }
         // Fields, enums and messages are arrays if provided
         var i;
-        if (typeof def["fields"] != 'undefined') {
+        if (typeof def["fields"] !== 'undefined') {
             if (!ProtoBuf.Util.isArray(def["fields"])) {
                 return false;
             }
@@ -135,7 +135,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             }
             ids = null;
         }
-        if (typeof def["enums"] != 'undefined') {
+        if (typeof def["enums"] !== 'undefined') {
             if (!ProtoBuf.Util.isArray(def["enums"])) {
                 return false;
             }
@@ -145,14 +145,19 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 }
             }
         }
-        if (typeof def["messages"] != 'undefined') {
+        if (typeof def["messages"] !== 'undefined') {
             if (!ProtoBuf.Util.isArray(def["messages"])) {
                 return false;
             }
             for (i=0; i<def["messages"].length; i++) {
-                if (!Builder.isValidMessage(def["messages"][i])) {
+                if (!Builder.isValidMessage(def["messages"][i]) && !Builder.isValidExtend(def["messages"][i])) {
                     return false;
                 }
+            }
+        }
+        if (typeof def["extensions"] !== 'undefined') {
+            if (!ProtoBuf.Util.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number') {
+                return false;
             }
         }
         return true;
@@ -247,9 +252,6 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                if (!Builder.isValidMessageField(def["fields"][i])) {
-                                    throw(new Error("Not a valid message field definition in message "+obj.name+": "+JSON.stringify(def["fields"][i])));
-                                }
                                 if (obj.hasChild(def['fields'][i]['id'])) {
                                     throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
                                 }
@@ -307,8 +309,25 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         }
                         this.ptr.addChild(obj);
                         obj = null;
+                    } else if (Builder.isValidExtend(def)) {
+                        obj = this.lookup(def["ref"]);
+                        if (obj) {
+                            for (i=0; i<def["fields"].length; i++) { // i=Fields
+                                if (obj.hasChild(def['fields'][i]['id'])) {
+                                    throw(new Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']));
+                                }
+                                obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                            }
+                            if (this.ptr instanceof Reflect.Message) {
+                                this.ptr.addChild(obj); // Reference the extended message here to enable proper lookups
+                            }
+                        } else {
+                            if (!/\.?google\.protobuf\./.test(def["ref"])) { // Silently skip internal extensions
+                                throw(new Error("Extended message "+def["ref"]+" is not defined"));
+                            }
+                        }
                     } else {
-                        throw(new Error("Not a valid message, enum or service definition: "+JSON.stringify(def)));
+                        throw(new Error("Not a valid message, enum, service or extend definition: "+JSON.stringify(def)));
                     }
                     def = null;
                 }
@@ -415,8 +434,39 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.isValidService = function(def) {
         // Services require a string name
-        if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"]) || typeof def["rpc"] != 'object') {
+        if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]) || typeof def["rpc"] !== 'object') {
             return false;
+        }
+        return true;
+    };
+
+    /**
+     * Tests if a definition is a valid extension.
+     * @param {Object} def Definition
+     * @returns {boolean} true if valid, else false
+     * @expose
+    */
+    Builder.isValidExtend = function(def) {
+        if (typeof def["ref"] !== 'string' || !Lang.NAME.test(def["name"])) {
+            return false;
+        }
+        var i;
+        if (typeof def["fields"] !== 'undefined') {
+            if (!ProtoBuf.Util.isArray(def["fields"])) {
+                return false;
+            }
+            var ids = [], id; // IDs must be unique
+            for (i=0; i<def["fields"].length; i++) {
+                if (!Builder.isValidMessageField(def["fields"][i])) {
+                    return false;
+                }
+                id = parseInt(def["id"], 10);
+                if (ids.indexOf(id) >= 0) {
+                    return false;
+                }
+                ids.push(id);
+            }
+            ids = null;
         }
         return true;
     };

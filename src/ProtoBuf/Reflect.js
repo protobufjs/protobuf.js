@@ -321,11 +321,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     /**
      * Builds the message and returns the runtime counterpart, which is a fully functional class.
      * @see ProtoBuf.Builder.Message
+     * @param {boolean=} rebuild Whether to rebuild or not, defaults to false
      * @return {ProtoBuf.Reflect.Message} Message class
      * @throws {Error} If the message cannot be built
      * @expose
      */
-    Message.prototype.build = function() {
+    Message.prototype.build = function(rebuild) {
+        if (this.clazz && !rebuild) return this.clazz;
+        
         // We need to create a prototyped Message class in an isolated scope
         var clazz = (function(Reflect, T) {
             var fields = T.getChildren(Reflect.Message.Field);
@@ -1324,11 +1327,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     /**
      * Builds the service and returns the runtime counterpart, which is a fully functional class.
      * @see ProtoBuf.Builder.Service
+     * @param {boolean=} rebuild Whether to rebuild or not
      * @return {Function} Service class
      * @throws {Error} If the message cannot be built
      * @expose
      */
-    Service.prototype.build = function() {
+    Service.prototype.build = function(rebuild) {
+        if (this.clazz && !rebuild) return this.clazz;
         return this.clazz = (function(T) {
 
             /**
