@@ -308,6 +308,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         Namespace.call(this, parent, name, options);
 
         /**
+         * Extensions range.
+         * @type {!Array.<number>}
+         * @expose
+         */
+        this.extensions = [ProtoBuf.Lang.ID_MIN, ProtoBuf.Lang.ID_MAX];
+
+        /**
          * Runtime message class.
          * @type {?function(new:ProtoBuf.Builder.Message)}
          * @expose

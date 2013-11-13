@@ -652,6 +652,13 @@
                 Namespace.call(this, parent, name, options);
         
                 /**
+                 * Extensions range.
+                 * @type {!Array.<number>}
+                 * @expose
+                 */
+                this.extensions = [ProtoBuf.Lang.ID_MIN, ProtoBuf.Lang.ID_MAX];
+        
+                /**
                  * Runtime message class.
                  * @type {?function(new:ProtoBuf.Builder.Message)}
                  * @expose
@@ -665,12 +672,13 @@
             /**
              * Builds the message and returns the runtime counterpart, which is a fully functional class.
              * @see ProtoBuf.Builder.Message
+             * @param {boolean=} rebuild Whether to rebuild or not, defaults to false
              * @return {ProtoBuf.Reflect.Message} Message class
              * @throws {Error} If the message cannot be built
              * @expose
              */
-            Message.prototype.build = function() {
-                if (this.clazz) return this.clazz;
+            Message.prototype.build = function(rebuild) {
+                if (this.clazz && !rebuild) return this.clazz;
                 
                 // We need to create a prototyped Message class in an isolated scope
                 var clazz = (function(Reflect, T) {
@@ -1670,12 +1678,13 @@
             /**
              * Builds the service and returns the runtime counterpart, which is a fully functional class.
              * @see ProtoBuf.Builder.Service
+             * @param {boolean=} rebuild Whether to rebuild or not
              * @return {Function} Service class
              * @throws {Error} If the message cannot be built
              * @expose
              */
-            Service.prototype.build = function() {
-                if (this.clazz) return this.clazz;
+            Service.prototype.build = function(rebuild) {
+                if (this.clazz && !rebuild) return this.clazz;
                 return this.clazz = (function(T) {
         
                     /**
@@ -2171,6 +2180,16 @@
                                         subObj.push(def["messages"][i]);
                                     }
                                 }
+                                // Set extension range
+                                if (def["extensions"]) {
+                                    obj.extensions = def["extensions"];
+                                    if (obj.extensions[0] < ProtoBuf.Lang.ID_MIN) {
+                                        obj.extensions[0] = ProtoBuf.Lang.ID_MIN;
+                                    }
+                                    if (obj.extensions[1] > ProtoBuf.Lang.ID_MAX) {
+                                        obj.extensions[1] = ProtoBuf.Lang.ID_MAX;
+                                    }
+                                }
                                 this.ptr.addChild(obj); // Add to current namespace
                                 if (subObj.length > 0) {
                                     stack.push(defs); // Push the current level back
@@ -2204,6 +2223,9 @@
                                     for (i=0; i<def["fields"].length; i++) { // i=Fields
                                         if (obj.hasChild(def['fields'][i]['id'])) {
                                             throw(new Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']));
+                                        }
+                                        if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1]) {
+                                            throw(new Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)"));
                                         }
                                         obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
                                     }
@@ -2326,7 +2348,7 @@
              * @expose
             */
             Builder.isValidExtend = function(def) {
-                if (typeof def["ref"] !== 'string' || !Lang.NAME.test(def["name"])) {
+                if (typeof def["ref"] !== 'string' || !Lang.TYPEREF.test(def["name"])) {
                     return false;
                 }
                 var i;
@@ -2334,7 +2356,7 @@
                     if (!ProtoBuf.Util.isArray(def["fields"])) {
                         return false;
                     }
-                    var ids = [], id; // IDs must be unique
+                    var ids = [], id; // IDs must be unique (does not yet test for the extended message's ids)
                     for (i=0; i<def["fields"].length; i++) {
                         if (!Builder.isValidMessageField(def["fields"][i])) {
                             return false;

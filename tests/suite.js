@@ -897,12 +897,15 @@
                 
                 var builder = ProtoBuf.protoFromFile(__dirname+"/extend.proto");
                 var TFoo = builder.lookup("Foo"),
+                    TBar = builder.lookup("Bar"),
                     fields = TFoo.getChildren(ProtoBuf.Reflect.Message.Field);
                 test.strictEqual(fields.length, 2);
                 test.strictEqual(fields[0].name, "bar");
                 test.strictEqual(fields[0].id, 2);
                 test.strictEqual(fields[1].name, "bar2");
                 test.strictEqual(fields[1].id, 3);
+                test.deepEqual(TFoo.extensions, [2, ProtoBuf.Lang.ID_MAX]); // Defined
+                test.deepEqual(TBar.extensions, [ProtoBuf.Lang.ID_MIN, ProtoBuf.Lang.ID_MAX]); // Undefined
                 var root = builder.build();
                 var foo = new root.Foo(),
                     bar = new root.Bar();

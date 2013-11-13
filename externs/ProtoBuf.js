@@ -312,6 +312,11 @@ ProtoBuf.Reflect.Namespace.prototype.build = function() {};
 ProtoBuf.Reflect.Message = function(parent, name) {};
 
 /**
+ * @type {?Array.<number>}
+ */
+ProtoBuf.Reflect.Message.prototype.extensions;
+
+/**
  * @type {?ProtoBuf.Builder.Message}
  */
 ProtoBuf.Reflect.Message.prototype.clazz;
