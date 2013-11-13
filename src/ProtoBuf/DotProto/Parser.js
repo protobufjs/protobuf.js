@@ -53,7 +53,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "enums": [],
             "imports": [],
             "options": {},
-            "services": []
+            "services": [],
+            "extensions": []
         };
         var token, header = true;
         do {
@@ -88,7 +89,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             } else if (token == 'service') {
                 this._parseService(topLevel, token);
             } else if (token == 'extend') {
-                this._parseIgnoredBlock(topLevel, token);
+                this._parseExtend(topLevel, token);
             } else if (token == 'syntax') {
                 this._parseIgnoredStatement(topLevel, token);
             } else {
@@ -431,6 +432,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         msg["enums"] = [];
         msg["messages"] = [];
         msg["options"] = {};
+        msg["extensions"] = [];
         do {
             token = this.tn.next();
             if (token == Lang.CLOSE) {
@@ -646,6 +648,46 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         if (token != Lang.END) {
             throw(new Error("Illegal enum value delimiter in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
         }
+    };
+
+    /**
+     * Parses an extend block.
+     * @param {Object} parent Parent object
+     * @param {string} token Initial token
+     * @throws {Error} If the extend block cannot be parsed
+     * @private
+     */
+    Parser.prototype._parseExtend = function(parent, token) {
+        token = this.tn.next();
+        if (!Lang.TYPEREF.test(token)) {
+            throw(new Error("Illegal extended message name at line "+this.tn.line+": "+token));
+        }
+        var ext = {};
+        ext["name"] = token;
+        ext["fields"] = [];
+        ext["options"] = {};
+        token = this.tn.next();
+        if (token != Lang.OPEN) {
+            throw(new Error("Illegal OPEN in extend "+ext.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
+        }
+        do {
+            token = this.tn.next();
+            if (token == Lang.CLOSE) {
+                token = this.tn.peek();
+                if (token == Lang.END) this.tn.next();
+                break;
+            } else if (Lang.RULE.test(token)) {
+                this._parseMessageField(ext, token);
+            /* } else if (token == "option") {
+                // FIXME: May an extend block contain options? Or anything else like messages or enums?
+                // If so, what is the actual effect of, let's say, an option? 
+                this._parseOption(ext, token);
+            */ } else {
+                throw(new Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token+" (rule or '"+Lang.CLOSE+"' expected)"));
+            }
+        } while (true);
+        parent["extensions"].push(ext);
+        return ext;
     };
 
     /**

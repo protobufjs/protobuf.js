@@ -1,7 +1,7 @@
 {
     "name": "protobuf",
     "description": "Protocol Buffers for JavaScript. Finally.",
-    "version": "1.3.2",
+    "version": "1.4.0",
     "main": "ProtoBuf.js",
     "license": "Apache-2.0",
     "homepage": "http://dcode.io/",
