@@ -568,7 +568,7 @@
                     "imports": [],
                     "options": {},
                     "services": [],
-                    "extensions": []
+                    "extends": []
                 };
                 var token, header = true;
                 do {
@@ -589,22 +589,22 @@
                             throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
                         }
                         topLevel.imports.push(this._parseImport(token));
-                    } else if (token == 'message') {
+                    } else if (token === 'message') {
                         this._parseMessage(topLevel, token);
                         header = false;
-                    } else if (token == 'enum') {
+                    } else if (token === 'enum') {
                         this._parseEnum(topLevel, token);
                         header = false;
-                    } else if (token == 'option') {
+                    } else if (token === 'option') {
                         if (!header) {
                             throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
                         }
                         this._parseOption(topLevel, token);
-                    } else if (token == 'service') {
+                    } else if (token === 'service') {
                         this._parseService(topLevel, token);
-                    } else if (token == 'extend') {
+                    } else if (token === 'extend') {
                         this._parseExtend(topLevel, token);
-                    } else if (token == 'syntax') {
+                    } else if (token === 'syntax') {
                         this._parseIgnoredStatement(topLevel, token);
                     } else {
                         throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
@@ -697,19 +697,19 @@
              */
             Parser.prototype._parseImport = function(token) {
                 token = this.tn.next();
-                if (token == "public") {
+                if (token === "public") {
                     token = this.tn.next();
                 }
-                if (token != Lang.STRINGOPEN) {
+                if (token !== Lang.STRINGOPEN) {
                     throw(new Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' expected)"));
                 }
                 var imported = this.tn.next();
                 token = this.tn.next();
-                if (token != Lang.STRINGCLOSE) {
+                if (token !== Lang.STRINGCLOSE) {
                     throw(new Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
                 }
                 token = this.tn.next();
-                if (token != Lang.END) {
+                if (token !== Lang.END) {
                     throw(new Error("Illegal end of import definition at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
                 return imported;
@@ -735,7 +735,7 @@
                 var name = token;
                 token = this.tn.next();
                 if (custom) { // (my_method_option).foo, (my_method_option), some_method_option
-                    if (token != Lang.COPTCLOSE) {
+                    if (token !== Lang.COPTCLOSE) {
                         throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
                     }
                     name = '('+name+')';
@@ -745,15 +745,15 @@
                         token = this.tn.next();
                     }
                 }
-                if (token != Lang.EQUAL) {
+                if (token !== Lang.EQUAL) {
                     throw(new Error("Illegal option operator in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 var value;
                 token = this.tn.next();
-                if (token == Lang.STRINGOPEN) {
+                if (token === Lang.STRINGOPEN) {
                     value = this.tn.next();
                     token = this.tn.next();
-                    if (token != Lang.STRINGCLOSE) {
+                    if (token !== Lang.STRINGCLOSE) {
                         throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
                     }
                 } else {
@@ -766,7 +766,7 @@
                     }
                 }
                 token = this.tn.next();
-                if (token != Lang.END) {
+                if (token !== Lang.END) {
                     throw(new Error("Illegal end of option in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
                 parent["options"][name] = value;
@@ -786,7 +786,7 @@
                 }
                 var name = token;
                 token = this.tn.next();
-                if (token != Lang.OPEN) {
+                if (token !== Lang.OPEN) {
                     throw(new Error("Illegal OPEN in "+parent.name+" after "+keyword+" "+name+" at line "+this.tn.line+": "+token));
                 }
                 var depth = 1;
@@ -795,13 +795,13 @@
                     if (token === null) {
                         throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored) at line "+this.tn.line+": "+name));
                     }
-                    if (token == Lang.OPEN) {
+                    if (token === Lang.OPEN) {
                         depth++;
-                    } else if (token == Lang.CLOSE) {
+                    } else if (token === Lang.CLOSE) {
                         token = this.tn.peek();
-                        if (token == Lang.END) this.tn.next();
+                        if (token === Lang.END) this.tn.next();
                         depth--;
-                        if (depth == 0) {
+                        if (depth === 0) {
                             break;
                         }
                     }
@@ -816,12 +816,13 @@
              * @private
              */
             Parser.prototype._parseIgnoredStatement = function(parent, keyword) {
+                var token;
                 do {
-                    var token = this.tn.next();
+                    token = this.tn.next();
                     if (token === null) {
                         throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored) at line "+this.tn.line));
                     }
-                    if (token == Lang.END) break;
+                    if (token === Lang.END) break;
                 } while (true);
             };
         
@@ -844,19 +845,19 @@
                     "options": {}
                 };
                 token = this.tn.next();
-                if (token != Lang.OPEN) {
+                if (token !== Lang.OPEN) {
                     throw(new Error("Illegal OPEN after service "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
                 }
                 do {
                     token = this.tn.next();
-                    if (token == "option") {
+                    if (token === "option") {
                         this._parseOption(svc, token);
-                    } else if (token == 'rpc') {
+                    } else if (token === 'rpc') {
                         this._parseServiceRPC(svc, token);
-                    } else if (token != Lang.CLOSE) {
+                    } else if (token !== Lang.CLOSE) {
                         throw(new Error("Illegal type for service "+name+" at line "+this.tn.line+": "+token));
                     }
-                } while (token != Lang.CLOSE);
+                } while (token !== Lang.CLOSE);
                 parent["services"].push(svc);
             };
         
@@ -879,7 +880,7 @@
                     "options": {}
                 };
                 token = this.tn.next();
-                if (token != Lang.COPTOPEN) {
+                if (token !== Lang.COPTOPEN) {
                     throw(new Error("Illegal start of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
                 }
                 token = this.tn.next();
@@ -892,7 +893,7 @@
                     throw(new Error("Illegal end of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
                 }
                 token = this.tn.next();
-                if (token.toLowerCase() != "returns") {
+                if (token.toLowerCase() !== "returns") {
                     throw(new Error("Illegal request/response delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('returns' expected)"));
                 }
                 token = this.tn.next();
@@ -902,20 +903,20 @@
                 token = this.tn.next();
                 method["response"] = token;
                 token = this.tn.next();
-                if (token != Lang.COPTCLOSE) {
+                if (token !== Lang.COPTCLOSE) {
                     throw(new Error("Illegal end of response type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
                 }
                 token = this.tn.next();
-                if (token == Lang.OPEN) {
+                if (token === Lang.OPEN) {
                     do {
                         token = this.tn.next();
-                        if (token == 'option') {
+                        if (token === 'option') {
                             this._parseOption(method, token); // <- will fail for the custom-options example
-                        } else if (token != Lang.CLOSE) {
+                        } else if (token !== Lang.CLOSE) {
                             throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('option' expected)"));
                         }
-                    } while (token != Lang.CLOSE);
-                } else if (token != Lang.END) {
+                    } while (token !== Lang.CLOSE);
+                } else if (token !== Lang.END) {
                     throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
                 }
                 if (typeof svc[type] === 'undefined') svc[type] = {};
@@ -946,23 +947,26 @@
                 msg["enums"] = [];
                 msg["messages"] = [];
                 msg["options"] = {};
-                msg["extensions"] = [];
+                msg["extends"] = [];
+                // msg["extensions"] = undefined
                 do {
                     token = this.tn.next();
-                    if (token == Lang.CLOSE) {
+                    if (token === Lang.CLOSE) {
                         token = this.tn.peek();
-                        if (token == Lang.END) this.tn.next();
+                        if (token === Lang.END) this.tn.next();
                         break;
                     } else if (Lang.RULE.test(token)) {
                         this._parseMessageField(msg, token);
-                    } else if (token == "enum") {
+                    } else if (token === "enum") {
                         this._parseEnum(msg, token);
-                    } else if (token == "message") {
+                    } else if (token === "message") {
                         this._parseMessage(msg, token);
-                    } else if (token == "option") {
+                    } else if (token === "option") {
                         this._parseOption(msg, token);
-                    } else if (token == "extensions") {
-                        this._parseIgnoredStatement(msg, token);
+                    } else if (token === "extensions") {
+                        msg["extensions"] = this._parseExtensions(msg, token);
+                    } else if (token === "extend") {
+                        this._parseExtend(msg, token);
                     } else {
                         throw(new Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
                     }
@@ -993,7 +997,7 @@
                 }
                 fld["name"] = token;
                 token = this.tn.next();
-                if (token != Lang.EQUAL) {
+                if (token !== Lang.EQUAL) {
                     throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 token = this.tn.next();
@@ -1005,11 +1009,11 @@
                 /** @dict */
                 fld["options"] = {};
                 token = this.tn.next();
-                if (token == Lang.OPTOPEN) {
+                if (token === Lang.OPTOPEN) {
                     this._parseFieldOptions(msg, fld, token);
                     token = this.tn.next();
                 }
-                if (token != Lang.END) {
+                if (token !== Lang.END) {
                     throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
                 msg["fields"].push(fld);
@@ -1027,9 +1031,9 @@
                 var first = true;
                 do {
                     token = this.tn.next();
-                    if (token == Lang.OPTCLOSE) {
+                    if (token === Lang.OPTCLOSE) {
                         break;
-                    } else if (token == Lang.OPTEND) {
+                    } else if (token === Lang.OPTEND) {
                         if (first) {
                             throw(new Error("Illegal start of message field options in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
                         }
@@ -1050,7 +1054,7 @@
              */
             Parser.prototype._parseFieldOption = function(msg, fld, token) {
                 var custom = false;
-                if (token == Lang.COPTOPEN) {
+                if (token === Lang.COPTOPEN) {
                     token = this.tn.next();
                     custom = true;
                 }
@@ -1060,7 +1064,7 @@
                 var name = token;
                 token = this.tn.next();
                 if (custom) {
-                    if (token != Lang.COPTCLOSE) {
+                    if (token !== Lang.COPTCLOSE) {
                         throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" (')' expected)"));
                     }
                     name = '('+name+')';
@@ -1070,12 +1074,12 @@
                         token = this.tn.next();
                     }
                 }
-                if (token != Lang.EQUAL) {
+                if (token !== Lang.EQUAL) {
                     throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('=' expected)"));
                 }
                 var value;
                 token = this.tn.next();
-                if (token == Lang.STRINGOPEN) {
+                if (token === Lang.STRINGOPEN) {
                     value = this.tn.next();
                     token = this.tn.next();
                     if (token != Lang.STRINGCLOSE) {
@@ -1107,16 +1111,16 @@
                 }
                 enm["name"] = token;
                 token = this.tn.next();
-                if (token != Lang.OPEN) {
+                if (token !== Lang.OPEN) {
                     throw(new Error("Illegal OPEN after enum "+enm.name+" at line "+this.tn.line+": "+token));
                 }
                 enm["values"] = [];
                 enm["options"] = {};
                 do {
                     token = this.tn.next();
-                    if (token == Lang.CLOSE) {
+                    if (token === Lang.CLOSE) {
                         token = this.tn.peek();
-                        if (token == Lang.END) this.tn.next();
+                        if (token === Lang.END) this.tn.next();
                         break;
                     }
                     if (token == 'option') {
@@ -1143,7 +1147,7 @@
                 var val = {};
                 val["name"] = token;
                 token = this.tn.next();
-                if (token != Lang.EQUAL) {
+                if (token !== Lang.EQUAL) {
                     throw(new Error("Illegal enum value operator in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
                 token = this.tn.next();
@@ -1154,14 +1158,50 @@
                 }
                 enm["values"].push(val);
                 token = this.tn.next();
-                if (token == Lang.OPTOPEN) {
+                if (token === Lang.OPTOPEN) {
                     var opt = { 'options' : {} }; // TODO: Actually expose them somehow.
                     this._parseFieldOptions(enm, opt, token);
                     token = this.tn.next();
                 }
-                if (token != Lang.END) {
+                if (token !== Lang.END) {
                     throw(new Error("Illegal enum value delimiter in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
+            };
+        
+            /**
+             * Parses an extensions statement.
+             * @param {Object} msg Message object
+             * @param {string} token Initial token
+             * @throws {Error} If the extensions statement cannot be parsed
+             * @private
+             */
+            Parser.prototype._parseExtensions = function(msg, token) {
+                var range = [];
+                token = this.tn.next();
+                if (token === "min") { // FIXME: Does the official implementation support this?
+                    range.push(1);
+                } else if (token === "max") {
+                    range.push(0x1FFFFFFF);
+                } else {
+                    range.push(this._parseNumber(token));
+                }
+                token = this.tn.next();
+                if (token !== 'to') {
+                    throw("Illegal extensions delimiter in message "+msg.name+" at line "+this.tn.line+" ('to' expected)");
+                }
+                token = this.tn.next();
+                if (token === "min") {
+                    range.push(1);
+                } else if (token === "max") {
+                    range.push(0x1FFFFFFF);
+                } else {
+                    range.push(this._parseNumber(token));
+                }
+                token = this.tn.next();
+                if (token !== Lang.END) {
+                    throw(new Error("Illegal extension delimiter in message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
+                }
+                return range;
             };
         
             /**
@@ -1181,12 +1221,12 @@
                 ext["fields"] = [];
                 ext["options"] = {};
                 token = this.tn.next();
-                if (token != Lang.OPEN) {
+                if (token !== Lang.OPEN) {
                     throw(new Error("Illegal OPEN in extend "+ext.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
                 }
                 do {
                     token = this.tn.next();
-                    if (token == Lang.CLOSE) {
+                    if (token === Lang.CLOSE) {
                         token = this.tn.peek();
                         if (token == Lang.END) this.tn.next();
                         break;
@@ -1200,7 +1240,7 @@
                         throw(new Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token+" (rule or '"+Lang.CLOSE+"' expected)"));
                     }
                 } while (true);
-                parent["extensions"].push(ext);
+                parent["extends"].push(ext);
                 return ext;
             };
         
