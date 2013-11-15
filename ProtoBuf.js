@@ -3201,17 +3201,22 @@
                     this.reset();
                 }
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
-                    if (!filename) {
-                        throw(new Error("Cannot determine import root: File name is unknown"));
-                    }
                     var importRoot, delim = '/';
-                    if (filename.indexOf("/") >= 0) { // Unix
-                        importRoot = filename.replace(/\/[^\/]*$/, "");
-                        if (/* /file.proto */ importRoot === "") importRoot = "/";
-                    } else if (filename.indexOf("\\") >= 0) { // Windows
-                        importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+                    
+                    if('importRoot' in ProtoBuf) {
+                        importRoot = ProtoBuf.importRoot;
                     } else {
-                        importRoot = ".";
+                        if (!filename) {
+                            throw(new Error("Cannot determine import root: File name is unknown"));
+                        }
+                        if (filename.indexOf("/") >= 0) { // Unix
+                            importRoot = filename.replace(/\/[^\/]*$/, "");
+                            if (/* /file.proto */ importRoot === "") importRoot = "/";
+                        } else if (filename.indexOf("\\") >= 0) { // Windows
+                            importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+                        } else {
+                            importRoot = ".";
+                        }
                     }
                     for (var i=0; i<parsed['imports'].length; i++) {
                         var importFilename = importRoot+delim+parsed['imports'][i];
