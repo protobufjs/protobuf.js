@@ -117,7 +117,10 @@ ProtoBuf.Util = (function() {
                 xhr.send(null);
             } else {
                 xhr.send(null);
-                return xhr.responseText;
+                if (xhr.status == 200) {
+                    return xhr.responseText;
+                }
+                return null;
             }
         }
     };
