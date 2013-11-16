@@ -550,6 +550,11 @@ ProtoBuf.Builder.prototype.result;
 ProtoBuf.Builder.prototype.files;
 
 /**
+ * @type {?string}
+ */
+ProtoBuf.Builder.prototype.importRoot;
+
+/**
  */
 ProtoBuf.Builder.prototype.reset = function() {};
 
@@ -603,7 +608,7 @@ ProtoBuf.Builder.prototype.create = function(messages) {};
  * @name ProtoBuf.Builder.prototype.import
  * @function
  * @param {ProtoBuf.Builder} builder
- * @param {string=} filename
+ * @param {(string|{root: string, file: string})=} filename
  * @return {!ProtoBuf.Builder}
  * @throws {Error}
  */
@@ -728,14 +733,14 @@ ProtoBuf.Builder.prototype.rpcImpl;
 /**
  * @param {string} proto
  * @param {(ProtoBuf.Builder|string)=} builder
- * @param {string=} filename
+ * @param {(string|{root: string, file: string})=} filename
  * @return {!ProtoBuf.Builder}
  * @throws {Error}
  */
 ProtoBuf.protoFromString = function(proto, builder, filename) {};
 
 /**
- * @param {string} filename
+ * @param {string|{root: string, file: string}} filename
  * @param {(function(ProtoBuf.Builder)|ProtoBuf.Builder)=} callback
  * @param {ProtoBuf.Builder=} builder
  * @return {ProtoBuf.Builder|undefined}

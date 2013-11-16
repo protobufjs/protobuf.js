@@ -64,6 +64,13 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
          * @expose
          */
         this.files = {};
+
+        /**
+         * Import root override.
+         * @type {?string}
+         * @expose
+         */
+        this.importRoot = null;
     };
 
     /**
@@ -371,7 +378,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     /**
      * Imports another definition into this builder.
      * @param {Object.<string,*>} parsed Parsed import
-     * @param {string=} filename Imported file name
+     * @param {(string|{root: string, file: string})=} filename Imported file name
      * @return {ProtoBuf.Builder} this
      * @throws {Error} If the definition or file cannot be imported
      * @expose
@@ -407,14 +414,25 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (!filename) {
                 throw(new Error("Cannot determine import root: File name is unknown"));
             }
-            var importRoot, delim = '/';
-            if (filename.indexOf("/") >= 0) { // Unix
-                importRoot = filename.replace(/\/[^\/]*$/, "");
-                if (/* /file.proto */ importRoot === "") importRoot = "/";
-            } else if (filename.indexOf("\\") >= 0) { // Windows
-                importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+            var importRoot, delim = '/', resetRoot = false;
+            if (typeof filename === 'object') { // If an import root is specified, override
+                this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
+                importRoot = this.importRoot;
+                filename = filename["file"];
+                if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
             } else {
-                importRoot = ".";
+                if (this.importRoot) { // If import root is overridden, use it
+                    importRoot = this.importRoot;
+                } else { // Otherwise compute from filename
+                    if (filename.indexOf("/") >= 0) { // Unix
+                        importRoot = filename.replace(/\/[^\/]*$/, "");
+                        if (/* /file.proto */ importRoot === "") importRoot = "/";
+                    } else if (filename.indexOf("\\") >= 0) { // Windows
+                        importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+                    } else {
+                        importRoot = ".";
+                    }
+                }
             }
             for (var i=0; i<parsed['imports'].length; i++) {
                 var importFilename = importRoot+delim+parsed['imports'][i];
@@ -437,6 +455,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                     this["import"](parser.parse(), importFilename); // Throws on its own                    
                     // #endif
                 }
+            }
+            if (resetRoot) { // Reset import root override when all imports are done
+                this.importRoot = null;
             }
         }
         if (!!parsed['extends']) {

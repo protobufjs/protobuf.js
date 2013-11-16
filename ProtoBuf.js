@@ -2860,6 +2860,13 @@
                  * @expose
                  */
                 this.files = {};
+        
+                /**
+                 * Import root override.
+                 * @type {?string}
+                 * @expose
+                 */
+                this.importRoot = null;
             };
         
             /**
@@ -3167,7 +3174,7 @@
             /**
              * Imports another definition into this builder.
              * @param {Object.<string,*>} parsed Parsed import
-             * @param {string=} filename Imported file name
+             * @param {(string|{root: string, file: string})=} filename Imported file name
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the definition or file cannot be imported
              * @expose
@@ -3203,14 +3210,25 @@
                     if (!filename) {
                         throw(new Error("Cannot determine import root: File name is unknown"));
                     }
-                    var importRoot, delim = '/';
-                    if (filename.indexOf("/") >= 0) { // Unix
-                        importRoot = filename.replace(/\/[^\/]*$/, "");
-                        if (/* /file.proto */ importRoot === "") importRoot = "/";
-                    } else if (filename.indexOf("\\") >= 0) { // Windows
-                        importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+                    var importRoot, delim = '/', resetRoot = false;
+                    if (typeof filename === 'object') { // If an import root is specified, override
+                        this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
+                        importRoot = this.importRoot;
+                        filename = filename["file"];
+                        if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
                     } else {
-                        importRoot = ".";
+                        if (this.importRoot) { // If import root is overridden, use it
+                            importRoot = this.importRoot;
+                        } else { // Otherwise compute from filename
+                            if (filename.indexOf("/") >= 0) { // Unix
+                                importRoot = filename.replace(/\/[^\/]*$/, "");
+                                if (/* /file.proto */ importRoot === "") importRoot = "/";
+                            } else if (filename.indexOf("\\") >= 0) { // Windows
+                                importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+                            } else {
+                                importRoot = ".";
+                            }
+                        }
                     }
                     for (var i=0; i<parsed['imports'].length; i++) {
                         var importFilename = importRoot+delim+parsed['imports'][i];
@@ -3229,6 +3247,9 @@
                             var parser = new ProtoBuf.DotProto.Parser(proto+"");
                             this["import"](parser.parse(), importFilename); // Throws on its own                    
                         }
+                    }
+                    if (resetRoot) { // Reset import root override when all imports are done
+                        this.importRoot = null;
                     }
                 }
                 if (!!parsed['extends']) {
@@ -3410,19 +3431,19 @@
          * Builds a .proto definition and returns the Builder.
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
-         * @param {string=} filename The corresponding file name if known. Must be specified for imports.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
          */
         ProtoBuf.protoFromString = function(proto, builder, filename) {
-            if (typeof builder == 'string') {
+            if (typeof builder == 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
                 filename = builder;
                 builder = null;
             }
-            var parser = new ProtoBuf.DotProto.Parser(proto+"");
-            var parsed = parser.parse();
-            var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
+            var parser = new ProtoBuf.DotProto.Parser(proto+""),
+                parsed = parser.parse(),
+                builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
             if (parsed['messages'].length > 0) {
                 if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
                 builder.create(parsed['messages']);
@@ -3450,7 +3471,8 @@
 
         /**
          * Builds a .proto file and returns the Builder.
-         * @param {string} filename Path to proto filename
+         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
          *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
          *   function will return the Builder or NULL if the request has failed.
