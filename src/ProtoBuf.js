@@ -262,11 +262,11 @@
                 callback = null;
             }
             if (callback) {
-                ProtoBuf.Util.fetch(filename, function(contents) {
+                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
                     callback(ProtoBuf.protoFromString(contents, builder, filename));
                 });
             } else {
-                var contents = ProtoBuf.Util.fetch(filename);
+                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
                 return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
         };

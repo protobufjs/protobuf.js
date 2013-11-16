@@ -828,6 +828,20 @@
             test.done();
         },
         
+        "importRoot": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromFile({
+                    root: __dirname,
+                    file: "importRoot/file1.proto"
+                });
+                var Test = builder.build("Test");
+                test.ok(new Test() instanceof ProtoBuf.Builder.Message);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         "extend": function(test) {
             try {
                 var ast = new ProtoBuf.DotProto.Parser(fs.readFileSync(__dirname+"/extend.proto")).parse();
