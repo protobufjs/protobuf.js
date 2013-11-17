@@ -84,7 +84,7 @@
         test.equal(car.vendor.address.country, car.getVendor().get_address().country);
         var bb = new ByteBuffer(28);
         car.encode(bb);
-        test.equal(bb.toHex(28), "<0A 05 52 75 73 74 79 12 11 0A 09 49 72 6F 6E 20 49 6E 63 2E 12 04 0A 02 55 53 18 02>");
+        test.equal(bb.toString("debug"), "<0A 05 52 75 73 74 79 12 11 0A 09 49 72 6F 6E 20 49 6E 63 2E 12 04 0A 02 55 53 18 02>");
         var carDec = Car.decode(bb);
         test.equal(carDec.model, "Rusty");
         test.equal(carDec.vendor.name, "Iron Inc.");
@@ -132,7 +132,7 @@
                 });
                 var bb = new ByteBuffer(3);
                 inst.encode(bb);
-                test.equal(bb.toHex(), "<08 98 01>");
+                test.equal(bb.toString("debug"), "<08 98 01>");
                 var instDec = Test1.decode(bb);
                 test.equal(instDec.a, 152);
                 
@@ -152,7 +152,7 @@
                 test.equal(inst.a, 4294967295);
                 var bb = new ByteBuffer(6);
                 inst.encode(bb);
-                test.equal(bb.toHex(), "<08 FF FF FF FF 7F>");
+                test.equal(bb.toString("debug"), "<08 FF FF FF FF 7F>");
                 var instDec = Test1u.decode(bb);
                 test.equal(instDec.a, 4294967295);
                 
@@ -171,7 +171,7 @@
                 var inst = new Test2("testing");
                 var bb = new ByteBuffer(9);
                 inst.encode(bb);
-                test.equal(bb.toHex(), "<12 07 74 65 73 74 69 6E 67>");
+                test.equal(bb.toString("debug"), "<12 07 74 65 73 74 69 6E 67>");
                 var instDec = Test2.decode(bb);
                 test.equal(instDec.b, "testing");
             } catch (e) {
@@ -192,7 +192,7 @@
                 var bb = new ByteBuffer(5);
                 test.equal(inst.c.a, 150);
                 inst.encode(bb);
-                test.equal(bb.toHex(), "<1A 03 08 96 01>");
+                test.equal(bb.toString("debug"), "<1A 03 08 96 01>");
                 var instDec = Test3.decode(bb);
                 test.equal(instDec.c.a, 150);
             } catch(e) {
@@ -209,9 +209,9 @@
                 var bb = new ByteBuffer(8);
                 test.equal(inst.d.length, 3);
                 inst.encode(bb);
-                test.equal(bb.toHex(), "<22 06 03 8E 02 9E A7 05>");
+                test.equal(bb.toString("debug"), "<22 06 03 8E 02 9E A7 05>");
                 var instDec = Test4.decode(bb);
-                test.equal(bb.toHex(), " 22 06 03 8E 02 9E A7 05|");
+                test.equal(bb.toString("debug"), " 22 06 03 8E 02 9E A7 05|");
                 test.equal(instDec.d.length, 3);
                 test.equal(instDec.d[2], 86942);
             } catch(e) {
@@ -290,7 +290,7 @@
                     m1.f = x.f;
                     m1.encode(b1);
                     var q1 = b1.slice(1,5).compact().reverse();
-                    test.strictEqual('<' + x.b + '>', q1.toHex());
+                    test.strictEqual('<' + x.b + '>', q1.toString("debug"));
     
                     // check decode
                     var b2 = new ByteBuffer();
@@ -330,7 +330,7 @@
                 test.strictEqual(myTest.b.array, bb.array);
                 var bb2 = new ByteBuffer(6);
                 myTest.encode(bb2);
-                test.equal(bb2.toHex(), "<0A 04 12 34 56 78>");
+                test.equal(bb2.toString("debug"), "<0A 04 12 34 56 78>");
                 myTest = Test.decode(bb2);
                 test.equal(myTest.b.BE().readUint32(), 0x12345678);
             } catch (e) {
@@ -345,7 +345,7 @@
             var bb = new ByteBuffer().writeUint32(0x12345678).flip();
             var encoded = new ByteBuffer(6);
             new Test(bb).encode(encoded);
-            test.equal(encoded.toHex(), "<0A 04 12 34 56 78>");
+            test.equal(encoded.toString("debug"), "<0A 04 12 34 56 78>");
             encoded = encoded.slice(0, 5); // chop off the last byte
             var err = null;
             try {
@@ -372,7 +372,7 @@
                 test.equal(inst.b, 139);
                 var bb = new ByteBuffer(3);
                 inst.encode(bb);
-                test.equal(bb.toHex(), "<08 8B 01 10 8B 01>");
+                test.equal(bb.toString("debug"), "<08 8B 01 10 8B 01>");
                 var instDec = T139.decode(bb);
                 test.equal(instDec.a, 139);
                 test.equal(instDec.b, 139);
@@ -595,7 +595,7 @@
                     var outer = new Outer({ inner: [new Inner(1), new Inner(2)] });
                     var bb = new ByteBuffer(8);
                     outer.encode(bb);
-                    test.equal("<0A 02 08 01 0A 02 08 02>", bb.toHex());
+                    test.equal("<0A 02 08 01 0A 02 08 02>", bb.toString("debug"));
                     var douter = Outer.decode(bb);
                     test.ok(douter.inner instanceof Array);
                     test.equal(douter.inner.length, 2);
@@ -618,7 +618,7 @@
                     var outer = new Outer({ innerPacked: [new Inner(1), new Inner(2)] });
                     var bb = new ByteBuffer(8);
                     outer.encode(bb);
-                    test.equal("<12 06 02 08 01 02 08 02>", bb.toHex());
+                    test.equal("<12 06 02 08 01 02 08 02>", bb.toString("debug"));
                     var douter = Outer.decode(bb);
                     test.ok(douter.inner instanceof Array);
                     test.equal(douter.inner.length, 0);
@@ -641,7 +641,7 @@
                     var outer = new Outer({ inner: [new Inner(1), new Inner(2)], innerPacked: [new Inner(3), new Inner(4)] });
                     var bb = new ByteBuffer(16);
                     outer.encode(bb);
-                    test.equal("<0A 02 08 01 0A 02 08 02 12 06 02 08 03 02 08 04>", bb.toHex());
+                    test.equal("<0A 02 08 01 0A 02 08 02 12 06 02 08 03 02 08 04>", bb.toString("debug"));
                     var douter = Outer.decode(bb);
                     test.ok(douter.inner instanceof Array);
                     test.equal(douter.inner.length, 2);
@@ -664,7 +664,7 @@
                     var outer = new Outer();
                     var bb = new ByteBuffer(1);
                     outer.encode(bb);
-                    test.equal("|00 ", bb.toHex());
+                    test.equal("|00 ", bb.toString("debug"));
                     var douter = Outer.decode(bb);
                     test.ok(douter.inner instanceof Array);
                     test.equal(douter.inner.length, 0);
@@ -693,7 +693,7 @@
                 myTest.setUval(2);
                 var bb = new ByteBuffer(18); // 2x tag + 2x 64bit
                 myTest.encode(bb);
-                test.equal(bb.toHex(20), "<09 FE FF FF FF FF FF FF FF 11 02 00 00 00 00 00 00 00>");
+                test.equal(bb.toString("debug"), "<09 FE FF FF FF FF FF FF FF 11 02 00 00 00 00 00 00 00>");
                 //                         ^ wireType=1, id=1         ^ wireType=1, id=2
                 myTest = Test.decode(bb);
                 test.ok(myTest.val instanceof ByteBuffer.Long);
@@ -728,7 +728,7 @@
                 myTest.setSval(-3);
                 var bb = new ByteBuffer(3+10+2); // 3x tag + 1x varint 10byte + 2x varint 1byte
                 myTest.encode(bb);
-                test.equal(bb.toHex(20), "<08 FE FF FF FF FF FF FF FF FF 01 10 02 18 05>");
+                test.equal(bb.toString("debug"), "<08 FE FF FF FF FF FF FF FF FF 01 10 02 18 05>");
                 // 08: wireType=0, id=1, 18: wireType=0, id=2, ?: wireType=0, id=3
                 myTest = Test.decode(bb);
                 test.ok(myTest.val instanceof ByteBuffer.Long);
@@ -927,7 +927,7 @@
                 test.ok(foo instanceof root.Bar.Foo);
                 foo.bar = "123";
                 foo.bar2 = bar;
-                test.equal(foo.encode().compact().toHex(), "<12 03 31 32 33 1A 00>");
+                test.equal(foo.encode().compact().toString("debug"), "<12 03 31 32 33 1A 00>");
             } catch (e) {
                 fail(e);
             }
