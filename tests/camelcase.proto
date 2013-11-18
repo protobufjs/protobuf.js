@@ -1,12 +1,12 @@
 message Test {
     
-    // Case 1: Revert 2nd
-    required int32 aField = 1;
-    required int32 a_field = 2;
-
-    // Case 2: Revert 1st
-    required int32 some_field = 3;
-    required int32 someField = 4;
+    // Case 1: Revert 1st
+    required int32 some_field = 1;
+    required int32 someField = 2;
+    
+    // Case 2: Revert 2nd
+    required int32 aField = 3;
+    required int32 a_field = 4;
     
     // No revert
     required int32 its_a_field = 5;

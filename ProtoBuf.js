@@ -1412,10 +1412,10 @@
                 var other;
                 if (other = this.getChild(child.name)) {
                     // Try to revert camelcase transformation on collision
-                    if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName)) {
+                    if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName)) {
+                        other.name = other.originalName; // Revert previous first (effectively keeps both originals)
+                    } else if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName)) {
                         child.name = child.originalName;
-                    } else if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName)) {
-                        other.name = other.originalName;
                     } else {
                         throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
                     }
