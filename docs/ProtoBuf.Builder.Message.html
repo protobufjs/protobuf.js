@@ -249,7 +249,7 @@
     
     
     <div class="description">
-        <p>Decodes the message from the specified ByteBuffer.</p>
+        <p>Decodes the message from the specified buffer or string.</p>
     </div>
     
 
@@ -396,7 +396,7 @@
     
             
 <div class="param-desc">
-    If the message cannot be decoded
+    If the message cannot be decoded or if required fields are missing. The later still returns the decoded message with missing fields in the `decoded` property on the error.
 </div>
 
 
@@ -546,7 +546,7 @@
     
             
 <div class="param-desc">
-    If the message cannot be decoded
+    If the message cannot be decoded or if required fields are missing. The later still returns the decoded message with missing fields in the `decoded` property on the error.
 </div>
 
 
@@ -696,7 +696,7 @@
     
             
 <div class="param-desc">
-    If the message cannot be decoded
+    If the message cannot be decoded or if required fields are missing. The later still returns the decoded message with missing fields in the `decoded` property on the error.
 </div>
 
 

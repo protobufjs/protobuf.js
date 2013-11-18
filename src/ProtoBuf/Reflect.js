@@ -707,20 +707,24 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             Message.prototype.toHex = Message.prototype.encodeHex;
 
             /**
-             * Decodes the message from the specified ByteBuffer.
+             * Decodes the message from the specified buffer or string.
              * @name ProtoBuf.Builder.Message.decode
              * @function
              * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
              * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
              * @return {!ProtoBuf.Builder.Message} Decoded message
-             * @throws {Error} If the message cannot be decoded
+             * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
+             *  returns the decoded message with missing fields in the `decoded` property on the error.
              * @expose
              * @see ProtoBuf.Builder.Message.decode64
              * @see ProtoBuf.Builder.Message.decodeHex
              */
             Message.decode = function(buffer, enc) {
-                if (typeof enc === "undefined") enc = "base64";
-                buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer, enc)) : new ByteBuffer();
+                if (buffer === null) throw(new Error("buffer must not be null"));
+                if (typeof buffer === 'string') {
+                    buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
+                }
+                buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
                 var le = buffer.littleEndian;
                 try {
                     var msg = T.decode(buffer.LE());
@@ -738,11 +742,12 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @function
              * @param {string} str String to decode from
              * @return {!ProtoBuf.Builder.Message} Decoded message
-             * @throws {Error} If the message cannot be decoded
+             * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
+             *  returns the decoded message with missing fields in the `decoded` property on the error.
              * @expose
              */
             Message.decode64 = function(str) {
-                return Message.decode(ByteBuffer.decode64(str));
+                return Message.decode(str, "base64");
             };
 
             /**
@@ -751,11 +756,12 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @function
              * @param {string} str String to decode from
              * @return {!ProtoBuf.Builder.Message} Decoded message
-             * @throws {Error} If the message cannot be decoded
+             * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
+             *  returns the decoded message with missing fields in the `decoded` property on the error.
              * @expose
              */
             Message.decodeHex = function(str) {
-                return Message.decode(ByteBuffer.decodeHex(str));
+                return Message.decode(str, "hex");
             };
 
             // Utility
