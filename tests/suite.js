@@ -1052,19 +1052,26 @@
             try {
                 ProtoBuf.convertFieldsToCamelCase = true;
                 var builder = ProtoBuf.protoFromFile(__dirname+"/camelcase.proto");
-                var Test = builder.build("Test");
+                var Test = builder.build("Test"),
+                    TTest = builder.lookup("Test");
                 var msg = new Test();
-                
-                // Reverted collision on 2nd
-                test.strictEqual(msg.aField, null);
-                test.strictEqual(msg.a_field, null);
 
                 // Reverted collision on 1st
                 test.strictEqual(msg.some_field, null);
                 test.strictEqual(msg.someField, null);
+                test.equal(TTest.getChild("some_field").id, 1);
+                test.equal(TTest.getChild("someField").id, 2);
+
+
+                // Reverted collision on 2nd
+                test.strictEqual(msg.aField, null);
+                test.strictEqual(msg.a_field, null);
+                test.equal(TTest.getChild("aField").id, 3);
+                test.equal(TTest.getChild("a_field").id, 4);
                 
                 // No collision
                 test.strictEqual(msg.itsAField, null);
+                test.equal(TTest.getChild("itsAField").id, 5);
                 
                 test.ok(typeof msg.set_its_a_field === "function");
                 test.ok(typeof msg.setItsAField === "function");
