@@ -180,6 +180,14 @@
          * @type {?Long}
          */
         ProtoBuf.Long = ByteBuffer.Long;
+
+        /**
+         * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
+         *  Must be set prior to parsing.
+         * @type {boolean}
+         * @expose
+         */
+        ProtoBuf.convertFieldsToCamelCase = false;
         
         // #include "ProtoBuf/Util.js"
         

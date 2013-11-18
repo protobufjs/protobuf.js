@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.5.0";
+        ProtoBuf.VERSION = "1.5.1";
 
         /**
          * Wire types.
@@ -180,6 +180,14 @@
          * @type {?Long}
          */
         ProtoBuf.Long = ByteBuffer.Long;
+
+        /**
+         * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
+         *  Must be set prior to parsing.
+         * @type {boolean}
+         * @expose
+         */
+        ProtoBuf.convertFieldsToCamelCase = false;
         
         /**
          * @alias ProtoBuf.Util
@@ -506,8 +514,16 @@
              * @expose
              */
             Namespace.prototype.addChild = function(child) {
-                if (this.hasChild(child.name)) {
-                    throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
+                var other;
+                if (other = this.getChild(child.name)) {
+                    // Try to revert camelcase transformation on collision
+                    if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName)) {
+                        child.name = child.originalName;
+                    } else if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName)) {
+                        other.name = other.originalName;
+                    } else {
+                        throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
+                    }
                 }
                 this.children.push(child);
             };
@@ -691,7 +707,7 @@
                      * Constructs a new runtime Message.
                      * @name ProtoBuf.Builder.Message
                      * @class Barebone of all runtime messages.
-                     * @param {Object.<string,*>} values Preset values
+                     * @param {Object.<string,*>|...[string]} values Preset values
                      * @constructor
                      * @throws {Error} If the message cannot be created
                      */
@@ -701,20 +717,22 @@
                      */
                     var Message;
                     try {
-                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); })");
+                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); })");
                         // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
                     } catch (err) {
-                        Message = function() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); };
+                        Message = function() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); };
                         // Chrome extensions prohibit the usage of eval, see #58 FIXME: Does this work?
                     }
                     
                     // Extends ProtoBuf.Builder.Message
                     Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
-                    
+        
                     /**
-                     * @expose
+                     * Initializes a runtime message.
+                     * @param {Object.<string,*>|...[string]} values Preset values
+                     * @private
                      */
-                    Message.prototype.__construct = function(values) {
+                    function init(values) {
                         var i, field;
         
                         // Create fields on the object itself to allow setting and getting through Message#fieldname
@@ -752,7 +770,7 @@
                                 }
                             }
                         }
-                    };
+                    }
         
                     /**
                      * Adds a value to a repeated field.
@@ -825,7 +843,7 @@
                         
                         (function(field) {
                             // set/get[SomeValue]
-                            var Name = field.name.replace(/(_[a-zA-Z])/g,
+                            var Name = field.originalName.replace(/(_[a-zA-Z])/g,
                                 function(match) {
                                     return match.toUpperCase().replace('_','');
                                 }
@@ -833,7 +851,7 @@
                             Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
             
                             // set/get_[some_value]
-                            var name = field.name.replace(/([A-Z])/g,
+                            var name = field.originalName.replace(/([A-Z])/g,
                                 function(match) {
                                     return "_"+match;
                                 }
@@ -1190,6 +1208,20 @@
                  * @expose
                  */
                 this.options = options || {};
+        
+                /**
+                 * Original field name.
+                 * @type {string}
+                 * @expose
+                 */
+                this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
+                
+                // Convert field names to camel case notation if the override is set
+                if (ProtoBuf.convertFieldsToCamelCase) {
+                    this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
+                        return $1.toUpperCase();
+                    });
+                }
             };
         
             // Extends T

@@ -80,6 +80,11 @@ ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
 ProtoBuf.WIRE_TYPES.BITS32 = 5;
 
 /**
+ * @type {boolean}
+ */
+ProtoBuf.convertFieldsToCamelCase = false;
+
+/**
  * @dict
  * @type {!object.<string,{name: string, wireType: number}>}
  * @const
@@ -385,6 +390,11 @@ ProtoBuf.Reflect.Message.Field.prototype.options;
  * @type {?ProtoBuf.Reflect.T}
  */
 ProtoBuf.Reflect.Message.Field.prototype.resolvedType;
+
+/**
+ * @type {string}
+ */
+ProtoBuf.Reflect.Message.Field.prototype.originalName;
 
 /**
  * @param {*} value

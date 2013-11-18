@@ -1048,6 +1048,35 @@
             test.done();
         },
         
+        "fieldsToCamelCase": function(test) {
+            try {
+                ProtoBuf.convertFieldsToCamelCase = true;
+                var builder = ProtoBuf.protoFromFile(__dirname+"/camelcase.proto");
+                var Test = builder.build("Test");
+                var msg = new Test();
+                
+                // Reverted collision on 2nd
+                test.strictEqual(msg.aField, null);
+                test.strictEqual(msg.a_field, null);
+
+                // Reverted collision on 1st
+                test.strictEqual(msg.some_field, null);
+                test.strictEqual(msg.someField, null);
+                
+                // No collision
+                test.strictEqual(msg.itsAField, null);
+                
+                test.ok(typeof msg.set_its_a_field === "function");
+                test.ok(typeof msg.setItsAField === "function");
+                
+                ProtoBuf.convertFieldsToCamelCase = false;
+            } catch (e) {
+                ProtoBuf.convertFieldsToCamelCase = false;
+                fail(e);
+            }
+            test.done();
+        },
+        
         "setarray": function(test) {
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/setarray.proto");
