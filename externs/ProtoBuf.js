@@ -335,11 +335,10 @@ ProtoBuf.Reflect.Message.prototype.build = function() {};
 /**
  * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
- * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {string}
  */
-ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer, doNotThrow) {};
+ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
 
 /**
  * @param {!ByteBuffer} buffer
@@ -679,26 +678,46 @@ ProtoBuf.Builder.Message.prototype.get = function(key) {};
 
 /**
  * @param {ByteBuffer=} buffer
- * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {Error}
  * @nosideeffects
  */
-ProtoBuf.Builder.Message.prototype.encode = function(buffer, doNotThrow) {};
+ProtoBuf.Builder.Message.prototype.encode = function(buffer) {};
 
 /**
- * @return {ArrayBuffer}
+ * @return {!ArrayBuffer}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.encodeAB = function() {};
+
+/**
+ * @return {!ArrayBuffer}
  * @throws {Error}
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.prototype.toArrayBuffer = function() {};
 
 /**
- * @return {Buffer}
+ * @return {!Buffer}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.encodeNB = function() {};
+
+/**
+ * @return {!Buffer}
  * @throws {Error}
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.prototype.toBuffer = function() {};
+
+/**
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.encode64 = function() {};
 
 /**
  * @return {string}
@@ -712,10 +731,17 @@ ProtoBuf.Builder.Message.prototype.toBase64 = function() {};
  * @throws {Error}
  * @nosideeffects
  */
+ProtoBuf.Builder.Message.prototype.encodeHex = function() {};
+
+/**
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
 ProtoBuf.Builder.Message.prototype.toHex = function() {};
 
 /**
- * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer
+ * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer
  * @param {string=} enc
  * @return {!ProtoBuf.Builder.Message}
  * @throws {Error}

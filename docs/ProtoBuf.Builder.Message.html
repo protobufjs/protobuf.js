@@ -232,51 +232,6 @@
     
 </dd>
 
-        
-            
-<dt>
-    <h4 class="name" id="decodeHex"><span class="type-signature">&lt;static> </span>decodeHex<span class="type-signature"> :Error</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Decodes the message from the specified hex encoded string.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
         </dl>
     
     
@@ -389,7 +344,7 @@
             
             
             
-            <td class="description last"><p>Encoding if buffer is a string: hex, base64, defaults to utf8 which you shouldn&#39;t use</p></td>
+            <td class="description last"><p>Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64</p></td>
         </tr>
 	
 	
@@ -499,6 +454,156 @@
     
     <div class="description">
         <p>Decodes the message from the specified base64 encoded string.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>String to decode from</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be decoded
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Decoded message</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="decodeHex"><span class="type-signature">&lt;static> </span>decodeHex<span class="signature">(str)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Decodes the message from the specified hex encoded string.</p>
     </div>
     
 
@@ -791,7 +896,7 @@
         
             
 <dt>
-    <h4 class="name" id="encode"><span class="type-signature"></span>encode<span class="signature">(<span class="optional">buffer</span>, <span class="optional">doNotThrow</span>)</span><span class="type-signature"> &rarr; {ByteBuffer}</span></h4>
+    <h4 class="name" id="encode"><span class="type-signature"></span>encode<span class="signature">(<span class="optional">buffer</span>)</span><span class="type-signature"> &rarr; {ByteBuffer}</span></h4>
     
     
 </dt>
@@ -841,7 +946,10 @@
             <td class="type">
             
                 
-<span class="param-type">ByteBuffer</span>
+<span class="param-type">!ByteBuffer</span>
+|
+
+<span class="param-type">boolean</span>
 
 
             
@@ -863,39 +971,121 @@
         </tr>
 	
 	
-	
-        <tr>
-            
-                <td class="name"><code>doNotThrow</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Forces encoding even if required fields are missing, defaults to false</p></td>
-        </tr>
-	
-	
 	</tbody>
 </table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="ProtoBuf.Builder.Message.html#encode64">ProtoBuf.Builder.Message#encode64</a></li>
+        
+            <li><a href="ProtoBuf.Builder.Message.html#encodeHex">ProtoBuf.Builder.Message#encodeHex</a></li>
+        
+            <li><a href="ProtoBuf.Builder.Message.html#encodeAB">ProtoBuf.Builder.Message#encodeAB</a></li>
+        </ul>
+    </dd>
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded ByteBuffer in the `encoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Encoded message as a ByteBuffer</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">ByteBuffer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="encode64"><span class="type-signature"></span>encode64<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Directly encodes the message to a base64 encoded string.</p>
+    </div>
+    
+
+    
+    
+    
+    
     
     
     
@@ -933,7 +1123,7 @@
     
             
 <div class="param-desc">
-    If required fields are missing or the message cannot be encoded for another reason
+    If the underlying buffer cannot be encoded or if required fields are missing. The later still returns the encoded base64 string in the `encoded` property on the error.
 </div>
 
 
@@ -957,7 +1147,7 @@
     
             
 <div class="param-desc">
-    <p>Encoded message as a ByteBuffer (bb#toArrayBuffer, bb#toBuffer, bb#toHex, bb#toBase64, ...)</p>
+    <p>Base64 encoded string</p>
 </div>
 
 
@@ -968,7 +1158,407 @@
 	</dt>
 	<dd>
 		
-<span class="param-type">ByteBuffer</span>
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="encodeAB"><span class="type-signature"></span>encodeAB<span class="signature">()</span><span class="type-signature"> &rarr; {ArrayBuffer}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Directly encodes the message to an ArrayBuffer.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded ArrayBuffer in the `encoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Encoded message as ArrayBuffer</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">ArrayBuffer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="encodeHex"><span class="type-signature"></span>encodeHex<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Directly encodes the message to a hex encoded string.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the underlying buffer cannot be encoded or if required fields are missing. The later still returns the encoded hex string in the `encoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Hex encoded string</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="encodeNB"><span class="type-signature"></span>encodeNB<span class="signature">()</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Directly encodes the message to a node Buffer.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be encoded, not running under node.js or if required fields are missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Buffer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="encodeNB"><span class="type-signature"></span>encodeNB<span class="signature">()</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the message as a node Buffer. This is an alias for <a href="ProtoBuf.Builder.Message.html#encodeNB">ProtoBuf.Builder.Message#encodeNB</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Buffer</span>
 
 
 	</dd>
@@ -1711,7 +2301,7 @@ another field.</p>
     
     
     <div class="description">
-        <p>Directly encodes the message to an ArrayBuffer.</p>
+        <p>Returns the message as an ArrayBuffer. This is an alias for <a href="ProtoBuf.Builder.Message.html#encodeAB">ProtoBuf.Builder.Message#encodeAB</a>.</p>
     </div>
     
 
@@ -1756,7 +2346,7 @@ another field.</p>
     
             
 <div class="param-desc">
-    If the message cannot be encoded
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded ArrayBuffer in the `encoded` property on the error.
 </div>
 
 
@@ -1813,7 +2403,7 @@ another field.</p>
     
     
     <div class="description">
-        <p>Directly encodes the message to a base64 encoded string.</p>
+        <p>Returns the message as a base64 encoded string. This is an alias for <a href="ProtoBuf.Builder.Message.html#encode64">ProtoBuf.Builder.Message#encode64</a>.</p>
     </div>
     
 
@@ -1858,7 +2448,7 @@ another field.</p>
     
             
 <div class="param-desc">
-    If the underlying buffer cannot be encoded
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded base64 string in the `encoded` property on the error.
 </div>
 
 
@@ -1907,104 +2497,6 @@ another field.</p>
         
             
 <dt>
-    <h4 class="name" id="toBuffer"><span class="type-signature"></span>toBuffer<span class="signature">()</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Directly encodes the message to a node Buffer.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-<div class="param-desc">
-    If the message cannot be encoded or not running under node.js
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Error</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Buffer</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
     <h4 class="name" id="toHex"><span class="type-signature"></span>toHex<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
     
     
@@ -2013,7 +2505,7 @@ another field.</p>
     
     
     <div class="description">
-        <p>Directly encodes the message to a hex encoded string.</p>
+        <p>Returns the message as a hex encoded string. This is an alias for <a href="ProtoBuf.Builder.Message.html#encodeHex">ProtoBuf.Builder.Message#encodeHex</a>.</p>
     </div>
     
 
@@ -2058,7 +2550,7 @@ another field.</p>
     
             
 <div class="param-desc">
-    If the underlying buffer cannot be encoded
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded hex string in the `encoded` property on the error.
 </div>
 
 

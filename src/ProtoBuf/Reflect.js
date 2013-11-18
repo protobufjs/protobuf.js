@@ -569,79 +569,149 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * Encodes the message.
              * @name ProtoBuf.Builder.Message#encode
              * @function
-             * @param {!ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
-             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
-             * @return {!ByteBuffer} Encoded message as a ByteBuffer (bb#toArrayBuffer, bb#toBuffer, bb#toHex, bb#toBase64, ...)
-             * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
+             * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+             * @return {!ByteBuffer} Encoded message as a ByteBuffer
+             * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+             *  returns the encoded ByteBuffer in the `encoded` property on the error.
              * @expose
+             * @see ProtoBuf.Builder.Message#encode64
+             * @see ProtoBuf.Builder.Message#encodeHex
+             * @see ProtoBuf.Builder.Message#encodeAB
              */
-            Message.prototype.encode = function(buffer, doNotThrow) {
+            Message.prototype.encode = function(buffer) {
                 buffer = buffer || new ByteBuffer();
                 var le = buffer.littleEndian;
                 try {
-                    var bb = T.encode(this, buffer.LE(), doNotThrow).flip();
-                    buffer.littleEndian = le;
-                    return bb;
+                    return T.encode(this, buffer.LE()).flip().LE(le);
                 } catch (e) {
-                    buffer.littleEndian = le;
+                    buffer.LE(le);
                     throw(e);
                 }
             };
 
             /**
              * Directly encodes the message to an ArrayBuffer.
+             * @name ProtoBuf.Builder.Message#encodeAB
+             * @function
+             * @return {ArrayBuffer} Encoded message as ArrayBuffer
+             * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+             *  returns the encoded ArrayBuffer in the `encoded` property on the error.
+             * @expose
+             */
+            Message.prototype.encodeAB = function() {
+                var enc;
+                try {
+                    return this.encode().toArrayBuffer();
+                } catch (err) {
+                    if (err["encoded"]) err["encoded"] = err["encoded"].toArrayBuffer();
+                    throw(err);
+                }
+            };
+
+            /**
+             * Returns the message as an ArrayBuffer. This is an alias for {@link ProtoBuf.Builder.Message#encodeAB}.
              * @name ProtoBuf.Builder.Message#toArrayBuffer
              * @function
              * @return {ArrayBuffer} Encoded message as ArrayBuffer
-             * @throws {Error} If the message cannot be encoded
+             * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+             *  returns the encoded ArrayBuffer in the `encoded` property on the error.
              * @expose
              */
-            Message.prototype.toArrayBuffer = function() {
-                return this.encode().toArrayBuffer();
-            };
+            Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
 
             /**
              * Directly encodes the message to a node Buffer.
-             * @name ProtoBuf.Builder.Message#toBuffer
+             * @name ProtoBuf.Builder.Message#encodeNB
              * @function
              * @return {!Buffer}
-             * @throws {Error} If the message cannot be encoded or not running under node.js
+             * @throws {Error} If the message cannot be encoded, not running under node.js or if required fields are
+             *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
              * @expose
              */
-            Message.prototype.toBuffer = function() {
-                return this.encode().toBuffer();
+            Message.prototype.encodeNB = function() {
+                try {
+                    return this.encode().toBuffer();
+                } catch (err) {
+                    if (err["encoded"]) err["encoded"] = err["encoded"].toBuffer();
+                    throw(err);
+                }
             };
+
+            /**
+             * Returns the message as a node Buffer. This is an alias for {@link ProtoBuf.Builder.Message#encodeNB}.
+             * @name ProtoBuf.Builder.Message#encodeNB
+             * @function
+             * @return {!Buffer}
+             * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+             *  returns the encoded node Buffer in the `encoded` property on the error.
+             * @expose
+             */
+            Message.prototype.toBuffer = Message.prototype.encodeNB;
 
             /**
              * Directly encodes the message to a base64 encoded string.
-             * @name ProtoBuf.Builder.Message#toBase64
+             * @name ProtoBuf.Builder.Message#encode64
              * @function
              * @return {string} Base64 encoded string
-             * @throws {Error} If the underlying buffer cannot be encoded
+             * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
+             *  still returns the encoded base64 string in the `encoded` property on the error.
              * @expose
              */
-            Message.prototype.toBase64 = function() {
-                return this.encode().toBase64();
+            Message.prototype.encode64 = function() {
+                try {
+                    return this.encode().toBase64();
+                } catch (err) {
+                    if (err["encoded"]) err["encoded"] = err["encoded"].toBase64();
+                    throw(err);
+                }
             };
 
             /**
+             * Returns the message as a base64 encoded string. This is an alias for {@link ProtoBuf.Builder.Message#encode64}.
+             * @name ProtoBuf.Builder.Message#toBase64
+             * @function
+             * @return {string} Base64 encoded string
+             * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+             *  returns the encoded base64 string in the `encoded` property on the error.
+             * @expose
+             */
+            Message.prototype.toBase64 = Message.prototype.encode64;
+
+            /**
              * Directly encodes the message to a hex encoded string.
+             * @name ProtoBuf.Builder.Message#encodeHex
+             * @function
+             * @return {string} Hex encoded string
+             * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
+             *  still returns the encoded hex string in the `encoded` property on the error.
+             * @expose
+             */
+            Message.prototype.encodeHex = function() {
+                try {
+                    return this.encode().toHex();
+                } catch (err) {
+                    if (err["encoded"]) err["encoded"] = err["encoded"].toHex();
+                    throw(err);
+                }
+            };
+
+            /**
+             * Returns the message as a hex encoded string. This is an alias for {@link ProtoBuf.Builder.Message#encodeHex}.
              * @name ProtoBuf.Builder.Message#toHex
              * @function
              * @return {string} Hex encoded string
-             * @throws {Error} If the underlying buffer cannot be encoded
+             * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+             *  returns the encoded hex string in the `encoded` property on the error.
              * @expose
              */
-            Message.prototype.toHex = function() {
-                return this.encode().toHex();
-            };
+            Message.prototype.toHex = Message.prototype.encodeHex;
 
             /**
              * Decodes the message from the specified ByteBuffer.
              * @name ProtoBuf.Builder.Message.decode
              * @function
              * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
-             * @param {string=} enc Encoding if buffer is a string: hex, base64, defaults to utf8 which you shouldn't use
+             * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
              * @return {!ProtoBuf.Builder.Message} Decoded message
              * @throws {Error} If the message cannot be decoded
              * @expose
@@ -649,14 +719,15 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @see ProtoBuf.Builder.Message.decodeHex
              */
             Message.decode = function(buffer, enc) {
+                if (typeof enc === "undefined") enc = "base64";
                 buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer, enc)) : new ByteBuffer();
                 var le = buffer.littleEndian;
                 try {
                     var msg = T.decode(buffer.LE());
-                    buffer.littleEndian = le;
+                    buffer.LE(le);
                     return msg;
                 } catch (e) {
-                    buffer.littleEndian = le;
+                    buffer.LE(le);
                     throw(e);
                 }
             };
@@ -677,6 +748,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             /**
              * Decodes the message from the specified hex encoded string.
              * @name ProtoBuf.Builder.Message.decodeHex
+             * @function
              * @param {string} str String to decode from
              * @return {!ProtoBuf.Builder.Message} Decoded message
              * @throws {Error} If the message cannot be decoded
@@ -742,21 +814,25 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * Encodes a runtime message's contents to the specified buffer.
      * @param {ProtoBuf.Builder.Message} message Runtime message to encode
      * @param {ByteBuffer} buffer ByteBuffer to write to
-     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
      * @return {ByteBuffer} The ByteBuffer for chaining
      * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
      * @expose
      */
-    Message.prototype.encode = function(message, buffer, doNotThrow) {
+    Message.prototype.encode = function(message, buffer) {
         var fields = this.getChildren(Message.Field),
-            offset = buffer.offset;
+            fieldMissing = null;
         for (var i=0; i<fields.length; i++) {
             var val = message.get(fields[i].name);
-            if (fields[i].required && val === null && !doNotThrow) {
-                buffer.offset = offset;
-                throw(new Error("Missing required field for "+this.toString(true)+": "+fields[i].name));
+            if (fields[i].required && val === null) {
+                if (fieldMissing === null) fieldMissing = fields[i];
+            } else {
+                fields[i].encode(val, buffer);
             }
-            fields[i].encode(val, buffer);
+        }
+        if (fieldMissing !== null) {
+            var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
+            err["encoded"] = buffer; // Still expose what we got
+            throw(err);
         }
         return buffer;
     };
@@ -809,8 +885,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         var fields = this.getChildren(Reflect.Field);
         for (var i=0; i<fields.length; i++) {
             if (fields[i].required && msg[fields[i].name] === null) {
-                var err = new Error("Missing field "+fields[i].toString(true)+" in "+this.toString(true)+"#decode");
-                err.msg = msg;
+                var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
+                err["decoded"] = msg; // Still expose what we got
                 throw(err);
             }
         }

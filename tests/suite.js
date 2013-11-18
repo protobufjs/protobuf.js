@@ -468,22 +468,25 @@
         
         "truncated": function(test) {
             try {
-                // Just `a`
-                var builder = ProtoBuf.protoFromString("message Test { required int32 a = 1; }");
+                var builder = ProtoBuf.protoFromString("message Test { required int32 a = 1; required int32 b = 2; }");
                 var Test = builder.build("Test");
-                var t = new Test();
+                var t = new Test(), bb = new ByteBuffer(2);
                 t.setA(1);
-                var bb = t.encode();
-                // Extend with `b`
-                builder = ProtoBuf.protoFromString("message Test { required int32 a = 1; required int32 b = 2; }");
-                Test = builder.build("Test");
+                try {
+                    bb = t.encode(bb).flip();
+                    test.ok(false);
+                } catch (e) {
+                    test.ok(e.encoded);
+                    bb = e.encoded.flip();
+                    test.equal(bb.toString("debug"), "<08 01>");
+                }
                 var t2;
                 try /* to decode truncated message */ {
                     t2 = Test.decode(bb);
                     test.ok(false); // ^ throws
                 } catch (e) {
                     // But still be able to access the rest
-                    var t3 = e.msg;
+                    var t3 = e.decoded;
                     test.strictEqual(t3.a, 1);
                     test.strictEqual(t3.b, null);
                 }

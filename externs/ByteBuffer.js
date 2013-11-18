@@ -31,7 +31,7 @@
  * @param {boolean=} littleEndian
  * @constructor
  */
-var ByteBuffer = function(capacity, littleEndian) {};
+function ByteBuffer(capacity, littleEndian) {};
 
 /**
  * @type {?ArrayBuffer}
@@ -101,14 +101,16 @@ ByteBuffer.allocate = function(capacity, littleEndian) {};
 ByteBuffer.wrap = function(buffer, enc, littleEndian) {};
 
 /**
+ * @param {boolean=} littleEndian
  * @returns {!ByteBuffer}
  */
-ByteBuffer.prototype.LE = function() {};
+ByteBuffer.prototype.LE = function(littleEndian) {};
 
 /**
+ * @param {boolean=} bigEndian
  * @returns {!ByteBuffer}
  */
-ByteBuffer.prototype.BE = function() {};
+ByteBuffer.prototype.BE = function(bigEndian) {};
 
 /**
  * @param {number} capacity
