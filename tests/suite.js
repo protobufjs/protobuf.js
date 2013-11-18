@@ -1156,6 +1156,24 @@
                 test.strictEqual(b64, "CgtQcm90b0J1Zi5qcw==");
                 var msg2 = Message.decode64(b64);
                 test.deepEqual(msg, msg2);
+                msg2 = Message.decode(b64, "base64");
+                test.deepEqual(msg, msg2);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "hex": function(test) {
+            try {
+                var Message = ProtoBuf.protoFromString("message Message { required string s = 1; }").build("Message");
+                var msg = new Message("ProtoBuf.js");
+                var hex = msg.toHex();
+                test.strictEqual(hex, "0A0B50726F746F4275662E6A73");
+                var msg2 = Message.decodeHex(hex);
+                test.deepEqual(msg, msg2);
+                msg2 = Message.decode(hex, "hex");
+                test.deepEqual(msg, msg2);
             } catch (e) {
                 fail(e);
             }

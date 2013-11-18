@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.5.1";
+        ProtoBuf.VERSION = "1.5.2";
 
         /**
          * Wire types.
@@ -326,7 +326,6 @@
              * @exports ProtoBuf.Lang
              * @type {Object.<string,string|RegExp>}
              * @namespace
-             * @private
              * @expose
              */
             var Lang = { // Look, so cute!
@@ -924,9 +923,9 @@
                      * Encodes the message.
                      * @name ProtoBuf.Builder.Message#encode
                      * @function
-                     * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+                     * @param {!ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
                      * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
-                     * @return {ByteBuffer} Encoded message
+                     * @return {!ByteBuffer} Encoded message as a ByteBuffer (bb#toArrayBuffer, bb#toBuffer, bb#toHex, bb#toBase64, ...)
                      * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
                      * @expose
                      */
@@ -980,16 +979,31 @@
                     };
         
                     /**
+                     * Directly encodes the message to a hex encoded string.
+                     * @name ProtoBuf.Builder.Message#toHex
+                     * @function
+                     * @return {string} Hex encoded string
+                     * @throws {Error} If the underlying buffer cannot be encoded
+                     * @expose
+                     */
+                    Message.prototype.toHex = function() {
+                        return this.encode().toHex();
+                    };
+        
+                    /**
                      * Decodes the message from the specified ByteBuffer.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
                      * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
+                     * @param {string=} enc Encoding if buffer is a string: hex, base64, defaults to utf8 which you shouldn't use
                      * @return {!ProtoBuf.Builder.Message} Decoded message
                      * @throws {Error} If the message cannot be decoded
                      * @expose
+                     * @see ProtoBuf.Builder.Message.decode64
+                     * @see ProtoBuf.Builder.Message.decodeHex
                      */
-                    Message.decode = function(buffer) {
-                        buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer)) : new ByteBuffer();
+                    Message.decode = function(buffer, enc) {
+                        buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer, enc)) : new ByteBuffer();
                         var le = buffer.littleEndian;
                         try {
                             var msg = T.decode(buffer.LE());
@@ -1012,6 +1026,18 @@
                      */
                     Message.decode64 = function(str) {
                         return Message.decode(ByteBuffer.decode64(str));
+                    };
+        
+                    /**
+                     * Decodes the message from the specified hex encoded string.
+                     * @name ProtoBuf.Builder.Message.decodeHex
+                     * @param {string} str String to decode from
+                     * @return {!ProtoBuf.Builder.Message} Decoded message
+                     * @throws {Error} If the message cannot be decoded
+                     * @expose
+                     */
+                    Message.decodeHex = function(str) {
+                        return Message.decode(ByteBuffer.decodeHex(str));
                     };
         
                     // Utility

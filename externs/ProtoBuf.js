@@ -708,12 +708,20 @@ ProtoBuf.Builder.Message.prototype.toBuffer = function() {};
 ProtoBuf.Builder.Message.prototype.toBase64 = function() {};
 
 /**
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.toHex = function() {};
+
+/**
  * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer
+ * @param {string=} enc
  * @return {!ProtoBuf.Builder.Message}
  * @throws {Error}
  * @nosideeffects
  */
-ProtoBuf.Builder.Message.decode = function(buffer) {};
+ProtoBuf.Builder.Message.decode = function(buffer, enc) {};
 
 /**
  * @param {string} str
@@ -722,6 +730,14 @@ ProtoBuf.Builder.Message.decode = function(buffer) {};
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.decode64 = function(str) {};
+
+/**
+ * @param {string} str
+ * @return {!ProtoBuf.Builder.Message}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.decodeHex = function(str) {};
 
 /**
  * @return {string}
