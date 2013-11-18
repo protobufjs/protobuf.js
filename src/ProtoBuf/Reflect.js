@@ -48,7 +48,11 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
          * @type {string}
          * @expose
          */
-        this.name = name;
+        this.name = ProtoBuf.convertFieldsToCamelCase && this instanceof Message.Field ? name.replace(/(_[a-zA-Z])/g,
+            function(match) {
+                return match.toUpperCase().replace('_','');
+            }
+        ) : name;
     };
 
     /**
