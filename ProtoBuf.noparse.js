@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "1.4.0";
+        ProtoBuf.VERSION = "2.0.0-pre";
 
         /**
          * Wire types.
@@ -180,6 +180,14 @@
          * @type {?Long}
          */
         ProtoBuf.Long = ByteBuffer.Long;
+
+        /**
+         * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
+         *  Must be set prior to parsing.
+         * @type {boolean}
+         * @expose
+         */
+        ProtoBuf.convertFieldsToCamelCase = false;
         
         /**
          * @alias ProtoBuf.Util
@@ -283,7 +291,10 @@
                         xhr.send(null);
                     } else {
                         xhr.send(null);
-                        return xhr.responseText;
+                        if (xhr.status == 200) {
+                            return xhr.responseText;
+                        }
+                        return null;
                     }
                 }
             };
@@ -315,7 +326,6 @@
              * @exports ProtoBuf.Lang
              * @type {Object.<string,string|RegExp>}
              * @namespace
-             * @private
              * @expose
              */
             var Lang = { // Look, so cute!
@@ -503,8 +513,16 @@
              * @expose
              */
             Namespace.prototype.addChild = function(child) {
-                if (this.hasChild(child.name)) {
-                    throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
+                var other;
+                if (other = this.getChild(child.name)) {
+                    // Try to revert camelcase transformation on collision
+                    if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName)) {
+                        other.name = other.originalName; // Revert previous first (effectively keeps both originals)
+                    } else if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName)) {
+                        child.name = child.originalName;
+                    } else {
+                        throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
+                    }
                 }
                 this.children.push(child);
             };
@@ -688,7 +706,7 @@
                      * Constructs a new runtime Message.
                      * @name ProtoBuf.Builder.Message
                      * @class Barebone of all runtime messages.
-                     * @param {Object.<string,*>} values Preset values
+                     * @param {Object.<string,*>|...[string]} values Preset values
                      * @constructor
                      * @throws {Error} If the message cannot be created
                      */
@@ -698,20 +716,22 @@
                      */
                     var Message;
                     try {
-                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); })");
+                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); })");
                         // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
                     } catch (err) {
-                        Message = function() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); };
+                        Message = function() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); };
                         // Chrome extensions prohibit the usage of eval, see #58 FIXME: Does this work?
                     }
                     
                     // Extends ProtoBuf.Builder.Message
                     Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
-                    
+        
                     /**
-                     * @expose
+                     * Initializes a runtime message.
+                     * @param {Object.<string,*>|...[string]} values Preset values
+                     * @private
                      */
-                    Message.prototype.__construct = function(values) {
+                    function init(values) {
                         var i, field;
         
                         // Create fields on the object itself to allow setting and getting through Message#fieldname
@@ -749,7 +769,7 @@
                                 }
                             }
                         }
-                    };
+                    }
         
                     /**
                      * Adds a value to a repeated field.
@@ -822,7 +842,7 @@
                         
                         (function(field) {
                             // set/get[SomeValue]
-                            var Name = field.name.replace(/(_[a-zA-Z])/g,
+                            var Name = field.originalName.replace(/(_[a-zA-Z])/g,
                                 function(match) {
                                     return match.toUpperCase().replace('_','');
                                 }
@@ -830,7 +850,7 @@
                             Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
             
                             // set/get_[some_value]
-                            var name = field.name.replace(/([A-Z])/g,
+                            var name = field.originalName.replace(/([A-Z])/g,
                                 function(match) {
                                     return "_"+match;
                                 }
@@ -903,79 +923,169 @@
                      * Encodes the message.
                      * @name ProtoBuf.Builder.Message#encode
                      * @function
-                     * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
-                     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
-                     * @return {ByteBuffer} Encoded message
-                     * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
+                     * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+                     * @return {!ByteBuffer} Encoded message as a ByteBuffer
+                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+                     *  returns the encoded ByteBuffer in the `encoded` property on the error.
                      * @expose
+                     * @see ProtoBuf.Builder.Message#encode64
+                     * @see ProtoBuf.Builder.Message#encodeHex
+                     * @see ProtoBuf.Builder.Message#encodeAB
                      */
-                    Message.prototype.encode = function(buffer, doNotThrow) {
+                    Message.prototype.encode = function(buffer) {
                         buffer = buffer || new ByteBuffer();
                         var le = buffer.littleEndian;
                         try {
-                            var bb = T.encode(this, buffer.LE(), doNotThrow).flip();
-                            buffer.littleEndian = le;
-                            return bb;
+                            return T.encode(this, buffer.LE()).flip().LE(le);
                         } catch (e) {
-                            buffer.littleEndian = le;
+                            buffer.LE(le);
                             throw(e);
                         }
                     };
         
                     /**
                      * Directly encodes the message to an ArrayBuffer.
+                     * @name ProtoBuf.Builder.Message#encodeAB
+                     * @function
+                     * @return {ArrayBuffer} Encoded message as ArrayBuffer
+                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+                     *  returns the encoded ArrayBuffer in the `encoded` property on the error.
+                     * @expose
+                     */
+                    Message.prototype.encodeAB = function() {
+                        var enc;
+                        try {
+                            return this.encode().toArrayBuffer();
+                        } catch (err) {
+                            if (err["encoded"]) err["encoded"] = err["encoded"].toArrayBuffer();
+                            throw(err);
+                        }
+                    };
+        
+                    /**
+                     * Returns the message as an ArrayBuffer. This is an alias for {@link ProtoBuf.Builder.Message#encodeAB}.
                      * @name ProtoBuf.Builder.Message#toArrayBuffer
                      * @function
                      * @return {ArrayBuffer} Encoded message as ArrayBuffer
-                     * @throws {Error} If the message cannot be encoded
+                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+                     *  returns the encoded ArrayBuffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toArrayBuffer = function() {
-                        return this.encode().toArrayBuffer();
-                    };
+                    Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
         
                     /**
                      * Directly encodes the message to a node Buffer.
-                     * @name ProtoBuf.Builder.Message#toBuffer
+                     * @name ProtoBuf.Builder.Message#encodeNB
                      * @function
                      * @return {!Buffer}
-                     * @throws {Error} If the message cannot be encoded or not running under node.js
+                     * @throws {Error} If the message cannot be encoded, not running under node.js or if required fields are
+                     *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toBuffer = function() {
-                        return this.encode().toBuffer();
+                    Message.prototype.encodeNB = function() {
+                        try {
+                            return this.encode().toBuffer();
+                        } catch (err) {
+                            if (err["encoded"]) err["encoded"] = err["encoded"].toBuffer();
+                            throw(err);
+                        }
                     };
+        
+                    /**
+                     * Returns the message as a node Buffer. This is an alias for {@link ProtoBuf.Builder.Message#encodeNB}.
+                     * @name ProtoBuf.Builder.Message#encodeNB
+                     * @function
+                     * @return {!Buffer}
+                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+                     *  returns the encoded node Buffer in the `encoded` property on the error.
+                     * @expose
+                     */
+                    Message.prototype.toBuffer = Message.prototype.encodeNB;
         
                     /**
                      * Directly encodes the message to a base64 encoded string.
-                     * @name ProtoBuf.Builder.Message#toBase64
+                     * @name ProtoBuf.Builder.Message#encode64
                      * @function
                      * @return {string} Base64 encoded string
-                     * @throws {Error} If the underlying buffer cannot be encoded
+                     * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
+                     *  still returns the encoded base64 string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toBase64 = function() {
-                        return this.encode().toBase64();
+                    Message.prototype.encode64 = function() {
+                        try {
+                            return this.encode().toBase64();
+                        } catch (err) {
+                            if (err["encoded"]) err["encoded"] = err["encoded"].toBase64();
+                            throw(err);
+                        }
                     };
         
                     /**
-                     * Decodes the message from the specified ByteBuffer.
+                     * Returns the message as a base64 encoded string. This is an alias for {@link ProtoBuf.Builder.Message#encode64}.
+                     * @name ProtoBuf.Builder.Message#toBase64
+                     * @function
+                     * @return {string} Base64 encoded string
+                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+                     *  returns the encoded base64 string in the `encoded` property on the error.
+                     * @expose
+                     */
+                    Message.prototype.toBase64 = Message.prototype.encode64;
+        
+                    /**
+                     * Directly encodes the message to a hex encoded string.
+                     * @name ProtoBuf.Builder.Message#encodeHex
+                     * @function
+                     * @return {string} Hex encoded string
+                     * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
+                     *  still returns the encoded hex string in the `encoded` property on the error.
+                     * @expose
+                     */
+                    Message.prototype.encodeHex = function() {
+                        try {
+                            return this.encode().toHex();
+                        } catch (err) {
+                            if (err["encoded"]) err["encoded"] = err["encoded"].toHex();
+                            throw(err);
+                        }
+                    };
+        
+                    /**
+                     * Returns the message as a hex encoded string. This is an alias for {@link ProtoBuf.Builder.Message#encodeHex}.
+                     * @name ProtoBuf.Builder.Message#toHex
+                     * @function
+                     * @return {string} Hex encoded string
+                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+                     *  returns the encoded hex string in the `encoded` property on the error.
+                     * @expose
+                     */
+                    Message.prototype.toHex = Message.prototype.encodeHex;
+        
+                    /**
+                     * Decodes the message from the specified buffer or string.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
                      * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
+                     * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
                      * @return {!ProtoBuf.Builder.Message} Decoded message
-                     * @throws {Error} If the message cannot be decoded
+                     * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
+                     *  returns the decoded message with missing fields in the `decoded` property on the error.
                      * @expose
+                     * @see ProtoBuf.Builder.Message.decode64
+                     * @see ProtoBuf.Builder.Message.decodeHex
                      */
-                    Message.decode = function(buffer) {
-                        buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer)) : new ByteBuffer();
+                    Message.decode = function(buffer, enc) {
+                        if (buffer === null) throw(new Error("buffer must not be null"));
+                        if (typeof buffer === 'string') {
+                            buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
+                        }
+                        buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
                         var le = buffer.littleEndian;
                         try {
                             var msg = T.decode(buffer.LE());
-                            buffer.littleEndian = le;
+                            buffer.LE(le);
                             return msg;
                         } catch (e) {
-                            buffer.littleEndian = le;
+                            buffer.LE(le);
                             throw(e);
                         }
                     };
@@ -986,11 +1096,26 @@
                      * @function
                      * @param {string} str String to decode from
                      * @return {!ProtoBuf.Builder.Message} Decoded message
-                     * @throws {Error} If the message cannot be decoded
+                     * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
+                     *  returns the decoded message with missing fields in the `decoded` property on the error.
                      * @expose
                      */
                     Message.decode64 = function(str) {
-                        return Message.decode(ByteBuffer.decode64(str));
+                        return Message.decode(str, "base64");
+                    };
+        
+                    /**
+                     * Decodes the message from the specified hex encoded string.
+                     * @name ProtoBuf.Builder.Message.decodeHex
+                     * @function
+                     * @param {string} str String to decode from
+                     * @return {!ProtoBuf.Builder.Message} Decoded message
+                     * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
+                     *  returns the decoded message with missing fields in the `decoded` property on the error.
+                     * @expose
+                     */
+                    Message.decodeHex = function(str) {
+                        return Message.decode(str, "hex");
                     };
         
                     // Utility
@@ -1049,21 +1174,25 @@
              * Encodes a runtime message's contents to the specified buffer.
              * @param {ProtoBuf.Builder.Message} message Runtime message to encode
              * @param {ByteBuffer} buffer ByteBuffer to write to
-             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
              * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(message, buffer, doNotThrow) {
+            Message.prototype.encode = function(message, buffer) {
                 var fields = this.getChildren(Message.Field),
-                    offset = buffer.offset;
+                    fieldMissing = null;
                 for (var i=0; i<fields.length; i++) {
                     var val = message.get(fields[i].name);
-                    if (fields[i].required && val === null && !doNotThrow) {
-                        buffer.offset = offset;
-                        throw(new Error("Missing required field for "+this.toString(true)+": "+fields[i].name));
+                    if (fields[i].required && val === null) {
+                        if (fieldMissing === null) fieldMissing = fields[i];
+                    } else {
+                        fields[i].encode(val, buffer);
                     }
-                    fields[i].encode(val, buffer);
+                }
+                if (fieldMissing !== null) {
+                    var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
+                    err["encoded"] = buffer; // Still expose what we got
+                    throw(err);
                 }
                 return buffer;
             };
@@ -1116,8 +1245,8 @@
                 var fields = this.getChildren(Reflect.Field);
                 for (var i=0; i<fields.length; i++) {
                     if (fields[i].required && msg[fields[i].name] === null) {
-                        var err = new Error("Missing field "+fields[i].toString(true)+" in "+this.toString(true)+"#decode");
-                        err.msg = msg;
+                        var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
+                        err["decoded"] = msg; // Still expose what we got
                         throw(err);
                     }
                 }
@@ -1187,6 +1316,20 @@
                  * @expose
                  */
                 this.options = options || {};
+        
+                /**
+                 * Original field name.
+                 * @type {string}
+                 * @expose
+                 */
+                this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
+                
+                // Convert field names to camel case notation if the override is set
+                if (ProtoBuf.convertFieldsToCamelCase) {
+                    this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
+                        return $1.toUpperCase();
+                    });
+                }
             };
         
             // Extends T
@@ -1962,6 +2105,13 @@
                  * @expose
                  */
                 this.files = {};
+        
+                /**
+                 * Import root override.
+                 * @type {?string}
+                 * @expose
+                 */
+                this.importRoot = null;
             };
         
             /**
@@ -2269,7 +2419,7 @@
             /**
              * Imports another definition into this builder.
              * @param {Object.<string,*>} parsed Parsed import
-             * @param {string=} filename Imported file name
+             * @param {(string|{root: string, file: string})=} filename Imported file name
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the definition or file cannot be imported
              * @expose
@@ -2305,14 +2455,25 @@
                     if (!filename) {
                         throw(new Error("Cannot determine import root: File name is unknown"));
                     }
-                    var importRoot, delim = '/';
-                    if (filename.indexOf("/") >= 0) { // Unix
-                        importRoot = filename.replace(/\/[^\/]*$/, "");
-                        if (/* /file.proto */ importRoot === "") importRoot = "/";
-                    } else if (filename.indexOf("\\") >= 0) { // Windows
-                        importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+                    var importRoot, delim = '/', resetRoot = false;
+                    if (typeof filename === 'object') { // If an import root is specified, override
+                        this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
+                        importRoot = this.importRoot;
+                        filename = filename["file"];
+                        if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
                     } else {
-                        importRoot = ".";
+                        if (this.importRoot) { // If import root is overridden, use it
+                            importRoot = this.importRoot;
+                        } else { // Otherwise compute from filename
+                            if (filename.indexOf("/") >= 0) { // Unix
+                                importRoot = filename.replace(/\/[^\/]*$/, "");
+                                if (/* /file.proto */ importRoot === "") importRoot = "/";
+                            } else if (filename.indexOf("\\") >= 0) { // Windows
+                                importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
+                            } else {
+                                importRoot = ".";
+                            }
+                        }
                     }
                     for (var i=0; i<parsed['imports'].length; i++) {
                         var importFilename = importRoot+delim+parsed['imports'][i];
@@ -2325,6 +2486,9 @@
                         } else {
                             throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
                         }
+                    }
+                    if (resetRoot) { // Reset import root override when all imports are done
+                        this.importRoot = null;
                     }
                 }
                 if (!!parsed['extends']) {
@@ -2506,7 +2670,7 @@
          * Builds a .proto definition and returns the Builder.
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
-         * @param {string=} filename The corresponding file name if known. Must be specified for imports.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
@@ -2517,7 +2681,8 @@
 
         /**
          * Builds a .proto file and returns the Builder.
-         * @param {string} filename Path to proto filename
+         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
          *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
          *   function will return the Builder or NULL if the request has failed.
@@ -2534,11 +2699,11 @@
                 callback = null;
             }
             if (callback) {
-                ProtoBuf.Util.fetch(filename, function(contents) {
+                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
                     callback(ProtoBuf.protoFromString(contents, builder, filename));
                 });
             } else {
-                var contents = ProtoBuf.Util.fetch(filename);
+                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
                 return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
         };

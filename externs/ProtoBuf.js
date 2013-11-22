@@ -80,6 +80,11 @@ ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
 ProtoBuf.WIRE_TYPES.BITS32 = 5;
 
 /**
+ * @type {boolean}
+ */
+ProtoBuf.convertFieldsToCamelCase = false;
+
+/**
  * @dict
  * @type {!object.<string,{name: string, wireType: number}>}
  * @const
@@ -330,11 +335,10 @@ ProtoBuf.Reflect.Message.prototype.build = function() {};
 /**
  * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
- * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {string}
  */
-ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer, doNotThrow) {};
+ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
 
 /**
  * @param {!ByteBuffer} buffer
@@ -385,6 +389,11 @@ ProtoBuf.Reflect.Message.Field.prototype.options;
  * @type {?ProtoBuf.Reflect.T}
  */
 ProtoBuf.Reflect.Message.Field.prototype.resolvedType;
+
+/**
+ * @type {string}
+ */
+ProtoBuf.Reflect.Message.Field.prototype.originalName;
 
 /**
  * @param {*} value
@@ -550,6 +559,11 @@ ProtoBuf.Builder.prototype.result;
 ProtoBuf.Builder.prototype.files;
 
 /**
+ * @type {?string}
+ */
+ProtoBuf.Builder.prototype.importRoot;
+
+/**
  */
 ProtoBuf.Builder.prototype.reset = function() {};
 
@@ -603,7 +617,7 @@ ProtoBuf.Builder.prototype.create = function(messages) {};
  * @name ProtoBuf.Builder.prototype.import
  * @function
  * @param {ProtoBuf.Builder} builder
- * @param {string=} filename
+ * @param {(string|{root: string, file: string})=} filename
  * @return {!ProtoBuf.Builder}
  * @throws {Error}
  */
@@ -664,22 +678,35 @@ ProtoBuf.Builder.Message.prototype.get = function(key) {};
 
 /**
  * @param {ByteBuffer=} buffer
- * @param {boolean=} doNotThrow
  * @return {!ByteBuffer}
  * @throws {Error}
  * @nosideeffects
  */
-ProtoBuf.Builder.Message.prototype.encode = function(buffer, doNotThrow) {};
+ProtoBuf.Builder.Message.prototype.encode = function(buffer) {};
 
 /**
- * @return {ArrayBuffer}
+ * @return {!ArrayBuffer}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.encodeAB = function() {};
+
+/**
+ * @return {!ArrayBuffer}
  * @throws {Error}
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.prototype.toArrayBuffer = function() {};
 
 /**
- * @return {Buffer}
+ * @return {!Buffer}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.encodeNB = function() {};
+
+/**
+ * @return {!Buffer}
  * @throws {Error}
  * @nosideeffects
  */
@@ -690,15 +717,37 @@ ProtoBuf.Builder.Message.prototype.toBuffer = function() {};
  * @throws {Error}
  * @nosideeffects
  */
+ProtoBuf.Builder.Message.prototype.encode64 = function() {};
+
+/**
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
 ProtoBuf.Builder.Message.prototype.toBase64 = function() {};
 
 /**
- * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.encodeHex = function() {};
+
+/**
+ * @return {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.toHex = function() {};
+
+/**
+ * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer
+ * @param {string=} enc
  * @return {!ProtoBuf.Builder.Message}
  * @throws {Error}
  * @nosideeffects
  */
-ProtoBuf.Builder.Message.decode = function(buffer) {};
+ProtoBuf.Builder.Message.decode = function(buffer, enc) {};
 
 /**
  * @param {string} str
@@ -707,6 +756,14 @@ ProtoBuf.Builder.Message.decode = function(buffer) {};
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.decode64 = function(str) {};
+
+/**
+ * @param {string} str
+ * @return {!ProtoBuf.Builder.Message}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.decodeHex = function(str) {};
 
 /**
  * @return {string}
@@ -728,14 +785,14 @@ ProtoBuf.Builder.prototype.rpcImpl;
 /**
  * @param {string} proto
  * @param {(ProtoBuf.Builder|string)=} builder
- * @param {string=} filename
+ * @param {(string|{root: string, file: string})=} filename
  * @return {!ProtoBuf.Builder}
  * @throws {Error}
  */
 ProtoBuf.protoFromString = function(proto, builder, filename) {};
 
 /**
- * @param {string} filename
+ * @param {string|{root: string, file: string}} filename
  * @param {(function(ProtoBuf.Builder)|ProtoBuf.Builder)=} callback
  * @param {ProtoBuf.Builder=} builder
  * @return {ProtoBuf.Builder|undefined}

@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "1.4.0",
+    "version": "2.0.0-pre",
     "description": "Probably the most complete implementation of protobuf for JavaScript you can get.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
@@ -19,7 +19,7 @@
     },
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "dependencies": {
-        "bytebuffer": ">=1.6.1",
+        "bytebuffer": ">=2.0.1 && <3",
         "ascli": "latest"
     },
     "devDependencies": {

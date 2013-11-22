@@ -95,6 +95,9 @@
             <dt><a href="namespaces.html#ProtoBuf.DotProto"><a href="ProtoBuf.DotProto.html">DotProto</a></a></dt>
             <dd></dd>
         
+            <dt><a href="namespaces.html#ProtoBuf.Lang"><a href="ProtoBuf.Lang.html">Lang</a></a></dt>
+            <dd></dd>
+        
             <dt><a href="namespaces.html#ProtoBuf.Reflect"><a href="ProtoBuf.Reflect.html">Reflect</a></a></dt>
             <dd></dd>
         
@@ -107,6 +110,52 @@
         <h3 class="subsection-title">Members</h3>
         
         <dl>
+            
+<dt>
+    <h4 class="name" id="convertFieldsToCamelCase"><span class="type-signature">&lt;static> </span>convertFieldsToCamelCase<span class="type-signature"> :boolean</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>If set to <code>true</code>, field names will be converted from underscore notation to camel case. Defaults to <code>false</code>.
+ Must be set prior to parsing.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
             
 <dt>
     <h4 class="name" id="Long"><span class="type-signature">&lt;static> </span>Long<span class="type-signature"> :Long</span></h4>
@@ -786,6 +835,9 @@ builder will only contain a global namespace.</p></td>
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type">{root: string, file: string}</span>
 
 
             
@@ -801,7 +853,8 @@ builder will only contain a global namespace.</p></td>
             
             
             
-            <td class="description last"><p>Path to proto filename</p></td>
+            <td class="description last"><p>Path to proto file or an object specifying &#39;file&#39; with
+ an overridden &#39;root&#39; path for all imported files.</p></td>
         </tr>
 	
 	
@@ -1053,6 +1106,9 @@ builder will only contain a global namespace.</p></td>
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type">{root: string, file: string}</span>
 
 
             
@@ -1176,7 +1232,7 @@ builder will only contain a global namespace.</p></td>
 
 <nav>
     <nav-inner>
-        <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
+        <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Lang.html">Lang</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
     </nav-inner>
 </nav>
 

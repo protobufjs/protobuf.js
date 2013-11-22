@@ -180,6 +180,14 @@
          * @type {?Long}
          */
         ProtoBuf.Long = ByteBuffer.Long;
+
+        /**
+         * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
+         *  Must be set prior to parsing.
+         * @type {boolean}
+         * @expose
+         */
+        ProtoBuf.convertFieldsToCamelCase = false;
         
         // #include "ProtoBuf/Util.js"
         
@@ -200,7 +208,7 @@
          * Builds a .proto definition and returns the Builder.
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
-         * @param {string=} filename The corresponding file name if known. Must be specified for imports.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
@@ -209,13 +217,13 @@
             // #ifdef NOPARSE
             throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
             // #else
-            if (typeof builder == 'string') {
+            if (typeof builder == 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
                 filename = builder;
                 builder = null;
             }
-            var parser = new ProtoBuf.DotProto.Parser(proto+"");
-            var parsed = parser.parse();
-            var builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
+            var parser = new ProtoBuf.DotProto.Parser(proto+""),
+                parsed = parser.parse(),
+                builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
             if (parsed['messages'].length > 0) {
                 if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
                 builder.create(parsed['messages']);
@@ -244,7 +252,8 @@
 
         /**
          * Builds a .proto file and returns the Builder.
-         * @param {string} filename Path to proto filename
+         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
          *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
          *   function will return the Builder or NULL if the request has failed.
@@ -261,11 +270,11 @@
                 callback = null;
             }
             if (callback) {
-                ProtoBuf.Util.fetch(filename, function(contents) {
+                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
                     callback(ProtoBuf.protoFromString(contents, builder, filename));
                 });
             } else {
-                var contents = ProtoBuf.Util.fetch(filename);
+                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
                 return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
         };

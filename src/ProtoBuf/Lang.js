@@ -27,7 +27,6 @@ ProtoBuf.Lang = (function() {
      * @exports ProtoBuf.Lang
      * @type {Object.<string,string|RegExp>}
      * @namespace
-     * @private
      * @expose
      */
     var Lang = { // Look, so cute!
