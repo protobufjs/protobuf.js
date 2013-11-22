@@ -2379,9 +2379,9 @@
                                         }
                                         obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
                                     }
-                                    if (this.ptr instanceof Reflect.Message) {
+                                    /* if (this.ptr instanceof Reflect.Message) {
                                         this.ptr.addChild(obj); // Reference the extended message here to enable proper lookups
-                                    }
+                                    } */
                                 } else {
                                     if (!/\.?google\.protobuf\./.test(def["ref"])) { // Silently skip internal extensions
                                         throw(new Error("Extended message "+def["ref"]+" is not defined"));
