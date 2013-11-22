@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ProtoBuf Extension test case</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="pbm.css" rel="stylesheet">
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+      <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row"><H1>ProtoBuf Extension test case</H1>
+      </div>
+      <div class="row">
+      <p>To run these tests, put these files on a server, so that Tests holds the protos, and the root is set properly. </p>
+      <p><em>The files MUST be on a server because you can't load files via AJAX from a file:// url in the browser.</em></p>
+      <p>Then, click the button to see a simplified outline of the objects in the tree. </p>
+      <p>As of the time of writing this code, the zmq_media_player was returning a single field, 
+      named 'MediaPlayerPbm'. However, this is an error in parsing the extensions. 
+      ZmqMediaPlayerPbm has no fields. It extends MediaPlayerPbm with the additional field zmq_media_player:</p>
+      <pre>
+message ZmqMediaPlayerPbm
+{
+  extend MediaPlayerPbm
+  {
+    optional ZmqMediaPlayerPbm zmq_media_player = 310;
+  }
+}
+</pre>
+
+      </div>
+      <div class="row">
+          <button class="btn btn-primary btn-xs" id="testButton" >Test</button>
+      </div>
+      <div id="output" class="row">
+      </div>
+    </div>
+  <script src="assets/jquery-1.10.2.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.js"></script>
+  <script src="assets/long/Long.min.js"></script>
+  <script src="assets/bytebuffer/ByteBuffer.min.js"></script>
+  <script src="assets/protobuf/ProtoBuf.js"></script>
+  <script src="assets/protobuf/ProtoBufHack.js"></script>
+  <script src="pbm.js"></script>
+  </body>
+</html>

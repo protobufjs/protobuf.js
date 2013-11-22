@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.0-pre";
+        ProtoBuf.VERSION = "1.4.0";
 
         /**
          * Wire types.
@@ -180,14 +180,6 @@
          * @type {?Long}
          */
         ProtoBuf.Long = ByteBuffer.Long;
-
-        /**
-         * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
-         *  Must be set prior to parsing.
-         * @type {boolean}
-         * @expose
-         */
-        ProtoBuf.convertFieldsToCamelCase = false;
         
         /**
          * @alias ProtoBuf.Util
@@ -291,11 +283,7 @@
                         xhr.send(null);
                     } else {
                         xhr.send(null);
-                        
-                        if (xhr.status == 200) {
-                            return xhr.responseText;
-                        }
-                        return null;
+                        return xhr.responseText;
                     }
                 }
             };
@@ -327,6 +315,7 @@
              * @exports ProtoBuf.Lang
              * @type {Object.<string,string|RegExp>}
              * @namespace
+             * @private
              * @expose
              */
             var Lang = { // Look, so cute!
@@ -368,903 +357,8 @@
             return Lang;
         })();
                 
-        /**
-         * Utilities to parse .proto files.
-         * @namespace
-         * @expose
-         */
-        ProtoBuf.DotProto = {}; // Not present in "noparse" builds
+        // This build of ProtoBuf.js does not include DotProto support.
         
-        /**
-         * @alias ProtoBuf.DotProto.Tokenizer
-         * @expose
-         */
-        ProtoBuf.DotProto.Tokenizer = (function(Lang) {
-        
-            /**
-             * Constructs a new Tokenizer.
-             * @exports ProtoBuf.DotProto.Tokenizer
-             * @class A ProtoBuf .proto Tokenizer.
-             * @param {string} proto Proto to tokenize
-             * @constructor
-             */
-            var Tokenizer = function(proto) {
-                
-                /**
-                 * Source to parse.
-                 * @type {string}
-                 * @expose
-                 */
-                this.source = ""+proto;
-                
-                /**
-                 * Current index.
-                 * @type {number}
-                 * @expose
-                 */
-                this.index = 0;
-        
-                /**
-                 * Current line.
-                 * @type {number}
-                 * @expose
-                 */
-                this.line = 1;
-        
-                /**
-                 * Stacked values.
-                 * @type {Array}
-                 * @expose
-                 */
-                this.stack = [];
-        
-                /**
-                 * Whether currently reading a string or not.
-                 * @type {boolean}
-                 * @expose
-                 */
-                this.readingString = false;
-            };
-        
-            /**
-             * Reads a string beginning at the current index.
-             * @return {string} The string
-             * @throws {Error} If it's not a valid string
-             * @private
-             */
-            Tokenizer.prototype._readString = function() {
-                Lang.STRING.lastIndex = this.index-1; // Include the open quote
-                var match;
-                if ((match = Lang.STRING.exec(this.source)) !== null) {
-                    var s = match[1];
-                    this.index = Lang.STRING.lastIndex;
-                    this.stack.push(Lang.STRINGCLOSE);
-                    return s;
-                }
-                throw(new Error("Illegal string value at line "+this.line+", index "+this.index));
-            };
-        
-            /**
-             * Gets the next token and advances by one.
-             * @return {?string} Token or `null` on EOF
-             * @throws {Error} If it's not a valid proto file
-             * @expose
-             */
-            Tokenizer.prototype.next = function() {
-                if (this.stack.length > 0) {
-                    return this.stack.shift();
-                }
-                if (this.index >= this.source.length) {
-                    return null; // No more tokens
-                }
-                if (this.readingString) {
-                    this.readingString = false;
-                    return this._readString();
-                }
-                var repeat, last;
-                do {
-                    repeat = false;
-                    // Strip white spaces
-                    while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
-                        this.index++;
-                        if (last === "\n") this.line++;
-                        if (this.index === this.source.length) return null;
-                    }
-                    // Strip comments
-                    if (this.source.charAt(this.index) === '/') {
-                        if (this.source.charAt(++this.index) === '/') { // Single line
-                            while (this.source.charAt(this.index) !== "\n") {
-                                this.index++;
-                                if (this.index == this.source.length) return null;
-                            }
-                            this.index++;
-                            this.line++;
-                            repeat = true;
-                        } else if (this.source.charAt(this.index) === '*') { /* Block */
-                            last = '';
-                            while (last+(last=this.source.charAt(this.index)) !== '*/') {
-                                this.index++;
-                                if (last === "\n") this.line++;
-                                if (this.index === this.source.length) return null;
-                            }
-                            this.index++;
-                            repeat = true;
-                        } else {
-                            throw(new Error("Invalid comment at line "+this.line+": /"+this.source.charAt(this.index)+" ('/' or '*' expected)"));
-                        }
-                    }
-                } while (repeat);
-                if (this.index === this.source.length) return null;
-        
-                // Read the next token
-                var end = this.index;
-                Lang.DELIM.lastIndex = 0;
-                var delim = Lang.DELIM.test(this.source.charAt(end));
-                if (!delim) {
-                    end++;
-                    while(end < this.source.length && !Lang.DELIM.test(this.source.charAt(end))) {
-                        end++;
-                    }
-                } else {
-                    end++;
-                }
-                var token = this.source.substring(this.index, this.index = end);
-                if (token === Lang.STRINGOPEN) {
-                    this.readingString = true;
-                }
-                return token;
-            };
-        
-            /**
-             * Peeks for the next token.
-             * @return {?string} Token or `null` on EOF
-             * @throws {Error} If it's not a valid proto file
-             * @expose
-             */
-            Tokenizer.prototype.peek = function() {
-                if (this.stack.length == 0) {
-                    var token = this.next();
-                    if (token === null) return null;
-                    this.stack.push(token);
-                }
-                return this.stack[0];
-            };
-        
-            /**
-             * Returns a string representation of this object.
-             * @return {string} String representation as of "Tokenizer(index/length)"
-             * @expose
-             */
-            Tokenizer.prototype.toString = function() {
-                return "Tokenizer("+this.index+"/"+this.source.length+" at line "+this.line+")";
-            };
-            
-            return Tokenizer;
-            
-        })(ProtoBuf.Lang);
-                
-        /**
-         * @alias ProtoBuf.DotProto.Parser
-         * @expose
-         */
-        ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
-            "use strict";
-            
-            /**
-             * Constructs a new Parser.
-             * @exports ProtoBuf.DotProto.Parser
-             * @class A ProtoBuf .proto parser.
-             * @param {string} proto Protocol source
-             * @constructor
-             */
-            var Parser = function(proto) {
-        
-                /**
-                 * Tokenizer.
-                 * @type {ProtoBuf.DotProto.Tokenizer}
-                 * @expose
-                 */
-                this.tn = new Tokenizer(proto);
-            };
-        
-            /**
-             * Runs the parser.
-             * @return {{package: string|null, messages: Array.<object>, enums: Array.<object>, imports: Array.<string>, options: object<string,*>}}
-             * @throws {Error} If the source cannot be parsed
-             * @expose
-             */
-            Parser.prototype.parse = function() {
-                var topLevel = {
-                    "name": "[ROOT]", // temporary
-                    "package": null,
-                    "messages": [],
-                    "enums": [],
-                    "imports": [],
-                    "options": {},
-                    "services": []
-                };
-                var token, header = true;
-                do {
-                    token = this.tn.next();
-                    if (token == null) {
-                        break; // No more messages
-                    }
-                    if (token == 'package') {
-                        if (!header) {
-                            throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                        }
-                        if (topLevel["package"] !== null) {
-                            throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
-                        }
-                        topLevel["package"] = this._parsePackage(token);
-                    } else if (token == 'import') {
-                        if (!header) {
-                            throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                        }
-                        topLevel.imports.push(this._parseImport(token));
-                    } else if (token === 'message') {
-                        this._parseMessage(topLevel, token);
-                        header = false;
-                    } else if (token === 'enum') {
-                        this._parseEnum(topLevel, token);
-                        header = false;
-                    } else if (token === 'option') {
-                        if (!header) {
-                            throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                        }
-                        this._parseOption(topLevel, token);
-                    } else if (token === 'service') {
-                        this._parseService(topLevel, token);
-                    } else if (token === 'extend') {
-                        this._parseExtend(topLevel, token);
-                    } else if (token === 'syntax') {
-                        this._parseIgnoredStatement(topLevel, token);
-                    } else {
-                        throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
-                    }
-                } while (true);
-                delete topLevel["name"];
-                return topLevel;
-            };
-        
-            /**
-             * Parses a number value.
-             * @param {string} val Number value to parse
-             * @return {number} Number
-             * @throws {Error} If the number value is invalid
-             * @private
-             */
-            Parser.prototype._parseNumber = function(val) {
-                var sign = 1;
-                if (val.charAt(0) == '-') {
-                    sign = -1; val = val.substring(1);
-                }
-                if (Lang.NUMBER_DEC.test(val)) {
-                    return sign*parseInt(val, 10);
-                } else if (Lang.NUMBER_HEX.test(val)) {
-                    return sign*parseInt(val.substring(2), 16);
-                } else if (Lang.NUMBER_OCT.test(val)) {
-                    return sign*parseInt(val.substring(1), 8);
-                } else if (Lang.NUMBER_FLT.test(val)) {
-                    return sign*parseFloat(val);
-                }
-                throw(new Error("Illegal number value at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val));
-            };
-        
-            /**
-             * Parses an ID value.
-             * @param {string} val ID value to parse
-             * @param {boolean=} neg Whether the ID may be negative, defaults to `false`
-             * @returns {number} ID
-             * @throws {Error} If the ID value is invalid
-             * @private
-             */
-            Parser.prototype._parseId = function(val, neg) {
-                var id = -1;
-                var sign = 1;
-                if (val.charAt(0) == '-') {
-                    sign = -1; val = val.substring(1);
-                }
-                if (Lang.NUMBER_DEC.test(val)) {
-                    id = parseInt(val);
-                } else if (Lang.NUMBER_HEX.test(val)) {
-                    id = parseInt(val.substring(2), 16);
-                } else if (Lang.NUMBER_OCT.test(val)) {
-                    id = parseInt(val.substring(1), 8);
-                } else {
-                    throw(new Error("Illegal ID value at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val));
-                }
-                id = (sign*id)|0; // Force to 32bit
-                if (!neg && id < 0) {
-                    throw(new Error("Illegal ID range at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val));
-                }
-                return id;
-            };
-        
-            /**
-             * Parses the package definition.
-             * @param {string} token Initial token
-             * @return {string} Package name
-             * @throws {Error} If the package definition cannot be parsed
-             * @private
-             */
-            Parser.prototype._parsePackage = function(token) {
-                token = this.tn.next();
-                if (!Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal package name at line "+this.tn.line+": "+token));
-                }
-                var pkg = token;
-                token = this.tn.next();
-                if (token != Lang.END) {
-                    throw(new Error("Illegal end of package definition at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
-                }
-                return pkg;
-            };
-        
-            /**
-             * Parses an import definition.
-             * @param {string} token Initial token
-             * @return {string} Import file name 
-             * @throws {Error} If the import definition cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseImport = function(token) {
-                token = this.tn.next();
-                if (token === "public") {
-                    token = this.tn.next();
-                }
-                if (token !== Lang.STRINGOPEN) {
-                    throw(new Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' expected)"));
-                }
-                var imported = this.tn.next();
-                token = this.tn.next();
-                if (token !== Lang.STRINGCLOSE) {
-                    throw(new Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
-                }
-                token = this.tn.next();
-                if (token !== Lang.END) {
-                    throw(new Error("Illegal end of import definition at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
-                }
-                return imported;
-            };
-        
-            /**
-             * Parses a namespace option.
-             * @param {Object} parent Parent definition
-             * @param {string} token Initial token
-             * @throws {Error} If the option cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseOption = function(parent, token) {
-                token = this.tn.next();
-                var custom = false;
-                if (token == Lang.COPTOPEN) {
-                    custom = true;
-                    token = this.tn.next();
-                }
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal option name in message "+parent.name+" at line "+this.tn.line+": "+token));
-                }
-                var name = token;
-                token = this.tn.next();
-                if (custom) { // (my_method_option).foo, (my_method_option), some_method_option
-                    if (token !== Lang.COPTCLOSE) {
-                        throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
-                    }
-                    name = '('+name+')';
-                    token = this.tn.next();
-                    if (Lang.FQTYPEREF.test(token)) {
-                        name += token;
-                        token = this.tn.next();
-                    }
-                }
-                if (token !== Lang.EQUAL) {
-                    throw(new Error("Illegal option operator in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
-                }
-                var value;
-                token = this.tn.next();
-                if (token === Lang.STRINGOPEN) {
-                    value = this.tn.next();
-                    token = this.tn.next();
-                    if (token !== Lang.STRINGCLOSE) {
-                        throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
-                    }
-                } else {
-                    if (Lang.NUMBER.test(token)) {
-                        value = this._parseNumber(token, true);
-                    } else if (Lang.TYPEREF.test(token)) {
-                        value = token;
-                    } else {
-                        throw(new Error("Illegal option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token));
-                    }
-                }
-                token = this.tn.next();
-                if (token !== Lang.END) {
-                    throw(new Error("Illegal end of option in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
-                }
-                parent["options"][name] = value;
-            };
-        
-            /**
-             * Parses an ignored block of the form ['keyword', 'typeref', '{' ... '}'].
-             * @param {Object} parent Parent definition
-             * @param {string} keyword Initial token
-             * @throws {Error} If the directive cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseIgnoredBlock = function(parent, keyword) {
-                var token = this.tn.next();
-                if (!Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal "+keyword+" type in "+parent.name+": "+token));
-                }
-                var name = token;
-                token = this.tn.next();
-                if (token !== Lang.OPEN) {
-                    throw(new Error("Illegal OPEN in "+parent.name+" after "+keyword+" "+name+" at line "+this.tn.line+": "+token));
-                }
-                var depth = 1;
-                do {
-                    token = this.tn.next();
-                    if (token === null) {
-                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored) at line "+this.tn.line+": "+name));
-                    }
-                    if (token === Lang.OPEN) {
-                        depth++;
-                    } else if (token === Lang.CLOSE) {
-                        token = this.tn.peek();
-                        if (token === Lang.END) this.tn.next();
-                        depth--;
-                        if (depth === 0) {
-                            break;
-                        }
-                    }
-                } while(true);
-            };
-        
-            /**
-             * Parses an ignored statement of the form ['keyword', ..., ';'].
-             * @param {Object} parent Parent definition
-             * @param {string} keyword Initial token
-             * @throws {Error} If the directive cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseIgnoredStatement = function(parent, keyword) {
-                var token;
-                do {
-                    token = this.tn.next();
-                    if (token === null) {
-                        throw(new Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored) at line "+this.tn.line));
-                    }
-                    if (token === Lang.END) break;
-                } while (true);
-            };
-        
-            /**
-             * Parses a service definition.
-             * @param {Object} parent Parent definition
-             * @param {string} keyword Initial token
-             * @throws {Error} If the service cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseService = function(parent, keyword) {
-                var token = this.tn.next();
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal service name at line "+this.tn.line+": "+token));
-                }
-                var name = token;
-                var svc = {
-                    "name": name,
-                    "rpc": {},
-                    "options": {}
-                };
-                token = this.tn.next();
-                if (token !== Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after service "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
-                }
-                do {
-                    token = this.tn.next();
-                    if (token === "option") {
-                        this._parseOption(svc, token);
-                    } else if (token === 'rpc') {
-                        this._parseServiceRPC(svc, token);
-                    } else if (token !== Lang.CLOSE) {
-                        throw(new Error("Illegal type for service "+name+" at line "+this.tn.line+": "+token));
-                    }
-                } while (token !== Lang.CLOSE);
-                parent["services"].push(svc);
-            };
-        
-            /**
-             * Parses a RPC service definition of the form ['rpc', name, (request), 'returns', (response)].
-             * @param {Object} svc Parent definition
-             * @param {string} token Initial token
-             * @private
-             */
-            Parser.prototype._parseServiceRPC = function(svc, token) {
-                var type = token;
-                token = this.tn.next();
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal RPC method name in service "+svc["name"]+" at line "+this.tn.line+": "+token));
-                }
-                var name = token;
-                var method = {
-                    "request": null,
-                    "response": null,
-                    "options": {}
-                };
-                token = this.tn.next();
-                if (token !== Lang.COPTOPEN) {
-                    throw(new Error("Illegal start of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
-                }
-                token = this.tn.next();
-                if (!Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token));
-                }
-                method["request"] = token;
-                token = this.tn.next();
-                if (token != Lang.COPTCLOSE) {
-                    throw(new Error("Illegal end of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
-                }
-                token = this.tn.next();
-                if (token.toLowerCase() !== "returns") {
-                    throw(new Error("Illegal request/response delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('returns' expected)"));
-                }
-                token = this.tn.next();
-                if (token != Lang.COPTOPEN) {
-                    throw(new Error("Illegal start of response type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTOPEN+"' expected)"));
-                }
-                token = this.tn.next();
-                method["response"] = token;
-                token = this.tn.next();
-                if (token !== Lang.COPTCLOSE) {
-                    throw(new Error("Illegal end of response type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"))
-                }
-                token = this.tn.next();
-                if (token === Lang.OPEN) {
-                    do {
-                        token = this.tn.next();
-                        if (token === 'option') {
-                            this._parseOption(method, token); // <- will fail for the custom-options example
-                        } else if (token !== Lang.CLOSE) {
-                            throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('option' expected)"));
-                        }
-                    } while (token !== Lang.CLOSE);
-                } else if (token !== Lang.END) {
-                    throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
-                }
-                if (typeof svc[type] === 'undefined') svc[type] = {};
-                svc[type][name] = method;
-            };
-        
-            /**
-             * Parses a message definition.
-             * @param {Object} parent Parent definition
-             * @param {string} token First token
-             * @return {Object}
-             * @throws {Error} If the message cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseMessage = function(parent, token) {
-                /** @dict */
-                var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
-                token = this.tn.next();
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal message name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
-                }
-                msg["name"] = token;
-                token = this.tn.next();
-                if (token != Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
-                }
-                msg["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
-                msg["enums"] = [];
-                msg["messages"] = [];
-                msg["options"] = {};
-                // msg["extensions"] = undefined
-                do {
-                    token = this.tn.next();
-                    if (token === Lang.CLOSE) {
-                        token = this.tn.peek();
-                        if (token === Lang.END) this.tn.next();
-                        break;
-                    } else if (Lang.RULE.test(token)) {
-                        this._parseMessageField(msg, token);
-                    } else if (token === "enum") {
-                        this._parseEnum(msg, token);
-                    } else if (token === "message") {
-                        this._parseMessage(msg, token);
-                    } else if (token === "option") {
-                        this._parseOption(msg, token);
-                    } else if (token === "extensions") {
-                        msg["extensions"] = this._parseExtensions(msg, token);
-                    } else if (token === "extend") {
-                        this._parseExtend(msg, token);
-                    } else {
-                        throw(new Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
-                    }
-                } while (true);
-                parent["messages"].push(msg);
-                return msg;
-            };
-        
-            /**
-             * Parses a message field.
-             * @param {Object} msg Message definition
-             * @param {string} token Initial token
-             * @throws {Error} If the message field cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseMessageField = function(msg, token) {
-                /** @dict */
-                var fld = {};
-                fld["rule"] = token;
-                token = this.tn.next();
-                if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal field type in message "+msg.name+" at line "+this.tn.line+": "+token));
-                }
-                fld["type"] = token;
-                token = this.tn.next();
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal field name in message "+msg.name+" at line "+this.tn.line+": "+token));
-                }
-                fld["name"] = token;
-                token = this.tn.next();
-                if (token !== Lang.EQUAL) {
-                    throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
-                }
-                token = this.tn.next();
-                try {
-                    fld["id"] = this._parseId(token);
-                } catch (e) {
-                    throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
-                }
-                /** @dict */
-                fld["options"] = {};
-                token = this.tn.next();
-                if (token === Lang.OPTOPEN) {
-                    this._parseFieldOptions(msg, fld, token);
-                    token = this.tn.next();
-                }
-                if (token !== Lang.END) {
-                    throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
-                }
-                msg["fields"].push(fld);
-            };
-        
-            /**
-             * Parses a set of field option definitions.
-             * @param {Object} msg Message definition
-             * @param {Object} fld Field definition
-             * @param {string} token Initial token
-             * @throws {Error} If the message field options cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseFieldOptions = function(msg, fld, token) {
-                var first = true;
-                do {
-                    token = this.tn.next();
-                    if (token === Lang.OPTCLOSE) {
-                        break;
-                    } else if (token === Lang.OPTEND) {
-                        if (first) {
-                            throw(new Error("Illegal start of message field options in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
-                        }
-                        token = this.tn.next();
-                    }
-                    this._parseFieldOption(msg, fld, token);
-                    first = false;
-                } while (true);
-            };
-        
-            /**
-             * Parses a single field option.
-             * @param {Object} msg Message definition
-             * @param {Object} fld Field definition
-             * @param {string} token Initial token
-             * @throws {Error} If the mesage field option cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseFieldOption = function(msg, fld, token) {
-                var custom = false;
-                if (token === Lang.COPTOPEN) {
-                    token = this.tn.next();
-                    custom = true;
-                }
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal field option in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
-                }
-                var name = token;
-                token = this.tn.next();
-                if (custom) {
-                    if (token !== Lang.COPTCLOSE) {
-                        throw(new Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" (')' expected)"));
-                    }
-                    name = '('+name+')';
-                    token = this.tn.next();
-                    if (Lang.FQTYPEREF.test(token)) {
-                        name += token;
-                        token = this.tn.next();
-                    }
-                }
-                if (token !== Lang.EQUAL) {
-                    throw(new Error("Illegal field option operation in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('=' expected)"));
-                }
-                var value;
-                token = this.tn.next();
-                if (token === Lang.STRINGOPEN) {
-                    value = this.tn.next();
-                    token = this.tn.next();
-                    if (token != Lang.STRINGCLOSE) {
-                        throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
-                    }
-                } else if (Lang.NUMBER.test(token, true)) {
-                    value = this._parseNumber(token, true);
-                } else if (Lang.TYPEREF.test(token)) {
-                    value = token; // TODO: Resolve?
-                } else {
-                    throw(new Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token));
-                }
-                fld["options"][name] = value;
-            };
-        
-            /**
-             * Parses an enum.
-             * @param {Object} msg Message definition
-             * @param {string} token Initial token
-             * @throws {Error} If the enum cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseEnum = function(msg, token) {
-                /** @dict */
-                var enm = {};
-                token = this.tn.next();
-                if (!Lang.NAME.test(token)) {
-                    throw(new Error("Illegal enum name in message "+msg.name+" at line "+this.tn.line+": "+token));
-                }
-                enm["name"] = token;
-                token = this.tn.next();
-                if (token !== Lang.OPEN) {
-                    throw(new Error("Illegal OPEN after enum "+enm.name+" at line "+this.tn.line+": "+token));
-                }
-                enm["values"] = [];
-                enm["options"] = {};
-                do {
-                    token = this.tn.next();
-                    if (token === Lang.CLOSE) {
-                        token = this.tn.peek();
-                        if (token === Lang.END) this.tn.next();
-                        break;
-                    }
-                    if (token == 'option') {
-                        this._parseOption(enm, token);
-                    } else {
-                        if (!Lang.NAME.test(token)) {
-                            throw(new Error("Illegal enum value name in enum "+enm.name+" at line "+this.tn.line+": "+token));
-                        }
-                        this._parseEnumValue(enm, token);
-                    }
-                } while (true);
-                msg["enums"].push(enm);
-            };
-        
-            /**
-             * Parses an enum value.
-             * @param {Object} enm Enum definition
-             * @param {string} token Initial token
-             * @throws {Error} If the enum value cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseEnumValue = function(enm, token) {
-                /** @dict */
-                var val = {};
-                val["name"] = token;
-                token = this.tn.next();
-                if (token !== Lang.EQUAL) {
-                    throw(new Error("Illegal enum value operator in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
-                }
-                token = this.tn.next();
-                try {
-                    val["id"] = this._parseId(token, true);
-                } catch (e) {
-                    throw(new Error("Illegal enum value id in enum "+enm.name+" at line "+this.tn.line+": "+token));
-                }
-                enm["values"].push(val);
-                token = this.tn.next();
-                if (token === Lang.OPTOPEN) {
-                    var opt = { 'options' : {} }; // TODO: Actually expose them somehow.
-                    this._parseFieldOptions(enm, opt, token);
-                    token = this.tn.next();
-                }
-                if (token !== Lang.END) {
-                    throw(new Error("Illegal enum value delimiter in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
-                }
-            };
-        
-            /**
-             * Parses an extensions statement.
-             * @param {Object} msg Message object
-             * @param {string} token Initial token
-             * @throws {Error} If the extensions statement cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseExtensions = function(msg, token) {
-                /** @type {Array.<number>} */
-                var range = [];
-                token = this.tn.next();
-                if (token === "min") { // FIXME: Does the official implementation support this?
-                    range.push(Lang.ID_MIN);
-                } else if (token === "max") {
-                    range.push(Lang.ID_MAX);
-                } else {
-                    range.push(this._parseNumber(token));
-                }
-                token = this.tn.next();
-                if (token !== 'to') {
-                    throw("Illegal extensions delimiter in message "+msg.name+" at line "+this.tn.line+" ('to' expected)");
-                }
-                token = this.tn.next();
-                if (token === "min") {
-                    range.push(Lang.ID_MIN);
-                } else if (token === "max") {
-                    range.push(Lang.ID_MAX);
-                } else {
-                    range.push(this._parseNumber(token));
-                }
-                token = this.tn.next();
-                if (token !== Lang.END) {
-                    throw(new Error("Illegal extension delimiter in message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
-                }
-                return range;
-            };
-        
-            /**
-             * Parses an extend block.
-             * @param {Object} parent Parent object
-             * @param {string} token Initial token
-             * @throws {Error} If the extend block cannot be parsed
-             * @private
-             */
-            Parser.prototype._parseExtend = function(parent, token) {
-                token = this.tn.next();
-                if (!Lang.TYPEREF.test(token)) {
-                    throw(new Error("Illegal extended message name at line "+this.tn.line+": "+token));
-                }
-                /** @dict */
-                var ext = {};
-                ext["ref"] = token;
-                ext["fields"] = [];
-                token = this.tn.next();
-                if (token !== Lang.OPEN) {
-                    throw(new Error("Illegal OPEN in extend "+ext.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
-                }
-                do {
-                    token = this.tn.next();
-                    if (token === Lang.CLOSE) {
-                        token = this.tn.peek();
-                        if (token == Lang.END) this.tn.next();
-                        break;
-                    } else if (Lang.RULE.test(token)) {
-                        this._parseMessageField(ext, token);
-                    } else {
-                        throw(new Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token+" (rule or '"+Lang.CLOSE+"' expected)"));
-                    }
-                } while (true);
-                parent["messages"].push(ext);
-                return ext;
-            };
-        
-            /**
-             * Returns a string representation of this object.
-             * @returns {string} String representation as of "Parser"
-             */
-            Parser.prototype.toString = function() {
-                return "Parser";
-            };
-            
-            return Parser;
-            
-        })(ProtoBuf, ProtoBuf.Lang, ProtoBuf.DotProto.Tokenizer);
-                        
         /**
          * @alias ProtoBuf.Reflect
          * @expose
@@ -1409,16 +503,8 @@
              * @expose
              */
             Namespace.prototype.addChild = function(child) {
-                var other;
-                if (other = this.getChild(child.name)) {
-                    // Try to revert camelcase transformation on collision
-                    if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName)) {
-                        other.name = other.originalName; // Revert previous first (effectively keeps both originals)
-                    } else if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName)) {
-                        child.name = child.originalName;
-                    } else {
-                        throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
-                    }
+                if (this.hasChild(child.name)) {
+                    throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
                 }
                 this.children.push(child);
             };
@@ -1602,7 +688,7 @@
                      * Constructs a new runtime Message.
                      * @name ProtoBuf.Builder.Message
                      * @class Barebone of all runtime messages.
-                     * @param {Object.<string,*>|...[string]} values Preset values
+                     * @param {Object.<string,*>} values Preset values
                      * @constructor
                      * @throws {Error} If the message cannot be created
                      */
@@ -1612,22 +698,20 @@
                      */
                     var Message;
                     try {
-                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); })");
+                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); })");
                         // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
                     } catch (err) {
-                        Message = function() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); };
+                        Message = function() { ProtoBuf.Builder.Message.call(this); this.__construct.apply(this, arguments); };
                         // Chrome extensions prohibit the usage of eval, see #58 FIXME: Does this work?
                     }
                     
                     // Extends ProtoBuf.Builder.Message
                     Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
-        
+                    
                     /**
-                     * Initializes a runtime message.
-                     * @param {Object.<string,*>|...[string]} values Preset values
-                     * @private
+                     * @expose
                      */
-                    function init(values) {
+                    Message.prototype.__construct = function(values) {
                         var i, field;
         
                         // Create fields on the object itself to allow setting and getting through Message#fieldname
@@ -1665,7 +749,7 @@
                                 }
                             }
                         }
-                    }
+                    };
         
                     /**
                      * Adds a value to a repeated field.
@@ -1738,7 +822,7 @@
                         
                         (function(field) {
                             // set/get[SomeValue]
-                            var Name = field.originalName.replace(/(_[a-zA-Z])/g,
+                            var Name = field.name.replace(/(_[a-zA-Z])/g,
                                 function(match) {
                                     return match.toUpperCase().replace('_','');
                                 }
@@ -1746,7 +830,7 @@
                             Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
             
                             // set/get_[some_value]
-                            var name = field.originalName.replace(/([A-Z])/g,
+                            var name = field.name.replace(/([A-Z])/g,
                                 function(match) {
                                     return "_"+match;
                                 }
@@ -1819,169 +903,79 @@
                      * Encodes the message.
                      * @name ProtoBuf.Builder.Message#encode
                      * @function
-                     * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one if omitted.
-                     * @return {!ByteBuffer} Encoded message as a ByteBuffer
-                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
-                     *  returns the encoded ByteBuffer in the `encoded` property on the error.
+                     * @param {ByteBuffer=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+                     * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
+                     * @return {ByteBuffer} Encoded message
+                     * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
                      * @expose
-                     * @see ProtoBuf.Builder.Message#encode64
-                     * @see ProtoBuf.Builder.Message#encodeHex
-                     * @see ProtoBuf.Builder.Message#encodeAB
                      */
-                    Message.prototype.encode = function(buffer) {
+                    Message.prototype.encode = function(buffer, doNotThrow) {
                         buffer = buffer || new ByteBuffer();
                         var le = buffer.littleEndian;
                         try {
-                            return T.encode(this, buffer.LE()).flip().LE(le);
+                            var bb = T.encode(this, buffer.LE(), doNotThrow).flip();
+                            buffer.littleEndian = le;
+                            return bb;
                         } catch (e) {
-                            buffer.LE(le);
+                            buffer.littleEndian = le;
                             throw(e);
                         }
                     };
         
                     /**
                      * Directly encodes the message to an ArrayBuffer.
-                     * @name ProtoBuf.Builder.Message#encodeAB
-                     * @function
-                     * @return {ArrayBuffer} Encoded message as ArrayBuffer
-                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
-                     *  returns the encoded ArrayBuffer in the `encoded` property on the error.
-                     * @expose
-                     */
-                    Message.prototype.encodeAB = function() {
-                        var enc;
-                        try {
-                            return this.encode().toArrayBuffer();
-                        } catch (err) {
-                            if (err["encoded"]) err["encoded"] = err["encoded"].toArrayBuffer();
-                            throw(err);
-                        }
-                    };
-        
-                    /**
-                     * Returns the message as an ArrayBuffer. This is an alias for {@link ProtoBuf.Builder.Message#encodeAB}.
                      * @name ProtoBuf.Builder.Message#toArrayBuffer
                      * @function
                      * @return {ArrayBuffer} Encoded message as ArrayBuffer
-                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
-                     *  returns the encoded ArrayBuffer in the `encoded` property on the error.
+                     * @throws {Error} If the message cannot be encoded
                      * @expose
                      */
-                    Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
+                    Message.prototype.toArrayBuffer = function() {
+                        return this.encode().toArrayBuffer();
+                    };
         
                     /**
                      * Directly encodes the message to a node Buffer.
-                     * @name ProtoBuf.Builder.Message#encodeNB
+                     * @name ProtoBuf.Builder.Message#toBuffer
                      * @function
                      * @return {!Buffer}
-                     * @throws {Error} If the message cannot be encoded, not running under node.js or if required fields are
-                     *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
+                     * @throws {Error} If the message cannot be encoded or not running under node.js
                      * @expose
                      */
-                    Message.prototype.encodeNB = function() {
-                        try {
-                            return this.encode().toBuffer();
-                        } catch (err) {
-                            if (err["encoded"]) err["encoded"] = err["encoded"].toBuffer();
-                            throw(err);
-                        }
+                    Message.prototype.toBuffer = function() {
+                        return this.encode().toBuffer();
                     };
-        
-                    /**
-                     * Returns the message as a node Buffer. This is an alias for {@link ProtoBuf.Builder.Message#encodeNB}.
-                     * @name ProtoBuf.Builder.Message#encodeNB
-                     * @function
-                     * @return {!Buffer}
-                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
-                     *  returns the encoded node Buffer in the `encoded` property on the error.
-                     * @expose
-                     */
-                    Message.prototype.toBuffer = Message.prototype.encodeNB;
         
                     /**
                      * Directly encodes the message to a base64 encoded string.
-                     * @name ProtoBuf.Builder.Message#encode64
-                     * @function
-                     * @return {string} Base64 encoded string
-                     * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
-                     *  still returns the encoded base64 string in the `encoded` property on the error.
-                     * @expose
-                     */
-                    Message.prototype.encode64 = function() {
-                        try {
-                            return this.encode().toBase64();
-                        } catch (err) {
-                            if (err["encoded"]) err["encoded"] = err["encoded"].toBase64();
-                            throw(err);
-                        }
-                    };
-        
-                    /**
-                     * Returns the message as a base64 encoded string. This is an alias for {@link ProtoBuf.Builder.Message#encode64}.
                      * @name ProtoBuf.Builder.Message#toBase64
                      * @function
                      * @return {string} Base64 encoded string
-                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
-                     *  returns the encoded base64 string in the `encoded` property on the error.
+                     * @throws {Error} If the underlying buffer cannot be encoded
                      * @expose
                      */
-                    Message.prototype.toBase64 = Message.prototype.encode64;
-        
-                    /**
-                     * Directly encodes the message to a hex encoded string.
-                     * @name ProtoBuf.Builder.Message#encodeHex
-                     * @function
-                     * @return {string} Hex encoded string
-                     * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
-                     *  still returns the encoded hex string in the `encoded` property on the error.
-                     * @expose
-                     */
-                    Message.prototype.encodeHex = function() {
-                        try {
-                            return this.encode().toHex();
-                        } catch (err) {
-                            if (err["encoded"]) err["encoded"] = err["encoded"].toHex();
-                            throw(err);
-                        }
+                    Message.prototype.toBase64 = function() {
+                        return this.encode().toBase64();
                     };
         
                     /**
-                     * Returns the message as a hex encoded string. This is an alias for {@link ProtoBuf.Builder.Message#encodeHex}.
-                     * @name ProtoBuf.Builder.Message#toHex
-                     * @function
-                     * @return {string} Hex encoded string
-                     * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
-                     *  returns the encoded hex string in the `encoded` property on the error.
-                     * @expose
-                     */
-                    Message.prototype.toHex = Message.prototype.encodeHex;
-        
-                    /**
-                     * Decodes the message from the specified buffer or string.
+                     * Decodes the message from the specified ByteBuffer.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
                      * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
-                     * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
                      * @return {!ProtoBuf.Builder.Message} Decoded message
-                     * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
-                     *  returns the decoded message with missing fields in the `decoded` property on the error.
+                     * @throws {Error} If the message cannot be decoded
                      * @expose
-                     * @see ProtoBuf.Builder.Message.decode64
-                     * @see ProtoBuf.Builder.Message.decodeHex
                      */
-                    Message.decode = function(buffer, enc) {
-                        if (buffer === null) throw(new Error("buffer must not be null"));
-                        if (typeof buffer === 'string') {
-                            buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-                        }
-                        buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
+                    Message.decode = function(buffer) {
+                        buffer = buffer ? (buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer)) : new ByteBuffer();
                         var le = buffer.littleEndian;
                         try {
                             var msg = T.decode(buffer.LE());
-                            buffer.LE(le);
+                            buffer.littleEndian = le;
                             return msg;
                         } catch (e) {
-                            buffer.LE(le);
+                            buffer.littleEndian = le;
                             throw(e);
                         }
                     };
@@ -1992,26 +986,11 @@
                      * @function
                      * @param {string} str String to decode from
                      * @return {!ProtoBuf.Builder.Message} Decoded message
-                     * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
-                     *  returns the decoded message with missing fields in the `decoded` property on the error.
+                     * @throws {Error} If the message cannot be decoded
                      * @expose
                      */
                     Message.decode64 = function(str) {
-                        return Message.decode(str, "base64");
-                    };
-        
-                    /**
-                     * Decodes the message from the specified hex encoded string.
-                     * @name ProtoBuf.Builder.Message.decodeHex
-                     * @function
-                     * @param {string} str String to decode from
-                     * @return {!ProtoBuf.Builder.Message} Decoded message
-                     * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
-                     *  returns the decoded message with missing fields in the `decoded` property on the error.
-                     * @expose
-                     */
-                    Message.decodeHex = function(str) {
-                        return Message.decode(str, "hex");
+                        return Message.decode(ByteBuffer.decode64(str));
                     };
         
                     // Utility
@@ -2070,25 +1049,21 @@
              * Encodes a runtime message's contents to the specified buffer.
              * @param {ProtoBuf.Builder.Message} message Runtime message to encode
              * @param {ByteBuffer} buffer ByteBuffer to write to
+             * @param {boolean=} doNotThrow Forces encoding even if required fields are missing, defaults to false
              * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(message, buffer) {
+            Message.prototype.encode = function(message, buffer, doNotThrow) {
                 var fields = this.getChildren(Message.Field),
-                    fieldMissing = null;
+                    offset = buffer.offset;
                 for (var i=0; i<fields.length; i++) {
                     var val = message.get(fields[i].name);
-                    if (fields[i].required && val === null) {
-                        if (fieldMissing === null) fieldMissing = fields[i];
-                    } else {
-                        fields[i].encode(val, buffer);
+                    if (fields[i].required && val === null && !doNotThrow) {
+                        buffer.offset = offset;
+                        throw(new Error("Missing required field for "+this.toString(true)+": "+fields[i].name));
                     }
-                }
-                if (fieldMissing !== null) {
-                    var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
-                    err["encoded"] = buffer; // Still expose what we got
-                    throw(err);
+                    fields[i].encode(val, buffer);
                 }
                 return buffer;
             };
@@ -2141,8 +1116,8 @@
                 var fields = this.getChildren(Reflect.Field);
                 for (var i=0; i<fields.length; i++) {
                     if (fields[i].required && msg[fields[i].name] === null) {
-                        var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
-                        err["decoded"] = msg; // Still expose what we got
+                        var err = new Error("Missing field "+fields[i].toString(true)+" in "+this.toString(true)+"#decode");
+                        err.msg = msg;
                         throw(err);
                     }
                 }
@@ -2212,20 +1187,6 @@
                  * @expose
                  */
                 this.options = options || {};
-        
-                /**
-                 * Original field name.
-                 * @type {string}
-                 * @expose
-                 */
-                this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
-                
-                // Convert field names to camel case notation if the override is set
-                if (ProtoBuf.convertFieldsToCamelCase) {
-                    this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
-                        return $1.toUpperCase();
-                    });
-                }
             };
         
             // Extends T
@@ -3001,13 +1962,6 @@
                  * @expose
                  */
                 this.files = {};
-        
-                /**
-                 * Import root override.
-                 * @type {?string}
-                 * @expose
-                 */
-                this.importRoot = null;
             };
         
             /**
@@ -3315,7 +2269,7 @@
             /**
              * Imports another definition into this builder.
              * @param {Object.<string,*>} parsed Parsed import
-             * @param {(string|{root: string, file: string})=} filename Imported file name
+             * @param {string=} filename Imported file name
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the definition or file cannot be imported
              * @expose
@@ -3348,31 +2302,12 @@
                     this.reset();
                 }
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
-                    var importRoot, delim = '/', resetRoot = false;
-                    if (typeof filename === 'object') { // If an import root is specified, override
-                        this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
-                        importRoot = this.importRoot;
-                        filename = filename["file"];
-                        if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
-                    } else {
-                        if (!filename) {
-                            throw(new Error("Cannot determine import root: File name is unknown"));
-                        }
-                        if ('importRoot' in this) {
-                          importRoot = this.importRoot;
-                        } else {
-                          if (filename.indexOf("/") >= 0) { // Unix
-                              importRoot = filename.replace(/\/[^\/]*$/, "");
-                              if (/* /file.proto */ importRoot === "") importRoot = "/";
-                          } else if (filename.indexOf("\\") >= 0) { // Windows
-                              importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
-                          } else {
-                              importRoot = ".";
-                          }
-                        }
+                    if (!filename) {
+                        throw(new Error("Cannot determine import root: File name is unknown"));
                     }
+                    var importRoot = filename.replace(/[\/\\][^\/\\]*$/, "");
                     for (var i=0; i<parsed['imports'].length; i++) {
-                        var importFilename = importRoot+delim+parsed['imports'][i];
+                        var importFilename = importRoot+"/"+parsed['imports'][i];
                         if (/\.json$/i.test(importFilename)) { // Always possible
                             var json = ProtoBuf.Util.fetch(importFilename);
                             if (json === null) {
@@ -3380,17 +2315,8 @@
                             }
                             this["import"](JSON.parse(json), importFilename); // Throws on its own
                         } else {
-                            if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
-                            var proto = ProtoBuf.Util.fetch(importFilename);
-                            if (proto === null) {
-                                throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
-                            }
-                            var parser = new ProtoBuf.DotProto.Parser(proto+"");
-                            this["import"](parser.parse(), importFilename); // Throws on its own                    
+                            throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
                         }
-                    }
-                    if (resetRoot) { // Reset import root override when all imports are done
-                        this.importRoot = null;
                     }
                 }
                 if (!!parsed['extends']) {
@@ -3572,48 +2498,18 @@
          * Builds a .proto definition and returns the Builder.
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
-         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
+         * @param {string=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
          */
         ProtoBuf.protoFromString = function(proto, builder, filename) {
-            if (typeof builder == 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
-                filename = builder;
-                builder = null;
-            }
-            var parser = new ProtoBuf.DotProto.Parser(proto+""),
-                parsed = parser.parse(),
-                builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
-            if (parsed['messages'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['messages']);
-                builder.reset();
-            }
-            if (parsed['enums'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['enums']);
-                builder.reset();
-            }
-            if (parsed['services'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['services']);
-                builder.reset();
-            }
-            if (filename && parsed['imports'].length > 0) {
-                builder["import"]({
-                    "imports": parsed["imports"]
-                }, filename);
-            }
-            builder.resolveAll();
-            builder.build();
-            return builder;
+            throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
         };
 
         /**
          * Builds a .proto file and returns the Builder.
-         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
-         *  an overridden 'root' path for all imported files.
+         * @param {string} filename Path to proto filename
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
          *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
          *   function will return the Builder or NULL if the request has failed.
@@ -3630,11 +2526,11 @@
                 callback = null;
             }
             if (callback) {
-                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
+                ProtoBuf.Util.fetch(filename, function(contents) {
                     callback(ProtoBuf.protoFromString(contents, builder, filename));
                 });
             } else {
-                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
+                var contents = ProtoBuf.Util.fetch(filename);
                 return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
         };

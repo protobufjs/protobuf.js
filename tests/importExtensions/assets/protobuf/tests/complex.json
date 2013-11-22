@@ -1,0 +1,91 @@
+[
+    {
+        "name": "Car",
+        "messages": [
+            {
+                "name": "Vendor",
+                "fields": [
+                    {
+                        "rule": "required",
+                        "name": "name",
+                        "type": "string",
+                        "id": 1
+                    },{
+                        "rule": "optional",
+                        "name": "address",
+                        "type": "Address",
+                        "id": 2
+                    }
+                ],
+                "messages": [
+                    {
+                        "name": "Address",
+                        "fields": [
+                            {
+                                "rule": "required",
+                                "name": "country",
+                                "type": "string",
+                                "id": 1
+                            }
+                        ]
+                    }
+                ]
+            },{
+                "name": "Holder",
+                "fields": [
+                    {
+                        "rule": "optional",
+                        "type": "string",
+                        "name": "first_name",
+                        "id": 1
+                    },{
+                        "rule": "required",
+                        "type": "string",
+                        "name": "last_name",
+                        "id": 2
+                    },{
+                        "rule": "optional",
+                        "type": "Vendor.Address",
+                        "name": "address",
+                        "id": 3
+                    }
+                ]
+            }
+        ],
+        "fields": [
+            {
+                "rule": "required",
+                "type": "string",
+                "name": "model",
+                "id": 1
+            },{
+                "rule": "required",
+                "type": "Vendor",
+                "name": "vendor",
+                "id": 2
+            },{
+                "rule": "optional",
+                "type": "Speed",
+                "name": "speed",
+                "id": 3,
+                "options": {
+                    "default": "FAST"
+                }
+            }
+        ],
+        "enums": [
+            {
+                "name": "Speed",
+                "values": [
+                    {
+                        "name": "FAST",
+                        "id": 1
+                    },{
+                        "name": "SUPERFAST",
+                        "id": 2
+                    }
+                ]
+            }
+        ]
+    }
+]
