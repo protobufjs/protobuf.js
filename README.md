@@ -20,7 +20,7 @@ ProtoBuf 2.x aims to unify the API driving the mostly feature-complete 1.x branc
 backward-incompatible changes. It for example eases working with hex and base64 encoded strings as added to ByteBuffer
 2.x, provides an intuitive API for ArrayBuffer (AB) and node Buffers (NB) and unifies the way error handling on missing
 required fields works for both encoding and decoding. If you have any suggestions for API changes that are necessary in
-your oppinion, [let me know](https://github.com/dcodeIO/ProtoBuf.js/issues?state=closed), as this is the right time to
+your opinion, [let me know](https://github.com/dcodeIO/ProtoBuf.js/issues?state=closed), as this is the right time to
 make such changes.
 
 Features
