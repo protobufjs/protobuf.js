@@ -2436,21 +2436,6 @@
                     }
                     this.files[filename] = true;
                 }
-                if (!!parsed['messages']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['messages']);
-                    this.reset();
-                }
-                if (!!parsed['enums']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['enums']);
-                    this.reset();
-                }
-                if (!!parsed['services']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['services']);
-                    this.reset();
-                }
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
                     if (!filename) {
                         throw(new Error("Cannot determine import root: File name is unknown"));
@@ -2490,6 +2475,21 @@
                     if (resetRoot) { // Reset import root override when all imports are done
                         this.importRoot = null;
                     }
+                }
+                if (!!parsed['messages']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
+                    this.create(parsed['messages']);
+                    this.reset();
+                }
+                if (!!parsed['enums']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
+                    this.create(parsed['enums']);
+                    this.reset();
+                }
+                if (!!parsed['services']) {
+                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
+                    this.create(parsed['services']);
+                    this.reset();
                 }
                 if (!!parsed['extends']) {
                     if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
