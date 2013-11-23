@@ -40,22 +40,28 @@ if (process.argv.length < 3) {
     console.log("  -amd[=My.Package]       Creates an AMD define instead of just a JSON def.");
     console.log("                          If you do not specify a package, the package");
     console.log("                          declaration from the .proto file is used instead.\n");
-    console.log("  -min                    Minifies the output.\n\n");
-    console.log("If none of -class, -commonjs or -amd is specified, the raw AST will be returned.");
+    console.log("If none of -class, -commonjs or -amd is specified, the raw AST will be returned.\n\n");    
+    console.log("  -min                    Minifies the output.");
+    // console.log("  -path=DIR               Adds a folder to the include path");
     process.exit(1);
 }
 var options = {};
 for (var i=3; i<process.argv.length; i++) {
     var option = process.argv[i];
     if (option.substring(0,1) == "-") {
-        var opt = option.split("=", 2);
-        options[opt[0].substring(1)] = opt.length == 2 ? opt[1] : true;
+        var opt = option.split("=", 2), key = opt[0].substring(1);
+        if (typeof options[key] === 'string') {
+            options[key] = [options[key], opt[1]];
+        } else {
+            options[key] = opt.length == 2 ? opt[1] : true;
+        }
     }
 }
 
-var sourceFile = process.argv[2];
-var min = !!options['min'];
-var importedFiles = []; // Already imported files
+var sourceFile = process.argv[2],
+    min = !!options['min'],
+    importedFiles = [], // Already imported files
+    includePath = Array.isArray(options['path']) ? options['path'] : (typeof options['path'] === 'string' ? [options['path']] : []);
 
 // Switch cases
 try {
@@ -96,14 +102,22 @@ function build_json(file, min) {
  * @throws {Error} If the package is not a valid namespace
  */
 function build_js(file, min) {
-    var base = path.dirname(file);
-    var source = fs.readFileSync(file);
-    var parser = new ProtoBuf.DotProto.Parser(source);
-    var ast = parser.parse();
-    var out = "";
+    var base = path.dirname(file),
+        source = fs.readFileSync(file),
+        parser = new ProtoBuf.DotProto.Parser(source),
+        ast = parser.parse(),
+        out = "";
     if (ast['imports']) {
         ast['imports'].forEach(function(ifile) {
-            var pfile = path.resolve(base, ifile);
+            var pfile = path.resolve(base, ifile),
+                ofile = pfile;
+            if (!fs.existsSync(pfile)) {
+                for (var i=0; i<includePath.length; i++) {
+                    pfile = path.resolve(includePath[i], ifile);
+                    if (fs.existsSync(pfile)) break;
+                    pfile = ofile; // Always fail on the file tried first
+                }
+            }
             if (importedFiles.indexOf(pfile) < 0 && ProtoBuf.Builder.isValidImport(ifile)) {
                 out += (build_js(pfile, min))[1];
                 importedFiles.push(pfile);
