@@ -63,6 +63,8 @@ var sourceFile = process.argv[2],
     importedFiles = [], // Already imported files
     includePath = Array.isArray(options['path']) ? options['path'] : (typeof options['path'] === 'string' ? [options['path']] : []);
 
+includePath.push(path.dirname(sourceFile));
+
 // Switch cases
 try {
     var out;
