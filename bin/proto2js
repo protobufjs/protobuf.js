@@ -40,9 +40,9 @@ if (process.argv.length < 3) {
     console.log("  -amd[=My.Package]       Creates an AMD define instead of just a JSON def.");
     console.log("                          If you do not specify a package, the package");
     console.log("                          declaration from the .proto file is used instead.\n");
-    console.log("If none of -class, -commonjs or -amd is specified, the raw AST will be returned.\n\n");    
-    console.log("  -min                    Minifies the output.");
-    // console.log("  -path=DIR               Adds a folder to the include path");
+    console.log("If none of -class, -commonjs or -amd is specified, the raw AST will be returned.\n");    
+    console.log("  -min                    Minifies the output.\n");
+    console.log("  -path=DIR               Adds a directory to the include path.");
     process.exit(1);
 }
 var options = {};
@@ -109,18 +109,20 @@ function build_js(file, min) {
         out = "";
     if (ast['imports']) {
         ast['imports'].forEach(function(ifile) {
-            var pfile = path.resolve(base, ifile),
-                ofile = pfile;
-            if (!fs.existsSync(pfile)) {
-                for (var i=0; i<includePath.length; i++) {
-                    pfile = path.resolve(includePath[i], ifile);
-                    if (fs.existsSync(pfile)) break;
-                    pfile = ofile; // Always fail on the file tried first
+            if (ProtoBuf.Builder.isValidImport(ifile)) {
+                var pfile = path.resolve(base, ifile),
+                    ofile = pfile;
+                if (!fs.existsSync(pfile)) {
+                    for (var i=0; i<includePath.length; i++) {
+                        pfile = path.resolve(includePath[i], ifile);
+                        if (fs.existsSync(pfile)) break;
+                        pfile = ofile; // Always fail on the file tried first
+                    }
                 }
-            }
-            if (importedFiles.indexOf(pfile) < 0 && ProtoBuf.Builder.isValidImport(ifile)) {
-                out += (build_js(pfile, min))[1];
-                importedFiles.push(pfile);
+                if (importedFiles.indexOf(pfile) < 0) {
+                    out += (build_js(pfile, min))[1];
+                    importedFiles.push(pfile);
+                }
             }
         });
         ast['imports'].length = 0;
