@@ -63,7 +63,14 @@ var sourceFile = process.argv[2],
     importedFiles = [], // Already imported files
     includePath = Array.isArray(options['path']) ? options['path'] : (typeof options['path'] === 'string' ? [options['path']] : []);
     includePath.push(path.dirname(sourceFile));
-    verify_paths(includePath);
+
+// Verify that include paths actually exist
+includePath.forEach(function(path) {
+    if (!fs.existsSync(path)) {
+        console.error('Failed to find include path: '+path);
+        process.exit(2);
+    }
+});
 
 // Switch cases
 try {
@@ -84,29 +91,16 @@ try {
 }
 
 /**
- * Verifies that all include paths exist.
- * @param {array} includePath include paths
- * @throws {Error} If an include path doesn't exist
- */
-function verify_paths(includePath) {
-  includePath.forEach(function verify_path(path) {
-    if(!fs.existsSync(path)) {
-      console.error('Failed to find include path: '+path);
-      process.exit();
-    }
-  });
-}
-
-/**
  * Simply parses a file and returns the JSON result.
  * @param {string} file Source file
  * @param {boolean=} min true to minify, false for pretty print
  * @return {string} JSON representation
  */
 function build_json(file, min) {
-    var source = fs.readFileSync(file);
-    var parser = new ProtoBuf.DotProto.Parser(source);
-    var ast = parser.parse();
+    var base = path.dirname(file),
+        source = fs.readFileSync(file),
+        parser = new ProtoBuf.DotProto.Parser(source),
+        ast = parser.parse();
     return JSON.stringify(ast, null, min ? 0 : 4);
 }
 
