@@ -3315,16 +3315,13 @@
                     this.files[filename] = true;
                 }
                 if (!!parsed['imports'] && parsed['imports'].length > 0) {
-                    if (!filename) {
-                        throw(new Error("Cannot determine import root: File name is unknown"));
-                    }
                     var importRoot, delim = '/', resetRoot = false;
                     if (typeof filename === 'object') { // If an import root is specified, override
                         this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
                         importRoot = this.importRoot;
                         filename = filename["file"];
                         if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
-                    } else {
+                    } else if (typeof filename === 'string') {
                         if (this.importRoot) { // If import root is overridden, use it
                             importRoot = this.importRoot;
                         } else { // Otherwise compute from filename
@@ -3337,23 +3334,32 @@
                                 importRoot = ".";
                             }
                         }
+                    } else {
+                        importRoot = null;
                     }
                     for (var i=0; i<parsed['imports'].length; i++) {
-                        var importFilename = importRoot+delim+parsed['imports'][i];
-                        if (/\.json$/i.test(importFilename)) { // Always possible
-                            var json = ProtoBuf.Util.fetch(importFilename);
-                            if (json === null) {
-                                throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                        if (typeof parsed['imports'][i] === 'string') { // Import file
+                            if (!importRoot) {
+                                throw(new Error("Cannot determine import root: File name is unknown"));
                             }
-                            this["import"](JSON.parse(json), importFilename); // Throws on its own
-                        } else {
-                            if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
-                            var proto = ProtoBuf.Util.fetch(importFilename);
-                            if (proto === null) {
-                                throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                            var importFilename = importRoot+delim+parsed['imports'][i];
+                            if (/\.json$/i.test(importFilename)) { // Always possible
+                                var json = ProtoBuf.Util.fetch(importFilename);
+                                if (json === null) {
+                                    throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                                }
+                                this["import"](JSON.parse(json), importFilename); // Throws on its own
+                            } else {
+                                if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
+                                var proto = ProtoBuf.Util.fetch(importFilename);
+                                if (proto === null) {
+                                    throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                                }
+                                var parser = new ProtoBuf.DotProto.Parser(proto+"");
+                                this["import"](parser.parse(), importFilename); // Throws on its own
                             }
-                            var parser = new ProtoBuf.DotProto.Parser(proto+"");
-                            this["import"](parser.parse(), importFilename); // Throws on its own                    
+                        } else { // Import structure
+                            this["import"](parsed['imports'][i], /* fake */ filename);
                         }
                     }
                     if (resetRoot) { // Reset import root override when all imports are done
