@@ -62,8 +62,8 @@ var sourceFile = process.argv[2],
     min = !!options['min'],
     importedFiles = [], // Already imported files
     includePath = Array.isArray(options['path']) ? options['path'] : (typeof options['path'] === 'string' ? [options['path']] : []);
-
-includePath.push(path.dirname(sourceFile));
+    includePath.push(path.dirname(sourceFile));
+    verify_paths(includePath);
 
 // Switch cases
 try {
@@ -81,6 +81,20 @@ try {
 } catch (e) {
     console.error(""+e);
     process.exit(2);
+}
+
+/**
+ * Verifies that all include paths exist.
+ * @param {array} includePath include paths
+ * @throws {Error} If an include path doesn't exist
+ */
+function verify_paths(includePath) {
+  includePath.forEach(function verify_path(path) {
+    if(!fs.existsSync(path)) {
+      console.error('Failed to find include path: '+path);
+      process.exit();
+    }
+  });
 }
 
 /**
