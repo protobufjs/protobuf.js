@@ -712,24 +712,9 @@
                      */
         
                     /**
-                     * @type {!Function}
-                     */
-                    var Message;
-                    try {
-                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); })");
-                        // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
-                    } catch (err) {
-                        Message = function() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); };
-                        // Chrome extensions prohibit the usage of eval, see #58 FIXME: Does this work?
-                    }
-                    
-                    // Extends ProtoBuf.Builder.Message
-                    Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
-        
-                    /**
                      * Initializes a runtime message.
                      * @param {Object.<string,*>|...[string]} values Preset values
-                     * @private
+                     * @inner
                      */
                     function init(values) {
                         var i, field;
@@ -770,6 +755,21 @@
                             }
                         }
                     }
+        
+                    /**
+                     * @type {!Function}
+                     */
+                    var Message;
+                    try {
+                        Message = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); })");
+                        // Any better way to create a named function? This is so much nicer for debugging with util.inspect()
+                    } catch (err) {
+                        Message = function() { ProtoBuf.Builder.Message.call(this); init.apply(this, arguments); };
+                        // Chrome extensions prohibit the usage of eval, see #58 FIXME: Does this work?
+                    }
+        
+                    // Extends ProtoBuf.Builder.Message
+                    Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
         
                     /**
                      * Adds a value to a repeated field.
