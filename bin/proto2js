@@ -132,34 +132,8 @@ function build_json(file, min, asObject) {
  * @throws {Error} If the package is not a valid namespace
  */
 function build_js(file, min) {
-    var base = path.dirname(file),
-        source = fs.readFileSync(file),
-        parser = new ProtoBuf.DotProto.Parser(source),
-        ast = parser.parse(),
-        out = "";
-    if (ast['imports']) {
-        ast['imports'].forEach(function(ifile) {
-            if (ProtoBuf.Builder.isValidImport(ifile)) {
-                var pfile = path.resolve(base, ifile),
-                    ofile = pfile;
-                if (!fs.existsSync(pfile)) {
-                    for (var i=0; i<includePath.length; i++) {
-                        pfile = path.resolve(includePath[i], ifile);
-                        if (fs.existsSync(pfile)) break;
-                        pfile = ofile; // Always fail on the file tried first
-                    }
-                }
-                if (importedFiles.indexOf(pfile) < 0) {
-                    out += (build_js(pfile, min))[1];
-                    importedFiles.push(pfile);
-                }
-            }
-        });
-        ast['imports'].length = 0;
-        
-    }
-    out += '.import('+JSON.stringify(ast, null, min ? 0 : 4)+')';
-    return [ast, out];
+    var ast = build_json(file, min, true);
+    return [ast, '.import('+JSON.stringify(ast, null, min ? 0 : 4)+')'];
 }
 
 /**
