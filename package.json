@@ -1,7 +1,7 @@
 {
     "name": "protobufjs",
-    "version": "2.0.0-pre",
-    "description": "Probably the most complete implementation of protobuf for JavaScript you can get.",
+    "version": "2.0.0-rc1",
+    "description": "A full-featured protobuf implementation in plain JavaScript.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
         "Frank Xu <yyfrankyy@gmail.com>"

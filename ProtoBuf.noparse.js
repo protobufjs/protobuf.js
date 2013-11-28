@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.0-pre";
+        ProtoBuf.VERSION = "2.0.0-rc1";
 
         /**
          * Wire types.
@@ -1047,7 +1047,7 @@
                      * Decodes the message from the specified buffer or string.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
-                     * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
+                     * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
                      * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
                      * @return {!ProtoBuf.Builder.Message} Decoded message
                      * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
