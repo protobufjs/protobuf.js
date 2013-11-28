@@ -103,6 +103,7 @@ function build_json(file, min, asObject) {
         parser = new ProtoBuf.DotProto.Parser(source),
         ast = parser.parse();
     if (ast['imports']) { // Replace import file names with the actual structures
+        var imports = [];
         ast['imports'].forEach(function(ifile, i) {
             if (ProtoBuf.Builder.isValidImport(ifile)) {
                 var pfile = path.resolve(base, ifile),
@@ -115,11 +116,12 @@ function build_json(file, min, asObject) {
                     }
                 }
                 if (importedFiles.indexOf(pfile) < 0) {
-                    ast['imports'][i] = build_json(pfile, min, true);
+                    imports.push(build_json(pfile, min, true));
                     importedFiles.push(pfile);
                 }
             }
         });
+        ast['imports'] = imports;
     }
     return asObject ? ast : JSON.stringify(ast, null, min ? 0 : 4);
 }
