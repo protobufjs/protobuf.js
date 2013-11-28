@@ -995,7 +995,7 @@
                 
                 // Provide the service with your actual RPC implementation based on whatever framework you like most.
                 var myService = new MyService(function(method, req, callback) {
-                    test.strictEqual(method, "MyMethod");
+                    test.strictEqual(method, ".MyService.MyMethod");
                     test.ok(req instanceof RequestType);
                     called = true;
                     

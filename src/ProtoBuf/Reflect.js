@@ -1543,7 +1543,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                             if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
                                 setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)));
                             }
-                            this.rpcImpl(method.name, req, function(err, res) { // Assumes that this is properly async
+                            this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                                 if (err) {
                                     callback(err);
                                     return;
