@@ -406,19 +406,29 @@
             };
         
             /**
+             * Returns the fully qualified name of this object.
+             * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
+             * @expose
+             */
+            T.prototype.fqn = function() {
+                var name = this.name,
+                    ptr = this;
+                do {
+                    ptr = ptr.parent;
+                    if (ptr == null) break;
+                    name = ptr.name+"."+name;
+                } while (true);
+                return name;
+            };
+        
+            /**
              * Returns a string representation of this Reflect object (its fully qualified name).
              * @param {boolean=} includeClass Set to true to include the class name. Defaults to false.
              * @return String representation
              * @expose
              */
             T.prototype.toString = function(includeClass) {
-                var name = this.name;
-                var ptr = this;
-                do {
-                    ptr = ptr.parent;
-                    if (ptr == null) break;
-                    name = ptr.name+"."+name;
-                } while (true);
+                var name = this.fqn();
                 if (includeClass) {
                     if (this instanceof Message) {
                         name = "Message "+name;
@@ -699,7 +709,7 @@
                 if (this.clazz && !rebuild) return this.clazz;
                 
                 // We need to create a prototyped Message class in an isolated scope
-                var clazz = (function(Reflect, T) {
+                var clazz = (function(ProtoBuf, T) {
                     var fields = T.getChildren(Reflect.Message.Field);
         
                     /**
@@ -768,7 +778,7 @@
                         if (!field) {
                             throw(new Error(this+"#"+key+" is undefined"));
                         }
-                        if (!(field instanceof Reflect.Message.Field)) {
+                        if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: "+field.toString(true))); // May throw if it's an enum or embedded message
                         }
                         if (!field.repeated) {
@@ -792,7 +802,7 @@
                         if (!field) {
                             throw(new Error(this+"#"+key+" is not a field: undefined"));
                         }
-                        if (!(field instanceof Reflect.Message.Field)) {
+                        if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                         }
                         this[field.name] = field.verifyValue(value); // May throw
@@ -809,10 +819,10 @@
                      */
                     Message.prototype.get = function(key) {
                         var field = T.getChild(key);
-                        if (!field || !(field instanceof Reflect.Message.Field)) {
+                        if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: undefined"));
                         }
-                        if (!(field instanceof Reflect.Message.Field)) {
+                        if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                         }
                         return this[field.name];
@@ -1135,7 +1145,7 @@
                     
                     return Message;
         
-                })(Reflect, this);
+                })(ProtoBuf, this);
         
                 // Static enums and prototyped sub-messages
                 var children = this.getChildren();
@@ -1225,7 +1235,7 @@
                     }
                 }
                 // Check if all required fields are present
-                var fields = this.getChildren(Reflect.Field);
+                var fields = this.getChildren(ProtoBuf.Reflect.Field);
                 for (var i=0; i<fields.length; i++) {
                     if (fields[i].required && msg[fields[i].name] === null) {
                         var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
@@ -1811,35 +1821,19 @@
              */
             Service.prototype.build = function(rebuild) {
                 if (this.clazz && !rebuild) return this.clazz;
-                return this.clazz = (function(T) {
+                return this.clazz = (function(ProtoBuf, T) {
         
                     /**
                      * Constructs a new runtime Service.
-                     * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))=} rpcImpl RPC implementation receiving the method name and the message
                      * @name ProtoBuf.Builder.Service
+                     * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))=} rpcImpl RPC implementation receiving the method name and the message
                      * @class Barebone of all runtime services.
                      * @constructor
                      * @throws {Error} If the service cannot be created
                      */
+                    var Service = function(rpcImpl) {
+                        ProtoBuf.Builder.Service.call(this);
         
-                    /**
-                     * @type {!Function}
-                     */
-                    var Service;
-                    try {
-                        Service = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); })");
-                    } catch (err) {
-                        Service = function() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); };
-                    }
-                    
-                    // Extends ProtoBuf.Builder.Service
-                    Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
-        
-                    /**
-                     * @expose
-                     */
-                    Service.prototype.__construct = function(rpcImpl) {
-                        
                         /**
                          * Service implementation.
                          * @name ProtoBuf.Builder.Service#rpcImpl
@@ -1852,8 +1846,10 @@
                             // argument or null and the actual response message.
                             setTimeout(callback.bind(this, new Error("Not implemented, see: https://github.com/dcodeIO/ProtoBuf.js/wiki/Services")), 0); // Must be async!
                         };
-                        
                     };
+                    
+                    // Extends ProtoBuf.Builder.Service
+                    Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
                     
                     if (Object.defineProperty) {
                         Object.defineProperty(Service, "$options", {
@@ -1942,7 +1938,7 @@
                     
                     return Service;
                     
-                })(this);
+                })(ProtoBuf, this);
             };
             
             Reflect.Service = Service;

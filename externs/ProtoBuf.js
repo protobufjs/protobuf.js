@@ -245,8 +245,14 @@ ProtoBuf.Reflect.T.prototype.parent;
 ProtoBuf.Reflect.T.prototype.name;
 
 /**
+ * @returns {string}
+ * @nosideeffects
+ */
+ProtoBuf.Reflect.T.prototype.fqn = function() {};
+
+/**
  * @param {boolean=} includeClass
- * @return
+ * @returns {string}
  * @nosideeffects
  */
 ProtoBuf.Reflect.T.prototype.toString = function(includeClass) {};

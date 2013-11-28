@@ -20,7 +20,7 @@
  */
 (function(global) {
 
-    var FILE = "ProtoBuf.js";
+    var FILE = "ProtoBuf.min.js";
     var BROWSER = !!global.window;
     
     var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require(__dirname+"/../"+FILE),
@@ -59,9 +59,9 @@
      * @param {Object} Game Game namespace
      */
     function validateComplex(test, Game) {
-        var Car = Game.Cars.Car;
-        var Vendor = Car.Vendor;
-        var Speed = Car.Speed;
+        var Car = Game.Cars.Car,
+            Vendor = Car.Vendor,
+            Speed = Car.Speed;
     
         var vendor;
         // Car from class with argument list properties
@@ -278,7 +278,7 @@
                     { f: -0.987654321 , b: "BF 7C D6 EA" },
                     { f: +0.987654321 , b: "3F 7C D6 EA" },
                     { f: -Infinity , b: "FF 80 00 00" },
-                    { f: +Infinity , b: "7F 80 00 00" },
+                    { f: +Infinity , b: "7F 80 00 00" }
                     // { f: -NaN , b: "FF C0 00 00>" },
                     // { f: +NaN , b: "7F C0 00 00" }
                 ];
@@ -312,7 +312,7 @@
                     }
                     else {
                         test.ok( in_tolerance(x.f, m2.f), s4 );
-                    };
+                    }
                 });
             } catch(e) {
                 fail(e);
@@ -555,6 +555,8 @@
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/complex.proto");
                 validateComplex(test, builder.build("Game"));
+                var TCars = builder.lookup("Game.Cars");
+                test.strictEqual(TCars.fqn(), ".Game.Cars");
             } catch(e) {
                 fail(e);
             }
