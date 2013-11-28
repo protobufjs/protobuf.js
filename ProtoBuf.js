@@ -263,7 +263,9 @@
                 if (Util.IS_NODE) {
                     if (callback) {
                         require("fs").readFile(path, function(err, data) {
-                            if (err) callback(null);
+                            if (err) {
+                                callback(null);
+                            }
                             else callback(""+data);
                         });
                     } else {
