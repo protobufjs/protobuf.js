@@ -1,0 +1,12 @@
+import "Tests/MediaPlayer.proto";
+
+//*****************************************************************************
+//*****************************************************************************
+message ZmqMediaPlayerPbm
+{
+  extend MediaPlayerPbm
+  {
+    optional ZmqMediaPlayerPbm zmq_media_player = 310;
+  }
+  optional bool test = 1;
+}

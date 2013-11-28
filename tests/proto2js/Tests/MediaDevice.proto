@@ -1,0 +1,11 @@
+import "Tests/MediaPlayer.proto";
+import "Tests/ZmqMediaPlayer.proto";
+
+//*****************************************************************************
+//*****************************************************************************
+message MediaDevicePbm
+{
+  optional bool auto_play = 1;
+  optional MediaPlayerPbm media_player = 30;
+  optional ZmqMediaPlayerPbm zmq_media_player = 31;
+}
