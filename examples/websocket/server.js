@@ -6,7 +6,7 @@ var http = require("http"),
     open = require("open"),
     ProtoBuf = require("protobufjs");
 
-// Copy dependencies to "www/"
+// Copy dependencies to "www/" (example specific, you usually don't have to care
 var deps = [
     ["Long.min.js", "./node_modules/protobufjs/node_modules/bytebuffer/node_modules/long/Long.min.js"],
     ["ByteBuffer.min.js", "./node_modules/protobufjs/node_modules/bytebuffer/ByteBuffer.min.js"],
@@ -14,13 +14,15 @@ var deps = [
 ];
 for (var i=0, dep, data; i<deps.length; i++) {
     dep = deps[i];
-    console.log("Copying "+dep[0]+" from "+dep[1]);
-    try {
-        fs.writeFileSync(path.join(__dirname, "www", dep[0]), fs.readFileSync(path.join(__dirname, dep[1])));
-    } catch (err) {
-        console.log("Copying failed: "+err.message);
-        console.log("\nDid you run `npm install` ?");
-        process.exit(1);
+    if (!fs.existsSync(path.join(__dirname, "www", dep[0]))) {
+        console.log("Copying "+dep[0]+" from "+dep[1]);
+        try {
+            fs.writeFileSync(path.join(__dirname, "www", dep[0]), fs.readFileSync(path.join(__dirname, dep[1])));
+        } catch (err) {
+            console.log("Copying failed: "+err.message);
+            console.log("\nDid you run `npm install` ?");
+            process.exit(1);
+        }
     }
 }
 
@@ -60,6 +62,7 @@ var server = http.createServer(function(req, res) {
 server.listen(8080);
 server.on("listening", function() {
     console.log("Server started");
+    open("http://localhost:8080/");
 });
 server.on("error", function(err) {
     console.log("Failed to start server:", err);

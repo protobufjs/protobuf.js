@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.0-rc1";
+        ProtoBuf.VERSION = "2.0.0-rc2";
 
         /**
          * Wire types.
@@ -280,10 +280,11 @@
                     xhr.open('GET', path, callback ? true : false);
                     // xhr.setRequestHeader('User-Agent', 'XMLHTTP/1.0');
                     xhr.setRequestHeader('Accept', 'text/plain');
+                    if (typeof xhr.overrideMimeType === 'function') xhr.overrideMimeType('text/plain');
                     if (callback) {
                         xhr.onreadystatechange = function() {
                             if (xhr.readyState != 4) return;
-                            if (xhr.status == 200) {
+                            if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText !== '')) {
                                 callback(xhr.responseText);
                             } else {
                                 callback(null);
@@ -293,7 +294,7 @@
                         xhr.send(null);
                     } else {
                         xhr.send(null);
-                        if (xhr.status == 200) {
+                        if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText !== '')) {
                             return xhr.responseText;
                         }
                         return null;
