@@ -1,12 +1,10 @@
 // Set up: npm install
-var http = require("http"), https = require("https"),
+var http = require("http"),
     fs = require("fs"),
     path = require("path"),
-    url = require("url"),
     ws = require("ws"),
     open = require("open"),
-    // ProtoBuf = require("protobufjs"),
-    ProtoBuf = require(path.join(__dirname, "..", "..", "ProtoBuf.js"));
+    ProtoBuf = require("protobufjs");
 
 // Copy dependencies to "www/"
 var deps = [
@@ -17,7 +15,13 @@ var deps = [
 for (var i=0, dep, data; i<deps.length; i++) {
     dep = deps[i];
     console.log("Copying "+dep[0]+" from "+dep[1]);
-    fs.writeFileSync(path.join(__dirname, "www", dep[0]), fs.readFileSync(path.join(__dirname, dep[1])));
+    try {
+        fs.writeFileSync(path.join(__dirname, "www", dep[0]), fs.readFileSync(path.join(__dirname, dep[1])));
+    } catch (err) {
+        console.log("Copying failed: "+err.message);
+        console.log("\nDid you run `npm install` ?");
+        process.exit(1);
+    }
 }
 
 // Initialize from .proto file
