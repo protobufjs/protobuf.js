@@ -284,7 +284,7 @@
                     if (callback) {
                         xhr.onreadystatechange = function() {
                             if (xhr.readyState != 4) return;
-                            if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText !== '')) {
+                            if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                                 callback(xhr.responseText);
                             } else {
                                 callback(null);
@@ -294,7 +294,7 @@
                         xhr.send(null);
                     } else {
                         xhr.send(null);
-                        if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText !== '')) {
+                        if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                             return xhr.responseText;
                         }
                         return null;
@@ -575,10 +575,11 @@
             /**
              * Resolves a reflect object inside of this namespace.
              * @param {string} qn Qualified name to resolve
+             * @param {boolean=} excludeFields Excludes fields, defaults to `false`
              * @return {ProtoBuf.Reflect.Namespace|null} The resolved type or null if not found
              * @expose
              */
-            Namespace.prototype.resolve = function(qn) {
+            Namespace.prototype.resolve = function(qn, excludeFields) {
                 var part = qn.split(".");
                 var ptr = this, i=0;
                 if (part[i] == "") { // Fully qualified name, e.g. ".My.Message'
@@ -591,7 +592,7 @@
                 do {
                     do {
                         child = ptr.getChild(part[i]);
-                        if (!child || !(child instanceof Reflect.T)) {
+                        if (!child || !(child instanceof Reflect.T) || (excludeFields && child instanceof Reflect.Message.Field)) {
                             ptr = null;
                             break;
                         }
@@ -600,7 +601,7 @@
                     if (ptr != null) break; // Found
                     // Else search the parent
                     if (this.parent !== null) {
-                        return this.parent.resolve(qn);
+                        return this.parent.resolve(qn, excludeFields);
                     }
                 } while (ptr != null);
                 return ptr;
@@ -2553,7 +2554,7 @@
                         if (!Lang.TYPEREF.test(this.ptr.type)) {
                             throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                         }
-                        res = this.ptr.parent.resolve(this.ptr.type);
+                        res = this.ptr.parent.resolve(this.ptr.type, true);
                         if (!res) {
                             throw(new Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                         }

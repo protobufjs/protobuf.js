@@ -540,7 +540,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 if (!Lang.TYPEREF.test(this.ptr.type)) {
                     throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                 }
-                res = this.ptr.parent.resolve(this.ptr.type);
+                res = this.ptr.parent.resolve(this.ptr.type, true);
                 if (!res) {
                     throw(new Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                 }

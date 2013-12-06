@@ -110,7 +110,7 @@ ProtoBuf.Util = (function() {
             if (callback) {
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState != 4) return;
-                    if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText !== '')) {
+                    if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                         callback(xhr.responseText);
                     } else {
                         callback(null);
@@ -120,7 +120,7 @@ ProtoBuf.Util = (function() {
                 xhr.send(null);
             } else {
                 xhr.send(null);
-                if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText !== '')) {
+                if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                     return xhr.responseText;
                 }
                 return null;

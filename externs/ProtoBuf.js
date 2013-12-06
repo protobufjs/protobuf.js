@@ -304,10 +304,11 @@ ProtoBuf.Reflect.Namespace.prototype.getChild = function(nameOrId) {};
 
 /**
  * @param {string} qn
+ * @param {boolean=} excludeFields
  * @return {?ProtoBuf.Reflect.Namespace}
  * @nosideeffects
  */
-ProtoBuf.Reflect.Namespace.prototype.resolve = function(qn) {};
+ProtoBuf.Reflect.Namespace.prototype.resolve = function(qn, excludeFields) {};
 
 /**
  * @return {Object.<string,Function|Object>}

@@ -218,10 +218,11 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     /**
      * Resolves a reflect object inside of this namespace.
      * @param {string} qn Qualified name to resolve
+     * @param {boolean=} excludeFields Excludes fields, defaults to `false`
      * @return {ProtoBuf.Reflect.Namespace|null} The resolved type or null if not found
      * @expose
      */
-    Namespace.prototype.resolve = function(qn) {
+    Namespace.prototype.resolve = function(qn, excludeFields) {
         var part = qn.split(".");
         var ptr = this, i=0;
         if (part[i] == "") { // Fully qualified name, e.g. ".My.Message'
@@ -234,7 +235,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         do {
             do {
                 child = ptr.getChild(part[i]);
-                if (!child || !(child instanceof Reflect.T)) {
+                if (!child || !(child instanceof Reflect.T) || (excludeFields && child instanceof Reflect.Message.Field)) {
                     ptr = null;
                     break;
                 }
@@ -243,7 +244,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             if (ptr != null) break; // Found
             // Else search the parent
             if (this.parent !== null) {
-                return this.parent.resolve(qn);
+                return this.parent.resolve(qn, excludeFields);
             }
         } while (ptr != null);
         return ptr;

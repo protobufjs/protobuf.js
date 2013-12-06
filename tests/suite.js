@@ -1219,6 +1219,16 @@
             }
             test.done();
         },
+
+        "excludeFields": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromString("message A { required int32 i = 1; } message B { required A A = 1; }");
+                builder.build();
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         // Node.js only
         "loaders": BROWSER ? {} : {
