@@ -1434,7 +1434,7 @@
                 }
                 // Embedded message
                 if (this.type == ProtoBuf.TYPES["message"]) {
-                    if (typeof value != 'object') {
+                    if (typeof value !== 'object') {
                         throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
                     }
                     if (value instanceof this.resolvedType.clazz) {
@@ -1512,7 +1512,7 @@
             Field.prototype.encodeValue = function(value, buffer) {
                 if (value === null) return; // Nothing to encode
                 // Tag has already been written
-                
+        
                 // 32bit varint as-is
                 if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"]) {
                     buffer.writeVarint32(value);
@@ -1547,7 +1547,8 @@
                     
                 // Bool
                 } else if (this.type == ProtoBuf.TYPES["bool"]) {
-                    buffer.writeVarint32(value ? 1 : 0);
+                    if (typeof value === 'string') buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
+                    else buffer.writeVarint32(value ? 1 : 0);
                     
                 // Constant enum value
                 } else if (this.type == ProtoBuf.TYPES["enum"]) {

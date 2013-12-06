@@ -20,7 +20,7 @@
  */
 (function(global) {
 
-    var FILE = "ProtoBuf.min.js";
+    var FILE = "ProtoBuf.js";
     var BROWSER = !!global.window;
     
     var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require(__dirname+"/../"+FILE),
@@ -357,12 +357,18 @@
             test.done();
         },
 
-        "boolDefault": function(test) {
+        "bool": function(test) {
             try {
                 var builder = ProtoBuf.protoFromString("message Test { optional bool ok = 1 [ default = false ]; }"),
                     Test = builder.build("Test"),
                     t =  new Test();
                 test.strictEqual(t.ok, false);
+                t.setOk("true");
+                test.strictEqual(t.ok, true);
+                test.strictEqual(Test.decode(t.encode()).ok, true);
+                t.setOk("false");
+                test.strictEqual(t.ok, false);
+                test.strictEqual(Test.decode(t.encode()).ok, false);
             } catch (err) {
                 fail(err);
             }
