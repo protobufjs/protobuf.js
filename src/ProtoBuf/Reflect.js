@@ -1040,7 +1040,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         }
         // Bool
         if (this.type == ProtoBuf.TYPES["bool"]) {
-            return !!value;
+            if (typeof value === 'string') return value === 'true';
+            else return !!value;
         }
         // Float
         if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {

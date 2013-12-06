@@ -363,6 +363,7 @@
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
+                BOOL: /^(?:true|false)$/i,
         
                 ID_MIN: 1,
                 ID_MAX: 0x1FFFFFFF
@@ -1101,6 +1102,8 @@
                     }
                 } else if (Lang.NUMBER.test(token, true)) {
                     value = this._parseNumber(token, true);
+                } else if (Lang.BOOL.test(token)) {
+                    value = token.toLowerCase() === 'true';
                 } else if (Lang.TYPEREF.test(token)) {
                     value = token; // TODO: Resolve?
                 } else {
@@ -2292,7 +2295,8 @@
                 }
                 // Bool
                 if (this.type == ProtoBuf.TYPES["bool"]) {
-                    return !!value;
+                    if (typeof value === 'string') return value === 'true';
+                    else return !!value;
                 }
                 // Float
                 if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {
@@ -3009,7 +3013,7 @@
              * @expose
              */
             Builder.prototype.define = function(pkg, options) {
-                if (typeof pkg != 'string' || !Lang.TYPEREF.test(pkg)) {
+                if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg)) {
                     throw(new Error("Illegal package name: "+pkg));
                 }
                 var part = pkg.split("."), i;
@@ -3097,7 +3101,7 @@
              */
             Builder.isValidMessageField = function(def) {
                 // Message fields require a string rule, name and type and an id
-                if (typeof def["rule"] != 'string' || typeof def["name"] != 'string' || typeof def["type"] != 'string' || typeof def["id"] == 'undefined') {
+                if (typeof def["rule"] !== 'string' || typeof def["name"] !== 'string' || typeof def["type"] !== 'string' || typeof def["id"] === 'undefined') {
                     return false;
                 }
                 if (!Lang.RULE.test(def["rule"]) || !Lang.NAME.test(def["name"]) || !Lang.TYPEREF.test(def["type"]) || !Lang.ID.test(""+def["id"])) {
@@ -3111,7 +3115,7 @@
                     // Options are <string,*>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
+                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] !== 'string' && typeof def["options"][keys[i]] !== 'number' && typeof def["options"][keys[i]] !== 'boolean')) {
                             return false;
                         }
                     }
@@ -3127,11 +3131,11 @@
              */
             Builder.isValidEnum = function(def) {
                 // Enums require a string name
-                if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"])) {
+                if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"])) {
                     return false;
                 }
                 // Enums require at least one value
-                if (typeof def["values"] == 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
+                if (typeof def["values"] === 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
                     return false;
                 }
                 for (var i=0; i<def["values"].length; i++) {
@@ -3140,7 +3144,7 @@
                         return false;
                     }
                     // Values require a string name and an id
-                    if (typeof def["values"][i]["name"] != 'string' || typeof def["values"][i]["id"] == 'undefined') {
+                    if (typeof def["values"][i]["name"] !== 'string' || typeof def["values"][i]["id"] === 'undefined') {
                         return false;
                     }
                     if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"])) {
@@ -3187,7 +3191,7 @@
                                                 if (!Lang.OPTNAME.test(subObj[j])) {
                                                     throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
                                                 }
-                                                if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
+                                                if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean') {
                                                     throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
                                                 }
                                             }
@@ -3198,7 +3202,7 @@
                                 }
                                 // Push enums and messages to stack
                                 subObj = [];
-                                if (typeof def["enums"] != 'undefined' && def['enums'].length > 0) {
+                                if (typeof def["enums"] !== 'undefined' && def['enums'].length > 0) {
                                     for (i=0; i<def["enums"].length; i++) {
                                         subObj.push(def["enums"][i]);
                                     }
@@ -3442,7 +3446,7 @@
             Builder.prototype.resolveAll = function() {
                 // Resolve all reflected objects
                 var res;
-                if (this.ptr == null || typeof this.ptr.type == 'object') return; // Done (already resolved)
+                if (this.ptr == null || typeof this.ptr.type === 'object') return; // Done (already resolved)
                 if (this.ptr instanceof Reflect.Namespace) {
                     // Build all children
                     var children = this.ptr.getChildren();

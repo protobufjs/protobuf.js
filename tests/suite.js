@@ -357,6 +357,18 @@
             test.done();
         },
 
+        "boolDefault": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromString("message Test { optional bool ok = 1 [ default = false ]; }"),
+                    Test = builder.build("Test"),
+                    t =  new Test();
+                test.strictEqual(t.ok, false);
+            } catch (err) {
+                fail(err);
+            }
+            test.done();
+        },
+
         // As mentioned by Bill Katz
         "T139": function(test) {
             try{

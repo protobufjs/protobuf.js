@@ -61,6 +61,7 @@ ProtoBuf.Lang = (function() {
         NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
         WHITESPACE: /\s/,
         STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
+        BOOL: /^(?:true|false)$/i,
 
         ID_MIN: 1,
         ID_MAX: 0x1FFFFFFF
