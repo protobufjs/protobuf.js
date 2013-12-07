@@ -3348,21 +3348,18 @@
                             if (!importRoot) {
                                 throw(new Error("Cannot determine import root: File name is unknown"));
                             }
-                            var importFilename = importRoot+delim+json['imports'][i],
-                                contents;
+                            var importFilename = importRoot+delim+json['imports'][i];
                             if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
                             if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto) {     // If this is a NOPARSE build
                                 importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
                             }
+                            var contents = ProtoBuf.Util.fetch(importFilename);
+                            if (contents === null) {
+                                throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                            }
                             if (/\.json$/i.test(importFilename)) { // Always possible
-                                if ((contents = ProtoBuf.Util.fetch(importFilename)) === null) {
-                                    throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
-                                }
                                 this["import"](JSON.parse(contents+""), importFilename); // May throw
                             } else {
-                                if ((contents = ProtoBuf.Util.fetch(importFilename)) === null) {
-                                    throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
-                                }
                                 this["import"]((new ProtoBuf.DotProto.Parser(contents+"")).parse(), importFilename); // May throw
                             }
                         } else { // Import structure
