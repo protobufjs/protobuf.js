@@ -109,7 +109,7 @@
         // https://developers.google.com/protocol-buffers/docs/encoding#simple
         "example1": function(test) {
             try{
-                var builder = ProtoBuf.protoFromFile(__dirname+"/example1.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/example1.proto");
                 var Test1 = builder.build("Test1");
                 test.ok(typeof Test1 == 'function');
                 var inst = new Test1(150);
@@ -145,7 +145,7 @@
         // Basically the same as example1, but with an unsigned value.
         "example1u": function(test) {
             try{
-                var builder = ProtoBuf.protoFromFile(__dirname+"/example1u.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/example1u.proto");
                 var Test1u = builder.build("Test1u");
                 test.ok(typeof Test1u == 'function');
                 var inst = new Test1u(-1);
@@ -166,7 +166,7 @@
         // https://developers.google.com/protocol-buffers/docs/encoding#types
         "example2": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/example2.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/example2.proto");
                 var Test2 = builder.build("Test2");
                 var inst = new Test2("testing");
                 var bb = new ByteBuffer(9);
@@ -184,7 +184,7 @@
         // https://developers.google.com/protocol-buffers/docs/encoding#embedded
         "example3": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/example3.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/example3.proto");
                 var root = builder.build();
                 var Test1 = root.Test1;
                 var Test3 = root.Test3;
@@ -203,7 +203,7 @@
         
         "example4": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/example4.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/example4.proto");
                 var Test4 = builder.build("Test4");
                 var inst = new Test4([3, 270, 86942]);
                 var bb = new ByteBuffer(8);
@@ -222,7 +222,7 @@
     
         "numberFormats": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/numberformats.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/numberformats.proto");
                 var Formats = builder.build("Formats");
                 test.strictEqual(Formats.DEC, 1);
                 test.strictEqual(Formats.HEX, 31);
@@ -246,7 +246,7 @@
                 var str_proto = "message Float {"
                     + " required float f = 1;"
                     + "}";
-                var builder = ProtoBuf.protoFromString(str_proto);
+                var builder = ProtoBuf.loadProto(str_proto);
                 var root = builder.build();
                 var Float = root.Float;
     
@@ -323,7 +323,7 @@
         "bytes": function(test) {
             try {
                 var str_proto = "message Test { required bytes b = 1; }";
-                var builder = ProtoBuf.protoFromString(str_proto);
+                var builder = ProtoBuf.loadProto(str_proto);
                 var Test = builder.build("Test");
                 var bb = new ByteBuffer(4).writeUint32(0x12345678).flip();
                 var myTest = new Test(bb);
@@ -340,7 +340,7 @@
         },
         
         "notEnoughBytes": function(test) {
-            var builder = ProtoBuf.protoFromString("message Test { required bytes b = 1; }");
+            var builder = ProtoBuf.loadProto("message Test { required bytes b = 1; }");
             var Test = builder.build("Test");
             var bb = new ByteBuffer().writeUint32(0x12345678).flip();
             var encoded = new ByteBuffer(6);
@@ -359,7 +359,7 @@
 
         "bool": function(test) {
             try {
-                var builder = ProtoBuf.protoFromString("message Test { optional bool ok = 1 [ default = false ]; }"),
+                var builder = ProtoBuf.loadProto("message Test { optional bool ok = 1 [ default = false ]; }"),
                     Test = builder.build("Test"),
                     t =  new Test();
                 test.strictEqual(t.ok, false);
@@ -378,7 +378,7 @@
         // As mentioned by Bill Katz
         "T139": function(test) {
             try{
-                var builder = ProtoBuf.protoFromFile(__dirname+"/T139.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/T139.proto");
                 var T139 = builder.build("T139");
                 test.ok(typeof T139 == 'function');
                 var inst = new T139(139,139);
@@ -402,7 +402,7 @@
         
         "emptyDefaultString": function(test) {
             try {
-                var builder = ProtoBuf.protoFromString("message Test1 { optional string test = 1 [default = \"\"]; }");
+                var builder = ProtoBuf.loadProto("message Test1 { optional string test = 1 [default = \"\"]; }");
                 var Test1;
                 test.doesNotThrow(function() {
                     Test1 = builder.build("Test1");
@@ -417,7 +417,7 @@
         
         "trailingSemicolon": function(test) {
             try {
-                var builder = ProtoBuf.protoFromString("message Test1 { optional string test = 1; };");
+                var builder = ProtoBuf.loadProto("message Test1 { optional string test = 1; };");
                 test.doesNotThrow(function() {
                     var Test1 = builder.build("Test1");
                 });
@@ -431,7 +431,7 @@
 
             "longstr": function(test) {
                 try {
-                    var builder = ProtoBuf.protoFromString("message Test { required Inner a = 1; message Inner { required string b = 1; } }");
+                    var builder = ProtoBuf.loadProto("message Test { required Inner a = 1; message Inner { required string b = 1; } }");
                     var Test = builder.build("Test");
                     var t = new Test();
                     var data = "0123456789"; // 10: 20, 40, 80, 160, 320 bytes
@@ -452,7 +452,7 @@
                 try {
                     var str = "";
                     for (var i=0; i<200; i++) str += 'a';
-                    var builder = ProtoBuf.protoFromFile(__dirname+"/inner.proto");
+                    var builder = ProtoBuf.loadProtoFile(__dirname+"/inner.proto");
                     var fooCls = builder.build("Foo");
                     var barCls = builder.build("Bar");
                     var bazCls = builder.build("Baz");
@@ -469,7 +469,7 @@
 
             "float": function(test) {
                 try {
-                    var builder = ProtoBuf.protoFromString("message Foo { required Bar bar = 1; } message Bar { required float baz = 1; }");
+                    var builder = ProtoBuf.loadProto("message Foo { required Bar bar = 1; } message Bar { required float baz = 1; }");
                     var root = builder.build();
                     var foo = new root.Foo(new root.Bar(4));
                     var bb = foo.encode();
@@ -486,7 +486,7 @@
         
         "truncated": function(test) {
             try {
-                var builder = ProtoBuf.protoFromString("message Test { required int32 a = 1; required int32 b = 2; }");
+                var builder = ProtoBuf.loadProto("message Test { required int32 a = 1; required int32 b = 2; }");
                 var Test = builder.build("Test");
                 var t = new Test(), bb = new ByteBuffer(2);
                 t.setA(1);
@@ -535,7 +535,7 @@
             
             "export": function(test) {
                 try {
-                    var builder = ProtoBuf.protoFromFile(__dirname+"/options.proto");
+                    var builder = ProtoBuf.loadProtoFile(__dirname+"/options.proto");
                     var My = builder.build("My");
                     test.deepEqual(My.$options, {
                         "(toplevel_1)": 10,
@@ -571,7 +571,7 @@
         // A more or less complex proto with type references
         "complexProto": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/complex.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/complex.proto");
                 validateComplex(test, builder.build("Game"));
                 var TCars = builder.lookup("Game.Cars");
                 test.strictEqual(TCars.fqn(), ".Game.Cars");
@@ -584,8 +584,7 @@
         // The same created without calling upon the parser to do so (noparse)
         "complexJSON": function(test) {
             try {
-                var builder = ProtoBuf.newBuilder("Game.Cars");
-                builder.create(JSON.parse(ProtoBuf.Util.fetch(__dirname+"/complex.json")));
+                var builder = ProtoBuf.loadJsonFile(__dirname+"/complex.json");
                 validateComplex(test, builder.build("Game"));
             } catch (e) {
                 fail(e);
@@ -596,8 +595,8 @@
         // Builder reused to add definitions from multiple sources
         "multiBuilder": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/example1.proto");
-                ProtoBuf.protoFromFile(__dirname+"/example2.proto", builder);
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/example1.proto");
+                ProtoBuf.loadProtoFile(__dirname+"/example2.proto", builder);
                 var ns = builder.build();
                 test.ok(!!ns.Test1);
                 test.ok(!!ns.Test2);
@@ -611,7 +610,7 @@
         "repeated": {
             "legacy": function(test) {
                 try {
-                    var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
                     var root = builder.build();
                     var Outer = root.Outer;
                     var Inner = root.Inner;
@@ -634,7 +633,7 @@
             
             "packed": function(test) {
                 try {
-                    var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
                     var root = builder.build();
                     var Outer = root.Outer;
                     var Inner = root.Inner;
@@ -657,7 +656,7 @@
             
             "both": function(test) {
                 try {
-                    var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
                     var root = builder.build();
                     var Outer = root.Outer;
                     var Inner = root.Inner;
@@ -682,7 +681,7 @@
             
             "none": function(test) {
                 try {
-                    var builder = ProtoBuf.protoFromFile(__dirname+"/repeated.proto");
+                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
                     var Outer = builder.build("Outer");
                     var outer = new Outer();
                     var bb = new ByteBuffer(1);
@@ -702,7 +701,7 @@
         
         "x64Fixed": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/x64.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/x64.proto");
                 var Test = builder.build("Test");
                 var myTest = new Test();
                 test.ok(myTest.val instanceof ByteBuffer.Long);
@@ -733,7 +732,7 @@
     
         "x64Varint": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/x64.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/x64.proto");
                 var Test = builder.build("Test2");
                 var myTest = new Test();
                 test.ok(myTest.val instanceof ByteBuffer.Long);
@@ -771,7 +770,7 @@
         
         "imports": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/imports.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/imports.proto");
                 var root = builder.build();
                 test.ok(!!root.Test1);
                 test.ok(!!root.Test2);
@@ -785,7 +784,7 @@
         
         "toplevel": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/toplevel.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/toplevel.proto");
                 var My = builder.build("My");
                 test.ok(!!My.MyEnum);
                 test.equal(My.MyEnum.ONE, 1);
@@ -801,7 +800,7 @@
         
         "importsToplevel": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/imports-toplevel.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/imports-toplevel.proto");
                 var My = builder.build("My");
                 test.ok(!!My.MyEnum);
                 test.equal(My.MyEnum1.ONE, 1);
@@ -818,9 +817,9 @@
         
         "importDuplicate": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/import_a.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/import_a.proto");
                 test.doesNotThrow(function() {
-                    ProtoBuf.protoFromFile(__dirname+"/import_b.proto", builder);
+                    ProtoBuf.loadProtoFile(__dirname+"/import_b.proto", builder);
                 });
                 var root = builder.build();
                 test.ok(root.A);
@@ -834,10 +833,10 @@
 
         "importDuplicateDifferentBuilder": function(test) {
             try {
-                var builderA = ProtoBuf.protoFromFile(__dirname+"/import_a.proto");
+                var builderA = ProtoBuf.loadProtoFile(__dirname+"/import_a.proto");
                 var builderB;
                 test.doesNotThrow(function() {
-                    builderB = ProtoBuf.protoFromFile(__dirname+"/import_b.proto");
+                    builderB = ProtoBuf.loadProtoFile(__dirname+"/import_b.proto");
                 });
                 var rootA = builderA.build();
                 var rootB = builderB.build();
@@ -853,7 +852,7 @@
         
         "importRoot": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile({
+                var builder = ProtoBuf.loadProtoFile({
                     root: __dirname,
                     file: "importRoot/file1.proto"
                 });
@@ -932,7 +931,7 @@
                     "services": []
                 });
                 
-                var builder = ProtoBuf.protoFromFile(__dirname+"/extend.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/extend.proto");
                 var TFoo = builder.lookup("Foo"),
                     TBar = builder.lookup("Bar"),
                     fields = TFoo.getChildren(ProtoBuf.Reflect.Message.Field);
@@ -996,7 +995,7 @@
                     }
                 }]);
                 
-                var builder = ProtoBuf.protoFromFile(__dirname+"/custom-options.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/custom-options.proto");
                 var root = builder.build(),
                     MyService = root.MyService,
                     RequestType = root.RequestType,
@@ -1047,7 +1046,7 @@
         "gtfs-realtime": function(test) {
             try {
                 test.doesNotThrow(function() {
-                    ProtoBuf.protoFromFile(__dirname+"/gtfs-realtime.proto");
+                    ProtoBuf.loadProtoFile(__dirname+"/gtfs-realtime.proto");
                 });
             } catch (e) {
                 fail(e);
@@ -1057,7 +1056,7 @@
         
         "fields": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/optional.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/optional.proto");
                 var Test1 = builder.build("Test1");
                 var test1 = new Test1();
                 test.strictEqual(test1.a, null);
@@ -1075,7 +1074,7 @@
         "fieldsToCamelCase": function(test) {
             try {
                 ProtoBuf.convertFieldsToCamelCase = true;
-                var builder = ProtoBuf.protoFromFile(__dirname+"/camelcase.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/camelcase.proto");
                 var Test = builder.build("Test"),
                     TTest = builder.lookup("Test");
                 var msg = new Test();
@@ -1110,7 +1109,7 @@
         
         "setarray": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/setarray.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/setarray.proto");
                 var root = builder.build(),
                     Outer = root.Outer,
                     Inner = root.Inner,
@@ -1138,7 +1137,7 @@
         // Make sure that our example at https://github.com/dcodeIO/ProtoBuf.js/wiki is not nonsense
         "pingexample": function(test) {
             try {
-                var builder = ProtoBuf.protoFromFile(__dirname+"/PingExample.proto");
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/PingExample.proto");
                 var Message = builder.build("Message");
                 var msg = new Message();
                 msg.ping = new Message.Ping(123456789);
@@ -1157,7 +1156,7 @@
         "negEnumId": function(test) {
             try {
                 test.doesNotThrow(function() {
-                    var builder = ProtoBuf.protoFromFile(__dirname+"/negid.proto");
+                    var builder = ProtoBuf.loadProtoFile(__dirname+"/negid.proto");
                     var Test = builder.build("Test");
                     test.strictEqual(Test.LobbyType.INVALID, -1);
                     var t = new Test(Test.LobbyType.INVALID);
@@ -1174,7 +1173,7 @@
         
         "base64": function(test) {
             try {
-                var Message = ProtoBuf.protoFromString("message Message { required string s = 1; }").build("Message");
+                var Message = ProtoBuf.loadProto("message Message { required string s = 1; }").build("Message");
                 var msg = new Message("ProtoBuf.js");
                 var b64 = msg.toBase64();
                 test.strictEqual(b64, "CgtQcm90b0J1Zi5qcw==");
@@ -1190,7 +1189,7 @@
         
         "hex": function(test) {
             try {
-                var Message = ProtoBuf.protoFromString("message Message { required string s = 1; }").build("Message");
+                var Message = ProtoBuf.loadProto("message Message { required string s = 1; }").build("Message");
                 var msg = new Message("ProtoBuf.js");
                 var hex = msg.toHex();
                 test.strictEqual(hex, "0A0B50726F746F4275662E6A73");
@@ -1206,10 +1205,10 @@
 
         "forwardComp": function(test) {
             try {
-                var Message = ProtoBuf.protoFromString("message Message { required int32 a = 1; required string b = 2; required float c = 3; }").build("Message");
+                var Message = ProtoBuf.loadProto("message Message { required int32 a = 1; required string b = 2; required float c = 3; }").build("Message");
                 var msg = new Message(123, "abc", 0.123);
                 var bb = msg.encode();
-                Message = ProtoBuf.protoFromString("message Message {}").build("Message");
+                Message = ProtoBuf.loadProto("message Message {}").build("Message");
                 test.doesNotThrow(function() {
                     Message.decode(bb);
                 });
@@ -1240,7 +1239,7 @@
 
         "excludeFields": function(test) {
             try {
-                var builder = ProtoBuf.protoFromString("message A { required int32 i = 1; } message B { required A A = 1; }");
+                var builder = ProtoBuf.loadProto("message A { required int32 i = 1; } message B { required A A = 1; }");
                 builder.build();
             } catch (e) {
                 fail(e);
