@@ -2445,20 +2445,25 @@
                     } else {
                         importRoot = null;
                     }
+        
                     for (var i=0; i<json['imports'].length; i++) {
                         if (typeof json['imports'][i] === 'string') { // Import file
                             if (!importRoot) {
                                 throw(new Error("Cannot determine import root: File name is unknown"));
                             }
                             var importFilename = importRoot+delim+json['imports'][i];
+                            if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
+                            if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto) {     // If this is a NOPARSE build
+                                importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
+                            }
+                            var contents = ProtoBuf.Util.fetch(importFilename);
+                            if (contents === null) {
+                                throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
+                            }
                             if (/\.json$/i.test(importFilename)) { // Always possible
-                                var json = ProtoBuf.Util.fetch(importFilename);
-                                if (json === null) {
-                                    throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
-                                }
-                                this["import"](JSON.parse(json), importFilename); // Throws on its own
+                                this["import"](JSON.parse(contents+""), importFilename); // May throw
                             } else {
-                                throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
+                                this["import"]((new ProtoBuf.DotProto.Parser(contents+"")).parse(), importFilename); // May throw
                             }
                         } else { // Import structure
                             this["import"](json['imports'][i], /* fake */ filename);
