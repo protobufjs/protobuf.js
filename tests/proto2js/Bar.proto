@@ -2,6 +2,6 @@
 import "Foo.proto";
 
 // really extend Bar but that produces an empty constructor. 
-message Bar {
+extend Foo {
     required string buzz = 2;
 }

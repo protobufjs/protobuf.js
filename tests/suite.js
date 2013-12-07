@@ -1246,6 +1246,16 @@
             }
             test.done();
         },
+
+        "proto2jsExtend": function(test) {
+            try {
+                var builder = ProtoBuf.loadJsonFile(__dirname+"/proto2js/Bar.json");
+                builder.build();
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         // Node.js only
         "loaders": BROWSER ? {} : {

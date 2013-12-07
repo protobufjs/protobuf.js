@@ -33,7 +33,7 @@
     },
     "scripts": {
         "prepublish": "npm test",
-        "test": "node node_modules/testjs/bin/testjs tests/suite.js",
+        "test": "node bin/proto2js tests/complex.proto > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
         
         "make": "npm run-script build && npm run-script compile && npm test && npm run-script jsdoc",
         "build": "node build.js",

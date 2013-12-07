@@ -439,7 +439,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         this["import"]((new ProtoBuf.DotProto.Parser(contents+"")).parse(), importFilename); // May throw
                     }
                 } else { // Import structure
-                    this["import"](json['imports'][i], /* fake */ filename);
+                    this["import"](json['imports'][i], /* unique fake */ filename.replace(/^(.+)\.(\w+)$/, function($0, $1, $2) { return $1+"_import"+i+"."+$2; }));
                 }
             }
             if (resetRoot) { // Reset import root override when all imports are done
