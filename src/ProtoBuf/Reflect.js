@@ -52,19 +52,29 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     };
 
     /**
+     * Returns the fully qualified name of this object.
+     * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
+     * @expose
+     */
+    T.prototype.fqn = function() {
+        var name = this.name,
+            ptr = this;
+        do {
+            ptr = ptr.parent;
+            if (ptr == null) break;
+            name = ptr.name+"."+name;
+        } while (true);
+        return name;
+    };
+
+    /**
      * Returns a string representation of this Reflect object (its fully qualified name).
      * @param {boolean=} includeClass Set to true to include the class name. Defaults to false.
      * @return String representation
      * @expose
      */
     T.prototype.toString = function(includeClass) {
-        var name = this.name;
-        var ptr = this;
-        do {
-            ptr = ptr.parent;
-            if (ptr == null) break;
-            name = ptr.name+"."+name;
-        } while (true);
+        var name = this.fqn();
         if (includeClass) {
             if (this instanceof Message) {
                 name = "Message "+name;
@@ -208,10 +218,11 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     /**
      * Resolves a reflect object inside of this namespace.
      * @param {string} qn Qualified name to resolve
+     * @param {boolean=} excludeFields Excludes fields, defaults to `false`
      * @return {ProtoBuf.Reflect.Namespace|null} The resolved type or null if not found
      * @expose
      */
-    Namespace.prototype.resolve = function(qn) {
+    Namespace.prototype.resolve = function(qn, excludeFields) {
         var part = qn.split(".");
         var ptr = this, i=0;
         if (part[i] == "") { // Fully qualified name, e.g. ".My.Message'
@@ -224,7 +235,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         do {
             do {
                 child = ptr.getChild(part[i]);
-                if (!child || !(child instanceof Reflect.T)) {
+                if (!child || !(child instanceof Reflect.T) || (excludeFields && child instanceof Reflect.Message.Field)) {
                     ptr = null;
                     break;
                 }
@@ -233,7 +244,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             if (ptr != null) break; // Found
             // Else search the parent
             if (this.parent !== null) {
-                return this.parent.resolve(qn);
+                return this.parent.resolve(qn, excludeFields);
             }
         } while (ptr != null);
         return ptr;
@@ -345,7 +356,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         if (this.clazz && !rebuild) return this.clazz;
         
         // We need to create a prototyped Message class in an isolated scope
-        var clazz = (function(Reflect, T) {
+        var clazz = (function(ProtoBuf, T) {
             var fields = T.getChildren(Reflect.Message.Field);
 
             /**
@@ -414,7 +425,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 if (!field) {
                     throw(new Error(this+"#"+key+" is undefined"));
                 }
-                if (!(field instanceof Reflect.Message.Field)) {
+                if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                     throw(new Error(this+"#"+key+" is not a field: "+field.toString(true))); // May throw if it's an enum or embedded message
                 }
                 if (!field.repeated) {
@@ -438,7 +449,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 if (!field) {
                     throw(new Error(this+"#"+key+" is not a field: undefined"));
                 }
-                if (!(field instanceof Reflect.Message.Field)) {
+                if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                     throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                 }
                 this[field.name] = field.verifyValue(value); // May throw
@@ -455,10 +466,10 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              */
             Message.prototype.get = function(key) {
                 var field = T.getChild(key);
-                if (!field || !(field instanceof Reflect.Message.Field)) {
+                if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field)) {
                     throw(new Error(this+"#"+key+" is not a field: undefined"));
                 }
-                if (!(field instanceof Reflect.Message.Field)) {
+                if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                     throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                 }
                 return this[field.name];
@@ -693,7 +704,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * Decodes the message from the specified buffer or string.
              * @name ProtoBuf.Builder.Message.decode
              * @function
-             * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
+             * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
              * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
              * @return {!ProtoBuf.Builder.Message} Decoded message
              * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
@@ -781,7 +792,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             
             return Message;
 
-        })(Reflect, this);
+        })(ProtoBuf, this);
 
         // Static enums and prototyped sub-messages
         var children = this.getChildren();
@@ -871,7 +882,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             }
         }
         // Check if all required fields are present
-        var fields = this.getChildren(Reflect.Field);
+        var fields = this.getChildren(ProtoBuf.Reflect.Field);
         for (var i=0; i<fields.length; i++) {
             if (fields[i].required && msg[fields[i].name] === null) {
                 var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
@@ -1029,7 +1040,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         }
         // Bool
         if (this.type == ProtoBuf.TYPES["bool"]) {
-            return !!value;
+            if (typeof value === 'string') return value === 'true';
+            else return !!value;
         }
         // Float
         if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {
@@ -1064,7 +1076,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         }
         // Embedded message
         if (this.type == ProtoBuf.TYPES["message"]) {
-            if (typeof value != 'object') {
+            if (typeof value !== 'object') {
                 throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
             }
             if (value instanceof this.resolvedType.clazz) {
@@ -1142,7 +1154,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     Field.prototype.encodeValue = function(value, buffer) {
         if (value === null) return; // Nothing to encode
         // Tag has already been written
-        
+
         // 32bit varint as-is
         if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"]) {
             buffer.writeVarint32(value);
@@ -1177,7 +1189,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             
         // Bool
         } else if (this.type == ProtoBuf.TYPES["bool"]) {
-            buffer.writeVarint32(value ? 1 : 0);
+            if (typeof value === 'string') buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
+            else buffer.writeVarint32(value ? 1 : 0);
             
         // Constant enum value
         } else if (this.type == ProtoBuf.TYPES["enum"]) {
@@ -1457,35 +1470,19 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     Service.prototype.build = function(rebuild) {
         if (this.clazz && !rebuild) return this.clazz;
-        return this.clazz = (function(T) {
+        return this.clazz = (function(ProtoBuf, T) {
 
             /**
              * Constructs a new runtime Service.
-             * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))=} rpcImpl RPC implementation receiving the method name and the message
              * @name ProtoBuf.Builder.Service
+             * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))=} rpcImpl RPC implementation receiving the method name and the message
              * @class Barebone of all runtime services.
              * @constructor
              * @throws {Error} If the service cannot be created
              */
+            var Service = function(rpcImpl) {
+                ProtoBuf.Builder.Service.call(this);
 
-            /**
-             * @type {!Function}
-             */
-            var Service;
-            try {
-                Service = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); })");
-            } catch (err) {
-                Service = function() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); };
-            }
-            
-            // Extends ProtoBuf.Builder.Service
-            Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
-
-            /**
-             * @expose
-             */
-            Service.prototype.__construct = function(rpcImpl) {
-                
                 /**
                  * Service implementation.
                  * @name ProtoBuf.Builder.Service#rpcImpl
@@ -1498,8 +1495,10 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                     // argument or null and the actual response message.
                     setTimeout(callback.bind(this, new Error("Not implemented, see: https://github.com/dcodeIO/ProtoBuf.js/wiki/Services")), 0); // Must be async!
                 };
-                
             };
+            
+            // Extends ProtoBuf.Builder.Service
+            Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
             
             if (Object.defineProperty) {
                 Object.defineProperty(Service, "$options", {
@@ -1547,7 +1546,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                             if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
                                 setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)));
                             }
-                            this.rpcImpl(method.name, req, function(err, res) { // Assumes that this is properly async
+                            this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                                 if (err) {
                                     callback(err);
                                     return;
@@ -1588,7 +1587,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             
             return Service;
             
-        })(this);
+        })(ProtoBuf, this);
     };
     
     Reflect.Service = Service;

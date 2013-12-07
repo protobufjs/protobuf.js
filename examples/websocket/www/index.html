@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-<script src="https://raw.github.com/dcodeIO/Long.js/master/Long.min.js"></script>
-<script src="https://raw.github.com/dcodeIO/ByteBuffer.js/master/ByteBuffer.min.js"></script>
-<script src="https://raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.min.js"></script>
+<head>                                    <!-- Please copy the following files into here: -->
+<script src="./Long.min.js"></script>       <!-- https://raw.github.com/dcodeIO/Long.js/master/Long.min.js -->
+<script src="./ByteBuffer.min.js"></script> <!-- https://raw.github.com/dcodeIO/ByteBuffer.js/master/ByteBuffer.min.js -->
+<script src="./ProtoBuf.min.js"></script>   <!-- https://raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.min.js -->
 <script>
+if (typeof dcodeIO === 'undefined' || !dcodeIO.ProtoBuf) {
+    throw(new Error("ProtoBuf.js is not present. Please see www/index.html for manual setup instructions."));
+}
 // Initialize ProtoBuf.js
 var ProtoBuf = dcodeIO.ProtoBuf;
-var Message = ProtoBuf.protoFromFile("example.proto").build("Message");
+var Message = ProtoBuf.protoFromFile("./example.proto").build("Message");
 </script>
 </head>
 <body>
@@ -50,6 +53,7 @@ socket.onmessage = function(evt) {
     }
 };
 
+log.value = ""; // Clear log on reload
 </script>
 </body>
 </html>

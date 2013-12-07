@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.0-pre";
+        ProtoBuf.VERSION = "2.0.0-rc3";
 
         /**
          * Wire types.
@@ -263,7 +263,9 @@
                 if (Util.IS_NODE) {
                     if (callback) {
                         require("fs").readFile(path, function(err, data) {
-                            if (err) callback(null);
+                            if (err) {
+                                callback(null);
+                            }
                             else callback(""+data);
                         });
                     } else {
@@ -278,10 +280,11 @@
                     xhr.open('GET', path, callback ? true : false);
                     // xhr.setRequestHeader('User-Agent', 'XMLHTTP/1.0');
                     xhr.setRequestHeader('Accept', 'text/plain');
+                    if (typeof xhr.overrideMimeType === 'function') xhr.overrideMimeType('text/plain');
                     if (callback) {
                         xhr.onreadystatechange = function() {
                             if (xhr.readyState != 4) return;
-                            if (xhr.status == 200) {
+                            if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                                 callback(xhr.responseText);
                             } else {
                                 callback(null);
@@ -291,7 +294,7 @@
                         xhr.send(null);
                     } else {
                         xhr.send(null);
-                        if (xhr.status == 200) {
+                        if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                             return xhr.responseText;
                         }
                         return null;
@@ -360,6 +363,7 @@
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
                 STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
+                BOOL: /^(?:true|false)$/i,
         
                 ID_MIN: 1,
                 ID_MAX: 0x1FFFFFFF
@@ -1098,6 +1102,8 @@
                     }
                 } else if (Lang.NUMBER.test(token, true)) {
                     value = this._parseNumber(token, true);
+                } else if (Lang.BOOL.test(token)) {
+                    value = token.toLowerCase() === 'true';
                 } else if (Lang.TYPEREF.test(token)) {
                     value = token; // TODO: Resolve?
                 } else {
@@ -1301,19 +1307,29 @@
             };
         
             /**
+             * Returns the fully qualified name of this object.
+             * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
+             * @expose
+             */
+            T.prototype.fqn = function() {
+                var name = this.name,
+                    ptr = this;
+                do {
+                    ptr = ptr.parent;
+                    if (ptr == null) break;
+                    name = ptr.name+"."+name;
+                } while (true);
+                return name;
+            };
+        
+            /**
              * Returns a string representation of this Reflect object (its fully qualified name).
              * @param {boolean=} includeClass Set to true to include the class name. Defaults to false.
              * @return String representation
              * @expose
              */
             T.prototype.toString = function(includeClass) {
-                var name = this.name;
-                var ptr = this;
-                do {
-                    ptr = ptr.parent;
-                    if (ptr == null) break;
-                    name = ptr.name+"."+name;
-                } while (true);
+                var name = this.fqn();
                 if (includeClass) {
                     if (this instanceof Message) {
                         name = "Message "+name;
@@ -1457,10 +1473,11 @@
             /**
              * Resolves a reflect object inside of this namespace.
              * @param {string} qn Qualified name to resolve
+             * @param {boolean=} excludeFields Excludes fields, defaults to `false`
              * @return {ProtoBuf.Reflect.Namespace|null} The resolved type or null if not found
              * @expose
              */
-            Namespace.prototype.resolve = function(qn) {
+            Namespace.prototype.resolve = function(qn, excludeFields) {
                 var part = qn.split(".");
                 var ptr = this, i=0;
                 if (part[i] == "") { // Fully qualified name, e.g. ".My.Message'
@@ -1473,7 +1490,7 @@
                 do {
                     do {
                         child = ptr.getChild(part[i]);
-                        if (!child || !(child instanceof Reflect.T)) {
+                        if (!child || !(child instanceof Reflect.T) || (excludeFields && child instanceof Reflect.Message.Field)) {
                             ptr = null;
                             break;
                         }
@@ -1482,7 +1499,7 @@
                     if (ptr != null) break; // Found
                     // Else search the parent
                     if (this.parent !== null) {
-                        return this.parent.resolve(qn);
+                        return this.parent.resolve(qn, excludeFields);
                     }
                 } while (ptr != null);
                 return ptr;
@@ -1594,7 +1611,7 @@
                 if (this.clazz && !rebuild) return this.clazz;
                 
                 // We need to create a prototyped Message class in an isolated scope
-                var clazz = (function(Reflect, T) {
+                var clazz = (function(ProtoBuf, T) {
                     var fields = T.getChildren(Reflect.Message.Field);
         
                     /**
@@ -1663,7 +1680,7 @@
                         if (!field) {
                             throw(new Error(this+"#"+key+" is undefined"));
                         }
-                        if (!(field instanceof Reflect.Message.Field)) {
+                        if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: "+field.toString(true))); // May throw if it's an enum or embedded message
                         }
                         if (!field.repeated) {
@@ -1687,7 +1704,7 @@
                         if (!field) {
                             throw(new Error(this+"#"+key+" is not a field: undefined"));
                         }
-                        if (!(field instanceof Reflect.Message.Field)) {
+                        if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                         }
                         this[field.name] = field.verifyValue(value); // May throw
@@ -1704,10 +1721,10 @@
                      */
                     Message.prototype.get = function(key) {
                         var field = T.getChild(key);
-                        if (!field || !(field instanceof Reflect.Message.Field)) {
+                        if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: undefined"));
                         }
-                        if (!(field instanceof Reflect.Message.Field)) {
+                        if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                         }
                         return this[field.name];
@@ -1942,7 +1959,7 @@
                      * Decodes the message from the specified buffer or string.
                      * @name ProtoBuf.Builder.Message.decode
                      * @function
-                     * @param {!ByteBuffer|!ArrayBuffer|!Buffer} buffer ByteBuffer to decode from
+                     * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
                      * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
                      * @return {!ProtoBuf.Builder.Message} Decoded message
                      * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
@@ -2030,7 +2047,7 @@
                     
                     return Message;
         
-                })(Reflect, this);
+                })(ProtoBuf, this);
         
                 // Static enums and prototyped sub-messages
                 var children = this.getChildren();
@@ -2120,7 +2137,7 @@
                     }
                 }
                 // Check if all required fields are present
-                var fields = this.getChildren(Reflect.Field);
+                var fields = this.getChildren(ProtoBuf.Reflect.Field);
                 for (var i=0; i<fields.length; i++) {
                     if (fields[i].required && msg[fields[i].name] === null) {
                         var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
@@ -2278,7 +2295,8 @@
                 }
                 // Bool
                 if (this.type == ProtoBuf.TYPES["bool"]) {
-                    return !!value;
+                    if (typeof value === 'string') return value === 'true';
+                    else return !!value;
                 }
                 // Float
                 if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {
@@ -2313,7 +2331,7 @@
                 }
                 // Embedded message
                 if (this.type == ProtoBuf.TYPES["message"]) {
-                    if (typeof value != 'object') {
+                    if (typeof value !== 'object') {
                         throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
                     }
                     if (value instanceof this.resolvedType.clazz) {
@@ -2391,7 +2409,7 @@
             Field.prototype.encodeValue = function(value, buffer) {
                 if (value === null) return; // Nothing to encode
                 // Tag has already been written
-                
+        
                 // 32bit varint as-is
                 if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"]) {
                     buffer.writeVarint32(value);
@@ -2426,7 +2444,8 @@
                     
                 // Bool
                 } else if (this.type == ProtoBuf.TYPES["bool"]) {
-                    buffer.writeVarint32(value ? 1 : 0);
+                    if (typeof value === 'string') buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
+                    else buffer.writeVarint32(value ? 1 : 0);
                     
                 // Constant enum value
                 } else if (this.type == ProtoBuf.TYPES["enum"]) {
@@ -2706,35 +2725,19 @@
              */
             Service.prototype.build = function(rebuild) {
                 if (this.clazz && !rebuild) return this.clazz;
-                return this.clazz = (function(T) {
+                return this.clazz = (function(ProtoBuf, T) {
         
                     /**
                      * Constructs a new runtime Service.
-                     * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))=} rpcImpl RPC implementation receiving the method name and the message
                      * @name ProtoBuf.Builder.Service
+                     * @param {function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))=} rpcImpl RPC implementation receiving the method name and the message
                      * @class Barebone of all runtime services.
                      * @constructor
                      * @throws {Error} If the service cannot be created
                      */
+                    var Service = function(rpcImpl) {
+                        ProtoBuf.Builder.Service.call(this);
         
-                    /**
-                     * @type {!Function}
-                     */
-                    var Service;
-                    try {
-                        Service = eval("0, (function "+T.name+"() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); })");
-                    } catch (err) {
-                        Service = function() { ProtoBuf.Builder.Service.call(this); this.__construct.apply(this, arguments); };
-                    }
-                    
-                    // Extends ProtoBuf.Builder.Service
-                    Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
-        
-                    /**
-                     * @expose
-                     */
-                    Service.prototype.__construct = function(rpcImpl) {
-                        
                         /**
                          * Service implementation.
                          * @name ProtoBuf.Builder.Service#rpcImpl
@@ -2747,8 +2750,10 @@
                             // argument or null and the actual response message.
                             setTimeout(callback.bind(this, new Error("Not implemented, see: https://github.com/dcodeIO/ProtoBuf.js/wiki/Services")), 0); // Must be async!
                         };
-                        
                     };
+                    
+                    // Extends ProtoBuf.Builder.Service
+                    Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
                     
                     if (Object.defineProperty) {
                         Object.defineProperty(Service, "$options", {
@@ -2796,7 +2801,7 @@
                                     if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
                                         setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)));
                                     }
-                                    this.rpcImpl(method.name, req, function(err, res) { // Assumes that this is properly async
+                                    this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                                         if (err) {
                                             callback(err);
                                             return;
@@ -2837,7 +2842,7 @@
                     
                     return Service;
                     
-                })(this);
+                })(ProtoBuf, this);
             };
             
             Reflect.Service = Service;
@@ -3009,7 +3014,7 @@
              * @expose
              */
             Builder.prototype.define = function(pkg, options) {
-                if (typeof pkg != 'string' || !Lang.TYPEREF.test(pkg)) {
+                if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg)) {
                     throw(new Error("Illegal package name: "+pkg));
                 }
                 var part = pkg.split("."), i;
@@ -3097,7 +3102,7 @@
              */
             Builder.isValidMessageField = function(def) {
                 // Message fields require a string rule, name and type and an id
-                if (typeof def["rule"] != 'string' || typeof def["name"] != 'string' || typeof def["type"] != 'string' || typeof def["id"] == 'undefined') {
+                if (typeof def["rule"] !== 'string' || typeof def["name"] !== 'string' || typeof def["type"] !== 'string' || typeof def["id"] === 'undefined') {
                     return false;
                 }
                 if (!Lang.RULE.test(def["rule"]) || !Lang.NAME.test(def["name"]) || !Lang.TYPEREF.test(def["type"]) || !Lang.ID.test(""+def["id"])) {
@@ -3111,7 +3116,7 @@
                     // Options are <string,*>
                     var keys = Object.keys(def["options"]);
                     for (var i=0; i<keys.length; i++) {
-                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] != 'string' && typeof def["options"][keys[i]] != 'number')) {
+                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] !== 'string' && typeof def["options"][keys[i]] !== 'number' && typeof def["options"][keys[i]] !== 'boolean')) {
                             return false;
                         }
                     }
@@ -3127,11 +3132,11 @@
              */
             Builder.isValidEnum = function(def) {
                 // Enums require a string name
-                if (typeof def["name"] != 'string' || !Lang.NAME.test(def["name"])) {
+                if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"])) {
                     return false;
                 }
                 // Enums require at least one value
-                if (typeof def["values"] == 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
+                if (typeof def["values"] === 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
                     return false;
                 }
                 for (var i=0; i<def["values"].length; i++) {
@@ -3140,7 +3145,7 @@
                         return false;
                     }
                     // Values require a string name and an id
-                    if (typeof def["values"][i]["name"] != 'string' || typeof def["values"][i]["id"] == 'undefined') {
+                    if (typeof def["values"][i]["name"] !== 'string' || typeof def["values"][i]["id"] === 'undefined') {
                         return false;
                     }
                     if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"])) {
@@ -3187,7 +3192,7 @@
                                                 if (!Lang.OPTNAME.test(subObj[j])) {
                                                     throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
                                                 }
-                                                if (typeof def["fields"][i]["options"][subObj[j]] != 'string' && typeof def["fields"][i]["options"][subObj[j]] != 'number') {
+                                                if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean') {
                                                     throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
                                                 }
                                             }
@@ -3198,7 +3203,7 @@
                                 }
                                 // Push enums and messages to stack
                                 subObj = [];
-                                if (typeof def["enums"] != 'undefined' && def['enums'].length > 0) {
+                                if (typeof def["enums"] !== 'undefined' && def['enums'].length > 0) {
                                     for (i=0; i<def["enums"].length; i++) {
                                         subObj.push(def["enums"][i]);
                                     }
@@ -3296,13 +3301,13 @@
         
             /**
              * Imports another definition into this builder.
-             * @param {Object.<string,*>} parsed Parsed import
+             * @param {Object.<string,*>} json Parsed import
              * @param {(string|{root: string, file: string})=} filename Imported file name
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the definition or file cannot be imported
              * @expose
              */
-            Builder.prototype["import"] = function(parsed, filename) {
+            Builder.prototype["import"] = function(json, filename) {
                 if (typeof filename === 'string') {
                     if (ProtoBuf.Util.IS_NODE) {
                         var path = require("path");
@@ -3314,7 +3319,7 @@
                     }
                     this.files[filename] = true;
                 }
-                if (!!parsed['imports'] && parsed['imports'].length > 0) {
+                if (!!json['imports'] && json['imports'].length > 0) {
                     var importRoot, delim = '/', resetRoot = false;
                     if (typeof filename === 'object') { // If an import root is specified, override
                         this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
@@ -3337,12 +3342,12 @@
                     } else {
                         importRoot = null;
                     }
-                    for (var i=0; i<parsed['imports'].length; i++) {
-                        if (typeof parsed['imports'][i] === 'string') { // Import file
+                    for (var i=0; i<json['imports'].length; i++) {
+                        if (typeof json['imports'][i] === 'string') { // Import file
                             if (!importRoot) {
                                 throw(new Error("Cannot determine import root: File name is unknown"));
                             }
-                            var importFilename = importRoot+delim+parsed['imports'][i];
+                            var importFilename = importRoot+delim+json['imports'][i];
                             if (/\.json$/i.test(importFilename)) { // Always possible
                                 var json = ProtoBuf.Util.fetch(importFilename);
                                 if (json === null) {
@@ -3359,31 +3364,31 @@
                                 this["import"](parser.parse(), importFilename); // Throws on its own
                             }
                         } else { // Import structure
-                            this["import"](parsed['imports'][i], /* fake */ filename);
+                            this["import"](json['imports'][i], /* fake */ filename);
                         }
                     }
                     if (resetRoot) { // Reset import root override when all imports are done
                         this.importRoot = null;
                     }
                 }
-                if (!!parsed['messages']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['messages']);
+                if (!!json['messages']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['messages']);
                     this.reset();
                 }
-                if (!!parsed['enums']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['enums']);
+                if (!!json['enums']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['enums']);
                     this.reset();
                 }
-                if (!!parsed['services']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['services']);
+                if (!!json['services']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['services']);
                     this.reset();
                 }
-                if (!!parsed['extends']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['extends']);
+                if (!!json['extends']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['extends']);
                     this.reset();
                 }
                 return this;
@@ -3442,7 +3447,7 @@
             Builder.prototype.resolveAll = function() {
                 // Resolve all reflected objects
                 var res;
-                if (this.ptr == null || typeof this.ptr.type == 'object') return; // Done (already resolved)
+                if (this.ptr == null || typeof this.ptr.type === 'object') return; // Done (already resolved)
                 if (this.ptr instanceof Reflect.Namespace) {
                     // Build all children
                     var children = this.ptr.getChildren();
@@ -3455,7 +3460,7 @@
                         if (!Lang.TYPEREF.test(this.ptr.type)) {
                             throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                         }
-                        res = this.ptr.parent.resolve(this.ptr.type);
+                        res = this.ptr.parent.resolve(this.ptr.type, true);
                         if (!res) {
                             throw(new Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                         }
@@ -3555,9 +3560,34 @@
             return Builder;
             
         })(ProtoBuf, ProtoBuf.Lang, ProtoBuf.Reflect);
-                
+        
+        
         /**
-         * Builds a .proto definition and returns the Builder.
+         * Loads a .proto string and returns the Builder.
+         * @param {string} proto .proto file contents
+         * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
+         * @return {ProtoBuf.Builder} Builder to create new messages
+         * @throws {Error} If the definition cannot be parsed or built
+         * @expose
+         */
+        ProtoBuf.loadProto = function(proto, builder, filename) {
+            if (typeof builder == 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
+                filename = builder;
+                builder = null;
+            }
+            var parser = new ProtoBuf.DotProto.Parser(proto+""),
+                json = parser.parse();
+            if (!builder || typeof builder !== 'object') builder = new ProtoBuf.Builder();
+            builder["import"](json, filename);
+            builder.resolveAll();
+            builder.build();
+            return builder;
+        };
+
+        /**
+         * Loads a .proto string and returns the Builder. This is an alias of {@link ProtoBuf.loadProto}.
+         * @function
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
          * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
@@ -3565,41 +3595,10 @@
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
          */
-        ProtoBuf.protoFromString = function(proto, builder, filename) {
-            if (typeof builder == 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
-                filename = builder;
-                builder = null;
-            }
-            var parser = new ProtoBuf.DotProto.Parser(proto+""),
-                parsed = parser.parse(),
-                builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
-            if (parsed['messages'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['messages']);
-                builder.reset();
-            }
-            if (parsed['enums'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['enums']);
-                builder.reset();
-            }
-            if (parsed['services'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['services']);
-                builder.reset();
-            }
-            if (filename && parsed['imports'].length > 0) {
-                builder["import"]({
-                    "imports": parsed["imports"]
-                }, filename);
-            }
-            builder.resolveAll();
-            builder.build();
-            return builder;
-        };
+        ProtoBuf.protoFromString = ProtoBuf.loadProto; // Legacy
 
         /**
-         * Builds a .proto file and returns the Builder.
+         * Loads a .proto file and returns the Builder.
          * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
          *  an overridden 'root' path for all imported files.
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
@@ -3610,22 +3609,38 @@
          *   request has failed), else undefined
          * @expose
          */
-        ProtoBuf.protoFromFile = function(filename, callback, builder) {
-            if (callback && typeof callback == 'object') {
+        ProtoBuf.loadProtoFile = function(filename, callback, builder) {
+            if (callback && typeof callback === 'object') {
                 builder = callback;
                 callback = null;
-            } else if (!callback || typeof callback != 'function') {
+            } else if (!callback || typeof callback !== 'function') {
                 callback = null;
             }
             if (callback) {
                 ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
-                    callback(ProtoBuf.protoFromString(contents, builder, filename));
+                    callback(ProtoBuf.loadProto(contents, builder, filename));
                 });
             } else {
                 var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
                 return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
         };
+
+        /**
+         * Loads a .proto file and returns the Builder. This is an alias of {@link ProtoBuf.loadProto}.
+         * @function
+         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
+         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
+         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+         *   function will return the Builder or NULL if the request has failed.
+         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
+         * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
+         *   request has failed), else undefined
+         * @expose
+         */
+        ProtoBuf.protoFromFile = ProtoBuf.loadProtoFile; // Legacy
+
 
         /**
          * Constructs a new Builder with the specified package defined.
@@ -3637,10 +3652,65 @@
          */
         ProtoBuf.newBuilder = function(pkg, options) {
             var builder = new ProtoBuf.Builder();
-            if (typeof pkg != 'undefined') {
+            if (typeof pkg !== 'undefined' && pkg !== null) {
                 builder.define(pkg, options);
             }
             return builder;
+        };
+
+        /**
+         * Loads a .json definition and returns the Builder.
+         * @param {!*|string} json JSON definition
+         * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
+         * @return {ProtoBuf.Builder} Builder to create new messages
+         * @throws {Error} If the definition cannot be parsed or built
+         * @expose
+         */
+        ProtoBuf.loadJson = function(json, builder, filename) {
+            if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
+                filename = builder;
+                builder = null;
+            }
+            if (!builder || typeof builder !== 'object') builder = ProtoBuf.newBuilder();
+            if (typeof json === 'string') json = JSON.parse(json);
+            builder["import"](json, filename);
+            builder.resolveAll();
+            builder.build();
+            return builder;
+        };
+
+        /**
+         * Loads a .json file and returns the Builder.
+         * @param {string|{root: string, file: string}} filename Path to json file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
+         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
+         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+         *   function will return the Builder or NULL if the request has failed.
+         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
+         * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
+         *   request has failed), else undefined
+         * @expose
+         */
+        ProtoBuf.loadJsonFile = function(filename, callback, builder) {
+            if (callback && typeof callback === 'object') {
+                builder = callback;
+                callback = null;
+            } else if (!callback || typeof callback !== 'function') {
+                callback = null;
+            }
+            if (callback) {
+                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
+                    try {
+                        callback(ProtoBuf.loadJson(JSON.parse(contents), builder, filename));
+                    } catch (err) {
+                        callback(err);
+                    }
+                });
+            } else {
+                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
+                return contents !== null ? ProtoBuf.loadJson(JSON.parse(contents), builder, filename) : null;
+            }
         };
 
         return ProtoBuf;

@@ -59,9 +59,9 @@
      * @param {Object} Game Game namespace
      */
     function validateComplex(test, Game) {
-        var Car = Game.Cars.Car;
-        var Vendor = Car.Vendor;
-        var Speed = Car.Speed;
+        var Car = Game.Cars.Car,
+            Vendor = Car.Vendor,
+            Speed = Car.Speed;
     
         var vendor;
         // Car from class with argument list properties
@@ -278,7 +278,7 @@
                     { f: -0.987654321 , b: "BF 7C D6 EA" },
                     { f: +0.987654321 , b: "3F 7C D6 EA" },
                     { f: -Infinity , b: "FF 80 00 00" },
-                    { f: +Infinity , b: "7F 80 00 00" },
+                    { f: +Infinity , b: "7F 80 00 00" }
                     // { f: -NaN , b: "FF C0 00 00>" },
                     // { f: +NaN , b: "7F C0 00 00" }
                 ];
@@ -312,7 +312,7 @@
                     }
                     else {
                         test.ok( in_tolerance(x.f, m2.f), s4 );
-                    };
+                    }
                 });
             } catch(e) {
                 fail(e);
@@ -354,6 +354,24 @@
                 err = caught;
             }
             test.ok(err && err.message && err.message.indexOf(": 4 required but got only 3") >= 0);
+            test.done();
+        },
+
+        "bool": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromString("message Test { optional bool ok = 1 [ default = false ]; }"),
+                    Test = builder.build("Test"),
+                    t =  new Test();
+                test.strictEqual(t.ok, false);
+                t.setOk("true");
+                test.strictEqual(t.ok, true);
+                test.strictEqual(Test.decode(t.encode()).ok, true);
+                t.setOk("false");
+                test.strictEqual(t.ok, false);
+                test.strictEqual(Test.decode(t.encode()).ok, false);
+            } catch (err) {
+                fail(err);
+            }
             test.done();
         },
 
@@ -555,6 +573,8 @@
             try {
                 var builder = ProtoBuf.protoFromFile(__dirname+"/complex.proto");
                 validateComplex(test, builder.build("Game"));
+                var TCars = builder.lookup("Game.Cars");
+                test.strictEqual(TCars.fqn(), ".Game.Cars");
             } catch(e) {
                 fail(e);
             }
@@ -993,7 +1013,7 @@
                 
                 // Provide the service with your actual RPC implementation based on whatever framework you like most.
                 var myService = new MyService(function(method, req, callback) {
-                    test.strictEqual(method, "MyMethod");
+                    test.strictEqual(method, ".MyService.MyMethod");
                     test.ok(req instanceof RequestType);
                     called = true;
                     
@@ -1212,6 +1232,16 @@
                 test.ok(err);
                 test.notOk(ast);
                 test.ok(err.message.indexOf("line 4:") >= 0);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "excludeFields": function(test) {
+            try {
+                var builder = ProtoBuf.protoFromString("message A { required int32 i = 1; } message B { required A A = 1; }");
+                builder.build();
             } catch (e) {
                 fail(e);
             }

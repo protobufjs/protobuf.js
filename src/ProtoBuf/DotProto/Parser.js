@@ -571,6 +571,8 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             }
         } else if (Lang.NUMBER.test(token, true)) {
             value = this._parseNumber(token, true);
+        } else if (Lang.BOOL.test(token)) {
+            value = token.toLowerCase() === 'true';
         } else if (Lang.TYPEREF.test(token)) {
             value = token; // TODO: Resolve?
         } else {

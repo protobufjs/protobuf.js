@@ -89,7 +89,9 @@ ProtoBuf.Util = (function() {
         if (Util.IS_NODE) {
             if (callback) {
                 require("fs").readFile(path, function(err, data) {
-                    if (err) callback(null);
+                    if (err) {
+                        callback(null);
+                    }
                     else callback(""+data);
                 });
             } else {
@@ -104,10 +106,11 @@ ProtoBuf.Util = (function() {
             xhr.open('GET', path, callback ? true : false);
             // xhr.setRequestHeader('User-Agent', 'XMLHTTP/1.0');
             xhr.setRequestHeader('Accept', 'text/plain');
+            if (typeof xhr.overrideMimeType === 'function') xhr.overrideMimeType('text/plain');
             if (callback) {
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState != 4) return;
-                    if (xhr.status == 200) {
+                    if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                         callback(xhr.responseText);
                     } else {
                         callback(null);
@@ -117,7 +120,7 @@ ProtoBuf.Util = (function() {
                 xhr.send(null);
             } else {
                 xhr.send(null);
-                if (xhr.status == 200) {
+                if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
                     return xhr.responseText;
                 }
                 return null;

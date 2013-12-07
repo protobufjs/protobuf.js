@@ -498,60 +498,6 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="__construct"><span class="type-signature"></span>__construct<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
     <h4 class="name" id="addChild"><span class="type-signature"></span>addChild<span class="signature">(child)</span><span class="type-signature"></span></h4>
     
     
@@ -920,6 +866,91 @@
 	<dd>
 		
 <span class="param-type">Object.&lt;string,*></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="fqn"><span class="type-signature"></span>fqn<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the fully qualified name of this object.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.Namespace.html#fqn">ProtoBuf.Reflect.Namespace#fqn</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Fully qualified name as of &quot;.PATH.TO.THIS&quot;</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
 
 
 	</dd>
@@ -1490,7 +1521,7 @@
         
             
 <dt>
-    <h4 class="name" id="resolve"><span class="type-signature"></span>resolve<span class="signature">(qn)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Reflect.Namespace.html">ProtoBuf.Reflect.Namespace</a>|null}</span></h4>
+    <h4 class="name" id="resolve"><span class="type-signature"></span>resolve<span class="signature">(qn, <span class="optional">excludeFields</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Reflect.Namespace.html">ProtoBuf.Reflect.Namespace</a>|null}</span></h4>
     
     
 </dt>
@@ -1520,6 +1551,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -1545,10 +1578,47 @@
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
             
             
             
             <td class="description last"><p>Qualified name to resolve</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>excludeFields</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Excludes fields, defaults to <code>false</code></p></td>
         </tr>
 	
 	
