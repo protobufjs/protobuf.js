@@ -796,6 +796,15 @@ ProtoBuf.Builder.prototype.rpcImpl;
  * @return {!ProtoBuf.Builder}
  * @throws {Error}
  */
+ProtoBuf.loadProto = function(proto, builder, filename) {};
+
+/**
+ * @param {string} proto
+ * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder
+ * @param {(string|{root: string, file: string})=} filename
+ * @return {!ProtoBuf.Builder}
+ * @throws {Error}
+ */
 ProtoBuf.protoFromString = function(proto, builder, filename) {};
 
 /**
@@ -805,7 +814,34 @@ ProtoBuf.protoFromString = function(proto, builder, filename) {};
  * @return {ProtoBuf.Builder|undefined}
  * @throws {Error}
  */
+ProtoBuf.loadProtoFile = function(filename, callback, builder) {};
+
+/**
+ * @param {string|{root: string, file: string}} filename
+ * @param {(function(ProtoBuf.Builder)|ProtoBuf.Builder)=} callback
+ * @param {ProtoBuf.Builder=} builder
+ * @return {ProtoBuf.Builder|undefined}
+ * @throws {Error}
+ */
 ProtoBuf.protoFromFile = function(filename, callback, builder) {};
+
+/**
+ * @param {!*|string} proto
+ * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder
+ * @param {(string|{root: string, file: string})=} filename
+ * @return {!ProtoBuf.Builder}
+ * @throws {Error}
+ */
+ProtoBuf.loadJson = function(json, builder, filename) {};
+
+/**
+ * @param {string|{root: string, file: string}} filename
+ * @param {(function(ProtoBuf.Builder)|ProtoBuf.Builder)=} callback
+ * @param {ProtoBuf.Builder=} builder
+ * @return {ProtoBuf.Builder|undefined}
+ * @throws {Error}
+ */
+ProtoBuf.loadJsonFile = function(filename, callback, builder) {};
 
 /**
  * @param {string=} pkg

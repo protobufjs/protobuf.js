@@ -3565,7 +3565,7 @@
         /**
          * Loads a .proto string and returns the Builder.
          * @param {string} proto .proto file contents
-         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder Builder to append to. Will create a new one if omitted.
          * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
@@ -3578,7 +3578,7 @@
             }
             var parser = new ProtoBuf.DotProto.Parser(proto+""),
                 parsed = parser.parse();
-            if (typeof builder !== 'object') builder = new ProtoBuf.Builder();
+            if (!builder || typeof builder !== 'object') builder = new ProtoBuf.Builder();
             if (parsed['messages'].length > 0) {
                 if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
                 builder.create(parsed['messages']);
@@ -3637,7 +3637,7 @@
             }
             if (callback) {
                 ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
-                    callback(ProtoBuf.protoFromString(contents, builder, filename));
+                    callback(ProtoBuf.loadProto(contents, builder, filename));
                 });
             } else {
                 var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
@@ -3679,8 +3679,8 @@
 
         /**
          * Loads a .json definition and returns the Builder.
-         * @param {string} json JSON definition
-         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
+         * @param {!*|string} json JSON definition
+         * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder Builder to append to. Will create a new one if omitted.
          * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
@@ -3691,7 +3691,8 @@
                 filename = builder;
                 builder = null;
             }
-            if (typeof builder !== 'object') builder = ProtoBuf.newBuilder();
+            if (!builder || typeof builder !== 'object') builder = ProtoBuf.newBuilder();
+            if (typeof json === 'string') json = JSON.parse(json);
             builder.define(json['package'], json['options']);
             builder["import"](json, filename);
             builder.resolveAll();
