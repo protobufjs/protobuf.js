@@ -220,13 +220,7 @@
                 filename = builder;
                 builder = null;
             }
-            var parser = new ProtoBuf.DotProto.Parser(proto+""),
-                json = parser.parse();
-            if (!builder || typeof builder !== 'object') builder = new ProtoBuf.Builder();
-            builder["import"](json, filename);
-            builder.resolveAll();
-            builder.build();
-            return builder;
+            return ProtoBuf.loadJson((new ProtoBuf.DotProto.Parser(proto+"")).parse(), builder, filename);
         };
 
         /**
@@ -271,7 +265,7 @@
         };
 
         /**
-         * Loads a .proto file and returns the Builder. This is an alias of {@link ProtoBuf.loadProto}.
+         * Loads a .proto file and returns the Builder. This is an alias of {@link ProtoBuf.loadProtoFile}.
          * @function
          * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
          *  an overridden 'root' path for all imported files.
