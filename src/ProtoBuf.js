@@ -265,7 +265,7 @@
         };
 
         /**
-         * Loads a .proto file and returns the Builder. This is an alias of {@link ProtoBuf.loadProto}.
+         * Loads a .proto file and returns the Builder. This is an alias of {@link ProtoBuf.loadProtoFile}.
          * @function
          * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
          *  an overridden 'root' path for all imported files.
