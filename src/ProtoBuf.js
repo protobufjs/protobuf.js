@@ -221,28 +221,9 @@
                 builder = null;
             }
             var parser = new ProtoBuf.DotProto.Parser(proto+""),
-                parsed = parser.parse();
+                json = parser.parse();
             if (!builder || typeof builder !== 'object') builder = new ProtoBuf.Builder();
-            if (parsed['messages'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['messages']);
-                builder.reset();
-            }
-            if (parsed['enums'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['enums']);
-                builder.reset();
-            }
-            if (parsed['services'].length > 0) {
-                if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
-                builder.create(parsed['services']);
-                builder.reset();
-            }
-            if (filename && parsed['imports'].length > 0) {
-                builder["import"]({
-                    "imports": parsed["imports"]
-                }, filename);
-            }
+            builder["import"](json, filename);
             builder.resolveAll();
             builder.build();
             return builder;
@@ -338,7 +319,6 @@
             }
             if (!builder || typeof builder !== 'object') builder = ProtoBuf.newBuilder();
             if (typeof json === 'string') json = JSON.parse(json);
-            builder.define(json['package'], json['options']);
             builder["import"](json, filename);
             builder.resolveAll();
             builder.build();

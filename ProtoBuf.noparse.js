@@ -2404,13 +2404,13 @@
         
             /**
              * Imports another definition into this builder.
-             * @param {Object.<string,*>} parsed Parsed import
+             * @param {Object.<string,*>} json Parsed import
              * @param {(string|{root: string, file: string})=} filename Imported file name
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the definition or file cannot be imported
              * @expose
              */
-            Builder.prototype["import"] = function(parsed, filename) {
+            Builder.prototype["import"] = function(json, filename) {
                 if (typeof filename === 'string') {
                     if (ProtoBuf.Util.IS_NODE) {
                         var path = require("path");
@@ -2422,7 +2422,7 @@
                     }
                     this.files[filename] = true;
                 }
-                if (!!parsed['imports'] && parsed['imports'].length > 0) {
+                if (!!json['imports'] && json['imports'].length > 0) {
                     var importRoot, delim = '/', resetRoot = false;
                     if (typeof filename === 'object') { // If an import root is specified, override
                         this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
@@ -2445,12 +2445,12 @@
                     } else {
                         importRoot = null;
                     }
-                    for (var i=0; i<parsed['imports'].length; i++) {
-                        if (typeof parsed['imports'][i] === 'string') { // Import file
+                    for (var i=0; i<json['imports'].length; i++) {
+                        if (typeof json['imports'][i] === 'string') { // Import file
                             if (!importRoot) {
                                 throw(new Error("Cannot determine import root: File name is unknown"));
                             }
-                            var importFilename = importRoot+delim+parsed['imports'][i];
+                            var importFilename = importRoot+delim+json['imports'][i];
                             if (/\.json$/i.test(importFilename)) { // Always possible
                                 var json = ProtoBuf.Util.fetch(importFilename);
                                 if (json === null) {
@@ -2461,31 +2461,31 @@
                                 throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
                             }
                         } else { // Import structure
-                            this["import"](parsed['imports'][i], /* fake */ filename);
+                            this["import"](json['imports'][i], /* fake */ filename);
                         }
                     }
                     if (resetRoot) { // Reset import root override when all imports are done
                         this.importRoot = null;
                     }
                 }
-                if (!!parsed['messages']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['messages']);
+                if (!!json['messages']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['messages']);
                     this.reset();
                 }
-                if (!!parsed['enums']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['enums']);
+                if (!!json['enums']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['enums']);
                     this.reset();
                 }
-                if (!!parsed['services']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['services']);
+                if (!!json['services']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['services']);
                     this.reset();
                 }
-                if (!!parsed['extends']) {
-                    if (!!parsed['package']) this.define(parsed['package'], parsed["options"]);
-                    this.create(parsed['extends']);
+                if (!!json['extends']) {
+                    if (!!json['package']) this.define(json['package'], json["options"]);
+                    this.create(json['extends']);
                     this.reset();
                 }
                 return this;
@@ -2691,7 +2691,6 @@
             }
             if (!builder || typeof builder !== 'object') builder = ProtoBuf.newBuilder();
             if (typeof json === 'string') json = JSON.parse(json);
-            builder.define(json['package'], json['options']);
             builder["import"](json, filename);
             builder.resolveAll();
             builder.build();
