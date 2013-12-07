@@ -27,6 +27,8 @@ var ProtoBuf = require(__dirname+"/../ProtoBuf.js"),
     pkg = require(__dirname+"/../package.json"),
     ascli = require("ascli");
 
+if (!fs.existsSync) fs.existsSync = path.existsSync; // node 0.6
+
 if (process.argv.length < 3) {
     ascli.banner("proto".green.bold+"2".white.bold+"js".green.bold, "ProtoBuf.js v"+pkg['version']+" "+"https://github.com/dcodeIO/ProtoBuf.js".grey);
     console.log("Usage: "+path.basename(process.argv[1]).green.bold+" protoFile [-class[=My.Package]|-commonjs[=My.Package]|-amd[=My.Package]] [-min] [> outFile]\n");
