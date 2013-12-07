@@ -203,9 +203,11 @@
         // #include "ProtoBuf/Reflect.js"
         
         // #include "ProtoBuf/Builder.js"
+
+        // #ifndef NOPARSE
         
         /**
-         * Builds a .proto definition and returns the Builder.
+         * Loads a .proto string and returns the Builder.
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
          * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
@@ -213,17 +215,14 @@
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
          */
-        ProtoBuf.protoFromString = function(proto, builder, filename) {
-            // #ifdef NOPARSE
-            throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
-            // #else
+        ProtoBuf.loadProto = function(proto, builder, filename) {
             if (typeof builder == 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
                 filename = builder;
                 builder = null;
             }
             var parser = new ProtoBuf.DotProto.Parser(proto+""),
-                parsed = parser.parse(),
-                builder = typeof builder == 'object' ? builder : new ProtoBuf.Builder();
+                parsed = parser.parse();
+            if (typeof builder !== 'object') builder = new ProtoBuf.Builder();
             if (parsed['messages'].length > 0) {
                 if (parsed['package'] !== null) builder.define(parsed['package'], parsed["options"]);
                 builder.create(parsed['messages']);
@@ -247,11 +246,22 @@
             builder.resolveAll();
             builder.build();
             return builder;
-            // #endif
         };
 
         /**
-         * Builds a .proto file and returns the Builder.
+         * Loads a .proto string and returns the Builder. This is an alias of {@link ProtoBuf.loadProto}.
+         * @function
+         * @param {string} proto .proto file contents
+         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
+         * @return {ProtoBuf.Builder} Builder to create new messages
+         * @throws {Error} If the definition cannot be parsed or built
+         * @expose
+         */
+        ProtoBuf.protoFromString = ProtoBuf.loadProto; // Legacy
+
+        /**
+         * Loads a .proto file and returns the Builder.
          * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
          *  an overridden 'root' path for all imported files.
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
@@ -262,11 +272,11 @@
          *   request has failed), else undefined
          * @expose
          */
-        ProtoBuf.protoFromFile = function(filename, callback, builder) {
-            if (callback && typeof callback == 'object') {
+        ProtoBuf.loadProtoFile = function(filename, callback, builder) {
+            if (callback && typeof callback === 'object') {
                 builder = callback;
                 callback = null;
-            } else if (!callback || typeof callback != 'function') {
+            } else if (!callback || typeof callback !== 'function') {
                 callback = null;
             }
             if (callback) {
@@ -280,6 +290,23 @@
         };
 
         /**
+         * Loads a .proto file and returns the Builder. This is an alias of {@link ProtoBuf.loadProto}.
+         * @function
+         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
+         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
+         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+         *   function will return the Builder or NULL if the request has failed.
+         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
+         * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
+         *   request has failed), else undefined
+         * @expose
+         */
+        ProtoBuf.protoFromFile = ProtoBuf.loadProtoFile; // Legacy
+
+        // #endif
+
+        /**
          * Constructs a new Builder with the specified package defined.
          * @param {string=} pkg Package name as fully qualified name, e.g. "My.Game". If no package is specified, the
          * builder will only contain a global namespace.
@@ -289,10 +316,65 @@
          */
         ProtoBuf.newBuilder = function(pkg, options) {
             var builder = new ProtoBuf.Builder();
-            if (typeof pkg != 'undefined') {
+            if (typeof pkg !== 'undefined' && pkg !== null) {
                 builder.define(pkg, options);
             }
             return builder;
+        };
+
+        /**
+         * Loads a .json definition and returns the Builder.
+         * @param {string} json JSON definition
+         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
+         * @return {ProtoBuf.Builder} Builder to create new messages
+         * @throws {Error} If the definition cannot be parsed or built
+         * @expose
+         */
+        ProtoBuf.loadJson = function(json, builder, filename) {
+            if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
+                filename = builder;
+                builder = null;
+            }
+            if (typeof builder !== 'object') builder = ProtoBuf.newBuilder();
+            builder.define(json['package'], json['options']);
+            builder["import"](json, filename);
+            builder.resolveAll();
+            builder.build();
+            return builder;
+        };
+
+        /**
+         * Loads a .json file and returns the Builder.
+         * @param {string|{root: string, file: string}} filename Path to json file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
+         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
+         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+         *   function will return the Builder or NULL if the request has failed.
+         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
+         * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
+         *   request has failed), else undefined
+         * @expose
+         */
+        ProtoBuf.loadJsonFile = function(filename, callback, builder) {
+            if (callback && typeof callback === 'object') {
+                builder = callback;
+                callback = null;
+            } else if (!callback || typeof callback !== 'function') {
+                callback = null;
+            }
+            if (callback) {
+                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
+                    try {
+                        callback(ProtoBuf.loadJson(JSON.parse(contents), builder, filename));
+                    } catch (err) {
+                        callback(err);
+                    }
+                });
+            } else {
+                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
+                return contents !== null ? ProtoBuf.loadJson(JSON.parse(contents), builder, filename) : null;
+            }
         };
 
         return ProtoBuf;

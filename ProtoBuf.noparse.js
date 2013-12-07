@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.0-rc2";
+        ProtoBuf.VERSION = "2.0.0-rc3";
 
         /**
          * Wire types.
@@ -2657,48 +2657,7 @@
             return Builder;
             
         })(ProtoBuf, ProtoBuf.Lang, ProtoBuf.Reflect);
-                
-        /**
-         * Builds a .proto definition and returns the Builder.
-         * @param {string} proto .proto file contents
-         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
-         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
-         * @return {ProtoBuf.Builder} Builder to create new messages
-         * @throws {Error} If the definition cannot be parsed or built
-         * @expose
-         */
-        ProtoBuf.protoFromString = function(proto, builder, filename) {
-            throw(new Error("This build of ProtoBuf.js does not include DotProto support. See: https://github.com/dcodeIO/ProtoBuf.js"));
-        };
-
-        /**
-         * Builds a .proto file and returns the Builder.
-         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
-         *  an overridden 'root' path for all imported files.
-         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
-         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
-         *   function will return the Builder or NULL if the request has failed.
-         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
-         * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
-         *   request has failed), else undefined
-         * @expose
-         */
-        ProtoBuf.protoFromFile = function(filename, callback, builder) {
-            if (callback && typeof callback == 'object') {
-                builder = callback;
-                callback = null;
-            } else if (!callback || typeof callback != 'function') {
-                callback = null;
-            }
-            if (callback) {
-                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
-                    callback(ProtoBuf.protoFromString(contents, builder, filename));
-                });
-            } else {
-                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
-                return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
-            }
-        };
+        
 
         /**
          * Constructs a new Builder with the specified package defined.
@@ -2710,10 +2669,65 @@
          */
         ProtoBuf.newBuilder = function(pkg, options) {
             var builder = new ProtoBuf.Builder();
-            if (typeof pkg != 'undefined') {
+            if (typeof pkg !== 'undefined' && pkg !== null) {
                 builder.define(pkg, options);
             }
             return builder;
+        };
+
+        /**
+         * Loads a .json definition and returns the Builder.
+         * @param {string} json JSON definition
+         * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
+         * @return {ProtoBuf.Builder} Builder to create new messages
+         * @throws {Error} If the definition cannot be parsed or built
+         * @expose
+         */
+        ProtoBuf.loadJson = function(json, builder, filename) {
+            if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
+                filename = builder;
+                builder = null;
+            }
+            if (typeof builder !== 'object') builder = ProtoBuf.newBuilder();
+            builder.define(json['package'], json['options']);
+            builder["import"](json, filename);
+            builder.resolveAll();
+            builder.build();
+            return builder;
+        };
+
+        /**
+         * Loads a .json file and returns the Builder.
+         * @param {string|{root: string, file: string}} filename Path to json file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
+         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
+         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+         *   function will return the Builder or NULL if the request has failed.
+         * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
+         * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
+         *   request has failed), else undefined
+         * @expose
+         */
+        ProtoBuf.loadJsonFile = function(filename, callback, builder) {
+            if (callback && typeof callback === 'object') {
+                builder = callback;
+                callback = null;
+            } else if (!callback || typeof callback !== 'function') {
+                callback = null;
+            }
+            if (callback) {
+                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
+                    try {
+                        callback(ProtoBuf.loadJson(JSON.parse(contents), builder, filename));
+                    } catch (err) {
+                        callback(err);
+                    }
+                });
+            } else {
+                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
+                return contents !== null ? ProtoBuf.loadJson(JSON.parse(contents), builder, filename) : null;
+            }
         };
 
         return ProtoBuf;

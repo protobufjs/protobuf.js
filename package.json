@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "2.0.0-rc2",
+    "version": "2.0.0-rc3",
     "description": "A full-featured protobuf implementation in plain JavaScript.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [

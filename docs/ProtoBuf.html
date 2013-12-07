@@ -614,6 +614,874 @@
         <dl>
             
 <dt>
+    <h4 class="name" id="loadJson"><span class="type-signature">&lt;static> </span>loadJson<span class="signature">(json, <span class="optional">builder</span>, <span class="optional">filename</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Loads a .json definition and returns the Builder.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>JSON definition</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>builder</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Builder to append to. Will create a new one if omitted.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">{root: string, file: string}</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The corresponding file name if known. Must be specified for imports.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the definition cannot be parsed or built
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Builder to create new messages</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="loadJsonFile"><span class="type-signature">&lt;static> </span>loadJsonFile<span class="signature">(filename, <span class="optional">callback</span>, <span class="optional">builder</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>|undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Loads a .json file and returns the Builder.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">{root: string, file: string}</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Path to json file or an object specifying &#39;file&#39; with
+ an overridden &#39;root&#39; path for all imported files.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function(ProtoBuf.Builder)</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Callback that will receive the Builder as its first argument.
+  If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+  function will return the Builder or NULL if the request has failed.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>builder</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Builder to append to. Will create a new one if omitted.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The Builder if synchronous (no callback specified, will be NULL if the
+  request has failed), else undefined</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="loadProto"><span class="type-signature">&lt;static> </span>loadProto<span class="signature">(proto, <span class="optional">builder</span>, <span class="optional">filename</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Loads a .proto string and returns the Builder.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>proto</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>.proto file contents</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>builder</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Builder to append to. Will create a new one if omitted.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">{root: string, file: string}</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The corresponding file name if known. Must be specified for imports.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the definition cannot be parsed or built
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Builder to create new messages</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="loadProtoFile"><span class="type-signature">&lt;static> </span>loadProtoFile<span class="signature">(filename, <span class="optional">callback</span>, <span class="optional">builder</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>|undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Loads a .proto file and returns the Builder.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">{root: string, file: string}</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Path to proto file or an object specifying &#39;file&#39; with
+ an overridden &#39;root&#39; path for all imported files.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function(ProtoBuf.Builder)</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Callback that will receive the Builder as its first argument.
+  If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
+  function will return the Builder or NULL if the request has failed.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>builder</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Builder to append to. Will create a new one if omitted.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The Builder if synchronous (no callback specified, will be NULL if the
+  request has failed), else undefined</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="newBuilder"><span class="type-signature">&lt;static> </span>newBuilder<span class="signature">(<span class="optional">pkg</span>, <span class="optional">options</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.html">ProtoBuf.Builder</a>}</span></h4>
     
     
@@ -792,7 +1660,7 @@ builder will only contain a global namespace.</p></td>
     
     
     <div class="description">
-        <p>Builds a .proto file and returns the Builder.</p>
+        <p>Loads a .proto file and returns the Builder. This is an alias of <a href="ProtoBuf.html#loadProto">ProtoBuf.loadProto</a>.</p>
     </div>
     
 
@@ -1000,7 +1868,7 @@ builder will only contain a global namespace.</p></td>
     
     
     <div class="description">
-        <p>Builds a .proto definition and returns the Builder.</p>
+        <p>Loads a .proto string and returns the Builder. This is an alias of <a href="ProtoBuf.html#loadProto">ProtoBuf.loadProto</a>.</p>
     </div>
     
 
