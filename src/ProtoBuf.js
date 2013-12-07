@@ -220,13 +220,7 @@
                 filename = builder;
                 builder = null;
             }
-            var parser = new ProtoBuf.DotProto.Parser(proto+""),
-                json = parser.parse();
-            if (!builder || typeof builder !== 'object') builder = new ProtoBuf.Builder();
-            builder["import"](json, filename);
-            builder.resolveAll();
-            builder.build();
-            return builder;
+            return ProtoBuf.loadJson((new ProtoBuf.DotProto.Parser(proto+"")).parse(), builder, filename);
         };
 
         /**
