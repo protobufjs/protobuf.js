@@ -27,7 +27,7 @@ for (var i=0, dep, data; i<deps.length; i++) {
 }
 
 // Initialize from .proto file
-var builder = ProtoBuf.protoFromFile(path.join(__dirname, "www", "example.proto")),
+var builder = ProtoBuf.loadProtoFile(path.join(__dirname, "www", "example.proto")),
     Message = builder.build("Message");
 
 // HTTP server

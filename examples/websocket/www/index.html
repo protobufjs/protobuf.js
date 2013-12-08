@@ -10,7 +10,7 @@ if (typeof dcodeIO === 'undefined' || !dcodeIO.ProtoBuf) {
 }
 // Initialize ProtoBuf.js
 var ProtoBuf = dcodeIO.ProtoBuf;
-var Message = ProtoBuf.protoFromFile("./example.proto").build("Message");
+var Message = ProtoBuf.loadProtoFile("./example.proto").build("Message");
 </script>
 </head>
 <body>

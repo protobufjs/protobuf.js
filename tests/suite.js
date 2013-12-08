@@ -1256,7 +1256,21 @@
             }
             test.done();
         },
-        
+
+        "emptyMessage": function(test) {
+            try {
+                var builder = ProtoBuf.loadProto("message EmptyMessage {}"),
+                    EmptyMessage = builder.build("EmptyMessage");
+
+                var msg = new EmptyMessage(),
+                    ab = msg.toArrayBuffer();
+                test.strictEqual(ab.byteLength, 0);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
         // Node.js only
         "loaders": BROWSER ? {} : {
             
