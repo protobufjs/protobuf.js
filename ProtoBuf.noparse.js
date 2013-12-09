@@ -1366,19 +1366,11 @@
                 }
                 // Signed 32bit
                 if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["sint32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    i = parseInt(value, 10);
-                    if (isNaN(i)) {
-                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a number)"));
-                    }
-                    return i | 0;
+                    return isNaN(i = parseInt(value, 10)) ? i : i | 0; // Do not cast NaN as it'd become 0
                 }
                 // Unsigned 32bit
                 if (this.type == ProtoBuf.TYPES["uint32"] || this.type == ProtoBuf.TYPES["fixed32"]) {
-                    i = parseInt(value, 10);
-                    if (isNaN(i)) {
-                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a number)"));
-                    }
-                    return i >>> 0;
+                    return isNaN(i = parseInt(value, 10)) ? i : i >>> 0; // Do not cast NaN as it'd become 0
                 }
                 if (ProtoBuf.Long) {
                     // Signed 64bit
@@ -1403,11 +1395,7 @@
                 }
                 // Float
                 if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {
-                    i = parseFloat(value);
-                    if (isNaN(i)) {
-                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a number)"));
-                    }
-                    return i;
+                    return parseFloat(value); // May also become NaN, +Infinity, -Infinity
                 }
                 // Length-delimited string
                 if (this.type == ProtoBuf.TYPES["string"]) {
