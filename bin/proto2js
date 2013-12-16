@@ -52,16 +52,12 @@ for (var i=3; i<process.argv.length; i++) {
     var option = process.argv[i];
     if (option.substring(0,1) == "-") {
         var opt = option.split("=", 2), key = opt[0].substring(1);
-        if (typeof options[key] !== 'undefined') {
-            if (typeof options[key] === 'string') {
-                options[key] = [options[key], opt[1]]; // Make it an array
-            } else if (Array.isArray(options[key])) {
-                options[key].push(opt[1]); // Add it
-            } else {
-                options[key] = opt.length == 2 ? opt[1] : true; // Overwrite
-            }
+        if (typeof options[key] === 'string' && typeof opt[1] === 'string') {
+            options[key] = [options[key], opt[1]]; // Make it an array
+        } else if (Array.isArray(options[key]) && typeof opt[1] === 'string') {
+            options[key].push(opt[1]); // Add it
         } else {
-            options[key] = opt.length == 2 ? opt[1] : true; // Create it
+            options[key] = opt.length == 2 ? opt[1] : true; // Create or overwrite
         }
     }
 }

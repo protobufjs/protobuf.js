@@ -338,6 +338,23 @@
             }
             test.done();
         },
+
+        "bytesFromFile": function(test) {
+            try {
+                var builder = ProtoBuf.loadProto("message Image { required bytes data = 1; }"),
+                    Image = builder.build("Image"),
+                    data = fs.readFileSync(__dirname+"/../ProtoBuf.png"),
+                    image = new Image({ data: data }),
+                    bb = image.encode(),
+                    imageDec = Image.decode(bb),
+                    dataDec = imageDec.data.toBuffer();
+                test.strictEqual(data.length, dataDec.length);
+                test.deepEqual(data, dataDec);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         "notEnoughBytes": function(test) {
             var builder = ProtoBuf.loadProto("message Test { required bytes b = 1; }");
