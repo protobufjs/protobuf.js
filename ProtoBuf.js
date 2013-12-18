@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.0";
+        ProtoBuf.VERSION = "2.0.1";
 
         /**
          * Wire types.
@@ -3351,7 +3351,13 @@
                                 this["import"]((new ProtoBuf.DotProto.Parser(contents+"")).parse(), importFilename); // May throw
                             }
                         } else { // Import structure
-                            this["import"](json['imports'][i], /* unique fake */ filename.replace(/^(.+)\.(\w+)$/, function($0, $1, $2) { return $1+"_import"+i+"."+$2; }));
+                            if (!filename) {
+                                this["import"](json['imports'][i]);
+                            } else if (/\.(\w+)$/.test(filename)) { // With extension: Append _importN to the name portion to make it unique
+                                this["import"](json['imports'][i], filename.replace(/^(.+)\.(\w+)$/, function($0, $1, $2) { return $1+"_import"+i+"."+$2; }));
+                            } else { // Without extension: Append _importN to make it unique
+                                this["import"](json['imports'][i], filename+"_import"+i);
+                            }
                         }
                     }
                     if (resetRoot) { // Reset import root override when all imports are done
