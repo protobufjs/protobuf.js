@@ -1045,7 +1045,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         }
         // Length-delimited bytes
         if (this.type == ProtoBuf.TYPES["bytes"]) {
-            if (typeof value == 'object' && value instanceof ByteBuffer) {
+            if (value && value instanceof ByteBuffer) {
                 return value;
             }
             return ByteBuffer.wrap(value);

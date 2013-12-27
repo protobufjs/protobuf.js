@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.1";
+        ProtoBuf.VERSION = "2.0.2";
 
         /**
          * Wire types.
@@ -2300,7 +2300,7 @@
                 }
                 // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
-                    if (typeof value == 'object' && value instanceof ByteBuffer) {
+                    if (value && value instanceof ByteBuffer) {
                         return value;
                     }
                     return ByteBuffer.wrap(value);
