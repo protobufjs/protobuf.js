@@ -101,6 +101,13 @@ ByteBuffer.allocate = function(capacity, littleEndian) {};
 ByteBuffer.wrap = function(buffer, enc, littleEndian) {};
 
 /**
+ * @param {*} bb
+ * @returns {boolean}
+ * @nosideeffects
+ */
+ByteBuffer.isByteBuffer = function(bb) {};
+
+/**
  * @param {boolean=} littleEndian
  * @returns {!ByteBuffer}
  */
@@ -331,12 +338,12 @@ ByteBuffer.prototype.readInt = function(offset) {};
 /**
  * @param {number} value
  * @param {number=} offset
- * @returns {!ByteBuffer}
+ * @returns {!ByteBuffer} 
  */
 ByteBuffer.prototype.writeUint32 = function(value, offset) {};
 
 /**
- * @param {number=} offset
+ * @param {number=} offset 
  * @returns {number}
  * @throws {Error}
  */
@@ -551,7 +558,7 @@ ByteBuffer.calculateUTF8String = function(str) {};
 
 /**
  * @param {string} str
- * @param {number=} offset
+ * @param {number=} offset 
  * @returns {!ByteBuffer|number}
  */
 ByteBuffer.prototype.writeUTF8String = function(str, offset) {};
@@ -729,6 +736,14 @@ ByteBuffer.encode64 = function(bb) {};
  * @nosideeffects
  */
 ByteBuffer.decode64 = function(str, littleEndian) {};
+
+/**
+ * @param {!ByteBuffer} bb
+ * @returns {string}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ByteBuffer.encodeHex = function(bb) {};
 
 /**
  * @param {string} str
