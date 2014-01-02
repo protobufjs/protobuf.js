@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "2.0.2";
+        ProtoBuf.VERSION = "2.0.3";
 
         /**
          * Wire types.
@@ -223,7 +223,7 @@
              * @const
              * @expose
              */
-            Util.IS_NODE = (typeof window == 'undefined' || !window.window) && typeof require == 'function' && typeof process !== 'undefined' && typeof process.nextTick === 'function';
+            Util.IS_NODE = (typeof window === 'undefined' || !window.window) && typeof require === 'function' && typeof process !== 'undefined' && typeof process["nextTick"] === 'function';
             
             /**
              * Constructs a XMLHttpRequest object.
