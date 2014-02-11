@@ -327,7 +327,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidExtend(def)) {
-                        obj = this.lookup(def["ref"]);
+                        obj = this.ptr.resolve(def["ref"]);
                         if (obj) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
                                 if (obj.hasChild(def['fields'][i]['id'])) {
