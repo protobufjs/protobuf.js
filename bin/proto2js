@@ -133,12 +133,18 @@ function build_json(file, min, asObject) {
 /**
  * Recursively builds a file and its imports by converting each to a JS import on a common builder.
  * @param {string} file File name
+ * @param {string} pkg The package name to enforce or null.
  * @param {boolean=} min true to minify, false for pretty print
  * @return {Array} Parsed AST [0] and JS output [1] as a concatenation of import statements
  * @throws {Error} If the package is not a valid namespace
  */
-function build_js(file, min) {
+function build_js(file, pkg, min) {
     var ast = build_json(file, min, true);
+
+    if (typeof pkg === 'string') {
+        ast['package'] = pkg;
+    }
+
     return [ast, '.import('+JSON.stringify(ast, null, min ? 0 : 4)+')'];
 }
 
@@ -192,7 +198,7 @@ function is_valid_package(pkg, ast) {
  * @throws {Error} If classes cannot be built
  */
 function build_shim(pkg, file, min) {
-    var res = build_js(file, min);
+    var res = build_js(file, pkg, min);
     var ast = res[0];
     var out = res[1];
     if (pkg === true) {
@@ -228,7 +234,7 @@ function build_shim(pkg, file, min) {
  * @throws {Error} If exports cannot be built
  */
 function build_commonjs(pkg, file, min) {
-    var res = build_js(file, min);
+    var res = build_js(file, pkg, min);
     var ast = res[0];
     var out = res[1];
     if (pkg === true) {
@@ -249,7 +255,7 @@ function build_commonjs(pkg, file, min) {
  * @throws {Error} If the define cannot be built
  */
 function build_amd(pkg, file, min) {
-    var res = build_js(file, min);
+    var res = build_js(file, pkg, min);
     var ast = res[0];
     var out = res[1];
     if (pkg === true) {
