@@ -1,0 +1,5 @@
+message Reserved {
+  optional string get = 1;
+  optional string add = 2;
+  optional string set = 3;
+}

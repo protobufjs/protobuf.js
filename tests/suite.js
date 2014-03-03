@@ -22,16 +22,16 @@
 
     var FILE = "ProtoBuf.js";
     var BROWSER = !!global.window;
-    
+
     var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require(__dirname+"/../"+FILE),
         ByteBuffer = BROWSER ? global.dcodeIO.ByteBuffer : ByteBuffer || require("bytebuffer"),
         util = BROWSER ? null : require("util"),
         fs = BROWSER ? null : require("fs");
-        
+
         if (typeof __dirname == 'undefined') {
             __dirname = document.location.href.replace(/[\/\\][^\/\\]*$/, "");
         }
-    
+
     /**
      * Constructs a new Sandbox for module loaders and shim testing.
      * @param {Object.<string,*>} properties Additional properties to set
@@ -48,11 +48,11 @@
             }
         };
     };
-    
+
     function fail(e) {
         throw(e);
     }
-    
+
     /**
      * Validates the complexDotProto and complexInline tests.
      * @param {*} test Nodeunit test
@@ -62,7 +62,7 @@
         var Car = Game.Cars.Car,
             Vendor = Car.Vendor,
             Speed = Car.Speed;
-    
+
         var vendor;
         // Car from class with argument list properties
         var car = new Car(
@@ -91,13 +91,13 @@
         test.equal(carDec.vendor.address.country, "US");
         test.equal(carDec.vendor.address.country, carDec.getVendor().get_address().country);
     }
-    
+
     /**
      * Test suite.
      * @type {Object.<string,function>}
      */
     var suite = {
-    
+
         "init": function(test) {
             test.ok(typeof ProtoBuf == "object");
             test.ok(typeof ProtoBuf.Reflect == 'object');
@@ -135,13 +135,13 @@
                 test.equal(bb.toString("debug"), "<08 98 01>");
                 var instDec = Test1.decode(bb);
                 test.equal(instDec.a, 152);
-                
+
             } catch (e) {
                 fail(e);
             }
             test.done();
         },
-    
+
         // Basically the same as example1, but with an unsigned value.
         "example1u": function(test) {
             try{
@@ -155,13 +155,13 @@
                 test.equal(bb.toString("debug"), "<08 FF FF FF FF 7F>");
                 var instDec = Test1u.decode(bb);
                 test.equal(instDec.a, 4294967295);
-                
+
             } catch (e) {
                 fail(e);
             }
             test.done();
         },
-        
+
         // Example "Strings" from the protobuf docs
         // https://developers.google.com/protocol-buffers/docs/encoding#types
         "example2": function(test) {
@@ -179,7 +179,7 @@
             }
             test.done();
         },
-        
+
         // Example "Embedded Messages" from the protobuf docs
         // https://developers.google.com/protocol-buffers/docs/encoding#embedded
         "example3": function(test) {
@@ -200,7 +200,7 @@
             }
             test.done();
         },
-        
+
         "example4": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/example4.proto");
@@ -219,7 +219,7 @@
             }
             test.done();
         },
-    
+
         "numberFormats": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/numberformats.proto");
@@ -237,7 +237,7 @@
             }
             test.done();
         },
-    
+
         // Check encode/decode against a table of known correct pairs.
         // Note that javascript ArrayBuffer does not support signed Zero or NaN
         // bertdouglas (https://github.com/bertdouglas)
@@ -249,7 +249,7 @@
                 var builder = ProtoBuf.loadProto(str_proto);
                 var root = builder.build();
                 var Float = root.Float;
-    
+
                 var in_tolerance = function (reference,actual) {
                     var tol = 1e-6;
                     var scale = 1.0;
@@ -259,7 +259,7 @@
                     var err = Math.abs(reference - actual)/scale;
                     return err < tol;
                 };
-    
+
                 var f_vals = [
                     // hex values are shown here in big-endian following IEEE754 notation
                     // protobuf is little-endian
@@ -282,7 +282,7 @@
                     // { f: -NaN , b: "FF C0 00 00>" },
                     // { f: +NaN , b: "7F C0 00 00" }
                 ];
-    
+
                 f_vals.map( function(x) {
                     // check encode
                     var m1 = new Float();
@@ -291,7 +291,7 @@
                     m1.encode(b1);
                     var q1 = b1.slice(1,5).compact().reverse();
                     test.strictEqual('<' + x.b + '>', q1.toString("debug"));
-    
+
                     // check decode
                     var b2 = new ByteBuffer();
                     var s1 = x.b + ' 0D';
@@ -302,7 +302,7 @@
                     b2.length = b2.offset;
                     b2.offset = 0;
                     var m2 = Float.decode(b2);
-    
+
                     var s4 = "" + x.f +" " + m2.f;
                     if ( isNaN(x.f) ) {
                         test.ok( isNaN(m2.f), s4 );
@@ -319,7 +319,7 @@
             }
             test.done();
         },
-        
+
         "bytes": function(test) {
             try {
                 var str_proto = "message Test { required bytes b = 1; }";
@@ -355,7 +355,7 @@
             }
             test.done();
         },
-        
+
         "notEnoughBytes": function(test) {
             var builder = ProtoBuf.loadProto("message Test { required bytes b = 1; }");
             var Test = builder.build("Test");
@@ -416,7 +416,7 @@
             }
             test.done();
         },
-        
+
         "emptyDefaultString": function(test) {
             try {
                 var builder = ProtoBuf.loadProto("message Test1 { optional string test = 1 [default = \"\"]; }");
@@ -431,7 +431,7 @@
             }
             test.done();
         },
-        
+
         "trailingSemicolon": function(test) {
             try {
                 var builder = ProtoBuf.loadProto("message Test1 { optional string test = 1; };");
@@ -443,7 +443,7 @@
             }
             test.done();
         },
-        
+
         "inner": {
 
             "longstr": function(test) {
@@ -498,9 +498,9 @@
                 }
                 test.done();
             }
-            
+
         },
-        
+
         "truncated": function(test) {
             try {
                 var builder = ProtoBuf.loadProto("message Test { required int32 a = 1; required int32 b = 2; }");
@@ -531,10 +531,10 @@
             }
             test.done();
         },
-        
+
         // Options on all levels
         "options": {
-            
+
             "parse": function(test) {
                 try {
                     var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/options.proto"));
@@ -549,7 +549,7 @@
                 }
                 test.done();
             },
-            
+
             "export": function(test) {
                 try {
                     var builder = ProtoBuf.loadProtoFile(__dirname+"/options.proto");
@@ -568,7 +568,7 @@
                 test.done();
             }
         },
-        
+
         // Comments
         "comments": function(test) {
             try {
@@ -584,7 +584,7 @@
             }
             test.done();
         },
-    
+
         // A more or less complex proto with type references
         "complexProto": function(test) {
             try {
@@ -597,7 +597,7 @@
             }
             test.done();
         },
-        
+
         // The same created without calling upon the parser to do so (noparse)
         "complexJSON": function(test) {
             try {
@@ -608,7 +608,7 @@
             }
             test.done();
         },
-        
+
         // Builder reused to add definitions from multiple sources
         "multiBuilder": function(test) {
             try {
@@ -622,7 +622,7 @@
             }
             test.done();
         },
-        
+
         // Inner messages test
         "repeated": {
             "legacy": function(test) {
@@ -647,7 +647,7 @@
                 }
                 test.done();
             },
-            
+
             "packed": function(test) {
                 try {
                     var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
@@ -670,7 +670,7 @@
                 }
                 test.done();
             },
-            
+
             "both": function(test) {
                 try {
                     var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
@@ -695,7 +695,7 @@
                 }
                 test.done();
             },
-            
+
             "none": function(test) {
                 try {
                     var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
@@ -715,7 +715,7 @@
                 test.done();
             }
         },
-        
+
         "x64Fixed": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/x64.proto");
@@ -727,7 +727,7 @@
                 test.ok(myTest.uval instanceof ByteBuffer.Long);
                 test.equal(myTest.uval.unsigned, true);
                 test.equal(myTest.uval.toNumber(), 1);
-                
+
                 myTest.setVal(-2);
                 myTest.setUval(2);
                 var bb = new ByteBuffer(18); // 2x tag + 2x 64bit
@@ -746,7 +746,7 @@
             }
             test.done();
         },
-    
+
         "x64Varint": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/x64.proto");
@@ -761,7 +761,7 @@
                 test.ok(myTest.sval instanceof ByteBuffer.Long);
                 test.equal(myTest.sval.unsigned, false);
                 test.equal(myTest.sval.toNumber(), -2);
-    
+
                 myTest.setVal(-2);
                 myTest.setUval(2);
                 myTest.setSval(-3);
@@ -784,7 +784,7 @@
             }
             test.done();
         },
-        
+
         "imports": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/imports.proto");
@@ -798,7 +798,7 @@
             }
             test.done();
         },
-        
+
         "toplevel": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/toplevel.proto");
@@ -814,7 +814,21 @@
             }
             test.done();
         },
-        
+
+        "reserved": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/Reserved.proto");
+                var My = builder.build();
+
+                var myTest = new My.Reserved();
+                // can encode
+                test.ok(myTest.encode());
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
         "importsToplevel": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/imports-toplevel.proto");
@@ -831,7 +845,7 @@
             }
             test.done();
         },
-        
+
         "importDuplicate": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/import_a.proto");
@@ -841,7 +855,7 @@
                 var root = builder.build();
                 test.ok(root.A);
                 test.ok(root.B);
-                test.ok(root.Common);                
+                test.ok(root.Common);
             } catch (e) {
                 fail(e);
             }
@@ -859,14 +873,14 @@
                 var rootB = builderB.build();
                 test.ok(rootA.A);
                 test.ok(rootB.B);
-                test.ok(rootA.Common);                
-                test.ok(rootB.Common);                
+                test.ok(rootA.Common);
+                test.ok(rootB.Common);
             } catch (e) {
                 fail(e);
             }
             test.done();
         },
-        
+
         "importRoot": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile({
@@ -880,7 +894,7 @@
             }
             test.done();
         },
-        
+
         "extend": function(test) {
             try {
                 var ast = new ProtoBuf.DotProto.Parser(fs.readFileSync(__dirname+"/extend.proto")).parse();
@@ -947,7 +961,7 @@
                     "options": {},
                     "services": []
                 });
-                
+
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/extend.proto");
                 var TFoo = builder.lookup("Foo"),
                     TBar = builder.lookup("Bar"),
@@ -990,7 +1004,7 @@
             }
             test.done();
         },
-        
+
         "services": function(test) {
             try {
                 var parser = new ProtoBuf.DotProto.Parser(ProtoBuf.Util.fetch(__dirname+"/custom-options.proto"));
@@ -1011,14 +1025,14 @@
                         "(my_service_option)": "FOO"
                     }
                 }]);
-                
+
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/custom-options.proto");
                 var root = builder.build(),
                     MyService = root.MyService,
                     RequestType = root.RequestType,
                     ResponseType = root.ResponseType,
                     called = false;
-                
+
                 test.deepEqual(MyService.$options, {
                     "(my_service_option)": "FOO"
                 });
@@ -1026,20 +1040,20 @@
                     "(my_method_option).foo": 567,
                     "(my_method_option).bar": "Some string"
                 });
-                
+
                 // Provide the service with your actual RPC implementation based on whatever framework you like most.
                 var myService = new MyService(function(method, req, callback) {
                     test.strictEqual(method, ".MyService.MyMethod");
                     test.ok(req instanceof RequestType);
                     called = true;
-                    
+
                     // In this case we just return no error and our pre-built response. This must be properly async!
                     setTimeout(callback.bind(this, null, (new ResponseType()).encode() /* as raw bytes for debugging */ ));
                 });
-                
+
                 test.deepEqual(myService.$options, MyService.$options);
                 test.deepEqual(myService.MyMethod.$options, MyService.MyMethod.$options);
-                
+
                 // Call the service with your request message and provide a callback. This will call your actual service
                 // implementation to perform the request and gather a response before calling the callback. If the
                 // request or response type is invalid i.e. not an instance of RequestType or ResponseType, your
@@ -1058,7 +1072,7 @@
                 fail(e);
             }
         },
-        
+
         // Properly ignore "syntax" and "extensions" keywords
         "gtfs-realtime": function(test) {
             try {
@@ -1070,7 +1084,7 @@
             }
             test.done();
         },
-        
+
         "fields": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/optional.proto");
@@ -1087,7 +1101,7 @@
             }
             test.done();
         },
-        
+
         "fieldsToCamelCase": function(test) {
             try {
                 ProtoBuf.convertFieldsToCamelCase = true;
@@ -1108,14 +1122,14 @@
                 test.strictEqual(msg.a_field, null);
                 test.equal(TTest.getChild("aField").id, 3);
                 test.equal(TTest.getChild("a_field").id, 4);
-                
+
                 // No collision
                 test.strictEqual(msg.itsAField, null);
                 test.equal(TTest.getChild("itsAField").id, 5);
-                
+
                 test.ok(typeof msg.set_its_a_field === "function");
                 test.ok(typeof msg.setItsAField === "function");
-                
+
                 ProtoBuf.convertFieldsToCamelCase = false;
             } catch (e) {
                 ProtoBuf.convertFieldsToCamelCase = false;
@@ -1123,7 +1137,7 @@
             }
             test.done();
         },
-        
+
         "setarray": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/setarray.proto");
@@ -1131,13 +1145,13 @@
                     Outer = root.Outer,
                     Inner = root.Inner,
                     inners = [];
-                
+
                 // Array of repeated messages
                 inners.push(new Inner("a"), new Inner("b"), new Inner("c"));
                 var outer = new Outer();
                 outer.setInners(inners);
                 test.deepEqual(outer.inners, inners);
-                
+
                 // Array of repeated message objects
                 inners = [];
                 inners.push({ str: 'a' }, { str: 'b' }, { str: 'c' });
@@ -1169,7 +1183,7 @@
             }
             test.done();
         },
-        
+
         "negEnumId": function(test) {
             try {
                 test.doesNotThrow(function() {
@@ -1181,13 +1195,13 @@
                     var bb = t.encode();
                     t = Test.decode(bb);
                     test.strictEqual(t.type, -1);
-                });                
+                });
             } catch (e) {
                 fail(e);
             }
             test.done();
         },
-        
+
         "base64": function(test) {
             try {
                 var Message = ProtoBuf.loadProto("message Message { required string s = 1; }").build("Message");
@@ -1203,7 +1217,7 @@
             }
             test.done();
         },
-        
+
         "hex": function(test) {
             try {
                 var Message = ProtoBuf.loadProto("message Message { required string s = 1; }").build("Message");
@@ -1235,7 +1249,7 @@
             }
             test.done();
         },
-        
+
         "tokenizerLine": function(test) {
             try {
                 var parser = new ProtoBuf.DotProto.Parser("package test;\n\nmessage Message {\n\trequired string invalid = 1;}ERROR\n"),
@@ -1290,12 +1304,12 @@
 
         // Node.js only
         "loaders": BROWSER ? {} : {
-            
+
             "commonjs": function(test) {
                 var fs = require("fs")
                   , vm = require("vm")
                   , util = require('util');
-        
+
                 var code = fs.readFileSync(__dirname+"/../"+FILE);
                 var sandbox = new Sandbox({
                     module: {
@@ -1316,12 +1330,12 @@
                 test.ok(typeof sandbox.require != 'undefined' && sandbox.require.called);
                 test.done();
             },
-        
+
             "amd": function(test) {
                 var fs = require("fs")
                   , vm = require("vm")
                   , util = require('util');
-        
+
                 var code = fs.readFileSync(__dirname+"/../"+FILE);
                 var sandbox = new Sandbox({
                     define: (function() {
@@ -1338,12 +1352,12 @@
                 test.ok(sandbox.define.called == true);
                 test.done();
             },
-        
+
             "shim": function(test) {
                 var fs = require("fs")
                   , vm = require("vm")
                   , util = require('util');
-        
+
                 var code = fs.readFileSync(__dirname+"/../"+FILE);
                 var sandbox = new Sandbox({
                     dcodeIO: {
@@ -1357,7 +1371,7 @@
             }
         }
     };
-    
+
     if (typeof module != 'undefined' && module.exports) {
         module.exports = suite;
     } else {
