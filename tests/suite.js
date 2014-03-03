@@ -814,7 +814,21 @@
             }
             test.done();
         },
-        
+
+        "reserved": function(test) {
+            try {
+                var builder = ProtoBuf.loadProto("message Reserved { optional string get = 1; }");
+                var My = builder.build();
+
+                var myTest = new My.Reserved();
+                // can encode
+                test.ok(myTest.encode());
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
         "importsToplevel": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/imports-toplevel.proto");
