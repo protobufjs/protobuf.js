@@ -379,7 +379,7 @@
          */
         ProtoBuf.Reflect = (function(ProtoBuf) {
             "use strict";
-            
+        
             /**
              * @exports ProtoBuf.Reflect
              * @namespace
@@ -712,7 +712,7 @@
              */
             Message.prototype.build = function(rebuild) {
                 if (this.clazz && !rebuild) return this.clazz;
-                
+        
                 // We need to create a prototyped Message class in an isolated scope
                 var clazz = (function(ProtoBuf, T) {
                     var fields = T.getChildren(Reflect.Message.Field);
@@ -739,7 +739,7 @@
                             field = fields[i];
                             if (typeof field.options['default'] != 'undefined') {
                                 try {
-                                    this.set(field.name, field.options['default']); // Should not throw
+                                    this._set(field.name, field.options['default']); // Should not throw
                                 } catch (e) {
                                     throw(new Error("[INTERNAL] "+e));
                                 }
@@ -754,13 +754,13 @@
                             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
                             var keys = Object.keys(values);
                             for (i=0; i<keys.length; i++) {
-                                this.set(keys[i], values[keys[i]]); // May throw
+                                this._set(keys[i], values[keys[i]]); // May throw
                             }
                             // Else set field values from arguments, in correct order
                         } else {
                             for (i=0; i<arguments.length; i++) {
                                 if (i<fields.length) {
-                                    this.set(fields[i].name, arguments[i]); // May throw
+                                    this._set(fields[i].name, arguments[i]); // May throw
                                 }
                             }
                         }
@@ -778,7 +778,7 @@
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
-                    Message.prototype.add = function(key, value) {
+                    Message.prototype.add = Message.prototype._add = function(key, value) {
                         var field = T.getChild(key);
                         if (!field) {
                             throw(new Error(this+"#"+key+" is undefined"));
@@ -802,7 +802,7 @@
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
-                    Message.prototype.set = function(key, value) {
+                    Message.prototype.set = Message.prototype._set = function(key, value) {
                         var field = T.getChild(key);
                         if (!field) {
                             throw(new Error(this+"#"+key+" is not a field: undefined"));
@@ -822,7 +822,7 @@
                      * @throws {Error} If there is no such field
                      * @expose
                      */
-                    Message.prototype.get = function(key) {
+                    Message.prototype.get = Message.prototype._get = function(key) {
                         var field = T.getChild(key);
                         if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: undefined"));
@@ -837,7 +837,7 @@
         
                     for (var i=0; i<fields.length; i++) {
                         var field = fields[i];
-                        
+        
                         (function(field) {
                             // set/get[SomeValue]
                             var Name = field.originalName.replace(/(_[a-zA-Z])/g,
@@ -846,14 +846,14 @@
                                 }
                             );
                             Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
-            
+        
                             // set/get_[some_value]
                             var name = field.originalName.replace(/([A-Z])/g,
                                 function(match) {
                                     return "_"+match;
                                 }
                             );
-            
+        
                             /**
                              * Sets a value. This method is present for each field, but only if there is no name conflict with
                              * another field.
@@ -865,10 +865,10 @@
                              */
                             if (!T.hasChild("set"+Name)) {
                                 Message.prototype["set"+Name] = function(value) {
-                                    this.set(field.name, value);
+                                    this._set(field.name, value);
                                 }
                             }
-            
+        
                             /**
                              * Sets a value. This method is present for each field, but only if there is no name conflict with
                              * another field.
@@ -880,10 +880,10 @@
                              */
                             if (!T.hasChild("set_"+name)) {
                                 Message.prototype["set_"+name] = function(value) {
-                                    this.set(field.name, value);
+                                    this._set(field.name, value);
                                 };
                             }
-            
+        
                             /**
                              * Gets a value. This method is present for each field, but only if there is no name conflict with
                              * another field.
@@ -894,10 +894,10 @@
                              */
                             if (!T.hasChild("get"+Name)) {
                                 Message.prototype["get"+Name] = function() {
-                                    return this.get(field.name); // Does not throw, field exists
+                                    return this._get(field.name); // Does not throw, field exists
                                 }
                             }
-            
+        
                             /**
                              * Gets a value. This method is present for each field, but only if there is no name conflict with
                              * another field.
@@ -908,10 +908,10 @@
                              */
                             if (!T.hasChild("get_"+name)) {
                                 Message.prototype["get_"+name] = function() {
-                                    return this.get(field.name); // Does not throw, field exists
+                                    return this._get(field.name); // Does not throw, field exists
                                 };
                             }
-                            
+        
                         })(field);
                     }
         
@@ -1130,7 +1130,7 @@
                     };
         
                     // Static
-                    
+        
                     /**
                      * Options.
                      * @name ProtoBuf.Builder.Message.$options
@@ -1138,7 +1138,7 @@
                      * @expose
                      */
                     var O_o; // for cc
-                    
+        
                     if (Object.defineProperty) {
                         Object.defineProperty(Message, '$options', {
                             'value': T.buildOpt(),
@@ -1147,7 +1147,7 @@
                             'writable': false
                         });
                     }
-                    
+        
                     return Message;
         
                 })(ProtoBuf, this);
@@ -1180,7 +1180,7 @@
                 var fields = this.getChildren(Message.Field),
                     fieldMissing = null;
                 for (var i=0; i<fields.length; i++) {
-                    var val = message.get(fields[i].name);
+                    var val = message._get(fields[i].name);
                     if (fields[i].required && val === null) {
                         if (fieldMissing === null) fieldMissing = fields[i];
                     } else {
@@ -1234,9 +1234,9 @@
                         continue;
                     }
                     if (field.repeated && !field.options["packed"]) {
-                        msg.add(field.name, field.decode(wireType, buffer));
+                        msg._add(field.name, field.decode(wireType, buffer));
                     } else {
-                        msg.set(field.name, field.decode(wireType, buffer));
+                        msg._set(field.name, field.decode(wireType, buffer));
                     }
                 }
                 // Check if all required fields are present
@@ -1321,7 +1321,7 @@
                  * @expose
                  */
                 this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
-                
+        
                 // Convert field names to camel case notation if the override is set
                 if (ProtoBuf.convertFieldsToCamelCase) {
                     this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
@@ -1455,7 +1455,7 @@
                         if (this.options["packed"]) {
                             // "All of the elements of the field are packed into a single key-value pair with wire type 2
                             // (length-delimited). Each element is encoded the same way it would be normally, except without a
-                            // tag preceding it." 
+                            // tag preceding it."
                             buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
                             buffer.ensureCapacity(buffer.offset += 1); // We do not know the length yet, so let's assume a varint of length 1
                             var start = buffer.offset; // Remember where the contents begin
@@ -1504,56 +1504,56 @@
                 // 32bit varint as-is
                 if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"]) {
                     buffer.writeVarint32(value);
-                    
+        
                 // 32bit varint zig-zag
                 } else if (this.type == ProtoBuf.TYPES["sint32"]) {
                     buffer.writeZigZagVarint32(value);
-                    
+        
                 // Fixed unsigned 32bit
                 } else if (this.type == ProtoBuf.TYPES["fixed32"]) {
                     buffer.writeUint32(value);
-                    
+        
                 // Fixed signed 32bit
                 } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
                     buffer.writeInt32(value);
-                
+        
                 // 64bit varint as-is
                 } else if (this.type == ProtoBuf.TYPES["int64"] || this.type == ProtoBuf.TYPES["uint64"]) {
                     buffer.writeVarint64(value); // throws
-                    
+        
                 // 64bit varint zig-zag
                 } else if (this.type == ProtoBuf.TYPES["sint64"]) {
                     buffer.writeZigZagVarint64(value); // throws
-                    
+        
                 // Fixed unsigned 64bit
                 } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
                     buffer.writeUint64(value); // throws
-                    
+        
                 // Fixed signed 64bit
                 } else if (this.type == ProtoBuf.TYPES["sfixed64"]) {
                     buffer.writeInt64(value); // throws
-                    
+        
                 // Bool
                 } else if (this.type == ProtoBuf.TYPES["bool"]) {
                     if (typeof value === 'string') buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
                     else buffer.writeVarint32(value ? 1 : 0);
-                    
+        
                 // Constant enum value
                 } else if (this.type == ProtoBuf.TYPES["enum"]) {
                     buffer.writeVarint32(value);
-                    
+        
                 // 32bit float
                 } else if (this.type == ProtoBuf.TYPES["float"]) {
                     buffer.writeFloat32(value);
-                    
+        
                 // 64bit float
                 } else if (this.type == ProtoBuf.TYPES["double"]) {
                     buffer.writeFloat64(value);
-                    
+        
                 // Length-delimited string
                 } else if (this.type == ProtoBuf.TYPES["string"]) {
                     buffer.writeVString(value);
-                    
+        
                 // Length-delimited bytes
                 } else if (this.type == ProtoBuf.TYPES["bytes"]) {
                     if (value.offset > value.length) { // Forgot to flip?
@@ -1561,7 +1561,7 @@
                     }
                     buffer.writeVarint32(value.remaining());
                     buffer.append(value);
-                    
+        
                 // Embedded message
                 } else if (this.type == ProtoBuf.TYPES["message"]) {
                     var bb = new ByteBuffer().LE();
@@ -1600,43 +1600,43 @@
                         return values;
                     }
                     // Read the next value otherwise...
-                    
+        
                 }
                 // 32bit signed varint
                 if (this.type == ProtoBuf.TYPES["int32"]) {
                     return buffer.readVarint32() | 0;
                 }
-                
+        
                 // 32bit unsigned varint
                 if (this.type == ProtoBuf.TYPES["uint32"]) {
                     return buffer.readVarint32() >>> 0;
                 }
-                
+        
                 // 32bit signed varint zig-zag
                 if (this.type == ProtoBuf.TYPES["sint32"]) {
                     return buffer.readZigZagVarint32() | 0;
                 }
-                
+        
                 // Fixed 32bit unsigned
                 if (this.type == ProtoBuf.TYPES["fixed32"]) {
                     return buffer.readUint32() >>> 0;
                 }
-                
+        
                 // Fixed 32bit signed
                 if (this.type == ProtoBuf.TYPES["sfixed32"]) {
                     return buffer.readInt32() | 0;
                 }
-                
+        
                 // 64bit signed varint
                 if (this.type == ProtoBuf.TYPES["int64"]) {
                     return buffer.readVarint64();
                 }
-                
+        
                 // 64bit unsigned varint
                 if (this.type == ProtoBuf.TYPES["uint64"]) {
                     return buffer.readVarint64().toUnsigned();
                 }
-                
+        
                 // 64bit signed varint zig-zag
                 if (this.type == ProtoBuf.TYPES["sint64"]) {
                     return buffer.readZigZagVarint64();
@@ -1646,22 +1646,22 @@
                 if (this.type == ProtoBuf.TYPES["fixed64"]) {
                     return buffer.readUint64();
                 }
-                
+        
                 // Fixed 64bit signed
                 if (this.type == ProtoBuf.TYPES["sfixed64"]) {
                     return buffer.readInt64();
                 }
-                
+        
                 // Bool varint
                 if (this.type == ProtoBuf.TYPES["bool"]) {
                     return !!buffer.readVarint32();
                 }
-                
+        
                 // Constant enum value varint)
                 if (this.type == ProtoBuf.TYPES["enum"]) {
                     return buffer.readVarint32(); // The following Builder.Message#set will already throw
                 }
-                
+        
                 // 32bit float
                 if (this.type == ProtoBuf.TYPES["float"]) {
                     return buffer.readFloat();
@@ -1670,12 +1670,12 @@
                 if (this.type == ProtoBuf.TYPES["double"]) {
                     return buffer.readDouble();
                 }
-                
+        
                 // Length-delimited string
                 if (this.type == ProtoBuf.TYPES["string"]){
                     return buffer.readVString();
                 }
-                
+        
                 // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     nBytes = buffer.readVarint32();
@@ -1687,13 +1687,13 @@
                     buffer.offset += nBytes;
                     return value;
                 }
-                
+        
                 // Length-delimited embedded message
                 if (this.type == ProtoBuf.TYPES["message"]) {
                     nBytes = buffer.readVarint32();
                     return this.resolvedType.decode(buffer, nBytes);
                 }
-                
+        
                 // We should never end here
                 throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
             };
@@ -1802,7 +1802,7 @@
                  */
                 this.clazz = null;
             };
-            
+        
             // Extends Namespace
             Service.prototype = Object.create(Namespace.prototype);
         
@@ -1842,10 +1842,10 @@
                             setTimeout(callback.bind(this, new Error("Not implemented, see: https://github.com/dcodeIO/ProtoBuf.js/wiki/Services")), 0); // Must be async!
                         };
                     };
-                    
+        
                     // Extends ProtoBuf.Builder.Service
                     Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
-                    
+        
                     if (Object.defineProperty) {
                         Object.defineProperty(Service, "$options", {
                             "value": T.buildOpt(),
@@ -1881,11 +1881,11 @@
                      *  the error if any and the response either as a pre-parsed message or as its raw bytes
                      * @abstract
                      */
-                    
+        
                     var rpc = T.getChildren(Reflect.Service.RPCMethod);
                     for (var i=0; i<rpc.length; i++) {
                         (function(method) {
-                            
+        
                             // service#Method(message, callback)
                             Service.prototype[method.name] = function(req, callback) {
                                 try {
@@ -1930,12 +1930,12 @@
                             }
                         })(rpc[i]);
                     }
-                    
+        
                     return Service;
-                    
+        
                 })(ProtoBuf, this);
             };
-            
+        
             Reflect.Service = Service;
         
             /**
@@ -1957,7 +1957,7 @@
                  */
                 this.options = options || {};
             };
-            
+        
             // Extends T
             Method.prototype = Object.create(T.prototype);
         
@@ -2017,7 +2017,7 @@
                  */
                 this.resolvedResponseType = null;
             };
-            
+        
             // Extends Method
             RPCMethod.prototype = Object.create(Method.prototype);
         
@@ -2026,7 +2026,7 @@
              * @expose
              */
             Reflect.Service.RPCMethod = RPCMethod;
-            
+        
             return Reflect;
         })(ProtoBuf);
                 
