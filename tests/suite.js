@@ -1093,6 +1093,18 @@
             test.done();
         },
         
+        "stringify": function(test) {
+            try {
+                var builder = ProtoBuf.loadProto("message Position { required int32 x = 1; required int32 y = 2; }");
+                var Position = builder.build("Position");
+                var position = new Position(1,2);
+                test.strictEqual(JSON.stringify(position), '{"x":1,"y":2}');
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         "fields": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/optional.proto");
