@@ -3365,7 +3365,7 @@
             /**
              * Imports another definition into this builder.
              * @param {Object.<string,*>} json Parsed import
-             * @param {(string|{root: string, file: string}|{file: string, paths: array})=} filename Imported file name
+             * @param {(string|{root: string, file: string})=} filename Imported file name
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the definition or file cannot be imported
              * @expose
@@ -3384,15 +3384,11 @@
                 }
                 if (!!json['imports'] && json['imports'].length > 0) {
                     var importRoot, delim = '/', resetRoot = false;
-
-                    if (typeof filename === 'object' && !!filename['root']) { // If an import root is specified, override
+                    if (typeof filename === 'object') { // If an import root is specified, override
                         this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
                         importRoot = this.importRoot;
                         filename = filename["file"];
                         if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
-                    } else if (typeof filename === 'object' && !!filename['paths']) {
-                        this.importRoot = filename['paths']; resetRoot = true;
-                        importRoot = this.importRoot;
                     } else if (typeof filename === 'string') {
                         if (this.importRoot) { // If import root is overridden, use it
                             importRoot = this.importRoot;
@@ -3410,34 +3406,20 @@
                         importRoot = null;
                     }
         
-                    var self = this;
-
                     for (var i=0; i<json['imports'].length; i++) {
                         if (typeof json['imports'][i] === 'string') { // Import file
                             if (!importRoot) {
                                 throw(new Error("Cannot determine import root: File name is unknown"));
                             }
-
-                            // If importRoot is an array of several search paths, iterate
-                            // until we find one that works
-                            var contents, importFilename;
-                            if (importRoot instanceof Array) {
-                                for (var k = 0; k < importRoot.length; k++) {
-                                    importFilename = importRoot[k]+delim+json['imports'][i];
-                                    contents = self.importSingleFile(importFilename);
-                                    if (!!contents) break;
-                                }
-                            } else {
-                                importFilename = importRoot+delim+json['imports'][i];
-                                contents = self.importSingleFile(importFilename);
+                            var importFilename = importRoot+delim+json['imports'][i];
+                            if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
+                            if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto) {     // If this is a NOPARSE build
+                                importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
                             }
-
+                            var contents = ProtoBuf.Util.fetch(importFilename);
                             if (contents === null) {
                                 throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
                             }
-
-                            if (contents.length === 0) continue;
-
                             if (/\.json$/i.test(importFilename)) { // Always possible
                                 this["import"](JSON.parse(contents+""), importFilename); // May throw
                             } else {
@@ -3478,21 +3460,6 @@
                     this.reset();
                 }
                 return this;
-            };
-
-            /**
-             * Imports a single file after the full file name has been computed based on the importRoot.
-             * When several search paths are specified, this function is called repeatedly as we iterate
-             * over the list of search paths.
-             * @param  {string} importFilePath The full file path to the file we're importing
-             * @return {string|undefined}  The resource contents or undefined if not found
-             */
-            Builder.prototype.importSingleFile = function(importFilePath) {
-                if (!Builder.isValidImport(importFilePath)) return ""; // e.g. google/protobuf/*
-                if (/\.proto$/i.test(importFilePath) && !ProtoBuf.DotProto) {     // If this is a NOPARSE build
-                    importFilePath = importFilePath.replace(/\.proto$/, ".json"); // always load the JSON file
-                }
-                return ProtoBuf.Util.fetch(importFilePath);
             };
         
             /**
@@ -3667,7 +3634,7 @@
          * Loads a .proto string and returns the Builder.
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder Builder to append to. Will create a new one if omitted.
-         * @param {(string|{root: string, file: string}|{file: string, paths: array})=} filename The corresponding file name if known. Must be specified for imports.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
@@ -3685,7 +3652,7 @@
          * @function
          * @param {string} proto .proto file contents
          * @param {(ProtoBuf.Builder|string)=} builder Builder to append to. Will create a new one if omitted.
-         * @param {(string|{root: string, file: string}|{file: string, paths: array})=} filename The corresponding file name if known. Must be specified for imports.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
@@ -3694,9 +3661,8 @@
 
         /**
          * Loads a .proto file and returns the Builder.
-         * @param {(string|{root: string, file: string}|{file: string, paths: array})=} filename Path to proto file, or an 
-         *  object specifying 'file' with an overridden 'root' path for all imported files, or an object specifying 'file'
-         *  and an array of search paths for imported files
+         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
          *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
          *   function will return the Builder or NULL if the request has failed.
@@ -3712,31 +3678,21 @@
             } else if (!callback || typeof callback !== 'function') {
                 callback = null;
             }
-
-            var fullFilePath;
-            if (typeof filename === 'object') {
-                if (!!filename["root"]) {
-                    fullFilePath = filename["root"]+"/"+filename["file"];
-                } else fullFilePath = filename["file"];
-            } else fullFilePath = filename;
-
             if (callback) {
-                ProtoBuf.Util.fetch(fullFilePath, function(contents) {
+                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
                     callback(ProtoBuf.loadProto(contents, builder, filename));
                 });
             } else {
-                var contents = ProtoBuf.Util.fetch(fullFilePath);
+                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
                 return contents !== null ? ProtoBuf.protoFromString(contents, builder, filename) : null;
             }
-
         };
 
         /**
          * Loads a .proto file and returns the Builder. This is an alias of {@link ProtoBuf.loadProtoFile}.
          * @function
-         * @param {(string|{root: string, file: string}|{file: string, paths: array})=} filename Path to proto file, or an 
-         *  object specifying 'file' with an overridden 'root' path for all imported files, or an object specifying 'file'
-         *  and an array of search paths for imported files
+         * @param {string|{root: string, file: string}} filename Path to proto file or an object specifying 'file' with
+         *  an overridden 'root' path for all imported files.
          * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
          *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
          *   function will return the Builder or NULL if the request has failed.
@@ -3768,8 +3724,7 @@
          * Loads a .json definition and returns the Builder.
          * @param {!*|string} json JSON definition
          * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder Builder to append to. Will create a new one if omitted.
-         * @param {(string|{root: string, file: string}|{file: string, paths: array})=} filename The corresponding file name if known. 
-         *   Must be specified for imports.
+         * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
          * @return {ProtoBuf.Builder} Builder to create new messages
          * @throws {Error} If the definition cannot be parsed or built
          * @expose
@@ -3781,7 +3736,6 @@
             }
             if (!builder || typeof builder !== 'object') builder = ProtoBuf.newBuilder();
             if (typeof json === 'string') json = JSON.parse(json);
-
             builder["import"](json, filename);
             builder.resolveAll();
             builder.build();
