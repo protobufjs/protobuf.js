@@ -563,7 +563,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * Encodes the message.
              * @name ProtoBuf.Builder.Message#encode
              * @function
-             * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one if omitted.
+             * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
              * @return {!ByteBuffer} Encoded message as a ByteBuffer
              * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
              *  returns the encoded ByteBuffer in the `encoded` property on the error.
@@ -573,10 +573,43 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @see ProtoBuf.Builder.Message#encodeAB
              */
             Message.prototype.encode = function(buffer) {
-                buffer = buffer || new ByteBuffer();
+                var isNew = false;
+                if (!buffer) {
+                    buffer = new ByteBuffer();
+                    isNew = true;
+                }
                 var le = buffer.littleEndian;
                 try {
-                    return T.encode(this, buffer.LE()).flip().LE(le);
+                    T.encode(this, buffer.LE());
+                    return (isNew ? buffer.flip() : buffer).LE(le);
+                } catch (e) {
+                    buffer.LE(le);
+                    throw(e);
+                }
+            };
+
+            /**
+             * Encodes the varint32 length-delimited message.
+             * @name ProtoBuf.Builder.Message#encode
+             * @function
+             * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
+             * @return {!ByteBuffer} Encoded message as a ByteBuffer
+             * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
+             *  returns the encoded ByteBuffer in the `encoded` property on the error.
+             * @expose
+             */
+            Message.prototype.encodeDelimited = function(buffer) {
+                var isNew = false;
+                if (!buffer) {
+                    buffer = new ByteBuffer();
+                    isNew = true;
+                }
+                try {
+                    var enc = new ByteBuffer().LE();
+                    T.encode(this, enc).flip();
+                    buffer.writeVarint32(enc.remaining());
+                    buffer.append(enc);
+                    return isNew ? buffer.flip() : buffer;
                 } catch (e) {
                     buffer.LE(le);
                     throw(e);
@@ -593,7 +626,6 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @expose
              */
             Message.prototype.encodeAB = function() {
-                var enc;
                 try {
                     return this.encode().toArrayBuffer();
                 } catch (err) {
@@ -699,9 +731,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
              * @expose
              */
             Message.prototype.toHex = Message.prototype.encodeHex;
-
+            
             /**
-             * Decodes the message from the specified buffer or string.
+             * Decodes a message from the specified buffer or string.
              * @name ProtoBuf.Builder.Message.decode
              * @function
              * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
@@ -728,6 +760,29 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                     buffer.LE(le);
                     throw(e);
                 }
+            };
+
+            /**
+             * Decodes a varint32 length-delimited message from the specified buffer or string.
+             * @name ProtoBuf.Builder.Message.decodeDelimited
+             * @function
+             * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
+             * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
+             * @return {!ProtoBuf.Builder.Message} Decoded message
+             * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
+             *  returns the decoded message with missing fields in the `decoded` property on the error.
+             * @expose
+             */
+            Message.decodeDelimited = function(buffer, enc) {
+                if (buffer === null) throw(new Error("buffer must not be null"));
+                if (typeof buffer === 'string') {
+                    buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
+                }
+                buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
+                var len = buffer.readVarint32();
+                var msg = T.decode(buffer.slice(buffer.offset, buffer.offset + len).LE());
+                buffer.offset += len;
+                return msg;
             };
 
             /**
@@ -815,7 +870,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @param {ProtoBuf.Builder.Message} message Runtime message to encode
      * @param {ByteBuffer} buffer ByteBuffer to write to
      * @return {ByteBuffer} The ByteBuffer for chaining
-     * @throws {string} If requried fields are missing or the message cannot be encoded for another reason
+     * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
      * @expose
      */
     Message.prototype.encode = function(message, buffer) {
@@ -834,6 +889,23 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             err["encoded"] = buffer; // Still expose what we got
             throw(err);
         }
+        return buffer;
+    };
+
+    /**
+     * Encodes a runtime message's varint32 length-delimitied contents to the specified buffer.
+     * @param {ProtoBuf.Builder.Message} message Runtime message to encode
+     * @param {ByteBuffer} buffer ByteBuffer to write to
+     * @return {ByteBuffer} The ByteBffer for chaining
+     * @throws {Error} If required fields are missing or the message cannot be encoded for anotzher reason
+     * @expose
+     */
+    Message.prototype.encodeDelimitied = function(message, buffer) {
+        var enc = new ByteBuffer();
+        this.encode(message, enc);
+        enc.flip();
+        buffer.writeVarint32(enc.remaining());
+        buffer.append(enc);
         return buffer;
     };
 

@@ -343,9 +343,17 @@ ProtoBuf.Reflect.Message.prototype.build = function() {};
  * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
  * @return {!ByteBuffer}
- * @throws {string}
+ * @throws {Error}
  */
 ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
+
+/**
+ * @param {!ProtoBuf.Builder.Message} message
+ * @param {!ByteBuffer} buffer
+ * @return {!ByteBuffer}
+ * @throws {Error}
+ */
+ProtoBuf.Reflect.Message.prototype.encodeDelimited = function(message, buffer) {};
 
 /**
  * @param {!ByteBuffer} buffer
@@ -354,6 +362,14 @@ ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
  * @throws {Error}
  */
 ProtoBuf.Reflect.Message.prototype.decode = function(buffer, length) {};
+
+/**
+ * @param {!ByteBuffer} buffer
+ * @param {number=} length
+ * @return {!ProtoBuf.Builder.Message}
+ * @throws {Error}
+ */
+ProtoBuf.Reflect.Message.prototype.decodeDelimited = function(buffer, length) {};
 
 /**
  * @param {!ProtoBuf.Reflect.Message} message

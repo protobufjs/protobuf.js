@@ -11,7 +11,7 @@ required, it's super easy to use and it works out of the box on .proto files!
 Getting started
 ---------------
 * **Step 1:** Become familar with [Google's Protocol Buffers (protobuf)](https://developers.google.com/protocol-buffers/docs/overview)
-* **Step 2:** Head straight to [our wiki for up to date usage information and examples](https://github.com/dcodeIO/ProtoBuf.js/wiki)
+* **Step 2:** Head straight to [our wiki for up to date usage information, changes and examples](https://github.com/dcodeIO/ProtoBuf.js/wiki)
 * **Step 3:** Build something cool! :-)
 
 Features

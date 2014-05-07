@@ -249,7 +249,7 @@
     
     
     <div class="description">
-        <p>Decodes the message from the specified buffer or string.</p>
+        <p>Decodes a message from the specified buffer or string.</p>
     </div>
     
 
@@ -507,6 +507,204 @@
             
             
             <td class="description last"><p>String to decode from</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be decoded or if required fields are missing. The later still returns the decoded message with missing fields in the `decoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Decoded message</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="decodeDelimited"><span class="type-signature">&lt;static> </span>decodeDelimited<span class="signature">(buffer, <span class="optional">enc</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Decodes a varint32 length-delimited message from the specified buffer or string.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ByteBuffer</span>
+|
+
+<span class="param-type">!ArrayBuffer</span>
+|
+
+<span class="param-type">!Buffer</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Buffer to decode from</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>enc</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64</p></td>
         </tr>
 	
 	
@@ -970,7 +1168,7 @@
             
             
             
-            <td class="description last"><p>ByteBuffer to encode to. Will create a new one if omitted.</p></td>
+            <td class="description last"><p>ByteBuffer to encode to. Will create a new one and flip it if omitted.</p></td>
         </tr>
 	
 	
@@ -1011,6 +1209,169 @@
             <li><a href="ProtoBuf.Builder.Message.html#encodeAB">ProtoBuf.Builder.Message#encodeAB</a></li>
         </ul>
     </dd>
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded ByteBuffer in the `encoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Encoded message as a ByteBuffer</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">ByteBuffer</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="encode"><span class="type-signature"></span>encode<span class="signature">(<span class="optional">buffer</span>)</span><span class="type-signature"> &rarr; {ByteBuffer}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Encodes the varint32 length-delimited message.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!ByteBuffer</span>
+|
+
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>ByteBuffer to encode to. Will create a new one and flip it if omitted.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
