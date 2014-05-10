@@ -2519,14 +2519,18 @@
                 if (value === null) return; // Nothing to encode
                 // Tag has already been written
         
-                // 32bit varint as-is
-                if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["uint32"]) {
+                // 32bit signed varint
+                if (this.type == ProtoBuf.TYPES["int32"]) {
                     // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
                     // long – it is, effectively, treated like a very large unsigned integer."
                     if (value < 0)
                         buffer.writeVarint64(value);
                     else
                         buffer.writeVarint32(value);
+                    
+                // 32bit unsigned varint
+                } else if (this.type == ProtoBuf.TYPES["uint32"]) {
+                    buffer.writeVarint32(value);
                     
                 // 32bit varint zig-zag
                 } else if (this.type == ProtoBuf.TYPES["sint32"]) {
