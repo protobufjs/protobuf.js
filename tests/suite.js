@@ -1204,6 +1204,21 @@
             test.done();
         },
         
+        "negOne": function(test) {
+            try {
+                var builder = ProtoBuf.loadProto("message Test { required int32 value = 2; }");
+                var Test = builder.build("Test");
+                var t = new Test(-1);
+                var bb = t.encode();
+                test.strictEqual(bb.toBase64(), "EP///////////wE=");
+                t = Test.decode(bb);
+                test.strictEqual(t.value, -1);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         "negEnumId": function(test) {
             try {
                 test.doesNotThrow(function() {
