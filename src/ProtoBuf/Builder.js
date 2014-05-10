@@ -134,7 +134,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 if (!Builder.isValidMessageField(def["fields"][i])) {
                     return false;
                 }
-                id = parseInt(def["id"], 10);
+                id = parseInt(def["fields"][i]["id"], 10);
                 if (ids.indexOf(id) >= 0) {
                     return false;
                 }
