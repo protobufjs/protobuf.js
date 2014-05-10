@@ -64,6 +64,13 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
          * @expose
          */
         this.readingString = false;
+
+        /**
+         * Whatever character ends the string. Either a single or double quote character.
+         * @type {string}
+         * @expose
+         */
+        this.stringEndsWith = Lang.STRINGCLOSE;
     };
 
     /**
@@ -78,7 +85,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
         if ((match = Lang.STRING.exec(this.source)) !== null) {
             var s = match[1];
             this.index = Lang.STRING.lastIndex;
-            this.stack.push(Lang.STRINGCLOSE);
+            this.stack.push(this.stringEndsWith);
             return s;
         }
         throw(new Error("Illegal string value at line "+this.line+", index "+this.index));
@@ -151,6 +158,10 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
         var token = this.source.substring(this.index, this.index = end);
         if (token === Lang.STRINGOPEN) {
             this.readingString = true;
+            this.stringEndsWith = Lang.STRINGCLOSE;
+        } else if (token === Lang.STRINGOPEN_SQ) {
+            this.readingString = true;
+            this.stringEndsWith = Lang.STRINGCLOSE_SQ;
         }
         return token;
     };

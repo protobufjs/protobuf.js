@@ -1322,6 +1322,33 @@
             test.done();
         },
 
+        "singleQuotedString": function(test) {
+            try{
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/string_single_quote.proto");
+                var TestSingleQuoteString = builder.build("TestSingleQuoteString");
+                test.ok(typeof TestSingleQuoteString == 'function');
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "importDuplicateSingleQuote": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/import_a_single_quote.proto");
+                test.doesNotThrow(function() {
+                    ProtoBuf.loadProtoFile(__dirname+"/import_b.proto", builder);
+                });
+                var root = builder.build();
+                test.ok(root.A);
+                test.ok(root.B);
+                test.ok(root.Common);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
         // Node.js only
         "loaders": BROWSER ? {} : {
             

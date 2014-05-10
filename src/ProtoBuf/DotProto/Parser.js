@@ -185,13 +185,13 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         if (token === "public") {
             token = this.tn.next();
         }
-        if (token !== Lang.STRINGOPEN) {
-            throw(new Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' expected)"));
+        if (token !== Lang.STRINGOPEN && token !== Lang.STRINGOPEN_SQ) {
+            throw(new Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' or '"+Lang.STRINGOPEN_SQ+"' expected)"));
         }
         var imported = this.tn.next();
         token = this.tn.next();
-        if (token !== Lang.STRINGCLOSE) {
-            throw(new Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+        if (token !== this.tn.stringEndsWith) {
+            throw(new Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)"));
         }
         token = this.tn.next();
         if (token !== Lang.END) {
@@ -238,11 +238,11 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         var value;
         token = this.tn.next();
-        if (token === Lang.STRINGOPEN) {
+        if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
             value = this.tn.next();
             token = this.tn.next();
-            if (token !== Lang.STRINGCLOSE) {
-                throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+            if (token !== this.tn.stringEndsWith) {
+                throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)"));
             }
         } else {
             if (Lang.NUMBER.test(token)) {
@@ -566,11 +566,11 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
         var value;
         token = this.tn.next();
-        if (token === Lang.STRINGOPEN) {
+        if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
             value = this.tn.next();
             token = this.tn.next();
-            if (token != Lang.STRINGCLOSE) {
-                throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+            if (token != this.tn.stringEndsWith) {
+                throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)"));
             }
         } else if (Lang.NUMBER.test(token, true)) {
             value = this._parseNumber(token, true);
