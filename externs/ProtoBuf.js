@@ -689,7 +689,21 @@ ProtoBuf.Builder.Message.prototype.add = function(key, value) {};
  * @param {*} value
  * @throws {Error}
  */
+ProtoBuf.Builder.Message.prototype.$add = function(key, value) {};
+
+/**
+ * @param {string} key
+ * @param {*} value
+ * @throws {Error}
+ */
 ProtoBuf.Builder.Message.prototype.set = function(key, value) {};
+
+/**
+ * @param {string} key
+ * @param {*} value
+ * @throws {Error}
+ */
+ProtoBuf.Builder.Message.prototype.$set = function(key, value) {};
 
 /**
  * @param {string} key
@@ -698,6 +712,14 @@ ProtoBuf.Builder.Message.prototype.set = function(key, value) {};
  * @nosideeffects
  */
 ProtoBuf.Builder.Message.prototype.get = function(key) {};
+
+/**
+ * @param {string} key
+ * @return {*}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.$get = function(key) {};
 
 /**
  * @param {ByteBuffer=} buffer

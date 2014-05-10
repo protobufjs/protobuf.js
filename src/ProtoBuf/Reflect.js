@@ -381,7 +381,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                     field = fields[i];
                     if (typeof field.options['default'] != 'undefined') {
                         try {
-                            this.set(field.name, field.options['default']); // Should not throw
+                            this.$set(field.name, field.options['default']); // Should not throw
                         } catch (e) {
                             throw(new Error("[INTERNAL] "+e));
                         }
@@ -396,13 +396,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                     /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
                     var keys = Object.keys(values);
                     for (i=0; i<keys.length; i++) {
-                        this.set(keys[i], values[keys[i]]); // May throw
+                        this.$set(keys[i], values[keys[i]]); // May throw
                     }
                     // Else set field values from arguments, in correct order
                 } else {
                     for (i=0; i<arguments.length; i++) {
                         if (i<fields.length) {
-                            this.set(fields[i].name, arguments[i]); // May throw
+                            this.$set(fields[i].name, arguments[i]); // May throw
                         }
                     }
                 }
@@ -436,7 +436,18 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             };
 
             /**
-             * Sets a field value.
+             * Adds a value to a repeated field. This is an alias for {@link ProtoBuf.Builder.Message#add}.
+             * @name ProtoBuf.Builder.Message#$add
+             * @function
+             * @param {string} key Field name
+             * @param {*} value Value to add
+             * @throws {Error} If the value cannot be added
+             * @expose
+             */
+            Message.prototype.$add = Message.prototype.add;
+
+            /**
+             * Sets a field's value.
              * @name ProtoBuf.Builder.Message#set
              * @function
              * @param {string} key Key
@@ -456,7 +467,18 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             };
 
             /**
-             * Gets a value.
+             * Sets a field's value. This is an alias for [@link ProtoBuf.Builder.Message#set}.
+             * @name ProtoBuf.Builder.Message#$set
+             * @function
+             * @param {string} key Key
+             * @param {*} value Value to set
+             * @throws {Error} If the value cannot be set
+             * @expose
+             */
+            Message.prototype.$set = Message.prototype.set;
+
+            /**
+             * Gets a field's value.
              * @name ProtoBuf.Builder.Message#get
              * @function
              * @param {string} key Key
@@ -474,6 +496,17 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 }
                 return this[field.name];
             };
+
+            /**
+             * Gets a field's value. This is an alias for {@link ProtoBuf.Builder.Message#$get}.
+             * @name ProtoBuf.Builder.Message#get
+             * @function
+             * @param {string} key Key
+             * @return {*} Value
+             * @throws {Error} If there is no such field
+             * @expose
+             */
+            Message.prototype.$get = Message.prototype.get;
 
             // Getters and setters
 
@@ -507,7 +540,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                      */
                     if (!T.hasChild("set"+Name)) {
                         Message.prototype["set"+Name] = function(value) {
-                            this.set(field.name, value);
+                            this.$set(field.name, value);
                         }
                     }
     
@@ -522,7 +555,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                      */
                     if (!T.hasChild("set_"+name)) {
                         Message.prototype["set_"+name] = function(value) {
-                            this.set(field.name, value);
+                            this.$set(field.name, value);
                         };
                     }
     
@@ -536,7 +569,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                      */
                     if (!T.hasChild("get"+Name)) {
                         Message.prototype["get"+Name] = function() {
-                            return this.get(field.name); // Does not throw, field exists
+                            return this.$get(field.name); // Does not throw, field exists
                         }
                     }
     
@@ -550,7 +583,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                      */
                     if (!T.hasChild("get_"+name)) {
                         Message.prototype["get_"+name] = function() {
-                            return this.get(field.name); // Does not throw, field exists
+                            return this.$get(field.name); // Does not throw, field exists
                         };
                     }
                     
@@ -561,7 +594,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
             /**
              * Encodes the message.
-             * @name ProtoBuf.Builder.Message#encode
+             * @name ProtoBuf.Builder.Message#$encode
              * @function
              * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
              * @return {!ByteBuffer} Encoded message as a ByteBuffer
@@ -877,7 +910,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         var fields = this.getChildren(Message.Field),
             fieldMissing = null;
         for (var i=0; i<fields.length; i++) {
-            var val = message.get(fields[i].name);
+            var val = message.$get(fields[i].name);
             if (fields[i].required && val === null) {
                 if (fieldMissing === null) fieldMissing = fields[i];
             } else {
@@ -948,9 +981,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 continue;
             }
             if (field.repeated && !field.options["packed"]) {
-                msg.add(field.name, field.decode(wireType, buffer));
+                msg.$add(field.name, field.decode(wireType, buffer));
             } else {
-                msg.set(field.name, field.decode(wireType, buffer));
+                msg.$set(field.name, field.decode(wireType, buffer));
             }
         }
         // Check if all required fields are present
