@@ -341,10 +341,12 @@
                 END: ";",
                 STRINGOPEN: '"',
                 STRINGCLOSE: '"',
+                STRINGOPEN_SQ: "'",
+                STRINGCLOSE_SQ: "'",
                 COPTOPEN: '(',
                 COPTCLOSE: ')',
         
-                DELIM: /[\s\{\}=;\[\],"\(\)]/g,
+                DELIM: /[\s\{\}=;\[\],'"\(\)]/g,
                 
                 KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions)$/,
                 RULE: /^(?:required|optional|repeated)$/,
@@ -362,7 +364,7 @@
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
-                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
+                STRING: /['"]([^'"\\]*(\\.[^"\\]*)*)['"]/g,
                 BOOL: /^(?:true|false)$/i,
         
                 ID_MIN: 1,
@@ -427,6 +429,13 @@
                  * @expose
                  */
                 this.readingString = false;
+        
+                /**
+                 * Whatever character ends the string. Either a single or double quote character.
+                 * @type {string}
+                 * @expose
+                 */
+                this.stringEndsWith = Lang.STRINGCLOSE;
             };
         
             /**
@@ -441,7 +450,7 @@
                 if ((match = Lang.STRING.exec(this.source)) !== null) {
                     var s = match[1];
                     this.index = Lang.STRING.lastIndex;
-                    this.stack.push(Lang.STRINGCLOSE);
+                    this.stack.push(this.stringEndsWith);
                     return s;
                 }
                 throw(new Error("Illegal string value at line "+this.line+", index "+this.index));
@@ -514,6 +523,10 @@
                 var token = this.source.substring(this.index, this.index = end);
                 if (token === Lang.STRINGOPEN) {
                     this.readingString = true;
+                    this.stringEndsWith = Lang.STRINGCLOSE;
+                } else if (token === Lang.STRINGOPEN_SQ) {
+                    this.readingString = true;
+                    this.stringEndsWith = Lang.STRINGCLOSE_SQ;
                 }
                 return token;
             };
@@ -716,13 +729,13 @@
                 if (token === "public") {
                     token = this.tn.next();
                 }
-                if (token !== Lang.STRINGOPEN) {
-                    throw(new Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' expected)"));
+                if (token !== Lang.STRINGOPEN && token !== Lang.STRINGOPEN_SQ) {
+                    throw(new Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' or '"+Lang.STRINGOPEN_SQ+"' expected)"));
                 }
                 var imported = this.tn.next();
                 token = this.tn.next();
-                if (token !== Lang.STRINGCLOSE) {
-                    throw(new Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+                if (token !== this.tn.stringEndsWith) {
+                    throw(new Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)"));
                 }
                 token = this.tn.next();
                 if (token !== Lang.END) {
@@ -769,11 +782,11 @@
                 }
                 var value;
                 token = this.tn.next();
-                if (token === Lang.STRINGOPEN) {
+                if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
                     value = this.tn.next();
                     token = this.tn.next();
-                    if (token !== Lang.STRINGCLOSE) {
-                        throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+                    if (token !== this.tn.stringEndsWith) {
+                        throw(new Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)"));
                     }
                 } else {
                     if (Lang.NUMBER.test(token)) {
@@ -1097,11 +1110,11 @@
                 }
                 var value;
                 token = this.tn.next();
-                if (token === Lang.STRINGOPEN) {
+                if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
                     value = this.tn.next();
                     token = this.tn.next();
-                    if (token != Lang.STRINGCLOSE) {
-                        throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.STRINGCLOSE+"' expected)"));
+                    if (token != this.tn.stringEndsWith) {
+                        throw(new Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)"));
                     }
                 } else if (Lang.NUMBER.test(token, true)) {
                     value = this._parseNumber(token, true);

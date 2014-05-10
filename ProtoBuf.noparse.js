@@ -341,10 +341,12 @@
                 END: ";",
                 STRINGOPEN: '"',
                 STRINGCLOSE: '"',
+                STRINGOPEN_SQ: "'",
+                STRINGCLOSE_SQ: "'",
                 COPTOPEN: '(',
                 COPTCLOSE: ')',
         
-                DELIM: /[\s\{\}=;\[\],"\(\)]/g,
+                DELIM: /[\s\{\}=;\[\],'"\(\)]/g,
                 
                 KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions)$/,
                 RULE: /^(?:required|optional|repeated)$/,
@@ -362,7 +364,7 @@
                 ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
                 WHITESPACE: /\s/,
-                STRING: /"([^"\\]*(\\.[^"\\]*)*)"/g,
+                STRING: /['"]([^'"\\]*(\\.[^"\\]*)*)['"]/g,
                 BOOL: /^(?:true|false)$/i,
         
                 ID_MIN: 1,
