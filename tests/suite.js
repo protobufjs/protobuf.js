@@ -785,6 +785,20 @@
             }
             test.done();
         },
+
+        "keywords": function(test) {
+            try {
+                var builder = ProtoBuf.loadProto("message Reserved { optional string get = 1; }");
+                var My = builder.build();
+                var myTest = new My.Reserved(1);
+                test.doesNotThrow(function() {
+                    myTest.encode();
+                });
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         "imports": function(test) {
             try {
@@ -1204,7 +1218,7 @@
             test.done();
         },
         
-        "negOne": function(test) {
+        "negInt32": function(test) {
             try {
                 var builder = ProtoBuf.loadProto("message Test { required int32 value = 2; }");
                 var Test = builder.build("Test");

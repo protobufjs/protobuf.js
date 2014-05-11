@@ -1251,7 +1251,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         // 32bit signed varint
         if (this.type == ProtoBuf.TYPES["int32"]) {
             // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
-            // long – it is, effectively, treated like a very large unsigned integer."
+            // long – it is, effectively, treated like a very large unsigned integer." (see #122)
             if (value < 0)
                 buffer.writeVarint64(value);
             else
