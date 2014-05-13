@@ -1112,7 +1112,11 @@
                 var builder = ProtoBuf.loadProto("message Position { required int32 x = 1; required int32 y = 2; }");
                 var Position = builder.build("Position");
                 var position = new Position(1,2);
-                test.strictEqual(JSON.stringify(position), '{"x":1,"y":2}');
+                var json = JSON.stringify(position);
+                test.strictEqual(json, '{"x":1,"y":2}');
+                position = new Position(JSON.parse(json));
+                test.strictEqual(position.x, 1);
+                test.strictEqual(position.y, 2);                
             } catch (e) {
                 fail(e);
             }
