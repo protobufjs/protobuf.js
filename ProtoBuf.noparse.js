@@ -777,10 +777,11 @@
                      * @function
                      * @param {string} key Field name
                      * @param {*} value Value to add
+                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
-                    Message.prototype.add = function(key, value) {
+                    Message.prototype.add = function(key, value, noAssert) {
                         var field = T.getChild(key);
                         if (!field) {
                             throw(new Error(this+"#"+key+" is undefined"));
@@ -792,7 +793,7 @@
                             throw(new Error(this+"#"+key+" is not a repeated field"));
                         }
                         if (this[field.name] === null) this[field.name] = [];
-                        this[field.name].push(field.verifyValue(value, true));
+                        this[field.name].push(noAssert ? value : field.verifyValue(value, true));
                     };
         
                     /**
@@ -801,6 +802,7 @@
                      * @function
                      * @param {string} key Field name
                      * @param {*} value Value to add
+                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
@@ -812,10 +814,11 @@
                      * @function
                      * @param {string} key Key
                      * @param {*} value Value to set
+                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
-                    Message.prototype.set = function(key, value) {
+                    Message.prototype.set = function(key, value, noAssert) {
                         var field = T.getChild(key);
                         if (!field) {
                             throw(new Error(this+"#"+key+" is not a field: undefined"));
@@ -823,7 +826,7 @@
                         if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
                             throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
                         }
-                        this[field.name] = field.verifyValue(value); // May throw
+                        this[field.name] = noAssert ? value : field.verifyValue(value); // May throw
                     };
         
                     /**
@@ -832,6 +835,7 @@
                      * @function
                      * @param {string} key Key
                      * @param {*} value Value to set
+                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
@@ -1341,9 +1345,9 @@
                         continue;
                     }
                     if (field.repeated && !field.options["packed"]) {
-                        msg.$add(field.name, field.decode(wireType, buffer));
+                        msg.$add(field.name, field.decode(wireType, buffer), true);
                     } else {
-                        msg.$set(field.name, field.decode(wireType, buffer));
+                        msg.$set(field.name, field.decode(wireType, buffer), true);
                     }
                 }
                 // Check if all required fields are present
@@ -1611,7 +1615,7 @@
                 // 32bit signed varint
                 if (this.type == ProtoBuf.TYPES["int32"]) {
                     // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
-                    // long – it is, effectively, treated like a very large unsigned integer."
+                    // long – it is, effectively, treated like a very large unsigned integer." (see #122)
                     if (value < 0)
                         buffer.writeVarint64(value);
                     else

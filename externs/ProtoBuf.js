@@ -680,30 +680,34 @@ ProtoBuf.Builder.Message = function(values) {};
 /**
  * @param {string} key
  * @param {*} value
+ * @param {boolean=} noAssert
  * @throws {Error}
  */
-ProtoBuf.Builder.Message.prototype.add = function(key, value) {};
+ProtoBuf.Builder.Message.prototype.add = function(key, value, noAssert) {};
 
 /**
  * @param {string} key
  * @param {*} value
+ * @param {boolean=} noAssert
  * @throws {Error}
  */
-ProtoBuf.Builder.Message.prototype.$add = function(key, value) {};
+ProtoBuf.Builder.Message.prototype.$add = function(key, value, noAssert) {};
 
 /**
  * @param {string} key
  * @param {*} value
+ * @param {boolean=} noAssert
  * @throws {Error}
  */
-ProtoBuf.Builder.Message.prototype.set = function(key, value) {};
+ProtoBuf.Builder.Message.prototype.set = function(key, value, noAssert) {};
 
 /**
  * @param {string} key
  * @param {*} value
+ * @param {boolean=} noAssert
  * @throws {Error}
  */
-ProtoBuf.Builder.Message.prototype.$set = function(key, value) {};
+ProtoBuf.Builder.Message.prototype.$set = function(key, value, noAssert) {};
 
 /**
  * @param {string} key
