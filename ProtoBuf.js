@@ -1688,7 +1688,7 @@
                      * @function
                      * @param {string} key Field name
                      * @param {*} value Value to add
-                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
+                     * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
@@ -1713,7 +1713,7 @@
                      * @function
                      * @param {string} key Field name
                      * @param {*} value Value to add
-                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
+                     * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
@@ -1725,7 +1725,7 @@
                      * @function
                      * @param {string} key Key
                      * @param {*} value Value to set
-                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
+                     * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
@@ -1746,7 +1746,7 @@
                      * @function
                      * @param {string} key Key
                      * @param {*} value Value to set
-                     * @param {boolean=} noAssert Whether to assert the value or not, defaults to `true`
+                     * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
