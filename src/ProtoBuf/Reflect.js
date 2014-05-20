@@ -627,7 +627,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
             /**
              * Encodes the varint32 length-delimited message.
-             * @name ProtoBuf.Builder.Message#encode
+             * @name ProtoBuf.Builder.Message#encodeDelimited
              * @function
              * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
              * @return {!ByteBuffer} Encoded message as a ByteBuffer
@@ -641,6 +641,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                     buffer = new ByteBuffer();
                     isNew = true;
                 }
+                // var le = buffer.littleEndian;
                 try {
                     var enc = new ByteBuffer().LE();
                     T.encode(this, enc).flip();
@@ -648,7 +649,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                     buffer.append(enc);
                     return isNew ? buffer.flip() : buffer;
                 } catch (e) {
-                    buffer.LE(le);
+                    // buffer.LE(le);
                     throw(e);
                 }
             };
