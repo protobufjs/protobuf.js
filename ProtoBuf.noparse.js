@@ -1129,6 +1129,39 @@
                      * @expose
                      */
                     Message.prototype.toHex = Message.prototype.encodeHex;
+        
+                    /**
+                     * Clones a message object to a raw object.
+                     * @param {*} obj Object to clone
+                     * @param {boolean} includeBuffers Whether to include native buffer data or not
+                     * @returns {*} Cloned object
+                     * @inner
+                     */
+                    function cloneRaw(obj, includeBuffers) {
+                        var clone = {};
+                        for (var i in obj)
+                            if (obj.hasOwnProperty(i)) {
+                                if (obj[i] === null || typeof obj[i] !== 'object') {
+                                    clone[i] = obj[i];
+                                } else if (obj[i] instanceof ByteBuffer) {
+                                    if (includeBuffers)
+                                        clone[i] = obj.toBuffer();
+                                } else { // is a non-null object
+                                    clone[i] = cloneRaw(obj[i], includeBuffers);
+                                }
+                            }
+                        return clone;
+                    }
+                    
+                    /**
+                     * Returns the message's raw payload.
+                     * @param {boolean=} includeBuffers Whether to include native buffer data or not, defaults to `false`
+                     * @returns {Object.<string,*>} Raw payload
+                     * @expose
+                     */
+                    Message.prototype.toRaw = function(includeBuffers) {
+                        return cloneRaw(this, !!includeBuffers);
+                    };
                     
                     /**
                      * Decodes a message from the specified buffer or string.

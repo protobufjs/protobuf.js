@@ -790,6 +790,13 @@ ProtoBuf.Builder.Message.prototype.encodeHex = function() {};
 ProtoBuf.Builder.Message.prototype.toHex = function() {};
 
 /**
+ * @param {boolean=} includeBuffers
+ * @return {Object.<string,*>}
+ * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.toRaw = function(includeBuffers) {};
+
+/**
  * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer
  * @param {string=} enc
  * @return {!ProtoBuf.Builder.Message}

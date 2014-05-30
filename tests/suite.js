@@ -1354,6 +1354,22 @@
             }
             test.done();
         },
+        
+        "toRaw": function(test) {
+            try {
+                var builder = ProtoBuf.loadProto("message MyMessage { required int32 a = 1; required int32 b = 2; }"),
+                    MyMessage = builder.build("MyMessage");
+                var raw = { a: 1, b: 2 },
+                    myMessage = new MyMessage(raw);
+                test.deepEqual(myMessage, raw);
+                test.strictEqual(myMessage.encode, MyMessage.prototype.encode);
+                test.deepEqual(myMessage.toRaw(), raw);
+                test.strictEqual(myMessage.toRaw().encode, undefined);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         "singleQuotedString": function(test) {
             try{
