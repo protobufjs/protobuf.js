@@ -1,0 +1,5 @@
+message Foo {
+    required group Bar = 1 {
+        required string baz = 1;
+    }
+}

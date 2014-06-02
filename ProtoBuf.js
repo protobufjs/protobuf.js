@@ -352,6 +352,7 @@
                 RULE: /^(?:required|optional|repeated)$/,
                 TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
                 NAME: /^[a-zA-Z_][a-zA-Z_0-9]*$/,
+                GROUP_NAME: /^[A-Z_][a-zA-Z_0-9]*$/,
                 OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,
                 TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
                 TYPEREF: /^(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+$/,
@@ -964,14 +965,39 @@
              * @private
              */
             Parser.prototype._parseMessage = function(parent, token) {
-                /** @dict */
-                var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
                 token = this.tn.next();
                 if (!Lang.NAME.test(token)) {
                     throw(new Error("Illegal message name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
                 }
-                msg["name"] = token;
-                token = this.tn.next();
+        
+                // Note: At some point we might want to exclude the parser, so we need a dict.
+                /** @dict */
+                var msg = {
+                    name: token
+                };
+        
+                this._parseMessageBody(msg, this.tn.next());
+                parent["messages"].push(msg);
+                return msg;
+            };
+        
+            Parser.prototype._parseGroup = function(groupName, parent) {
+                if (!Lang.GROUP_NAME.test(groupName)) {
+                    throw(new Error("Illegal group name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
+                }
+        
+                /** @dict */
+                var msg = {
+                    name: groupName,
+                    isGroup: true
+                };
+                this._parseMessageBody(msg, this.tn.next());
+        
+                parent["messages"].push(msg);
+                return msg;
+            };
+        
+            Parser.prototype._parseMessageBody = function(msg, token) {
                 if (token != Lang.OPEN) {
                     throw(new Error("Illegal OPEN after message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
                 }
@@ -1002,8 +1028,6 @@
                         throw(new Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
                     }
                 } while (true);
-                parent["messages"].push(msg);
-                return msg;
             };
         
             /**
@@ -1017,26 +1041,52 @@
                 /** @dict */
                 var fld = {};
                 fld["rule"] = token;
+        
                 token = this.tn.next();
-                if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token)) {
+        
+                var isGroup = token === 'group';
+                if (isGroup) {
+                    token = this.tn.next();
+                    var groupName = token;
+                }
+        
+                if (!Lang.TYPE.test(token) && !isGroup && !Lang.TYPEREF.test(token)) {
                     throw(new Error("Illegal field type in message "+msg.name+" at line "+this.tn.line+": "+token));
                 }
                 fld["type"] = token;
-                token = this.tn.next();
+        
+                token = !isGroup
+                    // name is written next
+                    ? this.tn.next()
+        
+                    // name convertion for group
+                    : token.replace(/^[A-Z]/, function (match) {
+                        return match.toLowerCase();
+                    });
+        
                 if (!Lang.NAME.test(token)) {
                     throw(new Error("Illegal field name in message "+msg.name+" at line "+this.tn.line+": "+token));
                 }
                 fld["name"] = token;
+        
                 token = this.tn.next();
                 if (token !== Lang.EQUAL) {
                     throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
                 }
+        
                 token = this.tn.next();
                 try {
                     fld["id"] = this._parseId(token);
                 } catch (e) {
                     throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
                 }
+        
+                if (isGroup) {
+                    this._parseGroup(groupName, msg, token);
+                    //fld["options"] = group.options;
+                    return;
+                }
+        
                 /** @dict */
                 fld["options"] = {};
                 token = this.tn.next();
@@ -1044,9 +1094,11 @@
                     this._parseFieldOptions(msg, fld, token);
                     token = this.tn.next();
                 }
+        
                 if (token !== Lang.END) {
                     throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
                 }
+        
                 msg["fields"].push(fld);
             };
         
