@@ -1,0 +1,29 @@
+package Datastore;
+
+message LookupRequest {
+  repeated string key = 1;
+}
+
+message LookupResponse {
+  repeated string results = 1;
+}
+
+message RunQueryRequest {
+  required string query = 1;
+}
+
+message RunQueryResponse {
+  repeated string results = 1;
+}
+
+service LookupService {
+  // Look up some entities by key.
+  rpc Lookup(LookupRequest) returns (LookupResponse) {
+  }
+}
+
+service RunQueryService {
+  // Query for entities.
+  rpc RunQuery(RunQueryRequest) returns (RunQueryResponse) {
+  };
+}

@@ -886,7 +886,7 @@
                         this._parseOption(svc, token);
                     } else if (token === 'rpc') {
                         this._parseServiceRPC(svc, token);
-                    } else if (token !== Lang.CLOSE) {
+                    } else if (token !== Lang.CLOSE && token !== Lang.END) {
                         throw(new Error("Illegal type for service "+name+" at line "+this.tn.line+": "+token));
                     }
                 } while (token !== Lang.CLOSE);
