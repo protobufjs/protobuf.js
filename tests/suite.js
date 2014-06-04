@@ -1409,6 +1409,37 @@
             test.done();
         },
 
+        "groups": function(test) {
+            try{
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/groups.proto");
+                var Foo = builder.build("Foo");
+
+                test.ok(typeof Foo == 'function');
+                var bar = new Foo.Bar({
+                    baz: 'abc'
+                });
+                var foo = new Foo(bar);
+
+                test.ok(foo instanceof ProtoBuf.Builder.Message);
+                test.ok(foo.bar.baz, 'abc');
+
+                foo.bar.setBaz('qwe')
+                test.equal(foo.bar.baz, 'qwe');
+                test.equal(foo.getBar().get_baz(), 'qwe');
+
+                test.equal(foo.toString(), ".Foo");
+                test.throws(function() {
+                    foo.setBar(null); // required
+                });
+                test.throws(function() {
+                    foo.bar.set_baz([]); // string
+                });
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
         // Node.js only
         "loaders": BROWSER ? {} : {
             
