@@ -173,7 +173,7 @@ ProtoBuf.DotProto.Tokenizer = (function(Lang) {
      * @expose
      */
     Tokenizer.prototype.peek = function() {
-        if (this.stack.length == 0) {
+        if (this.stack.length === 0) {
             var token = this.next();
             if (token === null) return null;
             this.stack.push(token);

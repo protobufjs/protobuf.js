@@ -538,7 +538,7 @@
              * @expose
              */
             Tokenizer.prototype.peek = function() {
-                if (this.stack.length == 0) {
+                if (this.stack.length === 0) {
                     var token = this.next();
                     if (token === null) return null;
                     this.stack.push(token);
@@ -948,6 +948,7 @@
                             throw(new Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('option' expected)"));
                         }
                     } while (token !== Lang.CLOSE);
+                    if (this.tn.peek() === Lang.END) this.tn.next();
                 } else if (token !== Lang.END) {
                     throw(new Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)"));
                 }

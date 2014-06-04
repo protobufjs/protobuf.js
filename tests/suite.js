@@ -219,6 +219,16 @@
             }
             test.done();
         },
+
+        "example5": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/example5.proto");
+                builder.build();
+            } catch(e) {
+                fail(e);
+            }
+            test.done();
+        },
     
         "numberFormats": function(test) {
             try {
