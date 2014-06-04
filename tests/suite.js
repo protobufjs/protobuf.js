@@ -232,6 +232,7 @@
                 test.strictEqual(msg.dec, -1);
                 test.strictEqual(msg.hex, -31);
                 test.strictEqual(msg.oct, -15);
+                test.strictEqual(msg.exp, 0.1e5);
             } catch (e) {
                 fail(e);
             }
