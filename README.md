@@ -41,6 +41,7 @@ Tests [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=mast
 
 Downloads
 ---------
+* [Distributions](https://github.com/dcodeIO/ProtoBuf.js/tree/master/dist)
 * [ZIP-Archive](https://github.com/dcodeIO/ProtoBuf.js/archive/master.zip)
 * [Tarball](https://github.com/dcodeIO/ProtoBuf.js/tarball/master)
 
