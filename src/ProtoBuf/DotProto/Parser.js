@@ -56,45 +56,59 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "services": []
         };
         var token, header = true;
-        do {
-            token = this.tn.next();
-            if (token == null) {
-                break; // No more messages
+        while(token = this.tn.next()) {
+            switch (token) {
+                case 'package': {
+                    if (!header)
+                        throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                    if (topLevel["package"] !== null)
+                        throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
+                    topLevel["package"] = this._parsePackage(token);
+                    break;
+                }
+
+                case 'import': {
+                    if (!header)
+                        throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                    topLevel.imports.push(this._parseImport(token));
+                    break;
+                }
+
+                case 'message': {
+                    this._parseMessage(topLevel, token);
+                    header = false;
+                    break;
+                }
+
+                case 'enum': {
+                    this._parseEnum(topLevel, token);
+                    header = false;
+                    break;
+                }
+
+                case 'option': {
+                    if (!header)
+                        throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                    this._parseOption(topLevel, token);
+                    break;
+                }
+
+                case 'service':
+                    this._parseService(topLevel, token);
+                    break;
+
+                case 'extend':
+                    this._parseExtend(topLevel, token);
+                    break;
+
+                case 'syntax':
+                    this._parseIgnoredStatement(topLevel, token);
+                    break;
+
+                default:
+                    throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
             }
-            if (token == 'package') {
-                if (!header) {
-                    throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                }
-                if (topLevel["package"] !== null) {
-                    throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
-                }
-                topLevel["package"] = this._parsePackage(token);
-            } else if (token == 'import') {
-                if (!header) {
-                    throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                }
-                topLevel.imports.push(this._parseImport(token));
-            } else if (token === 'message') {
-                this._parseMessage(topLevel, token);
-                header = false;
-            } else if (token === 'enum') {
-                this._parseEnum(topLevel, token);
-                header = false;
-            } else if (token === 'option') {
-                if (!header) {
-                    throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                }
-                this._parseOption(topLevel, token);
-            } else if (token === 'service') {
-                this._parseService(topLevel, token);
-            } else if (token === 'extend') {
-                this._parseExtend(topLevel, token);
-            } else if (token === 'syntax') {
-                this._parseIgnoredStatement(topLevel, token);
-            } else {
-                throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
-            }
-        } while (true);
+        }
         delete topLevel["name"];
         return topLevel;
     };
@@ -421,14 +435,39 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
      * @private
      */
     Parser.prototype._parseMessage = function(parent, token) {
-        /** @dict */
-        var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
         token = this.tn.next();
         if (!Lang.NAME.test(token)) {
             throw(new Error("Illegal message name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
         }
-        msg["name"] = token;
-        token = this.tn.next();
+
+        // Note: At some point we might want to exclude the parser, so we need a dict.
+        /** @dict */
+        var msg = {
+            name: token
+        };
+
+        this._parseMessageBody(msg, this.tn.next());
+        parent["messages"].push(msg);
+        return msg;
+    };
+
+    Parser.prototype._parseGroup = function(groupName, parent) {
+        if (!Lang.GROUP_NAME.test(groupName)) {
+            throw(new Error("Illegal group name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
+        }
+
+        /** @dict */
+        var msg = {
+            name: groupName,
+            isGroup: true
+        };
+        this._parseMessageBody(msg, this.tn.next());
+
+        parent["messages"].push(msg);
+        return msg;
+    };
+
+    Parser.prototype._parseMessageBody = function(msg, token) {
         if (token != Lang.OPEN) {
             throw(new Error("Illegal OPEN after message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
         }
@@ -459,8 +498,6 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 throw(new Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token+" (type or '"+Lang.CLOSE+"' expected)"));
             }
         } while (true);
-        parent["messages"].push(msg);
-        return msg;
     };
 
     /**
@@ -474,26 +511,53 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         /** @dict */
         var fld = {};
         fld["rule"] = token;
+
         token = this.tn.next();
-        if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token)) {
+
+        var isGroup = token === 'group';
+        if (isGroup) {
+            token = this.tn.next();
+            var groupName = token;
+        }
+
+        if (!Lang.TYPE.test(token) && !isGroup && !Lang.TYPEREF.test(token)) {
             throw(new Error("Illegal field type in message "+msg.name+" at line "+this.tn.line+": "+token));
         }
         fld["type"] = token;
-        token = this.tn.next();
+
+        token = !isGroup
+            // name is written next
+            ? this.tn.next()
+
+            // name convertion for group
+            : token.replace(/^[A-Z]/, function (match) {
+                return match.toLowerCase();
+            });
+
         if (!Lang.NAME.test(token)) {
             throw(new Error("Illegal field name in message "+msg.name+" at line "+this.tn.line+": "+token));
         }
         fld["name"] = token;
+
         token = this.tn.next();
         if (token !== Lang.EQUAL) {
             throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
         }
+
         token = this.tn.next();
         try {
             fld["id"] = this._parseId(token);
         } catch (e) {
             throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
         }
+
+        if (isGroup) {
+            this._parseGroup(groupName, msg, token);
+            //fld["options"] = group.options;
+            msg["fields"].push(fld);
+            return;
+        }
+
         /** @dict */
         fld["options"] = {};
         token = this.tn.next();
@@ -501,9 +565,11 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             this._parseFieldOptions(msg, fld, token);
             token = this.tn.next();
         }
+
         if (token !== Lang.END) {
             throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
         }
+
         msg["fields"].push(fld);
     };
 
