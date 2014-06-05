@@ -23,7 +23,7 @@
     var FILE = "ProtoBuf.js";
     var BROWSER = !!global.window;
     
-    var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require(__dirname+"/../"+FILE),
+    var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require(__dirname+"/../dist/"+FILE),
         ByteBuffer = BROWSER ? global.dcodeIO.ByteBuffer : ByteBuffer || require("bytebuffer"),
         util = BROWSER ? null : require("util"),
         fs = BROWSER ? null : require("fs");
@@ -152,7 +152,7 @@
                 test.equal(inst.a, 4294967295);
                 var bb = new ByteBuffer(6);
                 inst.encode(bb);
-                test.equal(bb.flip().toString("debug"), "<08 FF FF FF FF 7F>");
+                test.equal(bb.flip().toString("debug"), "<08 FF FF FF FF 0F>");
                 var instDec = Test1u.decode(bb);
                 test.equal(instDec.a, 4294967295);
                 
@@ -211,7 +211,7 @@
                 inst.encode(bb);
                 test.equal(bb.flip().toString("debug"), "<22 06 03 8E 02 9E A7 05>");
                 var instDec = Test4.decode(bb);
-                test.equal(bb.toString("debug"), " 22 06 03 8E 02 9E A7 05|");
+                test.equal(bb.toString("debug"), "22 06 03 8E 02 9E A7 05|");
                 test.equal(instDec.d.length, 3);
                 test.equal(instDec.d[2], 86942);
             } catch(e) {
@@ -310,7 +310,7 @@
                     var s3 = s2.reverse();
                     var i1 = s3.map(function(y) { return parseInt(y,16) } );
                     i1.map(function(y) { b2.writeUint8(y) });
-                    b2.length = b2.offset;
+                    b2.limit = b2.offset;
                     b2.offset = 0;
                     var m2 = Float.decode(b2);
     
@@ -712,9 +712,9 @@
                     var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
                     var Outer = builder.build("Outer");
                     var outer = new Outer();
-                    var bb = new ByteBuffer(1);
+                    var bb = new ByteBuffer(1).fill(0).flip();
                     outer.encode(bb);
-                    test.equal(bb.flip().toString("debug"), "|00 ");
+                    test.equal(bb.flip().toString("debug"), "|00");
                     var douter = Outer.decode(bb);
                     test.ok(douter.inner instanceof Array);
                     test.equal(douter.inner.length, 0);
@@ -1222,7 +1222,7 @@
                 var msg = new Message();
                 msg.ping = new Message.Ping(123456789);
                 var bb = msg.encode();
-                test.strictEqual(bb.length, 7);
+                test.strictEqual(bb.limit, 7);
                 msg = Message.decode(bb);
                 test.ok(msg.ping);
                 test.notOk(msg.pong);
@@ -1287,7 +1287,7 @@
                 var Message = ProtoBuf.loadProto("message Message { required string s = 1; }").build("Message");
                 var msg = new Message("ProtoBuf.js");
                 var hex = msg.toHex();
-                test.strictEqual(hex, "0A0B50726F746F4275662E6A73");
+                test.strictEqual(hex, "0a0b50726f746f4275662e6a73");
                 var msg2 = Message.decodeHex(hex);
                 test.deepEqual(msg, msg2);
                 msg2 = Message.decode(hex, "hex");
@@ -1307,7 +1307,7 @@
                 test.doesNotThrow(function() {
                     Message.decode(bb);
                 });
-                test.strictEqual(bb.offset, bb.length);
+                test.strictEqual(bb.offset, bb.limit);
             } catch (e) {
                 fail(e);
             }
@@ -1417,7 +1417,7 @@
                   , vm = require("vm")
                   , util = require('util');
         
-                var code = fs.readFileSync(__dirname+"/../"+FILE);
+                var code = fs.readFileSync(__dirname+"/../dist/"+FILE);
                 var sandbox = new Sandbox({
                     module: {
                         exports: {}
@@ -1443,7 +1443,7 @@
                   , vm = require("vm")
                   , util = require('util');
         
-                var code = fs.readFileSync(__dirname+"/../"+FILE);
+                var code = fs.readFileSync(__dirname+"/../dist/"+FILE);
                 var sandbox = new Sandbox({
                     define: (function() {
                         function define() {
@@ -1465,7 +1465,7 @@
                   , vm = require("vm")
                   , util = require('util');
         
-                var code = fs.readFileSync(__dirname+"/../"+FILE);
+                var code = fs.readFileSync(__dirname+"/../dist/"+FILE);
                 var sandbox = new Sandbox({
                     dcodeIO: {
                         ByteBuffer: ByteBuffer

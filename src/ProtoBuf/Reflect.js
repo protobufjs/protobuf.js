@@ -1301,7 +1301,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             
         // 32bit varint zig-zag
         } else if (this.type == ProtoBuf.TYPES["sint32"]) {
-            buffer.writeZigZagVarint32(value);
+            buffer.writeVarint32ZigZag(value);
             
         // Fixed unsigned 32bit
         } else if (this.type == ProtoBuf.TYPES["fixed32"]) {
@@ -1317,7 +1317,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             
         // 64bit varint zig-zag
         } else if (this.type == ProtoBuf.TYPES["sint64"]) {
-            buffer.writeZigZagVarint64(value); // throws
+            buffer.writeVarint64ZigZag(value); // throws
             
         // Fixed unsigned 64bit
         } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
@@ -1408,7 +1408,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         
         // 32bit signed varint zig-zag
         if (this.type == ProtoBuf.TYPES["sint32"]) {
-            return buffer.readZigZagVarint32() | 0;
+            return buffer.readVarint32ZigZag() | 0;
         }
         
         // Fixed 32bit unsigned
@@ -1433,7 +1433,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         
         // 64bit signed varint zig-zag
         if (this.type == ProtoBuf.TYPES["sint64"]) {
-            return buffer.readZigZagVarint64();
+            return buffer.readVarint64ZigZag();
         }
 
         // Fixed 64bit unsigned

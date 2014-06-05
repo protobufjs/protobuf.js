@@ -21,7 +21,7 @@
  * see: https://github.com/dcodeIO/ProtoBuf.js for details
  */
 
-var ProtoBuf = require(__dirname+"/../ProtoBuf.js"),
+var ProtoBuf = require(__dirname+"/../index.js"),
     fs = require("fs"),
     path = require("path"),
     pkg = require(__dirname+"/../package.json"),

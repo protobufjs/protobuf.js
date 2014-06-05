@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+//? if (typeof NOPARSE === 'undefined') NOPARSE = false;
 
 /**
  * @license ProtoBuf.js (c) 2013 Daniel Wirtz <dcode@dcode.io>
@@ -23,6 +24,9 @@
     "use strict";
     
     function loadProtoBuf(ByteBuffer) {
+        
+        if (!ByteBuffer || !ByteBuffer.VERSION || ByteBuffer.VERSION.split(".")[0] < 3)
+            throw Error("ProtoBuf.js requires ByteBuffer.js >=3");
 
         /**
          * The ProtoBuf namespace.
@@ -38,7 +42,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = // #put '"'+VERSION+'";'
+        ProtoBuf.VERSION = /*?== VERSION */;
 
         /**
          * Wire types.
@@ -189,22 +193,17 @@
          */
         ProtoBuf.convertFieldsToCamelCase = false;
         
-        // #include "ProtoBuf/Util.js"
+        //? include("ProtoBuf/Util.js");
         
-        // #include "ProtoBuf/Lang.js"
+        //? include("ProtoBuf/Lang.js");
         
-        // #ifndef NOPARSE
-        // #include "ProtoBuf/DotProto.js"
+        //? if (!NOPARSE) include("ProtoBuf/DotProto.js");
         
-        // #else
-        // This build of ProtoBuf.js does not include DotProto support.
+        //? include("ProtoBuf/Reflect.js");
         
-        // #endif
-        // #include "ProtoBuf/Reflect.js"
-        
-        // #include "ProtoBuf/Builder.js"
+        //? include("ProtoBuf/Builder.js");
 
-        // #ifndef NOPARSE
+        //? if (!NOPARSE) {
         
         /**
          * Loads a .proto string and returns the Builder.
@@ -279,7 +278,7 @@
          */
         ProtoBuf.protoFromFile = ProtoBuf.loadProtoFile; // Legacy
 
-        // #endif
+        //? } // !NOPARSE
 
         /**
          * Constructs a new Builder with the specified package defined.

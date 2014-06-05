@@ -1,12 +1,12 @@
 {
     "name": "protobuf",
     "description": "Protocol Buffers for JavaScript. Finally.",
-    "version": "2.2.1",
+    "version": "3.0.0-pre",
     "main": "ProtoBuf.js",
     "license": "Apache-2.0",
     "homepage": "http://dcode.io/",
     "dependencies": {
-        "bytebuffer": "latest"
+        "bytebuffer": "~3"
     },
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "ignore": [

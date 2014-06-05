@@ -1,4 +1,3 @@
-// #ifdef UNDEFINED
 /*
  Copyright 2013 Daniel Wirtz <dcode@dcode.io>
 
@@ -14,14 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-// #endif
-/**
- * Utilities to parse .proto files.
- * @namespace
- * @expose
- */
-ProtoBuf.DotProto = {};
+var path = require("path"),
+    ProtoBuf = require(path.join(__dirname, "dist", "ProtoBuf.js"));
 
-//? include("DotProto/Tokenizer.js");
-
-//? include("DotProto/Parser.js");
+module.exports = ProtoBuf;
