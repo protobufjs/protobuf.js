@@ -48,7 +48,7 @@ ProtoBuf.Lang = (function() {
         
         KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions)$/,
         RULE: /^(?:required|optional|repeated)$/,
-        TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
+        TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes|group)$/,
         NAME: /^[a-zA-Z_][a-zA-Z_0-9]*$/,
         GROUP_NAME: /^[A-Z_][a-zA-Z_0-9]*$/,
         OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,

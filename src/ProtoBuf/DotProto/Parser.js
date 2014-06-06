@@ -446,12 +446,12 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             name: token
         };
 
-        this._parseMessageBody(msg, this.tn.next());
+        this._parseMessageBody(msg);
         parent["messages"].push(msg);
         return msg;
     };
 
-    Parser.prototype._parseGroup = function(groupName, parent) {
+    Parser.prototype._parseGroup = function(parent, groupName) {
         if (!Lang.GROUP_NAME.test(groupName)) {
             throw(new Error("Illegal group name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
         }
@@ -461,13 +461,14 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             name: groupName,
             isGroup: true
         };
-        this._parseMessageBody(msg, this.tn.next());
+        this._parseMessageBody(msg);
 
         parent["messages"].push(msg);
         return msg;
     };
 
-    Parser.prototype._parseMessageBody = function(msg, token) {
+    Parser.prototype._parseMessageBody = function(msg) {
+        var token = this.tn.next();
         if (token != Lang.OPEN) {
             throw(new Error("Illegal OPEN after message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
         }
@@ -511,16 +512,15 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         /** @dict */
         var fld = {};
         fld["rule"] = token;
-
         token = this.tn.next();
 
-        var isGroup = token === 'group';
+        var isGroup = token === "group";
         if (isGroup) {
             token = this.tn.next();
             var groupName = token;
         }
 
-        if (!Lang.TYPE.test(token) && !isGroup && !Lang.TYPEREF.test(token)) {
+        if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token)) {
             throw(new Error("Illegal field type in message "+msg.name+" at line "+this.tn.line+": "+token));
         }
         fld["type"] = token;
@@ -538,12 +538,10 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             throw(new Error("Illegal field name in message "+msg.name+" at line "+this.tn.line+": "+token));
         }
         fld["name"] = token;
-
         token = this.tn.next();
         if (token !== Lang.EQUAL) {
             throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
         }
-
         token = this.tn.next();
         try {
             fld["id"] = this._parseId(token);
@@ -552,8 +550,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         }
 
         if (isGroup) {
-            this._parseGroup(groupName, msg, token);
-            //fld["options"] = group.options;
+            this._parseGroup(msg, groupName);
             msg["fields"].push(fld);
             return;
         }
@@ -565,11 +562,9 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             this._parseFieldOptions(msg, fld, token);
             token = this.tn.next();
         }
-
         if (token !== Lang.END) {
             throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
         }
-
         msg["fields"].push(fld);
     };
 
