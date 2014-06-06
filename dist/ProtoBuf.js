@@ -2394,6 +2394,23 @@
             Field.prototype = Object.create(T.prototype);
 
             /**
+             * Makes a Long from a value.
+             * @param {{low: number, high: number, unsigned: boolean}|string|number} value Value
+             * @param {boolean=} unsigned Whether unsigned or not, defaults to signed
+             * @returns {!Long}
+             * @inner
+             */
+            function mkLong(value, unsigned) {
+                if (value && typeof value.low === 'number' && typeof value.high === 'number' && typeof value.unsigned === 'boolean')
+                    return new ProtoBuf.Long(value.low, value.high, unsigned);
+                if (typeof value === 'string')
+                    return ProtoBuf.Long.fromString(value, unsigned, 10);
+                if (typeof value === 'number')
+                    return ProtoBuf.Long.fromNumber(value, unsigned);
+                throw(new Error("not convertible to Long"));
+            }
+
+            /**
              * Checks if the given value can be set for this field.
              * @param {*} value Value to check
              * @param {boolean=} skipRepeated Whether to skip the repeated value check or not. Defaults to false.
@@ -2435,17 +2452,19 @@
                 if (ProtoBuf.Long) {
                     // Signed 64bit
                     if (this.type == ProtoBuf.TYPES["int64"] || this.type == ProtoBuf.TYPES["sint64"] || this.type == ProtoBuf.TYPES["sfixed64"]) {
-                        if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-                            return ProtoBuf.Long.fromNumber(value, false);
+                        try {
+                            return mkLong(value, false);
+                        } catch (e) {
+                            throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
                         }
-                        return value.unsigned ? value.toSigned() : value;
                     }
                     // Unsigned 64bit
                     if (this.type == ProtoBuf.TYPES["uint64"] || this.type == ProtoBuf.TYPES["fixed64"]) {
-                        if (!(typeof value == 'object' && value instanceof ProtoBuf.Long)) {
-                            return ProtoBuf.Long.fromNumber(value, true);
+                        try {
+                            return mkLong(value, true);
+                        } catch (e) {
+                            throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
                         }
-                        return value.unsigned ? value : value.toUnsigned();
                     }
                 }
                 // Bool

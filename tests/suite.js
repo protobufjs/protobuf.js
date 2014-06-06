@@ -1120,14 +1120,15 @@
         
         "stringify": function(test) {
             try {
-                var builder = ProtoBuf.loadProto("message Position { required int32 x = 1; required int32 y = 2; }");
+                var builder = ProtoBuf.loadProto("message Position { required int32 x = 1; required int64 y = 2; }");
                 var Position = builder.build("Position");
-                var position = new Position(1,2);
+                var position = new Position(1, ProtoBuf.Long.fromNumber(2));
                 var json = JSON.stringify(position);
-                test.strictEqual(json, '{"x":1,"y":2}');
+                test.strictEqual(json, '{"x":1,"y":{"low":2,"high":0,"unsigned":false}}');
                 position = new Position(JSON.parse(json));
                 test.strictEqual(position.x, 1);
-                test.strictEqual(position.y, 2);                
+                test.ok(position.y instanceof ProtoBuf.Long);
+                test.deepEqual(position.y, {"low":2,"high":0,"unsigned":false});                
             } catch (e) {
                 fail(e);
             }
