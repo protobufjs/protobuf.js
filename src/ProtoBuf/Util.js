@@ -27,12 +27,20 @@ ProtoBuf.Util = (function() {
     var Util = {};
 
     /**
-     * Flag if running in node or not.
+     * Flag if running in node (fs is available) or not.
      * @type {boolean}
      * @const
      * @expose
      */
-    Util.IS_NODE = (typeof window === 'undefined' || !window.window) && typeof require === 'function' && typeof process !== 'undefined' && typeof process["nextTick"] === 'function';
+    Util.IS_NODE = false;
+    try {
+        // There is no reliable way to detect node.js as an environment, so our
+        // best bet is to feature-detect what we actually need.
+        Util.IS_NODE =
+            typeof require === 'function' &&
+            typeof require("fs").readFileSync === 'function' &&
+            typeof require("path").join === 'function';
+    } catch (e) {}
     
     /**
      * Constructs a XMLHttpRequest object.

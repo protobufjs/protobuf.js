@@ -221,12 +221,20 @@
             var Util = {};
 
             /**
-             * Flag if running in node or not.
+             * Flag if running in node (fs is available) or not.
              * @type {boolean}
              * @const
              * @expose
              */
-            Util.IS_NODE = (typeof window === 'undefined' || !window.window) && typeof require === 'function' && typeof process !== 'undefined' && typeof process["nextTick"] === 'function';
+            Util.IS_NODE = false;
+            try {
+                // There is no reliable way to detect node.js as an environment, so our
+                // best bet is to feature-detect what we actually need.
+                Util.IS_NODE =
+                    typeof require === 'function' &&
+                    typeof require("fs").readFileSync === 'function' &&
+                    typeof require("path").join === 'function';
+            } catch (e) {}
 
             /**
              * Constructs a XMLHttpRequest object.
@@ -2396,17 +2404,19 @@
             /**
              * Makes a Long from a value.
              * @param {{low: number, high: number, unsigned: boolean}|string|number} value Value
-             * @param {boolean=} unsigned Whether unsigned or not, defaults to signed
+             * @param {boolean=} unsigned Whether unsigned or not, defaults to reuse it from Long-like objects or to signed for
+             *  strings and numbers
              * @returns {!Long}
+             * @throws {Error} If the value cannot be converted to a Long
              * @inner
              */
             function mkLong(value, unsigned) {
                 if (value && typeof value.low === 'number' && typeof value.high === 'number' && typeof value.unsigned === 'boolean')
-                    return new ProtoBuf.Long(value.low, value.high, unsigned);
+                    return new ProtoBuf.Long(value.low, value.high, typeof unsigned === 'undefined' ? value.unsigned : unsigned);
                 if (typeof value === 'string')
-                    return ProtoBuf.Long.fromString(value, unsigned, 10);
+                    return ProtoBuf.Long.fromString(value, unsigned || false, 10);
                 if (typeof value === 'number')
-                    return ProtoBuf.Long.fromNumber(value, unsigned);
+                    return ProtoBuf.Long.fromNumber(value, unsigned || false);
                 throw(new Error("not convertible to Long"));
             }
 
