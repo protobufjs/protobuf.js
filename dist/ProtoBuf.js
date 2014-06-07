@@ -769,7 +769,7 @@
                     custom = true;
                     token = this.tn.next();
                 }
-                if (!Lang.NAME.test(token)) {
+                if (!Lang.TYPEREF.test(token)) {
                     // we can allow options of the form google.protobuf.* since they will just get ignored anyways
                     if (!/google\.protobuf\./.test(token)) {
                         throw(new Error("Illegal option name in message "+parent.name+" at line "+this.tn.line+": "+token));
@@ -777,7 +777,7 @@
                 }
                 var name = token;
                 token = this.tn.next();
-                if (custom) { // (my_method_option).foo, (my_method_option), some_method_option
+                if (custom) { // (my_method_option).foo, (my_method_option), some_method_option, (foo.my_option).bar
                     if (token !== Lang.COPTCLOSE) {
                         throw(new Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)"));
                     }

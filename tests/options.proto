@@ -5,4 +5,5 @@ option (toplevel_2) = "Hello world!";
 message Test {
     optional string name = 1 [default="Max"];
     option (inmessage) = My.Test;
+    option (foo.my_option).bar = false;
 }
