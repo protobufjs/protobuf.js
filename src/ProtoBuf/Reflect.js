@@ -955,35 +955,6 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     };
 
     /**
-     * Skips the next field by wire type.
-     * @param {number} wireType Wire type
-     * @param {!ByteBuffer} buf Buffer
-     * @inner
-     */
-    function skipByWireType(wireType, buf) {
-        var v;
-        switch (wireType) {
-            case ProtoBuf.WIRE_TYPES.VARINT:
-                do {
-                    v = buf.readUint8();
-                } while ((v & 0x80) === 0x80);
-                break;
-            case ProtoBuf.WIRE_TYPES.BITS64:
-                buf.offset += 8;
-                break;
-            case ProtoBuf.WIRE_TYPES.LDELIM:
-                buf.offset += buf.readVarint32();
-                break;
-            case ProtoBuf.WIRE_TYPES.STARTGROUP:
-            case ProtoBuf.WIRE_TYPES.ENDGROUP:
-                throw(new Error("[INTERNAL] Cannot skip grouped group by wire type: Not implemented"));
-            case ProtoBuf.WIRE_TYPES.BITS32:
-                buf.offset += 4;
-                break;
-        }
-    }
-
-    /**
      * Skips all data until the end of the specified group has been reached.
      * @param {number} groupId Group id
      * @param {!ByteBuffer} buf ByteBuffer
