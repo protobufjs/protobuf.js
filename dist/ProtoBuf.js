@@ -2283,6 +2283,75 @@
             };
 
             /**
+             * Skips the next field by wire type.
+             * @param {number} wireType Wire type
+             * @param {!ByteBuffer} buf Buffer
+             * @inner
+             */
+            function skipByWireType(wireType, buf) {
+                var v;
+                switch (wireType) {
+                    case ProtoBuf.WIRE_TYPES.VARINT:
+                        do {
+                            v = buf.readUint8();
+                        } while ((v & 0x80) === 0x80);
+                        break;
+                    case ProtoBuf.WIRE_TYPES.BITS64:
+                        buf.offset += 8;
+                        break;
+                    case ProtoBuf.WIRE_TYPES.LDELIM:
+                        buf.offset += buf.readVarint32();
+                        break;
+                    case ProtoBuf.WIRE_TYPES.STARTGROUP:
+                    case ProtoBuf.WIRE_TYPES.ENDGROUP:
+                        throw(new Error("[INTERNAL] Cannot skip grouped group by wire type: Not implemented"));
+                    case ProtoBuf.WIRE_TYPES.BITS32:
+                        buf.offset += 4;
+                        break;
+                }
+            }
+
+            /**
+             * Skips all data until the end of the specified group has been reached.
+             * @param {number} groupId Group id
+             * @param {!ByteBuffer} buf ByteBuffer
+             * @returns {boolean} `true` if a value as been skipped, `false` if the end has been reached
+             * @throws {Error} If it wasn't possible to find the end of the group (buffer overrun or end tag mismatch)
+             * @inner
+             */
+            function skipTillGroupEnd(groupId, buf) {
+                var tag = buf.readVarint32(), // Throws on OOB
+                    wireType = tag & 0x07,
+                    id = tag >> 3;
+                switch (wireType) {
+                    case ProtoBuf.WIRE_TYPES.VARINT:
+                        do tag = buf.readUint8();
+                        while ((tag & 0x80) === 0x80);
+                        break;
+                    case ProtoBuf.WIRE_TYPES.BITS64:
+                        buf.offset += 8;
+                        break;
+                    case ProtoBuf.WIRE_TYPES.LDELIM:
+                        buf.offset += 1 + buf.readVarint32();
+                        break;
+                    case ProtoBuf.WIRE_TYPES.STARTGROUP:
+                        skipTillGroupEnd(id, buf);
+                        break;
+                    case ProtoBuf.WIRE_TYPES.ENDGROUP:
+                        if (id === groupId)
+                            return false;
+                        else
+                            throw(new Error("Illegal GROUPEND after unknown group: "+id+" ("+groupId+" expected)"));
+                    case ProtoBuf.WIRE_TYPES.BITS32:
+                        buf.offset += 4;
+                        break;
+                    default:
+                        throw(new Error("Illegal wire type in unknown group "+groupId+": "+wireType));
+                }
+                return true;
+            }
+
+            /**
              * Decodes an encoded message and returns the decoded message.
              * @param {ByteBuffer} buffer ByteBuffer to decode from
              * @param {number=} length Message length. Defaults to decode all the available data.
@@ -2320,8 +2389,9 @@
                                 var len = buffer.readVarint32();
                                 buffer.offset += len;
                                 break;
-                            // case ProtoBuf.WIRE_TYPES.STARTGROUP:
-                                // TODO: Figure out how to skip a group or if this is even necessary.
+                            case ProtoBuf.WIRE_TYPES.STARTGROUP:
+                                while (skipTillGroupEnd(id, buffer)) {}
+                                break;
                             default:
                                 throw(new Error("Illegal wire type of unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType));
                         }
@@ -2685,12 +2755,14 @@
                 // Length-delimited bytes
                 } else if (this.type == ProtoBuf.TYPES["bytes"]) {
                     if (value.offset > value.length) { // Forgot to flip?
+                        // TODO: This is actually dangerous as it might lead to a condition where data is included that isn't
+                        // meant to be transmitted. Shall we remove this?
                         buffer = buffer.clone().flip();
                     }
-                    var offset = value.offset;
+                    var prevOffset = value.offset;
                     buffer.writeVarint32(value.remaining());
                     buffer.append(value);
-                    value.offset = offset;
+                    value.offset = prevOffset;
 
                 // Embedded message
                 } else if (this.type == ProtoBuf.TYPES["message"]) {

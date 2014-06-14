@@ -5,3 +5,8 @@ message Outer {
   }
   required string after = 4;
 }
+
+message OuterSparse {
+  required string before = 1;
+  required string after = 4;
+}

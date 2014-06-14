@@ -758,6 +758,11 @@
                 var douter = Outer.decode(bb);
                 test.strictEqual(douter.inner.length, 1);
                 test.strictEqual(douter.inner[0].a, "hello");
+                bb.offset = 0;
+                douter = root.OuterSparse.decode(bb);
+                test.strictEqual(bb.offset, bb.limit);
+                test.strictEqual(douter.before, "a");
+                test.strictEqual(douter.after, "b");
             } catch (e) {
                 fail(e);
             }
