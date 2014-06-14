@@ -406,14 +406,24 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     Parser.prototype._parseMessage = function(parent, token) {
         /** @dict */
         var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
+        var isGroup = token === "group";
         token = this.tn.next();
         if (!Lang.NAME.test(token)) {
-            throw(new Error("Illegal message name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
+            throw(new Error("Illegal "+(isGroup ? "group" : "message")+" name"+(parent ? " in message "+parent["name"] : "")+" at line "+this.tn.line+": "+token));
         }
         msg["name"] = token;
+        if (isGroup) {
+            token = this.tn.next();
+            if (token !== Lang.EQUAL)
+                throw(new Error("Illegal id assignment after group "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
+            token = this.tn.next();
+            if (!Lang.ID.test(token))
+                throw(new Error("Illegal id value after group "+msg.name+" at line "+this.tn.line+": "+token));
+            msg["groupId"] = this._parseId(token); // Also marker for legacy groups
+        }
         token = this.tn.next();
         if (token != Lang.OPEN) {
-            throw(new Error("Illegal OPEN after message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
+            throw(new Error("Illegal OPEN after "+(isGroup ? "group" : "message")+" "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
         }
         msg["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
         msg["enums"] = [];
@@ -455,37 +465,51 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
      */
     Parser.prototype._parseMessageField = function(msg, token) {
         /** @dict */
-        var fld = {};
+        var fld = {}, grp = null;
         fld["rule"] = token;
         token = this.tn.next();
-        if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token)) {
-            throw(new Error("Illegal field type in message "+msg.name+" at line "+this.tn.line+": "+token));
-        }
-        fld["type"] = token;
-        token = this.tn.next();
-        if (!Lang.NAME.test(token)) {
-            throw(new Error("Illegal field name in message "+msg.name+" at line "+this.tn.line+": "+token));
-        }
-        fld["name"] = token;
-        token = this.tn.next();
-        if (token !== Lang.EQUAL) {
-            throw(new Error("Illegal field number operator in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
-        }
-        token = this.tn.next();
-        try {
-            fld["id"] = this._parseId(token);
-        } catch (e) {
-            throw(new Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
-        }
-        /** @dict */
-        fld["options"] = {};
-        token = this.tn.next();
-        if (token === Lang.OPTOPEN) {
-            this._parseFieldOptions(msg, fld, token);
+        if (token === "group") {
+            // "A [legacy] group simply combines a nested message type and a field into a single declaration."
+            grp = this._parseMessage(msg, token);
+            fld["type"] = grp["name"];
+            // "In your code, you can treat this message just as if it had a Result type field called result (the latter
+            // name is converted to lower-case so that it does not conflict with the former)."
+            fld["name"] = grp["name"].toLowerCase();
+            fld["id"] = grp["groupId"];
+            fld["options"] = {}; // TODO: Do group definitions allow options?
+            token = this.tn.peek();
+            if (token === Lang.END)
+                this.tn.next();
+        } else {
+            if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token)) {
+                throw(new Error("Illegal field type in message "+msg.name+" at line "+this.tn.line+": "+token));
+            }
+            fld["type"] = token;
             token = this.tn.next();
-        }
-        if (token !== Lang.END) {
-            throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
+            if (!Lang.NAME.test(token)) {
+                throw(new Error("Illegal field name in message "+msg.name+" at line "+this.tn.line+": "+token));
+            }
+            fld["name"] = token;
+            token = this.tn.next();
+            if (token !== Lang.EQUAL) {
+                throw(new Error("Illegal field id assignment in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
+            }
+            token = this.tn.next();
+            try {
+                fld["id"] = this._parseId(token);
+            } catch (e) {
+                throw(new Error("Illegal field id value in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
+            }
+            /** @dict */
+            fld["options"] = {};
+            token = this.tn.next();
+            if (token === Lang.OPTOPEN) {
+                this._parseFieldOptions(msg, fld, token);
+                token = this.tn.next();
+            }
+            if (token !== Lang.END) {
+                throw(new Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)"));
+            }
         }
         msg["fields"].push(fld);
     };

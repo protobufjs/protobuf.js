@@ -177,6 +177,10 @@
             "message": {
                 name: "message",
                 wireType: ProtoBuf.WIRE_TYPES.LDELIM
+            },
+            "group": {
+                name: "group",
+                wireType: ProtoBuf.WIRE_TYPES.STARTGROUP
             }
         };
 

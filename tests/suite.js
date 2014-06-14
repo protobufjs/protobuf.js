@@ -725,7 +725,43 @@
                     fail(e);
                 }
                 test.done();
+            },
+        },
+
+        "groups": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/groups.proto");
+                var root = builder.build();
+                var Outer = root.Outer;
+                var TInner = builder.ns.getChild("Outer").getChild("Inner");
+                test.ok(TInner instanceof ProtoBuf.Reflect.Message);
+                test.strictEqual(TInner.groupId, 2);
+                var Tinner = builder.ns.getChild("Outer").getChild("inner");
+                test.ok(Tinner instanceof ProtoBuf.Reflect.Message.Field);
+                test.strictEqual(Tinner.id, 2);
+                var Inner = root.Outer.Inner;
+                var outer = new Outer("a", [new Inner("hello")], "b");
+                var bb = new ByteBuffer(15);
+                outer.encode(bb);
+                test.equal(bb.flip().toString("debug"), "<0A 01 61 13 1A 05 68 65 6C 6C 6F 14 22 01 62>");
+                // 0A = 1|010 = id 1, wire type 2 (ldelim)
+                // 01 = length 1
+                // 61 = "a"
+                // 13 = 10|011 = id 2, wire type 3 (start group)
+                // 1A = 11|010 = id 3, wire type 2 (ldelim)
+                // 05 = length 5
+                // 68 65 6C 6C 6F = "hello"
+                // 14 = 10|100 = id 2, wire type 4 (end group)
+                // 22 = 100|010 = id 4, wire type 2 (ldelim)
+                // 01 = length 1
+                // 62 = "b"
+                var douter = Outer.decode(bb);
+                test.strictEqual(douter.inner.length, 1);
+                test.strictEqual(douter.inner[0].a, "hello");
+            } catch (e) {
+                fail(e);
             }
+            test.done();
         },
         
         "x64Fixed": function(test) {

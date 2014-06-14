@@ -39,7 +39,7 @@ ProtoBuf.Util = (function() {
         Util.IS_NODE =
             typeof require === 'function' &&
             typeof require("fs").readFileSync === 'function' &&
-            typeof require("path").join === 'function';
+            typeof require("path").resolve === 'function';
     } catch (e) {}
     
     /**

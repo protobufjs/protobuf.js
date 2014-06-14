@@ -267,8 +267,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         var opt = {};
         var keys = Object.keys(this.options);
         for (var i=0; i<keys.length; i++) {
-            var key = keys[i];
-            var val = this.options[keys[i]];
+            var key = keys[i],
+                val = this.options[keys[i]];
             // TODO: Options are not resolved, yet.
             // if (val instanceof Namespace) {
             //     opt[key] = val.build();
@@ -303,10 +303,11 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @param {ProtoBuf.Reflect.Namespace} parent Parent message or namespace
      * @param {string} name Message name
      * @param {Object.<string,*>} options Message options
+     * @param {number=} groupId Group field id if this is a legacy group
      * @constructor
      * @extends ProtoBuf.Reflect.Namespace
      */
-    var Message = function(parent, name, options) {
+    var Message = function(parent, name, options, groupId) {
         Namespace.call(this, parent, name, options);
 
         /**
@@ -322,6 +323,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
          * @expose
          */
         this.clazz = null;
+
+        /**
+         * Group field id if this is a legacy group, otherwise `undefined`.
+         * @type {number|undefined}
+         * @expose
+         */
+        this.groupId = groupId;
     };
 
     // Extends Namespace
@@ -486,7 +494,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
             /**
              * Gets a field's value. This is an alias for {@link ProtoBuf.Builder.Message#$get}.
-             * @name ProtoBuf.Builder.Message#get
+             * @name ProtoBuf.Builder.Message#$get
              * @function
              * @param {string} key Key
              * @return {*} Value
@@ -686,7 +694,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
             /**
              * Returns the message as a node Buffer. This is an alias for {@link ProtoBuf.Builder.Message#encodeNB}.
-             * @name ProtoBuf.Builder.Message#encodeNB
+             * @name ProtoBuf.Builder.Message#toBuffer
              * @function
              * @return {!Buffer}
              * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
@@ -947,23 +955,6 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     };
 
     /**
-     * Encodes a runtime message's varint32 length-delimitied contents to the specified buffer.
-     * @param {ProtoBuf.Builder.Message} message Runtime message to encode
-     * @param {ByteBuffer} buffer ByteBuffer to write to
-     * @return {ByteBuffer} The ByteBffer for chaining
-     * @throws {Error} If required fields are missing or the message cannot be encoded for anotzher reason
-     * @expose
-     */
-    Message.prototype.encodeDelimitied = function(message, buffer) {
-        var enc = new ByteBuffer();
-        this.encode(message, enc);
-        enc.flip();
-        buffer.writeVarint32(enc.remaining());
-        buffer.append(enc);
-        return buffer;
-    };
-
-    /**
      * Decodes an encoded message and returns the decoded message.
      * @param {ByteBuffer} buffer ByteBuffer to decode from
      * @param {number=} length Message length. Defaults to decode all the available data.
@@ -975,10 +966,15 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         length = typeof length === 'number' ? length : -1;
         var start = buffer.offset;
         var msg = new (this.clazz)();
+        var tag, wireType, id, endGroupId = -1;
         while (buffer.offset < start+length || (length == -1 && buffer.remaining() > 0)) {
-            var tag = buffer.readVarint32();
-            var wireType = tag & 0x07,
-                id = tag >> 3;
+            tag = buffer.readVarint32();
+            wireType = tag & 0x07;
+            id = tag >> 3;
+            if (wireType === ProtoBuf.WIRE_TYPES.ENDGROUP && typeof this.groupId !== 'undefined') {
+                endGroupId = id;
+                break;
+            }
             var field = this.getChild(id); // Message.Field only
             if (!field) {
                 // "messages created by your new code can be parsed by your old code: old binaries simply ignore the new field when parsing."
@@ -996,6 +992,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                         var len = buffer.readVarint32();
                         buffer.offset += len;
                         break;
+                    // case ProtoBuf.WIRE_TYPES.STARTGROUP:
+                        // TODO: Figure out how to skip a group or if this is even necessary.
                     default:
                         throw(new Error("Illegal wire type of unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType));
                 }
@@ -1006,6 +1004,10 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             } else {
                 msg.$set(field.name, field.decode(wireType, buffer), true);
             }
+        }
+        // If this is a group, check if everything is correct
+        if (typeof this.groupId !== 'undefined' && endGroupId !== this.groupId) {
+            throw(new Error("Illegal end group indicator for "+this.toString(true)+": "+endGroupId+" ("+this.groupId+" expected)"));
         }
         // Check if all required fields are present
         var fields = this.getChildren(ProtoBuf.Reflect.Field);
@@ -1056,7 +1058,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
         /**
          * Message field type. Type reference string if unresolved, protobuf type if resolved.
-         * @type {string|{name: string, wireType: number}
+         * @type {string|{name: string, wireType: number}}
          * @expose
          */
         this.type = type;
@@ -1209,8 +1211,8 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             }
             throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a valid enum value)"));
         }
-        // Embedded message
-        if (this.type == ProtoBuf.TYPES["message"]) {
+        // Embedded message or legacy group
+        if (this.type == ProtoBuf.TYPES["message"] || this.type == ProtoBuf.TYPES["group"]) {
             if (typeof value !== 'object') {
                 throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
             }
@@ -1366,6 +1368,12 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             this.resolvedType.encode(value, bb);
             buffer.writeVarint32(bb.offset);
             buffer.append(bb.flip());
+            
+        // Legacy group
+        } else if (this.type == ProtoBuf.TYPES["group"]) {
+            this.resolvedType.encode(value, buffer);
+            buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
+            
         } else {
             // We should never end here
             throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
@@ -1398,68 +1406,55 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
                 return values;
             }
             // Read the next value otherwise...
-            
         }
         // 32bit signed varint
         if (this.type == ProtoBuf.TYPES["int32"]) {
             return buffer.readVarint32() | 0;
         }
-        
         // 32bit unsigned varint
         if (this.type == ProtoBuf.TYPES["uint32"]) {
             return buffer.readVarint32() >>> 0;
         }
-        
         // 32bit signed varint zig-zag
         if (this.type == ProtoBuf.TYPES["sint32"]) {
             return buffer.readVarint32ZigZag() | 0;
         }
-        
         // Fixed 32bit unsigned
         if (this.type == ProtoBuf.TYPES["fixed32"]) {
             return buffer.readUint32() >>> 0;
         }
-        
         // Fixed 32bit signed
         if (this.type == ProtoBuf.TYPES["sfixed32"]) {
             return buffer.readInt32() | 0;
         }
-        
         // 64bit signed varint
         if (this.type == ProtoBuf.TYPES["int64"]) {
             return buffer.readVarint64();
         }
-        
         // 64bit unsigned varint
         if (this.type == ProtoBuf.TYPES["uint64"]) {
             return buffer.readVarint64().toUnsigned();
         }
-        
         // 64bit signed varint zig-zag
         if (this.type == ProtoBuf.TYPES["sint64"]) {
             return buffer.readVarint64ZigZag();
         }
-
         // Fixed 64bit unsigned
         if (this.type == ProtoBuf.TYPES["fixed64"]) {
             return buffer.readUint64();
         }
-        
         // Fixed 64bit signed
         if (this.type == ProtoBuf.TYPES["sfixed64"]) {
             return buffer.readInt64();
         }
-        
         // Bool varint
         if (this.type == ProtoBuf.TYPES["bool"]) {
             return !!buffer.readVarint32();
         }
-        
-        // Constant enum value varint)
+        // Constant enum value (varint)
         if (this.type == ProtoBuf.TYPES["enum"]) {
             return buffer.readVarint32(); // The following Builder.Message#set will already throw
         }
-        
         // 32bit float
         if (this.type == ProtoBuf.TYPES["float"]) {
             return buffer.readFloat();
@@ -1468,12 +1463,10 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
         if (this.type == ProtoBuf.TYPES["double"]) {
             return buffer.readDouble();
         }
-        
         // Length-delimited string
         if (this.type == ProtoBuf.TYPES["string"]){
             return buffer.readVString();
         }
-        
         // Length-delimited bytes
         if (this.type == ProtoBuf.TYPES["bytes"]) {
             nBytes = buffer.readVarint32();
@@ -1485,13 +1478,15 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
             buffer.offset += nBytes;
             return value;
         }
-        
         // Length-delimited embedded message
         if (this.type == ProtoBuf.TYPES["message"]) {
             nBytes = buffer.readVarint32();
             return this.resolvedType.decode(buffer, nBytes);
         }
-        
+        // Legacy group
+        if (this.type == ProtoBuf.TYPES["group"]) {
+            return this.resolvedType.decode(buffer, buffer.remaining());
+        }
         // We should never end here
         throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
     };

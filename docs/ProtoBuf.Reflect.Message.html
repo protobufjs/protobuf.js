@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Message"><span class="type-signature"></span>new Message<span class="signature">(parent, name, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Message"><span class="type-signature"></span>new Message<span class="signature">(parent, name, options, <span class="optional">groupId</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -71,6 +71,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -96,6 +98,12 @@
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
             
             
             
@@ -118,6 +126,12 @@
             
             </td>
             
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
@@ -142,10 +156,47 @@
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
             
             
             
             <td class="description last"><p>Message options</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>groupId</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Group field id if this is a legacy group</p></td>
         </tr>
 	
 	
@@ -325,6 +376,51 @@
     
     <div class="description">
         <p>Extensions range.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="groupId"><span class="type-signature"></span>groupId<span class="type-signature"> :number|undefined</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Group field id if this is a legacy group, otherwise <code>undefined</code>.</p>
     </div>
     
     
@@ -1237,179 +1333,6 @@
             
 <div class="param-desc">
     <p>The ByteBuffer for chaining</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">ByteBuffer</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="encodeDelimitied"><span class="type-signature"></span>encodeDelimitied<span class="signature">(message, buffer)</span><span class="type-signature"> &rarr; {ByteBuffer}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Encodes a runtime message&#39;s varint32 length-delimitied contents to the specified buffer.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Runtime message to encode</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>buffer</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ByteBuffer</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>ByteBuffer to write to</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-<div class="param-desc">
-    If required fields are missing or the message cannot be encoded for anotzher reason
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Error</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The ByteBffer for chaining</p>
 </div>
 
 

@@ -1316,6 +1316,156 @@
         
             
 <dt>
+    <h4 class="name" id="$get"><span class="type-signature"></span>$get<span class="signature">(key)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets a field&#39;s value. This is an alias for <a href="ProtoBuf.Builder.Message.html#$get">ProtoBuf.Builder.Message#$get</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Key</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If there is no such field
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Value</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">*</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="$set"><span class="type-signature"></span>$set<span class="signature">(key, value, <span class="optional">noAssert</span>)</span><span class="type-signature"></span></h4>
     
     
@@ -2275,104 +2425,6 @@
         
             
 <dt>
-    <h4 class="name" id="encodeNB"><span class="type-signature"></span>encodeNB<span class="signature">()</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Returns the message as a node Buffer. This is an alias for <a href="ProtoBuf.Builder.Message.html#encodeNB">ProtoBuf.Builder.Message#encodeNB</a>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-<div class="param-desc">
-    If the message cannot be encoded or if required fields are missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Error</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Buffer</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
     <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(key)</span><span class="type-signature"> &rarr; {*}</span></h4>
     
     
@@ -2382,156 +2434,6 @@
     
     <div class="description">
         <p>Gets a field&#39;s value.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Key</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-<div class="param-desc">
-    If there is no such field
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Error</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Value</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">*</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(key)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Gets a field&#39;s value. This is an alias for ProtoBuf.Builder.Message#$get.</p>
     </div>
     
 
@@ -3480,6 +3382,104 @@ another field.</p>
 	<dd>
 		
 <span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="toBuffer"><span class="type-signature"></span>toBuffer<span class="signature">()</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the message as a node Buffer. This is an alias for <a href="ProtoBuf.Builder.Message.html#encodeNB">ProtoBuf.Builder.Message#encodeNB</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+<div class="param-desc">
+    If the message cannot be encoded or if required fields are missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Error</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Buffer</span>
 
 
 	</dd>

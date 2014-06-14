@@ -238,7 +238,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 while (defs.length > 0) {
                     def = defs.shift(); // Namespace always contains an array of messages, enums and services
                     if (Builder.isValidMessage(def)) {
-                        obj = new Reflect.Message(this.ptr, def["name"], def["options"]);
+                        obj = new Reflect.Message(this.ptr, def["name"], def["options"], def["groupId"]);
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
@@ -532,7 +532,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 if (res instanceof Reflect.Enum) {
                     this.ptr.type = ProtoBuf.TYPES["enum"];
                 } else if (res instanceof Reflect.Message) {
-                    this.ptr.type = ProtoBuf.TYPES["message"];
+                    this.ptr.type = typeof res.groupId === 'undefined'
+                        ? ProtoBuf.TYPES["message"]
+                        : ProtoBuf.TYPES["group"];
                 } else {
                     throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                 }
