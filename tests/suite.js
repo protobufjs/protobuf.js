@@ -733,13 +733,13 @@
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/groups.proto");
                 var root = builder.build();
                 var Outer = root.Outer;
-                var TInner = builder.ns.getChild("Outer").getChild("Inner");
+                var TInner = builder.ns.getChild("Outer").getChild("MyInner");
                 test.ok(TInner instanceof ProtoBuf.Reflect.Message);
                 test.strictEqual(TInner.groupId, 2);
-                var Tinner = builder.ns.getChild("Outer").getChild("inner");
+                var Tinner = builder.ns.getChild("Outer").getChild("myInner");
                 test.ok(Tinner instanceof ProtoBuf.Reflect.Message.Field);
                 test.strictEqual(Tinner.id, 2);
-                var Inner = root.Outer.Inner;
+                var Inner = root.Outer.MyInner;
                 var outer = new Outer("a", [new Inner("hello")], "b");
                 var bb = new ByteBuffer(15);
                 outer.encode(bb);
@@ -756,8 +756,10 @@
                 // 01 = length 1
                 // 62 = "b"
                 var douter = Outer.decode(bb);
-                test.strictEqual(douter.inner.length, 1);
-                test.strictEqual(douter.inner[0].a, "hello");
+                test.strictEqual(douter.before, "a");
+                test.strictEqual(douter.myInner.length, 1);
+                test.strictEqual(douter.myInner[0].a, "hello");
+                test.strictEqual(douter.after, "b");
                 bb.offset = 0;
                 douter = root.OuterSparse.decode(bb);
                 test.strictEqual(bb.offset, bb.limit);

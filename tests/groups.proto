@@ -1,6 +1,6 @@
 message Outer {
   required string before = 1;
-  repeated group Inner = 2 {
+  repeated group MyInner = 2 {
     required string a = 3;
   }
   required string after = 4;

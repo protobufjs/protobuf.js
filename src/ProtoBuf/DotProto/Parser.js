@@ -474,9 +474,9 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             fld["type"] = grp["name"];
             // "In your code, you can treat this message just as if it had a Result type field called result (the latter
             // name is converted to lower-case so that it does not conflict with the former)."
-            fld["name"] = grp["name"].toLowerCase();
+            fld["name"] = grp["name"].substr(0,1).toLowerCase()+grp["name"].substr(1);
             fld["id"] = grp["groupId"];
-            fld["options"] = {}; // TODO: Do group definitions allow options?
+            fld["options"] = {}; // TODO: Do group definitions allow options? If so, how is this annotated?
             token = this.tn.peek();
             if (token === Lang.END)
                 this.tn.next();

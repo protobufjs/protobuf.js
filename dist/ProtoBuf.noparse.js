@@ -2746,11 +2746,8 @@
              * @expose
              */
             Builder.isValidService = function(def) {
-                // Services require a string name
-                if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]) || typeof def["rpc"] !== 'object') {
-                    return false;
-                }
-                return true;
+                // Services require a string name and an rpc object
+                return !(typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]) || typeof def["rpc"] !== 'object');
             };
 
             /**
