@@ -1750,8 +1750,10 @@
                     if (value.offset > value.length) { // Forgot to flip?
                         buffer = buffer.clone().flip();
                     }
+                    var offset = value.offset;
                     buffer.writeVarint32(value.remaining());
                     buffer.append(value);
+                    value.offset = offset;
 
                 // Embedded message
                 } else if (this.type == ProtoBuf.TYPES["message"]) {
@@ -1798,66 +1800,82 @@
                     }
                     // Read the next value otherwise...
                 }
+
                 // 32bit signed varint
                 if (this.type == ProtoBuf.TYPES["int32"]) {
                     return buffer.readVarint32() | 0;
                 }
+
                 // 32bit unsigned varint
                 if (this.type == ProtoBuf.TYPES["uint32"]) {
                     return buffer.readVarint32() >>> 0;
                 }
+
                 // 32bit signed varint zig-zag
                 if (this.type == ProtoBuf.TYPES["sint32"]) {
                     return buffer.readVarint32ZigZag() | 0;
                 }
+
                 // Fixed 32bit unsigned
                 if (this.type == ProtoBuf.TYPES["fixed32"]) {
                     return buffer.readUint32() >>> 0;
                 }
+
                 // Fixed 32bit signed
                 if (this.type == ProtoBuf.TYPES["sfixed32"]) {
                     return buffer.readInt32() | 0;
                 }
+
                 // 64bit signed varint
                 if (this.type == ProtoBuf.TYPES["int64"]) {
                     return buffer.readVarint64();
                 }
+
                 // 64bit unsigned varint
                 if (this.type == ProtoBuf.TYPES["uint64"]) {
                     return buffer.readVarint64().toUnsigned();
                 }
+
                 // 64bit signed varint zig-zag
                 if (this.type == ProtoBuf.TYPES["sint64"]) {
                     return buffer.readVarint64ZigZag();
                 }
+
                 // Fixed 64bit unsigned
                 if (this.type == ProtoBuf.TYPES["fixed64"]) {
                     return buffer.readUint64();
                 }
+
                 // Fixed 64bit signed
                 if (this.type == ProtoBuf.TYPES["sfixed64"]) {
                     return buffer.readInt64();
                 }
+
                 // Bool varint
                 if (this.type == ProtoBuf.TYPES["bool"]) {
                     return !!buffer.readVarint32();
                 }
+
                 // Constant enum value (varint)
                 if (this.type == ProtoBuf.TYPES["enum"]) {
                     return buffer.readVarint32(); // The following Builder.Message#set will already throw
                 }
+
                 // 32bit float
                 if (this.type == ProtoBuf.TYPES["float"]) {
                     return buffer.readFloat();
                 }
+
                 // 64bit float
                 if (this.type == ProtoBuf.TYPES["double"]) {
                     return buffer.readDouble();
                 }
+
                 // Length-delimited string
                 if (this.type == ProtoBuf.TYPES["string"]){
                     return buffer.readVString();
                 }
+
                 // Length-delimited bytes
                 if (this.type == ProtoBuf.TYPES["bytes"]) {
                     nBytes = buffer.readVarint32();
@@ -1869,15 +1887,18 @@
                     buffer.offset += nBytes;
                     return value;
                 }
+
                 // Length-delimited embedded message
                 if (this.type == ProtoBuf.TYPES["message"]) {
                     nBytes = buffer.readVarint32();
                     return this.resolvedType.decode(buffer, nBytes);
                 }
+
                 // Legacy group
                 if (this.type == ProtoBuf.TYPES["group"]) {
                     return this.resolvedType.decode(buffer, buffer.remaining());
                 }
+
                 // We should never end here
                 throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
             };
