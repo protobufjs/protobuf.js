@@ -2303,7 +2303,8 @@
                         buf.offset += 8;
                         break;
                     case ProtoBuf.WIRE_TYPES.LDELIM:
-                        buf.offset += 1 + buf.readVarint32();
+                        tag = buf.readVarint32(); // reads the varint
+                        buf.offset += tag;        // skips n bytes
                         break;
                     case ProtoBuf.WIRE_TYPES.STARTGROUP:
                         skipTillGroupEnd(id, buf);
