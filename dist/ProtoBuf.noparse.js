@@ -448,29 +448,10 @@
              * @expose
              */
             T.prototype.toString = function(includeClass) {
-                var name = this.fqn();
-                if (includeClass) {
-                    if (this instanceof Message) {
-                        name = "Message "+name;
-                    } else if (this instanceof Message.Field) {
-                        name = "Message.Field "+name;
-                    } else if (this instanceof Enum) {
-                        name = "Enum "+name;
-                    } else if (this instanceof Enum.Value) {
-                        name = "Enum.Value "+name;
-                    } else if (this instanceof Service) {
-                        name = "Service "+name;
-                    } else if (this instanceof Service.Method) {
-                        if (this instanceof Service.RPCMethod) {
-                            name = "Service.RPCMethod "+name;
-                        } else {
-                            name = "Service.Method "+name; // Should not happen as it is abstract
-                        }
-                    } else if (this instanceof Namespace) {
-                        name = "Namespace "+name;
-                    }
-                }
-                return name;
+                var pfx = includeClass
+                    ? this.className + " "
+                    : "";
+                return pfx + this.fqn();
             };
 
             /**
@@ -499,6 +480,11 @@
              */
             var Namespace = function(parent, name, options) {
                 T.call(this, parent, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Namespace"
 
                 /**
                  * Children inside the namespace.
@@ -564,13 +550,7 @@
              * @expose
              */
             Namespace.prototype.hasChild = function(nameOrId) {
-                var i;
-                if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return true;
-                } else {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return true;
-                }
-                return false;
+                return this._indexOf(nameOrId) > -1;
             };
 
             /**
@@ -580,13 +560,24 @@
              * @expose
              */
             Namespace.prototype.getChild = function(nameOrId) {
-                var i;
-                if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return this.children[i];
-                } else {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return this.children[i];
-                }
-                return null;
+                var index = this._indexOf(nameOrId);
+                return index > -1 ? this.children[index] : null;
+            };
+
+            /**
+             * Returns child index by its name or id.
+             * @param {string|number} nameOrId Child name or id
+             * @return {Number} The child index
+             * @private
+             */
+            Namespace.prototype._indexOf = function(nameOrId) {
+                var key = (typeof nameOrId == 'number')
+                    ? 'id'
+                    : 'name';
+                for (var i=0; i<this.children.length; i++)
+                    if (typeof this.children[i][key] !== 'undefined' && this.children[i][key] == nameOrId)
+                        return i;
+                return -1;
             };
 
             /**
@@ -700,6 +691,11 @@
              */
             var Message = function(parent, name, options, groupId) {
                 Namespace.call(this, parent, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Message";
 
                 /**
                  * Extensions range.
@@ -1474,6 +1470,11 @@
              */
             var Field = function(message, rule, type, name, id, options) {
                 T.call(this, message, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Message.Field";
 
                 /**
                  * Message field required flag.
@@ -1655,6 +1656,7 @@
                     // Else let's try to construct one from a key-value object
                     return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
                 }
+
                 // We should never end here
                 throw(new Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
             };
@@ -1964,6 +1966,11 @@
              */
             var Enum = function(parent, name, options) {
                 Namespace.call(this, parent, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Enum";
 
                 /**
                  * Runtime enum object.
@@ -2015,6 +2022,11 @@
              */
             var Value = function(enm, name, id) {
                 T.call(this, enm, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Enum.Value";
 
                 /**
                  * Unique enum value id.
@@ -2044,6 +2056,11 @@
              */
             var Service = function(root, name, options) {
                 Namespace.call(this, root, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Service";
 
                 /**
                  * Built runtime service class.
@@ -2198,6 +2215,11 @@
              */
             var Method = function(svc, name, options) {
                 T.call(this, svc, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Service.Method";
 
                 /**
                  * Options.
@@ -2237,6 +2259,11 @@
              */
             var RPCMethod = function(svc, name, request, response, options) {
                 Method.call(this, svc, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Service.RPCMethod";
 
                 /**
                  * Request message name.
