@@ -410,6 +410,7 @@
              * @param {string} name Object name
              */
             var T = function(parent, name) {
+
                 /**
                  * Parent object.
                  * @type {ProtoBuf.Reflect.T|null}
@@ -423,6 +424,13 @@
                  * @expose
                  */
                 this.name = name;
+
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 * @expose
+                 */
+                this.className = undefined;
             };
 
             /**
@@ -480,11 +488,11 @@
              */
             var Namespace = function(parent, name, options) {
                 T.call(this, parent, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
-                this.className = "Namespace"
+                this.className = "Namespace";
 
                 /**
                  * Children inside the namespace.
@@ -691,9 +699,9 @@
              */
             var Message = function(parent, name, options, groupId) {
                 Namespace.call(this, parent, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Message";
 
@@ -1470,9 +1478,9 @@
              */
             var Field = function(message, rule, type, name, id, options) {
                 T.call(this, message, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Message.Field";
 
@@ -1995,9 +2003,9 @@
              */
             var Enum = function(parent, name, options) {
                 Namespace.call(this, parent, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Enum";
 
@@ -2051,9 +2059,9 @@
              */
             var Value = function(enm, name, id) {
                 T.call(this, enm, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Enum.Value";
 
@@ -2085,9 +2093,9 @@
              */
             var Service = function(root, name, options) {
                 Namespace.call(this, root, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Service";
 
@@ -2244,9 +2252,9 @@
              */
             var Method = function(svc, name, options) {
                 T.call(this, svc, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Service.Method";
 
@@ -2288,9 +2296,9 @@
              */
             var RPCMethod = function(svc, name, request, response, options) {
                 Method.call(this, svc, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Service.RPCMethod";
 

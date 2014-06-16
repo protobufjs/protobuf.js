@@ -19,6 +19,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @param {string} name Object name
      */
     var T = function(parent, name) {
+        
         /**
          * Parent object.
          * @type {ProtoBuf.Reflect.T|null}
@@ -32,6 +33,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
          * @expose
          */
         this.name = name;
+
+        /**
+         * Fully qualified class name
+         * @type {string}
+         * @expose
+         */
+        this.className = undefined;
     };
 
     /**
@@ -89,11 +97,11 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var Namespace = function(parent, name, options) {
         T.call(this, parent, name);
+
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
-        this.className = "Namespace"
+        this.className = "Namespace";
 
         /**
          * Children inside the namespace.
@@ -300,9 +308,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var Message = function(parent, name, options, groupId) {
         Namespace.call(this, parent, name, options);
+        
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
         this.className = "Message";
 
@@ -1079,9 +1087,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var Field = function(message, rule, type, name, id, options) {
         T.call(this, message, name);
+
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
         this.className = "Message.Field";
 
@@ -1604,9 +1612,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var Enum = function(parent, name, options) {
         Namespace.call(this, parent, name, options);
+
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
         this.className = "Enum";
 
@@ -1660,9 +1668,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var Value = function(enm, name, id) {
         T.call(this, enm, name);
+
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
         this.className = "Enum.Value";
 
@@ -1694,9 +1702,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var Service = function(root, name, options) {
         Namespace.call(this, root, name, options);
+
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
         this.className = "Service";
 
@@ -1853,9 +1861,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var Method = function(svc, name, options) {
         T.call(this, svc, name);
+        
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
         this.className = "Service.Method";
 
@@ -1897,9 +1905,9 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     var RPCMethod = function(svc, name, request, response, options) {
         Method.call(this, svc, name, options);
+        
         /**
-         * Fully qualified class name
-         * @type {string}
+         * @override
          */
         this.className = "Service.RPCMethod";
 

@@ -1059,11 +1059,15 @@
                 fld["rule"] = token;
                 token = this.tn.next();
                 if (token === "group") {
-                    // "A [legacy] group simply combines a nested message type and a field into a single declaration."
+                    // "A [legacy] group simply combines a nested message type and a field into a single declaration. In your
+                    // code, you can treat this message just as if it had a Result type field called result (the latter name is
+                    // converted to lower-case so that it does not conflict with the former)."
                     grp = this._parseMessage(msg, token);
+                    if (grp["name"].charAt(0) === grp["name"].charAt(0).toLowerCase()) {
+                        // In case the group is already lower cased, convert it to upper case for consistency.
+                        grp["name"] = grp["name"].substr(0,1).toUpperCase()+grp["name"].substr(1);
+                    }
                     fld["type"] = grp["name"];
-                    // "In your code, you can treat this message just as if it had a Result type field called result (the latter
-                    // name is converted to lower-case so that it does not conflict with the former)."
                     fld["name"] = grp["name"].substr(0,1).toLowerCase()+grp["name"].substr(1);
                     fld["id"] = grp["groupId"];
                     fld["options"] = {}; // TODO: Do group definitions allow options? If so, how is this annotated?
@@ -1361,6 +1365,7 @@
              * @param {string} name Object name
              */
             var T = function(parent, name) {
+
                 /**
                  * Parent object.
                  * @type {ProtoBuf.Reflect.T|null}
@@ -1374,6 +1379,13 @@
                  * @expose
                  */
                 this.name = name;
+
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 * @expose
+                 */
+                this.className = undefined;
             };
 
             /**
@@ -1431,11 +1443,11 @@
              */
             var Namespace = function(parent, name, options) {
                 T.call(this, parent, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
-                this.className = "Namespace"
+                this.className = "Namespace";
 
                 /**
                  * Children inside the namespace.
@@ -1642,9 +1654,9 @@
              */
             var Message = function(parent, name, options, groupId) {
                 Namespace.call(this, parent, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Message";
 
@@ -2421,9 +2433,9 @@
              */
             var Field = function(message, rule, type, name, id, options) {
                 T.call(this, message, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Message.Field";
 
@@ -2946,9 +2958,9 @@
              */
             var Enum = function(parent, name, options) {
                 Namespace.call(this, parent, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Enum";
 
@@ -3002,9 +3014,9 @@
              */
             var Value = function(enm, name, id) {
                 T.call(this, enm, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Enum.Value";
 
@@ -3036,9 +3048,9 @@
              */
             var Service = function(root, name, options) {
                 Namespace.call(this, root, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Service";
 
@@ -3195,9 +3207,9 @@
              */
             var Method = function(svc, name, options) {
                 T.call(this, svc, name);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Service.Method";
 
@@ -3239,9 +3251,9 @@
              */
             var RPCMethod = function(svc, name, request, response, options) {
                 Method.call(this, svc, name, options);
+
                 /**
-                 * Fully qualified class name
-                 * @type {string}
+                 * @override
                  */
                 this.className = "Service.RPCMethod";
 
