@@ -39,45 +39,59 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             "services": []
         };
         var token, header = true;
-        do {
-            token = this.tn.next();
-            if (token == null) {
-                break; // No more messages
+        while(token = this.tn.next()) {
+            switch (token) {
+                case 'package': {
+                    if (!header)
+                        throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                    if (topLevel["package"] !== null)
+                        throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
+                    topLevel["package"] = this._parsePackage(token);
+                    break;
+                }
+
+                case 'import': {
+                    if (!header)
+                        throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                    topLevel.imports.push(this._parseImport(token));
+                    break;
+                }
+
+                case 'message': {
+                    this._parseMessage(topLevel, token);
+                    header = false;
+                    break;
+                }
+
+                case 'enum': {
+                    this._parseEnum(topLevel, token);
+                    header = false;
+                    break;
+                }
+
+                case 'option': {
+                    if (!header)
+                        throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                    this._parseOption(topLevel, token);
+                    break;
+                }
+
+                case 'service':
+                    this._parseService(topLevel, token);
+                    break;
+
+                case 'extend':
+                    this._parseExtend(topLevel, token);
+                    break;
+
+                case 'syntax':
+                    this._parseIgnoredStatement(topLevel, token);
+                    break;
+
+                default:
+                    throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
             }
-            if (token == 'package') {
-                if (!header) {
-                    throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                }
-                if (topLevel["package"] !== null) {
-                    throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
-                }
-                topLevel["package"] = this._parsePackage(token);
-            } else if (token == 'import') {
-                if (!header) {
-                    throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                }
-                topLevel.imports.push(this._parseImport(token));
-            } else if (token === 'message') {
-                this._parseMessage(topLevel, token);
-                header = false;
-            } else if (token === 'enum') {
-                this._parseEnum(topLevel, token);
-                header = false;
-            } else if (token === 'option') {
-                if (!header) {
-                    throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                }
-                this._parseOption(topLevel, token);
-            } else if (token === 'service') {
-                this._parseService(topLevel, token);
-            } else if (token === 'extend') {
-                this._parseExtend(topLevel, token);
-            } else if (token === 'syntax') {
-                this._parseIgnoredStatement(topLevel, token);
-            } else {
-                throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
-            }
-        } while (true);
+        }
         delete topLevel["name"];
         return topLevel;
     };
