@@ -496,12 +496,12 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             // code, you can treat this message just as if it had a Result type field called result (the latter name is
             // converted to lower-case so that it does not conflict with the former)."
             grp = this._parseMessage(msg, fld, token);
-            if (grp["name"].charAt(0) === grp["name"].charAt(0).toLowerCase()) {
-                // In case the group is already lower cased, convert it to upper case for consistency.
-                grp["name"] = grp["name"].substr(0,1).toUpperCase()+grp["name"].substr(1);
+            if (!/^[A-Z]/.test(grp["name"])) {
+                throw(new Error('Group names must start with a capital letter'));
             }
             fld["type"] = grp["name"];
-            fld["name"] = grp["name"].substr(0,1).toLowerCase()+grp["name"].substr(1);
+            fld["name"] = grp["name"].toLowerCase();
+
             token = this.tn.peek();
             if (token === Lang.END)
                 this.tn.next();
