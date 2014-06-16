@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Message"><span class="type-signature"></span>new Message<span class="signature">(parent, name, options, <span class="optional">groupId</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Message"><span class="type-signature"></span>new Message<span class="signature">(parent, name, options, <span class="optional">isGroup</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -172,13 +172,13 @@
 	
         <tr>
             
-                <td class="name"><code>groupId</code></td>
+                <td class="name"><code>isGroup</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -196,7 +196,7 @@
             
             
             
-            <td class="description last"><p>Group field id if this is a legacy group</p></td>
+            <td class="description last"><p><code>true</code> if this is a legacy group</p></td>
         </tr>
 	
 	
@@ -454,14 +454,14 @@
         
             
 <dt>
-    <h4 class="name" id="groupId"><span class="type-signature"></span>groupId<span class="type-signature"> :number|undefined</span></h4>
+    <h4 class="name" id="isGroup"><span class="type-signature"></span>isGroup<span class="type-signature"> :boolean</span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>Group field id if this is a legacy group, otherwise <code>undefined</code>.</p>
+        <p>Whether this is a legacy group or not.</p>
     </div>
     
     
@@ -1036,7 +1036,7 @@
         
             
 <dt>
-    <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(buffer, <span class="optional">length</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a>}</span></h4>
+    <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(buffer, <span class="optional">length</span>, <span class="optional">expectedGroupEndId</span>)</span><span class="type-signature"> &rarr; {<a href="ProtoBuf.Builder.Message.html">ProtoBuf.Builder.Message</a>}</span></h4>
     
     
 </dt>
@@ -1134,6 +1134,37 @@
             
             
             <td class="description last"><p>Message length. Defaults to decode all the available data.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>expectedGroupEndId</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Expected GROUPEND id if this is a legacy group</p></td>
         </tr>
 	
 	

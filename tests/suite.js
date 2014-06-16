@@ -733,17 +733,19 @@
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/groups.proto");
                 var root = builder.build();
                 var Outer = root.Outer;
-                var TInner = builder.ns.getChild("Outer").getChild("MyInner");
+                var TOuter = builder.ns.getChild("Outer");
+                var TInner = TOuter.getChild("MyInner");
                 test.ok(TInner instanceof ProtoBuf.Reflect.Message);
-                test.strictEqual(TInner.groupId, 2);
-                var Tinner = builder.ns.getChild("Outer").getChild("myInner");
+                test.strictEqual(TInner.isGroup, true);
+                var Tinner = TOuter.getChild("myInner");
                 test.ok(Tinner instanceof ProtoBuf.Reflect.Message.Field);
                 test.strictEqual(Tinner.id, 2);
+                test.deepEqual(Tinner.options, { "deprecated": true });
                 var Inner = root.Outer.MyInner;
-                var outer = new Outer("a", [new Inner("hello")], "b");
-                var bb = new ByteBuffer(15);
-                outer.encode(bb);
-                test.equal(bb.flip().toString("debug"), "<0A 01 61 13 1A 05 68 65 6C 6C 6F 14 22 01 62>");
+                var outer = new Outer("a", [new Inner("hello")], "b", new Inner("world"));
+                var bb = new ByteBuffer();
+                outer.encode(bb).flip().compact();
+                test.equal(bb.toString("debug"), "<0A 01 61 13 1A 05 68 65 6C 6C 6F 14 22 01 62 2B 1A 05 77 6F 72 6C 64 2C>");
                 // 0A = 1|010 = id 1, wire type 2 (ldelim)
                 // 01 = length 1
                 // 61 = "a"
@@ -755,6 +757,11 @@
                 // 22 = 100|010 = id 4, wire type 2 (ldelim)
                 // 01 = length 1
                 // 62 = "b"
+                // 2B = 101|011 = id 5, wire type = 3 (start group)
+                // 1A = 11|010 = id 3, wire type = 2 (ldelim)
+                // 05 = length 5
+                // 77 6F 72 6C 64 = "world"
+                // 2C = 101|100 = id 5, wire type = 4 (end group)
                 var douter = Outer.decode(bb);
                 test.strictEqual(douter.before, "a");
                 test.strictEqual(douter.myInner.length, 1);

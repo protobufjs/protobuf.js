@@ -406,6 +406,7 @@
              * Constructs a Reflect base class.
              * @exports ProtoBuf.Reflect.T
              * @constructor
+             * @abstract
              * @param {ProtoBuf.Reflect.T} parent Parent object
              * @param {string} name Object name
              */
@@ -430,7 +431,7 @@
                  * @type {string}
                  * @expose
                  */
-                this.className = undefined;
+                this.className;
             };
 
             /**
@@ -693,11 +694,11 @@
              * @param {ProtoBuf.Reflect.Namespace} parent Parent message or namespace
              * @param {string} name Message name
              * @param {Object.<string,*>} options Message options
-             * @param {number=} groupId Group field id if this is a legacy group
+             * @param {boolean=} isGroup `true` if this is a legacy group
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Message = function(parent, name, options, groupId) {
+            var Message = function(parent, name, options, isGroup) {
                 Namespace.call(this, parent, name, options);
 
                 /**
@@ -720,11 +721,11 @@
                 this.clazz = null;
 
                 /**
-                 * Group field id if this is a legacy group, otherwise `undefined`.
-                 * @type {number|undefined}
+                 * Whether this is a legacy group or not.
+                 * @type {boolean}
                  * @expose
                  */
-                this.groupId = groupId;
+                this.isGroup = !!isGroup;
             };
 
             // Extends Namespace
@@ -1351,13 +1352,13 @@
 
             /**
              * Skips all data until the end of the specified group has been reached.
-             * @param {number} groupId Group id
+             * @param {number} expectedId Expected GROUPEND id
              * @param {!ByteBuffer} buf ByteBuffer
              * @returns {boolean} `true` if a value as been skipped, `false` if the end has been reached
              * @throws {Error} If it wasn't possible to find the end of the group (buffer overrun or end tag mismatch)
              * @inner
              */
-            function skipTillGroupEnd(groupId, buf) {
+            function skipTillGroupEnd(expectedId, buf) {
                 var tag = buf.readVarint32(), // Throws on OOB
                     wireType = tag & 0x07,
                     id = tag >> 3;
@@ -1377,15 +1378,15 @@
                         skipTillGroupEnd(id, buf);
                         break;
                     case ProtoBuf.WIRE_TYPES.ENDGROUP:
-                        if (id === groupId)
+                        if (id === expectedId)
                             return false;
                         else
-                            throw(new Error("Illegal GROUPEND after unknown group: "+id+" ("+groupId+" expected)"));
+                            throw(new Error("Illegal GROUPEND after unknown group: "+id+" ("+expectedId+" expected)"));
                     case ProtoBuf.WIRE_TYPES.BITS32:
                         buf.offset += 4;
                         break;
                     default:
-                        throw(new Error("Illegal wire type in unknown group "+groupId+": "+wireType));
+                        throw(new Error("Illegal wire type in unknown group "+expectedId+": "+wireType));
                 }
                 return true;
             }
@@ -1394,21 +1395,23 @@
              * Decodes an encoded message and returns the decoded message.
              * @param {ByteBuffer} buffer ByteBuffer to decode from
              * @param {number=} length Message length. Defaults to decode all the available data.
+             * @param {number=} expectedGroupEndId Expected GROUPEND id if this is a legacy group
              * @return {ProtoBuf.Builder.Message} Decoded message
              * @throws {Error} If the message cannot be decoded
              * @expose
              */
-            Message.prototype.decode = function(buffer, length) {
+            Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
                 length = typeof length === 'number' ? length : -1;
                 var start = buffer.offset;
                 var msg = new (this.clazz)();
-                var tag, wireType, id, endGroupId = -1;
+                var tag, wireType, id;
                 while (buffer.offset < start+length || (length == -1 && buffer.remaining() > 0)) {
                     tag = buffer.readVarint32();
                     wireType = tag & 0x07;
                     id = tag >> 3;
-                    if (wireType === ProtoBuf.WIRE_TYPES.ENDGROUP && typeof this.groupId !== 'undefined') {
-                        endGroupId = id;
+                    if (wireType === ProtoBuf.WIRE_TYPES.ENDGROUP) {
+                        if (id !== expectedGroupEndId)
+                            throw(new Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")"));
                         break;
                     }
                     var field = this.getChild(id); // Message.Field only
@@ -1432,7 +1435,7 @@
                                 while (skipTillGroupEnd(id, buffer)) {}
                                 break;
                             default:
-                                throw(new Error("Illegal wire type of unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType));
+                                throw(new Error("Illegal wire type for unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType));
                         }
                         continue;
                     }
@@ -1442,10 +1445,7 @@
                         msg.$set(field.name, field.decode(wireType, buffer), true);
                     }
                 }
-                // If this is a group, check if everything is correct
-                if (typeof this.groupId !== 'undefined' && endGroupId !== this.groupId) {
-                    throw(new Error("Illegal end group indicator for "+this.toString(true)+": "+endGroupId+" ("+this.groupId+" expected)"));
-                }
+
                 // Check if all required fields are present
                 var fields = this.getChildren(ProtoBuf.Reflect.Field);
                 for (var i=0; i<fields.length; i++) {
@@ -1979,7 +1979,7 @@
 
                     // Legacy group
                     case ProtoBuf.TYPES["group"]:
-                        return this.resolvedType.decode(buffer, buffer.remaining());
+                        return this.resolvedType.decode(buffer, -1, this.id);
                 }
 
                 // We should never end here
@@ -2583,7 +2583,7 @@
                         while (defs.length > 0) {
                             def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
-                                obj = new Reflect.Message(this.ptr, def["name"], def["options"], def["groupId"]);
+                                obj = new Reflect.Message(this.ptr, def["name"], def["options"], def["isGroup"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
                                     for (i=0; i<def["fields"].length; i++) { // i=Fields
@@ -2874,9 +2874,7 @@
                         if (res instanceof Reflect.Enum) {
                             this.ptr.type = ProtoBuf.TYPES["enum"];
                         } else if (res instanceof Reflect.Message) {
-                            this.ptr.type = typeof res.groupId === 'undefined'
-                                ? ProtoBuf.TYPES["message"]
-                                : ProtoBuf.TYPES["group"];
+                            this.ptr.type = res.isGroup ? ProtoBuf.TYPES["group"] : ProtoBuf.TYPES["message"];
                         } else {
                             throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
                         }

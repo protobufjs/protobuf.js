@@ -6,26 +6,26 @@
             "fields": [
                 {
                     "rule": "required",
+                    "options": {},
                     "type": "string",
                     "name": "model",
-                    "id": 1,
-                    "options": {}
+                    "id": 1
                 },
                 {
                     "rule": "required",
+                    "options": {},
                     "type": "Vendor",
                     "name": "vendor",
-                    "id": 2,
-                    "options": {}
+                    "id": 2
                 },
                 {
                     "rule": "optional",
-                    "type": "Speed",
-                    "name": "speed",
-                    "id": 3,
                     "options": {
                         "default": "FAST"
-                    }
+                    },
+                    "type": "Speed",
+                    "name": "speed",
+                    "id": 3
                 }
             ],
             "enums": [
@@ -50,17 +50,17 @@
                     "fields": [
                         {
                             "rule": "required",
+                            "options": {},
                             "type": "string",
                             "name": "name",
-                            "id": 1,
-                            "options": {}
+                            "id": 1
                         },
                         {
                             "rule": "optional",
+                            "options": {},
                             "type": "Address",
                             "name": "address",
-                            "id": 2,
-                            "options": {}
+                            "id": 2
                         }
                     ],
                     "enums": [],
@@ -70,10 +70,10 @@
                             "fields": [
                                 {
                                     "rule": "required",
+                                    "options": {},
                                     "type": "string",
                                     "name": "country",
-                                    "id": 1,
-                                    "options": {}
+                                    "id": 1
                                 }
                             ],
                             "enums": [],
@@ -88,24 +88,24 @@
                     "fields": [
                         {
                             "rule": "optional",
+                            "options": {},
                             "type": "string",
                             "name": "first_name",
-                            "id": 1,
-                            "options": {}
+                            "id": 1
                         },
                         {
                             "rule": "required",
+                            "options": {},
                             "type": "string",
                             "name": "last_name",
-                            "id": 2,
-                            "options": {}
+                            "id": 2
                         },
                         {
                             "rule": "optional",
+                            "options": {},
                             "type": "Vendor.Address",
                             "name": "address",
-                            "id": 3,
-                            "options": {}
+                            "id": 3
                         }
                     ],
                     "enums": [],

@@ -58,7 +58,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
                 }
 
                 case 'message': {
-                    this._parseMessage(topLevel, token);
+                    this._parseMessage(topLevel, null, token);
                     header = false;
                     break;
                 }
@@ -412,12 +412,13 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
     /**
      * Parses a message definition.
      * @param {Object} parent Parent definition
+     * @param {Object} fld Field definition if this is a group, otherwise `null`
      * @param {string} token First token
      * @return {Object}
      * @throws {Error} If the message cannot be parsed
      * @private
      */
-    Parser.prototype._parseMessage = function(parent, token) {
+    Parser.prototype._parseMessage = function(parent, fld, token) {
         /** @dict */
         var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
         var isGroup = token === "group";
@@ -431,18 +432,24 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             if (token !== Lang.EQUAL)
                 throw(new Error("Illegal id assignment after group "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)"));
             token = this.tn.next();
-            if (!Lang.ID.test(token))
-                throw(new Error("Illegal id value after group "+msg.name+" at line "+this.tn.line+": "+token));
-            msg["groupId"] = this._parseId(token); // Also marker for legacy groups
-        }
-        token = this.tn.next();
-        if (token != Lang.OPEN) {
-            throw(new Error("Illegal OPEN after "+(isGroup ? "group" : "message")+" "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
+            try {
+                fld["id"] = this._parseId(token);
+            } catch (e) {
+                throw(new Error("Illegal field id value for group "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
+            }
+            msg["isGroup"] = true;
         }
         msg["fields"] = []; // Note: Using arrays to support also browser that cannot preserve order of object keys.
         msg["enums"] = [];
         msg["messages"] = [];
         msg["options"] = {};
+        token = this.tn.next();
+        if (token === Lang.OPTOPEN && fld) {
+            this._parseFieldOptions(msg, fld, token);
+            token = this.tn.next();
+        }
+        if (token !== Lang.OPEN)
+            throw(new Error("Illegal OPEN after "+(isGroup ? "group" : "message")+" "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)"));
         // msg["extensions"] = undefined
         do {
             token = this.tn.next();
@@ -455,7 +462,7 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             } else if (token === "enum") {
                 this._parseEnum(msg, token);
             } else if (token === "message") {
-                this._parseMessage(msg, token);
+                this._parseMessage(msg, null, token);
             } else if (token === "option") {
                 this._parseOption(msg, token);
             } else if (token === "extensions") {
@@ -481,20 +488,20 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
         /** @dict */
         var fld = {}, grp = null;
         fld["rule"] = token;
+        /** @dict */
+        fld["options"] = {};
         token = this.tn.next();
         if (token === "group") {
             // "A [legacy] group simply combines a nested message type and a field into a single declaration. In your
             // code, you can treat this message just as if it had a Result type field called result (the latter name is
             // converted to lower-case so that it does not conflict with the former)."
-            grp = this._parseMessage(msg, token);
+            grp = this._parseMessage(msg, fld, token);
             if (grp["name"].charAt(0) === grp["name"].charAt(0).toLowerCase()) {
                 // In case the group is already lower cased, convert it to upper case for consistency.
                 grp["name"] = grp["name"].substr(0,1).toUpperCase()+grp["name"].substr(1);
             }
             fld["type"] = grp["name"];
             fld["name"] = grp["name"].substr(0,1).toLowerCase()+grp["name"].substr(1);
-            fld["id"] = grp["groupId"];
-            fld["options"] = {}; // TODO: Do group definitions allow options? If so, how is this annotated?
             token = this.tn.peek();
             if (token === Lang.END)
                 this.tn.next();
@@ -518,8 +525,6 @@ ProtoBuf.DotProto.Parser = (function(ProtoBuf, Lang, Tokenizer) {
             } catch (e) {
                 throw(new Error("Illegal field id value in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
             }
-            /** @dict */
-            fld["options"] = {};
             token = this.tn.next();
             if (token === Lang.OPTOPEN) {
                 this._parseFieldOptions(msg, fld, token);
