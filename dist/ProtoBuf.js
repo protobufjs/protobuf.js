@@ -615,45 +615,59 @@
                     "services": []
                 };
                 var token, header = true;
-                do {
-                    token = this.tn.next();
-                    if (token == null) {
-                        break; // No more messages
+                while(token = this.tn.next()) {
+                    switch (token) {
+                        case 'package': {
+                            if (!header)
+                                throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                            if (topLevel["package"] !== null)
+                                throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
+                            topLevel["package"] = this._parsePackage(token);
+                            break;
+                        }
+
+                        case 'import': {
+                            if (!header)
+                                throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                            topLevel.imports.push(this._parseImport(token));
+                            break;
+                        }
+
+                        case 'message': {
+                            this._parseMessage(topLevel, token);
+                            header = false;
+                            break;
+                        }
+
+                        case 'enum': {
+                            this._parseEnum(topLevel, token);
+                            header = false;
+                            break;
+                        }
+
+                        case 'option': {
+                            if (!header)
+                                throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
+                            this._parseOption(topLevel, token);
+                            break;
+                        }
+
+                        case 'service':
+                            this._parseService(topLevel, token);
+                            break;
+
+                        case 'extend':
+                            this._parseExtend(topLevel, token);
+                            break;
+
+                        case 'syntax':
+                            this._parseIgnoredStatement(topLevel, token);
+                            break;
+
+                        default:
+                            throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
                     }
-                    if (token == 'package') {
-                        if (!header) {
-                            throw(new Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                        }
-                        if (topLevel["package"] !== null) {
-                            throw(new Error("Illegal package definition at line "+this.tn.line+": Package already declared"));
-                        }
-                        topLevel["package"] = this._parsePackage(token);
-                    } else if (token == 'import') {
-                        if (!header) {
-                            throw(new Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                        }
-                        topLevel.imports.push(this._parseImport(token));
-                    } else if (token === 'message') {
-                        this._parseMessage(topLevel, token);
-                        header = false;
-                    } else if (token === 'enum') {
-                        this._parseEnum(topLevel, token);
-                        header = false;
-                    } else if (token === 'option') {
-                        if (!header) {
-                            throw(new Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum"));
-                        }
-                        this._parseOption(topLevel, token);
-                    } else if (token === 'service') {
-                        this._parseService(topLevel, token);
-                    } else if (token === 'extend') {
-                        this._parseExtend(topLevel, token);
-                    } else if (token === 'syntax') {
-                        this._parseIgnoredStatement(topLevel, token);
-                    } else {
-                        throw(new Error("Illegal top level declaration at line "+this.tn.line+": "+token));
-                    }
-                } while (true);
+                }
                 delete topLevel["name"];
                 return topLevel;
             };
@@ -1385,29 +1399,10 @@
              * @expose
              */
             T.prototype.toString = function(includeClass) {
-                var name = this.fqn();
-                if (includeClass) {
-                    if (this instanceof Message) {
-                        name = "Message "+name;
-                    } else if (this instanceof Message.Field) {
-                        name = "Message.Field "+name;
-                    } else if (this instanceof Enum) {
-                        name = "Enum "+name;
-                    } else if (this instanceof Enum.Value) {
-                        name = "Enum.Value "+name;
-                    } else if (this instanceof Service) {
-                        name = "Service "+name;
-                    } else if (this instanceof Service.Method) {
-                        if (this instanceof Service.RPCMethod) {
-                            name = "Service.RPCMethod "+name;
-                        } else {
-                            name = "Service.Method "+name; // Should not happen as it is abstract
-                        }
-                    } else if (this instanceof Namespace) {
-                        name = "Namespace "+name;
-                    }
-                }
-                return name;
+                var pfx = includeClass
+                    ? this.className + " "
+                    : "";
+                return pfx + this.fqn();
             };
 
             /**
@@ -1436,6 +1431,11 @@
              */
             var Namespace = function(parent, name, options) {
                 T.call(this, parent, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Namespace"
 
                 /**
                  * Children inside the namespace.
@@ -1501,13 +1501,7 @@
              * @expose
              */
             Namespace.prototype.hasChild = function(nameOrId) {
-                var i;
-                if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return true;
-                } else {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return true;
-                }
-                return false;
+                return this._indexOf(nameOrId) > -1;
             };
 
             /**
@@ -1517,13 +1511,24 @@
              * @expose
              */
             Namespace.prototype.getChild = function(nameOrId) {
-                var i;
-                if (typeof nameOrId == 'number') {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].id !== 'undefined' && this.children[i].id == nameOrId) return this.children[i];
-                } else {
-                    for (i=0; i<this.children.length; i++) if (typeof this.children[i].name !== 'undefined' && this.children[i].name == nameOrId) return this.children[i];
-                }
-                return null;
+                var index = this._indexOf(nameOrId);
+                return index > -1 ? this.children[index] : null;
+            };
+
+            /**
+             * Returns child index by its name or id.
+             * @param {string|number} nameOrId Child name or id
+             * @return {Number} The child index
+             * @private
+             */
+            Namespace.prototype._indexOf = function(nameOrId) {
+                var key = (typeof nameOrId == 'number')
+                    ? 'id'
+                    : 'name';
+                for (var i=0; i<this.children.length; i++)
+                    if (typeof this.children[i][key] !== 'undefined' && this.children[i][key] == nameOrId)
+                        return i;
+                return -1;
             };
 
             /**
@@ -1637,6 +1642,11 @@
              */
             var Message = function(parent, name, options, groupId) {
                 Namespace.call(this, parent, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Message";
 
                 /**
                  * Extensions range.
@@ -2411,6 +2421,11 @@
              */
             var Field = function(message, rule, type, name, id, options) {
                 T.call(this, message, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Message.Field";
 
                 /**
                  * Message field required flag.
@@ -2523,75 +2538,94 @@
                 if (!this.repeated && ProtoBuf.Util.isArray(value)) {
                     throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
                 }
-                // Signed 32bit
-                if (this.type == ProtoBuf.TYPES["int32"] || this.type == ProtoBuf.TYPES["sint32"] || this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    return isNaN(i = parseInt(value, 10)) ? i : i | 0; // Do not cast NaN as it'd become 0
-                }
-                // Unsigned 32bit
-                if (this.type == ProtoBuf.TYPES["uint32"] || this.type == ProtoBuf.TYPES["fixed32"]) {
-                    return isNaN(i = parseInt(value, 10)) ? i : i >>> 0; // Do not cast NaN as it'd become 0
-                }
-                if (ProtoBuf.Long) {
+
+                switch (this.type) {
+                    // Signed 32bit
+                    case ProtoBuf.TYPES["int32"]:
+                    case ProtoBuf.TYPES["sint32"]:
+                    case ProtoBuf.TYPES["sfixed32"]:
+                        // Do not cast NaN as it'd become 0
+                        return isNaN(i = parseInt(value, 10)) ? i : i | 0;
+
+                    // Unsigned 32bit
+                    case ProtoBuf.TYPES["uint32"]:
+                    case ProtoBuf.TYPES["fixed32"]:
+                        // Do not cast NaN as it'd become 0
+                        return isNaN(i = parseInt(value, 10)) ? i : i >>> 0;
+
                     // Signed 64bit
-                    if (this.type == ProtoBuf.TYPES["int64"] || this.type == ProtoBuf.TYPES["sint64"] || this.type == ProtoBuf.TYPES["sfixed64"]) {
-                        try {
-                            return mkLong(value, false);
-                        } catch (e) {
-                            throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["sint64"]:
+                    case ProtoBuf.TYPES["sfixed64"]: {
+                        if (ProtoBuf.Long) {
+                            try {
+                                return mkLong(value, false);
+                            } catch (e) {
+                                throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
+                            }
                         }
                     }
+
                     // Unsigned 64bit
-                    if (this.type == ProtoBuf.TYPES["uint64"] || this.type == ProtoBuf.TYPES["fixed64"]) {
-                        try {
-                            return mkLong(value, true);
-                        } catch (e) {
-                            throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
+                    case ProtoBuf.TYPES["uint64"]:
+                    case ProtoBuf.TYPES["fixed64"]: {
+                        if (ProtoBuf.Long) {
+                            try {
+                                return mkLong(value, true);
+                            } catch (e) {
+                                throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
+                            }
                         }
                     }
-                }
-                // Bool
-                if (this.type == ProtoBuf.TYPES["bool"]) {
-                    if (typeof value === 'string') return value === 'true';
-                    else return !!value;
-                }
-                // Float
-                if (this.type == ProtoBuf.TYPES["float"] || this.type == ProtoBuf.TYPES["double"]) {
-                    return parseFloat(value); // May also become NaN, +Infinity, -Infinity
-                }
-                // Length-delimited string
-                if (this.type == ProtoBuf.TYPES["string"]) {
-                    return ""+value;
-                }
-                // Length-delimited bytes
-                if (this.type == ProtoBuf.TYPES["bytes"]) {
-                    if (value && value instanceof ByteBuffer) {
-                        return value;
-                    }
-                    return ByteBuffer.wrap(value);
-                }
-                // Constant enum value
-                if (this.type == ProtoBuf.TYPES["enum"]) {
-                    var values = this.resolvedType.getChildren(Enum.Value);
-                    for (i=0; i<values.length; i++) {
-                        if (values[i].name == value) {
-                            return values[i].id;
-                        } else if (values[i].id == value) {
-                            return values[i].id;
+
+                    // Bool
+                    case ProtoBuf.TYPES["bool"]:
+                        return typeof value === 'string'
+                            ? value === 'true'
+                            : !!value;
+
+                    // Float
+                    case ProtoBuf.TYPES["float"]:
+                    case ProtoBuf.TYPES["double"]:
+                        // May also become NaN, +Infinity, -Infinity
+                        return parseFloat(value);
+
+                    // Length-delimited string
+                    case ProtoBuf.TYPES["string"]:
+                        return ""+value;
+
+                    // Length-delimited bytes
+                    case ProtoBuf.TYPES["bytes"]:
+                        return value && value instanceof ByteBuffer
+                            ? value
+                            : ByteBuffer.wrap(value);
+
+                    // Constant enum value
+                    case ProtoBuf.TYPES["enum"]: {
+                        var values = this.resolvedType.getChildren(Enum.Value);
+                        for (i=0; i<values.length; i++) {
+                            if (values[i].name == value) {
+                                return values[i].id;
+                            } else if (values[i].id == value) {
+                                return values[i].id;
+                            }
                         }
+                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a valid enum value)"));
                     }
-                    throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a valid enum value)"));
+                    // Embedded message
+                    case ProtoBuf.TYPES["group"]:
+                    case ProtoBuf.TYPES["message"]: {
+                        if (typeof value !== 'object') {
+                            throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
+                        }
+                        if (value instanceof this.resolvedType.clazz) {
+                            return value;
+                        }
+                        // Else let's try to construct one from a key-value object
+                        return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
+                    }
                 }
-                // Embedded message or legacy group
-                if (this.type == ProtoBuf.TYPES["message"] || this.type == ProtoBuf.TYPES["group"]) {
-                    if (typeof value !== 'object') {
-                        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
-                    }
-                    if (value instanceof this.resolvedType.clazz) {
-                        return value;
-                    }
-                    // Else let's try to construct one from a key-value object
-                    return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
-                }
+
                 // We should never end here
                 throw(new Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
             };
@@ -2662,95 +2696,121 @@
                 if (value === null) return; // Nothing to encode
                 // Tag has already been written
 
-                // 32bit signed varint
-                if (this.type == ProtoBuf.TYPES["int32"]) {
-                    // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
-                    // long – it is, effectively, treated like a very large unsigned integer." (see #122)
-                    if (value < 0)
-                        buffer.writeVarint64(value);
-                    else
-                        buffer.writeVarint32(value);
-
-                // 32bit unsigned varint
-                } else if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    buffer.writeVarint32(value);
-
-                // 32bit varint zig-zag
-                } else if (this.type == ProtoBuf.TYPES["sint32"]) {
-                    buffer.writeVarint32ZigZag(value);
-
-                // Fixed unsigned 32bit
-                } else if (this.type == ProtoBuf.TYPES["fixed32"]) {
-                    buffer.writeUint32(value);
-
-                // Fixed signed 32bit
-                } else if (this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    buffer.writeInt32(value);
-
-                // 64bit varint as-is
-                } else if (this.type == ProtoBuf.TYPES["int64"] || this.type == ProtoBuf.TYPES["uint64"]) {
-                    buffer.writeVarint64(value); // throws
-
-                // 64bit varint zig-zag
-                } else if (this.type == ProtoBuf.TYPES["sint64"]) {
-                    buffer.writeVarint64ZigZag(value); // throws
-
-                // Fixed unsigned 64bit
-                } else if (this.type == ProtoBuf.TYPES["fixed64"]) {
-                    buffer.writeUint64(value); // throws
-
-                // Fixed signed 64bit
-                } else if (this.type == ProtoBuf.TYPES["sfixed64"]) {
-                    buffer.writeInt64(value); // throws
-
-                // Bool
-                } else if (this.type == ProtoBuf.TYPES["bool"]) {
-                    if (typeof value === 'string') buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
-                    else buffer.writeVarint32(value ? 1 : 0);
-
-                // Constant enum value
-                } else if (this.type == ProtoBuf.TYPES["enum"]) {
-                    buffer.writeVarint32(value);
-
-                // 32bit float
-                } else if (this.type == ProtoBuf.TYPES["float"]) {
-                    buffer.writeFloat32(value);
-
-                // 64bit float
-                } else if (this.type == ProtoBuf.TYPES["double"]) {
-                    buffer.writeFloat64(value);
-
-                // Length-delimited string
-                } else if (this.type == ProtoBuf.TYPES["string"]) {
-                    buffer.writeVString(value);
-
-                // Length-delimited bytes
-                } else if (this.type == ProtoBuf.TYPES["bytes"]) {
-                    if (value.offset > value.length) { // Forgot to flip?
-                        // TODO: This is actually dangerous as it might lead to a condition where data is included that isn't
-                        // meant to be transmitted. Shall we remove this?
-                        buffer = buffer.clone().flip();
+                switch (this.type) {
+                    // 32bit signed varint
+                    case ProtoBuf.TYPES["int32"]: {
+                        // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
+                        // long – it is, effectively, treated like a very large unsigned integer." (see #122)
+                        if (value < 0)
+                            buffer.writeVarint64(value);
+                        else
+                            buffer.writeVarint32(value);
+                        break;
                     }
-                    var prevOffset = value.offset;
-                    buffer.writeVarint32(value.remaining());
-                    buffer.append(value);
-                    value.offset = prevOffset;
 
-                // Embedded message
-                } else if (this.type == ProtoBuf.TYPES["message"]) {
-                    var bb = new ByteBuffer().LE();
-                    this.resolvedType.encode(value, bb);
-                    buffer.writeVarint32(bb.offset);
-                    buffer.append(bb.flip());
+                    // 32bit unsigned varint
+                    case ProtoBuf.TYPES["uint32"]:
+                        buffer.writeVarint32(value);
+                        break;
 
-                // Legacy group
-                } else if (this.type == ProtoBuf.TYPES["group"]) {
-                    this.resolvedType.encode(value, buffer);
-                    buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
+                    // 32bit varint zig-zag
+                    case ProtoBuf.TYPES["sint32"]:
+                        buffer.writeVarint32ZigZag(value);
+                        break;
 
-                } else {
-                    // We should never end here
-                    throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
+                    // Fixed unsigned 32bit
+                    case ProtoBuf.TYPES["fixed32"]:
+                        buffer.writeUint32(value);
+                        break;
+
+                    // Fixed signed 32bit
+                    case ProtoBuf.TYPES["sfixed32"]:
+                        buffer.writeInt32(value);
+                        break;
+
+                    // 64bit varint as-is
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["uint64"]:
+                        buffer.writeVarint64(value); // throws
+                        break;
+
+                    // 64bit varint zig-zag
+                    case ProtoBuf.TYPES["sint64"]:
+                        buffer.writeVarint64ZigZag(value); // throws
+                        break;
+
+                    // Fixed unsigned 64bit
+                    case ProtoBuf.TYPES["fixed64"]:
+                        buffer.writeUint64(value); // throws
+                        break;
+
+                    // Fixed signed 64bit
+                    case ProtoBuf.TYPES["sfixed64"]:
+                        buffer.writeInt64(value); // throws
+                        break;
+
+                    // Bool
+                    case ProtoBuf.TYPES["bool"]: {
+                        if (typeof value === 'string')
+                            buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
+                        else
+                            buffer.writeVarint32(value ? 1 : 0);
+                        break;
+                    }
+
+                    // Constant enum value
+                    case ProtoBuf.TYPES["enum"]:
+                        buffer.writeVarint32(value);
+                        break;
+
+                    // 32bit float
+                    case ProtoBuf.TYPES["float"]:
+                        buffer.writeFloat32(value);
+                        break;
+
+                    // 64bit float
+                    case ProtoBuf.TYPES["double"]:
+                        buffer.writeFloat64(value);
+                        break;
+
+                    // Length-delimited string
+                    case ProtoBuf.TYPES["string"]:
+                        buffer.writeVString(value);
+                        break;
+
+                    // Length-delimited bytes
+                    case ProtoBuf.TYPES["bytes"]: {
+                        if (value.offset > value.length) { // Forgot to flip?
+                            // TODO: This is actually dangerous as it might lead to a condition where data is included that isn't
+                            // meant to be transmitted. Shall we remove this?
+                            buffer = buffer.clone().flip();
+                        }
+                        var prevOffset = value.offset;
+                        buffer.writeVarint32(value.remaining());
+                        buffer.append(value);
+                        value.offset = prevOffset;
+                        break;
+                    }
+
+                    // Embedded message
+                    case ProtoBuf.TYPES["message"]: {
+                        var bb = new ByteBuffer().LE();
+                        this.resolvedType.encode(value, bb);
+                        buffer.writeVarint32(bb.offset);
+                        buffer.append(bb.flip());
+                        break;
+                    }
+
+                    // Legacy group
+                    case ProtoBuf.TYPES["group"]: {
+                        this.resolvedType.encode(value, buffer);
+                        buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
+                        break;
+                    }
+
+                    default:
+                        // We should never end here
+                        throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
                 }
                 return buffer;
             };
@@ -2781,108 +2841,93 @@
                     }
                     // Read the next value otherwise...
                 }
+                switch (this.type) {
+                    // 32bit signed varint
+                    case ProtoBuf.TYPES["int32"]:
+                        return buffer.readVarint32() | 0;
 
-                // 32bit signed varint
-                if (this.type == ProtoBuf.TYPES["int32"]) {
-                    return buffer.readVarint32() | 0;
-                }
+                    // 32bit unsigned varint
+                    case ProtoBuf.TYPES["uint32"]:
+                        return buffer.readVarint32() >>> 0;
 
-                // 32bit unsigned varint
-                if (this.type == ProtoBuf.TYPES["uint32"]) {
-                    return buffer.readVarint32() >>> 0;
-                }
+                    // 32bit signed varint zig-zag
+                    case ProtoBuf.TYPES["sint32"]:
+                        return buffer.readVarint32ZigZag() | 0;
 
-                // 32bit signed varint zig-zag
-                if (this.type == ProtoBuf.TYPES["sint32"]) {
-                    return buffer.readVarint32ZigZag() | 0;
-                }
+                    // Fixed 32bit unsigned
+                    case ProtoBuf.TYPES["fixed32"]:
+                        return buffer.readUint32() >>> 0;
 
-                // Fixed 32bit unsigned
-                if (this.type == ProtoBuf.TYPES["fixed32"]) {
-                    return buffer.readUint32() >>> 0;
-                }
+                    case ProtoBuf.TYPES["sfixed32"]:
+                        return buffer.readInt32() | 0;
 
-                // Fixed 32bit signed
-                if (this.type == ProtoBuf.TYPES["sfixed32"]) {
-                    return buffer.readInt32() | 0;
-                }
+                    // 64bit signed varint
+                    case ProtoBuf.TYPES["int64"]:
+                        return buffer.readVarint64();
 
-                // 64bit signed varint
-                if (this.type == ProtoBuf.TYPES["int64"]) {
-                    return buffer.readVarint64();
-                }
+                    // 64bit unsigned varint
+                    case ProtoBuf.TYPES["uint64"]:
+                        return buffer.readVarint64().toUnsigned();
 
-                // 64bit unsigned varint
-                if (this.type == ProtoBuf.TYPES["uint64"]) {
-                    return buffer.readVarint64().toUnsigned();
-                }
+                    // 64bit signed varint zig-zag
+                    case ProtoBuf.TYPES["sint64"]:
+                        return buffer.readVarint64ZigZag();
 
-                // 64bit signed varint zig-zag
-                if (this.type == ProtoBuf.TYPES["sint64"]) {
-                    return buffer.readVarint64ZigZag();
-                }
+                    // Fixed 64bit unsigned
+                    case ProtoBuf.TYPES["fixed64"]:
+                        return buffer.readUint64();
 
-                // Fixed 64bit unsigned
-                if (this.type == ProtoBuf.TYPES["fixed64"]) {
-                    return buffer.readUint64();
-                }
+                    // Fixed 64bit signed
+                    case ProtoBuf.TYPES["sfixed64"]:
+                        return buffer.readInt64();
 
-                // Fixed 64bit signed
-                if (this.type == ProtoBuf.TYPES["sfixed64"]) {
-                    return buffer.readInt64();
-                }
+                    // Bool varint
+                    case ProtoBuf.TYPES["bool"]:
+                        return !!buffer.readVarint32();
 
-                // Bool varint
-                if (this.type == ProtoBuf.TYPES["bool"]) {
-                    return !!buffer.readVarint32();
-                }
+                    // Constant enum value (varint)
+                    case ProtoBuf.TYPES["enum"]:
+                        // The following Builder.Message#set will already throw
+                        return buffer.readVarint32();
 
-                // Constant enum value (varint)
-                if (this.type == ProtoBuf.TYPES["enum"]) {
-                    return buffer.readVarint32(); // The following Builder.Message#set will already throw
-                }
+                    // 32bit float
+                    case ProtoBuf.TYPES["float"]:
+                        return buffer.readFloat();
 
-                // 32bit float
-                if (this.type == ProtoBuf.TYPES["float"]) {
-                    return buffer.readFloat();
-                }
+                    // 64bit float
+                    case ProtoBuf.TYPES["double"]:
+                        return buffer.readDouble();
 
-                // 64bit float
-                if (this.type == ProtoBuf.TYPES["double"]) {
-                    return buffer.readDouble();
-                }
+                    // Length-delimited string
+                    case ProtoBuf.TYPES["string"]:
+                        return buffer.readVString();
 
-                // Length-delimited string
-                if (this.type == ProtoBuf.TYPES["string"]){
-                    return buffer.readVString();
-                }
-
-                // Length-delimited bytes
-                if (this.type == ProtoBuf.TYPES["bytes"]) {
-                    nBytes = buffer.readVarint32();
-                    if (buffer.remaining() < nBytes) {
-                        throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
+                    // Length-delimited bytes
+                    case ProtoBuf.TYPES["bytes"]: {
+                        nBytes = buffer.readVarint32();
+                        if (buffer.remaining() < nBytes) {
+                            throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
+                        }
+                        value = buffer.clone(); // Offset already set
+                        value.length = value.offset+nBytes;
+                        buffer.offset += nBytes;
+                        return value;
                     }
-                    value = buffer.clone(); // Offset already set
-                    value.length = value.offset+nBytes;
-                    buffer.offset += nBytes;
-                    return value;
-                }
 
-                // Length-delimited embedded message
-                if (this.type == ProtoBuf.TYPES["message"]) {
-                    nBytes = buffer.readVarint32();
-                    return this.resolvedType.decode(buffer, nBytes);
-                }
+                    // Length-delimited embedded message
+                    case ProtoBuf.TYPES["message"]: {
+                        nBytes = buffer.readVarint32();
+                        return this.resolvedType.decode(buffer, nBytes);
+                    }
 
-                // Legacy group
-                if (this.type == ProtoBuf.TYPES["group"]) {
-                    return this.resolvedType.decode(buffer, buffer.remaining());
+                    // Legacy group
+                    case ProtoBuf.TYPES["group"]:
+                        return this.resolvedType.decode(buffer, buffer.remaining());
                 }
 
                 // We should never end here
                 throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
-            };
+            }
 
             /**
              * @alias ProtoBuf.Reflect.Message.Field
@@ -2901,6 +2946,11 @@
              */
             var Enum = function(parent, name, options) {
                 Namespace.call(this, parent, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Enum";
 
                 /**
                  * Runtime enum object.
@@ -2952,6 +3002,11 @@
              */
             var Value = function(enm, name, id) {
                 T.call(this, enm, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Enum.Value";
 
                 /**
                  * Unique enum value id.
@@ -2981,6 +3036,11 @@
              */
             var Service = function(root, name, options) {
                 Namespace.call(this, root, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Service";
 
                 /**
                  * Built runtime service class.
@@ -3135,6 +3195,11 @@
              */
             var Method = function(svc, name, options) {
                 T.call(this, svc, name);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Service.Method";
 
                 /**
                  * Options.
@@ -3174,6 +3239,11 @@
              */
             var RPCMethod = function(svc, name, request, response, options) {
                 Method.call(this, svc, name, options);
+                /**
+                 * Fully qualified class name
+                 * @type {string}
+                 */
+                this.className = "Service.RPCMethod";
 
                 /**
                  * Request message name.
