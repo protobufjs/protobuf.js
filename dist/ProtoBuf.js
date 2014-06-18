@@ -2926,7 +2926,7 @@
                             throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
                         }
                         value = buffer.clone(); // Offset already set
-                        value.length = value.offset+nBytes;
+                        value.limit = value.offset+nBytes;
                         buffer.offset += nBytes;
                         return value;
                     }
