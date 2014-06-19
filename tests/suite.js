@@ -102,6 +102,7 @@
             test.ok(typeof ProtoBuf == "object");
             test.ok(typeof ProtoBuf.Reflect == 'object');
             test.ok(typeof ProtoBuf.protoFromFile == "function");
+            test.ok(ProtoBuf.ByteBuffer);
             test.done();
         },
 

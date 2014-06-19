@@ -141,14 +141,24 @@ ProtoBuf.TYPES = {
 };
 
 /**
+ * @type {!function(new: ByteBuffer, ...[*])}
+ */
+ProtoBuf.ByteBuffer;
+
+/**
+ * @type {?function(new: Long, ...[*])}
+ */
+ProtoBuf.Long;
+
+/**
  * @type {!object.<string,string|RegExp>}
  */
-ProtoBuf.Lang = {};
+ProtoBuf.Lang;
 
 /**
  * @type {!object.<string,function>}
  */
-ProtoBuf.DotProto = {};
+ProtoBuf.DotProto;
 
 /**
  * @param {string} proto

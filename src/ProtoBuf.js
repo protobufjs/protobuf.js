@@ -79,7 +79,6 @@
          * Start group wire type.
          * @type {number}
          * @const
-         * @deprecated Not supported.
          * @expose
          */
         ProtoBuf.WIRE_TYPES.STARTGROUP = 3;
@@ -88,7 +87,6 @@
          * End group wire type.
          * @type {number}
          * @const
-         * @deprecated Not supported.
          * @expose
          */
         ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
@@ -185,9 +183,16 @@
         };
 
         /**
-         * @type {?Long}
+         * @type {function(new: ByteBuffer, ...[*])}
+         * @expose
          */
-        ProtoBuf.Long = ByteBuffer.Long;
+        ProtoBuf.ByteBuffer = ByteBuffer;
+
+        /**
+         * @type {?function(new: Long, ...[*])}
+         * @expose
+         */
+        ProtoBuf.Long = ByteBuffer.Long || null;
 
         /**
          * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
@@ -359,14 +364,13 @@
     }
 
     // Enable module loading if available
-    if (typeof module != 'undefined' && module["exports"]) { // CommonJS
+    if (typeof module !== 'undefined' && module["exports"]) { // CommonJS
         module["exports"] = loadProtoBuf(require("bytebuffer"));
-    } else if (typeof define != 'undefined' && define["amd"]) { // AMD
+    } else if (typeof define === 'function' && define["amd"]) { // AMD
         define("ProtoBuf", ["ByteBuffer"], loadProtoBuf);
-    } else { // Shim
-        if (!global["dcodeIO"]) {
+    } else { // Otherwise install globally
+        if (!global["dcodeIO"])
             global["dcodeIO"] = {};
-        }
         global["dcodeIO"]["ProtoBuf"] = loadProtoBuf(global["dcodeIO"]["ByteBuffer"]);
     }
 
