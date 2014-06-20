@@ -1,3 +1,6 @@
+// --- Scope ------------------
+// T : Reflect.Service instance
+
 /**
  * Constructs a new runtime Service.
  * @name ProtoBuf.Builder.Service
@@ -62,7 +65,7 @@ if (Object.defineProperty) {
  * @abstract
  */
 
-var rpc = T.getChildren(Reflect.Service.RPCMethod);
+var rpc = T.getChildren(ProtoBuf.Reflect.Service.RPCMethod);
 for (var i=0; i<rpc.length; i++) {
     (function(method) {
 
@@ -70,7 +73,7 @@ for (var i=0; i<rpc.length; i++) {
         Service.prototype[method.name] = function(req, callback) {
             try {
                 if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
-                    setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)));
+                    setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
                 }
                 this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                     if (err) {

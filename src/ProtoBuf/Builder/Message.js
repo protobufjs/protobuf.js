@@ -1,3 +1,8 @@
+// --- Scope ------------------
+// T : Reflect.Message instance
+
+var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
+
 /**
  * Constructs a new runtime Message.
  * @name ProtoBuf.Builder.Message

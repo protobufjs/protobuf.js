@@ -368,7 +368,7 @@
 
                 DELIM: /[\s\{\}=;\[\],'"\(\)]/g,
 
-                KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions)$/,
+                // KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions|group)$/,
                 RULE: /^(?:required|optional|repeated)$/,
                 TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
                 NAME: /^[a-zA-Z_][a-zA-Z_0-9]*$/,
@@ -669,7 +669,7 @@
                     // if (val instanceof Namespace) {
                     //     opt[key] = val.build();
                     // } else {
-                        opt[key] = val;
+                    opt[key] = val;
                     // }
                 }
                 return opt;
@@ -749,7 +749,11 @@
 
                 // We need to create a prototyped Message class in an isolated scope
                 var clazz = (function(ProtoBuf, T) {
-                    var fields = T.getChildren(Reflect.Message.Field);
+
+                    // --- Scope ------------------
+                    // T : Reflect.Message instance
+
+                    var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
 
                     /**
                      * Constructs a new runtime Message.
@@ -2126,6 +2130,9 @@
                 if (this.clazz && !rebuild) return this.clazz;
                 return this.clazz = (function(ProtoBuf, T) {
 
+                    // --- Scope ------------------
+                    // T : Reflect.Service instance
+
                     /**
                      * Constructs a new runtime Service.
                      * @name ProtoBuf.Builder.Service
@@ -2190,7 +2197,7 @@
                      * @abstract
                      */
 
-                    var rpc = T.getChildren(Reflect.Service.RPCMethod);
+                    var rpc = T.getChildren(ProtoBuf.Reflect.Service.RPCMethod);
                     for (var i=0; i<rpc.length; i++) {
                         (function(method) {
 
@@ -2198,7 +2205,7 @@
                             Service.prototype[method.name] = function(req, callback) {
                                 try {
                                     if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
-                                        setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)));
+                                        setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
                                     }
                                     this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                                         if (err) {
@@ -2244,6 +2251,10 @@
                 })(ProtoBuf, this);
             };
 
+            /**
+             * @alias ProtoBuf.Reflect.Service
+             * @expose
+             */
             Reflect.Service = Service;
 
             /**
