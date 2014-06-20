@@ -1,6 +1,7 @@
-// --- Scope ------------------
-// T : Reflect.Service instance
-
+/*?
+ // --- Scope ------------------
+ // T : Reflect.Service instance
+ */
 /**
  * Constructs a new runtime Service.
  * @name ProtoBuf.Builder.Service

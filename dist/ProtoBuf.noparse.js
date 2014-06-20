@@ -182,6 +182,22 @@
         };
 
         /**
+         * Minimum field id.
+         * @type {number}
+         * @const
+         * @expose
+         */
+        ProtoBuf.ID_MIN = 1;
+
+        /**
+         * Maximum field id.
+         * @type {number}
+         * @const
+         * @expose
+         */
+        ProtoBuf.ID_MAX = 0x1FFFFFFF;
+
+        /**
          * @type {!function(new: ByteBuffer, ...[*])}
          * @expose
          */
@@ -337,61 +353,48 @@
 
             return Util;
         })();
+
         /**
-         * @alias ProtoBuf.Lang
+         * Language expressions.
+         * @exports ProtoBuf.Lang
+         * @type {Object.<string,string|RegExp>}
+         * @namespace
          * @expose
          */
-        ProtoBuf.Lang = (function() {
-            "use strict";
-
-            /**
-             * ProtoBuf Language.
-             * @exports ProtoBuf.Lang
-             * @type {Object.<string,string|RegExp>}
-             * @namespace
-             * @expose
-             */
-            var Lang = { // Look, so cute!
-                OPEN: "{",
-                CLOSE: "}",
-                OPTOPEN: "[",
-                OPTCLOSE: "]",
-                OPTEND: ",",
-                EQUAL: "=",
-                END: ";",
-                STRINGOPEN: '"',
-                STRINGCLOSE: '"',
-                STRINGOPEN_SQ: "'",
-                STRINGCLOSE_SQ: "'",
-                COPTOPEN: '(',
-                COPTCLOSE: ')',
-
-                DELIM: /[\s\{\}=;\[\],'"\(\)]/g,
-
-                // KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions|group)$/,
-                RULE: /^(?:required|optional|repeated)$/,
-                TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
-                NAME: /^[a-zA-Z_][a-zA-Z_0-9]*$/,
-                OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,
-                TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
-                TYPEREF: /^(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+$/,
-                FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
-                NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|([0-9]*\.[0-9]+([Ee][+-]?[0-9]+)?))$/,
-                NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
-                NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
-                NUMBER_OCT: /^0[0-7]+$/,
-                NUMBER_FLT: /^[0-9]*\.[0-9]+([Ee][+-]?[0-9]+)?$/,
-                ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
-                NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
-                WHITESPACE: /\s/,
-                STRING: /['"]([^'"\\]*(\\.[^"\\]*)*)['"]/g,
-                BOOL: /^(?:true|false)$/i,
-
-                ID_MIN: 1,
-                ID_MAX: 0x1FFFFFFF
-            };
-            return Lang;
-        })();
+        ProtoBuf.Lang = {
+            OPEN: "{",
+            CLOSE: "}",
+            OPTOPEN: "[",
+            OPTCLOSE: "]",
+            OPTEND: ",",
+            EQUAL: "=",
+            END: ";",
+            STRINGOPEN: '"',
+            STRINGCLOSE: '"',
+            STRINGOPEN_SQ: "'",
+            STRINGCLOSE_SQ: "'",
+            COPTOPEN: '(',
+            COPTCLOSE: ')',
+            DELIM: /[\s\{\}=;\[\],'"\(\)]/g,
+            // KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions|group)$/,
+            RULE: /^(?:required|optional|repeated)$/,
+            TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
+            NAME: /^[a-zA-Z_][a-zA-Z_0-9]*$/,
+            OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,
+            TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
+            TYPEREF: /^(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+$/,
+            FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
+            NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|([0-9]*\.[0-9]+([Ee][+-]?[0-9]+)?))$/,
+            NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
+            NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
+            NUMBER_OCT: /^0[0-7]+$/,
+            NUMBER_FLT: /^[0-9]*\.[0-9]+([Ee][+-]?[0-9]+)?$/,
+            ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
+            NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
+            WHITESPACE: /\s/,
+            STRING: /['"]([^'"\\]*(\\.[^"\\]*)*)['"]/g,
+            BOOL: /^(?:true|false)$/i
+        };
 
 
         /**
@@ -402,6 +405,7 @@
             "use strict";
 
             /**
+             * Reflection types.
              * @exports ProtoBuf.Reflect
              * @namespace
              */
@@ -716,7 +720,7 @@
                  * @type {!Array.<number>}
                  * @expose
                  */
-                this.extensions = [ProtoBuf.Lang.ID_MIN, ProtoBuf.Lang.ID_MAX];
+                this.extensions = [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX];
 
                 /**
                  * Runtime message class.
@@ -749,9 +753,6 @@
 
                 // We need to create a prototyped Message class in an isolated scope
                 var clazz = (function(ProtoBuf, T) {
-
-                    // --- Scope ------------------
-                    // T : Reflect.Message instance
 
                     var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
 
@@ -2130,9 +2131,6 @@
                 if (this.clazz && !rebuild) return this.clazz;
                 return this.clazz = (function(ProtoBuf, T) {
 
-                    // --- Scope ------------------
-                    // T : Reflect.Service instance
-
                     /**
                      * Constructs a new runtime Service.
                      * @name ProtoBuf.Builder.Service
@@ -2636,11 +2634,11 @@
                                 // Set extension range
                                 if (def["extensions"]) {
                                     obj.extensions = def["extensions"];
-                                    if (obj.extensions[0] < ProtoBuf.Lang.ID_MIN) {
-                                        obj.extensions[0] = ProtoBuf.Lang.ID_MIN;
+                                    if (obj.extensions[0] < ProtoBuf.ID_MIN) {
+                                        obj.extensions[0] = ProtoBuf.ID_MIN;
                                     }
-                                    if (obj.extensions[1] > ProtoBuf.Lang.ID_MAX) {
-                                        obj.extensions[1] = ProtoBuf.Lang.ID_MAX;
+                                    if (obj.extensions[1] > ProtoBuf.ID_MAX) {
+                                        obj.extensions[1] = ProtoBuf.ID_MAX;
                                     }
                                 }
                                 this.ptr.addChild(obj); // Add to current namespace

@@ -275,11 +275,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         // Set extension range
                         if (def["extensions"]) {
                             obj.extensions = def["extensions"];
-                            if (obj.extensions[0] < ProtoBuf.Lang.ID_MIN) {
-                                obj.extensions[0] = ProtoBuf.Lang.ID_MIN;
+                            if (obj.extensions[0] < ProtoBuf.ID_MIN) {
+                                obj.extensions[0] = ProtoBuf.ID_MIN;
                             }
-                            if (obj.extensions[1] > ProtoBuf.Lang.ID_MAX) {
-                                obj.extensions[1] = ProtoBuf.Lang.ID_MAX;
+                            if (obj.extensions[1] > ProtoBuf.ID_MAX) {
+                                obj.extensions[1] = ProtoBuf.ID_MAX;
                             }
                         }
                         this.ptr.addChild(obj); // Add to current namespace

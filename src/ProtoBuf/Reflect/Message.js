@@ -21,7 +21,7 @@ var Message = function(parent, name, options, isGroup) {
      * @type {!Array.<number>}
      * @expose
      */
-    this.extensions = [ProtoBuf.Lang.ID_MIN, ProtoBuf.Lang.ID_MAX];
+    this.extensions = [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX];
 
     /**
      * Runtime message class.

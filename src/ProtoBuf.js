@@ -183,6 +183,22 @@
         };
 
         /**
+         * Minimum field id.
+         * @type {number}
+         * @const
+         * @expose
+         */
+        ProtoBuf.ID_MIN = 1;
+
+        /**
+         * Maximum field id.
+         * @type {number}
+         * @const
+         * @expose
+         */
+        ProtoBuf.ID_MAX = 0x1FFFFFFF;
+
+        /**
          * @type {!function(new: ByteBuffer, ...[*])}
          * @expose
          */

@@ -1,7 +1,7 @@
 {
     "name": "protobufjs",
     "version": "3.0.0-pre",
-    "description": "A full-featured protobuf implementation in plain JavaScript.",
+    "description": "Protocol Buffers for JavaScript. Finally.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
         "Frank Xu <yyfrankyy@gmail.com>"

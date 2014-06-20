@@ -1037,8 +1037,8 @@
                 test.strictEqual(fields[0].id, 2);
                 test.strictEqual(fields[1].name, "bar2");
                 test.strictEqual(fields[1].id, 3);
-                test.deepEqual(TFoo.extensions, [2, ProtoBuf.Lang.ID_MAX]); // Defined
-                test.deepEqual(TBar.extensions, [ProtoBuf.Lang.ID_MIN, ProtoBuf.Lang.ID_MAX]); // Undefined
+                test.deepEqual(TFoo.extensions, [2, ProtoBuf.ID_MAX]); // Defined
+                test.deepEqual(TBar.extensions, [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX]); // Undefined
                 // test.strictEqual(TBar.getChildren(ProtoBuf.Reflect.Message.Field).length, 0);
                 var root = builder.build();
                 var foo = new root.Foo(),

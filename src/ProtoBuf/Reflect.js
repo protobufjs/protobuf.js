@@ -6,6 +6,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     "use strict";
 
     /**
+     * Reflection types.
      * @exports ProtoBuf.Reflect
      * @namespace
      */

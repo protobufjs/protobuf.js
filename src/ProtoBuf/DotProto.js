@@ -1,10 +1,33 @@
 /**
- * Utilities to parse .proto files.
- * @namespace
+ * @alias ProtoBuf.DotProto
  * @expose
  */
-ProtoBuf.DotProto = {};
+ProtoBuf.DotProto = (function(ProtoBuf, Lang) {
+    "use strict";
 
-//? include("DotProto/Tokenizer.js");
+    /**
+     * Utilities to parse .proto files.
+     * @exports ProtoBuf.DotProto
+     * @namespace
+     */
+    var DotProto = {};
+    
+    //? include("DotProto/Tokenizer.js");
 
-//? include("DotProto/Parser.js");
+    /**
+     * @alias ProtoBuf.DotProto.Tokenizer
+     * @expose
+     */
+    DotProto.Tokenizer = Tokenizer;
+    
+    //? include("DotProto/Parser.js");
+
+    /**
+     * @alias ProtoBuf.DotProto.Parser
+     * @expose
+     */
+    DotProto.Parser = Parser;
+    
+    return DotProto;
+    
+})(ProtoBuf, ProtoBuf.Lang);

@@ -1,6 +1,7 @@
-// --- Scope ------------------
-// T : Reflect.Message instance
-
+/*?
+ // --- Scope ------------------
+ // T : Reflect.Message instance
+ */
 var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
 
 /**
