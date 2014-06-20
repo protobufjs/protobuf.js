@@ -57,7 +57,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     };
 
     /**
-     * Resets the pointer to the global namespace.
+     * Resets the pointer to the root namespace.
      * @expose
      */
     Builder.prototype.reset = function() {

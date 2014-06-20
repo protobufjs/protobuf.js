@@ -183,7 +183,7 @@
         };
 
         /**
-         * @type {function(new: ByteBuffer, ...[*])}
+         * @type {!function(new: ByteBuffer, ...[*])}
          * @expose
          */
         ProtoBuf.ByteBuffer = ByteBuffer;

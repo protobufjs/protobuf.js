@@ -182,7 +182,7 @@
         };
 
         /**
-         * @type {function(new: ByteBuffer, ...[*])}
+         * @type {!function(new: ByteBuffer, ...[*])}
          * @expose
          */
         ProtoBuf.ByteBuffer = ByteBuffer;
@@ -2257,7 +2257,7 @@
                      * @type {Object.<string,*>}
                      * @expose
                      */
-                    var O_o; // for cc
+                    var $options; // for cc
 
                     if (Object.defineProperty) {
                         Object.defineProperty(Message, '$options', {
@@ -3367,7 +3367,7 @@
             };
 
             /**
-             * Resets the pointer to the global namespace.
+             * Resets the pointer to the root namespace.
              * @expose
              */
             Builder.prototype.reset = function() {
