@@ -167,18 +167,16 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         if (!Lang.RULE.test(def["rule"]) || !Lang.NAME.test(def["name"]) || !Lang.TYPEREF.test(def["type"]) || !Lang.ID.test(""+def["id"])) {
             return false;
         }
-        if (typeof def["options"] != 'undefined') {
+        if (typeof def["options"] !== 'undefined') {
             // Options are objects
-            if (typeof def["options"] != 'object') {
+            if (typeof def["options"] !== 'object') {
                 return false;
             }
-            // Options are <string,*>
+            // Options are <string,string|number|boolean>
             var keys = Object.keys(def["options"]);
-            for (var i=0; i<keys.length; i++) {
-                if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] !== 'string' && typeof def["options"][keys[i]] !== 'number' && typeof def["options"][keys[i]] !== 'boolean')) {
+            for (var i=0, key; i<keys.length; i++)
+                if (typeof (key = keys[i]) !== 'string' || (typeof def["options"][key] !== 'string' && typeof def["options"][key] !== 'number' && typeof def["options"][key] !== 'boolean'))
                     return false;
-                }
-            }
         }
         return true;
     };
@@ -248,12 +246,10 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                 if (def["fields"][i]["options"]) {
                                     subObj = Object.keys(def["fields"][i]["options"]);
                                     for (j=0; j<subObj.length; j++) { // j=Option names
-                                        if (!Lang.OPTNAME.test(subObj[j])) {
+                                        if (typeof subObj[j] !== 'string')
                                             throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
-                                        }
-                                        if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean') {
+                                        if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean')
                                             throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
-                                        }
                                     }
                                     subObj = null;
                                 }

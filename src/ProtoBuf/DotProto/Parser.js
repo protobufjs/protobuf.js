@@ -574,7 +574,7 @@ Parser.prototype._parseFieldOption = function(msg, fld, token) {
         token = this.tn.next();
         custom = true;
     }
-    if (!Lang.NAME.test(token)) {
+    if (!Lang.TYPEREF.test(token)) {
         throw(new Error("Illegal field option in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
     }
     var name = token;

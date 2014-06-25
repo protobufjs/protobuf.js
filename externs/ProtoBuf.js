@@ -141,6 +141,16 @@ ProtoBuf.TYPES = {
 };
 
 /**
+ * @type {number}
+ */
+ProtoBuf.ID_MIN;
+
+/**
+ * @type {number}
+ */
+ProtoBuf.ID_MAX;
+
+/**
  * @type {!function(new: ByteBuffer, ...[*])}
  */
 ProtoBuf.ByteBuffer;

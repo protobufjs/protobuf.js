@@ -380,9 +380,8 @@
             RULE: /^(?:required|optional|repeated)$/,
             TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
             NAME: /^[a-zA-Z_][a-zA-Z_0-9]*$/,
-            OPTNAME: /^(?:[a-zA-Z][a-zA-Z_0-9]*|\([a-zA-Z][a-zA-Z_0-9]*\))$/,
             TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
-            TYPEREF: /^(?:\.?[a-zA-Z][a-zA-Z_0-9]*)+$/,
+            TYPEREF: /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
             FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
             NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|([0-9]*\.[0-9]+([Ee][+-]?[0-9]+)?))$/,
             NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
@@ -1156,7 +1155,7 @@
                     token = this.tn.next();
                     custom = true;
                 }
-                if (!Lang.NAME.test(token)) {
+                if (!Lang.TYPEREF.test(token)) {
                     throw(new Error("Illegal field option in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token));
                 }
                 var name = token;
@@ -3488,18 +3487,16 @@
                 if (!Lang.RULE.test(def["rule"]) || !Lang.NAME.test(def["name"]) || !Lang.TYPEREF.test(def["type"]) || !Lang.ID.test(""+def["id"])) {
                     return false;
                 }
-                if (typeof def["options"] != 'undefined') {
+                if (typeof def["options"] !== 'undefined') {
                     // Options are objects
-                    if (typeof def["options"] != 'object') {
+                    if (typeof def["options"] !== 'object') {
                         return false;
                     }
-                    // Options are <string,*>
+                    // Options are <string,string|number|boolean>
                     var keys = Object.keys(def["options"]);
-                    for (var i=0; i<keys.length; i++) {
-                        if (!Lang.OPTNAME.test(keys[i]) || (typeof def["options"][keys[i]] !== 'string' && typeof def["options"][keys[i]] !== 'number' && typeof def["options"][keys[i]] !== 'boolean')) {
+                    for (var i=0, key; i<keys.length; i++)
+                        if (typeof (key = keys[i]) !== 'string' || (typeof def["options"][key] !== 'string' && typeof def["options"][key] !== 'number' && typeof def["options"][key] !== 'boolean'))
                             return false;
-                        }
-                    }
                 }
                 return true;
             };
@@ -3569,12 +3566,10 @@
                                         if (def["fields"][i]["options"]) {
                                             subObj = Object.keys(def["fields"][i]["options"]);
                                             for (j=0; j<subObj.length; j++) { // j=Option names
-                                                if (!Lang.OPTNAME.test(subObj[j])) {
+                                                if (typeof subObj[j] !== 'string')
                                                     throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
-                                                }
-                                                if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean') {
+                                                if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean')
                                                     throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
-                                                }
                                             }
                                             subObj = null;
                                         }
