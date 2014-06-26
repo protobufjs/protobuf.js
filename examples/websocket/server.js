@@ -8,7 +8,7 @@ var http = require("http"),
 
 // Copy dependencies to "www/" (example specific, you usually don't have to care
 var deps = [
-    ["Long.min.js", "./node_modules/protobufjs/node_modules/bytebuffer/node_modules/long/Long.min.js"],
+    ["Long.min.js", "./node_modules/protobufjs/node_modules/bytebuffer/node_modules/long/dist/Long.min.js"],
     ["ByteBuffer.min.js", "./node_modules/protobufjs/node_modules/bytebuffer/ByteBuffer.min.js"],
     ["ProtoBuf.min.js", "./node_modules/protobufjs/ProtoBuf.min.js"]
 ];
