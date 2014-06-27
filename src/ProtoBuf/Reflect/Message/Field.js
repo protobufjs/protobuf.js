@@ -231,14 +231,15 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
  */
 Field.prototype.encode = function(value, buffer) {
     value = this.verifyValue(value); // May throw
-    if (this.type == null || typeof this.type != 'object') {
+    if (this.type === null || typeof this.type !== 'object')
         throw(new Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type));
-    }
     if (value === null || (this.repeated && value.length == 0)) return buffer; // Optional omitted
     try {
         if (this.repeated) {
             var i;
-            if (this.options["packed"]) {
+            // "Only repeated fields of primitive numeric types (types which use the varint, 32-bit, or 64-bit wire
+            // types) can be declared 'packed'."
+            if (this.options["packed"] && ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
                 // "All of the elements of the field are packed into a single key-value pair with wire type 2
                 // (length-delimited). Each element is encoded the same way it would be normally, except without a
                 // tag preceding it."

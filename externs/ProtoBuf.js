@@ -35,7 +35,7 @@ var ProtoBuf = {};
  * @type {string}
  * @const
  */
-ProtoBuf.VERSION = "0.9.2";
+ProtoBuf.VERSION;
 
 /**
  * @type {!object.<string,number>}
@@ -47,98 +47,55 @@ ProtoBuf.WIRE_TYPES = {};
  * @type {number}
  * @const
  */
-ProtoBuf.WIRE_TYPES.VARINT = 0;
+ProtoBuf.WIRE_TYPES.VARINT;
 
 /**
  * @type {number}
  * @const
  */
-ProtoBuf.WIRE_TYPES.BITS64 = 1;
+ProtoBuf.WIRE_TYPES.BITS64;
 
 /**
  * @type {number}
  * @const
  */
-ProtoBuf.WIRE_TYPES.LDELIM = 2;
+ProtoBuf.WIRE_TYPES.LDELIM;
 
 /**
  * @type {number}
  * @const
  */
-ProtoBuf.WIRE_TYPES.STARTGROUP = 3;
+ProtoBuf.WIRE_TYPES.STARTGROUP;
 
 /**
  * @type {number}
  * @const
  */
-ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
+ProtoBuf.WIRE_TYPES.ENDGROUP;
 
 /**
  * @type {number}
  * @const
  */
-ProtoBuf.WIRE_TYPES.BITS32 = 5;
+ProtoBuf.WIRE_TYPES.BITS32;
+
+/**
+ * @type {!Array.<number>}
+ * @const
+ */
+ProtoBuf.PACKABLE_WIRE_TYPES;
 
 /**
  * @type {boolean}
  */
-ProtoBuf.convertFieldsToCamelCase = false;
+ProtoBuf.convertFieldsToCamelCase;
 
 /**
  * @dict
  * @type {!object.<string,{name: string, wireType: number}>}
  * @const
  */
-ProtoBuf.TYPES = {
-    "int32": {
-        name: "int32",
-        wireType: ProtoBuf.WIRE_TYPES.VARINT
-    },
-    "uint32": {
-        name: "uint32",
-        wireType: ProtoBuf.WIRE_TYPES.VARINT
-    },
-    "sint32": {
-        name: "sint32",
-        wireType: ProtoBuf.WIRE_TYPES.VARINT
-    },
-    "bool": {
-        name: "bool",
-        wireType: ProtoBuf.WIRE_TYPES.VARINT
-    },
-    "double": {
-        name: "double",
-        wireType: ProtoBuf.WIRE_TYPES.BITS64
-    },
-    "string": {
-        name: "string",
-        wireType: ProtoBuf.WIRE_TYPES.LDELIM
-    },
-    "bytes": {
-        name: "bytes",
-        wireType: ProtoBuf.WIRE_TYPES.LDELIM
-    },
-    "fixed32": {
-        name: "fixed32",
-        wireType: ProtoBuf.WIRE_TYPES.BITS32
-    },
-    "sfixed32": {
-        name: "sfixed32",
-        wireType: ProtoBuf.WIRE_TYPES.BITS32
-    },
-    "float": {
-        name: "float",
-        wireType: ProtoBuf.WIRE_TYPES.BITS32
-    },
-    "enum": {
-        name: "enum",
-        wireType: ProtoBuf.WIRE_TYPES.VARINT
-    },
-    "message": {
-        name: "message",
-        wireType: ProtoBuf.WIRE_TYPES.LDELIM
-    }
-};
+ProtoBuf.TYPES;
 
 /**
  * @type {number}

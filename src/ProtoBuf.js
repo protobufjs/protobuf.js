@@ -100,6 +100,18 @@
         ProtoBuf.WIRE_TYPES.BITS32 = 5;
 
         /**
+         * Packable wire types.
+         * @type {!Array.<number>}
+         * @const
+         * @expose
+         */
+        ProtoBuf.PACKABLE_WIRE_TYPES =  [
+            ProtoBuf.WIRE_TYPES.VARINT,
+            ProtoBuf.WIRE_TYPES.BITS64,
+            ProtoBuf.WIRE_TYPES.BITS32
+        ];
+
+        /**
          * Types.
          * @dict
          * @type {Object.<string,{name: string, wireType: number}>}

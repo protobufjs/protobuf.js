@@ -637,98 +637,69 @@
         },
         
         // Inner messages test
-        "repeated": {
-            "legacy": function(test) {
-                try {
-                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
-                    var root = builder.build();
-                    var Outer = root.Outer;
-                    var Inner = root.Inner;
-                    var outer = new Outer({ inner: [new Inner(1), new Inner(2)] });
-                    var bb = new ByteBuffer(8);
-                    outer.encode(bb);
-                    test.equal(bb.flip().toString("debug"), "<0A 02 08 01 0A 02 08 02>");
-                    var douter = Outer.decode(bb);
-                    test.ok(douter.inner instanceof Array);
-                    test.equal(douter.inner.length, 2);
-                    test.equal(douter.inner[0].inner_value, 1);
-                    test.equal(douter.inner[1].inner_value, 2);
-                    test.ok(douter.innerPacked instanceof Array);
-                    test.equal(douter.innerPacked.length, 0);
-                } catch (e) {
-                    fail(e);
-                }
-                test.done();
-            },
-            
-            "packed": function(test) {
-                try {
-                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
-                    var root = builder.build();
-                    var Outer = root.Outer;
-                    var Inner = root.Inner;
-                    var outer = new Outer({ innerPacked: [new Inner(1), new Inner(2)] });
-                    var bb = new ByteBuffer(8);
-                    outer.encode(bb);
-                    test.equal(bb.flip().toString("debug"), "<12 06 02 08 01 02 08 02>");
-                    var douter = Outer.decode(bb);
-                    test.ok(douter.inner instanceof Array);
-                    test.equal(douter.inner.length, 0);
-                    test.ok(douter.innerPacked instanceof Array);
-                    test.equal(douter.innerPacked.length, 2);
-                    test.equal(douter.innerPacked[0].inner_value, 1);
-                    test.equal(douter.innerPacked[1].inner_value, 2);
-                } catch (e) {
-                    fail(e);
-                }
-                test.done();
-            },
-            
-            "both": function(test) {
-                try {
-                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
-                    var root = builder.build();
-                    var Outer = root.Outer;
-                    var Inner = root.Inner;
-                    var outer = new Outer({ inner: [new Inner(1), new Inner(2)], innerPacked: [new Inner(3), new Inner(4)] });
-                    var bb = new ByteBuffer(16);
-                    outer.encode(bb);
-                    test.equal(bb.flip().toString("debug"), "<0A 02 08 01 0A 02 08 02 12 06 02 08 03 02 08 04>");
-                    var douter = Outer.decode(bb);
-                    test.ok(douter.inner instanceof Array);
-                    test.equal(douter.inner.length, 2);
-                    test.equal(douter.inner[0].inner_value, 1);
-                    test.equal(douter.inner[1].inner_value, 2);
-                    test.ok(douter.innerPacked instanceof Array);
-                    test.equal(douter.innerPacked.length, 2);
-                    test.equal(douter.innerPacked[0].inner_value, 3);
-                    test.equal(douter.innerPacked[1].inner_value, 4);
-                } catch (e) {
-                    fail(e);
-                }
-                test.done();
-            },
-            
-            "none": function(test) {
-                try {
-                    var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
-                    var Outer = builder.build("Outer");
-                    var outer = new Outer();
-                    var bb = new ByteBuffer(1).fill(0).flip();
-                    outer.encode(bb);
-                    test.equal(bb.flip().toString("debug"), "|00");
-                    var douter = Outer.decode(bb);
-                    test.ok(douter.inner instanceof Array);
-                    test.equal(douter.inner.length, 0);
-                    test.ok(douter.innerPacked instanceof Array);
-                    test.equal(douter.innerPacked.length, 0);
-                } catch (e) {
-                    fail(e);
-                }
-                test.done();
+        "inner": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/repeated.proto");
+                var root = builder.build(),
+                    Outer = root.Outer,
+                    Inner = root.Inner;
+                // Empty
+                var outer = new Outer();
+                var bb = new ByteBuffer(1).fill(0).flip();
+                outer.encode(bb);
+                test.equal(bb.flip().toString("debug"), "|00");
+                var douter = Outer.decode(bb);
+                test.ok(douter.inner instanceof Array);
+                test.equal(douter.inner.length, 0);
+                // Multiple
+                outer = new Outer({ inner: [new Inner(1), new Inner(2)] });
+                bb = new ByteBuffer(8);
+                outer.encode(bb);
+                test.equal(bb.flip().toString("debug"), "<0A 02 08 01 0A 02 08 02>");
+                douter = Outer.decode(bb);
+                test.ok(douter.inner instanceof Array);
+                test.equal(douter.inner.length, 2);
+                test.equal(douter.inner[0].inner_value, 1);
+                test.equal(douter.inner[1].inner_value, 2);
+            } catch (e) {
+                fail(e);
             }
+            test.done();
+        },
+        
+        // Packed vs. not packed repeated fields test
+        "packed": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/packed.proto");
+                var Message = builder.build("Message");
+                // Both empty
+                var message = new Message();
+                var bb = new ByteBuffer(1).fill(0).flip();
+                message.encode(bb);
+                test.equal(bb.flip().toString("debug"), "|00");
+                message = Message.decode(bb);
+                test.ok(message.a instanceof Array);
+                test.equal(message.a.length, 0);
+                test.ok(message.b instanceof Array);
+                test.equal(message.b.length, 0);
+                // Both non-empty
+                message = new Message([1,2,3], [1,2,3]);
+                message.encode(bb.resize(11));
+                test.equal(bb.flip().toString("debug"), "<0A 03 01 02 03 10 01 10 02 10 03>");
+                message = Message.decode(bb);
+                test.ok(message.a instanceof Array);
+                test.equal(message.a.length, 3);
+                test.deepEqual(message.a, [1,2,3]);
+                test.ok(message.b instanceof Array);
+                test.equal(message.b.length, 3);
+                test.deepEqual(message.b, [1,2,3]);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
         },
 
+        // Legacy groups test
         "groups": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/groups.proto");
