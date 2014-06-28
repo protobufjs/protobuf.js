@@ -41,7 +41,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.0.0-pre";
+        ProtoBuf.VERSION = "3.0.0";
 
         /**
          * Wire types.
