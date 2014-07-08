@@ -150,12 +150,12 @@
                 var Test1u = builder.build("Test1u");
                 test.ok(typeof Test1u == 'function');
                 var inst = new Test1u(-1);
-                test.equal(inst.a, 4294967295);
+                test.strictEqual(inst.a, 4294967295);
                 var bb = new ByteBuffer(6);
                 inst.encode(bb);
                 test.equal(bb.flip().toString("debug"), "<08 FF FF FF FF 0F>");
                 var instDec = Test1u.decode(bb);
-                test.equal(instDec.a, 4294967295);
+                test.strictEqual(instDec.a, 4294967295);
                 
             } catch (e) {
                 fail(e);
@@ -392,10 +392,10 @@
                     Test = builder.build("Test"),
                     t =  new Test();
                 test.strictEqual(t.ok, false);
-                t.setOk("true");
+                t.setOk(true);
                 test.strictEqual(t.ok, true);
                 test.strictEqual(Test.decode(t.encode()).ok, true);
-                t.setOk("false");
+                t.setOk(false);
                 test.strictEqual(t.ok, false);
                 test.strictEqual(Test.decode(t.encode()).ok, false);
             } catch (err) {
@@ -826,7 +826,7 @@
             try {
                 var builder = ProtoBuf.loadProto("message Reserved { optional string get = 1; }");
                 var My = builder.build();
-                var myTest = new My.Reserved(1);
+                var myTest = new My.Reserved("a");
                 test.doesNotThrow(function() {
                     myTest.encode();
                 });

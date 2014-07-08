@@ -89,7 +89,8 @@ Field.prototype = Object.create(T.prototype);
  * @inner
  */
 function mkLong(value, unsigned) {
-    if (value && typeof value.low === 'number' && typeof value.high === 'number' && typeof value.unsigned === 'boolean')
+    if (value && typeof value.low === 'number' && typeof value.high === 'number' && typeof value.unsigned === 'boolean'
+        && value.low === value.low && value.high === value.high)
         return new ProtoBuf.Long(value.low, value.high, typeof unsigned === 'undefined' ? value.unsigned : unsigned);
     if (typeof value === 'string')
         return ProtoBuf.Long.fromString(value, unsigned || false, 10);
@@ -108,10 +109,12 @@ function mkLong(value, unsigned) {
  */
 Field.prototype.verifyValue = function(value, skipRepeated) {
     skipRepeated = skipRepeated || false;
+    var fail = function(val, msg) {
+        throw new Error("Illegal value for "+this.toString(true)+": "+val+" ("+msg+")");
+    }.bind(this);
     if (value === null) { // NULL values for optional fields
-        if (this.required) {
-            throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (required)"));
-        }
+        if (this.required)
+            fail(typeof value, "required");
         return null;
     }
     var i;
@@ -126,23 +129,25 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
         return res;
     }
     // All non-repeated fields expect no array
-    if (!this.repeated && ProtoBuf.Util.isArray(value)) {
-        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (no array expected)"));
-    }
+    if (!this.repeated && ProtoBuf.Util.isArray(value))
+        fail(typeof value, "no array expected");
 
     switch (this.type) {
         // Signed 32bit
         case ProtoBuf.TYPES["int32"]:
         case ProtoBuf.TYPES["sint32"]:
         case ProtoBuf.TYPES["sfixed32"]:
-            // Do not cast NaN as it'd become 0
-            return isNaN(i = parseInt(value, 10)) ? i : i | 0;
+            // Account for !NaN: value === value
+            if (typeof value !== 'number' || (value === value && value % 1 !== 0))
+                fail(typeof value, "not an integer");
+            return value > 4294967295 ? value | 0 : value;
 
         // Unsigned 32bit
         case ProtoBuf.TYPES["uint32"]:
         case ProtoBuf.TYPES["fixed32"]:
-            // Do not cast NaN as it'd become 0
-            return isNaN(i = parseInt(value, 10)) ? i : i >>> 0;
+            if (typeof value !== 'number' || (value === value && value % 1 !== 0))
+                fail(typeof value, "not an integer");
+            return value < 0 ? value >>> 0 : value;
 
         // Signed 64bit
         case ProtoBuf.TYPES["int64"]:
@@ -152,7 +157,7 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
                 try {
                     return mkLong(value, false);
                 } catch (e) {
-                    throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
+                    fail(typeof value, e.message);
                 }
             }
         }
@@ -164,26 +169,29 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
                 try {
                     return mkLong(value, true);
                 } catch (e) {
-                    throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e.message+")"));
+                    fail(typeof value, e.message);
                 }
             }
         }
 
         // Bool
         case ProtoBuf.TYPES["bool"]:
-            return typeof value === 'string'
-                ? value === 'true'
-                : !!value;
+            if (typeof value !== 'boolean')
+                fail(typeof value, "not a boolean");
+            return value;
 
         // Float
         case ProtoBuf.TYPES["float"]:
         case ProtoBuf.TYPES["double"]:
-            // May also become NaN, +Infinity, -Infinity
-            return parseFloat(value);
+            if (typeof value !== 'number')
+                fail(typeof value, "not a number");
+            return value;
 
         // Length-delimited string
         case ProtoBuf.TYPES["string"]:
-            return ""+value;
+            if (typeof value !== 'string' && !(value && value instanceof String))
+                fail(typeof value, "not a string");
+            return ""+value; // Convert String object to string
 
         // Length-delimited bytes
         case ProtoBuf.TYPES["bytes"]:
@@ -201,17 +209,15 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
                     return values[i].id;
                 }
             }
-            throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (not a valid enum value)"));
+            fail(value, "not a valid enum value");
         }
         // Embedded message
         case ProtoBuf.TYPES["group"]:
         case ProtoBuf.TYPES["message"]: {
-            if (typeof value !== 'object') {
-                throw(new Error("Illegal value for "+this.toString(true)+": "+value+" (object expected)"));
-            }
-            if (value instanceof this.resolvedType.clazz) {
+            if (!value || typeof value !== 'object')
+                fail(typeof value, "object expected");
+            if (value instanceof this.resolvedType.clazz)
                 return value;
-            }
             // Else let's try to construct one from a key-value object
             return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
         }
