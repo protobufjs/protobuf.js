@@ -3707,7 +3707,7 @@
                         var path = require("path");
                         filename = path.resolve(filename);
                     }
-                    if (!!this.files[filename]) {
+                    if (this.files[filename] === true) {
                         this.reset();
                         return this; // Skip duplicate imports
                     }
@@ -3733,9 +3733,7 @@
                                 importRoot = ".";
                             }
                         }
-                    } else {
-                        importRoot = null;
-                    }
+                    } else importRoot = null;
 
                     for (var i=0; i<json['imports'].length; i++) {
                         if (typeof json['imports'][i] === 'string') { // Import file
@@ -3743,7 +3741,8 @@
                                 throw(new Error("Cannot determine import root: File name is unknown"));
                             }
                             var importFilename = importRoot+delim+json['imports'][i];
-                            if (!Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
+                            if (this.files[importFilename] === true || // already known
+                                !Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
                             if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto) {     // If this is a NOPARSE build
                                 importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
                             }

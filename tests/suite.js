@@ -1434,6 +1434,21 @@
             }
             test.done();
         },
+        
+        "importStringSuccessively": function(test) {
+            try {
+                var proto1 = "message A { required string a = 1; };";
+                var proto2 = "import \"proto1.proto\"; message B { required A a = 1; };";
+                var builder = ProtoBuf.protoFromString(proto1, "proto1.proto");
+                ProtoBuf.protoFromString(proto2, builder, "proto2.proto");
+                var root = builder.build();
+                test.ok(root.A);
+                test.ok(root.B);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         // Node.js only
         "loaders": BROWSER ? {} : {
