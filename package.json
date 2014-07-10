@@ -8,7 +8,8 @@
     ],
     "main": "index.js",
     "bin": {
-        "proto2js": "./bin/proto2js"
+        "proto2js": "./bin/proto2js",
+        "json2proto": "./bin/json2proto"
     },
     "repository": {
         "type": "git",
@@ -35,7 +36,7 @@
         "prepublish": "npm test",
         "test": "node bin/proto2js tests/complex.proto > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
         
-        "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && dos2unix bin/proto2js && npm test && npm run-script jsdoc",
+        "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && dos2unix bin/proto2js && dos2unix bin/json2proto && npm test && npm run-script jsdoc",
         "build": "node scripts/build.js",
         "descriptor2json": "node bin/proto2js src/google/protobuf/descriptor.proto > src/google/protobuf/descriptor.json",
         "compile": "npm run-script compile-full && npm run-script compile-noparse",
