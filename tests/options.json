@@ -1,0 +1,32 @@
+{
+    "package": "My",
+    "messages": [
+        {
+            "name": "Test",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {
+                        "default": "Max"
+                    },
+                    "type": "string",
+                    "name": "name",
+                    "id": 1
+                }
+            ],
+            "enums": [],
+            "messages": [],
+            "options": {
+                "(inmessage)": "My.Test",
+                "(foo.my_option).bar": false
+            }
+        }
+    ],
+    "enums": [],
+    "imports": [],
+    "options": {
+        "(toplevel_1)": 10,
+        "(toplevel_2)": "Hello world!"
+    },
+    "services": []
+}

@@ -42,6 +42,15 @@ function makeIndent(n) {
     return indent;
 }
 
+function makeOptions(opt, indent) {
+    var keys = opt ? Object.keys(opt) : [],
+        out = [];
+    keys.forEach(function(key) {
+        out.push(makeIndent(indent)+'option '+key+' = '+makeVal(opt[key])+';\n');
+    });
+    return out.join('');
+}
+
 var sourceFile = process.argv[2],
     source = fs.readFileSync(sourceFile)+"",
     json = JSON.parse(source),
@@ -52,7 +61,10 @@ function makeEnum(enm, indent) {
         throw Error("Invalid enum definition");
     var out = [];
     out.push(makeIndent(indent)+'enum '+enm.name+' {\n');
-    // TODO: Options
+    // options
+    var opt; out.push(opt = makeOptions(enm.options, indent+1));
+    if (opt !== "") out.push("\n");
+    // values
     enm.values.forEach(function(value) {
         out.push(makeIndent(indent+1)+value.name+" = "+value.id+";\n");
     });
@@ -60,31 +72,19 @@ function makeEnum(enm, indent) {
     return out.join('');
 }
 
-function makeMessage(msg, indent) {
-    if (!Builder.isValidMessage(msg))
-        throw Error("Invalid message definition");
+function makeMessageFields(fields, indent) {
     var out = [];
-    out.push(makeIndent(indent)+(msg.isGroup ? "group" : "message")+" "+msg.name+" {\n");
-    // TODO: Options
-    msg.enums.forEach(function(enm) {
-        out.push(makeEnum(enm, indent+1));
-    });
-    msg.messages.forEach(function(msg) {
-        out.push(makeMessage(msg, indent+1));
-    });
-    msg.fields.forEach(function(fld) {
-        out.push(makeIndent(indent+1)+fld.rule+" "+fld.type+" "+fld.name+" = "+fld.id);
-        var opt;
-        if (fld.options && (opt = Object.keys(fld.options)).length > 0) {
+    fields.forEach(function(fld) {
+        out.push(makeIndent(indent)+fld.rule+" "+fld.type+" "+fld.name+" = "+fld.id);
+        var opt = fld.options ? Object.keys(fld.options) : [];
+        if (opt.length > 0) {
             out.push(" [");
             var n = 0;
             opt.forEach(function(key) {
                 var val = fld.options[key];
                 if (n > 0) out.push(", ");
-                if (key === 'default' && !Lang.TYPE.test(fld.type)) { // Enum value without quotes
+                if (fld.type !== 'string') {
                     out.push(key+"="+val);
-                } else if (key === 'packed' && typeof val === 'string' && Lang.BOOL.test(val)) {
-                    out.push(key+"="+makeVal(val === 'true'));
                 } else {
                     out.push(key+"="+makeVal(val));
                 }
@@ -94,6 +94,46 @@ function makeMessage(msg, indent) {
         }
         out.push(";\n");
     });
+    return out.join('');
+}
+
+function makeMessage(msg, indent) {
+    var out = [];
+    if (!Builder.isValidMessage(msg))
+        throw Error("Invalid message definition");
+    out.push(makeIndent(indent)+(msg.isGroup ? "group" : "message")+" "+msg.name+" {\n");
+    // options
+    var opt; out.push(opt = makeOptions(msg.options, indent+1));
+    if (opt !== "") out.push("\n");
+    // inner enums
+    msg.enums.forEach(function(enm) {
+        out.push(makeEnum(enm, indent+1));
+    });
+    // inner messages
+    msg.messages.forEach(function(msg) {
+        if (msg.ref)
+            out.push(makeExtend(msg, indent+1));
+        else
+            out.push(makeMessage(msg, indent+1));
+    });
+    // fields
+    out.push(opt = makeMessageFields(msg.fields, indent+1));
+    // extensions
+    if (Array.isArray(msg.extensions) && msg.extensions.length === 2) {
+        if (opt !== '') out.push("\n");
+        out.push(makeIndent(indent+1)+"extensions "+msg.extensions[0]+" to "+msg.extensions[1]+";\n");
+    }
+    out.push(makeIndent(indent)+"}\n");
+    return out.join('');
+}
+
+function makeExtend(ext, indent) {
+    if (!Builder.isValidExtend(ext))
+        throw Error("Invalid extend definition");
+    var out = [];
+    out.push(makeIndent(indent)+"extend "+ext.ref+" {\n");
+    // fields
+    out.push(makeMessageFields(ext.fields, indent+1));
     out.push(makeIndent(indent)+"}\n");
     return out.join('');
 }
@@ -102,7 +142,25 @@ function makeService(svc, indent) {
     if (!Builder.isValidService(svc))
         throw Error("Invalid service definition");
     var out = [];
-    // TODO
+    out.push(makeIndent(indent)+'service '+svc.name+' {\n');
+    // options
+    var opt; out.push(opt = makeOptions(svc.options, indent+1));
+    if (opt !== "") out.push("\n");
+    // rpc
+    var keys = Object.keys(svc.rpc);
+    keys.forEach(function(key) {
+        var rpc = svc.rpc[key];
+        out.push(makeIndent(indent+1)+key+'('+rpc.request+') returns('+rpc.response+')');
+        opt = makeOptions(rpc.options, indent+2)
+        if (opt !== '') {
+            out.push(' {\n');
+            out.push(opt);
+            out.push(makeIndent(indent+1)+'}\n');
+        } else {
+            out.push(';\n');
+        }
+    });
+    out.push(makeIndent(indent)+'}\n');
     return out.join('');
 }
 
@@ -115,15 +173,8 @@ if (typeof json.package === 'string') {
 }
 
 // global options
-if (json.options && typeof json.options === 'object') {
-    var n = 0;
-    Object.keys(json.options).forEach(function(key) {
-        var val = json.options[key];
-        out.push('option '+key+' = '+makeVal(val)+';\n');
-        n++;
-    });
-    if (n > 0) out.push("\n");
-}
+out.push(opt = makeOptions(json.options, 0));
+if (opt !== "") out.push("\n");
 
 // imports
 if (Array.isArray(json.imports) && json.imports.length > 0) {
@@ -141,10 +192,14 @@ if (Array.isArray(json.enums) && json.enums.length > 0) {
     });
 }
 
-// messages
+// messages / extends
 if (Array.isArray(json.messages) && json.messages.length > 0) {
     json.messages.forEach(function(msg) {
-        out.push(makeMessage(msg, 0));
+        if (msg.ref)
+            out.push(makeExtend(msg, 0));
+        else
+            out.push(makeMessage(msg, 0));
+        out.push("\n");
     });
 }
 

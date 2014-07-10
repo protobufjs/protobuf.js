@@ -1,0 +1,169 @@
+{
+    "package": null,
+    "messages": [
+        {
+            "ref": "google.protobuf.FileOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "string",
+                    "name": "my_file_option",
+                    "id": 50000
+                }
+            ]
+        },
+        {
+            "ref": "google.protobuf.MessageOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "int32",
+                    "name": "my_message_option",
+                    "id": 50001
+                }
+            ]
+        },
+        {
+            "ref": "google.protobuf.FieldOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "float",
+                    "name": "my_field_option",
+                    "id": 50002
+                }
+            ]
+        },
+        {
+            "ref": "google.protobuf.EnumOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "bool",
+                    "name": "my_enum_option",
+                    "id": 50003
+                }
+            ]
+        },
+        {
+            "ref": "google.protobuf.EnumValueOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "uint32",
+                    "name": "my_enum_value_option",
+                    "id": 50004
+                }
+            ]
+        },
+        {
+            "ref": "google.protobuf.ServiceOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "MyEnum",
+                    "name": "my_service_option",
+                    "id": 50005
+                }
+            ]
+        },
+        {
+            "ref": "google.protobuf.MethodOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "MyMessage",
+                    "name": "my_method_option",
+                    "id": 50006
+                }
+            ]
+        },
+        {
+            "name": "MyMessage",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {
+                        "(my_field_option)": 4.5
+                    },
+                    "type": "int32",
+                    "name": "foo",
+                    "id": 1
+                },
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "string",
+                    "name": "bar",
+                    "id": 2
+                }
+            ],
+            "enums": [],
+            "messages": [],
+            "options": {
+                "(my_message_option)": 1234
+            }
+        },
+        {
+            "name": "RequestType",
+            "fields": [],
+            "enums": [],
+            "messages": [],
+            "options": {}
+        },
+        {
+            "name": "ResponseType",
+            "fields": [],
+            "enums": [],
+            "messages": [],
+            "options": {}
+        }
+    ],
+    "enums": [
+        {
+            "name": "MyEnum",
+            "values": [
+                {
+                    "name": "FOO",
+                    "id": 1
+                },
+                {
+                    "name": "BAR",
+                    "id": 2
+                }
+            ],
+            "options": {
+                "(my_enum_option)": true
+            }
+        }
+    ],
+    "imports": [],
+    "options": {
+        "(my_file_option)": "Hello world!"
+    },
+    "services": [
+        {
+            "name": "MyService",
+            "rpc": {
+                "MyMethod": {
+                    "request": "RequestType",
+                    "response": "ResponseType",
+                    "options": {
+                        "(my_method_option).foo": 567,
+                        "(my_method_option).bar": "Some string"
+                    }
+                }
+            },
+            "options": {
+                "(my_service_option)": "FOO"
+            }
+        }
+    ]
+}

@@ -3802,7 +3802,7 @@
              * @expose
             */
             Builder.isValidExtend = function(def) {
-                if (typeof def["ref"] !== 'string' || !Lang.TYPEREF.test(def["name"])) {
+                if (typeof def["ref"] !== 'string' || !Lang.TYPEREF.test(def["ref"])) {
                     return false;
                 }
                 var i;

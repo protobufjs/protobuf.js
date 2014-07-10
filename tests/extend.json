@@ -1,0 +1,64 @@
+{
+    "package": null,
+    "messages": [
+        {
+            "ref": "google.protobuf.MessageOptions",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "int32",
+                    "name": "foo",
+                    "id": 1001
+                }
+            ]
+        },
+        {
+            "name": "Foo",
+            "fields": [],
+            "enums": [],
+            "messages": [],
+            "options": {},
+            "extensions": [
+                2,
+                536870911
+            ]
+        },
+        {
+            "ref": "Foo",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "options": {},
+                    "type": "string",
+                    "name": "bar",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Bar",
+            "fields": [],
+            "enums": [],
+            "messages": [
+                {
+                    "ref": "Foo",
+                    "fields": [
+                        {
+                            "rule": "optional",
+                            "options": {},
+                            "type": "Bar",
+                            "name": "bar2",
+                            "id": 3
+                        }
+                    ]
+                }
+            ],
+            "options": {}
+        }
+    ],
+    "enums": [],
+    "imports": [],
+    "options": {},
+    "services": []
+}
