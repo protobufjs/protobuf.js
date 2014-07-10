@@ -576,7 +576,7 @@
                     test.strictEqual(My.$options['(toplevel_1)'], 10);
                     test.deepEqual(My.Test.$options, {
                         "(inmessage)": "My.Test",
-                        "(foo.my_option).bar": "false"
+                        "(foo.my_option).bar": false
                     });
                 } catch (e) {
                     fail(e);
