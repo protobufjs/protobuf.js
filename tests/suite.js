@@ -101,7 +101,10 @@
         "init": function(test) {
             test.ok(typeof ProtoBuf == "object");
             test.ok(typeof ProtoBuf.Reflect == 'object');
-            test.ok(typeof ProtoBuf.protoFromFile == "function");
+            test.ok(typeof ProtoBuf.loadProto == "function");
+            test.ok(typeof ProtoBuf.loadProtoFile == "function");
+            test.strictEqual(ProtoBuf.loadProto, ProtoBuf.protoFromString);
+            test.strictEqual(ProtoBuf.loadProtoFile, ProtoBuf.protoFromFile);
             test.ok(ProtoBuf.ByteBuffer);
             test.done();
         },
@@ -945,7 +948,7 @@
                                     "rule": "optional",
                                     "type": "int32",
                                     "name": "foo",
-                                    "id": 123,
+                                    "id": 1001,
                                     "options": {}
                                 }
                             ]
@@ -1439,11 +1442,23 @@
             try {
                 var proto1 = "message A { required string a = 1; };";
                 var proto2 = "import \"proto1.proto\"; message B { required A a = 1; };";
-                var builder = ProtoBuf.protoFromString(proto1, "proto1.proto");
-                ProtoBuf.protoFromString(proto2, builder, "proto2.proto");
+                var builder = ProtoBuf.loadProto(proto1, "proto1.proto");
+                ProtoBuf.loadProto(proto2, builder, "proto2.proto");
                 var root = builder.build();
                 test.ok(root.A);
                 test.ok(root.B);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
+        "descriptor": function(test) {
+            try {
+                var proto = 'import "./google/protobuf/descriptor.proto";';
+                var builder = ProtoBuf.loadProto(proto, "tests/proto.proto");
+                var root = builder.build("google.protobuf");
+                test.ok(root.FileDescriptorSet);
             } catch (e) {
                 fail(e);
             }

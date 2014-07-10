@@ -44,7 +44,9 @@ if (process.argv.length < 3) {
     console.log("                          declaration from the .proto file is used instead.\n");
     console.log("If none of -class, -commonjs or -amd is specified, the raw AST will be returned.\n");    
     console.log("  -min                    Minifies the output.\n");
-    console.log("  -path=DIR               Adds a directory to the include path.");
+    console.log("  -path=DIR               Adds a directory to the include path.\n");
+    console.log("  -legacy                 Includes legacy descriptors from google/protobuf/ if");
+    console.log("                          explicitly referenced.");
     process.exit(1);
 }
 var options = {};
@@ -109,20 +111,26 @@ function build_json(file, min, asObject) {
     if (ast['imports'] && ast['imports'].length > 0) { // Replace import file names with the actual structures
         var imports = [];
         ast['imports'].forEach(function(ifile, i) {
-            if (ProtoBuf.Builder.isValidImport(ifile)) {
-                var pfile = path.resolve(base, ifile),
-                    ofile = pfile;
-                if (!fs.existsSync(pfile)) {
-                    for (var i=0; i<includePath.length; i++) {
-                        pfile = path.resolve(includePath[i], ifile);
-                        if (fs.existsSync(pfile)) break;
-                        pfile = ofile; // Always fail on the file tried first
-                    }
+            var pfile;
+            if (/^google\/protobuf\//.test(ifile)) {
+                if (options.legacy) {
+                    pfile = path.resolve(__dirname, "..", "src", ifile);
+                } else {
+                    return;
                 }
-                if (importedFiles.indexOf(pfile) < 0) {
-                    imports.push(build_json(pfile, min, true));
-                    importedFiles.push(pfile);
+            } else
+                pfile = path.resolve(base, ifile);
+            var ofile = pfile;
+            if (!fs.existsSync(pfile)) {
+                for (var i=0; i<includePath.length; i++) {
+                    pfile = path.resolve(includePath[i], ifile);
+                    if (fs.existsSync(pfile)) break;
+                    pfile = ofile; // Always fail on the file tried first
                 }
+            }
+            if (importedFiles.indexOf(pfile) < 0) {
+                imports.push(build_json(pfile, min, true));
+                importedFiles.push(pfile);
             }
         });
         ast['imports'] = imports;

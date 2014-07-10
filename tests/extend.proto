@@ -1,7 +1,8 @@
-import "google/protobuf/descriptor.proto";
+import "google/protobuf/descriptor.proto"; // Ignored
+// import "./google/protobuf/descriptor.proto"; // Not ignored
 
 extend google.protobuf.MessageOptions {
-  optional int32 foo = 123;
+  optional int32 foo = 1001;
 }
 
 message Foo {

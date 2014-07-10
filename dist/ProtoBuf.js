@@ -3682,18 +3682,6 @@
             };
 
             /**
-             * Tests if the specified file is a valid import.
-             * @param {string} filename
-             * @returns {boolean} true if valid, false if it should be skipped
-             * @expose
-             */
-            Builder.isValidImport = function(filename) {
-                // Ignore google/protobuf/descriptor.proto (for example) as it makes use of low-level
-                // bootstrapping directives that are not required and therefore cannot be parsed by ProtoBuf.js.
-                return !(/google\/protobuf\//.test(filename));
-            };
-
-            /**
              * Imports another definition into this builder.
              * @param {Object.<string,*>} json Parsed import
              * @param {(string|{root: string, file: string})=} filename Imported file name
@@ -3737,12 +3725,14 @@
 
                     for (var i=0; i<json['imports'].length; i++) {
                         if (typeof json['imports'][i] === 'string') { // Import file
-                            if (!importRoot) {
-                                throw(new Error("Cannot determine import root: File name is unknown"));
-                            }
-                            var importFilename = importRoot+delim+json['imports'][i];
-                            if (this.files[importFilename] === true || // already known
-                                !Builder.isValidImport(importFilename)) continue; // e.g. google/protobuf/*
+                            if (!importRoot)
+                                throw new Error("Cannot determine import root: File name is unknown");
+                            var importFilename = json['imports'][i];
+                            if (/^google\/protobuf\//.test(importFilename))
+                                continue; // Not needed and therefore not used
+                            importFilename = importRoot+delim+importFilename;
+                            if (this.files[importFilename] === true)
+                                continue; // Already imported
                             if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto) {     // If this is a NOPARSE build
                                 importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
                             }
