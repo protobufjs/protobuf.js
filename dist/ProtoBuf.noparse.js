@@ -2870,11 +2870,11 @@
 
         /**
          * Loads a .json file and returns the Builder.
-         * @param {string|{root: string, file: string}} filename Path to json file or an object specifying 'file' with
+         * @param {string|!{root: string, file: string}} filename Path to json file or an object specifying 'file' with
          *  an overridden 'root' path for all imported files.
-         * @param {function(ProtoBuf.Builder)=} callback Callback that will receive the Builder as its first argument.
-         *   If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
-         *   function will return the Builder or NULL if the request has failed.
+         * @param {function(?Error, !ProtoBuf.Builder=)=} callback Callback that will receive `null` as the first and
+         *  the Builder as its second argument on success, otherwise the error as its first argument. If omitted, the
+         *  file will be read synchronously and this function will return the Builder.
          * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
          * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
          *   request has failed), else undefined
@@ -2888,14 +2888,18 @@
                 callback = null;
             if (callback)
                 return ProtoBuf.Util.fetch(typeof filename === 'string' ? filename : filename["root"]+"/"+filename["file"], function(contents) {
+                    if (contents === null) {
+                        callback(Error("Failed to fetch file"));
+                        return;
+                    }
                     try {
-                        callback(ProtoBuf.loadJson(JSON.parse(contents), builder, filename));
+                        callback(null, ProtoBuf.loadJson(JSON.parse(contents), builder, filename));
                     } catch (e) {
                         callback(e);
                     }
                 });
             var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
-            return contents !== null ? ProtoBuf.loadJson(JSON.parse(contents), builder, filename) : null;
+            return contents === null ? null : ProtoBuf.loadJson(JSON.parse(contents), builder, filename);
         };
 
         return ProtoBuf;

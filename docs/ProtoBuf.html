@@ -1068,7 +1068,7 @@
 <span class="param-type">string</span>
 |
 
-<span class="param-type">{root: string, file: string}</span>
+<span class="param-type">!{root: string, file: string}</span>
 
 
             
@@ -1098,7 +1098,7 @@
             <td class="type">
             
                 
-<span class="param-type">function(ProtoBuf.Builder)</span>
+<span class="param-type">function(?Error, !ProtoBuf.Builder=)</span>
 
 
             
@@ -1116,9 +1116,9 @@
             
             
             
-            <td class="description last"><p>Callback that will receive the Builder as its first argument.
-  If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
-  function will return the Builder or NULL if the request has failed.</p></td>
+            <td class="description last"><p>Callback that will receive <code>null</code> as the first and
+ the Builder as its second argument on success, otherwise the error as its first argument. If omitted, the
+ file will be read synchronously and this function will return the Builder.</p></td>
         </tr>
 	
 	
@@ -1535,7 +1535,7 @@
             <td class="type">
             
                 
-<span class="param-type">function(ProtoBuf.Builder)</span>
+<span class="param-type">function(?Error, !ProtoBuf.Builder=)</span>
 
 
             
@@ -1553,9 +1553,9 @@
             
             
             
-            <td class="description last"><p>Callback that will receive the Builder as its first argument.
-  If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
-  function will return the Builder or NULL if the request has failed.</p></td>
+            <td class="description last"><p>Callback that will receive <code>null</code> as the first and
+ the Builder as its second argument on success, otherwise the error as its first argument. If omitted, the
+ file will be read synchronously and this function will return the Builder.</p></td>
         </tr>
 	
 	
@@ -1913,7 +1913,7 @@ builder will only contain a global namespace.</p></td>
             <td class="type">
             
                 
-<span class="param-type">function(ProtoBuf.Builder)</span>
+<span class="param-type">function(?Error, !ProtoBuf.Builder=)</span>
 
 
             
@@ -1931,9 +1931,9 @@ builder will only contain a global namespace.</p></td>
             
             
             
-            <td class="description last"><p>Callback that will receive the Builder as its first argument.
-  If the request has failed, builder will be NULL. If omitted, the file will be read synchronously and this
-  function will return the Builder or NULL if the request has failed.</p></td>
+            <td class="description last"><p>Callback that will receive <code>null</code> as the first and
+ the Builder as its second argument on success, otherwise the error as its first argument. If omitted, the
+ file will be read synchronously and this function will return the Builder.</p></td>
         </tr>
 	
 	
