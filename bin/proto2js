@@ -42,7 +42,7 @@ if (process.argv.length < 3) {
     console.log("  -amd[=My.Package]       Creates an AMD define instead of just a JSON def.");
     console.log("                          If you do not specify a package, the package");
     console.log("                          declaration from the .proto file is used instead.\n");
-    console.log("If none of -class, -commonjs or -amd is specified, the raw AST will be returned.\n");    
+    console.log("If none of -class, -commonjs or -amd is specified, raw JSON will be returned.\n");    
     console.log("  -min                    Minifies the output.\n");
     console.log("  -path=DIR               Adds a directory to the include path.\n");
     console.log("  -legacy                 Includes legacy descriptors from google/protobuf/ if");
@@ -97,10 +97,10 @@ try {
 }
 
 /**
- * Simply parses a file and returns the JSON result.
+ * Parses a file and returns the JSON result.
  * @param {string} file Source file
  * @param {boolean=} min true to minify, false for pretty print
- * @param {boolean=} asObject true to return the AST as an object, defaults to false for using stringify
+ * @param {boolean=} asObject true to return an object, defaults to false for using stringify
  * @return {string|!*} JSON representation
  */
 function build_json(file, min, asObject) {
@@ -142,30 +142,30 @@ function build_json(file, min, asObject) {
  * Recursively builds a file and its imports by converting each to a JS import on a common builder.
  * @param {string} file File name
  * @param {boolean=} min true to minify, false for pretty print
- * @return {Array} Parsed AST [0] and JS output [1] as a concatenation of import statements
+ * @return {Array} Parsed JSON [0] and JS output [1] as a concatenation of import statements
  * @throws {Error} If the package is not a valid namespace
  */
 function build_js(file, min) {
-    var ast = build_json(file, min, true);
-    return [ast, '.import('+JSON.stringify(ast, null, min ? 0 : 4)+')'];
+    var json = build_json(file, min, true);
+    return [json, '.import('+JSON.stringify(json, null, min ? 0 : 4)+')'];
 }
 
 /**
- * Tests if a package is valid in the specified AST.
+ * Tests if a package is valid in the specified JSON representation.
  * @param {string} pkg Package
- * @param {Object} ast AST
+ * @param {Object} json JSON representation
  * @return {boolean} true if valid, otherwise false
  */
-function is_valid_package(pkg, ast) {
+function is_valid_package(pkg, json) {
     if (pkg === null) return true;
     if (!ProtoBuf.Lang.TYPEREF.test(pkg)) {
         return false;
     }
     var part = pkg.split(".");
     if (part[0] == "") part = part.slice(1);
-    var ptrs = [ast['messages']];
+    var ptrs = [json['messages']];
     var found = null;
-    var astPart = ast['package'] ? ast['package'].split(".") : [];
+    var astPart = json['package'] ? json['package'].split(".") : [];
     for (var i=0; i<part.length && found === null; i++) { // Package parts
         if (astPart.length > i) {
             if (astPart[i] != part[i]) return false;

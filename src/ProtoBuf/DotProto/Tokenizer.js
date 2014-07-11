@@ -5,7 +5,7 @@
 /**
  * Constructs a new Tokenizer.
  * @exports ProtoBuf.DotProto.Tokenizer
- * @class .proto tokenizer
+ * @class proto tokenizer
  * @param {string} proto Proto to tokenize
  * @constructor
  */
@@ -16,7 +16,7 @@ var Tokenizer = function(proto) {
      * @type {string}
      * @expose
      */
-    this.source = ""+proto;
+    this.source = ""+proto; // In case it's a buffer
     
     /**
      * Current index.
@@ -69,7 +69,7 @@ Tokenizer.prototype._readString = function() {
         this.stack.push(this.stringEndsWith);
         return s;
     }
-    throw(new Error("Illegal string value at line "+this.line+", index "+this.index));
+    throw Error("Illegal string value at line "+this.line+", index "+this.index);
 };
 
 /**
@@ -79,12 +79,10 @@ Tokenizer.prototype._readString = function() {
  * @expose
  */
 Tokenizer.prototype.next = function() {
-    if (this.stack.length > 0) {
+    if (this.stack.length > 0)
         return this.stack.shift();
-    }
-    if (this.index >= this.source.length) {
+    if (this.index >= this.source.length)
         return null; // No more tokens
-    }
     if (this.readingString) {
         this.readingString = false;
         return this._readString();
@@ -95,15 +93,18 @@ Tokenizer.prototype.next = function() {
         // Strip white spaces
         while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
             this.index++;
-            if (last === "\n") this.line++;
-            if (this.index === this.source.length) return null;
+            if (last === "\n")
+                this.line++;
+            if (this.index === this.source.length)
+                return null;
         }
         // Strip comments
         if (this.source.charAt(this.index) === '/') {
             if (this.source.charAt(++this.index) === '/') { // Single line
                 while (this.source.charAt(this.index) !== "\n") {
                     this.index++;
-                    if (this.index == this.source.length) return null;
+                    if (this.index == this.source.length)
+                        return null;
                 }
                 this.index++;
                 this.line++;
@@ -112,14 +113,15 @@ Tokenizer.prototype.next = function() {
                 last = '';
                 while (last+(last=this.source.charAt(this.index)) !== '*/') {
                     this.index++;
-                    if (last === "\n") this.line++;
-                    if (this.index === this.source.length) return null;
+                    if (last === "\n")
+                        this.line++;
+                    if (this.index === this.source.length)
+                        return null;
                 }
                 this.index++;
                 repeat = true;
-            } else {
-                throw(new Error("Invalid comment at line "+this.line+": /"+this.source.charAt(this.index)+" ('/' or '*' expected)"));
-            }
+            } else
+                throw Error("Invalid comment at line "+this.line+": /"+this.source.charAt(this.index)+" ('/' or '*' expected)");
         }
     } while (repeat);
     if (this.index === this.source.length) return null;
@@ -129,21 +131,18 @@ Tokenizer.prototype.next = function() {
     Lang.DELIM.lastIndex = 0;
     var delim = Lang.DELIM.test(this.source.charAt(end));
     if (!delim) {
-        end++;
-        while(end < this.source.length && !Lang.DELIM.test(this.source.charAt(end))) {
+        ++end;
+        while(end < this.source.length && !Lang.DELIM.test(this.source.charAt(end)))
             end++;
-        }
-    } else {
-        end++;
-    }
+    } else
+        ++end;
     var token = this.source.substring(this.index, this.index = end);
-    if (token === Lang.STRINGOPEN) {
-        this.readingString = true;
+    if (token === Lang.STRINGOPEN)
+        this.readingString = true,
         this.stringEndsWith = Lang.STRINGCLOSE;
-    } else if (token === Lang.STRINGOPEN_SQ) {
-        this.readingString = true;
+    else if (token === Lang.STRINGOPEN_SQ)
+        this.readingString = true,
         this.stringEndsWith = Lang.STRINGCLOSE_SQ;
-    }
     return token;
 };
 
@@ -156,7 +155,8 @@ Tokenizer.prototype.next = function() {
 Tokenizer.prototype.peek = function() {
     if (this.stack.length === 0) {
         var token = this.next();
-        if (token === null) return null;
+        if (token === null)
+            return null;
         this.stack.push(token);
     }
     return this.stack[0];

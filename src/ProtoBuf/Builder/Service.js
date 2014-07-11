@@ -23,27 +23,16 @@ var Service = function(rpcImpl) {
         // This is what a user has to implement: A function receiving the method name, the actual message to
         // send (type checked) and the callback that's either provided with the error as its first
         // argument or null and the actual response message.
-        setTimeout(callback.bind(this, new Error("Not implemented, see: https://github.com/dcodeIO/ProtoBuf.js/wiki/Services")), 0); // Must be async!
+        setTimeout(callback.bind(this, Error("Not implemented, see: https://github.com/dcodeIO/ProtoBuf.js/wiki/Services")), 0); // Must be async!
     };
 };
 
 // Extends ProtoBuf.Builder.Service
 Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
 
-if (Object.defineProperty) {
-    Object.defineProperty(Service, "$options", {
-        "value": T.buildOpt(),
-        "enumerable": false,
-        "configurable": false,
-        "writable": false
-    });
-    Object.defineProperty(Service.prototype, "$options", {
-        "value": Service["$options"],
-        "enumerable": false,
-        "configurable": false,
-        "writable": false
-    });
-}
+if (Object.defineProperty)
+    Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
+    Object.defineProperty(Service.prototype, "$options", { "value": Service["$options"] });
 
 /**
  * Asynchronously performs an RPC call using the given RPC implementation.
@@ -74,7 +63,8 @@ for (var i=0; i<rpc.length; i++) {
         Service.prototype[method.name] = function(req, callback) {
             try {
                 if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
-                    setTimeout(callback.bind(this, new Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
+                    setTimeout(callback.bind(this, Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
+                    return;
                 }
                 this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                     if (err) {
@@ -83,7 +73,7 @@ for (var i=0; i<rpc.length; i++) {
                     }
                     try { res = method.resolvedResponseType.clazz.decode(res); } catch (notABuffer) {}
                     if (!res || !(res instanceof method.resolvedResponseType.clazz)) {
-                        callback(new Error("Illegal response type received in service method "+ T.name+"#"+method.name));
+                        callback(Error("Illegal response type received in service method "+ T.name+"#"+method.name));
                         return;
                     }
                     callback(null, res);
@@ -98,19 +88,8 @@ for (var i=0; i<rpc.length; i++) {
             new Service(rpcImpl)[method.name](req, callback);
         };
 
-        if (Object.defineProperty) {
-            Object.defineProperty(Service[method.name], "$options", {
-                "value": method.buildOpt(),
-                "enumerable": false,
-                "configurable": false,
-                "writable": false
-            });
-            Object.defineProperty(Service.prototype[method.name], "$options", {
-                "value": Service[method.name]["$options"],
-                "enumerable": false,
-                "configurable": false,
-                "writable": false
-            });
-        }
+        if (Object.defineProperty)
+            Object.defineProperty(Service[method.name], "$options", { "value": method.buildOpt() }),
+            Object.defineProperty(Service.prototype[method.name], "$options", { "value": Service[method.name]["$options"] });
     })(rpc[i]);
 }

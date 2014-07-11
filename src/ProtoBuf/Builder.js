@@ -73,19 +73,15 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @expose
      */
     Builder.prototype.define = function(pkg, options) {
-        if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg)) {
-            throw(new Error("Illegal package name: "+pkg));
-        }
+        if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
+            throw Error("Illegal package name: "+pkg);
         var part = pkg.split("."), i;
-        for (i=0; i<part.length; i++) { // To be absolutely sure
-            if (!Lang.NAME.test(part[i])) {
-                throw(new Error("Illegal package name: "+part[i]));
-            }
-        }
+        for (i=0; i<part.length; i++) // To be absolutely sure
+            if (!Lang.NAME.test(part[i]))
+                throw Error("Illegal package name: "+part[i]);
         for (i=0; i<part.length; i++) {
-            if (!this.ptr.hasChild(part[i])) { // Keep existing namespace
+            if (!this.ptr.hasChild(part[i])) // Keep existing namespace
                 this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
-            }
             this.ptr = this.ptr.getChild(part[i]);
         }
         return this;
@@ -99,57 +95,44 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.isValidMessage = function(def) {
         // Messages require a string name
-        if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"])) {
+        if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]))
             return false;
-        }
         // Messages must not contain values (that'd be an enum) or methods (that'd be a service)
-        if (typeof def["values"] !== 'undefined' || typeof def["rpc"] !== 'undefined') {
+        if (typeof def["values"] !== 'undefined' || typeof def["rpc"] !== 'undefined')
             return false;
-        }
         // Fields, enums and messages are arrays if provided
         var i;
         if (typeof def["fields"] !== 'undefined') {
-            if (!ProtoBuf.Util.isArray(def["fields"])) {
+            if (!ProtoBuf.Util.isArray(def["fields"]))
                 return false;
-            }
             var ids = [], id; // IDs must be unique
             for (i=0; i<def["fields"].length; i++) {
-                if (!Builder.isValidMessageField(def["fields"][i])) {
+                if (!Builder.isValidMessageField(def["fields"][i]))
                     return false;
-                }
                 id = parseInt(def["fields"][i]["id"], 10);
-                if (ids.indexOf(id) >= 0) {
+                if (ids.indexOf(id) >= 0)
                     return false;
-                }
                 ids.push(id);
             }
             ids = null;
         }
         if (typeof def["enums"] !== 'undefined') {
-            if (!ProtoBuf.Util.isArray(def["enums"])) {
+            if (!ProtoBuf.Util.isArray(def["enums"]))
                 return false;
-            }
-            for (i=0; i<def["enums"].length; i++) {
-                if (!Builder.isValidEnum(def["enums"][i])) {
+            for (i=0; i<def["enums"].length; i++)
+                if (!Builder.isValidEnum(def["enums"][i]))
                     return false;
-                }
-            }
         }
         if (typeof def["messages"] !== 'undefined') {
-            if (!ProtoBuf.Util.isArray(def["messages"])) {
+            if (!ProtoBuf.Util.isArray(def["messages"]))
                 return false;
-            }
-            for (i=0; i<def["messages"].length; i++) {
-                if (!Builder.isValidMessage(def["messages"][i]) && !Builder.isValidExtend(def["messages"][i])) {
+            for (i=0; i<def["messages"].length; i++)
+                if (!Builder.isValidMessage(def["messages"][i]) && !Builder.isValidExtend(def["messages"][i]))
                     return false;
-                }
-            }
         }
-        if (typeof def["extensions"] !== 'undefined') {
-            if (!ProtoBuf.Util.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number') {
+        if (typeof def["extensions"] !== 'undefined')
+            if (!ProtoBuf.Util.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number')
                 return false;
-            }
-        }
         return true;
     };
 
@@ -161,17 +144,14 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.isValidMessageField = function(def) {
         // Message fields require a string rule, name and type and an id
-        if (typeof def["rule"] !== 'string' || typeof def["name"] !== 'string' || typeof def["type"] !== 'string' || typeof def["id"] === 'undefined') {
+        if (typeof def["rule"] !== 'string' || typeof def["name"] !== 'string' || typeof def["type"] !== 'string' || typeof def["id"] === 'undefined')
             return false;
-        }
-        if (!Lang.RULE.test(def["rule"]) || !Lang.NAME.test(def["name"]) || !Lang.TYPEREF.test(def["type"]) || !Lang.ID.test(""+def["id"])) {
+        if (!Lang.RULE.test(def["rule"]) || !Lang.NAME.test(def["name"]) || !Lang.TYPEREF.test(def["type"]) || !Lang.ID.test(""+def["id"]))
             return false;
-        }
         if (typeof def["options"] !== 'undefined') {
             // Options are objects
-            if (typeof def["options"] !== 'object') {
+            if (typeof def["options"] !== 'object')
                 return false;
-            }
             // Options are <string,string|number|boolean>
             var keys = Object.keys(def["options"]);
             for (var i=0, key; i<keys.length; i++)
@@ -189,25 +169,20 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.isValidEnum = function(def) {
         // Enums require a string name
-        if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"])) {
+        if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]))
             return false;
-        }
         // Enums require at least one value
-        if (typeof def["values"] === 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0) {
+        if (typeof def["values"] === 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0)
             return false;
-        }
         for (var i=0; i<def["values"].length; i++) {
             // Values are objects
-            if (typeof def["values"][i] != "object") {
+            if (typeof def["values"][i] != "object")
                 return false;
-            }
             // Values require a string name and an id
-            if (typeof def["values"][i]["name"] !== 'string' || typeof def["values"][i]["id"] === 'undefined') {
+            if (typeof def["values"][i]["name"] !== 'string' || typeof def["values"][i]["id"] === 'undefined')
                 return false;
-            }
-            if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"])) {
+            if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"]))
                 return false;
-            }
         }
         // It's not important if there are other fields because ["values"] is already unique
         return true;
@@ -221,11 +196,12 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @expose
      */
     Builder.prototype.create = function(defs) {
-        if (!defs) return; // Nothing to create
-        if (!ProtoBuf.Util.isArray(defs)) {
+        if (!defs)
+            return this; // Nothing to create
+        if (!ProtoBuf.Util.isArray(defs))
             defs = [defs];
-        }
-        if (defs.length == 0) return;
+        if (defs.length == 0)
+            return this;
         
         // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
         var stack = [], def, obj, subObj, i, j;
@@ -240,16 +216,15 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                if (obj.hasChild(def['fields'][i]['id'])) {
-                                    throw(new Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']));
-                                }
+                                if (obj.hasChild(def['fields'][i]['id']))
+                                    throw Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']);
                                 if (def["fields"][i]["options"]) {
                                     subObj = Object.keys(def["fields"][i]["options"]);
                                     for (j=0; j<subObj.length; j++) { // j=Option names
                                         if (typeof subObj[j] !== 'string')
-                                            throw(new Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]));
+                                            throw Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]);
                                         if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean')
-                                            throw(new Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]));
+                                            throw Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]);
                                     }
                                     subObj = null;
                                 }
@@ -258,25 +233,19 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         }
                         // Push enums and messages to stack
                         subObj = [];
-                        if (typeof def["enums"] !== 'undefined' && def['enums'].length > 0) {
-                            for (i=0; i<def["enums"].length; i++) {
+                        if (typeof def["enums"] !== 'undefined' && def['enums'].length > 0)
+                            for (i=0; i<def["enums"].length; i++)
                                 subObj.push(def["enums"][i]);
-                            }
-                        }
-                        if (def["messages"] && def["messages"].length > 0) {
-                            for (i=0; i<def["messages"].length; i++) {
+                        if (def["messages"] && def["messages"].length > 0)
+                            for (i=0; i<def["messages"].length; i++)
                                 subObj.push(def["messages"][i]);
-                            }
-                        }
                         // Set extension range
                         if (def["extensions"]) {
                             obj.extensions = def["extensions"];
-                            if (obj.extensions[0] < ProtoBuf.ID_MIN) {
+                            if (obj.extensions[0] < ProtoBuf.ID_MIN)
                                 obj.extensions[0] = ProtoBuf.ID_MIN;
-                            }
-                            if (obj.extensions[1] > ProtoBuf.ID_MAX) {
+                            if (obj.extensions[1] > ProtoBuf.ID_MAX)
                                 obj.extensions[1] = ProtoBuf.ID_MAX;
-                            }
                         }
                         this.ptr.addChild(obj); // Add to current namespace
                         if (subObj.length > 0) {
@@ -291,49 +260,38 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         obj = null;
                     } else if (Builder.isValidEnum(def)) {
                         obj = new Reflect.Enum(this.ptr, def["name"], def["options"]);
-                        for (i=0; i<def["values"].length; i++) {
+                        for (i=0; i<def["values"].length; i++)
                             obj.addChild(new Reflect.Enum.Value(obj, def["values"][i]["name"], def["values"][i]["id"]));
-                        }
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidService(def)) {
                         obj = new Reflect.Service(this.ptr, def["name"], def["options"]);
-                        for (i in def["rpc"]) {
-                            if (def["rpc"].hasOwnProperty(i)) {
+                        for (i in def["rpc"])
+                            if (def["rpc"].hasOwnProperty(i))
                                 obj.addChild(new Reflect.Service.RPCMethod(obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
-                            }
-                        }
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidExtend(def)) {
                         obj = this.ptr.resolve(def["ref"]);
                         if (obj) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                if (obj.hasChild(def['fields'][i]['id'])) {
-                                    throw(new Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']));
-                                }
-                                if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1]) {
-                                    throw(new Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)"));
-                                }
+                                if (obj.hasChild(def['fields'][i]['id']))
+                                    throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
+                                if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
+                                    throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
                                 obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
                             }
-                            /* if (this.ptr instanceof Reflect.Message) {
-                                this.ptr.addChild(obj); // Reference the extended message here to enable proper lookups
-                            } */
-                        } else {
-                            if (!/\.?google\.protobuf\./.test(def["ref"])) { // Silently skip internal extensions
-                                throw(new Error("Extended message "+def["ref"]+" is not defined"));
-                            }
-                        }
-                    } else {
-                        throw(new Error("Not a valid message, enum, service or extend definition: "+JSON.stringify(def)));
-                    }
+                            /* if (this.ptr instanceof Reflect.Message)
+                                this.ptr.addChild(obj); // Reference the extended message here to enable proper lookups */
+                        } else if (!/\.?google\.protobuf\./.test(def["ref"])) // Silently skip internal extensions
+                            throw Error("Extended message "+def["ref"]+" is not defined");
+                    } else
+                        throw Error("Not a valid message, enum, service or extend definition: "+JSON.stringify(def));
                     def = null;
                 }
                 // Break goes here
-            } else {
-                throw(new Error("Not a valid namespace definition: "+JSON.stringify(defs)));
-            }
+            } else
+                throw Error("Not a valid namespace definition: "+JSON.stringify(defs));
             defs = null;
             this.ptr = this.ptr.parent; // This namespace is s done
         }
@@ -352,10 +310,8 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.prototype["import"] = function(json, filename) {
         if (typeof filename === 'string') {
-            if (ProtoBuf.Util.IS_NODE) {
-                var path = require("path");
-                filename = path.resolve(filename);
-            }
+            if (ProtoBuf.Util.IS_NODE)
+                filename = require("path")['resolve'](filename);
             if (this.files[filename] === true) {
                 this.reset();
                 return this; // Skip duplicate imports
@@ -370,73 +326,73 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 filename = filename["file"];
                 if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
             } else if (typeof filename === 'string') {
-                if (this.importRoot) { // If import root is overridden, use it
+                if (this.importRoot) // If import root is overridden, use it
                     importRoot = this.importRoot;
-                } else { // Otherwise compute from filename
+                else { // Otherwise compute from filename
                     if (filename.indexOf("/") >= 0) { // Unix
                         importRoot = filename.replace(/\/[^\/]*$/, "");
-                        if (/* /file.proto */ importRoot === "") importRoot = "/";
+                        if (/* /file.proto */ importRoot === "")
+                            importRoot = "/";
                     } else if (filename.indexOf("\\") >= 0) { // Windows
-                        importRoot = filename.replace(/\\[^\\]*$/, ""); delim = '\\';
-                    } else {
+                        importRoot = filename.replace(/\\[^\\]*$/, "");
+                        delim = '\\';
+                    } else
                         importRoot = ".";
-                    }
                 }
-            } else importRoot = null;
+            } else
+                importRoot = null;
 
             for (var i=0; i<json['imports'].length; i++) {
                 if (typeof json['imports'][i] === 'string') { // Import file
                     if (!importRoot)
-                        throw new Error("Cannot determine import root: File name is unknown");
+                        throw Error("Cannot determine import root: File name is unknown");
                     var importFilename = json['imports'][i];
                     if (/^google\/protobuf\//.test(importFilename))
                         continue; // Not needed and therefore not used
                     importFilename = importRoot+delim+importFilename;
                     if (this.files[importFilename] === true)
                         continue; // Already imported
-                    if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto) {     // If this is a NOPARSE build
+                    if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto)     // If this is a NOPARSE build
                         importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
-                    }
                     var contents = ProtoBuf.Util.fetch(importFilename);
-                    if (contents === null) {
-                        throw(new Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found"));
-                    }
-                    if (/\.json$/i.test(importFilename)) { // Always possible
+                    if (contents === null)
+                        throw Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found");
+                    if (/\.json$/i.test(importFilename)) // Always possible
                         this["import"](JSON.parse(contents+""), importFilename); // May throw
-                    } else {
+                    else
                         this["import"]((new ProtoBuf.DotProto.Parser(contents+"")).parse(), importFilename); // May throw
-                    }
-                } else { // Import structure
-                    if (!filename) {
+                } else // Import structure
+                    if (!filename)
                         this["import"](json['imports'][i]);
-                    } else if (/\.(\w+)$/.test(filename)) { // With extension: Append _importN to the name portion to make it unique
+                    else if (/\.(\w+)$/.test(filename)) // With extension: Append _importN to the name portion to make it unique
                         this["import"](json['imports'][i], filename.replace(/^(.+)\.(\w+)$/, function($0, $1, $2) { return $1+"_import"+i+"."+$2; }));
-                    } else { // Without extension: Append _importN to make it unique
+                    else // Without extension: Append _importN to make it unique
                         this["import"](json['imports'][i], filename+"_import"+i);
-                    }
-                }
             }
-            if (resetRoot) { // Reset import root override when all imports are done
+            if (resetRoot) // Reset import root override when all imports are done
                 this.importRoot = null;
-            }
         }
-        if (!!json['messages']) {
-            if (!!json['package']) this.define(json['package'], json["options"]);
+        if (json['messages']) {
+            if (json['package'])
+                this.define(json['package'], json["options"]);
             this.create(json['messages']);
             this.reset();
         }
-        if (!!json['enums']) {
-            if (!!json['package']) this.define(json['package'], json["options"]);
+        if (json['enums']) {
+            if (json['package'])
+                this.define(json['package'], json["options"]);
             this.create(json['enums']);
             this.reset();
         }
-        if (!!json['services']) {
-            if (!!json['package']) this.define(json['package'], json["options"]);
+        if (json['services']) {
+            if (json['package'])
+                this.define(json['package'], json["options"]);
             this.create(json['services']);
             this.reset();
         }
-        if (!!json['extends']) {
-            if (!!json['package']) this.define(json['package'], json["options"]);
+        if (json['extends']) {
+            if (json['package'])
+                this.define(json['package'], json["options"]);
             this.create(json['extends']);
             this.reset();
         }
@@ -461,23 +417,19 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @expose
     */
     Builder.isValidExtend = function(def) {
-        if (typeof def["ref"] !== 'string' || !Lang.TYPEREF.test(def["ref"])) {
+        if (typeof def["ref"] !== 'string' || !Lang.TYPEREF.test(def["ref"]))
             return false;
-        }
         var i;
         if (typeof def["fields"] !== 'undefined') {
-            if (!ProtoBuf.Util.isArray(def["fields"])) {
+            if (!ProtoBuf.Util.isArray(def["fields"]))
                 return false;
-            }
             var ids = [], id; // IDs must be unique (does not yet test for the extended message's ids)
             for (i=0; i<def["fields"].length; i++) {
-                if (!Builder.isValidMessageField(def["fields"][i])) {
+                if (!Builder.isValidMessageField(def["fields"][i]))
                     return false;
-                }
                 id = parseInt(def["id"], 10);
-                if (ids.indexOf(id) >= 0) {
+                if (ids.indexOf(id) >= 0)
                     return false;
-                }
                 ids.push(id);
             }
             ids = null;
@@ -493,55 +445,47 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     Builder.prototype.resolveAll = function() {
         // Resolve all reflected objects
         var res;
-        if (this.ptr == null || typeof this.ptr.type === 'object') return; // Done (already resolved)
+        if (this.ptr == null || typeof this.ptr.type === 'object')
+            return; // Done (already resolved)
         if (this.ptr instanceof Reflect.Namespace) {
             // Build all children
             var children = this.ptr.getChildren();
-            for (var i=0; i<children.length; i++) {
-                this.ptr = children[i];
-                this.resolveAll();
-            }
+            for (var i=0; i<children.length; i++)
+                this.ptr = children[i], this.resolveAll();
         } else if (this.ptr instanceof Reflect.Message.Field) {
             if (!Lang.TYPE.test(this.ptr.type)) { // Resolve type...
-                if (!Lang.TYPEREF.test(this.ptr.type)) {
-                    throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
-                }
+                if (!Lang.TYPEREF.test(this.ptr.type))
+                    throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                 res = this.ptr.parent.resolve(this.ptr.type, true);
-                if (!res) {
-                    throw(new Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
-                }
+                if (!res)
+                    throw Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                 this.ptr.resolvedType = res;
-                if (res instanceof Reflect.Enum) {
+                if (res instanceof Reflect.Enum)
                     this.ptr.type = ProtoBuf.TYPES["enum"];
-                } else if (res instanceof Reflect.Message) {
+                else if (res instanceof Reflect.Message)
                     this.ptr.type = res.isGroup ? ProtoBuf.TYPES["group"] : ProtoBuf.TYPES["message"];
-                } else {
-                    throw(new Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type));
-                }
-            } else {
+                else
+                    throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
+            } else
                 this.ptr.type = ProtoBuf.TYPES[this.ptr.type];
-            }
         } else if (this.ptr instanceof ProtoBuf.Reflect.Enum.Value) {
             // No need to build enum values (built in enum)
         } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {
             if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
                 res = this.ptr.parent.resolve(this.ptr.requestName);
-                if (!res || !(res instanceof ProtoBuf.Reflect.Message)) {
-                    throw(new Error("Illegal request type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName));
-                }
+                if (!res || !(res instanceof ProtoBuf.Reflect.Message))
+                    throw Error("Illegal request type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName);
                 this.ptr.resolvedRequestType = res;
                 res = this.ptr.parent.resolve(this.ptr.responseName);
-                if (!res || !(res instanceof ProtoBuf.Reflect.Message)) {
-                    throw(new Error("Illegal response type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName));
-                }
+                if (!res || !(res instanceof ProtoBuf.Reflect.Message))
+                    throw Error("Illegal response type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
                 this.ptr.resolvedResponseType = res;
             } else {
                 // Should not happen as nothing else is implemented
-                throw(new Error("Illegal service method type in "+this.ptr.toString(true)));
+                throw Error("Illegal service method type in "+this.ptr.toString(true));
             }
-        } else {
-            throw(new Error("Illegal object type in namespace: "+typeof(this.ptr)+":"+this.ptr));
-        }
+        } else
+            throw Error("Illegal object type in namespace: "+typeof(this.ptr)+":"+this.ptr);
         this.reset();
     };
 
@@ -555,27 +499,24 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.prototype.build = function(path) {
         this.reset();
-        if (!this.resolved) {
-            this.resolveAll();
-            this.resolved = true;
+        if (!this.resolved)
+            this.resolveAll(),
+            this.resolved = true,
             this.result = null; // Require re-build
-        }
-        if (this.result == null) { // (Re-)Build
+        if (this.result == null) // (Re-)Build
             this.result = this.ns.build();
-        }
-        if (!path) {
+        if (!path)
             return this.result;
-        } else {
+        else {
             var part = path.split(".");
             var ptr = this.result; // Build namespace pointer (no hasChild etc.)
-            for (var i=0; i<part.length; i++) {
-                if (ptr[part[i]]) {
+            for (var i=0; i<part.length; i++)
+                if (ptr[part[i]])
                     ptr = ptr[part[i]];
-                } else {
+                else {
                     ptr = null;
                     break;
                 }
-            }
             return ptr;
         }
     };

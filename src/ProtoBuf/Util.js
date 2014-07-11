@@ -7,17 +7,15 @@ ProtoBuf.Util = (function() {
 
     // Object.create polyfill
     // ref: https://developer.mozilla.org/de/docs/JavaScript/Reference/Global_Objects/Object/create
-    if (!Object.create) {
+    if (!Object.create)
         /** @expose */
         Object.create = function (o) {
-            if (arguments.length > 1) {
-                throw new Error('Object.create implementation only accepts the first parameter.');
-            }
+            if (arguments.length > 1)
+                throw Error('Object.create implementation only accepts the first parameter.');
             function F() {}
             F.prototype = o;
             return new F();
         };
-    }
 
     /**
      * ProtoBuf utilities.
@@ -63,7 +61,8 @@ ProtoBuf.Util = (function() {
             catch (e) { continue; }
             break;
         }
-        if (!xhr) throw(new Error("XMLHttpRequest is not supported"));
+        if (!xhr)
+            throw Error("XMLHttpRequest is not supported");
         return xhr;
     };
 
@@ -76,22 +75,22 @@ ProtoBuf.Util = (function() {
      * @expose
      */
     Util.fetch = function(path, callback) {
-        if (callback && typeof callback != 'function') callback = null;
+        if (callback && typeof callback != 'function')
+            callback = null;
         if (Util.IS_NODE) {
             if (callback) {
                 require("fs").readFile(path, function(err, data) {
-                    if (err) {
+                    if (err)
                         callback(null);
-                    }
-                    else callback(""+data);
+                    else
+                        callback(""+data);
                 });
-            } else {
+            } else
                 try {
                     return require("fs").readFileSync(path);
                 } catch (e) {
                     return null;
                 }
-            }
         } else {
             var xhr = Util.XHR();
             xhr.open('GET', path, callback ? true : false);
@@ -101,19 +100,18 @@ ProtoBuf.Util = (function() {
             if (callback) {
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState != 4) return;
-                    if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
+                    if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string'))
                         callback(xhr.responseText);
-                    } else {
+                    else
                         callback(null);
-                    }
                 };
-                if (xhr.readyState == 4) return;
+                if (xhr.readyState == 4)
+                    return;
                 xhr.send(null);
             } else {
                 xhr.send(null);
-                if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string')) {
+                if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string'))
                     return xhr.responseText;
-                }
                 return null;
             }
         }
@@ -121,14 +119,12 @@ ProtoBuf.Util = (function() {
 
     /**
      * Tests if an object is an array.
+     * @function
      * @param {*} obj Object to test
      * @returns {boolean} true if it is an array, else false
      * @expose
      */
-    Util.isArray = function(obj) {
-        if (!obj) return false;
-        if (obj instanceof Array) return true;
-        if (Array.isArray) return Array.isArray(obj);
+    Util.isArray = Array.isArray || function(obj) {
         return Object.prototype.toString.call(obj) === "[object Array]";
     };
     

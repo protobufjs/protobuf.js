@@ -96,7 +96,7 @@ function mkLong(value, unsigned) {
         return ProtoBuf.Long.fromString(value, unsigned || false, 10);
     if (typeof value === 'number')
         return ProtoBuf.Long.fromNumber(value, unsigned || false);
-    throw(new Error("not convertible to Long"));
+    throw Error("not convertible to Long");
 }
 
 /**
@@ -110,7 +110,7 @@ function mkLong(value, unsigned) {
 Field.prototype.verifyValue = function(value, skipRepeated) {
     skipRepeated = skipRepeated || false;
     var fail = function(val, msg) {
-        throw new Error("Illegal value for "+this.toString(true)+": "+val+" ("+msg+")");
+        throw Error("Illegal value for "+this.toString(true)+": "+val+" ("+msg+")");
     }.bind(this);
     if (value === null) { // NULL values for optional fields
         if (this.required)
@@ -119,13 +119,11 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
     }
     var i;
     if (this.repeated && !skipRepeated) { // Repeated values as arrays
-        if (!ProtoBuf.Util.isArray(value)) {
+        if (!ProtoBuf.Util.isArray(value))
             value = [value];
-        }
         var res = [];
-        for (i=0; i<value.length; i++) {
+        for (i=0; i<value.length; i++)
             res.push(this.verifyValue(value[i], true));
-        }
         return res;
     }
     // All non-repeated fields expect no array
@@ -224,7 +222,7 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
     }
 
     // We should never end here
-    throw(new Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")"));
+    throw Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")");
 };
 
 /**
@@ -238,8 +236,9 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
 Field.prototype.encode = function(value, buffer) {
     value = this.verifyValue(value); // May throw
     if (this.type === null || typeof this.type !== 'object')
-        throw(new Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type));
-    if (value === null || (this.repeated && value.length == 0)) return buffer; // Optional omitted
+        throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
+    if (value === null || (this.repeated && value.length == 0))
+        return buffer; // Optional omitted
     try {
         if (this.repeated) {
             var i;
@@ -252,9 +251,8 @@ Field.prototype.encode = function(value, buffer) {
                 buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
                 buffer.ensureCapacity(buffer.offset += 1); // We do not know the length yet, so let's assume a varint of length 1
                 var start = buffer.offset; // Remember where the contents begin
-                for (i=0; i<value.length; i++) {
+                for (i=0; i<value.length; i++)
                     this.encodeValue(value[i], buffer);
-                }
                 var len = buffer.offset-start;
                 var varintLen = ByteBuffer.calculateVarint32(len);
                 if (varintLen > 1) { // We need to move the contents
@@ -267,17 +265,15 @@ Field.prototype.encode = function(value, buffer) {
             } else {
                 // "If your message definition has repeated elements (without the [packed=true] option), the encoded
                 // message has zero or more key-value pairs with the same tag number"
-                for (i=0; i<value.length; i++) {
-                    buffer.writeVarint32((this.id << 3) | this.type.wireType);
+                for (i=0; i<value.length; i++)
+                    buffer.writeVarint32((this.id << 3) | this.type.wireType),
                     this.encodeValue(value[i], buffer);
-                }
             }
-        } else {
-            buffer.writeVarint32((this.id << 3) | this.type.wireType);
+        } else
+            buffer.writeVarint32((this.id << 3) | this.type.wireType),
             this.encodeValue(value, buffer);
-        }
     } catch (e) {
-        throw(new Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")"));
+        throw Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")");
     }
     return buffer;
 };
@@ -408,7 +404,7 @@ Field.prototype.encodeValue = function(value, buffer) {
 
         default:
             // We should never end here
-            throw(new Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)"));
+            throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
     }
     return buffer;
 };
@@ -424,17 +420,15 @@ Field.prototype.encodeValue = function(value, buffer) {
  */
 Field.prototype.decode = function(wireType, buffer, skipRepeated) {
     var value, nBytes;
-    if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated))) {
-        throw(new Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)"));
-    }
+    if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated)))
+        throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");
     if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"]) {
         if (!skipRepeated) {
             nBytes = buffer.readVarint32();
             nBytes = buffer.offset + nBytes; // Limit
             var values = [];
-            while (buffer.offset < nBytes) {
+            while (buffer.offset < nBytes)
                 values.push(this.decode(this.type.wireType, buffer, true));
-            }
             return values;
         }
         // Read the next value otherwise...
@@ -503,9 +497,8 @@ Field.prototype.decode = function(wireType, buffer, skipRepeated) {
         // Length-delimited bytes
         case ProtoBuf.TYPES["bytes"]: {
             nBytes = buffer.readVarint32();
-            if (buffer.remaining() < nBytes) {
-                throw(new Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining()));
-            }
+            if (buffer.remaining() < nBytes)
+                throw Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining());
             value = buffer.clone(); // Offset already set
             value.limit = value.offset+nBytes;
             buffer.offset += nBytes;
@@ -524,5 +517,5 @@ Field.prototype.decode = function(wireType, buffer, skipRepeated) {
     }
 
     // We should never end here
-    throw(new Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType));
+    throw Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType);
 }

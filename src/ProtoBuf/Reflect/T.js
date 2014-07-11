@@ -40,7 +40,8 @@ T.prototype.fqn = function() {
         ptr = this;
     do {
         ptr = ptr.parent;
-        if (ptr == null) break;
+        if (ptr == null)
+            break;
         name = ptr.name+"."+name;
     } while (true);
     return name;
@@ -53,10 +54,7 @@ T.prototype.fqn = function() {
  * @expose
  */
 T.prototype.toString = function(includeClass) {
-    var pfx = includeClass
-        ? this.className + " "
-        : "";
-    return pfx + this.fqn();
+    return (includeClass ? this.className + " " : "") + this.fqn();
 };
 
 /**
@@ -65,5 +63,5 @@ T.prototype.toString = function(includeClass) {
  * @expose
  */
 T.prototype.build = function() {
-    throw(new Error(this.toString(true)+" cannot be built directly"));
+    throw Error(this.toString(true)+" cannot be built directly");
 };

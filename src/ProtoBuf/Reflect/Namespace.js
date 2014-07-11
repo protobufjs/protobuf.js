@@ -39,15 +39,12 @@ Namespace.prototype = Object.create(T.prototype);
  */
 Namespace.prototype.getChildren = function(type) {
     type = type || null;
-    if (type == null) {
+    if (type == null)
         return this.children.slice();
-    }
     var children = [];
-    for (var i=0; i<this.children.length; i++) {
-        if (this.children[i] instanceof type) {
+    for (var i=0; i<this.children.length; i++)
+        if (this.children[i] instanceof type)
             children.push(this.children[i]);
-        }
-    }
     return children;
 };
 
@@ -61,13 +58,12 @@ Namespace.prototype.addChild = function(child) {
     var other;
     if (other = this.getChild(child.name)) {
         // Try to revert camelcase transformation on collision
-        if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName)) {
+        if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName))
             other.name = other.originalName; // Revert previous first (effectively keeps both originals)
-        } else if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName)) {
+        else if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName))
             child.name = child.originalName;
-        } else {
-            throw(new Error("Duplicate name in namespace "+this.toString(true)+": "+child.name));
-        }
+        else
+            throw Error("Duplicate name in namespace "+this.toString(true)+": "+child.name);
     }
     this.children.push(child);
 };
@@ -100,9 +96,7 @@ Namespace.prototype.getChild = function(nameOrId) {
  * @private
  */
 Namespace.prototype._indexOf = function(nameOrId) {
-    var key = (typeof nameOrId == 'number')
-        ? 'id'
-        : 'name';
+    var key = typeof nameOrId === 'number' ? 'id' : 'name';
     for (var i=0; i<this.children.length; i++)
         if (typeof this.children[i][key] !== 'undefined' && this.children[i][key] == nameOrId)
             return i;
@@ -120,9 +114,8 @@ Namespace.prototype.resolve = function(qn, excludeFields) {
     var part = qn.split(".");
     var ptr = this, i=0;
     if (part[i] == "") { // Fully qualified name, e.g. ".My.Message'
-        while (ptr.parent != null) {
+        while (ptr.parent != null)
             ptr = ptr.parent;
-        }
         i++;
     }
     var child;
@@ -135,7 +128,8 @@ Namespace.prototype.resolve = function(qn, excludeFields) {
             }
             ptr = child; i++;
         } while (i < part.length);
-        if (ptr != null) break; // Found
+        if (ptr != null)
+            break; // Found
         // Else search the parent
         if (this.parent !== null) {
             return this.parent.resolve(qn, excludeFields);
@@ -155,18 +149,11 @@ Namespace.prototype.build = function() {
     var children = this.getChildren(), child;
     for (var i=0; i<children.length; i++) {
         child = children[i];
-        if (child instanceof Namespace) {
+        if (child instanceof Namespace)
             ns[child.name] = child.build();
-        }
     }
-    if (Object.defineProperty) {
-        Object.defineProperty(ns, "$options", {
-            "value": this.buildOpt(),
-            "enumerable": false,
-            "configurable": false,
-            "writable": false
-        });
-    }
+    if (Object.defineProperty)
+        Object.defineProperty(ns, "$options", { "value": this.buildOpt() });
     return ns;
 };
 
@@ -196,8 +183,7 @@ Namespace.prototype.buildOpt = function() {
  * @return {*|Object.<string,*>}null} Option value or NULL if there is no such option
  */
 Namespace.prototype.getOption = function(name) {
-    if (typeof name == 'undefined') {
+    if (typeof name === 'undefined')
         return this.options;
-    }
-    return typeof this.options[name] != 'undefined' ? this.options[name] : null;
+    return typeof this.options[name] !== 'undefined' ? this.options[name] : null;
 };

@@ -28,7 +28,7 @@ var Message = function(values) {
             try {
                 this.$set(field.name, field.options['default']); // Should not throw
             } catch (e) {
-                throw(new Error("[INTERNAL] "+e));
+                throw Error("[INTERNAL] "+e);
             }
         }
     }
@@ -40,17 +40,13 @@ var Message = function(values) {
         /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
         /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
         var keys = Object.keys(values);
-        for (i=0; i<keys.length; i++) {
+        for (i=0; i<keys.length; i++)
             this.$set(keys[i], values[keys[i]]); // May throw
-        }
         // Else set field values from arguments, in correct order
-    } else {
-        for (i=0; i<arguments.length; i++) {
-            if (i<fields.length) {
+    } else
+        for (i=0; i<arguments.length; i++)
+            if (i<fields.length)
                 this.$set(fields[i].name, arguments[i]); // May throw
-            }
-        }
-    }
 };
 
 // Extends ProtoBuf.Builder.Message
@@ -68,16 +64,14 @@ Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
  */
 Message.prototype.add = function(key, value, noAssert) {
     var field = T.getChild(key);
-    if (!field) {
-        throw(new Error(this+"#"+key+" is undefined"));
-    }
-    if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
-        throw(new Error(this+"#"+key+" is not a field: "+field.toString(true))); // May throw if it's an enum or embedded message
-    }
-    if (!field.repeated) {
-        throw(new Error(this+"#"+key+" is not a repeated field"));
-    }
-    if (this[field.name] === null) this[field.name] = [];
+    if (!field)
+        throw Error(this+"#"+key+" is undefined");
+    if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+        throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
+    if (!field.repeated)
+        throw Error(this+"#"+key+" is not a repeated field");
+    if (this[field.name] === null)
+        this[field.name] = [];
     this[field.name].push(noAssert ? value : field.verifyValue(value, true));
 };
 
@@ -105,12 +99,10 @@ Message.prototype.$add = Message.prototype.add;
  */
 Message.prototype.set = function(key, value, noAssert) {
     var field = T.getChild(key);
-    if (!field) {
-        throw(new Error(this+"#"+key+" is not a field: undefined"));
-    }
-    if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
-        throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
-    }
+    if (!field)
+        throw Error(this+"#"+key+" is not a field: undefined");
+    if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+        throw Error(this+"#"+key+" is not a field: "+field.toString(true));
     this[field.name] = noAssert ? value : field.verifyValue(value); // May throw
 };
 
@@ -137,12 +129,10 @@ Message.prototype.$set = Message.prototype.set;
  */
 Message.prototype.get = function(key) {
     var field = T.getChild(key);
-    if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field)) {
-        throw(new Error(this+"#"+key+" is not a field: undefined"));
-    }
-    if (!(field instanceof ProtoBuf.Reflect.Message.Field)) {
-        throw(new Error(this+"#"+key+" is not a field: "+field.toString(true)));
-    }
+    if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field))
+        throw Error(this+"#"+key+" is not a field: undefined");
+    if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+        throw Error(this+"#"+key+" is not a field: "+field.toString(true));
     return this[field.name];
 };
 
@@ -164,19 +154,15 @@ for (var i=0; i<fields.length; i++) {
 
     (function(field) {
         // set/get[SomeValue]
-        var Name = field.originalName.replace(/(_[a-zA-Z])/g,
-            function(match) {
-                return match.toUpperCase().replace('_','');
-            }
-        );
+        var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
+            return match.toUpperCase().replace('_','');
+        });
         Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
 
         // set/get_[some_value]
-        var name = field.originalName.replace(/([A-Z])/g,
-            function(match) {
-                return "_"+match;
-            }
-        );
+        var name = field.originalName.replace(/([A-Z])/g, function(match) {
+            return "_"+match;
+        });
 
         /**
          * Sets a value. This method is present for each field, but only if there is no name conflict with
@@ -187,11 +173,10 @@ for (var i=0; i<fields.length; i++) {
          * @abstract
          * @throws {Error} If the value cannot be set
          */
-        if (!T.hasChild("set"+Name)) {
+        if (!T.hasChild("set"+Name))
             Message.prototype["set"+Name] = function(value) {
                 this.$set(field.name, value);
-            }
-        }
+            };
 
         /**
          * Sets a value. This method is present for each field, but only if there is no name conflict with
@@ -202,11 +187,10 @@ for (var i=0; i<fields.length; i++) {
          * @abstract
          * @throws {Error} If the value cannot be set
          */
-        if (!T.hasChild("set_"+name)) {
+        if (!T.hasChild("set_"+name))
             Message.prototype["set_"+name] = function(value) {
                 this.$set(field.name, value);
             };
-        }
 
         /**
          * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -216,11 +200,10 @@ for (var i=0; i<fields.length; i++) {
          * @abstract
          * @return {*} The value
          */
-        if (!T.hasChild("get"+Name)) {
+        if (!T.hasChild("get"+Name))
             Message.prototype["get"+Name] = function() {
                 return this.$get(field.name); // Does not throw, field exists
             }
-        }
 
         /**
          * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -230,11 +213,10 @@ for (var i=0; i<fields.length; i++) {
          * @return {*} The value
          * @abstract
          */
-        if (!T.hasChild("get_"+name)) {
+        if (!T.hasChild("get_"+name))
             Message.prototype["get_"+name] = function() {
                 return this.$get(field.name); // Does not throw, field exists
             };
-        }
 
     })(field);
 }
@@ -256,10 +238,8 @@ for (var i=0; i<fields.length; i++) {
  */
 Message.prototype.encode = function(buffer) {
     var isNew = false;
-    if (!buffer) {
-        buffer = new ByteBuffer();
-        isNew = true;
-    }
+    if (!buffer)
+        buffer = new ByteBuffer(), isNew = true;
     var le = buffer.littleEndian;
     try {
         T.encode(this, buffer.LE());
@@ -282,21 +262,13 @@ Message.prototype.encode = function(buffer) {
  */
 Message.prototype.encodeDelimited = function(buffer) {
     var isNew = false;
-    if (!buffer) {
-        buffer = new ByteBuffer();
-        isNew = true;
-    }
-    // var le = buffer.littleEndian;
-    try {
-        var enc = new ByteBuffer().LE();
-        T.encode(this, enc).flip();
-        buffer.writeVarint32(enc.remaining());
-        buffer.append(enc);
-        return isNew ? buffer.flip() : buffer;
-    } catch (e) {
-        // buffer.LE(le);
-        throw(e);
-    }
+    if (!buffer)
+        buffer = new ByteBuffer(), isNew = true;
+    var enc = new ByteBuffer().LE();
+    T.encode(this, enc).flip();
+    buffer.writeVarint32(enc.remaining());
+    buffer.append(enc);
+    return isNew ? buffer.flip() : buffer;
 };
 
 /**
@@ -311,9 +283,9 @@ Message.prototype.encodeDelimited = function(buffer) {
 Message.prototype.encodeAB = function() {
     try {
         return this.encode().toArrayBuffer();
-    } catch (err) {
-        if (err["encoded"]) err["encoded"] = err["encoded"].toArrayBuffer();
-        throw(err);
+    } catch (e) {
+        if (e["encoded"]) e["encoded"] = e["encoded"].toArrayBuffer();
+        throw(e);
     }
 };
 
@@ -340,9 +312,9 @@ Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
 Message.prototype.encodeNB = function() {
     try {
         return this.encode().toBuffer();
-    } catch (err) {
-        if (err["encoded"]) err["encoded"] = err["encoded"].toBuffer();
-        throw(err);
+    } catch (e) {
+        if (e["encoded"]) e["encoded"] = e["encoded"].toBuffer();
+        throw(e);
     }
 };
 
@@ -369,9 +341,9 @@ Message.prototype.toBuffer = Message.prototype.encodeNB;
 Message.prototype.encode64 = function() {
     try {
         return this.encode().toBase64();
-    } catch (err) {
-        if (err["encoded"]) err["encoded"] = err["encoded"].toBase64();
-        throw(err);
+    } catch (e) {
+        if (e["encoded"]) e["encoded"] = e["encoded"].toBase64();
+        throw(e);
     }
 };
 
@@ -398,9 +370,9 @@ Message.prototype.toBase64 = Message.prototype.encode64;
 Message.prototype.encodeHex = function() {
     try {
         return this.encode().toHex();
-    } catch (err) {
-        if (err["encoded"]) err["encoded"] = err["encoded"].toHex();
-        throw(err);
+    } catch (e) {
+        if (e["encoded"]) e["encoded"] = e["encoded"].toHex();
+        throw(e);
     }
 };
 
@@ -426,14 +398,13 @@ function cloneRaw(obj, includeBuffers) {
     var clone = {};
     for (var i in obj)
         if (obj.hasOwnProperty(i)) {
-            if (obj[i] === null || typeof obj[i] !== 'object') {
+            if (obj[i] === null || typeof obj[i] !== 'object')
                 clone[i] = obj[i];
-            } else if (obj[i] instanceof ByteBuffer) {
+            else if (obj[i] instanceof ByteBuffer) {
                 if (includeBuffers)
                     clone[i] = obj.toBuffer();
-            } else { // is a non-null object
+            } else // is a non-null object
                 clone[i] = cloneRaw(obj[i], includeBuffers);
-            }
         }
     return clone;
 }
@@ -462,10 +433,10 @@ Message.prototype.toRaw = function(includeBuffers) {
  * @see ProtoBuf.Builder.Message.decodeHex
  */
 Message.decode = function(buffer, enc) {
-    if (buffer === null) throw(new Error("buffer must not be null"));
-    if (typeof buffer === 'string') {
+    if (buffer === null)
+        throw Error("buffer must not be null");
+    if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-    }
     buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
     var le = buffer.littleEndian;
     try {
@@ -490,10 +461,10 @@ Message.decode = function(buffer, enc) {
  * @expose
  */
 Message.decodeDelimited = function(buffer, enc) {
-    if (buffer === null) throw(new Error("buffer must not be null"));
-    if (typeof buffer === 'string') {
+    if (buffer === null)
+        throw Error("buffer must not be null");
+    if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-    }
     buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
     var len = buffer.readVarint32();
     var msg = T.decode(buffer.slice(buffer.offset, buffer.offset + len).LE());
@@ -552,11 +523,5 @@ Message.prototype.toString = function() {
  */
 var $options; // for cc
 
-if (Object.defineProperty) {
-    Object.defineProperty(Message, '$options', {
-        'value': T.buildOpt(),
-        'enumerable': false,
-        'configurable': false,
-        'writable': false
-    });
-}
+if (Object.defineProperty)
+    Object.defineProperty(Message, '$options', { "value": T.buildOpt() });

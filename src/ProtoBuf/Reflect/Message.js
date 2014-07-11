@@ -64,15 +64,14 @@ Message.prototype.build = function(rebuild) {
     // Static enums and prototyped sub-messages
     var children = this.getChildren();
     for (var i=0; i<children.length; i++) {
-        if (children[i] instanceof Enum) {
+        if (children[i] instanceof Enum)
             clazz[children[i]['name']] = children[i].build();
-        } else if (children[i] instanceof Message) {
+        else if (children[i] instanceof Message)
             clazz[children[i]['name']] = children[i].build();
-        } else if (children[i] instanceof Message.Field) {
+        else if (children[i] instanceof Message.Field) {
             // Ignore
-        } else {
-            throw(new Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true)));
-        }
+        } else
+            throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));
     }
     return this.clazz = clazz;
 };
@@ -91,13 +90,13 @@ Message.prototype.encode = function(message, buffer) {
     for (var i=0; i<fields.length; i++) {
         var val = message.$get(fields[i].name);
         if (fields[i].required && val === null) {
-            if (fieldMissing === null) fieldMissing = fields[i];
-        } else {
+            if (fieldMissing === null)
+                fieldMissing = fields[i];
+        } else
             fields[i].encode(val, buffer);
-        }
     }
     if (fieldMissing !== null) {
-        var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
+        var err = Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
         err["encoded"] = buffer; // Still expose what we got
         throw(err);
     }
@@ -135,12 +134,12 @@ function skipTillGroupEnd(expectedId, buf) {
             if (id === expectedId)
                 return false;
             else
-                throw(new Error("Illegal GROUPEND after unknown group: "+id+" ("+expectedId+" expected)"));
+                throw Error("Illegal GROUPEND after unknown group: "+id+" ("+expectedId+" expected)");
         case ProtoBuf.WIRE_TYPES.BITS32:
             buf.offset += 4;
             break;
         default:
-            throw(new Error("Illegal wire type in unknown group "+expectedId+": "+wireType));
+            throw Error("Illegal wire type in unknown group "+expectedId+": "+wireType);
     }
     return true;
 }
@@ -165,7 +164,7 @@ Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
         id = tag >> 3;
         if (wireType === ProtoBuf.WIRE_TYPES.ENDGROUP) {
             if (id !== expectedGroupEndId)
-                throw(new Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")"));
+                throw Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")");
             break;
         }
         var field = this.getChild(id); // Message.Field only
@@ -189,25 +188,23 @@ Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
                     while (skipTillGroupEnd(id, buffer)) {}
                     break;
                 default:
-                    throw(new Error("Illegal wire type for unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType));
+                    throw Error("Illegal wire type for unknown field "+id+" in "+this.toString(true)+"#decode: "+wireType);
             }
             continue;
         }
-        if (field.repeated && !field.options["packed"]) {
+        if (field.repeated && !field.options["packed"])
             msg.$add(field.name, field.decode(wireType, buffer), true);
-        } else {
+        else
             msg.$set(field.name, field.decode(wireType, buffer), true);
-        }
     }
 
     // Check if all required fields are present
     var fields = this.getChildren(ProtoBuf.Reflect.Field);
-    for (var i=0; i<fields.length; i++) {
+    for (var i=0; i<fields.length; i++)
         if (fields[i].required && msg[fields[i].name] === null) {
-            var err = new Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
+            var err = Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
             err["decoded"] = msg; // Still expose what we got
             throw(err);
         }
-    }
     return msg;
 };
