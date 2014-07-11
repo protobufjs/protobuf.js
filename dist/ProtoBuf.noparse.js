@@ -22,10 +22,7 @@
 (function(global) {
     "use strict";
 
-    function loadProtoBuf(ByteBuffer) {
-
-        if (!ByteBuffer || !ByteBuffer.VERSION || ByteBuffer.VERSION.split(".")[0] < 3)
-            throw Error("ProtoBuf.js requires ByteBuffer.js >=3");
+    function init(ByteBuffer) {
 
         /**
          * The ProtoBuf namespace.
@@ -104,7 +101,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.PACKABLE_WIRE_TYPES =  [
+        ProtoBuf.PACKABLE_WIRE_TYPES = [
             ProtoBuf.WIRE_TYPES.VARINT,
             ProtoBuf.WIRE_TYPES.BITS64,
             ProtoBuf.WIRE_TYPES.BITS32
@@ -2843,9 +2840,8 @@
          */
         ProtoBuf.newBuilder = function(pkg, options) {
             var builder = new ProtoBuf.Builder();
-            if (typeof pkg !== 'undefined' && pkg !== null) {
+            if (typeof pkg !== 'undefined' && pkg !== null)
                 builder.define(pkg, options);
-            }
             return builder;
         };
 
@@ -2859,12 +2855,13 @@
          * @expose
          */
         ProtoBuf.loadJson = function(json, builder, filename) {
-            if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
-                filename = builder;
+            if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
+                filename = builder,
                 builder = null;
-            }
-            if (!builder || typeof builder !== 'object') builder = ProtoBuf.newBuilder();
-            if (typeof json === 'string') json = JSON.parse(json);
+            if (!builder || typeof builder !== 'object')
+                builder = ProtoBuf.newBuilder();
+            if (typeof json === 'string')
+                json = JSON.parse(json);
             builder["import"](json, filename);
             builder.resolveAll();
             builder.build();
@@ -2884,38 +2881,31 @@
          * @expose
          */
         ProtoBuf.loadJsonFile = function(filename, callback, builder) {
-            if (callback && typeof callback === 'object') {
-                builder = callback;
+            if (callback && typeof callback === 'object')
+                builder = callback,
                 callback = null;
-            } else if (!callback || typeof callback !== 'function') {
+            else if (!callback || typeof callback !== 'function')
                 callback = null;
-            }
-            if (callback) {
-                ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename, function(contents) {
+            if (callback)
+                return ProtoBuf.Util.fetch(typeof filename === 'string' ? filename : filename["root"]+"/"+filename["file"], function(contents) {
                     try {
                         callback(ProtoBuf.loadJson(JSON.parse(contents), builder, filename));
-                    } catch (err) {
-                        callback(err);
+                    } catch (e) {
+                        callback(e);
                     }
                 });
-            } else {
-                var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
-                return contents !== null ? ProtoBuf.loadJson(JSON.parse(contents), builder, filename) : null;
-            }
+            var contents = ProtoBuf.Util.fetch(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename);
+            return contents !== null ? ProtoBuf.loadJson(JSON.parse(contents), builder, filename) : null;
         };
 
         return ProtoBuf;
     }
 
-    // Enable module loading if available
-    if (typeof module !== 'undefined' && module["exports"]) { // CommonJS
-        module["exports"] = loadProtoBuf(require("bytebuffer"));
-    } else if (typeof define === 'function' && define["amd"]) { // AMD
-        define("ProtoBuf", ["ByteBuffer"], loadProtoBuf);
-    } else { // Otherwise install globally
-        if (!global["dcodeIO"])
-            global["dcodeIO"] = {};
-        global["dcodeIO"]["ProtoBuf"] = loadProtoBuf(global["dcodeIO"]["ByteBuffer"]);
-    }
+    /* CommonJS */ if (typeof module !== 'undefined' && module["exports"])
+        module["exports"] = init(require("bytebuffer"));
+    /* AMD */ else if (typeof define === 'function' && define["amd"])
+        define(["ByteBuffer"], init);
+    /* Global */ else
+        (global["dcodeIO"] = global["dcodeIO"] || {})["ProtoBuf"] = init(global["dcodeIO"]["ByteBuffer"]);
 
 })(this);
