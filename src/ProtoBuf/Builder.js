@@ -74,11 +74,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      */
     Builder.prototype.define = function(pkg, options) {
         if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
-            throw Error("Illegal package name: "+pkg);
+            throw Error("Illegal package: "+pkg);
         var part = pkg.split("."), i;
         for (i=0; i<part.length; i++) // To be absolutely sure
             if (!Lang.NAME.test(part[i]))
-                throw Error("Illegal package name: "+part[i]);
+                throw Error("Illegal package: "+part[i]);
         for (i=0; i<part.length; i++) {
             if (!this.ptr.hasChild(part[i])) // Keep existing namespace
                 this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
@@ -279,19 +279,23 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                     throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                 if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                     throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
+                                // TODO: See #161
+                                /* subObj = new (this.ptr instanceof Reflect.Message ? Reflect.Message.ExtendedField : Reflect.Message.Field)(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
+                                if (this.ptr instanceof Reflect.Message)
+                                    this.ptr.addChild(subObj);
+                                else
+                                    obj.addChild(subObj); */
                                 obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
                             }
-                            /* if (this.ptr instanceof Reflect.Message)
-                                this.ptr.addChild(obj); // Reference the extended message here to enable proper lookups */
                         } else if (!/\.?google\.protobuf\./.test(def["ref"])) // Silently skip internal extensions
                             throw Error("Extended message "+def["ref"]+" is not defined");
                     } else
-                        throw Error("Not a valid message, enum, service or extend definition: "+JSON.stringify(def));
+                        throw Error("Not a valid definition: "+JSON.stringify(def));
                     def = null;
                 }
                 // Break goes here
             } else
-                throw Error("Not a valid namespace definition: "+JSON.stringify(defs));
+                throw Error("Not a valid namespace: "+JSON.stringify(defs));
             defs = null;
             this.ptr = this.ptr.parent; // This namespace is s done
         }
@@ -474,18 +478,18 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
                 res = this.ptr.parent.resolve(this.ptr.requestName);
                 if (!res || !(res instanceof ProtoBuf.Reflect.Message))
-                    throw Error("Illegal request type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName);
+                    throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName);
                 this.ptr.resolvedRequestType = res;
                 res = this.ptr.parent.resolve(this.ptr.responseName);
                 if (!res || !(res instanceof ProtoBuf.Reflect.Message))
-                    throw Error("Illegal response type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
+                    throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
                 this.ptr.resolvedResponseType = res;
             } else {
                 // Should not happen as nothing else is implemented
-                throw Error("Illegal service method type in "+this.ptr.toString(true));
+                throw Error("Illegal service type in "+this.ptr.toString(true));
             }
         } else
-            throw Error("Illegal object type in namespace: "+typeof(this.ptr)+":"+this.ptr);
+            throw Error("Illegal object in namespace: "+typeof(this.ptr)+":"+this.ptr);
         this.reset();
     };
 

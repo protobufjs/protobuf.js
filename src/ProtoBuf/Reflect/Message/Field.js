@@ -110,7 +110,7 @@ function mkLong(value, unsigned) {
 Field.prototype.verifyValue = function(value, skipRepeated) {
     skipRepeated = skipRepeated || false;
     var fail = function(val, msg) {
-        throw Error("Illegal value for "+this.toString(true)+": "+val+" ("+msg+")");
+        throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
     }.bind(this);
     if (value === null) { // NULL values for optional fields
         if (this.required)
@@ -151,25 +151,27 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
         case ProtoBuf.TYPES["int64"]:
         case ProtoBuf.TYPES["sint64"]:
         case ProtoBuf.TYPES["sfixed64"]: {
-            if (ProtoBuf.Long) {
+            if (ProtoBuf.Long)
                 try {
                     return mkLong(value, false);
                 } catch (e) {
                     fail(typeof value, e.message);
                 }
-            }
+            else
+                fail(typeof value, "requires Long.js");
         }
 
         // Unsigned 64bit
         case ProtoBuf.TYPES["uint64"]:
         case ProtoBuf.TYPES["fixed64"]: {
-            if (ProtoBuf.Long) {
+            if (ProtoBuf.Long)
                 try {
                     return mkLong(value, true);
                 } catch (e) {
                     fail(typeof value, e.message);
                 }
-            }
+            else
+                fail(typeof value, "requires Long.js");
         }
 
         // Bool
@@ -287,12 +289,12 @@ Field.prototype.encode = function(value, buffer) {
  * @expose
  */
 Field.prototype.encodeValue = function(value, buffer) {
-    if (value === null) return; // Nothing to encode
+    if (value === null) return buffer; // Nothing to encode
     // Tag has already been written
 
     switch (this.type) {
         // 32bit signed varint
-        case ProtoBuf.TYPES["int32"]: {
+        case ProtoBuf.TYPES["int32"]:
             // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
             // long – it is, effectively, treated like a very large unsigned integer." (see #122)
             if (value < 0)
@@ -300,7 +302,6 @@ Field.prototype.encodeValue = function(value, buffer) {
             else
                 buffer.writeVarint32(value);
             break;
-        }
 
         // 32bit unsigned varint
         case ProtoBuf.TYPES["uint32"]:
@@ -344,13 +345,12 @@ Field.prototype.encodeValue = function(value, buffer) {
             break;
 
         // Bool
-        case ProtoBuf.TYPES["bool"]: {
+        case ProtoBuf.TYPES["bool"]:
             if (typeof value === 'string')
                 buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
             else
                 buffer.writeVarint32(value ? 1 : 0);
             break;
-        }
 
         // Constant enum value
         case ProtoBuf.TYPES["enum"]:
@@ -373,40 +373,126 @@ Field.prototype.encodeValue = function(value, buffer) {
             break;
 
         // Length-delimited bytes
-        case ProtoBuf.TYPES["bytes"]: {
-            if (value.offset > value.length) { // Forgot to flip?
-                // TODO: This is actually dangerous as it might lead to a condition where data is included that isn't
-                // meant to be transmitted. Shall we remove this?
-                buffer = buffer.clone().flip();
-            }
+        case ProtoBuf.TYPES["bytes"]:
+            if (value.remaining() < 0)
+                throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
             var prevOffset = value.offset;
             buffer.writeVarint32(value.remaining());
             buffer.append(value);
             value.offset = prevOffset;
             break;
-        }
 
         // Embedded message
-        case ProtoBuf.TYPES["message"]: {
+        case ProtoBuf.TYPES["message"]:
             var bb = new ByteBuffer().LE();
             this.resolvedType.encode(value, bb);
             buffer.writeVarint32(bb.offset);
             buffer.append(bb.flip());
             break;
-        }
 
         // Legacy group
-        case ProtoBuf.TYPES["group"]: {
+        case ProtoBuf.TYPES["group"]:
             this.resolvedType.encode(value, buffer);
             buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
             break;
-        }
 
         default:
             // We should never end here
             throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
     }
     return buffer;
+};
+
+/**
+ * Calculates the length of this field's value on the network level.
+ * @param {*} value Field value
+ * @returns {number} Byte length
+ * @expose
+ */
+Field.prototype.calculate = function(value) {
+    value = this.verifyValue(value); // May throw
+    if (this.type === null || typeof this.type !== 'object')
+        throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
+    if (value === null || (this.repeated && value.length == 0))
+        return 0; // Optional omitted
+    var n = 0;
+    try {
+        if (this.repeated) {
+            var i, ni;
+            if (this.options["packed"] && ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
+                n += ByteBuffer.calculateVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
+                ni = 0;
+                for (i=0; i<value.length; i++)
+                    ni += this.calculateValue(value[i]);
+                n += ByteBuffer.calculateVarint32(ni);
+                n += ni;
+            } else {
+                for (i=0; i<value.length; i++)
+                    n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType),
+                    n += this.calculateValue(value[i]);
+            }
+        } else {
+            n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType);
+            n += this.calculateValue(value);
+        }
+    } catch (e) {
+        throw Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")");
+    }
+    return n;
+};
+
+/**
+ * Calculates the byte length of a value.
+ * @param {*} value Field value
+ * @returns {number} Byte length
+ * @throws {Error} If the value cannot be calculated
+ * @expose
+ */
+Field.prototype.calculateValue = function(value) {
+    if (value === null) return 0; // Nothing to encode
+    // Tag has already been written
+    var n;
+    switch (this.type) {
+        case ProtoBuf.TYPES["int32"]:
+            return value < 0 ? ByteBuffer.calculateVarint64(value) : ByteBuffer.calculateVarint32(value);
+        case ProtoBuf.TYPES["uint32"]:
+            return ByteBuffer.calculateVarint32(value);
+        case ProtoBuf.TYPES["sint32"]:
+            return ByteBuffer.calculateVarint32(ByteBuffer.zigZagEncode32(value));
+        case ProtoBuf.TYPES["fixed32"]:
+        case ProtoBuf.TYPES["sfixed32"]:
+        case ProtoBuf.TYPES["float"]:
+            return 4;
+        case ProtoBuf.TYPES["int64"]:
+        case ProtoBuf.TYPES["uint64"]:
+            return ByteBuffer.calculateVarint64(value);
+        case ProtoBuf.TYPES["sint64"]:
+            return ByteBuffer.calculateVarint64(ByteBuffer.zigZagEncode64(value));
+        case ProtoBuf.TYPES["fixed64"]:
+        case ProtoBuf.TYPES["sfixed64"]:
+            return 8;
+        case ProtoBuf.TYPES["bool"]:
+            return 1;
+        case ProtoBuf.TYPES["enum"]:
+            return ByteBuffer.calculateVarint32(value);
+        case ProtoBuf.TYPES["double"]:
+            return 8;
+        case ProtoBuf.TYPES["string"]:
+            n = ByteBuffer.calculateUTF8Bytes(value);
+            return ByteBuffer.calculateVarint32(n) + n;
+        case ProtoBuf.TYPES["bytes"]:
+            if (value.remaining() < 0)
+                throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
+            return ByteBuffer.calculateVarint32(value.remaining()) + value.remaining();
+        case ProtoBuf.TYPES["message"]:
+            n = this.resolvedType.calculate(value);
+            return ByteBuffer.calculateVarint32(n) + n;
+        case ProtoBuf.TYPES["group"]:
+            n = this.resolvedType.calculate(value);
+            return n + ByteBuffer.calculateVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
+    }
+    // We should never end here
+    throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
 };
 
 /**

@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.1.0";
+        ProtoBuf.VERSION = "3.2.0";
 
         /**
          * Wire types.
@@ -239,7 +239,7 @@
                 /** @expose */
                 Object.create = function (o) {
                     if (arguments.length > 1)
-                        throw Error('Object.create implementation only accepts the first parameter.');
+                        throw Error('Object.create polyfill only accepts the first parameter.');
                     function F() {}
                     F.prototype = o;
                     return new F();
@@ -533,9 +533,11 @@
                 if (type == null)
                     return this.children.slice();
                 var children = [];
-                for (var i=0; i<this.children.length; i++)
+                for (var i=0, k=this.children.length; i<k; ++i)
                     if (this.children[i] instanceof type)
-                        children.push(this.children[i]);
+                        // We also need to distinguish between Field and ExtendedField which is an instance of Field
+                        if (type !== Message.Field || !(this.children[i] instanceof Message.ExtendedField))
+                            children.push(this.children[i]);
                 return children;
             };
 
@@ -638,7 +640,7 @@
                 /** @dict */
                 var ns = {};
                 var children = this.getChildren(), child;
-                for (var i=0; i<children.length; i++) {
+                for (var i=0, k=children.length; i<k; ++i) {
                     child = children[i];
                     if (child instanceof Namespace)
                         ns[child.name] = child.build();
@@ -991,6 +993,18 @@
                     };
 
                     /**
+                     * Calculates the byte length of the message.
+                     * @name ProtoBuf.Builder.Message#calculate
+                     * @function
+                     * @returns {number} Byte length
+                     * @throws {Error} If the message cannot be calculated or if required fields are missing.
+                     * @expose
+                     */
+                    Message.prototype.calculate = function() {
+                        return T.calculate(this);
+                    };
+
+                    /**
                      * Encodes the varint32 length-delimited message.
                      * @name ProtoBuf.Builder.Message#encodeDelimited
                      * @function
@@ -1173,8 +1187,6 @@
                      * @see ProtoBuf.Builder.Message.decodeHex
                      */
                     Message.decode = function(buffer, enc) {
-                        if (buffer === null)
-                            throw Error("buffer must not be null");
                         if (typeof buffer === 'string')
                             buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
                         buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
@@ -1201,8 +1213,6 @@
                      * @expose
                      */
                     Message.decodeDelimited = function(buffer, enc) {
-                        if (buffer === null)
-                            throw Error("buffer must not be null");
                         if (typeof buffer === 'string')
                             buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
                         buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
@@ -1287,7 +1297,7 @@
 
             /**
              * Encodes a runtime message's contents to the specified buffer.
-             * @param {ProtoBuf.Builder.Message} message Runtime message to encode
+             * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
              * @param {ByteBuffer} buffer ByteBuffer to write to
              * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
@@ -1296,8 +1306,8 @@
             Message.prototype.encode = function(message, buffer) {
                 var fields = this.getChildren(Message.Field),
                     fieldMissing = null;
-                for (var i=0; i<fields.length; i++) {
-                    var val = message.$get(fields[i].name);
+                for (var i=0, val; i<fields.length; i++) {
+                    val = message.$get(fields[i].name);
                     if (fields[i].required && val === null) {
                         if (fieldMissing === null)
                             fieldMissing = fields[i];
@@ -1310,6 +1320,26 @@
                     throw(err);
                 }
                 return buffer;
+            };
+
+            /**
+             * Calculates a runtime message's byte length.
+             * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
+             * @returns {number} Byte length
+             * @throws {Error} If required fields are missing or the message cannot be calculated for another reason
+             * @expose
+             */
+            Message.prototype.calculate = function(message) {
+                var fields = this.getChildren(Message.Field),
+                    n = 0;
+                for (var i=0, val; i<fields.length; i++) {
+                    val = message.$get(fields[i].name);
+                    if (fields[i].required && val === null)
+                       throw Error("Missing at least one required field for "+this.toString(true)+": "+fields[i]);
+                    else
+                        n += fields[i].calculate(val);
+                }
+                return n;
             };
 
             /**
@@ -1536,7 +1566,7 @@
             Field.prototype.verifyValue = function(value, skipRepeated) {
                 skipRepeated = skipRepeated || false;
                 var fail = function(val, msg) {
-                    throw Error("Illegal value for "+this.toString(true)+": "+val+" ("+msg+")");
+                    throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
                 }.bind(this);
                 if (value === null) { // NULL values for optional fields
                     if (this.required)
@@ -1577,25 +1607,27 @@
                     case ProtoBuf.TYPES["int64"]:
                     case ProtoBuf.TYPES["sint64"]:
                     case ProtoBuf.TYPES["sfixed64"]: {
-                        if (ProtoBuf.Long) {
+                        if (ProtoBuf.Long)
                             try {
                                 return mkLong(value, false);
                             } catch (e) {
                                 fail(typeof value, e.message);
                             }
-                        }
+                        else
+                            fail(typeof value, "requires Long.js");
                     }
 
                     // Unsigned 64bit
                     case ProtoBuf.TYPES["uint64"]:
                     case ProtoBuf.TYPES["fixed64"]: {
-                        if (ProtoBuf.Long) {
+                        if (ProtoBuf.Long)
                             try {
                                 return mkLong(value, true);
                             } catch (e) {
                                 fail(typeof value, e.message);
                             }
-                        }
+                        else
+                            fail(typeof value, "requires Long.js");
                     }
 
                     // Bool
@@ -1713,12 +1745,12 @@
              * @expose
              */
             Field.prototype.encodeValue = function(value, buffer) {
-                if (value === null) return; // Nothing to encode
+                if (value === null) return buffer; // Nothing to encode
                 // Tag has already been written
 
                 switch (this.type) {
                     // 32bit signed varint
-                    case ProtoBuf.TYPES["int32"]: {
+                    case ProtoBuf.TYPES["int32"]:
                         // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
                         // long – it is, effectively, treated like a very large unsigned integer." (see #122)
                         if (value < 0)
@@ -1726,7 +1758,6 @@
                         else
                             buffer.writeVarint32(value);
                         break;
-                    }
 
                     // 32bit unsigned varint
                     case ProtoBuf.TYPES["uint32"]:
@@ -1770,13 +1801,12 @@
                         break;
 
                     // Bool
-                    case ProtoBuf.TYPES["bool"]: {
+                    case ProtoBuf.TYPES["bool"]:
                         if (typeof value === 'string')
                             buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
                         else
                             buffer.writeVarint32(value ? 1 : 0);
                         break;
-                    }
 
                     // Constant enum value
                     case ProtoBuf.TYPES["enum"]:
@@ -1799,40 +1829,126 @@
                         break;
 
                     // Length-delimited bytes
-                    case ProtoBuf.TYPES["bytes"]: {
-                        if (value.offset > value.length) { // Forgot to flip?
-                            // TODO: This is actually dangerous as it might lead to a condition where data is included that isn't
-                            // meant to be transmitted. Shall we remove this?
-                            buffer = buffer.clone().flip();
-                        }
+                    case ProtoBuf.TYPES["bytes"]:
+                        if (value.remaining() < 0)
+                            throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
                         var prevOffset = value.offset;
                         buffer.writeVarint32(value.remaining());
                         buffer.append(value);
                         value.offset = prevOffset;
                         break;
-                    }
 
                     // Embedded message
-                    case ProtoBuf.TYPES["message"]: {
+                    case ProtoBuf.TYPES["message"]:
                         var bb = new ByteBuffer().LE();
                         this.resolvedType.encode(value, bb);
                         buffer.writeVarint32(bb.offset);
                         buffer.append(bb.flip());
                         break;
-                    }
 
                     // Legacy group
-                    case ProtoBuf.TYPES["group"]: {
+                    case ProtoBuf.TYPES["group"]:
                         this.resolvedType.encode(value, buffer);
                         buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
                         break;
-                    }
 
                     default:
                         // We should never end here
                         throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
                 }
                 return buffer;
+            };
+
+            /**
+             * Calculates the length of this field's value on the network level.
+             * @param {*} value Field value
+             * @returns {number} Byte length
+             * @expose
+             */
+            Field.prototype.calculate = function(value) {
+                value = this.verifyValue(value); // May throw
+                if (this.type === null || typeof this.type !== 'object')
+                    throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
+                if (value === null || (this.repeated && value.length == 0))
+                    return 0; // Optional omitted
+                var n = 0;
+                try {
+                    if (this.repeated) {
+                        var i, ni;
+                        if (this.options["packed"] && ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
+                            n += ByteBuffer.calculateVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
+                            ni = 0;
+                            for (i=0; i<value.length; i++)
+                                ni += this.calculateValue(value[i]);
+                            n += ByteBuffer.calculateVarint32(ni);
+                            n += ni;
+                        } else {
+                            for (i=0; i<value.length; i++)
+                                n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType),
+                                n += this.calculateValue(value[i]);
+                        }
+                    } else {
+                        n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType);
+                        n += this.calculateValue(value);
+                    }
+                } catch (e) {
+                    throw Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")");
+                }
+                return n;
+            };
+
+            /**
+             * Calculates the byte length of a value.
+             * @param {*} value Field value
+             * @returns {number} Byte length
+             * @throws {Error} If the value cannot be calculated
+             * @expose
+             */
+            Field.prototype.calculateValue = function(value) {
+                if (value === null) return 0; // Nothing to encode
+                // Tag has already been written
+                var n;
+                switch (this.type) {
+                    case ProtoBuf.TYPES["int32"]:
+                        return value < 0 ? ByteBuffer.calculateVarint64(value) : ByteBuffer.calculateVarint32(value);
+                    case ProtoBuf.TYPES["uint32"]:
+                        return ByteBuffer.calculateVarint32(value);
+                    case ProtoBuf.TYPES["sint32"]:
+                        return ByteBuffer.calculateVarint32(ByteBuffer.zigZagEncode32(value));
+                    case ProtoBuf.TYPES["fixed32"]:
+                    case ProtoBuf.TYPES["sfixed32"]:
+                    case ProtoBuf.TYPES["float"]:
+                        return 4;
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["uint64"]:
+                        return ByteBuffer.calculateVarint64(value);
+                    case ProtoBuf.TYPES["sint64"]:
+                        return ByteBuffer.calculateVarint64(ByteBuffer.zigZagEncode64(value));
+                    case ProtoBuf.TYPES["fixed64"]:
+                    case ProtoBuf.TYPES["sfixed64"]:
+                        return 8;
+                    case ProtoBuf.TYPES["bool"]:
+                        return 1;
+                    case ProtoBuf.TYPES["enum"]:
+                        return ByteBuffer.calculateVarint32(value);
+                    case ProtoBuf.TYPES["double"]:
+                        return 8;
+                    case ProtoBuf.TYPES["string"]:
+                        n = ByteBuffer.calculateUTF8Bytes(value);
+                        return ByteBuffer.calculateVarint32(n) + n;
+                    case ProtoBuf.TYPES["bytes"]:
+                        if (value.remaining() < 0)
+                            throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
+                        return ByteBuffer.calculateVarint32(value.remaining()) + value.remaining();
+                    case ProtoBuf.TYPES["message"]:
+                        n = this.resolvedType.calculate(value);
+                        return ByteBuffer.calculateVarint32(n) + n;
+                    case ProtoBuf.TYPES["group"]:
+                        n = this.resolvedType.calculate(value);
+                        return n + ByteBuffer.calculateVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
+                }
+                // We should never end here
+                throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
             };
 
             /**
@@ -1951,6 +2067,31 @@
              * @expose
              */
             Reflect.Message.Field = Field;
+
+            /**
+             * Constructs a new Message ExtendedField.
+             * @exports ProtoBuf.Reflect.Message.ExtendedField
+             * @param {ProtoBuf.Reflect.Message} message Message reference
+             * @param {string} rule Rule, one of requried, optional, repeated
+             * @param {string} type Data type, e.g. int32
+             * @param {string} name Field name
+             * @param {number} id Unique field id
+             * @param {Object.<string.*>=} options Options
+             * @constructor
+             * @extends ProtoBuf.Reflect.Message.Field
+             */
+            var ExtendedField = function(message, rule, type, name, id, options) {
+                Field.call(this, message, rule, type, name, id, options);
+            };
+
+            // Extends Field
+            ExtendedField.prototype = Object.create(Field.prototype);
+
+            /**
+             * @alias ProtoBuf.Reflect.Message.ExtendedField
+             * @expose
+             */
+            Reflect.Message.ExtendedField = ExtendedField;
 
             /**
              * Constructs a new Enum.
@@ -2355,11 +2496,11 @@
              */
             Builder.prototype.define = function(pkg, options) {
                 if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
-                    throw Error("Illegal package name: "+pkg);
+                    throw Error("Illegal package: "+pkg);
                 var part = pkg.split("."), i;
                 for (i=0; i<part.length; i++) // To be absolutely sure
                     if (!Lang.NAME.test(part[i]))
-                        throw Error("Illegal package name: "+part[i]);
+                        throw Error("Illegal package: "+part[i]);
                 for (i=0; i<part.length; i++) {
                     if (!this.ptr.hasChild(part[i])) // Keep existing namespace
                         this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
@@ -2560,19 +2701,23 @@
                                             throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                         if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                             throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
+                                        // TODO: See #161
+                                        /* subObj = new (this.ptr instanceof Reflect.Message ? Reflect.Message.ExtendedField : Reflect.Message.Field)(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
+                                        if (this.ptr instanceof Reflect.Message)
+                                            this.ptr.addChild(subObj);
+                                        else
+                                            obj.addChild(subObj); */
                                         obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
                                     }
-                                    /* if (this.ptr instanceof Reflect.Message)
-                                        this.ptr.addChild(obj); // Reference the extended message here to enable proper lookups */
                                 } else if (!/\.?google\.protobuf\./.test(def["ref"])) // Silently skip internal extensions
                                     throw Error("Extended message "+def["ref"]+" is not defined");
                             } else
-                                throw Error("Not a valid message, enum, service or extend definition: "+JSON.stringify(def));
+                                throw Error("Not a valid definition: "+JSON.stringify(def));
                             def = null;
                         }
                         // Break goes here
                     } else
-                        throw Error("Not a valid namespace definition: "+JSON.stringify(defs));
+                        throw Error("Not a valid namespace: "+JSON.stringify(defs));
                     defs = null;
                     this.ptr = this.ptr.parent; // This namespace is s done
                 }
@@ -2755,18 +2900,18 @@
                     if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
                         res = this.ptr.parent.resolve(this.ptr.requestName);
                         if (!res || !(res instanceof ProtoBuf.Reflect.Message))
-                            throw Error("Illegal request type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName);
+                            throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName);
                         this.ptr.resolvedRequestType = res;
                         res = this.ptr.parent.resolve(this.ptr.responseName);
                         if (!res || !(res instanceof ProtoBuf.Reflect.Message))
-                            throw Error("Illegal response type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
+                            throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
                         this.ptr.resolvedResponseType = res;
                     } else {
                         // Should not happen as nothing else is implemented
-                        throw Error("Illegal service method type in "+this.ptr.toString(true));
+                        throw Error("Illegal service type in "+this.ptr.toString(true));
                     }
                 } else
-                    throw Error("Illegal object type in namespace: "+typeof(this.ptr)+":"+this.ptr);
+                    throw Error("Illegal object in namespace: "+typeof(this.ptr)+":"+this.ptr);
                 this.reset();
             };
 

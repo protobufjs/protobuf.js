@@ -44,6 +44,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     Reflect.Message.Field = Field;
 
+    //? include("Reflect/Message/ExtendedField.js");
+
+    /**
+     * @alias ProtoBuf.Reflect.Message.ExtendedField
+     * @expose
+     */
+    Reflect.Message.ExtendedField = ExtendedField;
+
     //? include("Reflect/Enum.js");
 
     /**
@@ -75,7 +83,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @expose
      */
     Reflect.Service.Method = Method;
-
+    
     //? include("Reflect/Service/RPCMethod.js");
 
     /**

@@ -326,6 +326,13 @@ ProtoBuf.Reflect.Message.prototype.encode = function(message, buffer) {};
 
 /**
  * @param {!ProtoBuf.Builder.Message} message
+ * @return {number}
+ * @throws {Error}
+ */
+ProtoBuf.Reflect.Message.prototype.calculate = function(message) {};
+
+/**
+ * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
  * @return {!ByteBuffer}
  * @throws {Error}
@@ -409,16 +416,22 @@ ProtoBuf.Reflect.Message.Field.prototype.verifyValue = function(value, skipRepea
  * @param {!ByteBuffer} buffer
  * @return {!ByteBuffer}
  * @throws {Error}
- * @nosideeffects
  */
 ProtoBuf.Reflect.Message.Field.prototype.encode = function(value, buffer) {};
+
+/**
+ * @param {*} value
+ * @return {number}
+ * @throws {Error}
+ * @nosideeffects
+ */
+ProtoBuf.Reflect.Message.Field.prototype.calculate = function(value) {};
 
 /**
  * @param {number} wireType
  * @param {!ByteBuffer} buffer
  * @return {*}
  * @throws {Error}
- * @nosideeffects
  */
 ProtoBuf.Reflect.Message.Field.prototype.decode = function(wireType, buffer) {};
 
@@ -427,7 +440,6 @@ ProtoBuf.Reflect.Message.Field.prototype.decode = function(wireType, buffer) {};
  * @param {!ByteBuffer} buffer
  * @return {!ByteBuffer}
  * @throws {Error}
- * @nosideeffects
  */
 ProtoBuf.Reflect.Message.Field.prototype.encodeValue = function(value, buffer) {};
 
@@ -706,14 +718,19 @@ ProtoBuf.Builder.Message.prototype.$get = function(key) {};
  * @param {ByteBuffer=} buffer
  * @return {!ByteBuffer}
  * @throws {Error}
- * @nosideeffects
  */
 ProtoBuf.Builder.Message.prototype.encode = function(buffer) {};
 
 /**
- * @return {!ArrayBuffer}
+ * @return {number}
  * @throws {Error}
  * @nosideeffects
+ */
+ProtoBuf.Builder.Message.prototype.calculate = function() {};
+
+/**
+ * @return {!ArrayBuffer}
+ * @throws {Error}
  */
 ProtoBuf.Builder.Message.prototype.encodeAB = function() {};
 
@@ -727,7 +744,6 @@ ProtoBuf.Builder.Message.prototype.toArrayBuffer = function() {};
 /**
  * @return {!Buffer}
  * @throws {Error}
- * @nosideeffects
  */
 ProtoBuf.Builder.Message.prototype.encodeNB = function() {};
 

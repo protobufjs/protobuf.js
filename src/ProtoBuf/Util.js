@@ -11,7 +11,7 @@ ProtoBuf.Util = (function() {
         /** @expose */
         Object.create = function (o) {
             if (arguments.length > 1)
-                throw Error('Object.create implementation only accepts the first parameter.');
+                throw Error('Object.create polyfill only accepts the first parameter.');
             function F() {}
             F.prototype = o;
             return new F();

@@ -40,15 +40,13 @@ Parser.prototype.parse = function() {
     while(token = this.tn.next()) {
         switch (token) {
             case 'package':
-                if (!header)
-                    throw Error("Illegal package definition at line "+this.tn.line+": Must be declared before the first message or enum");
-                if (topLevel["package"] !== null)
-                    throw Error("Illegal package definition at line "+this.tn.line+": Package already declared");
+                if (!header || topLevel["package"] !== null)
+                    throw Error("Illegal package at line "+this.tn.line);
                 topLevel["package"] = this._parsePackage(token);
                 break;
             case 'import':
                 if (!header)
-                    throw Error("Illegal import definition at line "+this.tn.line+": Must be declared before the first message or enum");
+                    throw Error("Illegal import at line "+this.tn.line);
                 topLevel.imports.push(this._parseImport(token));
                 break;
             case 'message':
@@ -61,7 +59,7 @@ Parser.prototype.parse = function() {
                 break;
             case 'option':
                 if (!header)
-                    throw Error("Illegal option definition at line "+this.tn.line+": Must be declared before the first message or enum");
+                    throw Error("Illegal option at line "+this.tn.line);
                 this._parseOption(topLevel, token);
                 break;
             case 'service':
@@ -74,7 +72,7 @@ Parser.prototype.parse = function() {
                 this._parseIgnoredStatement(topLevel, token);
                 break;
             default:
-                throw Error("Illegal top level declaration at line "+this.tn.line+": "+token);
+                throw Error("Illegal token at line "+this.tn.line+": "+token);
         }
     }
     delete topLevel["name"];
@@ -101,7 +99,7 @@ Parser.prototype._parseNumber = function(val) {
         return sign*parseInt(val.substring(1), 8);
     else if (Lang.NUMBER_FLT.test(val))
         return sign*parseFloat(val);
-    throw Error("Illegal number value at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
+    throw Error("Illegal number at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
 };
 
 /**
@@ -125,10 +123,10 @@ Parser.prototype._parseId = function(val, neg) {
     else if (Lang.NUMBER_OCT.test(val))
         id = parseInt(val.substring(1), 8);
     else
-        throw Error("Illegal ID value at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
+        throw Error("Illegal ID at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
     id = (sign*id)|0; // Force to 32bit
     if (!neg && id < 0)
-        throw Error("Illegal ID range at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
+        throw Error("Illegal ID at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
     return id;
 };
 
@@ -142,11 +140,11 @@ Parser.prototype._parseId = function(val, neg) {
 Parser.prototype._parsePackage = function(token) {
     token = this.tn.next();
     if (!Lang.TYPEREF.test(token))
-        throw Error("Illegal package name at line "+this.tn.line+": "+token);
+        throw Error("Illegal package at line "+this.tn.line+": "+token);
     var pkg = token;
     token = this.tn.next();
     if (token != Lang.END)
-        throw Error("Illegal end of package definition at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+        throw Error("Illegal end of package at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
     return pkg;
 };
 
@@ -162,14 +160,14 @@ Parser.prototype._parseImport = function(token) {
     if (token === "public")
         token = this.tn.next();
     if (token !== Lang.STRINGOPEN && token !== Lang.STRINGOPEN_SQ)
-        throw Error("Illegal begin of import value at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' or '"+Lang.STRINGOPEN_SQ+"' expected)");
+        throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' or '"+Lang.STRINGOPEN_SQ+"' expected)");
     var imported = this.tn.next();
     token = this.tn.next();
     if (token !== this.tn.stringEndsWith)
-        throw Error("Illegal end of import value at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+        throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
     token = this.tn.next();
     if (token !== Lang.END)
-        throw Error("Illegal end of import definition at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+        throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
     return imported;
 };
 
@@ -189,12 +187,12 @@ Parser.prototype._parseOption = function(parent, token) {
     if (!Lang.TYPEREF.test(token))
         // we can allow options of the form google.protobuf.* since they will just get ignored anyways
         if (!/google\.protobuf\./.test(token))
-            throw Error("Illegal option name in message "+parent.name+" at line "+this.tn.line+": "+token);
+            throw Error("Illegal option in message "+parent.name+" at line "+this.tn.line+": "+token);
     var name = token;
     token = this.tn.next();
     if (custom) { // (my_method_option).foo, (my_method_option), some_method_option, (foo.my_option).bar
         if (token !== Lang.COPTCLOSE)
-            throw Error("Illegal custom option name delimiter in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)");
+            throw Error("Illegal option in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)");
         name = '('+name+')';
         token = this.tn.next();
         if (Lang.FQTYPEREF.test(token))

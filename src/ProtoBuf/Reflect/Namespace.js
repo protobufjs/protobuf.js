@@ -42,9 +42,11 @@ Namespace.prototype.getChildren = function(type) {
     if (type == null)
         return this.children.slice();
     var children = [];
-    for (var i=0; i<this.children.length; i++)
+    for (var i=0, k=this.children.length; i<k; ++i)
         if (this.children[i] instanceof type)
-            children.push(this.children[i]);
+            // We also need to distinguish between Field and ExtendedField which is an instance of Field
+            if (type !== Message.Field || !(this.children[i] instanceof Message.ExtendedField))
+                children.push(this.children[i]);
     return children;
 };
 
@@ -147,7 +149,7 @@ Namespace.prototype.build = function() {
     /** @dict */
     var ns = {};
     var children = this.getChildren(), child;
-    for (var i=0; i<children.length; i++) {
+    for (var i=0, k=children.length; i<k; ++i) {
         child = children[i];
         if (child instanceof Namespace)
             ns[child.name] = child.build();

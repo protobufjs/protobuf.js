@@ -251,6 +251,18 @@ Message.prototype.encode = function(buffer) {
 };
 
 /**
+ * Calculates the byte length of the message.
+ * @name ProtoBuf.Builder.Message#calculate
+ * @function
+ * @returns {number} Byte length
+ * @throws {Error} If the message cannot be calculated or if required fields are missing.
+ * @expose
+ */
+Message.prototype.calculate = function() {
+    return T.calculate(this);
+};
+
+/**
  * Encodes the varint32 length-delimited message.
  * @name ProtoBuf.Builder.Message#encodeDelimited
  * @function
@@ -433,8 +445,6 @@ Message.prototype.toRaw = function(includeBuffers) {
  * @see ProtoBuf.Builder.Message.decodeHex
  */
 Message.decode = function(buffer, enc) {
-    if (buffer === null)
-        throw Error("buffer must not be null");
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
     buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
@@ -461,8 +471,6 @@ Message.decode = function(buffer, enc) {
  * @expose
  */
 Message.decodeDelimited = function(buffer, enc) {
-    if (buffer === null)
-        throw Error("buffer must not be null");
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
     buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw

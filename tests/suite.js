@@ -134,8 +134,10 @@
                 test.throws(function() {
                     inst.setA([]);
                 });
+                var size = inst.calculate();
                 var bb = new ByteBuffer(3);
                 inst.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<08 98 01>");
                 var instDec = Test1.decode(bb);
                 test.equal(instDec.a, 152);
@@ -155,7 +157,9 @@
                 var inst = new Test1u(-1);
                 test.strictEqual(inst.a, 4294967295);
                 var bb = new ByteBuffer(6);
+                var size = inst.calculate();
                 inst.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<08 FF FF FF FF 0F>");
                 var instDec = Test1u.decode(bb);
                 test.strictEqual(instDec.a, 4294967295);
@@ -174,7 +178,9 @@
                 var Test2 = builder.build("Test2");
                 var inst = new Test2("testing");
                 var bb = new ByteBuffer(9);
+                var size = inst.calculate();
                 inst.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<12 07 74 65 73 74 69 6E 67>");
                 var instDec = Test2.decode(bb);
                 test.equal(instDec.b, "testing");
@@ -195,7 +201,9 @@
                 var inst = new Test3(new Test1(150));
                 var bb = new ByteBuffer(5);
                 test.equal(inst.c.a, 150);
+                var size = inst.calculate();
                 inst.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<1A 03 08 96 01>");
                 var instDec = Test3.decode(bb);
                 test.equal(instDec.c.a, 150);
@@ -212,7 +220,9 @@
                 var inst = new Test4([3, 270, 86942]);
                 var bb = new ByteBuffer(8);
                 test.equal(inst.d.length, 3);
+                var size = inst.calculate();
                 inst.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<22 06 03 8E 02 9E A7 05>");
                 var instDec = Test4.decode(bb);
                 test.equal(bb.toString("debug"), "22 06 03 8E 02 9E A7 05|");
@@ -344,7 +354,9 @@
                 var myTest = new Test(bb);
                 test.strictEqual(myTest.b.array, bb.array);
                 var bb2 = new ByteBuffer(6);
+                var size = myTest.calculate();
                 myTest.encode(bb2);
+                test.strictEqual(bb2.offset, size);
                 test.equal(bb2.flip().toString("debug"), "<0A 04 12 34 56 78>");
                 myTest = Test.decode(bb2);
                 test.equal(myTest.b.BE().readUint32(), 0x12345678);
@@ -657,7 +669,9 @@
                 // Multiple
                 outer = new Outer({ inner: [new Inner(1), new Inner(2)] });
                 bb = new ByteBuffer(8);
+                var size = outer.calculate();
                 outer.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<0A 02 08 01 0A 02 08 02>");
                 douter = Outer.decode(bb);
                 test.ok(douter.inner instanceof Array);
@@ -678,7 +692,9 @@
                 // Both empty
                 var message = new Message();
                 var bb = new ByteBuffer(1).fill(0).flip();
+                var size = message.calculate();
                 message.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "|00");
                 message = Message.decode(bb);
                 test.ok(message.a instanceof Array);
@@ -687,7 +703,9 @@
                 test.equal(message.b.length, 0);
                 // Both non-empty
                 message = new Message([1,2,3], [1,2,3]);
+                size = message.calculate();
                 message.encode(bb.resize(11));
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<0A 03 01 02 03 10 01 10 02 10 03>");
                 message = Message.decode(bb);
                 test.ok(message.a instanceof Array);
@@ -719,7 +737,10 @@
                 var Inner = root.Outer.MyInner;
                 var outer = new Outer("a", [new Inner("hello")], "b", new Inner("world"));
                 var bb = new ByteBuffer();
-                outer.encode(bb).flip().compact();
+                var size = outer.calculate();
+                outer.encode(bb);
+                test.strictEqual(bb.offset, size);
+                bb.flip().compact();
                 var wiredMsg = [
                     "0A", // 1|010 = id 1, wire type 2 (ldelim)
                     "01", // length 1
@@ -766,11 +787,12 @@
                 test.ok(myTest.uval instanceof ByteBuffer.Long);
                 test.equal(myTest.uval.unsigned, true);
                 test.equal(myTest.uval.toNumber(), 1);
-                
                 myTest.setVal(-2);
                 myTest.setUval(2);
                 var bb = new ByteBuffer(18); // 2x tag + 2x 64bit
+                var size = myTest.calculate();
                 myTest.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<09 FE FF FF FF FF FF FF FF 11 02 00 00 00 00 00 00 00>");
                 //                         ^ wireType=1, id=1         ^ wireType=1, id=2
                 myTest = Test.decode(bb);
@@ -806,7 +828,9 @@
                 myTest.setUval(2);
                 myTest.setSval(-3);
                 var bb = new ByteBuffer(3+10+2); // 3x tag + 1x varint 10byte + 2x varint 1byte
+                var size = myTest.calculate();
                 myTest.encode(bb);
+                test.strictEqual(bb.offset, size);
                 test.equal(bb.flip().toString("debug"), "<08 FE FF FF FF FF FF FF FF FF 01 10 02 18 05>");
                 // 08: wireType=0, id=1, 18: wireType=0, id=2, ?: wireType=0, id=3
                 myTest = Test.decode(bb);
@@ -1267,7 +1291,9 @@
                 var builder = ProtoBuf.loadProto("message Test { required int32 value = 2; }");
                 var Test = builder.build("Test");
                 var t = new Test(-1);
-                var bb = t.encode();
+                var size = t.calculate();
+                var bb = t.encode(); // flips
+                test.strictEqual(bb.remaining(), size);
                 test.strictEqual(bb.toBase64(), "EP///////////wE=");
                 t = Test.decode(bb);
                 test.strictEqual(t.value, -1);
@@ -1285,7 +1311,9 @@
                     test.strictEqual(Test.LobbyType.INVALID, -1);
                     var t = new Test(Test.LobbyType.INVALID);
                     test.strictEqual(t.type, -1);
-                    var bb = t.encode();
+                    var size = t.calculate();
+                    var bb = t.encode(); // flips
+                    test.strictEqual(bb.remaining(), size);
                     t = Test.decode(bb);
                     test.strictEqual(t.type, -1);
                 });                

@@ -78,7 +78,7 @@ Message.prototype.build = function(rebuild) {
 
 /**
  * Encodes a runtime message's contents to the specified buffer.
- * @param {ProtoBuf.Builder.Message} message Runtime message to encode
+ * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
  * @param {ByteBuffer} buffer ByteBuffer to write to
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
@@ -87,8 +87,8 @@ Message.prototype.build = function(rebuild) {
 Message.prototype.encode = function(message, buffer) {
     var fields = this.getChildren(Message.Field),
         fieldMissing = null;
-    for (var i=0; i<fields.length; i++) {
-        var val = message.$get(fields[i].name);
+    for (var i=0, val; i<fields.length; i++) {
+        val = message.$get(fields[i].name);
         if (fields[i].required && val === null) {
             if (fieldMissing === null)
                 fieldMissing = fields[i];
@@ -101,6 +101,26 @@ Message.prototype.encode = function(message, buffer) {
         throw(err);
     }
     return buffer;
+};
+
+/**
+ * Calculates a runtime message's byte length.
+ * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
+ * @returns {number} Byte length
+ * @throws {Error} If required fields are missing or the message cannot be calculated for another reason
+ * @expose
+ */
+Message.prototype.calculate = function(message) {
+    var fields = this.getChildren(Message.Field),
+        n = 0;
+    for (var i=0, val; i<fields.length; i++) {
+        val = message.$get(fields[i].name);
+        if (fields[i].required && val === null)
+           throw Error("Missing at least one required field for "+this.toString(true)+": "+fields[i]);
+        else
+            n += fields[i].calculate(val);
+    }
+    return n;
 };
 
 /**
