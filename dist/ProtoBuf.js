@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.2.0";
+        ProtoBuf.VERSION = "3.2.1";
 
         /**
          * Wire types.
@@ -1393,8 +1393,8 @@
                 var children = [];
                 for (var i=0, k=this.children.length; i<k; ++i)
                     if (this.children[i] instanceof type)
-                        // We also need to distinguish between Field and ExtendedField which is an instance of Field
-                        if (type !== Message.Field || !(this.children[i] instanceof Message.ExtendedField))
+                        // We also need to distinguish between Field and ExtensionField which is an instance of Field
+                        if (type !== Message.Field || !(this.children[i] instanceof Message.ExtensionField))
                             children.push(this.children[i]);
                 return children;
             };
@@ -2927,8 +2927,8 @@
             Reflect.Message.Field = Field;
 
             /**
-             * Constructs a new Message ExtendedField.
-             * @exports ProtoBuf.Reflect.Message.ExtendedField
+             * Constructs a new Message ExtensionField.
+             * @exports ProtoBuf.Reflect.Message.ExtensionField
              * @param {ProtoBuf.Reflect.Message} message Message reference
              * @param {string} rule Rule, one of requried, optional, repeated
              * @param {string} type Data type, e.g. int32
@@ -2938,18 +2938,18 @@
              * @constructor
              * @extends ProtoBuf.Reflect.Message.Field
              */
-            var ExtendedField = function(message, rule, type, name, id, options) {
+            var ExtensionField = function(message, rule, type, name, id, options) {
                 Field.call(this, message, rule, type, name, id, options);
             };
 
             // Extends Field
-            ExtendedField.prototype = Object.create(Field.prototype);
+            ExtensionField.prototype = Object.create(Field.prototype);
 
             /**
-             * @alias ProtoBuf.Reflect.Message.ExtendedField
+             * @alias ProtoBuf.Reflect.Message.ExtensionField
              * @expose
              */
-            Reflect.Message.ExtendedField = ExtendedField;
+            Reflect.Message.ExtensionField = ExtensionField;
 
             /**
              * Constructs a new Enum.
@@ -3560,7 +3560,7 @@
                                         if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                             throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
                                         // TODO: See #161
-                                        /* subObj = new (this.ptr instanceof Reflect.Message ? Reflect.Message.ExtendedField : Reflect.Message.Field)(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
+                                        /* subObj = new (this.ptr instanceof Reflect.Message ? Reflect.Message.ExtensionField : Reflect.Message.Field)(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
                                         if (this.ptr instanceof Reflect.Message)
                                             this.ptr.addChild(subObj);
                                         else

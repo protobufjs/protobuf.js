@@ -44,13 +44,13 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     Reflect.Message.Field = Field;
 
-    //? include("Reflect/Message/ExtendedField.js");
+    //? include("Reflect/Message/ExtensionField.js");
 
     /**
-     * @alias ProtoBuf.Reflect.Message.ExtendedField
+     * @alias ProtoBuf.Reflect.Message.ExtensionField
      * @expose
      */
-    Reflect.Message.ExtendedField = ExtendedField;
+    Reflect.Message.ExtensionField = ExtensionField;
 
     //? include("Reflect/Enum.js");
 

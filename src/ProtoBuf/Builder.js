@@ -280,7 +280,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                 if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                     throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
                                 // TODO: See #161
-                                /* subObj = new (this.ptr instanceof Reflect.Message ? Reflect.Message.ExtendedField : Reflect.Message.Field)(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
+                                /* subObj = new (this.ptr instanceof Reflect.Message ? Reflect.Message.ExtensionField : Reflect.Message.Field)(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
                                 if (this.ptr instanceof Reflect.Message)
                                     this.ptr.addChild(subObj);
                                 else

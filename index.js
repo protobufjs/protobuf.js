@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-var path = require("path"),
-    ProtoBuf = require(path.join(__dirname, "dist", "ProtoBuf.js"));
+var ProtoBuf = require("./dist/ProtoBuf.js");
 
 module.exports = ProtoBuf;
