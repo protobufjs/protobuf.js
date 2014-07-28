@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.2.1";
+        ProtoBuf.VERSION = "3.2.2";
 
         /**
          * Wire types.
@@ -1207,7 +1207,7 @@
                      * @function
                      * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
                      * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
-                     * @return {!ProtoBuf.Builder.Message} Decoded message
+                     * @return {ProtoBuf.Builder.Message} Decoded message or `null` if not enough bytes are available yet
                      * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
                      *  returns the decoded message with missing fields in the `decoded` property on the error.
                      * @expose
@@ -1216,10 +1216,22 @@
                         if (typeof buffer === 'string')
                             buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
                         buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
-                        var len = buffer.readVarint32();
-                        var msg = T.decode(buffer.slice(buffer.offset, buffer.offset + len).LE());
-                        buffer.offset += len;
-                        return msg;
+                        if (buffer.remaining() < 1)
+                            return null;
+                        var off = buffer.offset,
+                            len = buffer.readVarint32();
+                        if (buffer.remaining() < len) {
+                            buffer.offset = off;
+                            return null;
+                        }
+                        try {
+                            var msg = T.decode(buffer.slice(buffer.offset, buffer.offset + len).LE());
+                            buffer.offset += len;
+                            return msg;
+                        } catch (err) {
+                            buffer.offset += len;
+                            throw err;
+                        }
                     };
 
                     /**
@@ -1964,7 +1976,7 @@
                 var value, nBytes;
                 if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated)))
                     throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");
-                if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"]) {
+                if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"] && ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
                     if (!skipRepeated) {
                         nBytes = buffer.readVarint32();
                         nBytes = buffer.offset + nBytes; // Limit

@@ -465,7 +465,7 @@ Message.decode = function(buffer, enc) {
  * @function
  * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
  * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
- * @return {!ProtoBuf.Builder.Message} Decoded message
+ * @return {ProtoBuf.Builder.Message} Decoded message or `null` if not enough bytes are available yet
  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
  *  returns the decoded message with missing fields in the `decoded` property on the error.
  * @expose
@@ -474,10 +474,22 @@ Message.decodeDelimited = function(buffer, enc) {
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
     buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
-    var len = buffer.readVarint32();
-    var msg = T.decode(buffer.slice(buffer.offset, buffer.offset + len).LE());
-    buffer.offset += len;
-    return msg;
+    if (buffer.remaining() < 1)
+        return null;
+    var off = buffer.offset,
+        len = buffer.readVarint32();
+    if (buffer.remaining() < len) {
+        buffer.offset = off;
+        return null;
+    }
+    try {
+        var msg = T.decode(buffer.slice(buffer.offset, buffer.offset + len).LE());
+        buffer.offset += len;
+        return msg;
+    } catch (err) {
+        buffer.offset += len;
+        throw err;
+    }
 };
 
 /**

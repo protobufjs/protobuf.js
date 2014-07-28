@@ -508,7 +508,7 @@ Field.prototype.decode = function(wireType, buffer, skipRepeated) {
     var value, nBytes;
     if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated)))
         throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");
-    if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"]) {
+    if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"] && ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
         if (!skipRepeated) {
             nBytes = buffer.readVarint32();
             nBytes = buffer.offset + nBytes; // Limit

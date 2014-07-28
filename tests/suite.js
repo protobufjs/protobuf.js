@@ -1481,6 +1481,27 @@
             test.done();
         },
         
+        "packable": function(test) {
+            try {
+                var proto = 'message Inner { required int32 id=2; }\nmessage Outer { repeated Inner inner = 1 [packed=true]; }';
+                var builder = ProtoBuf.loadProto(proto);
+                var root = builder.build();
+                var inner = new root.Inner(1),
+                    outer = new root.Outer(inner);
+                var bb = outer.encode().compact();
+                test.strictEqual(bb.toDebug(), "<0A 02 10 01>");
+                // 0A: wt 2, id 1
+                // 02: len 2
+                // 10: wt 0, id 2
+                // 01: 1
+                var outer2 = root.Outer.decode(bb);
+                test.strictEqual(outer2.inner.id, 1);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+        
         "descriptor": function(test) {
             try {
                 var proto = 'import "./google/protobuf/descriptor.proto";';
