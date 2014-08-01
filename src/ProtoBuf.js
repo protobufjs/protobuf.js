@@ -226,6 +226,14 @@
          * @expose
          */
         ProtoBuf.convertFieldsToCamelCase = false;
+
+        /**
+         * By default, messages are populated with (setX, set_x) accessors for each field. This can be disabled by
+         *  setting this to `false` prior to building messages.
+         * @type {boolean}
+         * @expose
+         */
+        ProtoBuf.populateAccessors = true;
         
         //? include("ProtoBuf/Util.js");
         

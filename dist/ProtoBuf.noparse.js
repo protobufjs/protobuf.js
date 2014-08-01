@@ -227,6 +227,14 @@
         ProtoBuf.convertFieldsToCamelCase = false;
 
         /**
+         * By default, messages are populated with (setX, set_x) accessors for each field. This can be disabled by
+         *  setting this to `false` prior to building messages.
+         * @type {boolean}
+         * @expose
+         */
+        ProtoBuf.populateAccessors = true;
+
+        /**
          * @alias ProtoBuf.Util
          * @expose
          */
@@ -894,73 +902,74 @@
                     for (var i=0; i<fields.length; i++) {
                         var field = fields[i];
 
-                        (function(field) {
-                            // set/get[SomeValue]
-                            var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
-                                return match.toUpperCase().replace('_','');
-                            });
-                            Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
+                        if (ProtoBuf.populateAccessors)
+                            (function(field) {
+                                // set/get[SomeValue]
+                                var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
+                                    return match.toUpperCase().replace('_','');
+                                });
+                                Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
 
-                            // set/get_[some_value]
-                            var name = field.originalName.replace(/([A-Z])/g, function(match) {
-                                return "_"+match;
-                            });
+                                // set/get_[some_value]
+                                var name = field.originalName.replace(/([A-Z])/g, function(match) {
+                                    return "_"+match;
+                                });
 
-                            /**
-                             * Sets a value. This method is present for each field, but only if there is no name conflict with
-                             * another field.
-                             * @name ProtoBuf.Builder.Message#set[SomeField]
-                             * @function
-                             * @param {*} value Value to set
-                             * @abstract
-                             * @throws {Error} If the value cannot be set
-                             */
-                            if (!T.hasChild("set"+Name))
-                                Message.prototype["set"+Name] = function(value) {
-                                    this.$set(field.name, value);
-                                };
+                                /**
+                                 * Sets a value. This method is present for each field, but only if there is no name conflict with
+                                 * another field.
+                                 * @name ProtoBuf.Builder.Message#set[SomeField]
+                                 * @function
+                                 * @param {*} value Value to set
+                                 * @abstract
+                                 * @throws {Error} If the value cannot be set
+                                 */
+                                if (!T.hasChild("set"+Name))
+                                    Message.prototype["set"+Name] = function(value) {
+                                        this.$set(field.name, value);
+                                    };
 
-                            /**
-                             * Sets a value. This method is present for each field, but only if there is no name conflict with
-                             * another field.
-                             * @name ProtoBuf.Builder.Message#set_[some_field]
-                             * @function
-                             * @param {*} value Value to set
-                             * @abstract
-                             * @throws {Error} If the value cannot be set
-                             */
-                            if (!T.hasChild("set_"+name))
-                                Message.prototype["set_"+name] = function(value) {
-                                    this.$set(field.name, value);
-                                };
+                                /**
+                                 * Sets a value. This method is present for each field, but only if there is no name conflict with
+                                 * another field.
+                                 * @name ProtoBuf.Builder.Message#set_[some_field]
+                                 * @function
+                                 * @param {*} value Value to set
+                                 * @abstract
+                                 * @throws {Error} If the value cannot be set
+                                 */
+                                if (!T.hasChild("set_"+name))
+                                    Message.prototype["set_"+name] = function(value) {
+                                        this.$set(field.name, value);
+                                    };
 
-                            /**
-                             * Gets a value. This method is present for each field, but only if there is no name conflict with
-                             * another field.
-                             * @name ProtoBuf.Builder.Message#get[SomeField]
-                             * @function
-                             * @abstract
-                             * @return {*} The value
-                             */
-                            if (!T.hasChild("get"+Name))
-                                Message.prototype["get"+Name] = function() {
-                                    return this.$get(field.name); // Does not throw, field exists
-                                }
+                                /**
+                                 * Gets a value. This method is present for each field, but only if there is no name conflict with
+                                 * another field.
+                                 * @name ProtoBuf.Builder.Message#get[SomeField]
+                                 * @function
+                                 * @abstract
+                                 * @return {*} The value
+                                 */
+                                if (!T.hasChild("get"+Name))
+                                    Message.prototype["get"+Name] = function() {
+                                        return this.$get(field.name); // Does not throw, field exists
+                                    };
 
-                            /**
-                             * Gets a value. This method is present for each field, but only if there is no name conflict with
-                             * another field.
-                             * @name ProtoBuf.Builder.Message#get_[some_field]
-                             * @function
-                             * @return {*} The value
-                             * @abstract
-                             */
-                            if (!T.hasChild("get_"+name))
-                                Message.prototype["get_"+name] = function() {
-                                    return this.$get(field.name); // Does not throw, field exists
-                                };
+                                /**
+                                 * Gets a value. This method is present for each field, but only if there is no name conflict with
+                                 * another field.
+                                 * @name ProtoBuf.Builder.Message#get_[some_field]
+                                 * @function
+                                 * @return {*} The value
+                                 * @abstract
+                                 */
+                                if (!T.hasChild("get_"+name))
+                                    Message.prototype["get_"+name] = function() {
+                                        return this.$get(field.name); // Does not throw, field exists
+                                    };
 
-                        })(field);
+                            })(field);
                     }
 
                     // En-/decoding

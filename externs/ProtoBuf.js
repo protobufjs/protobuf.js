@@ -91,6 +91,11 @@ ProtoBuf.PACKABLE_WIRE_TYPES;
 ProtoBuf.convertFieldsToCamelCase;
 
 /**
+ * @type {boolean}
+ */
+ProtoBuf.populateAccessors;
+
+/**
  * @dict
  * @type {!object.<string,{name: string, wireType: number}>}
  * @const
