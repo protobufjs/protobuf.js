@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.2.2";
+        ProtoBuf.VERSION = "3.2.3";
 
         /**
          * Wire types.
@@ -766,6 +766,12 @@
                         ProtoBuf.Builder.Message.call(this);
                         var i, field;
 
+                        if (Object.defineProperty) {
+                            Object.defineProperty(this, "$type", {
+                                get: function() { return T; }
+                            });
+                        }
+
                         // Create fields on the object itself to allow setting and getting through Message#fieldname
                         for (i=0; i<fields.length; i++) {
                             field = fields[i];
@@ -798,6 +804,13 @@
                                 if (i<fields.length)
                                     this.$set(fields[i].name, arguments[i]); // May throw
                     };
+
+                    /**
+                     * The message's reflection type.
+                     * @name ProtoBuf.Builder.Message#$type
+                     * @type {!ProtoBuf.Reflect.Message}
+                     * @expose
+                     */
 
                     // Extends ProtoBuf.Builder.Message
                     Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);

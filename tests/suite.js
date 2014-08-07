@@ -1502,6 +1502,14 @@
             test.done();
         },
         
+        "$type": function(test) {
+            var builder = ProtoBuf.loadProto("message Test {}");
+            var Test = builder.build("Test"),
+                TTest = builder.lookup("Test");
+            test.strictEqual(new Test().$type, TTest);
+            test.done();
+        },
+        
         "descriptor": function(test) {
             try {
                 var proto = 'import "./google/protobuf/descriptor.proto";';
