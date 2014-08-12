@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "3.2.4",
+    "version": "3.3.0",
     "description": "Protocol Buffers for JavaScript. Finally.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
@@ -20,12 +20,12 @@
     },
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "dependencies": {
-        "bytebuffer": "~3.1",
-        "ascli": "latest"
+        "bytebuffer": "~3.2",
+        "ascli": "~0.3"
     },
     "devDependencies": {
         "testjs": "~1",
-        "metascript": "~0",
+        "metascript": ">=0.18 <1",
         "closurecompiler": "~1"
     },
     "license": "Apache-2.0",
@@ -35,7 +35,6 @@
     "scripts": {
         "prepublish": "npm test",
         "test": "node bin/proto2js tests/complex.proto > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
-        
         "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && dos2unix bin/proto2js && dos2unix bin/json2proto && npm test && npm run-script jsdoc",
         "build": "node scripts/build.js",
         "descriptor2json": "node bin/proto2js src/google/protobuf/descriptor.proto > src/google/protobuf/descriptor.json",

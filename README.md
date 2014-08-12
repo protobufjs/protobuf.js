@@ -1,12 +1,14 @@
-![ProtoBuf.js - protobuf for JavaScript](https://raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.png)
+![ProtoBuf.js - Protocol Buffers for JavaScript. Finally.](https://raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.png)
 =====================================
-
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use
 in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
 
 **ProtoBuf.js** is a pure JavaScript implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js)
 including a .proto parser, message class building and simple encoding and decoding. There is no compilation step
 required, it's super easy to use and it works out of the box on .proto files!
+
+[![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+[![Donate](https://raw.githubusercontent.com/dcodeIO/Long.js/master/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=info%40code-emitter.com&item_name=Open%20Source%3A%20ProtoBuf.js)
 
 Getting started
 ---------------
@@ -31,11 +33,11 @@ Documentation
 -------------
 * [Read the official protobuf guide](https://developers.google.com/protocol-buffers/docs/overview)
 * [Read our wiki](https://github.com/dcodeIO/ProtoBuf.js/wiki)
-* [Read the API docs](http://htmlpreview.github.com/?http://github.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
+* [Read the API docs](http://htmlpreview.github.io/?https://raw.githubusercontent.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
 * [Check out the examples](https://github.com/dcodeIO/ProtoBuf.js/tree/master/examples)
 
-Tests [![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
-------------------
+Tests
+-----
 * [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
 * [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 

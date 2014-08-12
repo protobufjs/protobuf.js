@@ -1180,7 +1180,11 @@
                 position = new Position(JSON.parse(json));
                 test.strictEqual(position.x, 1);
                 test.ok(position.y instanceof ProtoBuf.Long);
-                test.deepEqual(position.y, {"low":2,"high":0,"unsigned":false});                
+                test.deepEqual(position.y, {"low":2,"high":0,"unsigned":false});
+                // Also test if this encodes and decodes properly
+                position = Position.decode(position.encode());
+                test.ok(position.y instanceof ProtoBuf.Long);
+                test.deepEqual(position.y, {"low": 2, "high": 0, "unsigned": false });
             } catch (e) {
                 fail(e);
             }
