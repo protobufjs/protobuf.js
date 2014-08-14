@@ -147,7 +147,7 @@ function build_json(file, min, asObject) {
  */
 function build_js(file, min) {
     var json = build_json(file, min, true);
-    return [json, '.import('+JSON.stringify(json, null, min ? 0 : 4)+')'];
+    return [json, '["import"]('+JSON.stringify(json, null, min ? 0 : 4)+')'];
 }
 
 /**
