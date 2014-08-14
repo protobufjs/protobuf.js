@@ -7,7 +7,7 @@ in communications protocols, data storage, and more, originally designed at Goog
 including a .proto parser, message class building and simple encoding and decoding. There is no compilation step
 required, it's super easy to use and it works out of the box on .proto files!
 
-[![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.png?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+[![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.svg?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
 [![Donate](https://raw.githubusercontent.com/dcodeIO/Long.js/master/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=info%40code-emitter.com&item_name=Open%20Source%3A%20ProtoBuf.js)
 
 Getting started

@@ -3,7 +3,7 @@
  * @exports ProtoBuf.Reflect.Enum
  * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
  * @param {string} name Enum name
- * @param {Object.<string.*>=} options Enum options
+ * @param {Object.<string,*>=} options Enum options
  * @constructor
  * @extends ProtoBuf.Reflect.Namespace
  */

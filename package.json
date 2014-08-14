@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "3.3.0",
+    "version": "3.3.1",
     "description": "Protocol Buffers for JavaScript. Finally.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
@@ -26,7 +26,8 @@
     "devDependencies": {
         "testjs": "~1",
         "metascript": ">=0.18 <1",
-        "closurecompiler": "~1"
+        "closurecompiler": "~1",
+        "jsdoc": "~3.3"
     },
     "license": "Apache-2.0",
     "engines": {
@@ -44,6 +45,6 @@
         "compress": "npm run-script compress-full && npm run-script compress-noparse",
         "compress-full": "gzip -c -9 dist/ProtoBuf.min.js > dist/ProtoBuf.min.js.gz",
         "compress-noparse": "gzip -c -9 dist/ProtoBuf.noparse.min.js > dist/ProtoBuf.noparse.min.js.gz",
-        "jsdoc": "jsdoc -c jsdoc.json"
+        "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json"
     }
 }

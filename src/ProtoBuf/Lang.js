@@ -1,8 +1,6 @@
 /**
  * Language expressions.
- * @exports ProtoBuf.Lang
- * @type {Object.<string,string|RegExp>}
- * @namespace
+ * @type {!Object.<string,string|!RegExp>}
  * @expose
  */
 ProtoBuf.Lang = {

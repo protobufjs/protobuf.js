@@ -8,11 +8,12 @@ var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
  * Constructs a new runtime Message.
  * @name ProtoBuf.Builder.Message
  * @class Barebone of all runtime messages.
- * @param {Object.<string,*>|...[string]} values Preset values
+ * @param {!Object.<string,*>|string} values Preset values
+ * @param {...string} var_args
  * @constructor
  * @throws {Error} If the message cannot be created
  */
-var Message = function(values) {
+var Message = function(values, var_args) {
     ProtoBuf.Builder.Message.call(this);
     var i, field;
 

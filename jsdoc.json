@@ -6,7 +6,6 @@
         "include": ["dist/ProtoBuf.js"]
     },
     "opts": {
-        "template": "templates/esoccer",
         "destination": "docs"
     },
     "plugins": ["plugins/markdown"]

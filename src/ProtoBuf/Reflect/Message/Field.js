@@ -6,7 +6,7 @@
  * @param {string} type Data type, e.g. int32
  * @param {string} name Field name
  * @param {number} id Unique field id
- * @param {Object.<string.*>=} options Options
+ * @param {Object.<string,*>=} options Options
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */

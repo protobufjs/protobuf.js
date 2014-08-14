@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.3.0";
+        ProtoBuf.VERSION = "3.3.1";
 
         /**
          * Wire types.
@@ -369,9 +369,7 @@
 
         /**
          * Language expressions.
-         * @exports ProtoBuf.Lang
-         * @type {Object.<string,string|RegExp>}
-         * @namespace
+         * @type {!Object.<string,string|!RegExp>}
          * @expose
          */
         ProtoBuf.Lang = {
@@ -1616,11 +1614,12 @@
                      * Constructs a new runtime Message.
                      * @name ProtoBuf.Builder.Message
                      * @class Barebone of all runtime messages.
-                     * @param {Object.<string,*>|...[string]} values Preset values
+                     * @param {!Object.<string,*>|string} values Preset values
+                     * @param {...string} var_args
                      * @constructor
                      * @throws {Error} If the message cannot be created
                      */
-                    var Message = function(values) {
+                    var Message = function(values, var_args) {
                         ProtoBuf.Builder.Message.call(this);
                         var i, field;
 
@@ -2354,7 +2353,7 @@
              * @param {string} type Data type, e.g. int32
              * @param {string} name Field name
              * @param {number} id Unique field id
-             * @param {Object.<string.*>=} options Options
+             * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
@@ -2968,7 +2967,7 @@
              * @param {string} type Data type, e.g. int32
              * @param {string} name Field name
              * @param {number} id Unique field id
-             * @param {Object.<string.*>=} options Options
+             * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.Message.Field
              */
@@ -2990,7 +2989,7 @@
              * @exports ProtoBuf.Reflect.Enum
              * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
              * @param {string} name Enum name
-             * @param {Object.<string.*>=} options Enum options
+             * @param {Object.<string,*>=} options Enum options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
