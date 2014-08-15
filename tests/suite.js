@@ -406,13 +406,14 @@
                 var builder = ProtoBuf.loadProto("message Test { optional bool ok = 1 [ default = false ]; }"),
                     Test = builder.build("Test"),
                     t =  new Test();
-                test.strictEqual(t.ok, false);
+                test.strictEqual(t.ok, null); // Not set as it is optional
                 t.setOk(true);
                 test.strictEqual(t.ok, true);
                 test.strictEqual(Test.decode(t.encode()).ok, true);
                 t.setOk(false);
                 test.strictEqual(t.ok, false);
-                test.strictEqual(Test.decode(t.encode()).ok, false);
+                t.setOk(null); // Not set
+                test.strictEqual(Test.decode(t.encode()).ok, false); // = default when missing
             } catch (err) {
                 fail(err);
             }
@@ -446,7 +447,7 @@
         
         "emptyDefaultString": function(test) {
             try {
-                var builder = ProtoBuf.loadProto("message Test1 { optional string test = 1 [default = \"\"]; }");
+                var builder = ProtoBuf.loadProto("message Test1 { required string test = 1 [default = \"\"]; }");
                 var Test1;
                 test.doesNotThrow(function() {
                     Test1 = builder.build("Test1");

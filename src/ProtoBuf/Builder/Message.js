@@ -28,16 +28,15 @@ var Message = function(values, var_args) {
         field = fields[i];
         this[field.name] = (field.repeated) ? [] : null;
     }
-    // Set the default values
+    // Set the default values for required fields
     for (i=0; i<fields.length; i++) {
         field = fields[i];
-        if (typeof field.options['default'] != 'undefined') {
+        if (field.required && typeof field.options['default'] !== 'undefined')
             try {
                 this.$set(field.name, field.options['default']); // Should not throw
             } catch (e) {
                 throw Error("[INTERNAL] "+e);
             }
-        }
     }
     // Set field values from a values object
     if (arguments.length == 1 && typeof values == 'object' &&

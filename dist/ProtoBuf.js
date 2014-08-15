@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.3.1";
+        ProtoBuf.VERSION = "3.4.0";
 
         /**
          * Wire types.
@@ -1634,16 +1634,15 @@
                             field = fields[i];
                             this[field.name] = (field.repeated) ? [] : null;
                         }
-                        // Set the default values
+                        // Set the default values for required fields
                         for (i=0; i<fields.length; i++) {
                             field = fields[i];
-                            if (typeof field.options['default'] != 'undefined') {
+                            if (field.required && typeof field.options['default'] !== 'undefined')
                                 try {
                                     this.$set(field.name, field.options['default']); // Should not throw
                                 } catch (e) {
                                     throw Error("[INTERNAL] "+e);
                                 }
-                            }
                         }
                         // Set field values from a values object
                         if (arguments.length == 1 && typeof values == 'object' &&
@@ -2328,14 +2327,23 @@
                         msg.$set(field.name, field.decode(wireType, buffer), true);
                 }
 
-                // Check if all required fields are present
+                // Check if all required fields are present and set default values for optional fields that are not
                 var fields = this.getChildren(ProtoBuf.Reflect.Field);
-                for (var i=0; i<fields.length; i++)
-                    if (fields[i].required && msg[fields[i].name] === null) {
-                        var err = Error("Missing at least one required field for "+this.toString(true)+": "+fields[i].name);
-                        err["decoded"] = msg; // Still expose what we got
-                        throw(err);
-                    }
+                for (var i=0; i<fields.length; i++) {
+                    field = fields[i];
+                    if (msg[field.name] === null)
+                        if (field.required) {
+                            var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
+                            err["decoded"] = msg; // Still expose what we got
+                            throw(err);
+                        } else if (typeof field.options['default'] !== 'undefined') {
+                            try {
+                                msg.$set(field.name, field.options['default']); // Should not throw
+                            } catch (e) {
+                                throw Error("[INTERNAL] "+e);
+                            }
+                        }
+                }
                 return msg;
             };
 
