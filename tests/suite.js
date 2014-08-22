@@ -1527,6 +1527,18 @@
             test.done();
         },
 
+        "mismatchedNesting": function(test) {
+            try {
+                var proto = "message Child { optional uint32 foo = 1; } message FakeChild { optional uint32 foo = 1; } message Parent { optional Child child = 1; }";
+                var builder = ProtoBuf.loadProto(proto, "tests/mismatchedNesting.proto");
+                var root = builder.build();
+                var foo = new root.Parent({ child: new root.FakeChild({ foo: 1 })});
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
         // Node.js only
         "loaders": BROWSER ? {} : {
             

@@ -39,8 +39,8 @@ var Message = function(values, var_args) {
             }
     }
     // Set field values from a values object
-    if (arguments.length == 1 && typeof values == 'object' &&
-        /* not another Message */ typeof values.encode != 'function' &&
+    if (arguments.length === 1 && typeof values === 'object' &&
+        /* not another Message */ typeof values.encode !== 'function' &&
         /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
         /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
         /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&

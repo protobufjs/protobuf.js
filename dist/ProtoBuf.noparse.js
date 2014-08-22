@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.4.0";
+        ProtoBuf.VERSION = "3.4.1";
 
         /**
          * Wire types.
@@ -787,8 +787,8 @@
                                 }
                         }
                         // Set field values from a values object
-                        if (arguments.length == 1 && typeof values == 'object' &&
-                            /* not another Message */ typeof values.encode != 'function' &&
+                        if (arguments.length === 1 && typeof values === 'object' &&
+                            /* not another Message */ typeof values.encode !== 'function' &&
                             /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
                             /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
@@ -1715,6 +1715,14 @@
                             fail(typeof value, "object expected");
                         if (value instanceof this.resolvedType.clazz)
                             return value;
+                        if (value instanceof ProtoBuf.Builder.Message) {
+                            // Mismatched type: Convert to object (see: https://github.com/dcodeIO/ProtoBuf.js/issues/180)
+                            var obj = {};
+                            for (var i in value)
+                                if (value.hasOwnProperty(i))
+                                    obj[i] = value[i];
+                            value = obj;
+                        }
                         // Else let's try to construct one from a key-value object
                         return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
                     }
