@@ -167,6 +167,9 @@ for (var i=0; i<fields.length; i++) {
 
     if (ProtoBuf.populateAccessors)
         (function(field) {
+            // no setters for extended fields as these are named by their fqn
+            if(field.originalName.indexOf(".") >= 0)
+                return;
             // set/get[SomeValue]
             var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
                 return match.toUpperCase().replace('_','');

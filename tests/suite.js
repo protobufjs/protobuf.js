@@ -1032,9 +1032,9 @@
                     TBar = builder.lookup("Bar"),
                     fields = TFoo.getChildren(ProtoBuf.Reflect.Message.Field);
                 test.strictEqual(fields.length, 2);
-                test.strictEqual(fields[0].name, "bar");
+                test.strictEqual(fields[0].name, ".bar");
                 test.strictEqual(fields[0].id, 2);
-                test.strictEqual(fields[1].name, "bar2");
+                test.strictEqual(fields[1].name, ".Bar.bar2");
                 test.strictEqual(fields[1].id, 3);
                 test.deepEqual(TFoo.extensions, [2, ProtoBuf.ID_MAX]); // Defined
                 test.deepEqual(TBar.extensions, [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX]); // Undefined
@@ -1042,10 +1042,8 @@
                 var root = builder.build();
                 var foo = new root.Foo(),
                     bar = new root.Bar();
-                test.ok(typeof foo.setBar === 'function');
-                // test.ok(foo instanceof root.Bar.Foo);
-                foo.bar = "123";
-                foo.bar2 = bar;
+                foo['.bar'] = "123";
+                foo['.Bar.bar2'] = bar;
                 test.equal(foo.encode().compact().toString("debug"), "<12 03 31 32 33 1A 00>");
             } catch (e) {
                 fail(e);

@@ -279,13 +279,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                     throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                 if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                     throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
-                                // TODO: See #161
-                                /* subObj = new (this.ptr instanceof Reflect.Message ? Reflect.Message.ExtensionField : Reflect.Message.Field)(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
-                                if (this.ptr instanceof Reflect.Message)
-                                    this.ptr.addChild(subObj);
-                                else
-                                    obj.addChild(subObj); */
-                                obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                // see #161: Extensions are referenced by their fully qualified name
+                                var fqn = this.ptr.fqn()+'.'+def["fields"][i]["name"];
+                                obj.addChild(new Reflect.Message.ExtensionField(obj, def["fields"][i]["rule"], def["fields"][i]["type"], fqn, def["fields"][i]["id"], def["fields"][i]["options"]));
                             }
                         } else if (!/\.?google\.protobuf\./.test(def["ref"])) // Silently skip internal extensions
                             throw Error("Extended message "+def["ref"]+" is not defined");

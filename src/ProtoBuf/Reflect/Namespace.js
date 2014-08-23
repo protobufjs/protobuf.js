@@ -44,9 +44,7 @@ Namespace.prototype.getChildren = function(type) {
     var children = [];
     for (var i=0, k=this.children.length; i<k; ++i)
         if (this.children[i] instanceof type)
-            // We also need to distinguish between Field and ExtensionField which is an instance of Field
-            if (type !== Message.Field || !(this.children[i] instanceof Message.ExtensionField))
-                children.push(this.children[i]);
+            children.push(this.children[i]);
     return children;
 };
 
