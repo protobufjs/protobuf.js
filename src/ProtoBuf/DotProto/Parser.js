@@ -36,29 +36,29 @@ Parser.prototype.parse = function() {
         "options": {},
         "services": []
     };
-    var token, header = true;
+    var token, head = true;
     while(token = this.tn.next()) {
         switch (token) {
             case 'package':
-                if (!header || topLevel["package"] !== null)
+                if (!head || topLevel["package"] !== null)
                     throw Error("Illegal package at line "+this.tn.line);
                 topLevel["package"] = this._parsePackage(token);
                 break;
             case 'import':
-                if (!header)
+                if (!head)
                     throw Error("Illegal import at line "+this.tn.line);
                 topLevel.imports.push(this._parseImport(token));
                 break;
             case 'message':
                 this._parseMessage(topLevel, null, token);
-                header = false;
+                head = false;
                 break;
             case 'enum':
                 this._parseEnum(topLevel, token);
-                header = false;
+                head = false;
                 break;
             case 'option':
-                if (!header)
+                if (!head)
                     throw Error("Illegal option at line "+this.tn.line);
                 this._parseOption(topLevel, token);
                 break;
@@ -100,6 +100,25 @@ Parser.prototype._parseNumber = function(val) {
     else if (Lang.NUMBER_FLT.test(val))
         return sign*parseFloat(val);
     throw Error("Illegal number at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
+};
+
+/**
+ * Parses a (possibly multiline) string.
+ * @param {string} context Context description
+ * @returns {string}
+ * @private
+ */
+Parser.prototype._parseString = function(context) {
+    var value = "", token;
+    do {
+        token = this.tn.next(); // Known to be = this.tn.stringEndsWith
+        value += this.tn.next();
+        token = this.tn.next();
+        if (token !== this.tn.stringEndsWith)
+            throw Error("Illegal end of string in "+context+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+        token = this.tn.peek();
+    } while (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ);
+    return value;
 };
 
 /**
@@ -156,15 +175,13 @@ Parser.prototype._parsePackage = function(token) {
  * @private
  */
 Parser.prototype._parseImport = function(token) {
-    token = this.tn.next();
+    token = this.tn.peek();
     if (token === "public")
-        token = this.tn.next();
+        this.tn.next(),
+        token = this.tn.peek();
     if (token !== Lang.STRINGOPEN && token !== Lang.STRINGOPEN_SQ)
         throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' or '"+Lang.STRINGOPEN_SQ+"' expected)");
-    var imported = this.tn.next();
-    token = this.tn.next();
-    if (token !== this.tn.stringEndsWith)
-        throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+    var imported = this._parseString("root");
     token = this.tn.next();
     if (token !== Lang.END)
         throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
@@ -202,13 +219,11 @@ Parser.prototype._parseOption = function(parent, token) {
     if (token !== Lang.EQUAL)
         throw Error("Illegal option operator in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)");
     var value;
-    token = this.tn.next();
-    if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
-        value = this.tn.next();
-        token = this.tn.next();
-        if (token !== this.tn.stringEndsWith)
-            throw Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
-    } else {
+    token = this.tn.peek();
+    if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ)
+        value = this._parseString("message "+parent.name+", option "+name);
+    else {
+        this.tn.next();
         if (Lang.NUMBER.test(token))
             value = this._parseNumber(token, true);
         else if (Lang.BOOL.test(token))
@@ -502,18 +517,15 @@ Parser.prototype._parseFieldOption = function(msg, fld, token) {
     if (token !== Lang.EQUAL)
         throw Error("Illegal field option operation in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('=' expected)");
     var value;
-    token = this.tn.next();
+    token = this.tn.peek();
     if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
-        value = this.tn.next();
-        token = this.tn.next();
-        if (token != this.tn.stringEndsWith)
-            throw Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+        value = this._parseString("message "+msg.name+"#"+fld.name);
     } else if (Lang.NUMBER.test(token, true))
-        value = this._parseNumber(token, true);
+        value = this._parseNumber(this.tn.next(), true);
     else if (Lang.BOOL.test(token))
-        value = token.toLowerCase() === 'true';
+        value = this.tn.next().toLowerCase() === 'true';
     else if (Lang.TYPEREF.test(token))
-        value = token; // TODO: Resolve?
+        value = this.tn.next(); // TODO: Resolve?
     else
         throw Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token);
     fld["options"][name] = value;

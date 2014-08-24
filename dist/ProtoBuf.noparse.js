@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.5.0";
+        ProtoBuf.VERSION = "3.5.1";
 
         /**
          * Wire types.
@@ -763,27 +763,18 @@
                         ProtoBuf.Builder.Message.call(this);
                         var i, field;
 
-                        if (Object.defineProperty) {
+                        if (Object.defineProperty)
                             Object.defineProperty(this, "$type", {
                                 get: function() { return T; }
                             });
+
+                        // Create fields on the object itself and set default values
+                        for (i=0; i<fields.length; ++i) {
+                            this[(field = fields[i]).name] = field.repeated ? [] : null;
+                            if (field.required && typeof field.options['default'] !== 'undefined')
+                                this.$set(field.name, field.options['default']); // Should not throw
                         }
 
-                        // Create fields on the object itself to allow setting and getting through Message#fieldname
-                        for (i=0; i<fields.length; i++) {
-                            field = fields[i];
-                            this[field.name] = (field.repeated) ? [] : null;
-                        }
-                        // Set the default values for required fields
-                        for (i=0; i<fields.length; i++) {
-                            field = fields[i];
-                            if (field.required && typeof field.options['default'] !== 'undefined')
-                                try {
-                                    this.$set(field.name, field.options['default']); // Should not throw
-                                } catch (e) {
-                                    throw Error("[INTERNAL] "+e);
-                                }
-                        }
                         // Set field values from a values object
                         if (arguments.length === 1 && typeof values === 'object' &&
                             /* not another Message */ typeof values.encode !== 'function' &&
@@ -794,8 +785,7 @@
                             var keys = Object.keys(values);
                             for (i=0; i<keys.length; i++)
                                 this.$set(keys[i], values[keys[i]]); // May throw
-                            // Else set field values from arguments, in correct order
-                        } else
+                        } else // set field values from arguments, in declaration order
                             for (i=0; i<arguments.length; i++)
                                 if (i<fields.length)
                                     this.$set(fields[i].name, arguments[i]); // May throw
@@ -910,12 +900,12 @@
 
                     for (var i=0; i<fields.length; i++) {
                         var field = fields[i];
+                        // no setters for extension fields as these are named by their fqn
+                        if (field instanceof ProtoBuf.Reflect.Message.ExtensionField)
+                            continue;
 
                         if (ProtoBuf.populateAccessors)
                             (function(field) {
-                                // no setters for extended fields as these are named by their fqn
-                                if(field.originalName.indexOf(".") >= 0)
-                                    return;
                                 // set/get[SomeValue]
                                 var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
                                     return match.toUpperCase().replace('_','');
@@ -1002,7 +992,8 @@
                     Message.prototype.encode = function(buffer) {
                         var isNew = false;
                         if (!buffer)
-                            buffer = new ByteBuffer(), isNew = true;
+                            buffer = new ByteBuffer(),
+                            isNew = true;
                         var le = buffer.littleEndian;
                         try {
                             T.encode(this, buffer.LE());
@@ -1038,7 +1029,8 @@
                     Message.prototype.encodeDelimited = function(buffer) {
                         var isNew = false;
                         if (!buffer)
-                            buffer = new ByteBuffer(), isNew = true;
+                            buffer = new ByteBuffer(),
+                            isNew = true;
                         var enc = new ByteBuffer().LE();
                         T.encode(this, enc).flip();
                         buffer.writeVarint32(enc.remaining());

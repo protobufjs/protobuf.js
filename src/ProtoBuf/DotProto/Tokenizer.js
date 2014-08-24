@@ -1,7 +1,7 @@
 /*?
- // --- Scope -----------------
- // Lang : Language expressions
- */
+    // --- Scope -----------------
+    // Lang : Language expressions
+    */
 /**
  * Constructs a new Tokenizer.
  * @exports ProtoBuf.DotProto.Tokenizer
@@ -10,14 +10,14 @@
  * @constructor
  */
 var Tokenizer = function(proto) {
-    
+
     /**
      * Source to parse.
      * @type {string}
      * @expose
      */
     this.source = ""+proto; // In case it's a buffer
-    
+
     /**
      * Current index.
      * @type {number}

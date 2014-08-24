@@ -1483,6 +1483,20 @@
             }
             test.done();
         },
+
+        "multilineString": function(test) {
+            try {
+                var proto = "message TestMessage { required string test = 1 [default = \"1\"   \"2\"\n\"3\"];}";
+                var builder = ProtoBuf.loadProto(proto, "multilineString.proto");
+                var TestMessage = builder.build("TestMessage"),
+                    testMessage = new TestMessage();
+                test.strictEqual(testMessage.test, "123");
+                test.done();
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
         
         "packable": function(test) {
             try {

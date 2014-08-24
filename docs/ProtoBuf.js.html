@@ -65,7 +65,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.5.0";
+        ProtoBuf.VERSION = "3.5.1";
 
         /**
          * Wire types.
@@ -655,29 +655,29 @@
                     "options": {},
                     "services": []
                 };
-                var token, header = true;
+                var token, head = true;
                 while(token = this.tn.next()) {
                     switch (token) {
                         case 'package':
-                            if (!header || topLevel["package"] !== null)
+                            if (!head || topLevel["package"] !== null)
                                 throw Error("Illegal package at line "+this.tn.line);
                             topLevel["package"] = this._parsePackage(token);
                             break;
                         case 'import':
-                            if (!header)
+                            if (!head)
                                 throw Error("Illegal import at line "+this.tn.line);
                             topLevel.imports.push(this._parseImport(token));
                             break;
                         case 'message':
                             this._parseMessage(topLevel, null, token);
-                            header = false;
+                            head = false;
                             break;
                         case 'enum':
                             this._parseEnum(topLevel, token);
-                            header = false;
+                            head = false;
                             break;
                         case 'option':
-                            if (!header)
+                            if (!head)
                                 throw Error("Illegal option at line "+this.tn.line);
                             this._parseOption(topLevel, token);
                             break;
@@ -719,6 +719,25 @@
                 else if (Lang.NUMBER_FLT.test(val))
                     return sign*parseFloat(val);
                 throw Error("Illegal number at line "+this.tn.line+": "+(sign &lt; 0 ? '-' : '')+val);
+            };
+
+            /**
+             * Parses a (possibly multiline) string.
+             * @param {string} context Context description
+             * @returns {string}
+             * @private
+             */
+            Parser.prototype._parseString = function(context) {
+                var value = "", token;
+                do {
+                    token = this.tn.next(); // Known to be = this.tn.stringEndsWith
+                    value += this.tn.next();
+                    token = this.tn.next();
+                    if (token !== this.tn.stringEndsWith)
+                        throw Error("Illegal end of string in "+context+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+                    token = this.tn.peek();
+                } while (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ);
+                return value;
             };
 
             /**
@@ -775,15 +794,13 @@
              * @private
              */
             Parser.prototype._parseImport = function(token) {
-                token = this.tn.next();
+                token = this.tn.peek();
                 if (token === "public")
-                    token = this.tn.next();
+                    this.tn.next(),
+                    token = this.tn.peek();
                 if (token !== Lang.STRINGOPEN &amp;&amp; token !== Lang.STRINGOPEN_SQ)
                     throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' or '"+Lang.STRINGOPEN_SQ+"' expected)");
-                var imported = this.tn.next();
-                token = this.tn.next();
-                if (token !== this.tn.stringEndsWith)
-                    throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+                var imported = this._parseString("root");
                 token = this.tn.next();
                 if (token !== Lang.END)
                     throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
@@ -821,13 +838,11 @@
                 if (token !== Lang.EQUAL)
                     throw Error("Illegal option operator in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)");
                 var value;
-                token = this.tn.next();
-                if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
-                    value = this.tn.next();
-                    token = this.tn.next();
-                    if (token !== this.tn.stringEndsWith)
-                        throw Error("Illegal end of option value in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
-                } else {
+                token = this.tn.peek();
+                if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ)
+                    value = this._parseString("message "+parent.name+", option "+name);
+                else {
+                    this.tn.next();
                     if (Lang.NUMBER.test(token))
                         value = this._parseNumber(token, true);
                     else if (Lang.BOOL.test(token))
@@ -1121,18 +1136,15 @@
                 if (token !== Lang.EQUAL)
                     throw Error("Illegal field option operation in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('=' expected)");
                 var value;
-                token = this.tn.next();
+                token = this.tn.peek();
                 if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
-                    value = this.tn.next();
-                    token = this.tn.next();
-                    if (token != this.tn.stringEndsWith)
-                        throw Error("Illegal end of field value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+                    value = this._parseString("message "+msg.name+"#"+fld.name);
                 } else if (Lang.NUMBER.test(token, true))
-                    value = this._parseNumber(token, true);
+                    value = this._parseNumber(this.tn.next(), true);
                 else if (Lang.BOOL.test(token))
-                    value = token.toLowerCase() === 'true';
+                    value = this.tn.next().toLowerCase() === 'true';
                 else if (Lang.TYPEREF.test(token))
-                    value = token; // TODO: Resolve?
+                    value = this.tn.next(); // TODO: Resolve?
                 else
                     throw Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token);
                 fld["options"][name] = value;
@@ -1648,27 +1660,18 @@
                         ProtoBuf.Builder.Message.call(this);
                         var i, field;
 
-                        if (Object.defineProperty) {
+                        if (Object.defineProperty)
                             Object.defineProperty(this, "$type", {
                                 get: function() { return T; }
                             });
+
+                        // Create fields on the object itself and set default values
+                        for (i=0; i&lt;fields.length; ++i) {
+                            this[(field = fields[i]).name] = field.repeated ? [] : null;
+                            if (field.required &amp;&amp; typeof field.options['default'] !== 'undefined')
+                                this.$set(field.name, field.options['default']); // Should not throw
                         }
 
-                        // Create fields on the object itself to allow setting and getting through Message#fieldname
-                        for (i=0; i&lt;fields.length; i++) {
-                            field = fields[i];
-                            this[field.name] = (field.repeated) ? [] : null;
-                        }
-                        // Set the default values for required fields
-                        for (i=0; i&lt;fields.length; i++) {
-                            field = fields[i];
-                            if (field.required &amp;&amp; typeof field.options['default'] !== 'undefined')
-                                try {
-                                    this.$set(field.name, field.options['default']); // Should not throw
-                                } catch (e) {
-                                    throw Error("[INTERNAL] "+e);
-                                }
-                        }
                         // Set field values from a values object
                         if (arguments.length === 1 &amp;&amp; typeof values === 'object' &amp;&amp;
                             /* not another Message */ typeof values.encode !== 'function' &amp;&amp;
@@ -1679,8 +1682,7 @@
                             var keys = Object.keys(values);
                             for (i=0; i&lt;keys.length; i++)
                                 this.$set(keys[i], values[keys[i]]); // May throw
-                            // Else set field values from arguments, in correct order
-                        } else
+                        } else // set field values from arguments, in declaration order
                             for (i=0; i&lt;arguments.length; i++)
                                 if (i&lt;fields.length)
                                     this.$set(fields[i].name, arguments[i]); // May throw
@@ -1795,12 +1797,12 @@
 
                     for (var i=0; i&lt;fields.length; i++) {
                         var field = fields[i];
+                        // no setters for extension fields as these are named by their fqn
+                        if (field instanceof ProtoBuf.Reflect.Message.ExtensionField)
+                            continue;
 
                         if (ProtoBuf.populateAccessors)
                             (function(field) {
-                                // no setters for extended fields as these are named by their fqn
-                                if(field.originalName.indexOf(".") >= 0)
-                                    return;
                                 // set/get[SomeValue]
                                 var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
                                     return match.toUpperCase().replace('_','');
@@ -1887,7 +1889,8 @@
                     Message.prototype.encode = function(buffer) {
                         var isNew = false;
                         if (!buffer)
-                            buffer = new ByteBuffer(), isNew = true;
+                            buffer = new ByteBuffer(),
+                            isNew = true;
                         var le = buffer.littleEndian;
                         try {
                             T.encode(this, buffer.LE());
@@ -1923,7 +1926,8 @@
                     Message.prototype.encodeDelimited = function(buffer) {
                         var isNew = false;
                         if (!buffer)
-                            buffer = new ByteBuffer(), isNew = true;
+                            buffer = new ByteBuffer(),
+                            isNew = true;
                         var enc = new ByteBuffer().LE();
                         T.encode(this, enc).flip();
                         buffer.writeVarint32(enc.remaining());
@@ -4084,7 +4088,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Sun Aug 24 2014 00:13:37 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Sun Aug 24 2014 21:39:47 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>
