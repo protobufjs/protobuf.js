@@ -279,12 +279,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                     throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                 if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                     throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
-                                // see #161: Extensions use their fully qualified name as their runtime key, ...
+                                // see #161: Extensions use their fully qualified name as their runtime key and...
                                 var fld = new Reflect.Message.ExtensionField(obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
-                                // ...are added on top of the current namespace as an extension and...
+                                // ...are added on top of the current namespace as an extension which is used for resolving their type later on
                                 var ext = new Reflect.Extension(this.ptr, def["fields"][i]["name"], fld);
-                                // ...use the current namespace to resolve types.
-                                fld.scope = this.ptr;
+                                fld.extension = ext;
                                 this.ptr.addChild(ext);
                                 obj.addChild(fld);
                             }
@@ -461,7 +460,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (!Lang.TYPE.test(this.ptr.type)) { // Resolve type...
                 if (!Lang.TYPEREF.test(this.ptr.type))
                     throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
-                res = this.ptr.scope.resolve(this.ptr.type, true); // this.ptr.parent
+                res = (this.ptr instanceof Reflect.Message.ExtensionField ? this.ptr.extension.parent : this.ptr.parent).resolve(this.ptr.type, true);
                 if (!res)
                     throw Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                 this.ptr.resolvedType = res;

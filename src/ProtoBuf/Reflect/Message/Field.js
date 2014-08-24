@@ -74,13 +74,6 @@ var Field = function(message, rule, type, name, id, options) {
             return $1.toUpperCase();
         });
     }
-
-    /**
-     * Scope used to resolve the type.
-     * @type {!ProtoBuf.Reflect.Message}
-     * @expose
-     */
-    this.scope = message;
 };
 
 // Extends T

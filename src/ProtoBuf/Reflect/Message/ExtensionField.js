@@ -12,6 +12,13 @@
  */
 var ExtensionField = function(message, rule, type, name, id, options) {
     Field.call(this, message, rule, type, name, id, options);
+
+    /**
+     * Extension reference.
+     * @type {!ProtoBuf.Reflect.Extension}
+     * @expose
+     */
+    this.extension;
 };
 
 // Extends Field
