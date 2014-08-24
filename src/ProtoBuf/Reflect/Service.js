@@ -34,7 +34,10 @@ Service.prototype = Object.create(Namespace.prototype);
  * @expose
  */
 Service.prototype.build = function(rebuild) {
-    if (this.clazz && !rebuild) return this.clazz;
+    if (this.clazz && !rebuild)
+        return this.clazz;
+
+    // Create the runtime Service class in its own scope
     return this.clazz = (function(ProtoBuf, T) {
 
         //? include("../Builder/Service.js");

@@ -97,7 +97,7 @@ Namespace.prototype.getChild = function(nameOrId) {
  */
 Namespace.prototype._indexOf = function(nameOrId) {
     var key = typeof nameOrId === 'number' ? 'id' : 'name';
-    for (var i=0; i<this.children.length; i++)
+    for (var i= 0, k=this.children.length; i<k; ++i)
         if (typeof this.children[i][key] !== 'undefined' && this.children[i][key] == nameOrId)
             return i;
     return -1;
@@ -107,14 +107,15 @@ Namespace.prototype._indexOf = function(nameOrId) {
  * Resolves a reflect object inside of this namespace.
  * @param {string} qn Qualified name to resolve
  * @param {boolean=} excludeFields Excludes fields, defaults to `false`
- * @return {ProtoBuf.Reflect.Namespace|null} The resolved type or null if not found
+ * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
  * @expose
  */
 Namespace.prototype.resolve = function(qn, excludeFields) {
-    var part = qn.split(".");
-    var ptr = this, i=0;
-    if (part[i] == "") { // Fully qualified name, e.g. ".My.Message'
-        while (ptr.parent != null)
+    var part = qn.split("."),
+        ptr = this,
+        i = 0;
+    if (part[i] === "") { // Fully qualified name, e.g. ".My.Message'
+        while (ptr.parent !== null)
             ptr = ptr.parent;
         i++;
     }
@@ -162,9 +163,9 @@ Namespace.prototype.build = function() {
  * @return {Object.<string,*>}
  */
 Namespace.prototype.buildOpt = function() {
-    var opt = {};
-    var keys = Object.keys(this.options);
-    for (var i=0; i<keys.length; i++) {
+    var opt = {},
+        keys = Object.keys(this.options);
+    for (var i=0, k=keys.length; i<k; ++i) {
         var key = keys[i],
             val = this.options[keys[i]];
         // TODO: Options are not resolved, yet.

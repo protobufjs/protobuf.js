@@ -14,7 +14,10 @@ extend Foo {
 }
 
 message Bar {
-    extend Foo {
-        optional Bar bar2 = 3;
+    message Foo {
+    }
+
+    extend .Foo {
+        optional Foo foo = 3; // references Bar.Foo
     }
 }

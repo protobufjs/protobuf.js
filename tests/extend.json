@@ -42,13 +42,20 @@
             "enums": [],
             "messages": [
                 {
+                    "name": "Foo",
+                    "fields": [],
+                    "enums": [],
+                    "messages": [],
+                    "options": {}
+                },
+                {
                     "ref": "Foo",
                     "fields": [
                         {
                             "rule": "optional",
                             "options": {},
-                            "type": "Bar",
-                            "name": "bar2",
+                            "type": "Foo",
+                            "name": "foo",
                             "id": 3
                         }
                     ]

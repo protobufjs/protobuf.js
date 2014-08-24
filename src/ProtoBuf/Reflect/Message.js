@@ -50,9 +50,10 @@ Message.prototype = Object.create(Namespace.prototype);
  * @expose
  */
 Message.prototype.build = function(rebuild) {
-    if (this.clazz && !rebuild) return this.clazz;
+    if (this.clazz && !rebuild)
+        return this.clazz;
 
-    // We need to create a prototyped Message class in an isolated scope
+    // Create the runtime Message class in its own scope
     var clazz = (function(ProtoBuf, T) {
 
         //? include("../Builder/Message.js");
@@ -62,13 +63,15 @@ Message.prototype.build = function(rebuild) {
     })(ProtoBuf, this);
 
     // Static enums and prototyped sub-messages
-    var children = this.getChildren();
-    for (var i=0; i<children.length; i++) {
-        if (children[i] instanceof Enum)
-            clazz[children[i]['name']] = children[i].build();
-        else if (children[i] instanceof Message)
-            clazz[children[i]['name']] = children[i].build();
-        else if (children[i] instanceof Message.Field) {
+    var children = this.getChildren(),
+        child;
+    for (var i=0, k=children.length; i<k; i++) {
+        child = children[i];
+        if (child instanceof Enum)
+            clazz[child['name']] = child.build();
+        else if (child instanceof Message)
+            clazz[child['name']] = child.build();
+        else if (child instanceof Message.Field || child instanceof Extension) {
             // Ignore
         } else
             throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));

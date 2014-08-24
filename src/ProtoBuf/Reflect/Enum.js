@@ -32,9 +32,9 @@ Enum.prototype = Object.create(Namespace.prototype);
  * @expose
  */
 Enum.prototype.build = function() {
-    var enm = {};
-    var values = this.getChildren(Enum.Value);
-    for (var i=0; i<values.length; i++)
+    var enm = {},
+        values = this.getChildren(Enum.Value);
+    for (var i=0, k=values.length; i<k; ++i)
         enm[values[i]['name']] = values[i]['id'];
     if (Object.defineProperty)
         Object.defineProperty(enm, '$options', { "value": this.buildOpt() });

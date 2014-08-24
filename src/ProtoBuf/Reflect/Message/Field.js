@@ -23,14 +23,14 @@ var Field = function(message, rule, type, name, id, options) {
      * @type {boolean}
      * @expose
      */
-    this.required = rule == "required";
+    this.required = rule === "required";
 
     /**
      * Message field repeated flag.
      * @type {boolean}
      * @expose
      */
-    this.repeated = rule == "repeated";
+    this.repeated = rule === "repeated";
 
     /**
      * Message field type. Type reference string if unresolved, protobuf type if resolved.
@@ -69,11 +69,18 @@ var Field = function(message, rule, type, name, id, options) {
     this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
 
     // Convert field names to camel case notation if the override is set
-    if (ProtoBuf.convertFieldsToCamelCase) {
+    if (ProtoBuf.convertFieldsToCamelCase && !(this instanceof Message.ExtensionField)) {
         this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
             return $1.toUpperCase();
         });
     }
+
+    /**
+     * Scope used to resolve the type.
+     * @type {!ProtoBuf.Reflect.Message}
+     * @expose
+     */
+    this.scope = message;
 };
 
 // Extends T

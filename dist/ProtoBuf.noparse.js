@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.5.1";
+        ProtoBuf.VERSION = "3.5.2";
 
         /**
          * Wire types.
@@ -594,7 +594,7 @@
              */
             Namespace.prototype._indexOf = function(nameOrId) {
                 var key = typeof nameOrId === 'number' ? 'id' : 'name';
-                for (var i=0; i<this.children.length; i++)
+                for (var i= 0, k=this.children.length; i<k; ++i)
                     if (typeof this.children[i][key] !== 'undefined' && this.children[i][key] == nameOrId)
                         return i;
                 return -1;
@@ -604,14 +604,15 @@
              * Resolves a reflect object inside of this namespace.
              * @param {string} qn Qualified name to resolve
              * @param {boolean=} excludeFields Excludes fields, defaults to `false`
-             * @return {ProtoBuf.Reflect.Namespace|null} The resolved type or null if not found
+             * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
              * @expose
              */
             Namespace.prototype.resolve = function(qn, excludeFields) {
-                var part = qn.split(".");
-                var ptr = this, i=0;
-                if (part[i] == "") { // Fully qualified name, e.g. ".My.Message'
-                    while (ptr.parent != null)
+                var part = qn.split("."),
+                    ptr = this,
+                    i = 0;
+                if (part[i] === "") { // Fully qualified name, e.g. ".My.Message'
+                    while (ptr.parent !== null)
                         ptr = ptr.parent;
                     i++;
                 }
@@ -659,9 +660,9 @@
              * @return {Object.<string,*>}
              */
             Namespace.prototype.buildOpt = function() {
-                var opt = {};
-                var keys = Object.keys(this.options);
-                for (var i=0; i<keys.length; i++) {
+                var opt = {},
+                    keys = Object.keys(this.options);
+                for (var i=0, k=keys.length; i<k; ++i) {
                     var key = keys[i],
                         val = this.options[keys[i]];
                     // TODO: Options are not resolved, yet.
@@ -743,9 +744,10 @@
              * @expose
              */
             Message.prototype.build = function(rebuild) {
-                if (this.clazz && !rebuild) return this.clazz;
+                if (this.clazz && !rebuild)
+                    return this.clazz;
 
-                // We need to create a prototyped Message class in an isolated scope
+                // Create the runtime Message class in its own scope
                 var clazz = (function(ProtoBuf, T) {
 
                     var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
@@ -1306,13 +1308,15 @@
                 })(ProtoBuf, this);
 
                 // Static enums and prototyped sub-messages
-                var children = this.getChildren();
-                for (var i=0; i<children.length; i++) {
-                    if (children[i] instanceof Enum)
-                        clazz[children[i]['name']] = children[i].build();
-                    else if (children[i] instanceof Message)
-                        clazz[children[i]['name']] = children[i].build();
-                    else if (children[i] instanceof Message.Field) {
+                var children = this.getChildren(),
+                    child;
+                for (var i=0, k=children.length; i<k; i++) {
+                    child = children[i];
+                    if (child instanceof Enum)
+                        clazz[child['name']] = child.build();
+                    else if (child instanceof Message)
+                        clazz[child['name']] = child.build();
+                    else if (child instanceof Message.Field || child instanceof Extension) {
                         // Ignore
                     } else
                         throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));
@@ -1513,14 +1517,14 @@
                  * @type {boolean}
                  * @expose
                  */
-                this.required = rule == "required";
+                this.required = rule === "required";
 
                 /**
                  * Message field repeated flag.
                  * @type {boolean}
                  * @expose
                  */
-                this.repeated = rule == "repeated";
+                this.repeated = rule === "repeated";
 
                 /**
                  * Message field type. Type reference string if unresolved, protobuf type if resolved.
@@ -1559,11 +1563,18 @@
                 this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
 
                 // Convert field names to camel case notation if the override is set
-                if (ProtoBuf.convertFieldsToCamelCase) {
+                if (ProtoBuf.convertFieldsToCamelCase && !(this instanceof Message.ExtensionField)) {
                     this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
                         return $1.toUpperCase();
                     });
                 }
+
+                /**
+                 * Scope used to resolve the type.
+                 * @type {!ProtoBuf.Reflect.Message}
+                 * @expose
+                 */
+                this.scope = message;
             };
 
             // Extends T
@@ -2169,9 +2180,9 @@
              * @expose
              */
             Enum.prototype.build = function() {
-                var enm = {};
-                var values = this.getChildren(Enum.Value);
-                for (var i=0; i<values.length; i++)
+                var enm = {},
+                    values = this.getChildren(Enum.Value);
+                for (var i=0, k=values.length; i<k; ++i)
                     enm[values[i]['name']] = values[i]['id'];
                 if (Object.defineProperty)
                     Object.defineProperty(enm, '$options', { "value": this.buildOpt() });
@@ -2219,6 +2230,34 @@
             Reflect.Enum.Value = Value;
 
             /**
+             * An extension (field).
+             * @exports ProtoBuf.Reflect.Extension
+             * @constructor
+             * @param {ProtoBuf.Reflect.T} parent Parent object
+             * @param {string} name Object name
+             * @param {!ProtoBuf.Reflect.Message.Field} field Extension field
+             */
+            var Extension = function(parent, name, field) {
+                T.call(this, parent, name);
+
+                /**
+                 * Extended message field.
+                 * @type {!ProtoBuf.Reflect.Message.Field}
+                 * @expose
+                 */
+                this.field = field;
+            };
+
+            // Extends T
+            Extension.prototype = Object.create(T.prototype);
+
+            /**
+             * @alias ProtoBuf.Reflect.Extension
+             * @expose
+             */
+            Reflect.Extension = Extension;
+
+            /**
              * Constructs a new Service.
              * @exports ProtoBuf.Reflect.Service
              * @param {!ProtoBuf.Reflect.Namespace} root Root
@@ -2254,7 +2293,10 @@
              * @expose
              */
             Service.prototype.build = function(rebuild) {
-                if (this.clazz && !rebuild) return this.clazz;
+                if (this.clazz && !rebuild)
+                    return this.clazz;
+
+                // Create the runtime Service class in its own scope
                 return this.clazz = (function(ProtoBuf, T) {
 
                     /**
@@ -2743,9 +2785,14 @@
                                             throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                         if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                             throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
-                                        // see #161: Extensions are referenced by their fully qualified name
-                                        var fqn = this.ptr.fqn()+'.'+def["fields"][i]["name"];
-                                        obj.addChild(new Reflect.Message.ExtensionField(obj, def["fields"][i]["rule"], def["fields"][i]["type"], fqn, def["fields"][i]["id"], def["fields"][i]["options"]));
+                                        // see #161: Extensions use their fully qualified name as their runtime key, ...
+                                        var fld = new Reflect.Message.ExtensionField(obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
+                                        // ...are added on top of the current namespace as an extension and...
+                                        var ext = new Reflect.Extension(this.ptr, def["fields"][i]["name"], fld);
+                                        // ...use the current namespace to resolve types.
+                                        fld.scope = this.ptr;
+                                        this.ptr.addChild(ext);
+                                        obj.addChild(fld);
                                     }
                                 } else if (!/\.?google\.protobuf\./.test(def["ref"])) // Silently skip internal extensions
                                     throw Error("Extended message "+def["ref"]+" is not defined");
@@ -2920,7 +2967,7 @@
                     if (!Lang.TYPE.test(this.ptr.type)) { // Resolve type...
                         if (!Lang.TYPEREF.test(this.ptr.type))
                             throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
-                        res = this.ptr.parent.resolve(this.ptr.type, true);
+                        res = this.ptr.scope.resolve(this.ptr.type, true); // this.ptr.parent
                         if (!res)
                             throw Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                         this.ptr.resolvedType = res;
@@ -2948,6 +2995,8 @@
                         // Should not happen as nothing else is implemented
                         throw Error("Illegal service type in "+this.ptr.toString(true));
                     }
+                } else if (this.ptr instanceof ProtoBuf.Reflect.Extension) {
+                    // There are no runtime counterparts to extensions
                 } else
                     throw Error("Illegal object in namespace: "+typeof(this.ptr)+":"+this.ptr);
                 this.reset();

@@ -68,6 +68,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     Reflect.Enum.Value = Value;
 
+    //? include("Reflect/Extension.js");
+
+    /**
+     * @alias ProtoBuf.Reflect.Extension
+     * @expose
+     */
+    Reflect.Extension = Extension;
+
     //? include("Reflect/Service.js");
 
     /**

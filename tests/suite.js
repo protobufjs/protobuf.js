@@ -971,10 +971,10 @@
                             "fields": [
                                 {
                                     "rule": "optional",
+                                    "options": {},
                                     "type": "int32",
                                     "name": "foo",
-                                    "id": 1001,
-                                    "options": {}
+                                    "id": 1001
                                 }
                             ]
                         },
@@ -984,17 +984,20 @@
                             "enums": [],
                             "messages": [],
                             "options": {},
-                            "extensions": [2,536870911]
+                            "extensions": [
+                                2,
+                                536870911
+                            ]
                         },
                         {
                             "ref": "Foo",
                             "fields":[
                                 {
                                     "rule": "optional",
+                                    "options": {},
                                     "type": "string",
                                     "name": "bar",
-                                    "id": 2,
-                                    "options": {}
+                                    "id": 2
                                 }
                             ]
                         },
@@ -1004,14 +1007,21 @@
                             "enums": [],
                             "messages": [
                                 {
-                                    "ref": "Foo",
+                                    "name": "Foo",
+                                    "fields": [],
+                                    "enums": [],
+                                    "messages": [],
+                                    "options": {}
+                                },
+                                {
+                                    "ref": ".Foo",
                                     "fields": [
                                         {
                                             "rule": "optional",
-                                            "type": "Bar",
-                                            "name": "bar2",
-                                            "id": 3,
-                                            "options": {}
+                                            "options": {},
+                                            "type": "Foo",
+                                            "name": "foo",
+                                            "id": 3
                                         }
                                     ]
                                 }
@@ -1028,22 +1038,25 @@
                 });
                 
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/extend.proto");
-                var TFoo = builder.lookup("Foo"),
-                    TBar = builder.lookup("Bar"),
+                var TFoo = builder.lookup(".Foo"),
+                    TBar = builder.lookup(".Bar"),
+                    TBarFoo = builder.lookup(".Bar.Foo"),
                     fields = TFoo.getChildren(ProtoBuf.Reflect.Message.Field);
                 test.strictEqual(fields.length, 2);
                 test.strictEqual(fields[0].name, ".bar");
                 test.strictEqual(fields[0].id, 2);
-                test.strictEqual(fields[1].name, ".Bar.bar2");
+                test.strictEqual(fields[1].name, ".Bar.foo");
                 test.strictEqual(fields[1].id, 3);
                 test.deepEqual(TFoo.extensions, [2, ProtoBuf.ID_MAX]); // Defined
                 test.deepEqual(TBar.extensions, [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX]); // Undefined
-                // test.strictEqual(TBar.getChildren(ProtoBuf.Reflect.Message.Field).length, 0);
+                test.deepEqual(TBar.getChild("foo"), { parent: TBar, name: "foo", field: TFoo.getChild('.Bar.foo') });
+                test.strictEqual(TBar.getChildren(ProtoBuf.Reflect.Message.Field).length, 0);
                 var root = builder.build();
+                test.strictEqual(TFoo.getChild(".Bar.foo").resolvedType, TBarFoo); // .Bar.Foo, not .Foo
                 var foo = new root.Foo(),
                     bar = new root.Bar();
                 foo['.bar'] = "123";
-                foo['.Bar.bar2'] = bar;
+                foo['.Bar.foo'] = bar;
                 test.equal(foo.encode().compact().toString("debug"), "<12 03 31 32 33 1A 00>");
             } catch (e) {
                 fail(e);
