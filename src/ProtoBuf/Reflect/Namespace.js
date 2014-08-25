@@ -58,9 +58,9 @@ Namespace.prototype.addChild = function(child) {
     var other;
     if (other = this.getChild(child.name)) {
         // Try to revert camelcase transformation on collision
-        if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName))
+        if (other instanceof Message.Field && other.name !== other.originalName && this.getChild(other.originalName) === null)
             other.name = other.originalName; // Revert previous first (effectively keeps both originals)
-        else if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName))
+        else if (child instanceof Message.Field && child.name !== child.originalName && this.getChild(child.originalName) === null)
             child.name = child.originalName;
         else
             throw Error("Duplicate name in namespace "+this.toString(true)+": "+child.name);
@@ -69,38 +69,17 @@ Namespace.prototype.addChild = function(child) {
 };
 
 /**
- * Tests if this namespace has a child with the specified name.
- * @param {string|number} nameOrId Child name or id
- * @returns {boolean} true if there is one, else false
- * @expose
- */
-Namespace.prototype.hasChild = function(nameOrId) {
-    return this._indexOf(nameOrId) > -1;
-};
-
-/**
- * Gets a child by its name.
+ * Gets a child by its name or id.
  * @param {string|number} nameOrId Child name or id
  * @return {?ProtoBuf.Reflect.T} The child or null if not found
  * @expose
  */
 Namespace.prototype.getChild = function(nameOrId) {
-    var index = this._indexOf(nameOrId);
-    return index > -1 ? this.children[index] : null;
-};
-
-/**
- * Returns child index by its name or id.
- * @param {string|number} nameOrId Child name or id
- * @return {Number} The child index
- * @private
- */
-Namespace.prototype._indexOf = function(nameOrId) {
     var key = typeof nameOrId === 'number' ? 'id' : 'name';
-    for (var i= 0, k=this.children.length; i<k; ++i)
-        if (typeof this.children[i][key] !== 'undefined' && this.children[i][key] == nameOrId)
-            return i;
-    return -1;
+    for (var i=0, k=this.children.length; i<k; ++i)
+        if (this.children[i][key] === nameOrId)
+            return this.children[i];
+    return null;
 };
 
 /**

@@ -96,17 +96,21 @@ Message.prototype.$add = Message.prototype.add;
  * @function
  * @param {string} key Key
  * @param {*} value Value to set
- * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+ * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
  * @throws {Error} If the value cannot be set
  * @expose
  */
 Message.prototype.set = function(key, value, noAssert) {
+    if (noAssert) {
+        this[key] = value;
+        return;
+    }
     var field = T.getChild(key);
     if (!field)
         throw Error(this+"#"+key+" is not a field: undefined");
     if (!(field instanceof ProtoBuf.Reflect.Message.Field))
         throw Error(this+"#"+key+" is not a field: "+field.toString(true));
-    this[field.name] = noAssert ? value : field.verifyValue(value); // May throw
+    this[field.name] = field.verifyValue(value); // May throw
 };
 
 /**
@@ -126,11 +130,14 @@ Message.prototype.$set = Message.prototype.set;
  * @name ProtoBuf.Builder.Message#get
  * @function
  * @param {string} key Key
+ * @param {boolean=} noAssert Whether to no assert for an actual field, defaults to `false`
  * @return {*} Value
  * @throws {Error} If there is no such field
  * @expose
  */
-Message.prototype.get = function(key) {
+Message.prototype.get = function(key, noAssert) {
+    if (noAssert)
+        return this[key];
     var field = T.getChild(key);
     if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field))
         throw Error(this+"#"+key+" is not a field: undefined");
@@ -165,12 +172,12 @@ for (var i=0; i<fields.length; i++) {
                 return match.toUpperCase().replace('_','');
             });
             Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
-    
+
             // set/get_[some_value]
             var name = field.originalName.replace(/([A-Z])/g, function(match) {
                 return "_"+match;
             });
-    
+
             /**
              * Sets a value. This method is present for each field, but only if there is no name conflict with
              * another field.
@@ -180,11 +187,11 @@ for (var i=0; i<fields.length; i++) {
              * @abstract
              * @throws {Error} If the value cannot be set
              */
-            if (!T.hasChild("set"+Name))
+            if (T.getChild("set"+Name) === null)
                 Message.prototype["set"+Name] = function(value) {
                     this.$set(field.name, value);
                 };
-    
+
             /**
              * Sets a value. This method is present for each field, but only if there is no name conflict with
              * another field.
@@ -194,11 +201,11 @@ for (var i=0; i<fields.length; i++) {
              * @abstract
              * @throws {Error} If the value cannot be set
              */
-            if (!T.hasChild("set_"+name))
+            if (T.getChild("set_"+name) === null)
                 Message.prototype["set_"+name] = function(value) {
                     this.$set(field.name, value);
                 };
-    
+
             /**
              * Gets a value. This method is present for each field, but only if there is no name conflict with
              * another field.
@@ -207,11 +214,11 @@ for (var i=0; i<fields.length; i++) {
              * @abstract
              * @return {*} The value
              */
-            if (!T.hasChild("get"+Name))
+            if (T.getChild("get"+Name) === null)
                 Message.prototype["get"+Name] = function() {
                     return this.$get(field.name); // Does not throw, field exists
                 };
-    
+
             /**
              * Gets a value. This method is present for each field, but only if there is no name conflict with
              * another field.
@@ -220,11 +227,11 @@ for (var i=0; i<fields.length; i++) {
              * @return {*} The value
              * @abstract
              */
-            if (!T.hasChild("get_"+name))
+            if (T.getChild("get_"+name) === null)
                 Message.prototype["get_"+name] = function() {
                     return this.$get(field.name); // Does not throw, field exists
                 };
-    
+
         })(field);
 }
 
@@ -235,6 +242,7 @@ for (var i=0; i<fields.length; i++) {
  * @name ProtoBuf.Builder.Message#$encode
  * @function
  * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
+ * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
  * @return {!ByteBuffer} Encoded message as a ByteBuffer
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded ByteBuffer in the `encoded` property on the error.
@@ -243,14 +251,17 @@ for (var i=0; i<fields.length; i++) {
  * @see ProtoBuf.Builder.Message#encodeHex
  * @see ProtoBuf.Builder.Message#encodeAB
  */
-Message.prototype.encode = function(buffer) {
+Message.prototype.encode = function(buffer, noVerify) {
+    if (typeof buffer === 'boolean')
+        noVerify = buffer,
+        buffer = undefined;
     var isNew = false;
     if (!buffer)
         buffer = new ByteBuffer(),
         isNew = true;
     var le = buffer.littleEndian;
     try {
-        T.encode(this, buffer.LE());
+        T.encode(this, buffer.LE(), noVerify);
         return (isNew ? buffer.flip() : buffer).LE(le);
     } catch (e) {
         buffer.LE(le);

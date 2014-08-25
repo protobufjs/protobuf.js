@@ -237,14 +237,13 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
 
 /**
  * Encodes the specified field value to the specified buffer.
- * @param {*} value Field value
+ * @param {*} value Verified field value
  * @param {ByteBuffer} buffer ByteBuffer to encode to
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If the field cannot be encoded
  * @expose
  */
 Field.prototype.encode = function(value, buffer) {
-    value = this.verifyValue(value); // May throw
     if (this.type === null || typeof this.type !== 'object')
         throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
     if (value === null || (this.repeated && value.length == 0))
@@ -263,8 +262,8 @@ Field.prototype.encode = function(value, buffer) {
                 var start = buffer.offset; // Remember where the contents begin
                 for (i=0; i<value.length; i++)
                     this.encodeValue(value[i], buffer);
-                var len = buffer.offset-start;
-                var varintLen = ByteBuffer.calculateVarint32(len);
+                var len = buffer.offset-start,
+                    varintLen = ByteBuffer.calculateVarint32(len);
                 if (varintLen > 1) { // We need to move the contents
                     var contents = buffer.slice(start, buffer.offset);
                     start += varintLen-1;

@@ -83,20 +83,24 @@ Message.prototype.build = function(rebuild) {
  * Encodes a runtime message's contents to the specified buffer.
  * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
  * @param {ByteBuffer} buffer ByteBuffer to write to
+ * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
  * @expose
  */
-Message.prototype.encode = function(message, buffer) {
-    var fields = this.getChildren(Message.Field),
-        fieldMissing = null;
-    for (var i=0, val; i<fields.length; i++) {
-        val = message.$get(fields[i].name);
-        if (fields[i].required && val === null) {
+Message.prototype.encode = function(message, buffer, noVerify) {
+    var fieldMissing = null,
+        field;
+    for (var i=0, k=this.children.length, val; i<k; ++i) {
+        field = this.children[i];
+        if (!(field instanceof Message.Field))
+            continue;
+        val = message[field.name];
+        if (field.required && val === null) {
             if (fieldMissing === null)
-                fieldMissing = fields[i];
+                fieldMissing = field;
         } else
-            fields[i].encode(val, buffer);
+            field.encode(noVerify ? val : field.verifyValue(val), buffer);
     }
     if (fieldMissing !== null) {
         var err = Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
@@ -181,7 +185,14 @@ Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
     var start = buffer.offset;
     var msg = new (this.clazz)();
     var tag, wireType, id;
-    while (buffer.offset < start+length || (length == -1 && buffer.remaining() > 0)) {
+    var fields = {};
+    for (var i=0, k=this.children.length; i<k; ++i) {
+        var field = this.children[i];
+        if (!(field instanceof Message.Field))
+            continue;
+        fields[field.id] = field;
+    }
+    while (buffer.offset < start+length || (length === -1 && buffer.remaining() > 0)) {
         tag = buffer.readVarint32();
         wireType = tag & 0x07;
         id = tag >> 3;
@@ -190,8 +201,7 @@ Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
                 throw Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")");
             break;
         }
-        var field = this.getChild(id); // Message.Field only
-        if (!field) {
+        if (!(field = fields[id])) {
             // "messages created by your new code can be parsed by your old code: old binaries simply ignore the new field when parsing."
             switch (wireType) {
                 case ProtoBuf.WIRE_TYPES.VARINT:
@@ -216,26 +226,23 @@ Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
             continue;
         }
         if (field.repeated && !field.options["packed"])
-            msg.$add(field.name, field.decode(wireType, buffer), true);
+            msg[field.name].push(field.decode(wireType, buffer));
         else
-            msg.$set(field.name, field.decode(wireType, buffer), true);
+            msg[field.name] = field.decode(wireType, buffer);
     }
 
     // Check if all required fields are present and set default values for optional fields that are not
-    var fields = this.getChildren(ProtoBuf.Reflect.Field);
-    for (var i=0; i<fields.length; i++) {
-        field = fields[i];
+    for (i=0, k=this.children.length; i<k; ++i) {
+        field = this.children[i];
+        if (!(field instanceof Message.Field))
+            continue;
         if (msg[field.name] === null)
             if (field.required) {
                 var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
                 err["decoded"] = msg; // Still expose what we got
                 throw(err);
             } else if (typeof field.options['default'] !== 'undefined') {
-                try {
-                    msg.$set(field.name, field.options['default']); // Should not throw
-                } catch (e) {
-                    throw Error("[INTERNAL] "+e);
-                }
+                msg.$set(field.name, field.options['default']);
             }
     }
     return msg;

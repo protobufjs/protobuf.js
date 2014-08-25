@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.5.2";
+        ProtoBuf.VERSION = "3.5.3";
 
         /**
          * Wire types.
@@ -1425,9 +1425,9 @@
                 var other;
                 if (other = this.getChild(child.name)) {
                     // Try to revert camelcase transformation on collision
-                    if (other instanceof Message.Field && other.name !== other.originalName && !this.hasChild(other.originalName))
+                    if (other instanceof Message.Field && other.name !== other.originalName && this.getChild(other.originalName) === null)
                         other.name = other.originalName; // Revert previous first (effectively keeps both originals)
-                    else if (child instanceof Message.Field && child.name !== child.originalName && !this.hasChild(child.originalName))
+                    else if (child instanceof Message.Field && child.name !== child.originalName && this.getChild(child.originalName) === null)
                         child.name = child.originalName;
                     else
                         throw Error("Duplicate name in namespace "+this.toString(true)+": "+child.name);
@@ -1436,38 +1436,17 @@
             };
 
             /**
-             * Tests if this namespace has a child with the specified name.
-             * @param {string|number} nameOrId Child name or id
-             * @returns {boolean} true if there is one, else false
-             * @expose
-             */
-            Namespace.prototype.hasChild = function(nameOrId) {
-                return this._indexOf(nameOrId) > -1;
-            };
-
-            /**
-             * Gets a child by its name.
+             * Gets a child by its name or id.
              * @param {string|number} nameOrId Child name or id
              * @return {?ProtoBuf.Reflect.T} The child or null if not found
              * @expose
              */
             Namespace.prototype.getChild = function(nameOrId) {
-                var index = this._indexOf(nameOrId);
-                return index > -1 ? this.children[index] : null;
-            };
-
-            /**
-             * Returns child index by its name or id.
-             * @param {string|number} nameOrId Child name or id
-             * @return {Number} The child index
-             * @private
-             */
-            Namespace.prototype._indexOf = function(nameOrId) {
                 var key = typeof nameOrId === 'number' ? 'id' : 'name';
-                for (var i= 0, k=this.children.length; i<k; ++i)
-                    if (typeof this.children[i][key] !== 'undefined' && this.children[i][key] == nameOrId)
-                        return i;
-                return -1;
+                for (var i=0, k=this.children.length; i<k; ++i)
+                    if (this.children[i][key] === nameOrId)
+                        return this.children[i];
+                return null;
             };
 
             /**
@@ -1714,17 +1693,21 @@
                      * @function
                      * @param {string} key Key
                      * @param {*} value Value to set
-                     * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+                     * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
                     Message.prototype.set = function(key, value, noAssert) {
+                        if (noAssert) {
+                            this[key] = value;
+                            return;
+                        }
                         var field = T.getChild(key);
                         if (!field)
                             throw Error(this+"#"+key+" is not a field: undefined");
                         if (!(field instanceof ProtoBuf.Reflect.Message.Field))
                             throw Error(this+"#"+key+" is not a field: "+field.toString(true));
-                        this[field.name] = noAssert ? value : field.verifyValue(value); // May throw
+                        this[field.name] = field.verifyValue(value); // May throw
                     };
 
                     /**
@@ -1744,11 +1727,14 @@
                      * @name ProtoBuf.Builder.Message#get
                      * @function
                      * @param {string} key Key
+                     * @param {boolean=} noAssert Whether to no assert for an actual field, defaults to `false`
                      * @return {*} Value
                      * @throws {Error} If there is no such field
                      * @expose
                      */
-                    Message.prototype.get = function(key) {
+                    Message.prototype.get = function(key, noAssert) {
+                        if (noAssert)
+                            return this[key];
                         var field = T.getChild(key);
                         if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field))
                             throw Error(this+"#"+key+" is not a field: undefined");
@@ -1798,7 +1784,7 @@
                                  * @abstract
                                  * @throws {Error} If the value cannot be set
                                  */
-                                if (!T.hasChild("set"+Name))
+                                if (T.getChild("set"+Name) === null)
                                     Message.prototype["set"+Name] = function(value) {
                                         this.$set(field.name, value);
                                     };
@@ -1812,7 +1798,7 @@
                                  * @abstract
                                  * @throws {Error} If the value cannot be set
                                  */
-                                if (!T.hasChild("set_"+name))
+                                if (T.getChild("set_"+name) === null)
                                     Message.prototype["set_"+name] = function(value) {
                                         this.$set(field.name, value);
                                     };
@@ -1825,7 +1811,7 @@
                                  * @abstract
                                  * @return {*} The value
                                  */
-                                if (!T.hasChild("get"+Name))
+                                if (T.getChild("get"+Name) === null)
                                     Message.prototype["get"+Name] = function() {
                                         return this.$get(field.name); // Does not throw, field exists
                                     };
@@ -1838,7 +1824,7 @@
                                  * @return {*} The value
                                  * @abstract
                                  */
-                                if (!T.hasChild("get_"+name))
+                                if (T.getChild("get_"+name) === null)
                                     Message.prototype["get_"+name] = function() {
                                         return this.$get(field.name); // Does not throw, field exists
                                     };
@@ -1853,6 +1839,7 @@
                      * @name ProtoBuf.Builder.Message#$encode
                      * @function
                      * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
+                     * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
                      * @return {!ByteBuffer} Encoded message as a ByteBuffer
                      * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                      *  returns the encoded ByteBuffer in the `encoded` property on the error.
@@ -1861,14 +1848,17 @@
                      * @see ProtoBuf.Builder.Message#encodeHex
                      * @see ProtoBuf.Builder.Message#encodeAB
                      */
-                    Message.prototype.encode = function(buffer) {
+                    Message.prototype.encode = function(buffer, noVerify) {
+                        if (typeof buffer === 'boolean')
+                            noVerify = buffer,
+                            buffer = undefined;
                         var isNew = false;
                         if (!buffer)
                             buffer = new ByteBuffer(),
                             isNew = true;
                         var le = buffer.littleEndian;
                         try {
-                            T.encode(this, buffer.LE());
+                            T.encode(this, buffer.LE(), noVerify);
                             return (isNew ? buffer.flip() : buffer).LE(le);
                         } catch (e) {
                             buffer.LE(le);
@@ -2198,20 +2188,24 @@
              * Encodes a runtime message's contents to the specified buffer.
              * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
              * @param {ByteBuffer} buffer ByteBuffer to write to
+             * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
              * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(message, buffer) {
-                var fields = this.getChildren(Message.Field),
-                    fieldMissing = null;
-                for (var i=0, val; i<fields.length; i++) {
-                    val = message.$get(fields[i].name);
-                    if (fields[i].required && val === null) {
+            Message.prototype.encode = function(message, buffer, noVerify) {
+                var fieldMissing = null,
+                    field;
+                for (var i=0, k=this.children.length, val; i<k; ++i) {
+                    field = this.children[i];
+                    if (!(field instanceof Message.Field))
+                        continue;
+                    val = message[field.name];
+                    if (field.required && val === null) {
                         if (fieldMissing === null)
-                            fieldMissing = fields[i];
+                            fieldMissing = field;
                     } else
-                        fields[i].encode(val, buffer);
+                        field.encode(noVerify ? val : field.verifyValue(val), buffer);
                 }
                 if (fieldMissing !== null) {
                     var err = Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
@@ -2296,7 +2290,14 @@
                 var start = buffer.offset;
                 var msg = new (this.clazz)();
                 var tag, wireType, id;
-                while (buffer.offset < start+length || (length == -1 && buffer.remaining() > 0)) {
+                var fields = {};
+                for (var i=0, k=this.children.length; i<k; ++i) {
+                    var field = this.children[i];
+                    if (!(field instanceof Message.Field))
+                        continue;
+                    fields[field.id] = field;
+                }
+                while (buffer.offset < start+length || (length === -1 && buffer.remaining() > 0)) {
                     tag = buffer.readVarint32();
                     wireType = tag & 0x07;
                     id = tag >> 3;
@@ -2305,8 +2306,7 @@
                             throw Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")");
                         break;
                     }
-                    var field = this.getChild(id); // Message.Field only
-                    if (!field) {
+                    if (!(field = fields[id])) {
                         // "messages created by your new code can be parsed by your old code: old binaries simply ignore the new field when parsing."
                         switch (wireType) {
                             case ProtoBuf.WIRE_TYPES.VARINT:
@@ -2331,26 +2331,23 @@
                         continue;
                     }
                     if (field.repeated && !field.options["packed"])
-                        msg.$add(field.name, field.decode(wireType, buffer), true);
+                        msg[field.name].push(field.decode(wireType, buffer));
                     else
-                        msg.$set(field.name, field.decode(wireType, buffer), true);
+                        msg[field.name] = field.decode(wireType, buffer);
                 }
 
                 // Check if all required fields are present and set default values for optional fields that are not
-                var fields = this.getChildren(ProtoBuf.Reflect.Field);
-                for (var i=0; i<fields.length; i++) {
-                    field = fields[i];
+                for (i=0, k=this.children.length; i<k; ++i) {
+                    field = this.children[i];
+                    if (!(field instanceof Message.Field))
+                        continue;
                     if (msg[field.name] === null)
                         if (field.required) {
                             var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
                             err["decoded"] = msg; // Still expose what we got
                             throw(err);
                         } else if (typeof field.options['default'] !== 'undefined') {
-                            try {
-                                msg.$set(field.name, field.options['default']); // Should not throw
-                            } catch (e) {
-                                throw Error("[INTERNAL] "+e);
-                            }
+                            msg.$set(field.name, field.options['default']);
                         }
                 }
                 return msg;
@@ -2601,14 +2598,13 @@
 
             /**
              * Encodes the specified field value to the specified buffer.
-             * @param {*} value Field value
+             * @param {*} value Verified field value
              * @param {ByteBuffer} buffer ByteBuffer to encode to
              * @return {ByteBuffer} The ByteBuffer for chaining
              * @throws {Error} If the field cannot be encoded
              * @expose
              */
             Field.prototype.encode = function(value, buffer) {
-                value = this.verifyValue(value); // May throw
                 if (this.type === null || typeof this.type !== 'object')
                     throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
                 if (value === null || (this.repeated && value.length == 0))
@@ -2627,8 +2623,8 @@
                             var start = buffer.offset; // Remember where the contents begin
                             for (i=0; i<value.length; i++)
                                 this.encodeValue(value[i], buffer);
-                            var len = buffer.offset-start;
-                            var varintLen = ByteBuffer.calculateVarint32(len);
+                            var len = buffer.offset-start,
+                                varintLen = ByteBuffer.calculateVarint32(len);
                             if (varintLen > 1) { // We need to move the contents
                                 var contents = buffer.slice(start, buffer.offset);
                                 start += varintLen-1;
@@ -3456,7 +3452,7 @@
                     if (!Lang.NAME.test(part[i]))
                         throw Error("Illegal package: "+part[i]);
                 for (i=0; i<part.length; i++) {
-                    if (!this.ptr.hasChild(part[i])) // Keep existing namespace
+                    if (this.ptr.getChild(part[i]) === null) // Keep existing namespace
                         this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
                     this.ptr = this.ptr.getChild(part[i]);
                 }
@@ -3592,7 +3588,7 @@
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
                                     for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                        if (obj.hasChild(def['fields'][i]['id']))
+                                        if (obj.getChild(def['fields'][i]['id']) !== null)
                                             throw Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']);
                                         if (def["fields"][i]["options"]) {
                                             subObj = Object.keys(def["fields"][i]["options"]);
@@ -3651,7 +3647,7 @@
                                 obj = this.ptr.resolve(def["ref"]);
                                 if (obj) {
                                     for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                        if (obj.hasChild(def['fields'][i]['id']))
+                                        if (obj.getChild(def['fields'][i]['id']) !== null)
                                             throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                         if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                             throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");

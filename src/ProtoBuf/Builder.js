@@ -80,7 +80,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (!Lang.NAME.test(part[i]))
                 throw Error("Illegal package: "+part[i]);
         for (i=0; i<part.length; i++) {
-            if (!this.ptr.hasChild(part[i])) // Keep existing namespace
+            if (this.ptr.getChild(part[i]) === null) // Keep existing namespace
                 this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
             this.ptr = this.ptr.getChild(part[i]);
         }
@@ -216,7 +216,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                if (obj.hasChild(def['fields'][i]['id']))
+                                if (obj.getChild(def['fields'][i]['id']) !== null)
                                     throw Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']);
                                 if (def["fields"][i]["options"]) {
                                     subObj = Object.keys(def["fields"][i]["options"]);
@@ -275,7 +275,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         obj = this.ptr.resolve(def["ref"]);
                         if (obj) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                if (obj.hasChild(def['fields'][i]['id']))
+                                if (obj.getChild(def['fields'][i]['id']) !== null)
                                     throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                 if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                     throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");

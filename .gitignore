@@ -2,3 +2,4 @@ node_modules/
 npm-debug.log
 .idea/
 sandbox/
+v8.log
