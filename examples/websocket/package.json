@@ -7,7 +7,7 @@
         "open": "0.0.3"
     },
     "engines": {
-        "node": ">=0.6"
+        "node": ">=0.8"
     },
     "scripts": {
         "run": "node server.js"

@@ -1,0 +1,21 @@
+package js;
+
+message Value {
+	optional sint32 integer = 1;
+	optional double double = 2;
+	optional string string = 3;
+	optional bool boolean = 4;
+	optional bool null = 5;
+	optional Array array = 6;
+	optional Object object = 7;
+	// if none is set: undefined
+}
+
+message Array {
+    repeated Value values = 1;
+}
+
+message Object {
+    repeated Value keys = 1;
+    repeated Value values = 2;
+}
