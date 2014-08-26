@@ -1,6 +1,5 @@
 var protoify = require("./index.js"),
     jsonify = protoify.jsonify,
-    ByteBuffer = protoify.ByteBuffer,
     assert = require("assert");
 
 var samples = [

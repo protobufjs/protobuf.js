@@ -1,5 +1,6 @@
 ProtoBuf.js WebSocket example
 =============================
+This example shows how to use binary websockets to transfer protocol buffers.
 
 Instructions
 ------------
