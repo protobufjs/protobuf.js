@@ -709,6 +709,22 @@
                  * @expose
                  */
                 this.isGroup = !!isGroup;
+
+                // The following cached collections are used to efficiently iterate over or look up fields when decoding.
+
+                /**
+                 * Cached fields.
+                 * @type {?Array.<!ProtoBuf.Reflect.Message.Field>}
+                 * @private
+                 */
+                this._fields = null;
+
+                /**
+                 * Cached fields by id.
+                 * @type {?Object.<number,!ProtoBuf.Reflect.Message.Field>}
+                 * @private
+                 */
+                this._fieldsById = null;
             };
 
             // Extends Namespace
@@ -765,11 +781,6 @@
                                 for (i=0, k=arguments.length; i<k; ++i)
                                     this.$set(fields[i].name, arguments[i]); // May throw
                         }
-
-                        if (Object.defineProperty)
-                            Object.defineProperty(this, "$type", {
-                                get: function() { return T; }
-                            });
                     };
 
                     /**
@@ -1288,7 +1299,7 @@
                         return T.toString();
                     };
 
-                    // Static
+                    // Properties
 
                     /**
                      * Options.
@@ -1296,18 +1307,31 @@
                      * @type {Object.<string,*>}
                      * @expose
                      */
-                    var $options; // for cc
+                    var $options; // cc
+
+                    /**
+                     * Reflection type.
+                     * @name ProtoBuf.Builder.Message#$type
+                     * @type {!ProtoBuf.Reflect.Message}
+                     * @expose
+                     */
+                    var $type; // cc
 
                     if (Object.defineProperty)
-                        Object.defineProperty(Message, '$options', { "value": T.buildOpt() });
+                        Object.defineProperty(Message, '$options', { "value": T.buildOpt() }),
+                        Object.defineProperty(Message.prototype, "$type", {
+                            get: function() { return T; }
+                        });
 
                     return Message;
 
                 })(ProtoBuf, this);
 
-                // Static enums and prototyped sub-messages
+                // Static enums and prototyped sub-messages / cached collections
                 var children = this.getChildren(),
                     child;
+                this._fields = [];
+                this._fieldsById = [];
                 for (var i=0, k=children.length; i<k; i++) {
                     child = children[i];
                     if (child instanceof Enum)
@@ -1315,12 +1339,15 @@
                     else if (child instanceof Message)
                         clazz[child['name']] = child.build();
                     else if (child instanceof Message.Field)
-                        child.build();
+                        child.build(),
+                        this._fields.push(child),
+                        this._fieldsById[child.id] = child;
                     else if (child instanceof Extension) {
                         // Ignore
                     } else
                         throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));
                 }
+
                 return this.clazz = clazz;
             };
 
@@ -1427,16 +1454,9 @@
              */
             Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
                 length = typeof length === 'number' ? length : -1;
-                var start = buffer.offset;
-                var msg = new (this.clazz)();
-                var tag, wireType, id;
-                var fields = {};
-                for (var i=0, k=this.children.length; i<k; ++i) {
-                    var field = this.children[i];
-                    if (!(field instanceof Message.Field))
-                        continue;
-                    fields[field.id] = field;
-                }
+                var start = buffer.offset,
+                    msg = new (this.clazz)(),
+                    tag, wireType, id, field;
                 while (buffer.offset < start+length || (length === -1 && buffer.remaining() > 0)) {
                     tag = buffer.readVarint32();
                     wireType = tag & 0x07;
@@ -1446,7 +1466,7 @@
                             throw Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")");
                         break;
                     }
-                    if (!(field = fields[id])) {
+                    if (!(field = this._fieldsById[id])) {
                         // "messages created by your new code can be parsed by your old code: old binaries simply ignore the new field when parsing."
                         switch (wireType) {
                             case ProtoBuf.WIRE_TYPES.VARINT:
@@ -1477,10 +1497,8 @@
                 }
 
                 // Check if all required fields are present and set default values for optional fields that are not
-                for (i=0, k=this.children.length; i<k; ++i) {
-                    field = this.children[i];
-                    if (!(field instanceof Message.Field))
-                        continue;
+                for (var i=0, k=this._fields.length; i<k; ++i) {
+                    field = this._fields[i];
                     if (msg[field.name] === null)
                         if (field.required) {
                             var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);

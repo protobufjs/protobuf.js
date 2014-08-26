@@ -38,11 +38,6 @@ var Message = function(values, var_args) {
             for (i=0, k=arguments.length; i<k; ++i)
                 this.$set(fields[i].name, arguments[i]); // May throw
     }
-
-    if (Object.defineProperty)
-        Object.defineProperty(this, "$type", {
-            get: function() { return T; }
-        });
 };
 
 /**
@@ -561,7 +556,7 @@ Message.prototype.toString = function() {
     return T.toString();
 };
 
-// Static
+// Properties
 
 /**
  * Options.
@@ -569,7 +564,18 @@ Message.prototype.toString = function() {
  * @type {Object.<string,*>}
  * @expose
  */
-var $options; // for cc
+var $options; // cc
+
+/**
+ * Reflection type.
+ * @name ProtoBuf.Builder.Message#$type
+ * @type {!ProtoBuf.Reflect.Message}
+ * @expose
+ */
+var $type; // cc
 
 if (Object.defineProperty)
-    Object.defineProperty(Message, '$options', { "value": T.buildOpt() });
+    Object.defineProperty(Message, '$options', { "value": T.buildOpt() }),
+    Object.defineProperty(Message.prototype, "$type", {
+        get: function() { return T; }
+    });
