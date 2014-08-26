@@ -126,7 +126,7 @@ Namespace.prototype.resolve = function(qn, excludeFields) {
 Namespace.prototype.build = function() {
     /** @dict */
     var ns = {};
-    var children = this.getChildren();
+    var children = this.children;
     for (var i=0, k=children.length, child; i<k; ++i) {
         child = children[i];
         if (child instanceof Namespace)

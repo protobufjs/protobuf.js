@@ -79,12 +79,10 @@ Message.prototype.build = function(rebuild) {
     })(ProtoBuf, this);
 
     // Static enums and prototyped sub-messages / cached collections
-    var children = this.getChildren(),
-        child;
     this._fields = [];
     this._fieldsById = [];
-    for (var i=0, k=children.length; i<k; i++) {
-        child = children[i];
+    for (var i=0, k=this.children.length, child; i<k; i++) {
+        child = this.children[i];
         if (child instanceof Enum)
             clazz[child['name']] = child.build();
         else if (child instanceof Message)
@@ -114,10 +112,8 @@ Message.prototype.build = function(rebuild) {
 Message.prototype.encode = function(message, buffer, noVerify) {
     var fieldMissing = null,
         field;
-    for (var i=0, k=this.children.length, val; i<k; ++i) {
+    for (var i=0, k=this._fields.length, val; i<k; ++i) {
         field = this.children[i];
-        if (!(field instanceof Message.Field))
-            continue;
         val = message[field.name];
         if (field.required && val === null) {
             if (fieldMissing === null)
@@ -141,14 +137,13 @@ Message.prototype.encode = function(message, buffer, noVerify) {
  * @expose
  */
 Message.prototype.calculate = function(message) {
-    var fields = this.getChildren(Message.Field),
-        n = 0;
-    for (var i=0, val; i<fields.length; i++) {
-        val = message.$get(fields[i].name);
-        if (fields[i].required && val === null)
-           throw Error("Missing at least one required field for "+this.toString(true)+": "+fields[i]);
+    for (var n=0, i=0, k=this._fields.length, field, val; i<k; ++i) {
+        field = this._fields[i];
+        val = message[field.name];
+        if (field.required && val === null)
+           throw Error("Missing at least one required field for "+this.toString(true)+": "+field);
         else
-            n += fields[i].calculate(val);
+            n += field.calculate(val);
     }
     return n;
 };

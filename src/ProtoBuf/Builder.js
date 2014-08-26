@@ -453,9 +453,10 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             return; // Done (already resolved)
         if (this.ptr instanceof Reflect.Namespace) {
             // Build all children
-            var children = this.ptr.getChildren();
-            for (var i=0; i<children.length; i++)
-                this.ptr = children[i], this.resolveAll();
+            var children = this.ptr.children;
+            for (var i= 0, k=children.length; i<k; ++i)
+                this.ptr = children[i],
+                this.resolveAll();
         } else if (this.ptr instanceof Reflect.Message.Field) {
             if (!Lang.TYPE.test(this.ptr.type)) { // Resolve type...
                 if (!Lang.TYPEREF.test(this.ptr.type))
