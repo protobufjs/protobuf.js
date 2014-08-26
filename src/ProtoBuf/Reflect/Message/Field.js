@@ -62,6 +62,13 @@ var Field = function(message, rule, type, name, id, options) {
     this.options = options || {};
 
     /**
+     * Default value.
+     * @type {*}
+     * @expose
+     */
+    this.defaultValue = null;
+
+    /**
      * Original field name.
      * @type {string}
      * @expose
@@ -78,6 +85,16 @@ var Field = function(message, rule, type, name, id, options) {
 
 // Extends T
 Field.prototype = Object.create(T.prototype);
+
+/**
+ * Builds the field.
+ * @override
+ * @expose
+ */
+Field.prototype.build = function() {
+    this.defaultValue = typeof this.options['default'] !== 'undefined'
+        ? this.verifyValue(this.options['default']) : null;
+};
 
 /**
  * Makes a Long from a value.

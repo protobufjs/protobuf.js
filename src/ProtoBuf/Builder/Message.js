@@ -15,34 +15,34 @@ var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
  */
 var Message = function(values, var_args) {
     ProtoBuf.Builder.Message.call(this);
-    var i, field;
+
+    // Create fields on the object itself and set default values
+    for (var i=0, k=fields.length, field; i<k; ++i) {
+        this[(field = fields[i]).name] = field.repeated ? [] : null;
+        if (field.required && field.defaultValue !== null)
+            this[field.name] = field.defaultValue;
+    }
+
+    if (arguments.length > 0) {
+        // Set field values from a values object
+        if (arguments.length === 1 && typeof values === 'object' &&
+            /* not another Message */ typeof values.encode !== 'function' &&
+            /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
+            /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
+            /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
+            /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
+            var keys = Object.keys(values);
+            for (i=0, k=keys.length; i<k; ++i)
+                this.$set(keys[i], values[keys[i]]); // May throw
+        } else // set field values from arguments, in declaration order
+            for (i=0, k=arguments.length; i<k; ++i)
+                this.$set(fields[i].name, arguments[i]); // May throw
+    }
 
     if (Object.defineProperty)
         Object.defineProperty(this, "$type", {
             get: function() { return T; }
         });
-
-    // Create fields on the object itself and set default values
-    for (i=0; i<fields.length; ++i) {
-        this[(field = fields[i]).name] = field.repeated ? [] : null;
-        if (field.required && typeof field.options['default'] !== 'undefined')
-            this.$set(field.name, field.options['default']); // Should not throw
-    }
-
-    // Set field values from a values object
-    if (arguments.length === 1 && typeof values === 'object' &&
-        /* not another Message */ typeof values.encode !== 'function' &&
-        /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
-        /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
-        /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
-        /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
-        var keys = Object.keys(values);
-        for (i=0; i<keys.length; i++)
-            this.$set(keys[i], values[keys[i]]); // May throw
-    } else // set field values from arguments, in declaration order
-        for (i=0; i<arguments.length; i++)
-            if (i<fields.length)
-                this.$set(fields[i].name, arguments[i]); // May throw
 };
 
 /**
@@ -97,13 +97,20 @@ Message.prototype.$add = Message.prototype.add;
  * @param {string} key Key
  * @param {*} value Value to set
  * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
+ * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be set
  * @expose
  */
 Message.prototype.set = function(key, value, noAssert) {
+    if (key && typeof key === 'object') {
+        for (var i in key)
+            if (key.hasOwnProperty(i))
+                this.$set(i, key[i], noAssert);
+        return this;
+    }
     if (noAssert) {
         this[key] = value;
-        return;
+        return this;
     }
     var field = T.getChild(key);
     if (!field)
@@ -111,6 +118,7 @@ Message.prototype.set = function(key, value, noAssert) {
     if (!(field instanceof ProtoBuf.Reflect.Message.Field))
         throw Error(this+"#"+key+" is not a field: "+field.toString(true));
     this[field.name] = field.verifyValue(value); // May throw
+    return this;
 };
 
 /**

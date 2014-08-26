@@ -41,13 +41,8 @@ console.log("--------------");
         buf.flip();
     console.timeEnd("* ProtoBuf encode "+k);
     console.time("* ProtoBuf decode "+k);
-    for (i=0; i<n; ++i)
+    for (var i=0; i<n; ++i)
         Sample.decode(buf),
         buf.flip();
     console.timeEnd("* ProtoBuf decode "+k);
-    console.time("* ProtoBuf encode/decode "+k);
-    for (i=0; i<n; ++i)
-        Sample.decode(protoSample.encode(buf, true).flip()),
-        buf.flip();
-    console.timeEnd("* ProtoBuf encode/decode "+k);
 })();

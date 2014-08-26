@@ -71,7 +71,9 @@ Message.prototype.build = function(rebuild) {
             clazz[child['name']] = child.build();
         else if (child instanceof Message)
             clazz[child['name']] = child.build();
-        else if (child instanceof Message.Field || child instanceof Extension) {
+        else if (child instanceof Message.Field)
+            child.build();
+        else if (child instanceof Extension) {
             // Ignore
         } else
             throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));
@@ -241,9 +243,8 @@ Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
                 var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
                 err["decoded"] = msg; // Still expose what we got
                 throw(err);
-            } else if (typeof field.options['default'] !== 'undefined') {
-                msg.$set(field.name, field.options['default']);
-            }
+            } else if (field.defaultValue !== null)
+                msg[field.name] = field.defaultValue;
     }
     return msg;
 };

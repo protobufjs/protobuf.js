@@ -1,126 +1,107 @@
-Statistical profiling result from v8.log, (2002 ticks, 1275 unaccounted, 0 excluded).
+Statistical profiling result from v8.log, (745 ticks, 490 unaccounted, 0 excluded).
 
  [Unknown]:
    ticks  total  nonlib   name
-   1275   63.7%
+    490   65.8%
 
  [Shared libraries]:
    ticks  total  nonlib   name
 
  [JavaScript]:
    ticks  total  nonlib   name
-    316   15.8%   15.8%  LazyCompile: *Buffer buffer.js:156
-    221   11.0%   11.0%  LazyCompile: *DefineObjectProperty native v8natives.js:695
-    207   10.3%   10.3%  LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-    192    9.6%    9.6%  LazyCompile: *Message x:\public\ProtoBuf\dist\ProtoBuf.js:1613
-    133    6.6%    6.6%  LazyCompile: *Buffer.write buffer.js:315
-     85    4.2%    4.2%  LazyCompile: *Buffer.toString buffer.js:392
-     51    2.5%    2.5%  LazyCompile: *Buffer.copy buffer.js:509
-     48    2.4%    2.4%  LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-     46    2.3%    2.3%  LazyCompile: *toLowerCase native string.js:739
-     44    2.2%    2.2%  LazyCompile: IN native runtime.js:354
-     35    1.7%    1.7%  LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-     34    1.7%    1.7%  LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
-     31    1.5%    1.5%  LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-     27    1.3%    1.3%  Stub: CompareICStub
-     24    1.2%    1.2%  LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-     22    1.1%    1.1%  Stub: InstanceofStub
-     19    0.9%    0.9%  LazyCompile: <anonymous> native string.js:36
-     19    0.9%    0.9%  LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
-     19    0.9%    0.9%  LazyCompile: *module.exports.ByteBuffer.readVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
-     18    0.9%    0.9%  LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-     17    0.8%    0.8%  Stub: CEntryStub
-     17    0.8%    0.8%  Builtin: A builtin from the snapshot {1}
-     15    0.7%    0.7%  Builtin: A builtin from the snapshot
-     12    0.6%    0.6%  LazyCompile: ~Buffer buffer.js:156
-     12    0.6%    0.6%  LazyCompile: ToString native runtime.js:550
-     12    0.6%    0.6%  LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-     11    0.5%    0.5%  LazyCompile: *ToPropertyDescriptor native v8natives.js:420
-     10    0.5%    0.5%  Stub: CallConstructStub
-     10    0.5%    0.5%  LazyCompile: *isFinite native v8natives.js:103
-      9    0.4%    0.4%  LazyCompile: ToObject native runtime.js:567
-      9    0.4%    0.4%  LazyCompile: *ceil native math.js:79
-      8    0.4%    0.4%  KeyedLoadIC: A keyed load IC from the snapshot
-      7    0.3%    0.3%  Stub: ToBooleanStub
-      7    0.3%    0.3%  LazyCompile: ~Module._compile module.js:374
-      7    0.3%    0.3%  LazyCompile: Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:1851
-      7    0.3%    0.3%  LazyCompile: *IsDataDescriptor native v8natives.js:354
-      7    0.3%    0.3%  LazyCompile: *Buffer.slice buffer.js:539
-      7    0.3%    0.3%  Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-      6    0.3%    0.3%  LazyCompile: *defineProperty native v8natives.js:1050
-      6    0.3%    0.3%  LazyCompile: *PropertyDescriptor native v8natives.js:482
-      6    0.3%    0.3%  KeyedStoreIC: A keyed store IC from the snapshot
-      5    0.2%    0.2%  Stub: FastNewClosureStub
-      5    0.2%    0.2%  Stub: CompareICStub {3}
-      5    0.2%    0.2%  LazyCompile: *<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-      5    0.2%    0.2%  Builtin: A builtin from the snapshot {3}
-      4    0.2%    0.2%  LazyCompile: ~NativeModule.compile node.js:892
-      4    0.2%    0.2%  LazyCompile: NonNumberToNumber native runtime.js:538
-      4    0.2%    0.2%  LazyCompile: *IsAccessorDescriptor native v8natives.js:347
-      3    0.1%    0.1%  Stub: ToBooleanStub_UndefinedSpecObject
-      3    0.1%    0.1%  Stub: ToBooleanStub {1}
-      3    0.1%    0.1%  Stub: KeyedLoadElementStub
-      3    0.1%    0.1%  Stub: CompareICStub {1}
-      3    0.1%    0.1%  LazyCompile: *DefineOwnProperty native v8natives.js:924
-      3    0.1%    0.1%  Builtin: A builtin from the snapshot {2}
-      2    0.1%    0.1%  Stub: KeyedLoadElementStub {1}
-      2    0.1%    0.1%  Stub: FastCloneShallowObjectStub
-      2    0.1%    0.1%  Stub: CallConstructStub {1}
-      2    0.1%    0.1%  LazyCompile: ~startup node.js:30
-      2    0.1%    0.1%  LazyCompile: ~fs.statSync fs.js:687
-      2    0.1%    0.1%  LazyCompile: ~createWriteReq net.js:658
-      2    0.1%    0.1%  LazyCompile: *module.exports.ByteBuffer.flip x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2260
-      2    0.1%    0.1%  LazyCompile: *module.exports.ByteBuffer.LE x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2307
-      2    0.1%    0.1%  LazyCompile: *isBuffer buffer.js:277
-      2    0.1%    0.1%  LazyCompile: *IsInconsistentDescriptor native v8natives.js:367
-      2    0.1%    0.1%  LazyCompile: *$Array.set_ native v8natives.js:563
-      2    0.1%    0.1%  LazyCompile: *$Array.configurable_ native v8natives.js:543
-      2    0.1%    0.1%  KeyedLoadIC: args_count: 0 {1}
-      2    0.1%    0.1%  KeyedLoadIC: args_count: 0
-      2    0.1%    0.1%  Function: ~<anonymous> x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferAB.js:23
-      2    0.1%    0.1%  Function: ~<anonymous> x:\public\ProtoBuf\dist\ProtoBuf.js:22
-      2    0.1%    0.1%  Function: ~<anonymous> net.js:1
-      1    0.0%    0.0%  Stub: RecordWriteStub {1}
-      1    0.0%    0.0%  Stub: RecordWriteStub
-      1    0.0%    0.0%  Stub: JSEntryStub
-      1    0.0%    0.0%  Stub: CompareICStub {2}
-      1    0.0%    0.0%  Stub: BinaryOpStub_MUL_Alloc_SMI
-      1    0.0%    0.0%  Stub: BinaryOpStub_BIT_OR_OverwriteLeft_SMI
-      1    0.0%    0.0%  LazyCompile: ~setTime native date.js:482
-      1    0.0%    0.0%  LazyCompile: ~module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-      1    0.0%    0.0%  LazyCompile: ~module.exports.ByteBuffer.readVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
-      1    0.0%    0.0%  LazyCompile: ~fs.openSync fs.js:429
-      1    0.0%    0.0%  LazyCompile: ~exports.resolve path.js:89
-      1    0.0%    0.0%  LazyCompile: ~defineProperty native v8natives.js:1050
-      1    0.0%    0.0%  LazyCompile: ~StringSplitOnRegExp native string.js:591
-      1    0.0%    0.0%  LazyCompile: ~Readable.on _stream_readable.js:706
-      1    0.0%    0.0%  LazyCompile: ~ProtoBuf.Reflect.Namespace.build x:\public\ProtoBuf\dist\ProtoBuf.js:1493
-      1    0.0%    0.0%  LazyCompile: ~ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-      1    0.0%    0.0%  LazyCompile: ~ProtoBuf.DotProto.Parser._parseId x:\public\ProtoBuf\dist\ProtoBuf.js:724
-      1    0.0%    0.0%  LazyCompile: ~ProtoBuf.Builder.Builder.create x:\public\ProtoBuf\dist\ProtoBuf.js:3575
-      1    0.0%    0.0%  LazyCompile: ~Module.require module.js:361
-      1    0.0%    0.0%  LazyCompile: ~Module.load module.js:346
-      1    0.0%    0.0%  LazyCompile: ~IsGenericDescriptor native v8natives.js:361
-      1    0.0%    0.0%  LazyCompile: ~DefineObjectProperty native v8natives.js:695
-      1    0.0%    0.0%  LazyCompile: ~Console console.js:24
-      1    0.0%    0.0%  LazyCompile: ~Buffer.toString buffer.js:392
-      1    0.0%    0.0%  LazyCompile: ~BasicJSONSerialize native json.js:274
-      1    0.0%    0.0%  LazyCompile: <anonymous> native messages.js:1157
-      1    0.0%    0.0%  LazyCompile: *module.exports.ByteBuffer.remaining x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2405
-      1    0.0%    0.0%  LazyCompile: *ProtoBuf.Builder.Builder.Message x:\public\ProtoBuf\dist\ProtoBuf.js:3927
-      1    0.0%    0.0%  LazyCompile: *IsGenericDescriptor native v8natives.js:361
-      1    0.0%    0.0%  LazyCompile: *ConvertDescriptorArrayToDescriptor native v8natives.js:581
-      1    0.0%    0.0%  LazyCompile: *$Array.enumerable_ native v8natives.js:523
-      1    0.0%    0.0%  Function: ~<anonymous> x:\public\ProtoBuf\dist\ProtoBuf.js:3382
-      1    0.0%    0.0%  Function: ~<anonymous> node.js:27
-      1    0.0%    0.0%  Function: ~<anonymous> assert.js:1
+     98   13.2%   13.2%  LazyCompile: *DefineObjectProperty native v8natives.js:695
+     86   11.5%   11.5%  LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     67    9.0%    9.0%  LazyCompile: *Buffer buffer.js:156
+     55    7.4%    7.4%  LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+     55    7.4%    7.4%  LazyCompile: *Buffer.write buffer.js:315
+     43    5.8%    5.8%  LazyCompile: *Buffer.toString buffer.js:392
+     23    3.1%    3.1%  LazyCompile: *toLowerCase native string.js:739
+     21    2.8%    2.8%  LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+     19    2.6%    2.6%  LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+     18    2.4%    2.4%  LazyCompile: IN native runtime.js:354
+     17    2.3%    2.3%  LazyCompile: *Buffer.copy buffer.js:509
+     13    1.7%    1.7%  LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+     11    1.5%    1.5%  LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+     10    1.3%    1.3%  Stub: InstanceofStub
+      9    1.2%    1.2%  LazyCompile: ~NativeModule.compile node.js:892
+      9    1.2%    1.2%  LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+      9    1.2%    1.2%  LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      9    1.2%    1.2%  LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+      8    1.1%    1.1%  LazyCompile: ~Module._compile module.js:374
+      8    1.1%    1.1%  LazyCompile: ~Buffer buffer.js:156
+      8    1.1%    1.1%  LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
+      7    0.9%    0.9%  LazyCompile: *isFinite native v8natives.js:103
+      7    0.9%    0.9%  Builtin: A builtin from the snapshot
+      6    0.8%    0.8%  LazyCompile: ToString native runtime.js:550
+      5    0.7%    0.7%  LazyCompile: *IsDataDescriptor native v8natives.js:354
+      4    0.5%    0.5%  Stub: CEntryStub
+      4    0.5%    0.5%  LazyCompile: *module.exports.ByteBuffer.flip x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2260
+      4    0.5%    0.5%  LazyCompile: *ToPropertyDescriptor native v8natives.js:420
+      4    0.5%    0.5%  Builtin: A builtin from the snapshot {1}
+      3    0.4%    0.4%  Stub: CompareICStub {2}
+      3    0.4%    0.4%  Stub: CallConstructStub {1}
+      3    0.4%    0.4%  LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
+      3    0.4%    0.4%  LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      3    0.4%    0.4%  LazyCompile: <anonymous> native string.js:36
+      3    0.4%    0.4%  LazyCompile: *module.exports.ByteBuffer.LE x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2307
+      3    0.4%    0.4%  LazyCompile: *IsAccessorDescriptor native v8natives.js:347
+      3    0.4%    0.4%  LazyCompile: *DefineOwnProperty native v8natives.js:924
+      2    0.3%    0.3%  Stub: ToBooleanStub
+      2    0.3%    0.3%  Stub: KeyedLoadElementStub
+      2    0.3%    0.3%  Stub: FastCloneShallowObjectStub
+      2    0.3%    0.3%  Stub: CompareICStub {1}
+      2    0.3%    0.3%  LazyCompile: ~ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+      2    0.3%    0.3%  LazyCompile: ~ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      2    0.3%    0.3%  LazyCompile: NonNumberToNumber native runtime.js:538
+      2    0.3%    0.3%  LazyCompile: *$Array.writable_ native v8natives.js:533
+      2    0.3%    0.3%  KeyedLoadIC: A keyed load IC from the snapshot
+      2    0.3%    0.3%  Function: ~<anonymous> x:\public\protobuf\dist\ProtoBuf.js:22
+      2    0.3%    0.3%  Function: ~<anonymous> net.js:1
+      1    0.1%    0.1%  Stub: ToBooleanStub {1}
+      1    0.1%    0.1%  Stub: StringAddStub
+      1    0.1%    0.1%  Stub: RegExpExecStub
+      1    0.1%    0.1%  Stub: KeyedLoadElementStub {1}
+      1    0.1%    0.1%  Stub: CompareICStub
+      1    0.1%    0.1%  Stub: CallConstructStub
+      1    0.1%    0.1%  Stub: BinaryOpStub
+      1    0.1%    0.1%  LazyCompile: ~test native regexp.js:217
+      1    0.1%    0.1%  LazyCompile: ~startup.globalConsole node.js:203
+      1    0.1%    0.1%  LazyCompile: ~module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+      1    0.1%    0.1%  LazyCompile: ~init x:\public\protobuf\dist\ProtoBuf.js:25
+      1    0.1%    0.1%  LazyCompile: ~fs.statSync fs.js:687
+      1    0.1%    0.1%  LazyCompile: ~fs.lstatSync fs.js:682
+      1    0.1%    0.1%  LazyCompile: ~filter native array.js:1036
+      1    0.1%    0.1%  LazyCompile: ~doWrite _stream_writable.js:220
+      1    0.1%    0.1%  LazyCompile: ~Socket net.js:135
+      1    0.1%    0.1%  LazyCompile: ~Readable _stream_readable.js:100
+      1    0.1%    0.1%  LazyCompile: ~ProtoBuf.Reflect.Namespace.build x:\public\protobuf\dist\ProtoBuf.js:1493
+      1    0.1%    0.1%  LazyCompile: ~$Array.set_ native v8natives.js:563
+      1    0.1%    0.1%  LazyCompile: fs.readFileSync fs.js:276
+      1    0.1%    0.1%  LazyCompile: captureStackTrace native messages.js:1113
+      1    0.1%    0.1%  LazyCompile: ToPrimitive native runtime.js:506
+      1    0.1%    0.1%  LazyCompile: *module.exports.ByteBuffer.remaining x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2405
+      1    0.1%    0.1%  LazyCompile: *ProtoBuf.Builder.Builder.Message x:\public\protobuf\dist\ProtoBuf.js:3948
+      1    0.1%    0.1%  LazyCompile: *IsGenericDescriptor native v8natives.js:361
+      1    0.1%    0.1%  LazyCompile: *ConvertDescriptorArrayToDescriptor native v8natives.js:581
+      1    0.1%    0.1%  LazyCompile: *$Array.set_ native v8natives.js:560
+      1    0.1%    0.1%  LazyCompile: *$Array.set_ native v8natives.js:556
+      1    0.1%    0.1%  KeyedStoreIC: A keyed store IC from the snapshot
+      1    0.1%    0.1%  KeyedLoadIC: args_count: 0 {1}
+      1    0.1%    0.1%  KeyedLoadIC: args_count: 0
+      1    0.1%    0.1%  Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
+      1    0.1%    0.1%  Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+      1    0.1%    0.1%  Function: ~<anonymous> x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferAB.js:23
+      1    0.1%    0.1%  Function: <anonymous> x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:23
+      1    0.1%    0.1%  CallMegamorphic: args_count: 4
+      1    0.1%    0.1%  Builtin: A builtin from the snapshot {3}
+      1    0.1%    0.1%  Builtin: A builtin from the snapshot {2}
 
  [C++]:
    ticks  total  nonlib   name
 
  [GC]:
    ticks  total  nonlib   name
-     88    4.4%
+     22    3.0%
 
  [Bottom up (heavy) profile]:
   Note: percentage shows a share of a particular caller in the total
@@ -128,106 +109,146 @@ Statistical profiling result from v8.log, (2002 ticks, 1275 unaccounted, 0 exclu
   Callers occupying less than 2.0% are not shown.
 
    ticks parent  name
-    316   15.8%  LazyCompile: *Buffer buffer.js:156
-    195   61.7%    LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-    195  100.0%      LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-    195  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-    195  100.0%          LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-    195  100.0%            LazyCompile: Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:1851
-    113   35.8%    LazyCompile: *Buffer.slice buffer.js:539
-    113  100.0%      LazyCompile: *module.exports.ByteBuffer.readVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
-    113  100.0%        LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-    113  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-    113  100.0%            LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
+     98   13.2%  LazyCompile: *DefineObjectProperty native v8natives.js:695
+     98  100.0%    LazyCompile: *DefineOwnProperty native v8natives.js:924
+     95   96.9%      LazyCompile: *defineProperty native v8natives.js:1050
+     95  100.0%        LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+     95  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     95  100.0%            LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      3    3.1%      LazyCompile: ~defineProperty native v8natives.js:1050
+      2   66.7%        LazyCompile: ~Message x:\public\protobuf\dist\ProtoBuf.js:1613
+      2  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      2  100.0%            LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1   33.3%        LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+      1  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      1  100.0%            LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
 
-    221   11.0%  LazyCompile: *DefineObjectProperty native v8natives.js:695
-    220   99.5%    LazyCompile: *DefineOwnProperty native v8natives.js:924
-    216   98.2%      LazyCompile: *defineProperty native v8natives.js:1050
-    216  100.0%        LazyCompile: *Message x:\public\ProtoBuf\dist\ProtoBuf.js:1613
-    216  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-    216  100.0%            LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
+     86   11.5%  LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     86  100.0%    LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+     58   67.4%      Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+     58  100.0%        LazyCompile: ~Module._compile module.js:374
+     58  100.0%          LazyCompile: ~Module._extensions..js module.js:472
+     58  100.0%            LazyCompile: ~Module.load module.js:346
+     20   23.3%      Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
+     20  100.0%        Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+     20  100.0%          LazyCompile: ~Module._compile module.js:374
+     20  100.0%            LazyCompile: ~Module._extensions..js module.js:472
+      8    9.3%      LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      8  100.0%        Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+      8  100.0%          LazyCompile: ~Module._compile module.js:374
+      8  100.0%            LazyCompile: ~Module._extensions..js module.js:472
 
-    207   10.3%  LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-    207  100.0%    LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-    151   72.9%      LazyCompile: *<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-    151  100.0%        Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:1
-    151  100.0%          LazyCompile: ~Module._compile module.js:374
-    151  100.0%            LazyCompile: ~Module._extensions..js module.js:472
-     56   27.1%      Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-     56  100.0%        Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:1
-     56  100.0%          LazyCompile: ~Module._compile module.js:374
-     56  100.0%            LazyCompile: ~Module._extensions..js module.js:472
+     67    9.0%  LazyCompile: *Buffer buffer.js:156
+     67  100.0%    LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+     67  100.0%      LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+     67  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+     67  100.0%          LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+     67  100.0%            LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
 
-    192    9.6%  LazyCompile: *Message x:\public\ProtoBuf\dist\ProtoBuf.js:1613
-    192  100.0%    LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-    192  100.0%      LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-    151   78.6%        LazyCompile: *<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-    151  100.0%          Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:1
-    151  100.0%            LazyCompile: ~Module._compile module.js:374
-     41   21.4%        Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-     41  100.0%          Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:1
-     41  100.0%            LazyCompile: ~Module._compile module.js:374
+     55    7.4%  LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+     55  100.0%    LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     55  100.0%      LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+     41   74.5%        Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+     41  100.0%          LazyCompile: ~Module._compile module.js:374
+     41  100.0%            LazyCompile: ~Module._extensions..js module.js:472
+      8   14.5%        Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
+      8  100.0%          Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+      8  100.0%            LazyCompile: ~Module._compile module.js:374
+      6   10.9%        LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      6  100.0%          Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+      6  100.0%            LazyCompile: ~Module._compile module.js:374
 
-    133    6.6%  LazyCompile: *Buffer.write buffer.js:315
-    128   96.2%    LazyCompile: *Buffer buffer.js:156
-    128  100.0%      LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-    128  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-    128  100.0%          LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-    128  100.0%            LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-      5    3.8%    LazyCompile: ~Buffer buffer.js:156
-      5  100.0%      LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-      5  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-      5  100.0%          LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-      4   80.0%            LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-      1   20.0%            LazyCompile: ~ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
+     55    7.4%  LazyCompile: *Buffer.write buffer.js:315
+     51   92.7%    LazyCompile: *Buffer buffer.js:156
+     51  100.0%      LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+     51  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+     51  100.0%          LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+     51  100.0%            LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+      4    7.3%    LazyCompile: ~Buffer buffer.js:156
+      4  100.0%      LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+      4  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+      4  100.0%          LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+      3   75.0%            LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+      1   25.0%            LazyCompile: ~ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
 
-     85    4.2%  LazyCompile: *Buffer.toString buffer.js:392
-     85  100.0%    LazyCompile: *module.exports.ByteBuffer.readVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
-     85  100.0%      LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-     85  100.0%        LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-     85  100.0%          LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-     62   72.9%            LazyCompile: *<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-     23   27.1%            Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:33
+     43    5.8%  LazyCompile: *Buffer.toString buffer.js:392
+     41   95.3%    LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+     41  100.0%      LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+     41  100.0%        LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     41  100.0%          LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+     21   51.2%            Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+     13   31.7%            Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
+      7   17.1%            LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      1    2.3%    LazyCompile: ~module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      1  100.0%      LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+      1  100.0%        LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      1  100.0%          LazyCompile: ~ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      1  100.0%            LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1    2.3%    LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      1  100.0%      LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      1  100.0%        LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1  100.0%          Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+      1  100.0%            LazyCompile: ~Module._compile module.js:374
 
-     51    2.5%  LazyCompile: *Buffer.copy buffer.js:509
-     51  100.0%    LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-     51  100.0%      LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-     51  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-     51  100.0%          LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-     51  100.0%            LazyCompile: Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:1851
+     23    3.1%  LazyCompile: *toLowerCase native string.js:739
+     12   52.2%    LazyCompile: *Buffer.write buffer.js:315
+     12  100.0%      LazyCompile: *Buffer buffer.js:156
+     12  100.0%        LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+     12  100.0%          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+     12  100.0%            LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+     10   43.5%    LazyCompile: *Buffer.toString buffer.js:392
+     10  100.0%      LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+     10  100.0%        LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+     10  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     10  100.0%            LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1    4.3%    LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+      1  100.0%      LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      1  100.0%        LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      1  100.0%          LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1  100.0%            Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
 
-     48    2.4%  LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-     48  100.0%    LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-     48  100.0%      LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-     33   68.8%        LazyCompile: *<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-     33  100.0%          Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:1
-     33  100.0%            LazyCompile: ~Module._compile module.js:374
-     15   31.3%        Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-     15  100.0%          Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:1
-     15  100.0%            LazyCompile: ~Module._compile module.js:374
+     21    2.8%  LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+     21  100.0%    LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+     21  100.0%      LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+     21  100.0%        LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
+     15   71.4%          LazyCompile: *<anonymous> x:\public\protobuf\tests\bench.js:33
+     15  100.0%            Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+      6   28.6%          Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
+      6  100.0%            Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
 
-     46    2.3%  LazyCompile: *toLowerCase native string.js:739
-     25   54.3%    LazyCompile: *Buffer.toString buffer.js:392
-     25  100.0%      LazyCompile: *module.exports.ByteBuffer.readVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
-     25  100.0%        LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-     25  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-     25  100.0%            LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-     21   45.7%    LazyCompile: *Buffer.write buffer.js:315
-     20   95.2%      LazyCompile: *Buffer buffer.js:156
-     20  100.0%        LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-     20  100.0%          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-     20  100.0%            LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-      1    4.8%      LazyCompile: ~Buffer buffer.js:156
-      1  100.0%        LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-      1  100.0%          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-      1  100.0%            LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
+     19    2.6%  LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+     19  100.0%    LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
+     12   63.2%      LazyCompile: *<anonymous> x:\public\protobuf\tests\bench.js:33
+     12  100.0%        Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+     12  100.0%          LazyCompile: ~Module._compile module.js:374
+     12  100.0%            LazyCompile: ~Module._extensions..js module.js:472
+      7   36.8%      Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
+      7  100.0%        Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+      7  100.0%          LazyCompile: ~Module._compile module.js:374
+      7  100.0%            LazyCompile: ~Module._extensions..js module.js:472
 
-     44    2.2%  LazyCompile: IN native runtime.js:354
-     44  100.0%    LazyCompile: *ToPropertyDescriptor native v8natives.js:420
-     44  100.0%      LazyCompile: *defineProperty native v8natives.js:1050
-     44  100.0%        LazyCompile: *Message x:\public\ProtoBuf\dist\ProtoBuf.js:1613
-     44  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-     44  100.0%            LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
+     18    2.4%  LazyCompile: IN native runtime.js:354
+     17   94.4%    LazyCompile: *ToPropertyDescriptor native v8natives.js:420
+     16   94.1%      LazyCompile: *defineProperty native v8natives.js:1050
+     16  100.0%        LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+     16  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     16  100.0%            LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1    5.9%      LazyCompile: ~defineProperty native v8natives.js:1050
+      1  100.0%        LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+      1  100.0%          LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      1  100.0%            LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1    5.6%    LazyCompile: *defineProperty native v8natives.js:1050
+      1  100.0%      LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+      1  100.0%        LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      1  100.0%          LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+      1  100.0%            Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+
+     17    2.3%  LazyCompile: *Buffer.copy buffer.js:509
+     17  100.0%    LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+     17  100.0%      LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+     17  100.0%        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+     17  100.0%          LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+     17  100.0%            LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
 
 
  [Top down (heavy) profile]:
@@ -235,162 +256,331 @@ Statistical profiling result from v8.log, (2002 ticks, 1275 unaccounted, 0 exclu
 
   inclusive      self           name
   ticks   total  ticks   total
-   1907   95.3%      1    0.0%  Function: ~<anonymous> node.js:27
-   1906   95.2%      2    0.1%    LazyCompile: ~startup node.js:30
-   1901   95.0%      0    0.0%      LazyCompile: ~Module.runMain module.js:495
-   1901   95.0%      0    0.0%        LazyCompile: Module._load module.js:275
-   1897   94.8%      0    0.0%          LazyCompile: ~Module.load module.js:346
-   1897   94.8%      0    0.0%            LazyCompile: ~Module._extensions..js module.js:472
-   1896   94.7%      0    0.0%              LazyCompile: ~Module._compile module.js:374
-   1896   94.7%      0    0.0%                Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:1
-   1419   70.9%      5    0.2%                  LazyCompile: *<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-    938   46.9%     11    0.5%                    LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-    922   46.1%    151    7.5%                      LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-    434   21.7%    151    7.5%                        LazyCompile: *Message x:\public\ProtoBuf\dist\ProtoBuf.js:1613
-    271   13.5%      5    0.2%                          LazyCompile: *defineProperty native v8natives.js:1050
-    194    9.7%      2    0.1%                            LazyCompile: *DefineOwnProperty native v8natives.js:924
-    191    9.5%    174    8.7%                              LazyCompile: *DefineObjectProperty native v8natives.js:695
-      7    0.3%      7    0.3%                                LazyCompile: ToObject native runtime.js:567
-      3    0.1%      3    0.1%                                Stub: CEntryStub
-     70    3.5%     10    0.5%                            LazyCompile: *ToPropertyDescriptor native v8natives.js:420
-     43    2.1%     36    1.8%                              LazyCompile: IN native runtime.js:354
-      5    0.2%      5    0.2%                                LazyCompile: ToString native runtime.js:550
-      7    0.3%      0    0.0%                              LazyCompile: *IsInconsistentDescriptor native v8natives.js:367
-      4    0.2%      2    0.1%                                LazyCompile: *IsDataDescriptor native v8natives.js:354
-      3    0.1%      2    0.1%                                LazyCompile: *IsAccessorDescriptor native v8natives.js:347
-      5    0.2%      5    0.2%                              LazyCompile: *PropertyDescriptor native v8natives.js:482
-      3    0.1%      3    0.1%                              Builtin: A builtin from the snapshot {1}
-      5    0.2%      5    0.2%                          Builtin: A builtin from the snapshot {3}
-      4    0.2%      4    0.2%                          Stub: FastNewClosureStub
-    279   13.9%     33    1.6%                        LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-    231   11.5%     16    0.8%                          LazyCompile: *module.exports.ByteBuffer.readVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
-    111    5.5%      3    0.1%                            LazyCompile: *Buffer.slice buffer.js:539
-    100    5.0%     90    4.5%                              LazyCompile: *Buffer buffer.js:156
-      8    0.4%      7    0.3%                                LazyCompile: *ceil native math.js:79
-      5    0.2%      5    0.2%                              Builtin: A builtin from the snapshot {1}
-    102    5.1%     62    3.1%                            LazyCompile: *Buffer.toString buffer.js:392
-     24    1.2%     22    1.1%                              LazyCompile: *toLowerCase native string.js:739
-     11    0.5%      9    0.4%                              LazyCompile: <anonymous> native string.js:36
-      3    0.1%      3    0.1%                              Stub: CompareICStub {3}
-     11    0.5%     11    0.5%                          Stub: CompareICStub
-     15    0.7%     15    0.7%                        LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
-      7    0.3%      7    0.3%                        Stub: InstanceofStub
-      6    0.3%      6    0.3%                        Builtin: A builtin from the snapshot
-      4    0.2%      4    0.2%                        LazyCompile: *Buffer buffer.js:156
-      3    0.1%      3    0.1%                        Stub: KeyedLoadElementStub
-      3    0.1%      3    0.1%                        KeyedStoreIC: A keyed store IC from the snapshot
-      3    0.1%      3    0.1%                        KeyedLoadIC: A keyed load IC from the snapshot
-    475   23.7%      3    0.1%                    LazyCompile: Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:1851
-    469   23.4%     27    1.3%                      LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-    435   21.7%     13    0.6%                        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-    410   20.5%     22    1.1%                          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-    379   18.9%     16    0.8%                            LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-    307   15.3%    161    8.0%                              LazyCompile: *Buffer buffer.js:156
-    142    7.1%    103    5.1%                                LazyCompile: *Buffer.write buffer.js:315
-     18    0.9%     16    0.8%                                  LazyCompile: *toLowerCase native string.js:739
-     11    0.5%      8    0.4%                                  LazyCompile: *isFinite native v8natives.js:103
-      3    0.1%      3    0.1%                                    LazyCompile: NonNumberToNumber native runtime.js:538
-      7    0.3%      7    0.3%                                  LazyCompile: <anonymous> native string.js:36
-     41    2.0%     41    2.0%                              LazyCompile: *Buffer.copy buffer.js:509
-      6    0.3%      6    0.3%                              LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
-      6    0.3%      6    0.3%                              Builtin: A builtin from the snapshot {1}
-      9    0.4%      9    0.4%                            Stub: CompareICStub
-      9    0.4%      9    0.4%                          LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
-      3    0.1%      3    0.1%                        Stub: InstanceofStub
-    447   22.3%      7    0.3%                  Function: ~<anonymous> x:\public\ProtoBuf\tests\bench.js:33
-    291   14.5%      1    0.0%                    LazyCompile: Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2064
-    289   14.4%     56    2.8%                      LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2288
-    115    5.7%     41    2.0%                        LazyCompile: *Message x:\public\ProtoBuf\dist\ProtoBuf.js:1613
-     66    3.3%      1    0.0%                          LazyCompile: *defineProperty native v8natives.js:1050
-     46    2.3%      0    0.0%                            LazyCompile: *DefineOwnProperty native v8natives.js:924
-     46    2.3%     42    2.1%                              LazyCompile: *DefineObjectProperty native v8natives.js:695
-     19    0.9%      1    0.0%                            LazyCompile: *ToPropertyDescriptor native v8natives.js:420
-     11    0.5%      8    0.4%                              LazyCompile: IN native runtime.js:354
-      6    0.3%      1    0.0%                              LazyCompile: *IsInconsistentDescriptor native v8natives.js:367
-      4    0.2%      3    0.1%                                LazyCompile: *IsDataDescriptor native v8natives.js:354
-      5    0.2%      1    0.0%                          LazyCompile: ~defineProperty native v8natives.js:1050
-      4    0.2%      0    0.0%                            LazyCompile: *DefineOwnProperty native v8natives.js:924
-      4    0.2%      4    0.2%                              LazyCompile: *DefineObjectProperty native v8natives.js:695
-     93    4.6%     15    0.7%                        LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-     70    3.5%      0    0.0%                          LazyCompile: *module.exports.ByteBuffer.readVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
-     35    1.7%      1    0.0%                            LazyCompile: *Buffer.slice buffer.js:539
-     28    1.4%     23    1.1%                              LazyCompile: *Buffer buffer.js:156
-      4    0.2%      4    0.2%                              Stub: CallConstructStub
-     28    1.4%     23    1.1%                            LazyCompile: *Buffer.toString buffer.js:392
-      3    0.1%      3    0.1%                              LazyCompile: *toLowerCase native string.js:739
-      5    0.2%      5    0.2%                            LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
-      4    0.2%      4    0.2%                          Stub: CompareICStub
-      7    0.3%      7    0.3%                        LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
-      3    0.1%      3    0.1%                        Stub: InstanceofStub
-      3    0.1%      0    0.0%                        LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\ProtoBuf\dist\ProtoBuf.js:2880
-      3    0.1%      0    0.0%                        LazyCompile: ~Message x:\public\ProtoBuf\dist\ProtoBuf.js:1613
-      3    0.1%      0    0.0%                          LazyCompile: ~defineProperty native v8natives.js:1050
-    148    7.4%      3    0.1%                    LazyCompile: Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:1851
-    135    6.7%      8    0.4%                      LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-    124    6.2%      5    0.2%                        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-    114    5.7%      6    0.3%                          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-    104    5.2%      7    0.3%                            LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-     68    3.4%     34    1.7%                              LazyCompile: *Buffer buffer.js:156
-     33    1.6%     25    1.2%                                LazyCompile: *Buffer.write buffer.js:315
-      4    0.2%      4    0.2%                                  LazyCompile: *toLowerCase native string.js:739
-      3    0.1%      1    0.0%                                  LazyCompile: *isFinite native v8natives.js:103
-     15    0.7%      9    0.4%                              LazyCompile: ~Buffer buffer.js:156
-      6    0.3%      4    0.2%                                LazyCompile: *Buffer.write buffer.js:315
-     11    0.5%     10    0.5%                              LazyCompile: *Buffer.copy buffer.js:509
-      3    0.1%      3    0.1%                            Stub: CompareICStub
-      7    0.3%      0    0.0%                      LazyCompile: ~ProtoBuf.Reflect.Message.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2196
-      7    0.3%      0    0.0%                        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\ProtoBuf\dist\ProtoBuf.js:2612
-      6    0.3%      1    0.0%                          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\ProtoBuf\dist\ProtoBuf.js:2664
-      4    0.2%      1    0.0%                            LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
-      3    0.1%      2    0.1%                              LazyCompile: ~Buffer buffer.js:156
-     19    0.9%      0    0.0%                  LazyCompile: ~require module.js:379
-     19    0.9%      0    0.0%                    LazyCompile: ~Module.require module.js:361
-     19    0.9%      0    0.0%                      LazyCompile: Module._load module.js:275
-     19    0.9%      1    0.0%                        LazyCompile: ~Module.load module.js:346
-     18    0.9%      0    0.0%                          LazyCompile: ~Module._extensions..js module.js:472
-     18    0.9%      0    0.0%                            LazyCompile: ~Module._compile module.js:374
-     18    0.9%      0    0.0%                              Function: ~<anonymous> x:\public\ProtoBuf\index.js:1
-     18    0.9%      0    0.0%                                LazyCompile: ~require module.js:379
-     18    0.9%      0    0.0%                                  LazyCompile: ~Module.require module.js:361
-     18    0.9%      0    0.0%                                    LazyCompile: Module._load module.js:275
-     18    0.9%      0    0.0%                                      LazyCompile: ~Module.load module.js:346
-     18    0.9%      0    0.0%                                        LazyCompile: ~Module._extensions..js module.js:472
-     17    0.8%      2    0.1%                                          LazyCompile: ~Module._compile module.js:374
-     15    0.7%      0    0.0%                                            Function: ~<anonymous> x:\public\ProtoBuf\dist\ProtoBuf.js:1
-     15    0.7%      2    0.1%                                              Function: ~<anonymous> x:\public\ProtoBuf\dist\ProtoBuf.js:22
-     12    0.6%      0    0.0%                                                LazyCompile: ~require module.js:379
-     12    0.6%      0    0.0%                                                  LazyCompile: ~Module.require module.js:361
-     12    0.6%      0    0.0%                                                    LazyCompile: Module._load module.js:275
-     11    0.5%      0    0.0%                                                      LazyCompile: ~Module.load module.js:346
-     11    0.5%      0    0.0%                                                        LazyCompile: ~Module._extensions..js module.js:472
-     11    0.5%      0    0.0%                                                          LazyCompile: ~Module._compile module.js:374
-     11    0.5%      0    0.0%                                                            Function: ~<anonymous> x:\public\ProtoBuf\node_modules\bytebuffer\index.js:1
-     11    0.5%      0    0.0%                                                              LazyCompile: ~require module.js:379
-     11    0.5%      1    0.0%                                                                LazyCompile: ~Module.require module.js:361
-     10    0.5%      0    0.0%                                                                  LazyCompile: Module._load module.js:275
-     10    0.5%      0    0.0%                                                                    LazyCompile: ~Module.load module.js:346
-     10    0.5%      0    0.0%                                                                      LazyCompile: ~Module._extensions..js module.js:472
-     10    0.5%      4    0.2%                                                                        LazyCompile: ~Module._compile module.js:374
-      4    0.2%      0    0.0%                                                                          Function: ~<anonymous> x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1
-      4    0.2%      0    0.0%                                                                            Function: <anonymous> x:\public\ProtoBuf\node_modules\bytebuffer\dist\ByteBufferNB.js:23
-      4    0.2%      0    0.0%                                                                              LazyCompile: ~require module.js:379
-      4    0.2%      0    0.0%                                                                                LazyCompile: ~Module.require module.js:361
-      4    0.2%      0    0.0%                                                                                  LazyCompile: Module._load module.js:275
-      3    0.1%      0    0.0%                                                                                    LazyCompile: ~Module._resolveFilename module.js:323
-      3    0.1%      0    0.0%                                                                                      LazyCompile: ~Module._findPath module.js:160
-      5    0.2%      0    0.0%                  LazyCompile: ~<anonymous> node.js:204
-      5    0.2%      0    0.0%                    LazyCompile: ~NativeModule.require node.js:847
-      5    0.2%      0    0.0%                      LazyCompile: ~NativeModule.compile node.js:892
-      5    0.2%      0    0.0%                        Function: ~<anonymous> console.js:1
-      4    0.2%      0    0.0%                          LazyCompile: ~<anonymous> node.js:615
-      4    0.2%      0    0.0%                            LazyCompile: ~createWritableStdioStream node.js:550
-      3    0.1%      0    0.0%                              LazyCompile: ~NativeModule.require node.js:847
-      3    0.1%      0    0.0%                                LazyCompile: ~NativeModule.compile node.js:892
-      3    0.1%      0    0.0%                                  Function: ~<anonymous> tty.js:1
-      3    0.1%      0    0.0%                                    LazyCompile: ~NativeModule.require node.js:847
-      3    0.1%      1    0.0%                                      LazyCompile: ~NativeModule.compile node.js:892
-      3    0.1%      0    0.0%                  LazyCompile: ~ProtoBuf.loadProto x:\public\ProtoBuf\dist\ProtoBuf.js:3944
-      4    0.2%      0    0.0%          LazyCompile: ~Module._resolveFilename module.js:323
-      3    0.1%      0    0.0%            LazyCompile: ~Module._findPath module.js:160
-      3    0.1%      0    0.0%              LazyCompile: ~tryFile module.js:138
+    719   96.5%      0    0.0%  Function: ~<anonymous> node.js:27
+    719   96.5%      0    0.0%    LazyCompile: ~startup node.js:30
+    713   95.7%      0    0.0%      LazyCompile: ~Module.runMain module.js:495
+    713   95.7%      0    0.0%        LazyCompile: Module._load module.js:275
+    709   95.2%      0    0.0%          LazyCompile: ~Module.load module.js:346
+    709   95.2%      0    0.0%            LazyCompile: ~Module._extensions..js module.js:472
+    708   95.0%      0    0.0%              LazyCompile: ~Module._compile module.js:374
+    708   95.0%      1    0.1%                Function: ~<anonymous> x:\public\protobuf\tests\bench.js:1
+    270   36.2%      1    0.1%                  LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+    269   36.1%     58    7.8%                    LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+    146   19.6%     41    5.5%                      LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+    104   14.0%      0    0.0%                        LazyCompile: *defineProperty native v8natives.js:1050
+     76   10.2%      2    0.3%                          LazyCompile: *DefineOwnProperty native v8natives.js:924
+     74    9.9%     67    9.0%                            LazyCompile: *DefineObjectProperty native v8natives.js:695
+      2    0.3%      2    0.3%                              Stub: CEntryStub
+      1    0.1%      1    0.1%                              LazyCompile: ToString native runtime.js:550
+      1    0.1%      1    0.1%                              LazyCompile: *IsGenericDescriptor native v8natives.js:361
+      1    0.1%      1    0.1%                              LazyCompile: *IsDataDescriptor native v8natives.js:354
+      1    0.1%      1    0.1%                              LazyCompile: *$Array.writable_ native v8natives.js:533
+      1    0.1%      1    0.1%                              LazyCompile: *$Array.set_ native v8natives.js:560
+     25    3.4%      4    0.5%                          LazyCompile: *ToPropertyDescriptor native v8natives.js:420
+     14    1.9%     12    1.6%                            LazyCompile: IN native runtime.js:354
+      2    0.3%      2    0.3%                              LazyCompile: ToString native runtime.js:550
+      6    0.8%      0    0.0%                            LazyCompile: *IsInconsistentDescriptor native v8natives.js:367
+      3    0.4%      3    0.4%                              LazyCompile: *IsDataDescriptor native v8natives.js:354
+      3    0.4%      3    0.4%                              LazyCompile: *IsAccessorDescriptor native v8natives.js:347
+      1    0.1%      1    0.1%                            LazyCompile: *$Array.set_ native v8natives.js:556
+      2    0.3%      2    0.3%                          LazyCompile: ToString native runtime.js:550
+      1    0.1%      1    0.1%                          LazyCompile: IN native runtime.js:354
+      1    0.1%      1    0.1%                        LazyCompile: *ProtoBuf.Builder.Builder.Message x:\public\protobuf\dist\ProtoBuf.js:3948
+     52    7.0%     10    1.3%                      LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+     37    5.0%      4    0.5%                        LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+     29    3.9%     21    2.8%                          LazyCompile: *Buffer.toString buffer.js:392
+      8    1.1%      8    1.1%                            LazyCompile: *toLowerCase native string.js:739
+      3    0.4%      3    0.4%                          LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      1    0.1%      1    0.1%                          Builtin: A builtin from the snapshot {3}
+      2    0.3%      2    0.3%                        Stub: CompareICStub {2}
+      1    0.1%      1    0.1%                        LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      1    0.1%      1    0.1%                        LazyCompile: *Buffer.toString buffer.js:392
+      1    0.1%      1    0.1%                        Builtin: A builtin from the snapshot
+      3    0.4%      3    0.4%                      Stub: CallConstructStub {1}
+      2    0.3%      2    0.3%                      Stub: InstanceofStub
+      2    0.3%      2    0.3%                      Stub: FastCloneShallowObjectStub
+      1    0.1%      1    0.1%                      Stub: ToBooleanStub {1}
+      1    0.1%      1    0.1%                      Stub: ToBooleanStub
+      1    0.1%      1    0.1%                      Stub: KeyedLoadElementStub
+      1    0.1%      1    0.1%                      KeyedLoadIC: args_count: 0 {1}
+      1    0.1%      1    0.1%                      KeyedLoadIC: A keyed load IC from the snapshot
+      1    0.1%      1    0.1%                      Builtin: A builtin from the snapshot
+    202   27.1%      0    0.0%                  LazyCompile: *<anonymous> x:\public\protobuf\tests\bench.js:33
+    201   27.0%      2    0.3%                    LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
+    197   26.4%     12    1.6%                      LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+    182   24.4%      7    0.9%                        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+    171   23.0%     15    2.0%                          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+    154   20.7%      8    1.1%                            LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+    123   16.5%     58    7.8%                              LazyCompile: *Buffer buffer.js:156
+     61    8.2%     39    5.2%                                LazyCompile: *Buffer.write buffer.js:315
+     10    1.3%     10    1.3%                                  LazyCompile: *toLowerCase native string.js:739
+      9    1.2%      7    0.9%                                  LazyCompile: *isFinite native v8natives.js:103
+      2    0.3%      2    0.3%                                    LazyCompile: NonNumberToNumber native runtime.js:538
+      2    0.3%      2    0.3%                                  LazyCompile: <anonymous> native string.js:36
+      1    0.1%      1    0.1%                                  Stub: CompareICStub {1}
+      2    0.3%      2    0.3%                                Stub: InstanceofStub
+      1    0.1%      1    0.1%                                Stub: CompareICStub {1}
+      1    0.1%      1    0.1%                                Builtin: A builtin from the snapshot
+     16    2.1%     16    2.1%                              LazyCompile: *Buffer.copy buffer.js:509
+      4    0.5%      4    0.5%                              LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
+      2    0.3%      2    0.3%                              Builtin: A builtin from the snapshot {1}
+      1    0.1%      1    0.1%                              Builtin: A builtin from the snapshot
+      1    0.1%      1    0.1%                            Stub: CompareICStub {2}
+      1    0.1%      1    0.1%                            LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
+      2    0.3%      2    0.3%                          LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
+      2    0.3%      2    0.3%                          Builtin: A builtin from the snapshot
+      2    0.3%      2    0.3%                        Stub: InstanceofStub
+      1    0.1%      1    0.1%                        KeyedLoadIC: A keyed load IC from the snapshot
+      1    0.1%      1    0.1%                      Stub: CEntryStub
+      1    0.1%      1    0.1%                      LazyCompile: *module.exports.ByteBuffer.LE x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2307
+      1    0.1%      1    0.1%                    LazyCompile: *module.exports.ByteBuffer.flip x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2260
+    169   22.7%      1    0.1%                  Function: ~<anonymous> x:\public\protobuf\tests\bench.js:33
+     99   13.3%      1    0.1%                    LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+     92   12.3%     20    2.7%                      LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     36    4.8%      8    1.1%                        LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+     25    3.4%      0    0.0%                          LazyCompile: *defineProperty native v8natives.js:1050
+     22    3.0%      0    0.0%                            LazyCompile: *DefineOwnProperty native v8natives.js:924
+     22    3.0%     19    2.6%                              LazyCompile: *DefineObjectProperty native v8natives.js:695
+      1    0.1%      0    0.0%                                LazyCompile: *IsAccessorDescriptor native v8natives.js:347
+      1    0.1%      1    0.1%                                  Stub: CEntryStub
+      1    0.1%      1    0.1%                                LazyCompile: *ConvertDescriptorArrayToDescriptor native v8natives.js:581
+      1    0.1%      1    0.1%                                LazyCompile: *$Array.writable_ native v8natives.js:533
+      3    0.4%      0    0.0%                            LazyCompile: *ToPropertyDescriptor native v8natives.js:420
+      3    0.4%      2    0.3%                              LazyCompile: IN native runtime.js:354
+      1    0.1%      1    0.1%                                LazyCompile: ToString native runtime.js:550
+      3    0.4%      0    0.0%                          LazyCompile: ~defineProperty native v8natives.js:1050
+      2    0.3%      0    0.0%                            LazyCompile: *ToPropertyDescriptor native v8natives.js:420
+      1    0.1%      1    0.1%                              LazyCompile: IN native runtime.js:354
+      1    0.1%      0    0.0%                              LazyCompile: *IsInconsistentDescriptor native v8natives.js:367
+      1    0.1%      1    0.1%                                LazyCompile: *IsDataDescriptor native v8natives.js:354
+      1    0.1%      0    0.0%                            LazyCompile: *DefineOwnProperty native v8natives.js:924
+      1    0.1%      1    0.1%                              LazyCompile: *DefineObjectProperty native v8natives.js:695
+     23    3.1%      3    0.4%                        LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+     20    2.7%      4    0.5%                          LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+     14    1.9%     13    1.7%                            LazyCompile: *Buffer.toString buffer.js:392
+      1    0.1%      1    0.1%                              LazyCompile: *toLowerCase native string.js:739
+      1    0.1%      1    0.1%                            LazyCompile: *toLowerCase native string.js:739
+      1    0.1%      1    0.1%                            LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      3    0.4%      0    0.0%                        LazyCompile: ~Message x:\public\protobuf\dist\ProtoBuf.js:1613
+      3    0.4%      0    0.0%                          LazyCompile: ~defineProperty native v8natives.js:1050
+      3    0.4%      1    0.1%                            LazyCompile: *DefineOwnProperty native v8natives.js:924
+      2    0.3%      2    0.3%                              LazyCompile: *DefineObjectProperty native v8natives.js:695
+      2    0.3%      2    0.3%                        LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      1    0.1%      1    0.1%                        Stub: ToBooleanStub
+      1    0.1%      1    0.1%                        Stub: KeyedLoadElementStub {1}
+      1    0.1%      1    0.1%                        Stub: KeyedLoadElementStub
+      1    0.1%      1    0.1%                        Stub: InstanceofStub
+      1    0.1%      0    0.0%                        LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      1    0.1%      1    0.1%                          LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+      1    0.1%      1    0.1%                        LazyCompile: *module.exports.ByteBuffer.remaining x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2405
+      1    0.1%      1    0.1%                        KeyedStoreIC: A keyed store IC from the snapshot
+      1    0.1%      1    0.1%                        Builtin: A builtin from the snapshot {1}
+      4    0.5%      2    0.3%                      LazyCompile: ~ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+      1    0.1%      0    0.0%                        LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      1    0.1%      0    0.0%                          LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+      1    0.1%      0    0.0%                            LazyCompile: ~module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      1    0.1%      1    0.1%                              LazyCompile: *Buffer.toString buffer.js:392
+      1    0.1%      0    0.0%                        LazyCompile: ~Message x:\public\protobuf\dist\ProtoBuf.js:1613
+      1    0.1%      0    0.0%                          LazyCompile: ~defineProperty native v8natives.js:1050
+      1    0.1%      0    0.0%                            LazyCompile: ~ToPropertyDescriptor native v8natives.js:420
+      1    0.1%      0    0.0%                              LazyCompile: ~IsInconsistentDescriptor native v8natives.js:367
+      1    0.1%      0    0.0%                                LazyCompile: ~IsAccessorDescriptor native v8natives.js:347
+      1    0.1%      1    0.1%                                  LazyCompile: ~$Array.set_ native v8natives.js:563
+      1    0.1%      1    0.1%                      Stub: InstanceofStub
+      1    0.1%      1    0.1%                      Builtin: A builtin from the snapshot {1}
+     66    8.9%      1    0.1%                    LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
+     57    7.7%      7    0.9%                      LazyCompile: *ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+     48    6.4%      2    0.3%                        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+     45    6.0%      6    0.8%                          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+     39    5.2%      3    0.4%                            LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+     23    3.1%      9    1.2%                              LazyCompile: *Buffer buffer.js:156
+     14    1.9%     12    1.6%                                LazyCompile: *Buffer.write buffer.js:315
+      2    0.3%      2    0.3%                                  LazyCompile: *toLowerCase native string.js:739
+     10    1.3%      4    0.5%                              LazyCompile: ~Buffer buffer.js:156
+      4    0.5%      3    0.4%                                LazyCompile: *Buffer.write buffer.js:315
+      1    0.1%      1    0.1%                                  LazyCompile: <anonymous> native string.js:36
+      1    0.1%      1    0.1%                                Stub: CompareICStub
+      1    0.1%      1    0.1%                                Stub: BinaryOpStub
+      1    0.1%      1    0.1%                              Stub: CallConstructStub
+      1    0.1%      1    0.1%                              LazyCompile: *Buffer.copy buffer.js:509
+      1    0.1%      1    0.1%                              Builtin: A builtin from the snapshot
+      1    0.1%      1    0.1%                          LazyCompile: *module.exports.ByteBuffer.writeVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1193
+      2    0.3%      2    0.3%                        Stub: InstanceofStub
+      7    0.9%      1    0.1%                      LazyCompile: ~ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+      6    0.8%      0    0.0%                        LazyCompile: ProtoBuf.Reflect.Field.encode x:\public\protobuf\dist\ProtoBuf.js:2633
+      5    0.7%      0    0.0%                          LazyCompile: ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+      4    0.5%      0    0.0%                            LazyCompile: *module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+      4    0.5%      2    0.3%                              LazyCompile: ~Buffer buffer.js:156
+      1    0.1%      1    0.1%                                LazyCompile: *Buffer.write buffer.js:315
+      1    0.1%      1    0.1%                                CallMegamorphic: args_count: 4
+      1    0.1%      0    0.0%                            LazyCompile: ~module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+      1    0.1%      1    0.1%                              LazyCompile: ~Buffer buffer.js:156
+      1    0.1%      0    0.0%                          LazyCompile: ~ProtoBuf.Reflect.Field.encodeValue x:\public\protobuf\dist\ProtoBuf.js:2685
+      1    0.1%      1    0.1%                            LazyCompile: ~module.exports.ByteBuffer.writeVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1899
+      1    0.1%      1    0.1%                      LazyCompile: *module.exports.ByteBuffer.LE x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2307
+      2    0.3%      2    0.3%                    LazyCompile: *module.exports.ByteBuffer.flip x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2260
+      1    0.1%      1    0.1%                    LazyCompile: *module.exports.ByteBuffer.LE x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2307
+     38    5.1%      0    0.0%                  LazyCompile: ~ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+     38    5.1%      1    0.1%                    LazyCompile: Message.decode x:\public\protobuf\dist\ProtoBuf.js:2072
+     37    5.0%      8    1.1%                      LazyCompile: ProtoBuf.Reflect.Message.decode x:\public\protobuf\dist\ProtoBuf.js:2298
+     18    2.4%      6    0.8%                        LazyCompile: *Message x:\public\protobuf\dist\ProtoBuf.js:1613
+     11    1.5%      0    0.0%                          LazyCompile: *defineProperty native v8natives.js:1050
+      9    1.2%      0    0.0%                            LazyCompile: *DefineOwnProperty native v8natives.js:924
+      9    1.2%      9    1.2%                              LazyCompile: *DefineObjectProperty native v8natives.js:695
+      2    0.3%      0    0.0%                            LazyCompile: *ToPropertyDescriptor native v8natives.js:420
+      2    0.3%      2    0.3%                              LazyCompile: IN native runtime.js:354
+      1    0.1%      1    0.1%                          Builtin: A builtin from the snapshot {2}
+      9    1.2%      0    0.0%                        LazyCompile: ProtoBuf.Reflect.Field.decode x:\public\protobuf\dist\ProtoBuf.js:2901
+      9    1.2%      0    0.0%                          LazyCompile: *module.exports.ByteBuffer.readVString x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1940
+      8    1.1%      7    0.9%                            LazyCompile: *Buffer.toString buffer.js:392
+      1    0.1%      1    0.1%                              LazyCompile: *toLowerCase native string.js:739
+      1    0.1%      1    0.1%                            LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      1    0.1%      1    0.1%                        LazyCompile: *module.exports.ByteBuffer.readVarint32 x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1272
+      1    0.1%      1    0.1%                        KeyedLoadIC: args_count: 0
+     18    2.4%      0    0.0%                  LazyCompile: ~require module.js:379
+     18    2.4%      0    0.0%                    LazyCompile: ~Module.require module.js:361
+     18    2.4%      0    0.0%                      LazyCompile: Module._load module.js:275
+     18    2.4%      0    0.0%                        LazyCompile: ~Module.load module.js:346
+     18    2.4%      0    0.0%                          LazyCompile: ~Module._extensions..js module.js:472
+     17    2.3%      0    0.0%                            LazyCompile: ~Module._compile module.js:374
+     17    2.3%      0    0.0%                              Function: ~<anonymous> x:\public\protobuf\index.js:1
+     17    2.3%      0    0.0%                                LazyCompile: ~require module.js:379
+     17    2.3%      0    0.0%                                  LazyCompile: ~Module.require module.js:361
+     17    2.3%      0    0.0%                                    LazyCompile: Module._load module.js:275
+     17    2.3%      0    0.0%                                      LazyCompile: ~Module.load module.js:346
+     17    2.3%      0    0.0%                                        LazyCompile: ~Module._extensions..js module.js:472
+     17    2.3%      3    0.4%                                          LazyCompile: ~Module._compile module.js:374
+     14    1.9%      0    0.0%                                            Function: ~<anonymous> x:\public\protobuf\dist\ProtoBuf.js:1
+     14    1.9%      2    0.3%                                              Function: ~<anonymous> x:\public\protobuf\dist\ProtoBuf.js:22
+     11    1.5%      0    0.0%                                                LazyCompile: ~require module.js:379
+     11    1.5%      0    0.0%                                                  LazyCompile: ~Module.require module.js:361
+     11    1.5%      0    0.0%                                                    LazyCompile: Module._load module.js:275
+     10    1.3%      0    0.0%                                                      LazyCompile: ~Module.load module.js:346
+     10    1.3%      0    0.0%                                                        LazyCompile: ~Module._extensions..js module.js:472
+     10    1.3%      0    0.0%                                                          LazyCompile: ~Module._compile module.js:374
+     10    1.3%      0    0.0%                                                            Function: ~<anonymous> x:\public\protobuf\node_modules\bytebuffer\index.js:1
+     10    1.3%      0    0.0%                                                              LazyCompile: ~require module.js:379
+     10    1.3%      0    0.0%                                                                LazyCompile: ~Module.require module.js:361
+     10    1.3%      0    0.0%                                                                  LazyCompile: Module._load module.js:275
+     10    1.3%      0    0.0%                                                                    LazyCompile: ~Module.load module.js:346
+     10    1.3%      0    0.0%                                                                      LazyCompile: ~Module._extensions..js module.js:472
+     10    1.3%      4    0.5%                                                                        LazyCompile: ~Module._compile module.js:374
+      5    0.7%      0    0.0%                                                                          Function: ~<anonymous> x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:1
+      5    0.7%      1    0.1%                                                                            Function: <anonymous> x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:23
+      4    0.5%      0    0.0%                                                                              LazyCompile: ~require module.js:379
+      4    0.5%      0    0.0%                                                                                LazyCompile: ~Module.require module.js:361
+      4    0.5%      0    0.0%                                                                                  LazyCompile: Module._load module.js:275
+      3    0.4%      0    0.0%                                                                                    LazyCompile: ~Module._resolveFilename module.js:323
+      3    0.4%      0    0.0%                                                                                      LazyCompile: ~Module._findPath module.js:160
+      2    0.3%      0    0.0%                                                                                        LazyCompile: ~tryExtensions module.js:148
+      2    0.3%      0    0.0%                                                                                          LazyCompile: ~tryFile module.js:138
+      2    0.3%      0    0.0%                                                                                            LazyCompile: statPath module.js:88
+      2    0.3%      1    0.1%                                                                                              LazyCompile: ~fs.statSync fs.js:687
+      1    0.1%      0    0.0%                                                                                                LazyCompile: <anonymous> native messages.js:1157
+      1    0.1%      0    0.0%                                                                                                  LazyCompile: <anonymous> native messages.js:1157
+      1    0.1%      1    0.1%                                                                                                    LazyCompile: captureStackTrace native messages.js:1113
+      1    0.1%      0    0.0%                                                                                        LazyCompile: ~tryPackage module.js:122
+      1    0.1%      0    0.0%                                                                                          LazyCompile: readPackage module.js:99
+      1    0.1%      0    0.0%                                                                                            LazyCompile: fs.readFileSync fs.js:276
+      1    0.1%      0    0.0%                                                                                              LazyCompile: ~fs.openSync fs.js:429
+      1    0.1%      0    0.0%                                                                                                LazyCompile: ~exports._makeLong path.js:460
+      1    0.1%      0    0.0%                                                                                                  LazyCompile: ~exports.resolve path.js:89
+      1    0.1%      1    0.1%                                                                                                    LazyCompile: ~filter native array.js:1036
+      1    0.1%      0    0.0%                                                                                    LazyCompile: ~Module.load module.js:346
+      1    0.1%      0    0.0%                                                                                      LazyCompile: ~Module._extensions..js module.js:472
+      1    0.1%      0    0.0%                                                                                        LazyCompile: ~Module._compile module.js:374
+      1    0.1%      0    0.0%                                                                                          Function: ~<anonymous> x:\public\protobuf\node_modules\bytebuffer\node_modules\long\index.js:1
+      1    0.1%      0    0.0%                                                                                            LazyCompile: ~require module.js:379
+      1    0.1%      0    0.0%                                                                                              LazyCompile: ~Module.require module.js:361
+      1    0.1%      0    0.0%                                                                                                LazyCompile: Module._load module.js:275
+      1    0.1%      0    0.0%                                                                                                  LazyCompile: ~Module.load module.js:346
+      1    0.1%      0    0.0%                                                                                                    LazyCompile: ~Module._extensions..js module.js:472
+      1    0.1%      1    0.1%                                                                                                      LazyCompile: ~Module._compile module.js:374
+      1    0.1%      0    0.0%                                                                          Function: ~<anonymous> x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferAB.js:1
+      1    0.1%      1    0.1%                                                                            Function: ~<anonymous> x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferAB.js:23
+      1    0.1%      0    0.0%                                                      LazyCompile: ~Module._resolveFilename module.js:323
+      1    0.1%      0    0.0%                                                        LazyCompile: ~Module._findPath module.js:160
+      1    0.1%      0    0.0%                                                          LazyCompile: ~tryPackage module.js:122
+      1    0.1%      0    0.0%                                                            LazyCompile: ~tryFile module.js:138
+      1    0.1%      0    0.0%                                                              LazyCompile: ~realpathSync fs.js:1212
+      1    0.1%      0    0.0%                                                                LazyCompile: ~start fs.js:1235
+      1    0.1%      0    0.0%                                                                  LazyCompile: ~fs.lstatSync fs.js:682
+      1    0.1%      0    0.0%                                                                    LazyCompile: ~exports._makeLong path.js:460
+      1    0.1%      1    0.1%                                                                      Stub: StringAddStub
+      1    0.1%      1    0.1%                                                LazyCompile: ~init x:\public\protobuf\dist\ProtoBuf.js:25
+      1    0.1%      1    0.1%                            LazyCompile: fs.readFileSync fs.js:276
+      5    0.7%      0    0.0%                  LazyCompile: ~<anonymous> node.js:204
+      5    0.7%      0    0.0%                    LazyCompile: ~NativeModule.require node.js:847
+      5    0.7%      0    0.0%                      LazyCompile: ~NativeModule.compile node.js:892
+      5    0.7%      0    0.0%                        Function: ~<anonymous> console.js:1
+      4    0.5%      0    0.0%                          LazyCompile: ~<anonymous> node.js:615
+      4    0.5%      0    0.0%                            LazyCompile: ~createWritableStdioStream node.js:550
+      3    0.4%      0    0.0%                              LazyCompile: ~NativeModule.require node.js:847
+      3    0.4%      0    0.0%                                LazyCompile: ~NativeModule.compile node.js:892
+      3    0.4%      0    0.0%                                  Function: ~<anonymous> tty.js:1
+      3    0.4%      0    0.0%                                    LazyCompile: ~NativeModule.require node.js:847
+      3    0.4%      1    0.1%                                      LazyCompile: ~NativeModule.compile node.js:892
+      2    0.3%      2    0.3%                                        Function: ~<anonymous> net.js:1
+      1    0.1%      0    0.0%                              LazyCompile: ~WriteStream tty.js:71
+      1    0.1%      0    0.0%                                LazyCompile: ~Socket net.js:135
+      1    0.1%      0    0.0%                                  LazyCompile: ~Duplex _stream_duplex.js:39
+      1    0.1%      1    0.1%                                    LazyCompile: ~Readable _stream_readable.js:100
+      1    0.1%      0    0.0%                          LazyCompile: ~<anonymous> node.js:630
+      1    0.1%      0    0.0%                            LazyCompile: ~createWritableStdioStream node.js:550
+      1    0.1%      0    0.0%                              LazyCompile: ~WriteStream tty.js:71
+      1    0.1%      1    0.1%                                LazyCompile: ~Socket net.js:135
+      3    0.4%      0    0.0%                  LazyCompile: ~ProtoBuf.loadProto x:\public\protobuf\dist\ProtoBuf.js:3965
+      2    0.3%      0    0.0%                    LazyCompile: ~ProtoBuf.loadJson x:\public\protobuf\dist\ProtoBuf.js:4059
+      1    0.1%      0    0.0%                      LazyCompile: ~ProtoBuf.Builder.Builder.import x:\public\protobuf\dist\ProtoBuf.js:3713
+      1    0.1%      0    0.0%                        LazyCompile: ~ProtoBuf.Builder.Builder.create x:\public\protobuf\dist\ProtoBuf.js:3596
+      1    0.1%      0    0.0%                          LazyCompile: ~ProtoBuf.Builder.Builder.isValidMessage x:\public\protobuf\dist\ProtoBuf.js:3494
+      1    0.1%      0    0.0%                            LazyCompile: ~ProtoBuf.Builder.Builder.isValidMessageField x:\public\protobuf\dist\ProtoBuf.js:3543
+      1    0.1%      1    0.1%                              LazyCompile: ~test native regexp.js:217
+      1    0.1%      0    0.0%                      LazyCompile: ~ProtoBuf.Builder.Builder.build x:\public\protobuf\dist\ProtoBuf.js:3904
+      1    0.1%      1    0.1%                        LazyCompile: ~ProtoBuf.Reflect.Namespace.build x:\public\protobuf\dist\ProtoBuf.js:1493
+      1    0.1%      0    0.0%                    LazyCompile: ~ProtoBuf.DotProto.Parser.parse x:\public\protobuf\dist\ProtoBuf.js:621
+      1    0.1%      0    0.0%                      LazyCompile: ProtoBuf.DotProto.Parser._parseMessage x:\public\protobuf\dist\ProtoBuf.js:949
+      1    0.1%      0    0.0%                        LazyCompile: ~ProtoBuf.DotProto.Tokenizer.next x:\public\protobuf\dist\ProtoBuf.js:499
+      1    0.1%      0    0.0%                          LazyCompile: ~test native regexp.js:217
+      1    0.1%      1    0.1%                            Stub: RegExpExecStub
+      1    0.1%      0    0.0%                  LazyCompile: ~b native v8natives.js:1582
+      1    0.1%      0    0.0%                    LazyCompile: ~Console.log console.js:52
+      1    0.1%      0    0.0%                      LazyCompile: ~Socket.write net.js:612
+      1    0.1%      0    0.0%                        LazyCompile: ~Writable.write _stream_writable.js:162
+      1    0.1%      0    0.0%                          LazyCompile: ~writeOrBuffer _stream_writable.js:199
+      1    0.1%      1    0.1%                            LazyCompile: ~doWrite _stream_writable.js:220
+      1    0.1%      0    0.0%                  LazyCompile: Message.encodeNB x:\public\protobuf\dist\ProtoBuf.js:1949
+      1    0.1%      0    0.0%                    LazyCompile: Message.encode x:\public\protobuf\dist\ProtoBuf.js:1859
+      1    0.1%      1    0.1%                      LazyCompile: ~ProtoBuf.Reflect.Message.encode x:\public\protobuf\dist\ProtoBuf.js:2206
+      1    0.1%      0    0.0%              LazyCompile: fs.readFileSync fs.js:276
+      1    0.1%      1    0.1%                LazyCompile: ~Buffer buffer.js:156
+      4    0.5%      0    0.0%          LazyCompile: ~Module._resolveFilename module.js:323
+      4    0.5%      0    0.0%            LazyCompile: ~Module._findPath module.js:160
+      4    0.5%      0    0.0%              LazyCompile: ~tryFile module.js:138
+      3    0.4%      0    0.0%                LazyCompile: ~NativeModule.require node.js:847
+      3    0.4%      1    0.1%                  LazyCompile: ~NativeModule.compile node.js:892
+      2    0.3%      0    0.0%                    Function: ~<anonymous> fs.js:1
+      2    0.3%      0    0.0%                      LazyCompile: ~NativeModule.require node.js:847
+      2    0.3%      1    0.1%                        LazyCompile: ~NativeModule.compile node.js:892
+      1    0.1%      0    0.0%                          Function: ~<anonymous> stream.js:1
+      1    0.1%      0    0.0%                            LazyCompile: ~NativeModule.require node.js:847
+      1    0.1%      1    0.1%                              LazyCompile: ~NativeModule.compile node.js:892
+      1    0.1%      0    0.0%                LazyCompile: ~realpathSync fs.js:1212
+      1    0.1%      1    0.1%                  LazyCompile: ~fs.lstatSync fs.js:682
+      3    0.4%      0    0.0%      LazyCompile: ~NativeModule.require node.js:847
+      3    0.4%      3    0.4%        LazyCompile: ~NativeModule.compile node.js:892
+      2    0.3%      0    0.0%      LazyCompile: ~startup.globalVariables node.js:160
+      2    0.3%      0    0.0%        LazyCompile: ~NativeModule.require node.js:847
+      2    0.3%      1    0.1%          LazyCompile: ~NativeModule.compile node.js:892
+      1    0.1%      0    0.0%            Function: ~<anonymous> buffer.js:1
+      1    0.1%      0    0.0%              LazyCompile: ~NativeModule.require node.js:847
+      1    0.1%      0    0.0%                LazyCompile: ~NativeModule.compile node.js:892
+      1    0.1%      0    0.0%                  Function: ~<anonymous> assert.js:1
+      1    0.1%      0    0.0%                    LazyCompile: ~NativeModule.require node.js:847
+      1    0.1%      1    0.1%                      LazyCompile: ~NativeModule.compile node.js:892
+      1    0.1%      1    0.1%      LazyCompile: ~startup.globalConsole node.js:203
+
+      1    0.1%      1    0.1%  LazyCompile: ToPrimitive native runtime.js:506
+
+      1    0.1%      1    0.1%  LazyCompile: *module.exports.ByteBuffer.flip x:\public\protobuf\node_modules\bytebuffer\dist\ByteBufferNB.js:2260
 
