@@ -8,7 +8,7 @@ var builder = ProtoBuf.loadProtoFile("./json.proto"),    // Creates the Builder
 
 // Option 2: Loading the .json file generated through 'proto2js json.proto > json.json'
 var root = ProtoBuf.loadJsonFile("./json.json").build(), // Here we make the Builder return the root namespace
-    JS = root.js;                                        // then we reference 'js' inside. both is possible.
+    JS = root.js;                                        // then we reference 'js' inside. Both is possible.
 
 // Option 3: Loading the module generated through 'proto2js json.proto -commonjs=js > json.js'
 var JS = require("./json.js");                           // Returns what is specified with -commonjs[=XX] (omitted=root)
@@ -93,7 +93,7 @@ function _jsonify(value) {
             obj[keys[i]['string'] /* is a JS.Value, here always a string */] = _jsonify(values[i]);
         return obj;
     }
-    return undefined;
+    /* If nothing is set */ return undefined;
 }
 
 // And this is how we actually encode and decode them:
@@ -117,7 +117,7 @@ module.exports = function(json) {
  * @returns {*} JSON
  * @expose
  */
-module.exports.jsonify = function(proto) {
+module.exports.parse = function(proto) {
     return _jsonify(           // Processes JS-namespace objects
         JS.Value.decode(proto) // Decodes the JS.Value from a ByteBuffer, a Buffer, an ArrayBuffer, an Uint8Array, ...
     );
