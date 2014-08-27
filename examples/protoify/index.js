@@ -1,18 +1,21 @@
 var ProtoBuf = require("protobufjs"),
-    ByteBuffer = ProtoBuf.ByteBuffer,
-    int_min = 0x80000000|0,
-    int_max = 0x7fffffff|0;
+    ByteBuffer = ProtoBuf.ByteBuffer,                    // ProtoBuf.js uses and also exposes ByteBuffer.js
+    Long = ProtoBuf.Long;                                // as well as Long.js (not used in this example)
 
 // Option 1: Loading the .proto file directly
-var JS = ProtoBuf.loadProtoFile("./json.proto").build("js");
+var builder = ProtoBuf.loadProtoFile("./json.proto"),    // Creates the Builder
+    JS = builder.build("js");                            // Returns just the 'js' namespace if that's all we need
 
 // Option 2: Loading the .json file generated through 'proto2js json.proto > json.json'
-var JS = ProtoBuf.loadJsonFile("./json.json").build("js");
+var root = ProtoBuf.loadJsonFile("./json.json").build(), // Here we make the Builder return the root namespace
+    JS = root.js;                                        // then we reference 'js' inside. both is possible.
 
 // Option 3: Loading the module generated through 'proto2js json.proto -commonjs=js > json.js'
-var JS = require("./json.js");
+var JS = require("./json.js");                           // Returns what is specified with -commonjs[=XX] (omitted=root)
 
-// The JS-namespace now contains Value, Array and Object
+// `JS` now contains the js namespace from json.proto: Value, Array and Object
+
+// This is how we use these classes:
 
 /**
  * Converts a JSON-like structure to JS-Namespace values.
@@ -23,12 +26,12 @@ var JS = require("./json.js");
 function _protoify(val) {
     switch (typeof val) {
         case 'number':
-            if (val%1 === 0 && val >= int_min && val <= int_max)
-                return new JS.Value({ 'integer': val });
+            if (val%1 === 0 && val >= (0x80000000|0) && val <= (0x7fffffff|0))
+                return new JS.Value(val); // sets the first field declared in .js.Value
             else
-                return new JS.Value({ 'double': val });
+                return new JS.Value(null, val); // sets the second field
         case 'string':
-            return new JS.Value({ 'string': val });
+            return new JS.Value({ 'string': val }); // uses object notation instead
         case 'boolean':
             return new JS.Value({ 'boolean': val });
         case 'object':
@@ -60,6 +63,7 @@ function _protoify(val) {
  * @inner
  */
 function _jsonify(value) {
+    // Omitted optional fields are always `null`
     if (value['integer'] !== null)
         return value['integer'];
     if (value['double'] !== null)
@@ -86,30 +90,35 @@ function _jsonify(value) {
             k = keys.length,
             obj = {};
         for (; i<k; ++i)
-            obj[_jsonify(keys[i])] = _jsonify(values[i]);
+            obj[keys[i]['string'] /* is a JS.Value, here always a string */] = _jsonify(values[i]);
         return obj;
     }
     return undefined;
 }
 
+// And this is how we actually encode and decode them:
+
 /**
- * Converts JSON to a Buffer.
+ * Converts a JSON structure to a Buffer.
  * @param {*} json JSON
  * @returns {!Buffer|!ArrayBuffer}
  * @expose
  */
 module.exports = function(json) {
-    return _protoify(json).encode().toBuffer();
+    return _protoify(json)     // Returns the root JS.Value
+           .encode()           // Encodes it to a ByteBuffer
+           .toBuffer();        // Converts it to a Buffer. In the browser, this returns an ArrayBuffer. To return an
+                               // ArrayBuffer explicitly both under node.js and in the browser, use .toArrayBuffer()
 };
 
 /**
- * Converts a Buffer to JSON.
+ * Converts a Buffer to a JSON structure.
  * @param {!Buffer|!ArrayBuffer} proto Buffer
  * @returns {*} JSON
  * @expose
  */
 module.exports.jsonify = function(proto) {
-    if (!ByteBuffer.isByteBuffer(proto))
-        proto = ByteBuffer.wrap(proto);
-    return _jsonify(JS.Value.decode(proto));
+    return _jsonify(           // Processes JS-namespace objects
+        JS.Value.decode(proto) // Decodes the JS.Value from a ByteBuffer, a Buffer, an ArrayBuffer, an Uint8Array, ...
+    );
 };
