@@ -1,7 +1,9 @@
 ProtoBuf.js protoify example
 ============================
 This example shows the general usage of ProtoBuf.js by converting JSON structures to protocol buffers and vice versa
-using a definition describing JSON itself. While this works as an example, it does not provide any real world benefits.
+using a definition describing JSON itself. While this works as an example, it does not provide any real world benefits
+(well, this is if you are not building a protobuf-backed database for JSON data, using inter-field substitution to
+minimize redundancy - nevermind, forget that).
 
 Instructions
 ------------
@@ -10,8 +12,6 @@ Instructions
 
 Now you know no more and no less than that it works and you might want to inspect the following files to get the 'how':
 
-Files
------
 * **[index.js](https://github.com/dcodeIO/ProtoBuf.js/blob/master/examples/protoify/index.js)**
   contains the sample's source code
 

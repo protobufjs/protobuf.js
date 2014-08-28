@@ -9,16 +9,17 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Constructs a new Builder.
      * @exports ProtoBuf.Builder
      * @class Provides the functionality to build protocol messages.
+     * @param {Object.<string,*>=} options Options
      * @constructor
      */
-    var Builder = function() {
+    var Builder = function(options) {
 
         /**
          * Namespace.
          * @type {ProtoBuf.Reflect.Namespace}
          * @expose
          */
-        this.ns = new Reflect.Namespace(null, ""); // Global namespace
+        this.ns = new Reflect.Namespace(this, null, ""); // Global namespace
 
         /**
          * Namespace pointer.
@@ -54,6 +55,13 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
          * @expose
          */
         this.importRoot = null;
+
+        /**
+         * Options.
+         * @type {!Object.<string, *>}
+         * @expose
+         */
+        this.options = options || {};
     };
 
     /**
@@ -81,7 +89,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 throw Error("Illegal package: "+part[i]);
         for (i=0; i<part.length; i++) {
             if (this.ptr.getChild(part[i]) === null) // Keep existing namespace
-                this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
+                this.ptr.addChild(new Reflect.Namespace(this, this.ptr, part[i], options));
             this.ptr = this.ptr.getChild(part[i]);
         }
         return this;
@@ -212,7 +220,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 while (defs.length > 0) {
                     def = defs.shift(); // Namespace always contains an array of messages, enums and services
                     if (Builder.isValidMessage(def)) {
-                        obj = new Reflect.Message(this.ptr, def["name"], def["options"], def["isGroup"]);
+                        obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
@@ -228,7 +236,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                     }
                                     subObj = null;
                                 }
-                                obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                obj.addChild(new Reflect.Message.Field(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
                             }
                         }
                         // Push enums and messages to stack
@@ -259,16 +267,16 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         subObj = null;
                         obj = null;
                     } else if (Builder.isValidEnum(def)) {
-                        obj = new Reflect.Enum(this.ptr, def["name"], def["options"]);
+                        obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"]);
                         for (i=0; i<def["values"].length; i++)
-                            obj.addChild(new Reflect.Enum.Value(obj, def["values"][i]["name"], def["values"][i]["id"]));
+                            obj.addChild(new Reflect.Enum.Value(this, obj, def["values"][i]["name"], def["values"][i]["id"]));
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidService(def)) {
-                        obj = new Reflect.Service(this.ptr, def["name"], def["options"]);
+                        obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                         for (i in def["rpc"])
                             if (def["rpc"].hasOwnProperty(i))
-                                obj.addChild(new Reflect.Service.RPCMethod(obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
+                                obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidExtend(def)) {
@@ -279,10 +287,16 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                     throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                 if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                     throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
+                                // Convert extension field names to camel case notation if the override is set
+                                var name = def["fields"][i]["name"];
+                                if (this.options['convertFieldsToCamelCase'])
+                                    name = Reflect.Message.Field._toCamelCase(def["fields"][i]["name"]);
                                 // see #161: Extensions use their fully qualified name as their runtime key and...
-                                var fld = new Reflect.Message.ExtensionField(obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
-                                // ...are added on top of the current namespace as an extension which is used for resolving their type later on
-                                var ext = new Reflect.Extension(this.ptr, def["fields"][i]["name"], fld);
+                                var fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
+                                // ...are added on top of the current namespace as an extension which is used for
+                                // resolving their type later on (the extension always keeps the original name to
+                                // prevent naming collisions)
+                                var ext = new Reflect.Extension(this, this.ptr, def["fields"][i]["name"], fld);
                                 fld.extension = ext;
                                 this.ptr.addChild(ext);
                                 obj.addChild(fld);

@@ -3,14 +3,22 @@
  * @exports ProtoBuf.Reflect.T
  * @constructor
  * @abstract
- * @param {ProtoBuf.Reflect.T} parent Parent object
+ * @param {!ProtoBuf.Builder} builder Builder reference
+ * @param {?ProtoBuf.Reflect.T} parent Parent object
  * @param {string} name Object name
  */
-var T = function(parent, name) {
+var T = function(builder, parent, name) {
+
+    /**
+     * Builder reference.
+     * @type {!ProtoBuf.Builder}
+     * @expose
+     */
+    this.builder = builder;
 
     /**
      * Parent object.
-     * @type {ProtoBuf.Reflect.T|null}
+     * @type {?ProtoBuf.Reflect.T}
      * @expose
      */
     this.parent = parent;

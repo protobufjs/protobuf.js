@@ -42,7 +42,8 @@ if (process.argv.length < 3) {
     console.log("  -amd[=My.Package]       Creates an AMD define instead of just a JSON def.");
     console.log("                          If you do not specify a package, the package");
     console.log("                          declaration from the .proto file is used instead.\n");
-    console.log("If none of -class, -commonjs or -amd is specified, raw JSON will be returned.\n");    
+    console.log("  -with:name[=key]        Sets a builder option, e.g. convertFieldsToCamelCase\n");
+    console.log("If none of -class, -commonjs or -amd is specified, raw JSON will be returned.\n");
     console.log("  -min                    Minifies the output.\n");
     console.log("  -path=DIR               Adds a directory to the include path.\n");
     console.log("  -legacy                 Includes legacy descriptors from google/protobuf/ if");
@@ -63,6 +64,17 @@ for (var i=3; i<process.argv.length; i++) {
         }
     }
 }
+var builderOptions = {};
+Object.keys(options).forEach(function(key) {
+    if (key.substring(0,5) === 'with:') {
+        var val = options[key];
+        if (val === 'true')
+            val = true;
+        else if (val === 'false')
+            val = false;
+        builderOptions[key.substring(5)] = val;
+    }
+});
 
 var sourceFile = process.argv[2],
     min = !!options['min'],
@@ -224,7 +236,7 @@ function build_shim(pkg, file, min) {
         path += part[part.length-1];
         vars += path+WHITESPACE+'='+WHITESPACE;
     }
-    return vars+'dcodeIO.ProtoBuf.newBuilder()'+out+'.build('+(pkg !== null ? '"'+pkg+'"' : '')+');';
+    return vars+'dcodeIO.ProtoBuf.newBuilder('+JSON.stringify(builderOptions, null, min ? 0 : 4)+')'+out+'.build('+(pkg !== null ? '"'+pkg+'"' : '')+');';
 }
 
 /**
@@ -246,7 +258,7 @@ function build_commonjs(pkg, file, min) {
         throw(new Error("Not a valid namespace: "+pkg));
     }
     var WHITESPACE = min ? '' : ' ';
-    return 'module.exports'+WHITESPACE+'='+WHITESPACE+'require("protobufjs").newBuilder()'+out+'.build('+(pkg !== null ? '"'+pkg+'"' : '')+');';
+    return 'module.exports'+WHITESPACE+'='+WHITESPACE+'require("protobufjs").newBuilder('+JSON.stringify(builderOptions, null, min ? 0 : 4)+')'+out+'.build('+(pkg !== null ? '"'+pkg+'"' : '')+');';
 }
 
 /**
@@ -267,5 +279,5 @@ function build_amd(pkg, file, min) {
         throw(new Error("Not a valid namespace: "+pkg));
     }
     var WHITESPACE = min ? '' : ' ';
-    return 'define('+(pkg !== null ? '"'+pkg.replace(/\./g, '/').replace(/^\//, "")+'",'+WHITESPACE : '')+'["ProtoBuf"],'+WHITESPACE+'function(ProtoBuf)'+WHITESPACE+'{'+WHITESPACE+'return ProtoBuf.newBuilder()'+out+'.build('+(pkg !== null ? '"'+pkg+'"' : '')+');'+WHITESPACE+'});';
+    return 'define('+(pkg !== null ? '"'+pkg.replace(/\./g, '/').replace(/^\//, "")+'",'+WHITESPACE : '')+'["ProtoBuf"],'+WHITESPACE+'function(ProtoBuf)'+WHITESPACE+'{'+WHITESPACE+'return ProtoBuf.newBuilder('+JSON.stringify(builderOptions, null, min ? 0 : 4)+')'+out+'.build('+(pkg !== null ? '"'+pkg+'"' : '')+');'+WHITESPACE+'});';
 }

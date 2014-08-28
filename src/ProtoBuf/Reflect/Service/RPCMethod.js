@@ -1,6 +1,7 @@
 /**
  * RPC service method.
  * @exports ProtoBuf.Reflect.Service.RPCMethod
+ * @param {!ProtoBuf.Builder} builder Builder reference
  * @param {!ProtoBuf.Reflect.Service} svc Service
  * @param {string} name Method name
  * @param {string} request Request message name
@@ -9,8 +10,8 @@
  * @constructor
  * @extends ProtoBuf.Reflect.Service.Method
  */
-var RPCMethod = function(svc, name, request, response, options) {
-    Method.call(this, svc, name, options);
+var RPCMethod = function(builder, svc, name, request, response, options) {
+    Method.call(this, builder, svc, name, options);
 
     /**
      * @override

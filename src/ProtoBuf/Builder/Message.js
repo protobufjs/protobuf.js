@@ -122,7 +122,7 @@ Message.prototype.set = function(key, value, noAssert) {
  * @function
  * @param {string} key Key
  * @param {*} value Value to set
- * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+ * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
  * @throws {Error} If the value cannot be set
  * @expose
  */
@@ -133,7 +133,7 @@ Message.prototype.$set = Message.prototype.set;
  * @name ProtoBuf.Builder.Message#get
  * @function
  * @param {string} key Key
- * @param {boolean=} noAssert Whether to no assert for an actual field, defaults to `false`
+ * @param {boolean=} noAssert Whether to not assert for an actual field, defaults to `false`
  * @return {*} Value
  * @throws {Error} If there is no such field
  * @expose
@@ -168,72 +168,91 @@ for (var i=0; i<fields.length; i++) {
     if (field instanceof ProtoBuf.Reflect.Message.ExtensionField)
         continue;
 
-    if (ProtoBuf.populateAccessors)
+    if (T.builder.options['populateAccessors'])
         (function(field) {
             // set/get[SomeValue]
             var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
                 return match.toUpperCase().replace('_','');
             });
-            Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
+            Name = Name.substring(0,1).toUpperCase() + Name.substring(1);
 
-            // set/get_[some_value]
+            // set/get_[some_value] FIXME: Do we really need these?
             var name = field.originalName.replace(/([A-Z])/g, function(match) {
                 return "_"+match;
             });
 
             /**
+             * The current field's unbound setter function.
+             * @function
+             * @param {*} value
+             * @param {boolean=} noAssert
+             * @returns {!ProtoBuf.Builder.Message}
+             * @inner
+             */
+            var setter = function(value, noAssert) {
+                this[field.name] = noAssert ? value : field.verifyValue(value);
+                return this;
+            };
+
+            /**
+             * The current field's unbound getter function.
+             * @function
+             * @returns {*}
+             * @inner
+             */
+            var getter = function() {
+                return this[field.name];
+            };
+
+            /**
              * Sets a value. This method is present for each field, but only if there is no name conflict with
-             * another field.
+             *  another field.
              * @name ProtoBuf.Builder.Message#set[SomeField]
              * @function
              * @param {*} value Value to set
+             * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+             * @returns {!ProtoBuf.Builder.Message} this
              * @abstract
              * @throws {Error} If the value cannot be set
              */
             if (T.getChild("set"+Name) === null)
-                Message.prototype["set"+Name] = function(value) {
-                    this.$set(field.name, value);
-                };
+                Message.prototype["set"+Name] = setter;
 
             /**
              * Sets a value. This method is present for each field, but only if there is no name conflict with
-             * another field.
+             *  another field.
              * @name ProtoBuf.Builder.Message#set_[some_field]
              * @function
              * @param {*} value Value to set
+             * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+             * @returns {!ProtoBuf.Builder.Message} this
              * @abstract
              * @throws {Error} If the value cannot be set
              */
             if (T.getChild("set_"+name) === null)
-                Message.prototype["set_"+name] = function(value) {
-                    this.$set(field.name, value);
-                };
+                Message.prototype["set_"+name] = setter;
 
             /**
              * Gets a value. This method is present for each field, but only if there is no name conflict with
-             * another field.
+             *  another field.
              * @name ProtoBuf.Builder.Message#get[SomeField]
              * @function
              * @abstract
              * @return {*} The value
              */
             if (T.getChild("get"+Name) === null)
-                Message.prototype["get"+Name] = function() {
-                    return this.$get(field.name); // Does not throw, field exists
-                };
+                Message.prototype["get"+Name] = getter;
 
             /**
              * Gets a value. This method is present for each field, but only if there is no name conflict with
-             * another field.
+             *  another field.
              * @name ProtoBuf.Builder.Message#get_[some_field]
              * @function
              * @return {*} The value
              * @abstract
              */
             if (T.getChild("get_"+name) === null)
-                Message.prototype["get_"+name] = function() {
-                    return this.$get(field.name); // Does not throw, field exists
-                };
+                Message.prototype["get_"+name] = getter;
 
         })(field);
 }

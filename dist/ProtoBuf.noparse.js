@@ -426,14 +426,22 @@
              * @exports ProtoBuf.Reflect.T
              * @constructor
              * @abstract
-             * @param {ProtoBuf.Reflect.T} parent Parent object
+             * @param {!ProtoBuf.Builder} builder Builder reference
+             * @param {?ProtoBuf.Reflect.T} parent Parent object
              * @param {string} name Object name
              */
-            var T = function(parent, name) {
+            var T = function(builder, parent, name) {
+
+                /**
+                 * Builder reference.
+                 * @type {!ProtoBuf.Builder}
+                 * @expose
+                 */
+                this.builder = builder;
 
                 /**
                  * Parent object.
-                 * @type {ProtoBuf.Reflect.T|null}
+                 * @type {?ProtoBuf.Reflect.T}
                  * @expose
                  */
                 this.parent = parent;
@@ -498,14 +506,15 @@
             /**
              * Constructs a new Namespace.
              * @exports ProtoBuf.Reflect.Namespace
-             * @param {ProtoBuf.Reflect.Namespace|null} parent Namespace parent
+             * @param {!ProtoBuf.Builder} builder Builder reference
+             * @param {?ProtoBuf.Reflect.Namespace} parent Namespace parent
              * @param {string} name Namespace name
-             * @param {Object.<string,*>} options Namespace options
+             * @param {Object.<string,*>=} options Namespace options
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Namespace = function(parent, name, options) {
-                T.call(this, parent, name);
+            var Namespace = function(builder, parent, name, options) {
+                T.call(this, builder, parent, name);
 
                 /**
                  * @override
@@ -514,13 +523,13 @@
 
                 /**
                  * Children inside the namespace.
-                 * @type {Array.<ProtoBuf.Reflect.T>}
+                 * @type {!Array.<ProtoBuf.Reflect.T>}
                  */
                 this.children = [];
 
                 /**
                  * Options.
-                 * @type {Object.<string, *>}
+                 * @type {!Object.<string, *>}
                  */
                 this.options = options || {};
             };
@@ -674,15 +683,16 @@
             /**
              * Constructs a new Message.
              * @exports ProtoBuf.Reflect.Message
-             * @param {ProtoBuf.Reflect.Namespace} parent Parent message or namespace
+             * @param {!ProtoBuf.Builder} builder Builder reference
+             * @param {!ProtoBuf.Reflect.Namespace} parent Parent message or namespace
              * @param {string} name Message name
-             * @param {Object.<string,*>} options Message options
+             * @param {Object.<string,*>=} options Message options
              * @param {boolean=} isGroup `true` if this is a legacy group
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Message = function(parent, name, options, isGroup) {
-                Namespace.call(this, parent, name, options);
+            var Message = function(builder, parent, name, options, isGroup) {
+                Namespace.call(this, builder, parent, name, options);
 
                 /**
                  * @override
@@ -865,7 +875,7 @@
                      * @function
                      * @param {string} key Key
                      * @param {*} value Value to set
-                     * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+                     * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
@@ -876,7 +886,7 @@
                      * @name ProtoBuf.Builder.Message#get
                      * @function
                      * @param {string} key Key
-                     * @param {boolean=} noAssert Whether to no assert for an actual field, defaults to `false`
+                     * @param {boolean=} noAssert Whether to not assert for an actual field, defaults to `false`
                      * @return {*} Value
                      * @throws {Error} If there is no such field
                      * @expose
@@ -911,72 +921,91 @@
                         if (field instanceof ProtoBuf.Reflect.Message.ExtensionField)
                             continue;
 
-                        if (ProtoBuf.populateAccessors)
+                        if (T.builder.options['populateAccessors'])
                             (function(field) {
                                 // set/get[SomeValue]
                                 var Name = field.originalName.replace(/(_[a-zA-Z])/g, function(match) {
                                     return match.toUpperCase().replace('_','');
                                 });
-                                Name = Name.substring(0,1).toUpperCase()+Name.substring(1);
+                                Name = Name.substring(0,1).toUpperCase() + Name.substring(1);
 
-                                // set/get_[some_value]
+                                // set/get_[some_value] FIXME: Do we really need these?
                                 var name = field.originalName.replace(/([A-Z])/g, function(match) {
                                     return "_"+match;
                                 });
 
                                 /**
+                                 * The current field's unbound setter function.
+                                 * @function
+                                 * @param {*} value
+                                 * @param {boolean=} noAssert
+                                 * @returns {!ProtoBuf.Builder.Message}
+                                 * @inner
+                                 */
+                                var setter = function(value, noAssert) {
+                                    this[field.name] = noAssert ? value : field.verifyValue(value);
+                                    return this;
+                                };
+
+                                /**
+                                 * The current field's unbound getter function.
+                                 * @function
+                                 * @returns {*}
+                                 * @inner
+                                 */
+                                var getter = function() {
+                                    return this[field.name];
+                                };
+
+                                /**
                                  * Sets a value. This method is present for each field, but only if there is no name conflict with
-                                 * another field.
+                                 *  another field.
                                  * @name ProtoBuf.Builder.Message#set[SomeField]
                                  * @function
                                  * @param {*} value Value to set
+                                 * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+                                 * @returns {!ProtoBuf.Builder.Message} this
                                  * @abstract
                                  * @throws {Error} If the value cannot be set
                                  */
                                 if (T.getChild("set"+Name) === null)
-                                    Message.prototype["set"+Name] = function(value) {
-                                        this.$set(field.name, value);
-                                    };
+                                    Message.prototype["set"+Name] = setter;
 
                                 /**
                                  * Sets a value. This method is present for each field, but only if there is no name conflict with
-                                 * another field.
+                                 *  another field.
                                  * @name ProtoBuf.Builder.Message#set_[some_field]
                                  * @function
                                  * @param {*} value Value to set
+                                 * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+                                 * @returns {!ProtoBuf.Builder.Message} this
                                  * @abstract
                                  * @throws {Error} If the value cannot be set
                                  */
                                 if (T.getChild("set_"+name) === null)
-                                    Message.prototype["set_"+name] = function(value) {
-                                        this.$set(field.name, value);
-                                    };
+                                    Message.prototype["set_"+name] = setter;
 
                                 /**
                                  * Gets a value. This method is present for each field, but only if there is no name conflict with
-                                 * another field.
+                                 *  another field.
                                  * @name ProtoBuf.Builder.Message#get[SomeField]
                                  * @function
                                  * @abstract
                                  * @return {*} The value
                                  */
                                 if (T.getChild("get"+Name) === null)
-                                    Message.prototype["get"+Name] = function() {
-                                        return this.$get(field.name); // Does not throw, field exists
-                                    };
+                                    Message.prototype["get"+Name] = getter;
 
                                 /**
                                  * Gets a value. This method is present for each field, but only if there is no name conflict with
-                                 * another field.
+                                 *  another field.
                                  * @name ProtoBuf.Builder.Message#get_[some_field]
                                  * @function
                                  * @return {*} The value
                                  * @abstract
                                  */
                                 if (T.getChild("get_"+name) === null)
-                                    Message.prototype["get_"+name] = function() {
-                                        return this.$get(field.name); // Does not throw, field exists
-                                    };
+                                    Message.prototype["get_"+name] = getter;
 
                             })(field);
                     }
@@ -1514,7 +1543,8 @@
             /**
              * Constructs a new Message Field.
              * @exports ProtoBuf.Reflect.Message.Field
-             * @param {ProtoBuf.Reflect.Message} message Message reference
+             * @param {!ProtoBuf.Builder} builder Builder reference
+             * @param {!ProtoBuf.Reflect.Message} message Message reference
              * @param {string} rule Rule, one of requried, optional, repeated
              * @param {string} type Data type, e.g. int32
              * @param {string} name Field name
@@ -1523,8 +1553,8 @@
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Field = function(message, rule, type, name, id, options) {
-                T.call(this, message, name);
+            var Field = function(builder, message, rule, type, name, id, options) {
+                T.call(this, builder, message, name);
 
                 /**
                  * @override
@@ -1589,11 +1619,20 @@
                 this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
 
                 // Convert field names to camel case notation if the override is set
-                if (ProtoBuf.convertFieldsToCamelCase && !(this instanceof Message.ExtensionField)) {
-                    this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
-                        return $1.toUpperCase();
-                    });
-                }
+                if (this.builder.options['convertFieldsToCamelCase'] && !(this instanceof Message.ExtensionField))
+                    this.name = Field._toCamelCase(this.name);
+            };
+
+            /**
+             * Converts a field name to camel case.
+             * @param {string} name Likely underscore notated name
+             * @returns {string} Camel case notated name
+             * @private
+             */
+            Field._toCamelCase = function(name) {
+                return name.replace(/_([a-zA-Z])/g, function($0, $1) {
+                    return $1.toUpperCase();
+                });
             };
 
             // Extends T
@@ -2152,7 +2191,8 @@
             /**
              * Constructs a new Message ExtensionField.
              * @exports ProtoBuf.Reflect.Message.ExtensionField
-             * @param {ProtoBuf.Reflect.Message} message Message reference
+             * @param {!ProtoBuf.Builder} builder Builder reference
+             * @param {!ProtoBuf.Reflect.Message} message Message reference
              * @param {string} rule Rule, one of requried, optional, repeated
              * @param {string} type Data type, e.g. int32
              * @param {string} name Field name
@@ -2161,8 +2201,8 @@
              * @constructor
              * @extends ProtoBuf.Reflect.Message.Field
              */
-            var ExtensionField = function(message, rule, type, name, id, options) {
-                Field.call(this, message, rule, type, name, id, options);
+            var ExtensionField = function(builder, message, rule, type, name, id, options) {
+                Field.call(this, builder, message, rule, type, name, id, options);
 
                 /**
                  * Extension reference.
@@ -2184,14 +2224,15 @@
             /**
              * Constructs a new Enum.
              * @exports ProtoBuf.Reflect.Enum
+             * @param {!ProtoBuf.Builder} builder Builder reference
              * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
              * @param {string} name Enum name
              * @param {Object.<string,*>=} options Enum options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Enum = function(parent, name, options) {
-                Namespace.call(this, parent, name, options);
+            var Enum = function(builder, parent, name, options) {
+                Namespace.call(this, builder, parent, name, options);
 
                 /**
                  * @override
@@ -2233,14 +2274,15 @@
             /**
              * Constructs a new Enum Value.
              * @exports ProtoBuf.Reflect.Enum.Value
+             * @param {!ProtoBuf.Builder} builder Builder reference
              * @param {!ProtoBuf.Reflect.Enum} enm Enum reference
              * @param {string} name Field name
              * @param {number} id Unique field id
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Value = function(enm, name, id) {
-                T.call(this, enm, name);
+            var Value = function(builder, enm, name, id) {
+                T.call(this, builder, enm, name);
 
                 /**
                  * @override
@@ -2268,12 +2310,13 @@
              * An extension (field).
              * @exports ProtoBuf.Reflect.Extension
              * @constructor
-             * @param {ProtoBuf.Reflect.T} parent Parent object
+             * @param {!ProtoBuf.Builder} builder Builder reference
+             * @param {!ProtoBuf.Reflect.T} parent Parent object
              * @param {string} name Object name
              * @param {!ProtoBuf.Reflect.Message.Field} field Extension field
              */
-            var Extension = function(parent, name, field) {
-                T.call(this, parent, name);
+            var Extension = function(builder, parent, name, field) {
+                T.call(this, builder, parent, name);
 
                 /**
                  * Extended message field.
@@ -2295,14 +2338,15 @@
             /**
              * Constructs a new Service.
              * @exports ProtoBuf.Reflect.Service
+             * @param {!ProtoBuf.Builder} builder Builder reference
              * @param {!ProtoBuf.Reflect.Namespace} root Root
              * @param {string} name Service name
              * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Service = function(root, name, options) {
-                Namespace.call(this, root, name, options);
+            var Service = function(builder, root, name, options) {
+                Namespace.call(this, builder, root, name, options);
 
                 /**
                  * @override
@@ -2440,14 +2484,15 @@
             /**
              * Abstract service method.
              * @exports ProtoBuf.Reflect.Service.Method
+             * @param {!ProtoBuf.Builder} builder Builder reference
              * @param {!ProtoBuf.Reflect.Service} svc Service
              * @param {string} name Method name
              * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Method = function(svc, name, options) {
-                T.call(this, svc, name);
+            var Method = function(builder, svc, name, options) {
+                T.call(this, builder, svc, name);
 
                 /**
                  * @override
@@ -2482,6 +2527,7 @@
             /**
              * RPC service method.
              * @exports ProtoBuf.Reflect.Service.RPCMethod
+             * @param {!ProtoBuf.Builder} builder Builder reference
              * @param {!ProtoBuf.Reflect.Service} svc Service
              * @param {string} name Method name
              * @param {string} request Request message name
@@ -2490,8 +2536,8 @@
              * @constructor
              * @extends ProtoBuf.Reflect.Service.Method
              */
-            var RPCMethod = function(svc, name, request, response, options) {
-                Method.call(this, svc, name, options);
+            var RPCMethod = function(builder, svc, name, request, response, options) {
+                Method.call(this, builder, svc, name, options);
 
                 /**
                  * @override
@@ -2537,6 +2583,7 @@
             Reflect.Service.RPCMethod = RPCMethod;
 
             return Reflect;
+
         })(ProtoBuf);
 
         /**
@@ -2550,16 +2597,17 @@
              * Constructs a new Builder.
              * @exports ProtoBuf.Builder
              * @class Provides the functionality to build protocol messages.
+             * @param {Object.<string,*>=} options Options
              * @constructor
              */
-            var Builder = function() {
+            var Builder = function(options) {
 
                 /**
                  * Namespace.
                  * @type {ProtoBuf.Reflect.Namespace}
                  * @expose
                  */
-                this.ns = new Reflect.Namespace(null, ""); // Global namespace
+                this.ns = new Reflect.Namespace(this, null, ""); // Global namespace
 
                 /**
                  * Namespace pointer.
@@ -2595,6 +2643,13 @@
                  * @expose
                  */
                 this.importRoot = null;
+
+                /**
+                 * Options.
+                 * @type {!Object.<string, *>}
+                 * @expose
+                 */
+                this.options = options || {};
             };
 
             /**
@@ -2622,7 +2677,7 @@
                         throw Error("Illegal package: "+part[i]);
                 for (i=0; i<part.length; i++) {
                     if (this.ptr.getChild(part[i]) === null) // Keep existing namespace
-                        this.ptr.addChild(new Reflect.Namespace(this.ptr, part[i], options));
+                        this.ptr.addChild(new Reflect.Namespace(this, this.ptr, part[i], options));
                     this.ptr = this.ptr.getChild(part[i]);
                 }
                 return this;
@@ -2753,7 +2808,7 @@
                         while (defs.length > 0) {
                             def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
-                                obj = new Reflect.Message(this.ptr, def["name"], def["options"], def["isGroup"]);
+                                obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
                                     for (i=0; i<def["fields"].length; i++) { // i=Fields
@@ -2769,7 +2824,7 @@
                                             }
                                             subObj = null;
                                         }
-                                        obj.addChild(new Reflect.Message.Field(obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                        obj.addChild(new Reflect.Message.Field(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
                                     }
                                 }
                                 // Push enums and messages to stack
@@ -2800,16 +2855,16 @@
                                 subObj = null;
                                 obj = null;
                             } else if (Builder.isValidEnum(def)) {
-                                obj = new Reflect.Enum(this.ptr, def["name"], def["options"]);
+                                obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"]);
                                 for (i=0; i<def["values"].length; i++)
-                                    obj.addChild(new Reflect.Enum.Value(obj, def["values"][i]["name"], def["values"][i]["id"]));
+                                    obj.addChild(new Reflect.Enum.Value(this, obj, def["values"][i]["name"], def["values"][i]["id"]));
                                 this.ptr.addChild(obj);
                                 obj = null;
                             } else if (Builder.isValidService(def)) {
-                                obj = new Reflect.Service(this.ptr, def["name"], def["options"]);
+                                obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                                 for (i in def["rpc"])
                                     if (def["rpc"].hasOwnProperty(i))
-                                        obj.addChild(new Reflect.Service.RPCMethod(obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
+                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
                                 this.ptr.addChild(obj);
                                 obj = null;
                             } else if (Builder.isValidExtend(def)) {
@@ -2820,10 +2875,16 @@
                                             throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
                                         if (def['fields'][i]['id'] < obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
                                             throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
+                                        // Convert extension field names to camel case notation if the override is set
+                                        var name = def["fields"][i]["name"];
+                                        if (this.options['convertFieldsToCamelCase'])
+                                            name = Reflect.Message.Field._toCamelCase(def["fields"][i]["name"]);
                                         // see #161: Extensions use their fully qualified name as their runtime key and...
-                                        var fld = new Reflect.Message.ExtensionField(obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]);
-                                        // ...are added on top of the current namespace as an extension which is used for resolving their type later on
-                                        var ext = new Reflect.Extension(this.ptr, def["fields"][i]["name"], fld);
+                                        var fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
+                                        // ...are added on top of the current namespace as an extension which is used for
+                                        // resolving their type later on (the extension always keeps the original name to
+                                        // prevent naming collisions)
+                                        var ext = new Reflect.Extension(this, this.ptr, def["fields"][i]["name"], fld);
                                         fld.extension = ext;
                                         this.ptr.addChild(ext);
                                         obj.addChild(fld);
@@ -3098,18 +3159,18 @@
 
 
         /**
-         * Constructs a new Builder with the specified package defined.
-         * @param {string=} pkg Package name as fully qualified name, e.g. "My.Game". If no package is specified, the
-         * builder will only contain a global namespace.
-         * @param {Object.<string,*>=} options Top level options
-         * @return {ProtoBuf.Builder} New Builder
+         * Constructs a new empty Builder.
+         * @param {Object.<string,*>=} options Builder options, defaults to global options set on ProtoBuf
+         * @return {!ProtoBuf.Builder} Builder
          * @expose
          */
-        ProtoBuf.newBuilder = function(pkg, options) {
-            var builder = new ProtoBuf.Builder();
-            if (typeof pkg !== 'undefined' && pkg !== null)
-                builder.define(pkg, options);
-            return builder;
+        ProtoBuf.newBuilder = function(options) {
+            options = options || {};
+            if (typeof options['convertFieldsToCamelCase'] === 'undefined')
+                options['convertFieldsToCamelCase'] = ProtoBuf.convertFieldsToCamelCase;
+            if (typeof options['populateAccessors'] === 'undefined')
+                options['populateAccessors'] = ProtoBuf.populateAccessors;
+            return new ProtoBuf.Builder(options);
         };
 
         /**

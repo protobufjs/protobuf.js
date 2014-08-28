@@ -1,7 +1,8 @@
 /**
  * Constructs a new Message Field.
  * @exports ProtoBuf.Reflect.Message.Field
- * @param {ProtoBuf.Reflect.Message} message Message reference
+ * @param {!ProtoBuf.Builder} builder Builder reference
+ * @param {!ProtoBuf.Reflect.Message} message Message reference
  * @param {string} rule Rule, one of requried, optional, repeated
  * @param {string} type Data type, e.g. int32
  * @param {string} name Field name
@@ -10,8 +11,8 @@
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */
-var Field = function(message, rule, type, name, id, options) {
-    T.call(this, message, name);
+var Field = function(builder, message, rule, type, name, id, options) {
+    T.call(this, builder, message, name);
 
     /**
      * @override
@@ -76,11 +77,20 @@ var Field = function(message, rule, type, name, id, options) {
     this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
 
     // Convert field names to camel case notation if the override is set
-    if (ProtoBuf.convertFieldsToCamelCase && !(this instanceof Message.ExtensionField)) {
-        this.name = this.name.replace(/_([a-zA-Z])/g, function($0, $1) {
-            return $1.toUpperCase();
-        });
-    }
+    if (this.builder.options['convertFieldsToCamelCase'] && !(this instanceof Message.ExtensionField))
+        this.name = Field._toCamelCase(this.name);
+};
+
+/**
+ * Converts a field name to camel case.
+ * @param {string} name Likely underscore notated name
+ * @returns {string} Camel case notated name
+ * @private
+ */
+Field._toCamelCase = function(name) {
+    return name.replace(/_([a-zA-Z])/g, function($0, $1) {
+        return $1.toUpperCase();
+    });
 };
 
 // Extends T

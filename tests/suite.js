@@ -1036,7 +1036,7 @@
                     "options": {},
                     "services": []
                 });
-                
+
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/extend.proto");
                 var TFoo = builder.lookup(".Foo"),
                     TBar = builder.lookup(".Bar"),
@@ -1049,7 +1049,7 @@
                 test.strictEqual(fields[1].id, 3);
                 test.deepEqual(TFoo.extensions, [2, ProtoBuf.ID_MAX]); // Defined
                 test.deepEqual(TBar.extensions, [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX]); // Undefined
-                test.deepEqual(TBar.getChild("foo"), { parent: TBar, name: "foo", field: TFoo.getChild('.Bar.foo') });
+                test.deepEqual(TBar.getChild("foo"), { builder: builder, parent: TBar, name: "foo", field: TFoo.getChild('.Bar.foo') });
                 test.strictEqual(TBar.getChildren(ProtoBuf.Reflect.Message.Field).length, 0);
                 var root = builder.build();
                 test.strictEqual(TFoo.getChild(".Bar.foo").resolvedType, TBarFoo); // .Bar.Foo, not .Foo
@@ -1558,6 +1558,26 @@
                 var builder = ProtoBuf.loadProto(proto, "tests/mismatchedNesting.proto");
                 var root = builder.build();
                 var foo = new root.Parent({ child: new root.FakeChild({ foo: 1 })});
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "builderOptions": function(test) {
+            try {
+                var proto = "message Foo { optional uint32 foo_bar = 1; }";
+                var builder = ProtoBuf.newBuilder({
+                    convertFieldsToCamelCase: true
+                });
+                ProtoBuf.loadProto(proto, builder, "tests/builderOptions.proto");
+                var Foo = builder.build("Foo");
+                test.strictEqual(ProtoBuf.convertFieldsToCamelCase, false);
+                test.strictEqual(builder.options.convertFieldsToCamelCase, true);
+                var foo = new Foo();
+                test.ok(typeof foo.fooBar !== 'undefined');
+                test.ok(typeof foo.foo_bar === 'undefined');
+                test.done();
             } catch (e) {
                 fail(e);
             }

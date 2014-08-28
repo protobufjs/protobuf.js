@@ -1,7 +1,8 @@
 /**
  * Constructs a new Message ExtensionField.
  * @exports ProtoBuf.Reflect.Message.ExtensionField
- * @param {ProtoBuf.Reflect.Message} message Message reference
+ * @param {!ProtoBuf.Builder} builder Builder reference
+ * @param {!ProtoBuf.Reflect.Message} message Message reference
  * @param {string} rule Rule, one of requried, optional, repeated
  * @param {string} type Data type, e.g. int32
  * @param {string} name Field name
@@ -10,8 +11,8 @@
  * @constructor
  * @extends ProtoBuf.Reflect.Message.Field
  */
-var ExtensionField = function(message, rule, type, name, id, options) {
-    Field.call(this, message, rule, type, name, id, options);
+var ExtensionField = function(builder, message, rule, type, name, id, options) {
+    Field.call(this, builder, message, rule, type, name, id, options);
 
     /**
      * Extension reference.

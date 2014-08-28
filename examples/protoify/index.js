@@ -99,6 +99,13 @@ function _jsonify(value) {
 // And this is how we actually encode and decode them:
 
 /**
+ * A temporary Buffer to speed up encoding.
+ * @type {!ByteBuffer}
+ * @inner
+ */
+var tempBuffer = ByteBuffer.allocate(1024);
+
+/**
  * Converts a JSON structure to a Buffer.
  * @param {*} json JSON
  * @returns {!Buffer|!ArrayBuffer}
@@ -106,9 +113,11 @@ function _jsonify(value) {
  */
 module.exports = function(json) {
     return _protoify(json)     // Returns the root JS.Value
-           .encode()           // Encodes it to a ByteBuffer
+           .encode(tempBuffer).flip() // Encodes it to a ByteBuffer, here: reusing tempBuffer forever
+                               // The non-tempBuffer alternative is just doing .encode()
            .toBuffer();        // Converts it to a Buffer. In the browser, this returns an ArrayBuffer. To return an
-                               // ArrayBuffer explicitly both under node.js and in the browser, use .toArrayBuffer()
+                               // ArrayBuffer explicitly both under node.js and in the browser, use .toArrayBuffer().
+                               // Performance note: This just returns a slice on the ByteBuffer's backing .buffer
 };
 
 /**
@@ -122,3 +131,19 @@ module.exports.parse = function(proto) {
         JS.Value.decode(proto) // Decodes the JS.Value from a ByteBuffer, a Buffer, an ArrayBuffer, an Uint8Array, ...
     );
 };
+
+/**
+ * Performs maintenance.
+ * @expose
+ */
+module.exports.performMaintenance = function() {
+    if (tempBuffer.capacity() > 2048)
+        tempBuffer = ByteBuffer.allocate(1024);
+    // In case this module is running inside of a daemon, we'd just call this
+    // method every now and then to discard the tempBuffer if it becomes too
+    // large. This is just an example on how to reuse ByteBuffers effectively.
+    // You may consider something like this for the performance benefit, which
+    // is decreasing the memory allocation footprint of your app.
+};
+
+// Have a nice day!

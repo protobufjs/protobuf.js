@@ -1,14 +1,15 @@
 /**
  * Constructs a new Service.
  * @exports ProtoBuf.Reflect.Service
+ * @param {!ProtoBuf.Builder} builder Builder reference
  * @param {!ProtoBuf.Reflect.Namespace} root Root
  * @param {string} name Service name
  * @param {Object.<string,*>=} options Options
  * @constructor
  * @extends ProtoBuf.Reflect.Namespace
  */
-var Service = function(root, name, options) {
-    Namespace.call(this, root, name, options);
+var Service = function(builder, root, name, options) {
+    Namespace.call(this, builder, root, name, options);
 
     /**
      * @override

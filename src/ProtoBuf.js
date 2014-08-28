@@ -257,10 +257,9 @@
          * @expose
          */
         ProtoBuf.loadProto = function(proto, builder, filename) {
-            if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string')) {
-                filename = builder;
-                builder = null;
-            }
+            if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
+                filename = builder,
+                builder = undefined;
             return ProtoBuf.loadJson((new ProtoBuf.DotProto.Parser(proto)).parse(), builder, filename);
         };
 
@@ -328,18 +327,18 @@
         //? } // !NOPARSE
 
         /**
-         * Constructs a new Builder with the specified package defined.
-         * @param {string=} pkg Package name as fully qualified name, e.g. "My.Game". If no package is specified, the
-         * builder will only contain a global namespace.
-         * @param {Object.<string,*>=} options Top level options
-         * @return {ProtoBuf.Builder} New Builder
+         * Constructs a new empty Builder.
+         * @param {Object.<string,*>=} options Builder options, defaults to global options set on ProtoBuf
+         * @return {!ProtoBuf.Builder} Builder
          * @expose
          */
-        ProtoBuf.newBuilder = function(pkg, options) {
-            var builder = new ProtoBuf.Builder();
-            if (typeof pkg !== 'undefined' && pkg !== null)
-                builder.define(pkg, options);
-            return builder;
+        ProtoBuf.newBuilder = function(options) {
+            options = options || {};
+            if (typeof options['convertFieldsToCamelCase'] === 'undefined')
+                options['convertFieldsToCamelCase'] = ProtoBuf.convertFieldsToCamelCase;
+            if (typeof options['populateAccessors'] === 'undefined')
+                options['populateAccessors'] = ProtoBuf.populateAccessors;
+            return new ProtoBuf.Builder(options);
         };
 
         /**

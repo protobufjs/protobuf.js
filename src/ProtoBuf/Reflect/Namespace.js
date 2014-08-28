@@ -1,14 +1,15 @@
 /**
  * Constructs a new Namespace.
  * @exports ProtoBuf.Reflect.Namespace
- * @param {ProtoBuf.Reflect.Namespace|null} parent Namespace parent
+ * @param {!ProtoBuf.Builder} builder Builder reference
+ * @param {?ProtoBuf.Reflect.Namespace} parent Namespace parent
  * @param {string} name Namespace name
- * @param {Object.<string,*>} options Namespace options
+ * @param {Object.<string,*>=} options Namespace options
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */
-var Namespace = function(parent, name, options) {
-    T.call(this, parent, name);
+var Namespace = function(builder, parent, name, options) {
+    T.call(this, builder, parent, name);
 
     /**
      * @override
@@ -17,13 +18,13 @@ var Namespace = function(parent, name, options) {
 
     /**
      * Children inside the namespace.
-     * @type {Array.<ProtoBuf.Reflect.T>}
+     * @type {!Array.<ProtoBuf.Reflect.T>}
      */
     this.children = [];
 
     /**
      * Options.
-     * @type {Object.<string, *>}
+     * @type {!Object.<string, *>}
      */
     this.options = options || {};
 };

@@ -1,14 +1,15 @@
 /**
  * Constructs a new Enum.
  * @exports ProtoBuf.Reflect.Enum
+ * @param {!ProtoBuf.Builder} builder Builder reference
  * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
  * @param {string} name Enum name
  * @param {Object.<string,*>=} options Enum options
  * @constructor
  * @extends ProtoBuf.Reflect.Namespace
  */
-var Enum = function(parent, name, options) {
-    Namespace.call(this, parent, name, options);
+var Enum = function(builder, parent, name, options) {
+    Namespace.call(this, builder, parent, name, options);
 
     /**
      * @override

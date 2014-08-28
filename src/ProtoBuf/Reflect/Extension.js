@@ -2,12 +2,13 @@
  * An extension (field).
  * @exports ProtoBuf.Reflect.Extension
  * @constructor
- * @param {ProtoBuf.Reflect.T} parent Parent object
+ * @param {!ProtoBuf.Builder} builder Builder reference
+ * @param {!ProtoBuf.Reflect.T} parent Parent object
  * @param {string} name Object name
  * @param {!ProtoBuf.Reflect.Message.Field} field Extension field
  */
-var Extension = function(parent, name, field) {
-    T.call(this, parent, name);
+var Extension = function(builder, parent, name, field) {
+    T.call(this, builder, parent, name);
 
     /**
      * Extended message field.

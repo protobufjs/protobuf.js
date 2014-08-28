@@ -101,4 +101,5 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
     Reflect.Service.RPCMethod = RPCMethod;
 
     return Reflect;
+
 })(ProtoBuf);

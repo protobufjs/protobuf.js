@@ -1,14 +1,15 @@
 /**
  * Abstract service method.
  * @exports ProtoBuf.Reflect.Service.Method
+ * @param {!ProtoBuf.Builder} builder Builder reference
  * @param {!ProtoBuf.Reflect.Service} svc Service
  * @param {string} name Method name
  * @param {Object.<string,*>=} options Options
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */
-var Method = function(svc, name, options) {
-    T.call(this, svc, name);
+var Method = function(builder, svc, name, options) {
+    T.call(this, builder, svc, name);
 
     /**
      * @override

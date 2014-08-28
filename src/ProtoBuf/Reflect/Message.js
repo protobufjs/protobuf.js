@@ -1,15 +1,16 @@
 /**
  * Constructs a new Message.
  * @exports ProtoBuf.Reflect.Message
- * @param {ProtoBuf.Reflect.Namespace} parent Parent message or namespace
+ * @param {!ProtoBuf.Builder} builder Builder reference
+ * @param {!ProtoBuf.Reflect.Namespace} parent Parent message or namespace
  * @param {string} name Message name
- * @param {Object.<string,*>} options Message options
+ * @param {Object.<string,*>=} options Message options
  * @param {boolean=} isGroup `true` if this is a legacy group
  * @constructor
  * @extends ProtoBuf.Reflect.Namespace
  */
-var Message = function(parent, name, options, isGroup) {
-    Namespace.call(this, parent, name, options);
+var Message = function(builder, parent, name, options, isGroup) {
+    Namespace.call(this, builder, parent, name, options);
 
     /**
      * @override
