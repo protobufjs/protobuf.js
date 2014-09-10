@@ -1,0 +1,6 @@
+message MyOneOf {
+    oneof my_oneof {
+        uint32 id = 1;
+        string name = 2;
+    }
+}

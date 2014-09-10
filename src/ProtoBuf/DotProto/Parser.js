@@ -378,6 +378,7 @@ Parser.prototype._parseMessage = function(parent, fld, token) {
     msg["enums"] = [];
     msg["messages"] = [];
     msg["options"] = {};
+    msg["oneofs"] = {};
     token = this.tn.next();
     if (token === Lang.OPTOPEN && fld)
         this._parseFieldOptions(msg, fld, token),
@@ -394,6 +395,8 @@ Parser.prototype._parseMessage = function(parent, fld, token) {
             break;
         } else if (Lang.RULE.test(token))
             this._parseMessageField(msg, token);
+        else if (token === "oneof")
+            this._parseMessageOneOf(msg, token);
         else if (token === "enum")
             this._parseEnum(msg, token);
         else if (token === "message")
@@ -415,6 +418,7 @@ Parser.prototype._parseMessage = function(parent, fld, token) {
  * Parses a message field.
  * @param {Object} msg Message definition
  * @param {string} token Initial token
+ * @returns {!Object} Field descriptor
  * @throws {Error} If the message field cannot be parsed
  * @private
  */
@@ -462,6 +466,33 @@ Parser.prototype._parseMessageField = function(msg, token) {
             throw Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
     }
     msg["fields"].push(fld);
+    return fld;
+};
+
+/**
+ * Parses a message oneof.
+ * @param {Object} msg Message definition
+ * @param {string} token Initial token
+ * @throws {Error} If the message oneof cannot be parsed
+ * @private
+ */
+Parser.prototype._parseMessageOneOf = function(msg, token) {
+    token = this.tn.next();
+    if (!Lang.NAME.test(token))
+        throw Error("Illegal oneof name in message "+msg.name+" at line "+this.tn.line+": "+token);
+    var name = token,
+        fld;
+    var fields = [];
+    token = this.tn.next();
+    if (token !== Lang.OPEN)
+        throw Error("Illegal OPEN after oneof "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)");
+    while (this.tn.peek() !== Lang.CLOSE) {
+        fld = this._parseMessageField(msg, "optional");
+        fld["oneof"] = name;
+        fields.push(fld["id"]);
+    }
+    this.tn.next();
+    msg["oneofs"][name] = fields;
 };
 
 /**

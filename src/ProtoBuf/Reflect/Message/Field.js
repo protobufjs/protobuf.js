@@ -8,10 +8,11 @@
  * @param {string} name Field name
  * @param {number} id Unique field id
  * @param {Object.<string,*>=} options Options
+ * @param {!ProtoBuf.Reflect.Message.OneOf=} oneof Enclosing OneOf
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */
-var Field = function(builder, message, rule, type, name, id, options) {
+var Field = function(builder, message, rule, type, name, id, options, oneof) {
     T.call(this, builder, message, name);
 
     /**
@@ -68,6 +69,13 @@ var Field = function(builder, message, rule, type, name, id, options) {
      * @expose
      */
     this.defaultValue = null;
+
+    /**
+     * Enclosing OneOf.
+     * @type {?ProtoBuf.Reflect.Message.OneOf}
+     * @expose
+     */
+    this.oneof = oneof || null;
 
     /**
      * Original field name.
@@ -229,13 +237,11 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
         // Constant enum value
         case ProtoBuf.TYPES["enum"]: {
             var values = this.resolvedType.getChildren(Enum.Value);
-            for (i=0; i<values.length; i++) {
-                if (values[i].name == value) {
+            for (i=0; i<values.length; i++)
+                if (values[i].name == value)
                     return values[i].id;
-                } else if (values[i].id == value) {
+                else if (values[i].id == value)
                     return values[i].id;
-                }
-            }
             fail(value, "not a valid enum value");
         }
         // Embedded message
@@ -638,4 +644,4 @@ Field.prototype.decode = function(wireType, buffer, skipRepeated) {
 
     // We should never end here
     throw Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType);
-}
+};

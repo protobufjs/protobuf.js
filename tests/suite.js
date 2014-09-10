@@ -987,7 +987,8 @@
                             "extensions": [
                                 2,
                                 536870911
-                            ]
+                            ],
+                            "oneofs": []
                         },
                         {
                             "ref": "Foo",
@@ -1011,7 +1012,8 @@
                                     "fields": [],
                                     "enums": [],
                                     "messages": [],
-                                    "options": {}
+                                    "options": {},
+                                    "oneofs": []
                                 },
                                 {
                                     "ref": ".Foo",
@@ -1026,7 +1028,8 @@
                                     ]
                                 }
                             ],
-                            "options": {}
+                            "options": {},
+                            "oneofs": []
                         }
                     ],
                     "enums": [],
@@ -1075,6 +1078,31 @@
                 test.equal(root["messages"][7]["fields"][0]["options"]["(my_field_option)"], 4.5);
                 // test.equal(root["services"]["MyService"]["options"]["my_service_option"], "FOO");
                 // TODO: add tests for my_enum_option, my_enum_value_option
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "oneofs": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/oneof.proto"),
+                    MyOneOf = builder.build("MyOneOf"),
+                    TOneOf = builder.lookup(".MyOneOf");
+                test.ok(TOneOf.getChild("my_oneof"));
+                var myOneOf = new MyOneOf();
+                test.strictEqual(myOneOf.my_oneof, null);
+                myOneOf.set("id", 1);
+                test.strictEqual(myOneOf.my_oneof, "id");
+                myOneOf.set("name", "me");
+                test.strictEqual(myOneOf.my_oneof, "name");
+                test.strictEqual(myOneOf.id, null);
+                var bb = myOneOf.encode().compact();
+                test.strictEqual(bb.toString("debug"), "<12 02 6D 65>"); // id 2, wt 2, len 2
+                myOneOf = MyOneOf.decode(bb);
+                test.strictEqual(myOneOf.my_oneof, "name");
+                test.strictEqual(myOneOf.name, "me");
+                test.strictEqual(myOneOf.id, null);
             } catch (e) {
                 fail(e);
             }

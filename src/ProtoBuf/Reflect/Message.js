@@ -53,6 +53,13 @@ var Message = function(builder, parent, name, options, isGroup) {
      * @private
      */
     this._fieldsById = null;
+
+    /**
+     * Cached fields by name.
+     * @type {?Object.<string,!ProtoBuf.Reflect.Message.Field>}
+     * @private
+     */
+    this._fieldsByName = null;
 };
 
 // Extends Namespace
@@ -81,20 +88,20 @@ Message.prototype.build = function(rebuild) {
 
     // Static enums and prototyped sub-messages / cached collections
     this._fields = [];
-    this._fieldsById = [];
+    this._fieldsById = {};
+    this._fieldsByName = {};
     for (var i=0, k=this.children.length, child; i<k; i++) {
         child = this.children[i];
         if (child instanceof Enum)
-            clazz[child['name']] = child.build();
+            clazz[child.name] = child.build();
         else if (child instanceof Message)
-            clazz[child['name']] = child.build();
+            clazz[child.name] = child.build();
         else if (child instanceof Message.Field)
             child.build(),
             this._fields.push(child),
-            this._fieldsById[child.id] = child;
-        else if (child instanceof Extension) {
-            // Ignore
-        } else
+            this._fieldsById[child.id] = child,
+            this._fieldsByName[child.name] = child;
+        else if (!(child instanceof Message.OneOf) && !(child instanceof Extension)) // Not built
             throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));
     }
 
@@ -114,7 +121,7 @@ Message.prototype.encode = function(message, buffer, noVerify) {
     var fieldMissing = null,
         field;
     for (var i=0, k=this._fields.length, val; i<k; ++i) {
-        field = this.children[i];
+        field = this._fields[i];
         val = message[field.name];
         if (field.required && val === null) {
             if (fieldMissing === null)
@@ -239,8 +246,14 @@ Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
         }
         if (field.repeated && !field.options["packed"])
             msg[field.name].push(field.decode(wireType, buffer));
-        else
+        else {
             msg[field.name] = field.decode(wireType, buffer);
+            if (field.oneof) {
+                if (this[field.oneof.name] !== null)
+                    this[this[field.oneof.name]] = null;
+                msg[field.oneof.name] = field.name;
+            }
+        }
     }
 
     // Check if all required fields are present and set default values for optional fields that are not

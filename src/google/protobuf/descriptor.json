@@ -14,7 +14,8 @@
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "FileDescriptorProto",
@@ -99,7 +100,8 @@
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "DescriptorProto",
@@ -176,10 +178,12 @@
                     ],
                     "enums": [],
                     "messages": [],
-                    "options": {}
+                    "options": {},
+                    "oneofs": {}
                 }
             ],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "FieldDescriptorProto",
@@ -340,7 +344,8 @@
                 }
             ],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "EnumDescriptorProto",
@@ -369,7 +374,8 @@
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "EnumValueDescriptorProto",
@@ -398,7 +404,8 @@
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "ServiceDescriptorProto",
@@ -427,7 +434,8 @@
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "MethodDescriptorProto",
@@ -463,7 +471,8 @@
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "FileOptions",
@@ -573,6 +582,7 @@
             ],
             "messages": [],
             "options": {},
+            "oneofs": {},
             "extensions": [
                 1000,
                 536870911
@@ -610,6 +620,7 @@
             "enums": [],
             "messages": [],
             "options": {},
+            "oneofs": {},
             "extensions": [
                 1000,
                 536870911
@@ -698,6 +709,7 @@
             ],
             "messages": [],
             "options": {},
+            "oneofs": {},
             "extensions": [
                 1000,
                 536870911
@@ -726,6 +738,7 @@
             "enums": [],
             "messages": [],
             "options": {},
+            "oneofs": {},
             "extensions": [
                 1000,
                 536870911
@@ -745,6 +758,7 @@
             "enums": [],
             "messages": [],
             "options": {},
+            "oneofs": {},
             "extensions": [
                 1000,
                 536870911
@@ -764,6 +778,7 @@
             "enums": [],
             "messages": [],
             "options": {},
+            "oneofs": {},
             "extensions": [
                 1000,
                 536870911
@@ -783,6 +798,7 @@
             "enums": [],
             "messages": [],
             "options": {},
+            "oneofs": {},
             "extensions": [
                 1000,
                 536870911
@@ -863,10 +879,12 @@
                     ],
                     "enums": [],
                     "messages": [],
-                    "options": {}
+                    "options": {},
+                    "oneofs": {}
                 }
             ],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "SourceCodeInfo",
@@ -919,10 +937,12 @@
                     ],
                     "enums": [],
                     "messages": [],
-                    "options": {}
+                    "options": {},
+                    "oneofs": {}
                 }
             ],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         }
     ],
     "enums": [],

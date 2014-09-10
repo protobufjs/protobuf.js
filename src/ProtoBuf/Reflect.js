@@ -52,6 +52,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      */
     Reflect.Message.ExtensionField = ExtensionField;
 
+    //? include("Reflect/Message/OneOf.js");
+
+    /**
+     * @alias ProtoBuf.Reflect.Message.OneOf
+     * @expose
+     */
+    Reflect.Message.OneOf = OneOf;
+
     //? include("Reflect/Enum.js");
 
     /**

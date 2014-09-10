@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: T</title>
+    <title>JSDoc: Class: OneOf</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: T</h1>
+    <h1 class="page-title">Class: OneOf</h1>
 
     
 
@@ -27,9 +27,9 @@
 
 <header>
     <h2>
-        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.Reflect.html">.Reflect</a>.</span>
+        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.Reflect.html">.Reflect</a><a href="ProtoBuf.Reflect.Message.html">.Message</a>.</span>
     
-    T
+    OneOf
     </h2>
     
 </header>
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="T"><span class="type-signature">(abstract) </span>new T<span class="signature">(builder<span class="signature-attributes">non-null</span>, parent<span class="signature-attributes">nullable</span>, name)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="OneOf"><span class="type-signature"></span>new OneOf<span class="signature">(builder<span class="signature-attributes">non-null</span>, message<span class="signature-attributes">non-null</span>, name)</span><span class="type-signature"></span></h4>
 
     
 </dt>
@@ -49,7 +49,7 @@
 
     
     <div class="description">
-        <p>Constructs a Reflect base class.</p>
+        <p>Constructs a new Message OneOf.</p>
     </div>
     
 
@@ -70,8 +70,6 @@
 
         <th>Type</th>
 
-        
-        <th>Attributes</th>
         
 
         
@@ -98,14 +96,6 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -116,33 +106,23 @@
 
         <tr>
             
-                <td class="name"><code>parent</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></span>
+<span class="param-type"><a href="ProtoBuf.Reflect.Message.html">ProtoBuf.Reflect.Message</a></span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>Parent object</p></td>
+            <td class="description last"><p>Message reference</p></td>
         </tr>
 
     
@@ -162,18 +142,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>Object name</p></td>
+            <td class="description last"><p>OneOf name</p></td>
         </tr>
 
     
@@ -204,7 +176,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1334">line 1334</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3164">line 3164</a>
     </li></ul></dd>
     
 
@@ -234,6 +206,12 @@
     
     </div>
 
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        <ul>
+            <li><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></li>
+        </ul>
     
 
     
@@ -283,6 +261,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#builder">ProtoBuf.Reflect.T#builder</a>
+    </li></dd>
     
 
     
@@ -350,6 +333,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#className">ProtoBuf.Reflect.T#className</a>
+    </li></dd>
+    
 
     
 
@@ -365,6 +353,72 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1362">line 1362</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="fields"><span class="type-signature">(non-null) </span>fields<span class="type-signature"> :Array.&lt;<a href="ProtoBuf.Reflect.Message.Field.html">ProtoBuf.Reflect.Message.Field</a>></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Enclosed fields.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Array.&lt;<a href="ProtoBuf.Reflect.Message.Field.html">ProtoBuf.Reflect.Message.Field</a>></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3172">line 3172</a>
     </li></ul></dd>
     
 
@@ -415,6 +469,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#name">ProtoBuf.Reflect.T#name</a>
+    </li></dd>
     
 
     
@@ -482,6 +541,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#parent">ProtoBuf.Reflect.T#parent</a>
+    </li></dd>
+    
 
     
 
@@ -548,6 +612,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#build">ProtoBuf.Reflect.T#build</a>
+    </li></dd>
     
 
     
@@ -646,6 +715,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#fqn">ProtoBuf.Reflect.T#fqn</a>
+    </li></dd>
     
 
     
@@ -799,6 +873,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="ProtoBuf.Reflect.T.html#toString">ProtoBuf.Reflect.T#toString</a>
+    </li></dd>
     
 
     

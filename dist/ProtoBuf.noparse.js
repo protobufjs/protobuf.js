@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.6.0";
+        ProtoBuf.VERSION = "3.7.0";
 
         /**
          * Wire types.
@@ -735,6 +735,13 @@
                  * @private
                  */
                 this._fieldsById = null;
+
+                /**
+                 * Cached fields by name.
+                 * @type {?Object.<string,!ProtoBuf.Reflect.Message.Field>}
+                 * @private
+                 */
+                this._fieldsByName = null;
             };
 
             // Extends Namespace
@@ -755,7 +762,8 @@
                 // Create the runtime Message class in its own scope
                 var clazz = (function(ProtoBuf, T) {
 
-                    var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
+                    var fields = T.getChildren(ProtoBuf.Reflect.Message.Field),
+                        oneofs = T.getChildren(ProtoBuf.Reflect.Message.OneOf);
 
                     /**
                      * Constructs a new runtime Message.
@@ -770,8 +778,11 @@
                         ProtoBuf.Builder.Message.call(this);
 
                         // Create fields on the object itself and set default values
-                        for (var i=0, k=fields.length, field; i<k; ++i) {
-                            this[(field = fields[i]).name] = field.repeated ? [] : null;
+                        for (var i=0, k=oneofs.length; i<k; ++i)
+                            this[oneofs[i].name] = null;
+                        for (i=0, k=fields.length; i<k; ++i) {
+                            var field = fields[i];
+                            this[field.name] = field.repeated ? [] : null;
                             if (field.required && field.defaultValue !== null)
                                 this[field.name] = field.defaultValue;
                         }
@@ -787,7 +798,7 @@
                                 var keys = Object.keys(values);
                                 for (i=0, k=keys.length; i<k; ++i)
                                     this.$set(keys[i], values[keys[i]]); // May throw
-                            } else // set field values from arguments, in declaration order
+                            } else // Set field values from arguments, in declaration order
                                 for (i=0, k=arguments.length; i<k; ++i)
                                     this.$set(fields[i].name, arguments[i]); // May throw
                         }
@@ -814,13 +825,15 @@
                      * @expose
                      */
                     Message.prototype.add = function(key, value, noAssert) {
-                        var field = T.getChild(key);
-                        if (!field)
-                            throw Error(this+"#"+key+" is undefined");
-                        if (!(field instanceof ProtoBuf.Reflect.Message.Field))
-                            throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
-                        if (!field.repeated)
-                            throw Error(this+"#"+key+" is not a repeated field");
+                        var field = T._fieldsByName[key];
+                        if (!noAssert) {
+                            if (!field)
+                                throw Error(this+"#"+key+" is undefined");
+                            if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+                                throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
+                            if (!field.repeated)
+                                throw Error(this+"#"+key+" is not a repeated field");
+                        }
                         if (this[field.name] === null)
                             this[field.name] = [];
                         this[field.name].push(noAssert ? value : field.verifyValue(value, true));
@@ -856,16 +869,21 @@
                                     this.$set(i, key[i], noAssert);
                             return this;
                         }
-                        if (noAssert) {
-                            this[key] = value;
-                            return this;
+                        var field = T._fieldsByName[key];
+                        if (!noAssert) {
+                            if (!field)
+                                throw Error(this+"#"+key+" is not a field: undefined");
+                            if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+                                throw Error(this+"#"+key+" is not a field: "+field.toString(true));
+                            this[field.name] = field.verifyValue(value); // May throw
+                        } else {
+                            this[field.name] = value;
                         }
-                        var field = T.getChild(key);
-                        if (!field)
-                            throw Error(this+"#"+key+" is not a field: undefined");
-                        if (!(field instanceof ProtoBuf.Reflect.Message.Field))
-                            throw Error(this+"#"+key+" is not a field: "+field.toString(true));
-                        this[field.name] = field.verifyValue(value); // May throw
+                        if (field.oneof) {
+                            if (typeof this[field.oneof.name] !== 'undefined')
+                                this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
+                            this[field.oneof.name] = field.name;
+                        }
                         return this;
                     };
 
@@ -894,7 +912,7 @@
                     Message.prototype.get = function(key, noAssert) {
                         if (noAssert)
                             return this[key];
-                        var field = T.getChild(key);
+                        var field = T._fieldsByName[key];
                         if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field))
                             throw Error(this+"#"+key+" is not a field: undefined");
                         if (!(field instanceof ProtoBuf.Reflect.Message.Field))
@@ -1358,20 +1376,20 @@
 
                 // Static enums and prototyped sub-messages / cached collections
                 this._fields = [];
-                this._fieldsById = [];
+                this._fieldsById = {};
+                this._fieldsByName = {};
                 for (var i=0, k=this.children.length, child; i<k; i++) {
                     child = this.children[i];
                     if (child instanceof Enum)
-                        clazz[child['name']] = child.build();
+                        clazz[child.name] = child.build();
                     else if (child instanceof Message)
-                        clazz[child['name']] = child.build();
+                        clazz[child.name] = child.build();
                     else if (child instanceof Message.Field)
                         child.build(),
                         this._fields.push(child),
-                        this._fieldsById[child.id] = child;
-                    else if (child instanceof Extension) {
-                        // Ignore
-                    } else
+                        this._fieldsById[child.id] = child,
+                        this._fieldsByName[child.name] = child;
+                    else if (!(child instanceof Message.OneOf) && !(child instanceof Extension)) // Not built
                         throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));
                 }
 
@@ -1391,7 +1409,7 @@
                 var fieldMissing = null,
                     field;
                 for (var i=0, k=this._fields.length, val; i<k; ++i) {
-                    field = this.children[i];
+                    field = this._fields[i];
                     val = message[field.name];
                     if (field.required && val === null) {
                         if (fieldMissing === null)
@@ -1516,8 +1534,14 @@
                     }
                     if (field.repeated && !field.options["packed"])
                         msg[field.name].push(field.decode(wireType, buffer));
-                    else
+                    else {
                         msg[field.name] = field.decode(wireType, buffer);
+                        if (field.oneof) {
+                            if (this[field.oneof.name] !== null)
+                                this[this[field.oneof.name]] = null;
+                            msg[field.oneof.name] = field.name;
+                        }
+                    }
                 }
 
                 // Check if all required fields are present and set default values for optional fields that are not
@@ -1550,10 +1574,11 @@
              * @param {string} name Field name
              * @param {number} id Unique field id
              * @param {Object.<string,*>=} options Options
+             * @param {!ProtoBuf.Reflect.Message.OneOf=} oneof Enclosing OneOf
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Field = function(builder, message, rule, type, name, id, options) {
+            var Field = function(builder, message, rule, type, name, id, options, oneof) {
                 T.call(this, builder, message, name);
 
                 /**
@@ -1610,6 +1635,13 @@
                  * @expose
                  */
                 this.defaultValue = null;
+
+                /**
+                 * Enclosing OneOf.
+                 * @type {?ProtoBuf.Reflect.Message.OneOf}
+                 * @expose
+                 */
+                this.oneof = oneof || null;
 
                 /**
                  * Original field name.
@@ -1771,13 +1803,11 @@
                     // Constant enum value
                     case ProtoBuf.TYPES["enum"]: {
                         var values = this.resolvedType.getChildren(Enum.Value);
-                        for (i=0; i<values.length; i++) {
-                            if (values[i].name == value) {
+                        for (i=0; i<values.length; i++)
+                            if (values[i].name == value)
                                 return values[i].id;
-                            } else if (values[i].id == value) {
+                            else if (values[i].id == value)
                                 return values[i].id;
-                            }
-                        }
                         fail(value, "not a valid enum value");
                     }
                     // Embedded message
@@ -2180,7 +2210,7 @@
 
                 // We should never end here
                 throw Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType);
-            }
+            };
 
             /**
              * @alias ProtoBuf.Reflect.Message.Field
@@ -2220,6 +2250,32 @@
              * @expose
              */
             Reflect.Message.ExtensionField = ExtensionField;
+
+            /**
+             * Constructs a new Message OneOf.
+             * @exports ProtoBuf.Reflect.Message.OneOf
+             * @param {!ProtoBuf.Builder} builder Builder reference
+             * @param {!ProtoBuf.Reflect.Message} message Message reference
+             * @param {string} name OneOf name
+             * @constructor
+             * @extends ProtoBuf.Reflect.T
+             */
+            var OneOf = function(builder, message, name) {
+                T.call(this, builder, message, name);
+
+                /**
+                 * Enclosed fields.
+                 * @type {!Array.<!ProtoBuf.Reflect.Message.Field>}
+                 * @expose
+                 */
+                this.fields = [];
+            };
+
+            /**
+             * @alias ProtoBuf.Reflect.Message.OneOf
+             * @expose
+             */
+            Reflect.Message.OneOf = OneOf;
 
             /**
              * Constructs a new Enum.
@@ -2800,35 +2856,51 @@
                     return this;
 
                 // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
-                var stack = [], def, obj, subObj, i, j;
+                var stack = [];
                 stack.push(defs); // One level [a, b, c]
                 while (stack.length > 0) {
                     defs = stack.pop();
                     if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
                         while (defs.length > 0) {
-                            def = defs.shift(); // Namespace always contains an array of messages, enums and services
+                            var def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
-                                obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
+                                var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
+                                // Create OneOfs
+                                var oneofs = {};
+                                if (def["oneofs"]) {
+                                    var keys = Object.keys(def["oneofs"]);
+                                    for (var i=0, k=keys.length; i<k; ++i)
+                                        obj.addChild(oneofs[keys[i]] = new Reflect.Message.OneOf(this, obj, keys[i]));
+                                }
                                 // Create fields
                                 if (def["fields"] && def["fields"].length > 0) {
-                                    for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                        if (obj.getChild(def['fields'][i]['id']) !== null)
-                                            throw Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']);
-                                        if (def["fields"][i]["options"]) {
-                                            subObj = Object.keys(def["fields"][i]["options"]);
-                                            for (j=0; j<subObj.length; j++) { // j=Option names
-                                                if (typeof subObj[j] !== 'string')
-                                                    throw Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]);
-                                                if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean')
-                                                    throw Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]);
+                                    for (i=0, k=def["fields"].length; i<k; ++i) { // i:k=Fields
+                                        var fld = def['fields'][i];
+                                        if (obj.getChild(fld['id']) !== null)
+                                            throw Error("Duplicate field id in message "+obj.name+": "+fld['id']);
+                                        if (fld["options"]) {
+                                            var opts = Object.keys(fld["options"]);
+                                            for (var j= 0,l=opts.length; j<l; ++j) { // j:l=Option names
+                                                if (typeof opts[j] !== 'string')
+                                                    throw Error("Illegal field option name in message "+obj.name+"#"+fld["name"]+": "+opts[j]);
+                                                if (typeof fld["options"][opts[j]] !== 'string' && typeof fld["options"][opts[j]] !== 'number' && typeof fld["options"][opts[j]] !== 'boolean')
+                                                    throw Error("Illegal field option value in message "+obj.name+"#"+fld["name"]+"#"+opts[j]+": "+fld["options"][opts[j]]);
                                             }
-                                            subObj = null;
                                         }
-                                        obj.addChild(new Reflect.Message.Field(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                        var oneof = null;
+                                        if (typeof fld["oneof"] === 'string') {
+                                            oneof = oneofs[fld["oneof"]];
+                                            if (typeof oneof === 'undefined')
+                                                throw Error("Illegal oneof in message "+obj.name+"#"+fld["name"]+": "+fld["oneof"]);
+                                        }
+                                        fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["type"], fld["name"], fld["id"], fld["options"], oneof);
+                                        if (oneof)
+                                            oneof.fields.push(fld);
+                                        obj.addChild(fld);
                                     }
                                 }
                                 // Push enums and messages to stack
-                                subObj = [];
+                                var subObj = [];
                                 if (typeof def["enums"] !== 'undefined' && def['enums'].length > 0)
                                     for (i=0; i<def["enums"].length; i++)
                                         subObj.push(def["enums"][i]);
@@ -2880,7 +2952,7 @@
                                         if (this.options['convertFieldsToCamelCase'])
                                             name = Reflect.Message.Field._toCamelCase(def["fields"][i]["name"]);
                                         // see #161: Extensions use their fully qualified name as their runtime key and...
-                                        var fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
+                                        fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
                                         // ...are added on top of the current namespace as an extension which is used for
                                         // resolving their type later on (the extension always keeps the original name to
                                         // prevent naming collisions)
@@ -3091,9 +3163,7 @@
                         // Should not happen as nothing else is implemented
                         throw Error("Illegal service type in "+this.ptr.toString(true));
                     }
-                } else if (this.ptr instanceof ProtoBuf.Reflect.Extension) {
-                    // There are no runtime counterparts to extensions
-                } else
+                } else if (!(this.ptr instanceof ProtoBuf.Reflect.Message.OneOf) && !(this.ptr instanceof ProtoBuf.Reflect.Extension))
                     throw Error("Illegal object in namespace: "+typeof(this.ptr)+":"+this.ptr);
                 this.reset();
             };

@@ -2,7 +2,8 @@
  // --- Scope ------------------
  // T : Reflect.Message instance
  */
-var fields = T.getChildren(ProtoBuf.Reflect.Message.Field);
+var fields = T.getChildren(ProtoBuf.Reflect.Message.Field),
+    oneofs = T.getChildren(ProtoBuf.Reflect.Message.OneOf);
 
 /**
  * Constructs a new runtime Message.
@@ -17,8 +18,11 @@ var Message = function(values, var_args) {
     ProtoBuf.Builder.Message.call(this);
 
     // Create fields on the object itself and set default values
-    for (var i=0, k=fields.length, field; i<k; ++i) {
-        this[(field = fields[i]).name] = field.repeated ? [] : null;
+    for (var i=0, k=oneofs.length; i<k; ++i)
+        this[oneofs[i].name] = null;
+    for (i=0, k=fields.length; i<k; ++i) {
+        var field = fields[i];
+        this[field.name] = field.repeated ? [] : null;
         if (field.required && field.defaultValue !== null)
             this[field.name] = field.defaultValue;
     }
@@ -34,7 +38,7 @@ var Message = function(values, var_args) {
             var keys = Object.keys(values);
             for (i=0, k=keys.length; i<k; ++i)
                 this.$set(keys[i], values[keys[i]]); // May throw
-        } else // set field values from arguments, in declaration order
+        } else // Set field values from arguments, in declaration order
             for (i=0, k=arguments.length; i<k; ++i)
                 this.$set(fields[i].name, arguments[i]); // May throw
     }
@@ -61,13 +65,15 @@ Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
  * @expose
  */
 Message.prototype.add = function(key, value, noAssert) {
-    var field = T.getChild(key);
-    if (!field)
-        throw Error(this+"#"+key+" is undefined");
-    if (!(field instanceof ProtoBuf.Reflect.Message.Field))
-        throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
-    if (!field.repeated)
-        throw Error(this+"#"+key+" is not a repeated field");
+    var field = T._fieldsByName[key];
+    if (!noAssert) {
+        if (!field)
+            throw Error(this+"#"+key+" is undefined");
+        if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+            throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
+        if (!field.repeated)
+            throw Error(this+"#"+key+" is not a repeated field");
+    }
     if (this[field.name] === null)
         this[field.name] = [];
     this[field.name].push(noAssert ? value : field.verifyValue(value, true));
@@ -103,16 +109,21 @@ Message.prototype.set = function(key, value, noAssert) {
                 this.$set(i, key[i], noAssert);
         return this;
     }
-    if (noAssert) {
-        this[key] = value;
-        return this;
+    var field = T._fieldsByName[key];
+    if (!noAssert) {
+        if (!field)
+            throw Error(this+"#"+key+" is not a field: undefined");
+        if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+            throw Error(this+"#"+key+" is not a field: "+field.toString(true));
+        this[field.name] = field.verifyValue(value); // May throw
+    } else {
+        this[field.name] = value;
     }
-    var field = T.getChild(key);
-    if (!field)
-        throw Error(this+"#"+key+" is not a field: undefined");
-    if (!(field instanceof ProtoBuf.Reflect.Message.Field))
-        throw Error(this+"#"+key+" is not a field: "+field.toString(true));
-    this[field.name] = field.verifyValue(value); // May throw
+    if (field.oneof) {
+        if (typeof this[field.oneof.name] !== 'undefined')
+            this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
+        this[field.oneof.name] = field.name;
+    }
     return this;
 };
 
@@ -141,7 +152,7 @@ Message.prototype.$set = Message.prototype.set;
 Message.prototype.get = function(key, noAssert) {
     if (noAssert)
         return this[key];
-    var field = T.getChild(key);
+    var field = T._fieldsByName[key];
     if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field))
         throw Error(this+"#"+key+" is not a field: undefined");
     if (!(field instanceof ProtoBuf.Reflect.Message.Field))

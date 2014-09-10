@@ -212,35 +212,51 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             return this;
         
         // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
-        var stack = [], def, obj, subObj, i, j;
+        var stack = [];
         stack.push(defs); // One level [a, b, c]
         while (stack.length > 0) {
             defs = stack.pop();
             if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
                 while (defs.length > 0) {
-                    def = defs.shift(); // Namespace always contains an array of messages, enums and services
+                    var def = defs.shift(); // Namespace always contains an array of messages, enums and services
                     if (Builder.isValidMessage(def)) {
-                        obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
+                        var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
+                        // Create OneOfs
+                        var oneofs = {};
+                        if (def["oneofs"]) {
+                            var keys = Object.keys(def["oneofs"]);
+                            for (var i=0, k=keys.length; i<k; ++i)
+                                obj.addChild(oneofs[keys[i]] = new Reflect.Message.OneOf(this, obj, keys[i]));
+                        }
                         // Create fields
                         if (def["fields"] && def["fields"].length > 0) {
-                            for (i=0; i<def["fields"].length; i++) { // i=Fields
-                                if (obj.getChild(def['fields'][i]['id']) !== null)
-                                    throw Error("Duplicate field id in message "+obj.name+": "+def['fields'][i]['id']);
-                                if (def["fields"][i]["options"]) {
-                                    subObj = Object.keys(def["fields"][i]["options"]);
-                                    for (j=0; j<subObj.length; j++) { // j=Option names
-                                        if (typeof subObj[j] !== 'string')
-                                            throw Error("Illegal field option name in message "+obj.name+"#"+def["fields"][i]["name"]+": "+subObj[j]);
-                                        if (typeof def["fields"][i]["options"][subObj[j]] !== 'string' && typeof def["fields"][i]["options"][subObj[j]] !== 'number' && typeof def["fields"][i]["options"][subObj[j]] !== 'boolean')
-                                            throw Error("Illegal field option value in message "+obj.name+"#"+def["fields"][i]["name"]+"#"+subObj[j]+": "+def["fields"][i]["options"][subObj[j]]);
+                            for (i=0, k=def["fields"].length; i<k; ++i) { // i:k=Fields
+                                var fld = def['fields'][i];
+                                if (obj.getChild(fld['id']) !== null)
+                                    throw Error("Duplicate field id in message "+obj.name+": "+fld['id']);
+                                if (fld["options"]) {
+                                    var opts = Object.keys(fld["options"]);
+                                    for (var j= 0,l=opts.length; j<l; ++j) { // j:l=Option names
+                                        if (typeof opts[j] !== 'string')
+                                            throw Error("Illegal field option name in message "+obj.name+"#"+fld["name"]+": "+opts[j]);
+                                        if (typeof fld["options"][opts[j]] !== 'string' && typeof fld["options"][opts[j]] !== 'number' && typeof fld["options"][opts[j]] !== 'boolean')
+                                            throw Error("Illegal field option value in message "+obj.name+"#"+fld["name"]+"#"+opts[j]+": "+fld["options"][opts[j]]);
                                     }
-                                    subObj = null;
                                 }
-                                obj.addChild(new Reflect.Message.Field(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], def["fields"][i]["name"], def["fields"][i]["id"], def["fields"][i]["options"]));
+                                var oneof = null;
+                                if (typeof fld["oneof"] === 'string') {
+                                    oneof = oneofs[fld["oneof"]];
+                                    if (typeof oneof === 'undefined')
+                                        throw Error("Illegal oneof in message "+obj.name+"#"+fld["name"]+": "+fld["oneof"]);
+                                }
+                                fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["type"], fld["name"], fld["id"], fld["options"], oneof);
+                                if (oneof)
+                                    oneof.fields.push(fld);
+                                obj.addChild(fld);
                             }
                         }
                         // Push enums and messages to stack
-                        subObj = [];
+                        var subObj = [];
                         if (typeof def["enums"] !== 'undefined' && def['enums'].length > 0)
                             for (i=0; i<def["enums"].length; i++)
                                 subObj.push(def["enums"][i]);
@@ -292,7 +308,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                 if (this.options['convertFieldsToCamelCase'])
                                     name = Reflect.Message.Field._toCamelCase(def["fields"][i]["name"]);
                                 // see #161: Extensions use their fully qualified name as their runtime key and...
-                                var fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
+                                fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
                                 // ...are added on top of the current namespace as an extension which is used for
                                 // resolving their type later on (the extension always keeps the original name to
                                 // prevent naming collisions)
@@ -503,9 +519,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 // Should not happen as nothing else is implemented
                 throw Error("Illegal service type in "+this.ptr.toString(true));
             }
-        } else if (this.ptr instanceof ProtoBuf.Reflect.Extension) {
-            // There are no runtime counterparts to extensions
-        } else
+        } else if (!(this.ptr instanceof ProtoBuf.Reflect.Message.OneOf) && !(this.ptr instanceof ProtoBuf.Reflect.Extension))
             throw Error("Illegal object in namespace: "+typeof(this.ptr)+":"+this.ptr);
         this.reset();
     };

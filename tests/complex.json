@@ -78,10 +78,12 @@
                             ],
                             "enums": [],
                             "messages": [],
-                            "options": {}
+                            "options": {},
+                            "oneofs": {}
                         }
                     ],
-                    "options": {}
+                    "options": {},
+                    "oneofs": {}
                 },
                 {
                     "name": "Holder",
@@ -110,10 +112,12 @@
                     ],
                     "enums": [],
                     "messages": [],
-                    "options": {}
+                    "options": {},
+                    "oneofs": {}
                 }
             ],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         }
     ],
     "enums": [],
