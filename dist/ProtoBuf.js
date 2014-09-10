@@ -1780,10 +1780,13 @@
                         } else {
                             this[field.name] = value;
                         }
-                        if (field.oneof && value !== null) {
-                            if (typeof this[field.oneof.name] !== 'undefined')
-                                this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
-                            this[field.oneof.name] = field.name;
+                        if (field.oneof) {
+                            if (value !== null) {
+                                if (this[field.oneof.name] !== null)
+                                    this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
+                                this[field.oneof.name] = field.name;
+                            } else if (field.oneof.name === key)
+                                this[field.oneof.name] = null;
                         }
                         return this;
                     };
