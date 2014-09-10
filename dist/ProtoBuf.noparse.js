@@ -875,11 +875,11 @@
                                 throw Error(this+"#"+key+" is not a field: undefined");
                             if (!(field instanceof ProtoBuf.Reflect.Message.Field))
                                 throw Error(this+"#"+key+" is not a field: "+field.toString(true));
-                            this[field.name] = field.verifyValue(value); // May throw
+                            this[field.name] = (value = field.verifyValue(value)); // May throw
                         } else {
                             this[field.name] = value;
                         }
-                        if (field.oneof) {
+                        if (field.oneof && value !== null) {
                             if (typeof this[field.oneof.name] !== 'undefined')
                                 this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
                             this[field.oneof.name] = field.name;
