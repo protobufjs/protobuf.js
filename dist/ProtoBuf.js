@@ -423,7 +423,7 @@
             /**
              * Constructs a new Tokenizer.
              * @exports ProtoBuf.DotProto.Tokenizer
-             * @class proto tokenizer
+             * @class prototype tokenizer
              * @param {string} proto Proto to tokenize
              * @constructor
              */
@@ -473,12 +473,18 @@
             };
 
             /**
+             * @alias ProtoBuf.DotProto.Tokenizer.prototype
+             * @inner
+             */
+            var TokenizerPrototype = Tokenizer.prototype;
+
+            /**
              * Reads a string beginning at the current index.
              * @return {string} The string
              * @throws {Error} If it's not a valid string
              * @private
              */
-            Tokenizer.prototype._readString = function() {
+            TokenizerPrototype._readString = function() {
                 Lang.STRING.lastIndex = this.index-1; // Include the open quote
                 var match;
                 if ((match = Lang.STRING.exec(this.source)) !== null) {
@@ -487,7 +493,7 @@
                     this.stack.push(this.stringEndsWith);
                     return s;
                 }
-                throw Error("Illegal string value at line "+this.line+", index "+this.index);
+                throw Error("Unterminated string at line "+this.line+", index "+this.index);
             };
 
             /**
@@ -496,7 +502,7 @@
              * @throws {Error} If it's not a valid proto file
              * @expose
              */
-            Tokenizer.prototype.next = function() {
+            TokenizerPrototype.next = function() {
                 if (this.stack.length > 0)
                     return this.stack.shift();
                 if (this.index >= this.source.length)
@@ -539,7 +545,7 @@
                             this.index++;
                             repeat = true;
                         } else
-                            throw Error("Invalid comment at line "+this.line+": /"+this.source.charAt(this.index)+" ('/' or '*' expected)");
+                            throw Error("Unterminated comment at line "+this.line+": /"+this.source.charAt(this.index));
                     }
                 } while (repeat);
                 if (this.index === this.source.length) return null;
@@ -570,7 +576,7 @@
              * @throws {Error} If it's not a valid proto file
              * @expose
              */
-            Tokenizer.prototype.peek = function() {
+            TokenizerPrototype.peek = function() {
                 if (this.stack.length === 0) {
                     var token = this.next();
                     if (token === null)
@@ -585,7 +591,7 @@
              * @return {string} String representation as of "Tokenizer(index/length)"
              * @expose
              */
-            Tokenizer.prototype.toString = function() {
+            TokenizerPrototype.toString = function() {
                 return "Tokenizer("+this.index+"/"+this.source.length+" at line "+this.line+")";
             };
 
@@ -598,7 +604,7 @@
             /**
              * Constructs a new Parser.
              * @exports ProtoBuf.DotProto.Parser
-             * @class proto parser
+             * @class prototype parser
              * @param {string} proto Protocol source
              * @constructor
              */
@@ -613,12 +619,18 @@
             };
 
             /**
+             * @alias ProtoBuf.DotProto.Parser.prototype
+             * @inner
+             */
+            var ParserPrototype = Parser.prototype;
+
+            /**
              * Runs the parser.
              * @return {{package: string|null, messages: Array.<object>, enums: Array.<object>, imports: Array.<string>, options: object<string,*>}}
              * @throws {Error} If the source cannot be parsed
              * @expose
              */
-            Parser.prototype.parse = function() {
+            ParserPrototype.parse = function() {
                 var topLevel = {
                     "name": "[ROOT]", // temporary
                     "package": null,
@@ -633,12 +645,12 @@
                     switch (token) {
                         case 'package':
                             if (!head || topLevel["package"] !== null)
-                                throw Error("Illegal package at line "+this.tn.line);
+                                throw Error("Unexpected package at line "+this.tn.line);
                             topLevel["package"] = this._parsePackage(token);
                             break;
                         case 'import':
                             if (!head)
-                                throw Error("Illegal import at line "+this.tn.line);
+                                throw Error("Unexpected import at line "+this.tn.line);
                             topLevel.imports.push(this._parseImport(token));
                             break;
                         case 'message':
@@ -651,7 +663,7 @@
                             break;
                         case 'option':
                             if (!head)
-                                throw Error("Illegal option at line "+this.tn.line);
+                                throw Error("Unexpected option at line "+this.tn.line);
                             this._parseOption(topLevel, token);
                             break;
                         case 'service':
@@ -664,7 +676,7 @@
                             this._parseIgnoredStatement(topLevel, token);
                             break;
                         default:
-                            throw Error("Illegal token at line "+this.tn.line+": "+token);
+                            throw Error("Unexpected token at line "+this.tn.line+": "+token);
                     }
                 }
                 delete topLevel["name"];
@@ -678,7 +690,7 @@
              * @throws {Error} If the number value is invalid
              * @private
              */
-            Parser.prototype._parseNumber = function(val) {
+            ParserPrototype._parseNumber = function(val) {
                 var sign = 1;
                 if (val.charAt(0) == '-')
                     sign = -1,
@@ -696,18 +708,17 @@
 
             /**
              * Parses a (possibly multiline) string.
-             * @param {string} context Context description
              * @returns {string}
              * @private
              */
-            Parser.prototype._parseString = function(context) {
+            ParserPrototype._parseString = function() {
                 var value = "", token;
                 do {
                     token = this.tn.next(); // Known to be = this.tn.stringEndsWith
                     value += this.tn.next();
                     token = this.tn.next();
                     if (token !== this.tn.stringEndsWith)
-                        throw Error("Illegal end of string in "+context+" at line "+this.tn.line+": "+token+" ('"+this.tn.stringEndsWith+"' expected)");
+                        throw Error("Illegal end of string at line "+this.tn.line+": "+token);
                     token = this.tn.peek();
                 } while (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ);
                 return value;
@@ -721,7 +732,7 @@
              * @throws {Error} If the ID value is invalid
              * @private
              */
-            Parser.prototype._parseId = function(val, neg) {
+            ParserPrototype._parseId = function(val, neg) {
                 var id = -1;
                 var sign = 1;
                 if (val.charAt(0) == '-')
@@ -734,10 +745,10 @@
                 else if (Lang.NUMBER_OCT.test(val))
                     id = parseInt(val.substring(1), 8);
                 else
-                    throw Error("Illegal ID at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
+                    throw Error("Illegal id at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
                 id = (sign*id)|0; // Force to 32bit
                 if (!neg && id < 0)
-                    throw Error("Illegal ID at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
+                    throw Error("Illegal id at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
                 return id;
             };
 
@@ -748,14 +759,14 @@
              * @throws {Error} If the package definition cannot be parsed
              * @private
              */
-            Parser.prototype._parsePackage = function(token) {
+            ParserPrototype._parsePackage = function(token) {
                 token = this.tn.next();
                 if (!Lang.TYPEREF.test(token))
-                    throw Error("Illegal package at line "+this.tn.line+": "+token);
+                    throw Error("Illegal package name at line "+this.tn.line+": "+token);
                 var pkg = token;
                 token = this.tn.next();
                 if (token != Lang.END)
-                    throw Error("Illegal end of package at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+                    throw Error("Illegal end of package at line "+this.tn.line+": "+token);
                 return pkg;
             };
 
@@ -766,17 +777,17 @@
              * @throws {Error} If the import definition cannot be parsed
              * @private
              */
-            Parser.prototype._parseImport = function(token) {
+            ParserPrototype._parseImport = function(token) {
                 token = this.tn.peek();
                 if (token === "public")
                     this.tn.next(),
                     token = this.tn.peek();
                 if (token !== Lang.STRINGOPEN && token !== Lang.STRINGOPEN_SQ)
-                    throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.STRINGOPEN+"' or '"+Lang.STRINGOPEN_SQ+"' expected)");
-                var imported = this._parseString("root");
+                    throw Error("Illegal start of import at line "+this.tn.line+": "+token);
+                var imported = this._parseString();
                 token = this.tn.next();
                 if (token !== Lang.END)
-                    throw Error("Illegal import at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+                    throw Error("Illegal end of import at line "+this.tn.line+": "+token);
                 return imported;
             };
 
@@ -787,7 +798,7 @@
              * @throws {Error} If the option cannot be parsed
              * @private
              */
-            Parser.prototype._parseOption = function(parent, token) {
+            ParserPrototype._parseOption = function(parent, token) {
                 token = this.tn.next();
                 var custom = false;
                 if (token == Lang.COPTOPEN)
@@ -796,12 +807,12 @@
                 if (!Lang.TYPEREF.test(token))
                     // we can allow options of the form google.protobuf.* since they will just get ignored anyways
                     if (!/google\.protobuf\./.test(token))
-                        throw Error("Illegal option in message "+parent.name+" at line "+this.tn.line+": "+token);
+                        throw Error("Illegal option name in message "+parent.name+" at line "+this.tn.line+": "+token);
                 var name = token;
                 token = this.tn.next();
                 if (custom) { // (my_method_option).foo, (my_method_option), some_method_option, (foo.my_option).bar
                     if (token !== Lang.COPTCLOSE)
-                        throw Error("Illegal option in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)");
+                        throw Error("Illegal end in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token);
                     name = '('+name+')';
                     token = this.tn.next();
                     if (Lang.FQTYPEREF.test(token))
@@ -809,11 +820,11 @@
                         token = this.tn.next();
                 }
                 if (token !== Lang.EQUAL)
-                    throw Error("Illegal option operator in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)");
+                    throw Error("Illegal operator in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token);
                 var value;
                 token = this.tn.peek();
                 if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ)
-                    value = this._parseString("message "+parent.name+", option "+name);
+                    value = this._parseString();
                 else {
                     this.tn.next();
                     if (Lang.NUMBER.test(token))
@@ -827,7 +838,7 @@
                 }
                 token = this.tn.next();
                 if (token !== Lang.END)
-                    throw Error("Illegal end of option in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+                    throw Error("Illegal end of option in message "+parent.name+", option "+name+" at line "+this.tn.line+": "+token);
                 parent["options"][name] = value;
             };
 
@@ -838,12 +849,12 @@
              * @throws {Error} If the directive cannot be parsed
              * @private
              */
-            Parser.prototype._parseIgnoredStatement = function(parent, keyword) {
+            ParserPrototype._parseIgnoredStatement = function(parent, keyword) {
                 var token;
                 do {
                     token = this.tn.next();
                     if (token === null)
-                        throw Error("Unexpected EOF in "+parent.name+", "+keyword+" (ignored) at line "+this.tn.line);
+                        throw Error("Unexpected EOF in "+parent.name+", "+keyword+" at line "+this.tn.line);
                     if (token === Lang.END)
                         break;
                 } while (true);
@@ -856,7 +867,7 @@
              * @throws {Error} If the service cannot be parsed
              * @private
              */
-            Parser.prototype._parseService = function(parent, token) {
+            ParserPrototype._parseService = function(parent, token) {
                 token = this.tn.next();
                 if (!Lang.NAME.test(token))
                     throw Error("Illegal service name at line "+this.tn.line+": "+token);
@@ -868,7 +879,7 @@
                 };
                 token = this.tn.next();
                 if (token !== Lang.OPEN)
-                    throw Error("Illegal OPEN after service "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)");
+                    throw Error("Illegal start of service "+name+" at line "+this.tn.line+": "+token);
                 do {
                     token = this.tn.next();
                     if (token === "option")
@@ -876,7 +887,7 @@
                     else if (token === 'rpc')
                         this._parseServiceRPC(svc, token);
                     else if (token !== Lang.CLOSE)
-                        throw Error("Illegal type for service "+name+" at line "+this.tn.line+": "+token);
+                        throw Error("Illegal type of service "+name+" at line "+this.tn.line+": "+token);
                 } while (token !== Lang.CLOSE);
                 parent["services"].push(svc);
             };
@@ -887,11 +898,11 @@
              * @param {string} token Initial token
              * @private
              */
-            Parser.prototype._parseServiceRPC = function(svc, token) {
+            ParserPrototype._parseServiceRPC = function(svc, token) {
                 var type = token;
                 token = this.tn.next();
                 if (!Lang.NAME.test(token))
-                    throw Error("Illegal RPC method name in service "+svc["name"]+" at line "+this.tn.line+": "+token);
+                    throw Error("Illegal method name in service "+svc["name"]+" at line "+this.tn.line+": "+token);
                 var name = token;
                 var method = {
                     "request": null,
@@ -900,25 +911,25 @@
                 };
                 token = this.tn.next();
                 if (token !== Lang.COPTOPEN)
-                    throw Error("Illegal start of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTOPEN+"' expected)");
+                    throw Error("Illegal start of request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
                 if (!Lang.TYPEREF.test(token))
-                    throw Error("Illegal request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
+                    throw Error("Illegal request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 method["request"] = token;
                 token = this.tn.next();
                 if (token != Lang.COPTCLOSE)
-                    throw Error("Illegal end of request type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)");
+                    throw Error("Illegal end of request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
                 if (token.toLowerCase() !== "returns")
-                    throw Error("Illegal request/response delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('returns' expected)");
+                    throw Error("Illegal delimiter in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
                 if (token != Lang.COPTOPEN)
-                    throw Error("Illegal start of response type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTOPEN+"' expected)");
+                    throw Error("Illegal start of response type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
                 method["response"] = token;
                 token = this.tn.next();
                 if (token !== Lang.COPTCLOSE)
-                    throw Error("Illegal end of response type in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.COPTCLOSE+"' expected)");
+                    throw Error("Illegal end of response type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
                 if (token === Lang.OPEN) {
                     do {
@@ -926,12 +937,12 @@
                         if (token === 'option')
                             this._parseOption(method, token); // <- will fail for the custom-options example
                         else if (token !== Lang.CLOSE)
-                            throw Error("Illegal start of option in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('option' expected)");
+                            throw Error("Illegal start of option inservice "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                     } while (token !== Lang.CLOSE);
                     if (this.tn.peek() === Lang.END)
                         this.tn.next();
                 } else if (token !== Lang.END)
-                    throw Error("Illegal method delimiter in RPC service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' or '"+Lang.OPEN+"' expected)");
+                    throw Error("Illegal delimiter in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 if (typeof svc[type] === 'undefined')
                     svc[type] = {};
                 svc[type][name] = method;
@@ -946,7 +957,7 @@
              * @throws {Error} If the message cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessage = function(parent, fld, token) {
+            ParserPrototype._parseMessage = function(parent, fld, token) {
                 /** @dict */
                 var msg = {}; // Note: At some point we might want to exclude the parser, so we need a dict.
                 var isGroup = token === "group";
@@ -957,7 +968,7 @@
                 if (isGroup) {
                     token = this.tn.next();
                     if (token !== Lang.EQUAL)
-                        throw Error("Illegal id assignment after group "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)");
+                        throw Error("Illegal id assignment after group "+msg.name+" at line "+this.tn.line+": "+token);
                     token = this.tn.next();
                     try {
                         fld["id"] = this._parseId(token);
@@ -976,7 +987,7 @@
                     this._parseFieldOptions(msg, fld, token),
                     token = this.tn.next();
                 if (token !== Lang.OPEN)
-                    throw Error("Illegal OPEN after "+(isGroup ? "group" : "message")+" "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)");
+                    throw Error("Illegal start of "+(isGroup ? "group" : "message")+" "+msg.name+" at line "+this.tn.line+": "+token);
                 // msg["extensions"] = undefined
                 do {
                     token = this.tn.next();
@@ -1000,7 +1011,7 @@
                     else if (token === "extend")
                         this._parseExtend(msg, token);
                     else
-                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token+" (type or '"+Lang.CLOSE+"' expected)");
+                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
                 } while (true);
                 parent["messages"].push(msg);
                 return msg;
@@ -1014,7 +1025,7 @@
              * @throws {Error} If the message field cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessageField = function(msg, token) {
+            ParserPrototype._parseMessageField = function(msg, token) {
                 /** @dict */
                 var fld = {}, grp = null;
                 fld["rule"] = token;
@@ -1043,19 +1054,19 @@
                     fld["name"] = token;
                     token = this.tn.next();
                     if (token !== Lang.EQUAL)
-                        throw Error("Illegal field id assignment in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)");
+                        throw Error("Illegal token in field "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
                     token = this.tn.next();
                     try {
                         fld["id"] = this._parseId(token);
                     } catch (e) {
-                        throw Error("Illegal field id value in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
+                        throw Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
                     }
                     token = this.tn.next();
                     if (token === Lang.OPTOPEN)
                         this._parseFieldOptions(msg, fld, token),
                         token = this.tn.next();
                     if (token !== Lang.END)
-                        throw Error("Illegal field delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+                        throw Error("Illegal delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
                 }
                 msg["fields"].push(fld);
                 return fld;
@@ -1068,7 +1079,7 @@
              * @throws {Error} If the message oneof cannot be parsed
              * @private
              */
-            Parser.prototype._parseMessageOneOf = function(msg, token) {
+            ParserPrototype._parseMessageOneOf = function(msg, token) {
                 token = this.tn.next();
                 if (!Lang.NAME.test(token))
                     throw Error("Illegal oneof name in message "+msg.name+" at line "+this.tn.line+": "+token);
@@ -1077,7 +1088,7 @@
                 var fields = [];
                 token = this.tn.next();
                 if (token !== Lang.OPEN)
-                    throw Error("Illegal OPEN after oneof "+name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)");
+                    throw Error("Illegal start of oneof "+name+" at line "+this.tn.line+": "+token);
                 while (this.tn.peek() !== Lang.CLOSE) {
                     fld = this._parseMessageField(msg, "optional");
                     fld["oneof"] = name;
@@ -1095,7 +1106,7 @@
              * @throws {Error} If the message field options cannot be parsed
              * @private
              */
-            Parser.prototype._parseFieldOptions = function(msg, fld, token) {
+            ParserPrototype._parseFieldOptions = function(msg, fld, token) {
                 var first = true;
                 do {
                     token = this.tn.next();
@@ -1103,7 +1114,7 @@
                         break;
                     else if (token === Lang.OPTEND) {
                         if (first)
-                            throw Error("Illegal start of message field options in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
+                            throw Error("Illegal start of options in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
                         token = this.tn.next();
                     }
                     this._parseFieldOption(msg, fld, token);
@@ -1119,18 +1130,18 @@
              * @throws {Error} If the mesage field option cannot be parsed
              * @private
              */
-            Parser.prototype._parseFieldOption = function(msg, fld, token) {
+            ParserPrototype._parseFieldOption = function(msg, fld, token) {
                 var custom = false;
                 if (token === Lang.COPTOPEN)
                     token = this.tn.next(),
                     custom = true;
                 if (!Lang.TYPEREF.test(token))
-                    throw Error("Illegal field option in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
+                    throw Error("Illegal field option in "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
                 var name = token;
                 token = this.tn.next();
                 if (custom) {
                     if (token !== Lang.COPTCLOSE)
-                        throw Error("Illegal custom field option name delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" (')' expected)");
+                        throw Error("Illegal delimiter in "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
                     name = '('+name+')';
                     token = this.tn.next();
                     if (Lang.FQTYPEREF.test(token))
@@ -1138,11 +1149,11 @@
                         token = this.tn.next();
                 }
                 if (token !== Lang.EQUAL)
-                    throw Error("Illegal field option operation in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token+" ('=' expected)");
+                    throw Error("Illegal token in "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
                 var value;
                 token = this.tn.peek();
                 if (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ) {
-                    value = this._parseString("message "+msg.name+"#"+fld.name);
+                    value = this._parseString();
                 } else if (Lang.NUMBER.test(token, true))
                     value = this._parseNumber(this.tn.next(), true);
                 else if (Lang.BOOL.test(token))
@@ -1150,7 +1161,7 @@
                 else if (Lang.TYPEREF.test(token))
                     value = this.tn.next(); // TODO: Resolve?
                 else
-                    throw Error("Illegal field option value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token);
+                    throw Error("Illegal value in message "+msg.name+"#"+fld.name+", option "+name+" at line "+this.tn.line+": "+token);
                 fld["options"][name] = value;
             };
 
@@ -1161,7 +1172,7 @@
              * @throws {Error} If the enum cannot be parsed
              * @private
              */
-            Parser.prototype._parseEnum = function(msg, token) {
+            ParserPrototype._parseEnum = function(msg, token) {
                 /** @dict */
                 var enm = {};
                 token = this.tn.next();
@@ -1170,7 +1181,7 @@
                 enm["name"] = token;
                 token = this.tn.next();
                 if (token !== Lang.OPEN)
-                    throw Error("Illegal OPEN after enum "+enm.name+" at line "+this.tn.line+": "+token);
+                    throw Error("Illegal start of enum "+enm.name+" at line "+this.tn.line+": "+token);
                 enm["values"] = [];
                 enm["options"] = {};
                 do {
@@ -1185,7 +1196,7 @@
                         this._parseOption(enm, token);
                     else {
                         if (!Lang.NAME.test(token))
-                            throw Error("Illegal enum value name in enum "+enm.name+" at line "+this.tn.line+": "+token);
+                            throw Error("Illegal name in enum "+enm.name+" at line "+this.tn.line+": "+token);
                         this._parseEnumValue(enm, token);
                     }
                 } while (true);
@@ -1199,18 +1210,18 @@
              * @throws {Error} If the enum value cannot be parsed
              * @private
              */
-            Parser.prototype._parseEnumValue = function(enm, token) {
+            ParserPrototype._parseEnumValue = function(enm, token) {
                 /** @dict */
                 var val = {};
                 val["name"] = token;
                 token = this.tn.next();
                 if (token !== Lang.EQUAL)
-                    throw Error("Illegal enum value operator in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.EQUAL+"' expected)");
+                    throw Error("Illegal token in enum "+enm.name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
                 try {
                     val["id"] = this._parseId(token, true);
                 } catch (e) {
-                    throw Error("Illegal enum value id in enum "+enm.name+" at line "+this.tn.line+": "+token);
+                    throw Error("Illegal id in enum "+enm.name+" at line "+this.tn.line+": "+token);
                 }
                 enm["values"].push(val);
                 token = this.tn.next();
@@ -1220,7 +1231,7 @@
                     token = this.tn.next();
                 }
                 if (token !== Lang.END)
-                    throw Error("Illegal enum value delimiter in enum "+enm.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+                    throw Error("Illegal delimiter in enum "+enm.name+" at line "+this.tn.line+": "+token);
             };
 
             /**
@@ -1230,7 +1241,7 @@
              * @throws {Error} If the extensions statement cannot be parsed
              * @private
              */
-            Parser.prototype._parseExtensions = function(msg, token) {
+            ParserPrototype._parseExtensions = function(msg, token) {
                 /** @type {Array.<number>} */
                 var range = [];
                 token = this.tn.next();
@@ -1242,7 +1253,7 @@
                     range.push(this._parseNumber(token));
                 token = this.tn.next();
                 if (token !== 'to')
-                    throw Error("Illegal extensions delimiter in message "+msg.name+" at line "+this.tn.line+" ('to' expected)");
+                    throw Error("Illegal extensions delimiter in message "+msg.name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
                 if (token === "min")
                     range.push(ProtoBuf.ID_MIN);
@@ -1252,7 +1263,7 @@
                     range.push(this._parseNumber(token));
                 token = this.tn.next();
                 if (token !== Lang.END)
-                    throw Error("Illegal extension delimiter in message "+msg.name+" at line "+this.tn.line+": "+token+" ('"+Lang.END+"' expected)");
+                    throw Error("Illegal extensions delimiter in message "+msg.name+" at line "+this.tn.line+": "+token);
                 return range;
             };
 
@@ -1263,17 +1274,17 @@
              * @throws {Error} If the extend block cannot be parsed
              * @private
              */
-            Parser.prototype._parseExtend = function(parent, token) {
+            ParserPrototype._parseExtend = function(parent, token) {
                 token = this.tn.next();
                 if (!Lang.TYPEREF.test(token))
-                    throw Error("Illegal extended message name at line "+this.tn.line+": "+token);
+                    throw Error("Illegal message name at line "+this.tn.line+": "+token);
                 /** @dict */
                 var ext = {};
                 ext["ref"] = token;
                 ext["fields"] = [];
                 token = this.tn.next();
                 if (token !== Lang.OPEN)
-                    throw Error("Illegal OPEN in extend "+ext.name+" at line "+this.tn.line+": "+token+" ('"+Lang.OPEN+"' expected)");
+                    throw Error("Illegal start of extend "+ext.name+" at line "+this.tn.line+": "+token);
                 do {
                     token = this.tn.next();
                     if (token === Lang.CLOSE) {
@@ -1284,7 +1295,7 @@
                     } else if (Lang.RULE.test(token))
                         this._parseMessageField(ext, token);
                     else
-                        throw Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token+" (rule or '"+Lang.CLOSE+"' expected)");
+                        throw Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token);
                 } while (true);
                 parent["messages"].push(ext);
                 return ext;
@@ -1294,7 +1305,7 @@
              * Returns a string representation of this object.
              * @returns {string} String representation as of "Parser"
              */
-            Parser.prototype.toString = function() {
+            ParserPrototype.toString = function() {
                 return "Parser";
             };
 
@@ -1363,11 +1374,17 @@
             };
 
             /**
+             * @alias ProtoBuf.Reflect.T.prototype
+             * @inner
+             */
+            var TPrototype = T.prototype;
+
+            /**
              * Returns the fully qualified name of this object.
              * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
              * @expose
              */
-            T.prototype.fqn = function() {
+            TPrototype.fqn = function() {
                 var name = this.name,
                     ptr = this;
                 do {
@@ -1385,7 +1402,7 @@
              * @return String representation
              * @expose
              */
-            T.prototype.toString = function(includeClass) {
+            TPrototype.toString = function(includeClass) {
                 return (includeClass ? this.className + " " : "") + this.fqn();
             };
 
@@ -1394,7 +1411,7 @@
              * @throws {Error} If this type cannot be built directly
              * @expose
              */
-            T.prototype.build = function() {
+            TPrototype.build = function() {
                 throw Error(this.toString(true)+" cannot be built directly");
             };
 
@@ -1435,8 +1452,11 @@
                 this.options = options || {};
             };
 
-            // Extends T
-            Namespace.prototype = Object.create(T.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Namespace.prototype
+             * @inner
+             */
+            var NamespacePrototype = Namespace.prototype = Object.create(T.prototype);
 
             /**
              * Returns an array of the namespace's children.
@@ -1444,7 +1464,7 @@
              * @return {Array.<ProtoBuf.Reflect.T>}
              * @expose
              */
-            Namespace.prototype.getChildren = function(type) {
+            NamespacePrototype.getChildren = function(type) {
                 type = type || null;
                 if (type == null)
                     return this.children.slice();
@@ -1461,7 +1481,7 @@
              * @throws {Error} If the child cannot be added (duplicate)
              * @expose
              */
-            Namespace.prototype.addChild = function(child) {
+            NamespacePrototype.addChild = function(child) {
                 var other;
                 if (other = this.getChild(child.name)) {
                     // Try to revert camelcase transformation on collision
@@ -1481,7 +1501,7 @@
              * @return {?ProtoBuf.Reflect.T} The child or null if not found
              * @expose
              */
-            Namespace.prototype.getChild = function(nameOrId) {
+            NamespacePrototype.getChild = function(nameOrId) {
                 var key = typeof nameOrId === 'number' ? 'id' : 'name';
                 for (var i=0, k=this.children.length; i<k; ++i)
                     if (this.children[i][key] === nameOrId)
@@ -1496,7 +1516,7 @@
              * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
              * @expose
              */
-            Namespace.prototype.resolve = function(qn, excludeFields) {
+            NamespacePrototype.resolve = function(qn, excludeFields) {
                 var part = qn.split("."),
                     ptr = this,
                     i = 0;
@@ -1530,7 +1550,7 @@
              * @return {Object.<string,Function|Object>} Runtime namespace
              * @expose
              */
-            Namespace.prototype.build = function() {
+            NamespacePrototype.build = function() {
                 /** @dict */
                 var ns = {};
                 var children = this.children;
@@ -1548,7 +1568,7 @@
              * Builds the namespace's '$options' property.
              * @return {Object.<string,*>}
              */
-            Namespace.prototype.buildOpt = function() {
+            NamespacePrototype.buildOpt = function() {
                 var opt = {},
                     keys = Object.keys(this.options);
                 for (var i=0, k=keys.length; i<k; ++i) {
@@ -1569,7 +1589,7 @@
              * @param {string=} name Returns the option value if specified, otherwise all options are returned.
              * @return {*|Object.<string,*>}null} Option value or NULL if there is no such option
              */
-            Namespace.prototype.getOption = function(name) {
+            NamespacePrototype.getOption = function(name) {
                 if (typeof name === 'undefined')
                     return this.options;
                 return typeof this.options[name] !== 'undefined' ? this.options[name] : null;
@@ -1645,8 +1665,11 @@
                 this._fieldsByName = null;
             };
 
-            // Extends Namespace
-            Message.prototype = Object.create(Namespace.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Message.prototype
+             * @inner
+             */
+            var MessagePrototype = Message.prototype = Object.create(Namespace.prototype);
 
             /**
              * Builds the message and returns the runtime counterpart, which is a fully functional class.
@@ -1656,7 +1679,7 @@
              * @throws {Error} If the message cannot be built
              * @expose
              */
-            Message.prototype.build = function(rebuild) {
+            MessagePrototype.build = function(rebuild) {
                 if (this.clazz && !rebuild)
                     return this.clazz;
 
@@ -1678,9 +1701,10 @@
                     var Message = function(values, var_args) {
                         ProtoBuf.Builder.Message.call(this);
 
-                        // Create fields on the object itself and set default values
+                        // Create virtual oneof properties
                         for (var i=0, k=oneofs.length; i<k; ++i)
                             this[oneofs[i].name] = null;
+                        // Create fields and set default values
                         for (i=0, k=fields.length; i<k; ++i) {
                             var field = fields[i];
                             this[field.name] = field.repeated ? [] : null;
@@ -1706,14 +1730,10 @@
                     };
 
                     /**
-                     * The message's reflection type.
-                     * @name ProtoBuf.Builder.Message#$type
-                     * @type {!ProtoBuf.Reflect.Message}
-                     * @expose
+                     * @alias ProtoBuf.Builder.Message.prototype
+                     * @inner
                      */
-
-                    // Extends ProtoBuf.Builder.Message
-                    Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
+                    var MessagePrototype = Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
 
                     /**
                      * Adds a value to a repeated field.
@@ -1725,7 +1745,7 @@
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
-                    Message.prototype.add = function(key, value, noAssert) {
+                    MessagePrototype.add = function(key, value, noAssert) {
                         var field = T._fieldsByName[key];
                         if (!noAssert) {
                             if (!field)
@@ -1750,7 +1770,7 @@
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
-                    Message.prototype.$add = Message.prototype.add;
+                    MessagePrototype.$add = MessagePrototype.add;
 
                     /**
                      * Sets a field's value.
@@ -1763,7 +1783,7 @@
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
-                    Message.prototype.set = function(key, value, noAssert) {
+                    MessagePrototype.set = function(key, value, noAssert) {
                         if (key && typeof key === 'object') {
                             for (var i in key)
                                 if (key.hasOwnProperty(i))
@@ -1801,7 +1821,7 @@
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
-                    Message.prototype.$set = Message.prototype.set;
+                    MessagePrototype.$set = MessagePrototype.set;
 
                     /**
                      * Gets a field's value.
@@ -1813,7 +1833,7 @@
                      * @throws {Error} If there is no such field
                      * @expose
                      */
-                    Message.prototype.get = function(key, noAssert) {
+                    MessagePrototype.get = function(key, noAssert) {
                         if (noAssert)
                             return this[key];
                         var field = T._fieldsByName[key];
@@ -1833,7 +1853,7 @@
                      * @throws {Error} If there is no such field
                      * @expose
                      */
-                    Message.prototype.$get = Message.prototype.get;
+                    MessagePrototype.$get = MessagePrototype.get;
 
                     // Getters and setters
 
@@ -1891,7 +1911,7 @@
                                  * @throws {Error} If the value cannot be set
                                  */
                                 if (T.getChild("set"+Name) === null)
-                                    Message.prototype["set"+Name] = setter;
+                                    MessagePrototype["set"+Name] = setter;
 
                                 /**
                                  * Sets a value. This method is present for each field, but only if there is no name conflict with
@@ -1905,7 +1925,7 @@
                                  * @throws {Error} If the value cannot be set
                                  */
                                 if (T.getChild("set_"+name) === null)
-                                    Message.prototype["set_"+name] = setter;
+                                    MessagePrototype["set_"+name] = setter;
 
                                 /**
                                  * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -1916,7 +1936,7 @@
                                  * @return {*} The value
                                  */
                                 if (T.getChild("get"+Name) === null)
-                                    Message.prototype["get"+Name] = getter;
+                                    MessagePrototype["get"+Name] = getter;
 
                                 /**
                                  * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -1927,7 +1947,7 @@
                                  * @abstract
                                  */
                                 if (T.getChild("get_"+name) === null)
-                                    Message.prototype["get_"+name] = getter;
+                                    MessagePrototype["get_"+name] = getter;
 
                             })(field);
                     }
@@ -1948,7 +1968,7 @@
                      * @see ProtoBuf.Builder.Message#encodeHex
                      * @see ProtoBuf.Builder.Message#encodeAB
                      */
-                    Message.prototype.encode = function(buffer, noVerify) {
+                    MessagePrototype.encode = function(buffer, noVerify) {
                         if (typeof buffer === 'boolean')
                             noVerify = buffer,
                             buffer = undefined;
@@ -1974,7 +1994,7 @@
                      * @throws {Error} If the message cannot be calculated or if required fields are missing.
                      * @expose
                      */
-                    Message.prototype.calculate = function() {
+                    MessagePrototype.calculate = function() {
                         return T.calculate(this);
                     };
 
@@ -1988,7 +2008,7 @@
                      *  returns the encoded ByteBuffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeDelimited = function(buffer) {
+                    MessagePrototype.encodeDelimited = function(buffer) {
                         var isNew = false;
                         if (!buffer)
                             buffer = new ByteBuffer(),
@@ -2009,7 +2029,7 @@
                      *  returns the encoded ArrayBuffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeAB = function() {
+                    MessagePrototype.encodeAB = function() {
                         try {
                             return this.encode().toArrayBuffer();
                         } catch (e) {
@@ -2027,7 +2047,7 @@
                      *  returns the encoded ArrayBuffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
+                    MessagePrototype.toArrayBuffer = MessagePrototype.encodeAB;
 
                     /**
                      * Directly encodes the message to a node Buffer.
@@ -2038,7 +2058,7 @@
                      *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeNB = function() {
+                    MessagePrototype.encodeNB = function() {
                         try {
                             return this.encode().toBuffer();
                         } catch (e) {
@@ -2056,7 +2076,7 @@
                      *  returns the encoded node Buffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toBuffer = Message.prototype.encodeNB;
+                    MessagePrototype.toBuffer = MessagePrototype.encodeNB;
 
                     /**
                      * Directly encodes the message to a base64 encoded string.
@@ -2067,7 +2087,7 @@
                      *  still returns the encoded base64 string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encode64 = function() {
+                    MessagePrototype.encode64 = function() {
                         try {
                             return this.encode().toBase64();
                         } catch (e) {
@@ -2085,7 +2105,7 @@
                      *  returns the encoded base64 string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toBase64 = Message.prototype.encode64;
+                    MessagePrototype.toBase64 = MessagePrototype.encode64;
 
                     /**
                      * Directly encodes the message to a hex encoded string.
@@ -2096,7 +2116,7 @@
                      *  still returns the encoded hex string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeHex = function() {
+                    MessagePrototype.encodeHex = function() {
                         try {
                             return this.encode().toHex();
                         } catch (e) {
@@ -2114,7 +2134,7 @@
                      *  returns the encoded hex string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toHex = Message.prototype.encodeHex;
+                    MessagePrototype.toHex = MessagePrototype.encodeHex;
 
                     /**
                      * Clones a message object to a raw object.
@@ -2144,7 +2164,7 @@
                      * @returns {Object.<string,*>} Raw payload
                      * @expose
                      */
-                    Message.prototype.toRaw = function(includeBuffers) {
+                    MessagePrototype.toRaw = function(includeBuffers) {
                         return cloneRaw(this, !!includeBuffers);
                     };
 
@@ -2246,7 +2266,7 @@
                      * @return {string} String representation as of ".Fully.Qualified.MessageName"
                      * @expose
                      */
-                    Message.prototype.toString = function() {
+                    MessagePrototype.toString = function() {
                         return T.toString();
                     };
 
@@ -2270,7 +2290,7 @@
 
                     if (Object.defineProperty)
                         Object.defineProperty(Message, '$options', { "value": T.buildOpt() }),
-                        Object.defineProperty(Message.prototype, "$type", {
+                        Object.defineProperty(MessagePrototype, "$type", {
                             get: function() { return T; }
                         });
 
@@ -2309,7 +2329,7 @@
              * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(message, buffer, noVerify) {
+            MessagePrototype.encode = function(message, buffer, noVerify) {
                 var fieldMissing = null,
                     field;
                 for (var i=0, k=this._fields.length, val; i<k; ++i) {
@@ -2336,7 +2356,7 @@
              * @throws {Error} If required fields are missing or the message cannot be calculated for another reason
              * @expose
              */
-            Message.prototype.calculate = function(message) {
+            MessagePrototype.calculate = function(message) {
                 for (var n=0, i=0, k=this._fields.length, field, val; i<k; ++i) {
                     field = this._fields[i];
                     val = message[field.name];
@@ -2398,7 +2418,7 @@
              * @throws {Error} If the message cannot be decoded
              * @expose
              */
-            Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
+            MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
                 length = typeof length === 'number' ? length : -1;
                 var start = buffer.offset,
                     msg = new (this.clazz)(),
@@ -2571,15 +2591,18 @@
                 });
             };
 
-            // Extends T
-            Field.prototype = Object.create(T.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Message.Field.prototype
+             * @inner
+             */
+            var FieldPrototype = Field.prototype = Object.create(T.prototype);
 
             /**
              * Builds the field.
              * @override
              * @expose
              */
-            Field.prototype.build = function() {
+            FieldPrototype.build = function() {
                 this.defaultValue = typeof this.options['default'] !== 'undefined'
                     ? this.verifyValue(this.options['default']) : null;
             };
@@ -2612,7 +2635,7 @@
              * @throws {Error} If the value cannot be set for this field
              * @expose
              */
-            Field.prototype.verifyValue = function(value, skipRepeated) {
+            FieldPrototype.verifyValue = function(value, skipRepeated) {
                 skipRepeated = skipRepeated || false;
                 var fail = function(val, msg) {
                     throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
@@ -2746,7 +2769,7 @@
              * @throws {Error} If the field cannot be encoded
              * @expose
              */
-            Field.prototype.encode = function(value, buffer) {
+            FieldPrototype.encode = function(value, buffer) {
                 if (this.type === null || typeof this.type !== 'object')
                     throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
                 if (value === null || (this.repeated && value.length == 0))
@@ -2798,7 +2821,7 @@
              * @throws {Error} If the value cannot be encoded
              * @expose
              */
-            Field.prototype.encodeValue = function(value, buffer) {
+            FieldPrototype.encodeValue = function(value, buffer) {
                 if (value === null) return buffer; // Nothing to encode
                 // Tag has already been written
 
@@ -2919,7 +2942,7 @@
              * @returns {number} Byte length
              * @expose
              */
-            Field.prototype.calculate = function(value) {
+            FieldPrototype.calculate = function(value) {
                 value = this.verifyValue(value); // May throw
                 if (this.type === null || typeof this.type !== 'object')
                     throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
@@ -2958,7 +2981,7 @@
              * @throws {Error} If the value cannot be calculated
              * @expose
              */
-            Field.prototype.calculateValue = function(value) {
+            FieldPrototype.calculateValue = function(value) {
                 if (value === null) return 0; // Nothing to encode
                 // Tag has already been written
                 var n;
@@ -3014,7 +3037,7 @@
              * @throws {Error} If the field cannot be decoded
              * @expose
              */
-            Field.prototype.decode = function(wireType, buffer, skipRepeated) {
+            FieldPrototype.decode = function(wireType, buffer, skipRepeated) {
                 var value, nBytes;
                 if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated)))
                     throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");
@@ -3207,15 +3230,18 @@
                 this.object = null;
             };
 
-            // Extends Namespace
-            Enum.prototype = Object.create(Namespace.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Enum.prototype
+             * @inner
+             */
+            var EnumPrototype = Enum.prototype = Object.create(Namespace.prototype);
 
             /**
              * Builds this enum and returns the runtime counterpart.
              * @return {Object<string,*>}
              * @expose
              */
-            Enum.prototype.build = function() {
+            EnumPrototype.build = function() {
                 var enm = {},
                     values = this.getChildren(Enum.Value);
                 for (var i=0, k=values.length; i<k; ++i)
@@ -3320,8 +3346,11 @@
                 this.clazz = null;
             };
 
-            // Extends Namespace
-            Service.prototype = Object.create(Namespace.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Service.prototype
+             * @inner
+             */
+            var ServicePrototype = Service.prototype = Object.create(Namespace.prototype);
 
             /**
              * Builds the service and returns the runtime counterpart, which is a fully functional class.
@@ -3331,7 +3360,7 @@
              * @throws {Error} If the message cannot be built
              * @expose
              */
-            Service.prototype.build = function(rebuild) {
+            ServicePrototype.build = function(rebuild) {
                 if (this.clazz && !rebuild)
                     return this.clazz;
 
@@ -3363,12 +3392,15 @@
                         };
                     };
 
-                    // Extends ProtoBuf.Builder.Service
-                    Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
+                    /**
+                     * @alias ProtoBuf.Builder.Service.prototype
+                     * @inner
+                     */
+                    var ServicePrototype = Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
 
                     if (Object.defineProperty)
                         Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
-                        Object.defineProperty(Service.prototype, "$options", { "value": Service["$options"] });
+                        Object.defineProperty(ServicePrototype, "$options", { "value": Service["$options"] });
 
                     /**
                      * Asynchronously performs an RPC call using the given RPC implementation.
@@ -3396,7 +3428,7 @@
                         (function(method) {
 
                             // service#Method(message, callback)
-                            Service.prototype[method.name] = function(req, callback) {
+                            ServicePrototype[method.name] = function(req, callback) {
                                 try {
                                     if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
                                         setTimeout(callback.bind(this, Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
@@ -3426,7 +3458,7 @@
 
                             if (Object.defineProperty)
                                 Object.defineProperty(Service[method.name], "$options", { "value": method.buildOpt() }),
-                                Object.defineProperty(Service.prototype[method.name], "$options", { "value": Service[method.name]["$options"] });
+                                Object.defineProperty(ServicePrototype[method.name], "$options", { "value": Service[method.name]["$options"] });
                         })(rpc[i]);
                     }
 
@@ -3467,8 +3499,11 @@
                 this.options = options || {};
             };
 
-            // Extends T
-            Method.prototype = Object.create(T.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Service.Method.prototype
+             * @inner
+             */
+            var MethodPrototype = Method.prototype = Object.create(T.prototype);
 
             /**
              * Builds the method's '$options' property.
@@ -3476,7 +3511,7 @@
              * @function
              * @return {Object.<string,*>}
              */
-            Method.prototype.buildOpt = Namespace.prototype.buildOpt;
+            MethodPrototype.buildOpt = NamespacePrototype.buildOpt;
 
             /**
              * @alias ProtoBuf.Reflect.Service.Method
@@ -3613,10 +3648,16 @@
             };
 
             /**
+             * @alias ProtoBuf.Builder.prototype
+             * @inner
+             */
+            var BuilderPrototype = Builder.prototype;
+
+            /**
              * Resets the pointer to the root namespace.
              * @expose
              */
-            Builder.prototype.reset = function() {
+            BuilderPrototype.reset = function() {
                 this.ptr = this.ns;
             };
 
@@ -3628,7 +3669,7 @@
              * @throws {Error} If the package name is invalid
              * @expose
              */
-            Builder.prototype.define = function(pkg, options) {
+            BuilderPrototype.define = function(pkg, options) {
                 if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
                     throw Error("Illegal package: "+pkg);
                 var part = pkg.split("."), i;
@@ -3751,7 +3792,7 @@
              * @throws {Error} If a message definition is invalid
              * @expose
              */
-            Builder.prototype.create = function(defs) {
+            BuilderPrototype.create = function(defs) {
                 if (!defs)
                     return this; // Nothing to create
                 if (!ProtoBuf.Util.isArray(defs))
@@ -3890,7 +3931,7 @@
              * @throws {Error} If the definition or file cannot be imported
              * @expose
              */
-            Builder.prototype["import"] = function(json, filename) {
+            BuilderPrototype["import"] = function(json, filename) {
                 if (typeof filename === 'string') {
                     if (ProtoBuf.Util.IS_NODE)
                         filename = require("path")['resolve'](filename);
@@ -4024,7 +4065,7 @@
              * @throws {Error} If a type cannot be resolved
              * @expose
              */
-            Builder.prototype.resolveAll = function() {
+            BuilderPrototype.resolveAll = function() {
                 // Resolve all reflected objects
                 var res;
                 if (this.ptr == null || typeof this.ptr.type === 'object')
@@ -4080,7 +4121,7 @@
              * @throws {Error} If a type could not be resolved
              * @expose
              */
-            Builder.prototype.build = function(path) {
+            BuilderPrototype.build = function(path) {
                 this.reset();
                 if (!this.resolved)
                     this.resolveAll(),
@@ -4109,7 +4150,7 @@
              * @param {string=} path Specifies what to return. If omitted, the entire namespace wiil be returned.
              * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
              */
-            Builder.prototype.lookup = function(path) {
+            BuilderPrototype.lookup = function(path) {
                 return path ? this.ns.resolve(path) : this.ns;
             };
 
@@ -4118,7 +4159,7 @@
              * @return {string} String representation as of "Builder"
              * @expose
              */
-            Builder.prototype.toString = function() {
+            BuilderPrototype.toString = function() {
                 return "Builder";
             };
 

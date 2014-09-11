@@ -23,8 +23,11 @@ var Service = function(builder, root, name, options) {
     this.clazz = null;
 };
 
-// Extends Namespace
-Service.prototype = Object.create(Namespace.prototype);
+/**
+ * @alias ProtoBuf.Reflect.Service.prototype
+ * @inner
+ */
+var ServicePrototype = Service.prototype = Object.create(Namespace.prototype);
 
 /**
  * Builds the service and returns the runtime counterpart, which is a fully functional class.
@@ -34,7 +37,7 @@ Service.prototype = Object.create(Namespace.prototype);
  * @throws {Error} If the message cannot be built
  * @expose
  */
-Service.prototype.build = function(rebuild) {
+ServicePrototype.build = function(rebuild) {
     if (this.clazz && !rebuild)
         return this.clazz;
 

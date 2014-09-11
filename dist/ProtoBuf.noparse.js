@@ -462,11 +462,17 @@
             };
 
             /**
+             * @alias ProtoBuf.Reflect.T.prototype
+             * @inner
+             */
+            var TPrototype = T.prototype;
+
+            /**
              * Returns the fully qualified name of this object.
              * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
              * @expose
              */
-            T.prototype.fqn = function() {
+            TPrototype.fqn = function() {
                 var name = this.name,
                     ptr = this;
                 do {
@@ -484,7 +490,7 @@
              * @return String representation
              * @expose
              */
-            T.prototype.toString = function(includeClass) {
+            TPrototype.toString = function(includeClass) {
                 return (includeClass ? this.className + " " : "") + this.fqn();
             };
 
@@ -493,7 +499,7 @@
              * @throws {Error} If this type cannot be built directly
              * @expose
              */
-            T.prototype.build = function() {
+            TPrototype.build = function() {
                 throw Error(this.toString(true)+" cannot be built directly");
             };
 
@@ -534,8 +540,11 @@
                 this.options = options || {};
             };
 
-            // Extends T
-            Namespace.prototype = Object.create(T.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Namespace.prototype
+             * @inner
+             */
+            var NamespacePrototype = Namespace.prototype = Object.create(T.prototype);
 
             /**
              * Returns an array of the namespace's children.
@@ -543,7 +552,7 @@
              * @return {Array.<ProtoBuf.Reflect.T>}
              * @expose
              */
-            Namespace.prototype.getChildren = function(type) {
+            NamespacePrototype.getChildren = function(type) {
                 type = type || null;
                 if (type == null)
                     return this.children.slice();
@@ -560,7 +569,7 @@
              * @throws {Error} If the child cannot be added (duplicate)
              * @expose
              */
-            Namespace.prototype.addChild = function(child) {
+            NamespacePrototype.addChild = function(child) {
                 var other;
                 if (other = this.getChild(child.name)) {
                     // Try to revert camelcase transformation on collision
@@ -580,7 +589,7 @@
              * @return {?ProtoBuf.Reflect.T} The child or null if not found
              * @expose
              */
-            Namespace.prototype.getChild = function(nameOrId) {
+            NamespacePrototype.getChild = function(nameOrId) {
                 var key = typeof nameOrId === 'number' ? 'id' : 'name';
                 for (var i=0, k=this.children.length; i<k; ++i)
                     if (this.children[i][key] === nameOrId)
@@ -595,7 +604,7 @@
              * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
              * @expose
              */
-            Namespace.prototype.resolve = function(qn, excludeFields) {
+            NamespacePrototype.resolve = function(qn, excludeFields) {
                 var part = qn.split("."),
                     ptr = this,
                     i = 0;
@@ -629,7 +638,7 @@
              * @return {Object.<string,Function|Object>} Runtime namespace
              * @expose
              */
-            Namespace.prototype.build = function() {
+            NamespacePrototype.build = function() {
                 /** @dict */
                 var ns = {};
                 var children = this.children;
@@ -647,7 +656,7 @@
              * Builds the namespace's '$options' property.
              * @return {Object.<string,*>}
              */
-            Namespace.prototype.buildOpt = function() {
+            NamespacePrototype.buildOpt = function() {
                 var opt = {},
                     keys = Object.keys(this.options);
                 for (var i=0, k=keys.length; i<k; ++i) {
@@ -668,7 +677,7 @@
              * @param {string=} name Returns the option value if specified, otherwise all options are returned.
              * @return {*|Object.<string,*>}null} Option value or NULL if there is no such option
              */
-            Namespace.prototype.getOption = function(name) {
+            NamespacePrototype.getOption = function(name) {
                 if (typeof name === 'undefined')
                     return this.options;
                 return typeof this.options[name] !== 'undefined' ? this.options[name] : null;
@@ -744,8 +753,11 @@
                 this._fieldsByName = null;
             };
 
-            // Extends Namespace
-            Message.prototype = Object.create(Namespace.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Message.prototype
+             * @inner
+             */
+            var MessagePrototype = Message.prototype = Object.create(Namespace.prototype);
 
             /**
              * Builds the message and returns the runtime counterpart, which is a fully functional class.
@@ -755,7 +767,7 @@
              * @throws {Error} If the message cannot be built
              * @expose
              */
-            Message.prototype.build = function(rebuild) {
+            MessagePrototype.build = function(rebuild) {
                 if (this.clazz && !rebuild)
                     return this.clazz;
 
@@ -777,9 +789,10 @@
                     var Message = function(values, var_args) {
                         ProtoBuf.Builder.Message.call(this);
 
-                        // Create fields on the object itself and set default values
+                        // Create virtual oneof properties
                         for (var i=0, k=oneofs.length; i<k; ++i)
                             this[oneofs[i].name] = null;
+                        // Create fields and set default values
                         for (i=0, k=fields.length; i<k; ++i) {
                             var field = fields[i];
                             this[field.name] = field.repeated ? [] : null;
@@ -805,14 +818,10 @@
                     };
 
                     /**
-                     * The message's reflection type.
-                     * @name ProtoBuf.Builder.Message#$type
-                     * @type {!ProtoBuf.Reflect.Message}
-                     * @expose
+                     * @alias ProtoBuf.Builder.Message.prototype
+                     * @inner
                      */
-
-                    // Extends ProtoBuf.Builder.Message
-                    Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
+                    var MessagePrototype = Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
 
                     /**
                      * Adds a value to a repeated field.
@@ -824,7 +833,7 @@
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
-                    Message.prototype.add = function(key, value, noAssert) {
+                    MessagePrototype.add = function(key, value, noAssert) {
                         var field = T._fieldsByName[key];
                         if (!noAssert) {
                             if (!field)
@@ -849,7 +858,7 @@
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
-                    Message.prototype.$add = Message.prototype.add;
+                    MessagePrototype.$add = MessagePrototype.add;
 
                     /**
                      * Sets a field's value.
@@ -862,7 +871,7 @@
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
-                    Message.prototype.set = function(key, value, noAssert) {
+                    MessagePrototype.set = function(key, value, noAssert) {
                         if (key && typeof key === 'object') {
                             for (var i in key)
                                 if (key.hasOwnProperty(i))
@@ -900,7 +909,7 @@
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
-                    Message.prototype.$set = Message.prototype.set;
+                    MessagePrototype.$set = MessagePrototype.set;
 
                     /**
                      * Gets a field's value.
@@ -912,7 +921,7 @@
                      * @throws {Error} If there is no such field
                      * @expose
                      */
-                    Message.prototype.get = function(key, noAssert) {
+                    MessagePrototype.get = function(key, noAssert) {
                         if (noAssert)
                             return this[key];
                         var field = T._fieldsByName[key];
@@ -932,7 +941,7 @@
                      * @throws {Error} If there is no such field
                      * @expose
                      */
-                    Message.prototype.$get = Message.prototype.get;
+                    MessagePrototype.$get = MessagePrototype.get;
 
                     // Getters and setters
 
@@ -990,7 +999,7 @@
                                  * @throws {Error} If the value cannot be set
                                  */
                                 if (T.getChild("set"+Name) === null)
-                                    Message.prototype["set"+Name] = setter;
+                                    MessagePrototype["set"+Name] = setter;
 
                                 /**
                                  * Sets a value. This method is present for each field, but only if there is no name conflict with
@@ -1004,7 +1013,7 @@
                                  * @throws {Error} If the value cannot be set
                                  */
                                 if (T.getChild("set_"+name) === null)
-                                    Message.prototype["set_"+name] = setter;
+                                    MessagePrototype["set_"+name] = setter;
 
                                 /**
                                  * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -1015,7 +1024,7 @@
                                  * @return {*} The value
                                  */
                                 if (T.getChild("get"+Name) === null)
-                                    Message.prototype["get"+Name] = getter;
+                                    MessagePrototype["get"+Name] = getter;
 
                                 /**
                                  * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -1026,7 +1035,7 @@
                                  * @abstract
                                  */
                                 if (T.getChild("get_"+name) === null)
-                                    Message.prototype["get_"+name] = getter;
+                                    MessagePrototype["get_"+name] = getter;
 
                             })(field);
                     }
@@ -1047,7 +1056,7 @@
                      * @see ProtoBuf.Builder.Message#encodeHex
                      * @see ProtoBuf.Builder.Message#encodeAB
                      */
-                    Message.prototype.encode = function(buffer, noVerify) {
+                    MessagePrototype.encode = function(buffer, noVerify) {
                         if (typeof buffer === 'boolean')
                             noVerify = buffer,
                             buffer = undefined;
@@ -1073,7 +1082,7 @@
                      * @throws {Error} If the message cannot be calculated or if required fields are missing.
                      * @expose
                      */
-                    Message.prototype.calculate = function() {
+                    MessagePrototype.calculate = function() {
                         return T.calculate(this);
                     };
 
@@ -1087,7 +1096,7 @@
                      *  returns the encoded ByteBuffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeDelimited = function(buffer) {
+                    MessagePrototype.encodeDelimited = function(buffer) {
                         var isNew = false;
                         if (!buffer)
                             buffer = new ByteBuffer(),
@@ -1108,7 +1117,7 @@
                      *  returns the encoded ArrayBuffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeAB = function() {
+                    MessagePrototype.encodeAB = function() {
                         try {
                             return this.encode().toArrayBuffer();
                         } catch (e) {
@@ -1126,7 +1135,7 @@
                      *  returns the encoded ArrayBuffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
+                    MessagePrototype.toArrayBuffer = MessagePrototype.encodeAB;
 
                     /**
                      * Directly encodes the message to a node Buffer.
@@ -1137,7 +1146,7 @@
                      *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeNB = function() {
+                    MessagePrototype.encodeNB = function() {
                         try {
                             return this.encode().toBuffer();
                         } catch (e) {
@@ -1155,7 +1164,7 @@
                      *  returns the encoded node Buffer in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toBuffer = Message.prototype.encodeNB;
+                    MessagePrototype.toBuffer = MessagePrototype.encodeNB;
 
                     /**
                      * Directly encodes the message to a base64 encoded string.
@@ -1166,7 +1175,7 @@
                      *  still returns the encoded base64 string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encode64 = function() {
+                    MessagePrototype.encode64 = function() {
                         try {
                             return this.encode().toBase64();
                         } catch (e) {
@@ -1184,7 +1193,7 @@
                      *  returns the encoded base64 string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toBase64 = Message.prototype.encode64;
+                    MessagePrototype.toBase64 = MessagePrototype.encode64;
 
                     /**
                      * Directly encodes the message to a hex encoded string.
@@ -1195,7 +1204,7 @@
                      *  still returns the encoded hex string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.encodeHex = function() {
+                    MessagePrototype.encodeHex = function() {
                         try {
                             return this.encode().toHex();
                         } catch (e) {
@@ -1213,7 +1222,7 @@
                      *  returns the encoded hex string in the `encoded` property on the error.
                      * @expose
                      */
-                    Message.prototype.toHex = Message.prototype.encodeHex;
+                    MessagePrototype.toHex = MessagePrototype.encodeHex;
 
                     /**
                      * Clones a message object to a raw object.
@@ -1243,7 +1252,7 @@
                      * @returns {Object.<string,*>} Raw payload
                      * @expose
                      */
-                    Message.prototype.toRaw = function(includeBuffers) {
+                    MessagePrototype.toRaw = function(includeBuffers) {
                         return cloneRaw(this, !!includeBuffers);
                     };
 
@@ -1345,7 +1354,7 @@
                      * @return {string} String representation as of ".Fully.Qualified.MessageName"
                      * @expose
                      */
-                    Message.prototype.toString = function() {
+                    MessagePrototype.toString = function() {
                         return T.toString();
                     };
 
@@ -1369,7 +1378,7 @@
 
                     if (Object.defineProperty)
                         Object.defineProperty(Message, '$options', { "value": T.buildOpt() }),
-                        Object.defineProperty(Message.prototype, "$type", {
+                        Object.defineProperty(MessagePrototype, "$type", {
                             get: function() { return T; }
                         });
 
@@ -1408,7 +1417,7 @@
              * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
              * @expose
              */
-            Message.prototype.encode = function(message, buffer, noVerify) {
+            MessagePrototype.encode = function(message, buffer, noVerify) {
                 var fieldMissing = null,
                     field;
                 for (var i=0, k=this._fields.length, val; i<k; ++i) {
@@ -1435,7 +1444,7 @@
              * @throws {Error} If required fields are missing or the message cannot be calculated for another reason
              * @expose
              */
-            Message.prototype.calculate = function(message) {
+            MessagePrototype.calculate = function(message) {
                 for (var n=0, i=0, k=this._fields.length, field, val; i<k; ++i) {
                     field = this._fields[i];
                     val = message[field.name];
@@ -1497,7 +1506,7 @@
              * @throws {Error} If the message cannot be decoded
              * @expose
              */
-            Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
+            MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
                 length = typeof length === 'number' ? length : -1;
                 var start = buffer.offset,
                     msg = new (this.clazz)(),
@@ -1670,15 +1679,18 @@
                 });
             };
 
-            // Extends T
-            Field.prototype = Object.create(T.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Message.Field.prototype
+             * @inner
+             */
+            var FieldPrototype = Field.prototype = Object.create(T.prototype);
 
             /**
              * Builds the field.
              * @override
              * @expose
              */
-            Field.prototype.build = function() {
+            FieldPrototype.build = function() {
                 this.defaultValue = typeof this.options['default'] !== 'undefined'
                     ? this.verifyValue(this.options['default']) : null;
             };
@@ -1711,7 +1723,7 @@
              * @throws {Error} If the value cannot be set for this field
              * @expose
              */
-            Field.prototype.verifyValue = function(value, skipRepeated) {
+            FieldPrototype.verifyValue = function(value, skipRepeated) {
                 skipRepeated = skipRepeated || false;
                 var fail = function(val, msg) {
                     throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
@@ -1845,7 +1857,7 @@
              * @throws {Error} If the field cannot be encoded
              * @expose
              */
-            Field.prototype.encode = function(value, buffer) {
+            FieldPrototype.encode = function(value, buffer) {
                 if (this.type === null || typeof this.type !== 'object')
                     throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
                 if (value === null || (this.repeated && value.length == 0))
@@ -1897,7 +1909,7 @@
              * @throws {Error} If the value cannot be encoded
              * @expose
              */
-            Field.prototype.encodeValue = function(value, buffer) {
+            FieldPrototype.encodeValue = function(value, buffer) {
                 if (value === null) return buffer; // Nothing to encode
                 // Tag has already been written
 
@@ -2018,7 +2030,7 @@
              * @returns {number} Byte length
              * @expose
              */
-            Field.prototype.calculate = function(value) {
+            FieldPrototype.calculate = function(value) {
                 value = this.verifyValue(value); // May throw
                 if (this.type === null || typeof this.type !== 'object')
                     throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
@@ -2057,7 +2069,7 @@
              * @throws {Error} If the value cannot be calculated
              * @expose
              */
-            Field.prototype.calculateValue = function(value) {
+            FieldPrototype.calculateValue = function(value) {
                 if (value === null) return 0; // Nothing to encode
                 // Tag has already been written
                 var n;
@@ -2113,7 +2125,7 @@
              * @throws {Error} If the field cannot be decoded
              * @expose
              */
-            Field.prototype.decode = function(wireType, buffer, skipRepeated) {
+            FieldPrototype.decode = function(wireType, buffer, skipRepeated) {
                 var value, nBytes;
                 if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated)))
                     throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");
@@ -2306,15 +2318,18 @@
                 this.object = null;
             };
 
-            // Extends Namespace
-            Enum.prototype = Object.create(Namespace.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Enum.prototype
+             * @inner
+             */
+            var EnumPrototype = Enum.prototype = Object.create(Namespace.prototype);
 
             /**
              * Builds this enum and returns the runtime counterpart.
              * @return {Object<string,*>}
              * @expose
              */
-            Enum.prototype.build = function() {
+            EnumPrototype.build = function() {
                 var enm = {},
                     values = this.getChildren(Enum.Value);
                 for (var i=0, k=values.length; i<k; ++i)
@@ -2419,8 +2434,11 @@
                 this.clazz = null;
             };
 
-            // Extends Namespace
-            Service.prototype = Object.create(Namespace.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Service.prototype
+             * @inner
+             */
+            var ServicePrototype = Service.prototype = Object.create(Namespace.prototype);
 
             /**
              * Builds the service and returns the runtime counterpart, which is a fully functional class.
@@ -2430,7 +2448,7 @@
              * @throws {Error} If the message cannot be built
              * @expose
              */
-            Service.prototype.build = function(rebuild) {
+            ServicePrototype.build = function(rebuild) {
                 if (this.clazz && !rebuild)
                     return this.clazz;
 
@@ -2462,12 +2480,15 @@
                         };
                     };
 
-                    // Extends ProtoBuf.Builder.Service
-                    Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
+                    /**
+                     * @alias ProtoBuf.Builder.Service.prototype
+                     * @inner
+                     */
+                    var ServicePrototype = Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
 
                     if (Object.defineProperty)
                         Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
-                        Object.defineProperty(Service.prototype, "$options", { "value": Service["$options"] });
+                        Object.defineProperty(ServicePrototype, "$options", { "value": Service["$options"] });
 
                     /**
                      * Asynchronously performs an RPC call using the given RPC implementation.
@@ -2495,7 +2516,7 @@
                         (function(method) {
 
                             // service#Method(message, callback)
-                            Service.prototype[method.name] = function(req, callback) {
+                            ServicePrototype[method.name] = function(req, callback) {
                                 try {
                                     if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
                                         setTimeout(callback.bind(this, Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
@@ -2525,7 +2546,7 @@
 
                             if (Object.defineProperty)
                                 Object.defineProperty(Service[method.name], "$options", { "value": method.buildOpt() }),
-                                Object.defineProperty(Service.prototype[method.name], "$options", { "value": Service[method.name]["$options"] });
+                                Object.defineProperty(ServicePrototype[method.name], "$options", { "value": Service[method.name]["$options"] });
                         })(rpc[i]);
                     }
 
@@ -2566,8 +2587,11 @@
                 this.options = options || {};
             };
 
-            // Extends T
-            Method.prototype = Object.create(T.prototype);
+            /**
+             * @alias ProtoBuf.Reflect.Service.Method.prototype
+             * @inner
+             */
+            var MethodPrototype = Method.prototype = Object.create(T.prototype);
 
             /**
              * Builds the method's '$options' property.
@@ -2575,7 +2599,7 @@
              * @function
              * @return {Object.<string,*>}
              */
-            Method.prototype.buildOpt = Namespace.prototype.buildOpt;
+            MethodPrototype.buildOpt = NamespacePrototype.buildOpt;
 
             /**
              * @alias ProtoBuf.Reflect.Service.Method
@@ -2712,10 +2736,16 @@
             };
 
             /**
+             * @alias ProtoBuf.Builder.prototype
+             * @inner
+             */
+            var BuilderPrototype = Builder.prototype;
+
+            /**
              * Resets the pointer to the root namespace.
              * @expose
              */
-            Builder.prototype.reset = function() {
+            BuilderPrototype.reset = function() {
                 this.ptr = this.ns;
             };
 
@@ -2727,7 +2757,7 @@
              * @throws {Error} If the package name is invalid
              * @expose
              */
-            Builder.prototype.define = function(pkg, options) {
+            BuilderPrototype.define = function(pkg, options) {
                 if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
                     throw Error("Illegal package: "+pkg);
                 var part = pkg.split("."), i;
@@ -2850,7 +2880,7 @@
              * @throws {Error} If a message definition is invalid
              * @expose
              */
-            Builder.prototype.create = function(defs) {
+            BuilderPrototype.create = function(defs) {
                 if (!defs)
                     return this; // Nothing to create
                 if (!ProtoBuf.Util.isArray(defs))
@@ -2989,7 +3019,7 @@
              * @throws {Error} If the definition or file cannot be imported
              * @expose
              */
-            Builder.prototype["import"] = function(json, filename) {
+            BuilderPrototype["import"] = function(json, filename) {
                 if (typeof filename === 'string') {
                     if (ProtoBuf.Util.IS_NODE)
                         filename = require("path")['resolve'](filename);
@@ -3123,7 +3153,7 @@
              * @throws {Error} If a type cannot be resolved
              * @expose
              */
-            Builder.prototype.resolveAll = function() {
+            BuilderPrototype.resolveAll = function() {
                 // Resolve all reflected objects
                 var res;
                 if (this.ptr == null || typeof this.ptr.type === 'object')
@@ -3179,7 +3209,7 @@
              * @throws {Error} If a type could not be resolved
              * @expose
              */
-            Builder.prototype.build = function(path) {
+            BuilderPrototype.build = function(path) {
                 this.reset();
                 if (!this.resolved)
                     this.resolveAll(),
@@ -3208,7 +3238,7 @@
              * @param {string=} path Specifies what to return. If omitted, the entire namespace wiil be returned.
              * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
              */
-            Builder.prototype.lookup = function(path) {
+            BuilderPrototype.lookup = function(path) {
                 return path ? this.ns.resolve(path) : this.ns;
             };
 
@@ -3217,7 +3247,7 @@
              * @return {string} String representation as of "Builder"
              * @expose
              */
-            Builder.prototype.toString = function() {
+            BuilderPrototype.toString = function() {
                 return "Builder";
             };
 

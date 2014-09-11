@@ -65,10 +65,16 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     };
 
     /**
+     * @alias ProtoBuf.Builder.prototype
+     * @inner
+     */
+    var BuilderPrototype = Builder.prototype;
+
+    /**
      * Resets the pointer to the root namespace.
      * @expose
      */
-    Builder.prototype.reset = function() {
+    BuilderPrototype.reset = function() {
         this.ptr = this.ns;
     };
 
@@ -80,7 +86,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @throws {Error} If the package name is invalid
      * @expose
      */
-    Builder.prototype.define = function(pkg, options) {
+    BuilderPrototype.define = function(pkg, options) {
         if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
             throw Error("Illegal package: "+pkg);
         var part = pkg.split("."), i;
@@ -203,7 +209,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @throws {Error} If a message definition is invalid
      * @expose
      */
-    Builder.prototype.create = function(defs) {
+    BuilderPrototype.create = function(defs) {
         if (!defs)
             return this; // Nothing to create
         if (!ProtoBuf.Util.isArray(defs))
@@ -342,7 +348,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @throws {Error} If the definition or file cannot be imported
      * @expose
      */
-    Builder.prototype["import"] = function(json, filename) {
+    BuilderPrototype["import"] = function(json, filename) {
         if (typeof filename === 'string') {
             if (ProtoBuf.Util.IS_NODE)
                 filename = require("path")['resolve'](filename);
@@ -476,7 +482,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @throws {Error} If a type cannot be resolved
      * @expose
      */
-    Builder.prototype.resolveAll = function() {
+    BuilderPrototype.resolveAll = function() {
         // Resolve all reflected objects
         var res;
         if (this.ptr == null || typeof this.ptr.type === 'object')
@@ -532,7 +538,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @throws {Error} If a type could not be resolved
      * @expose
      */
-    Builder.prototype.build = function(path) {
+    BuilderPrototype.build = function(path) {
         this.reset();
         if (!this.resolved)
             this.resolveAll(),
@@ -561,7 +567,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @param {string=} path Specifies what to return. If omitted, the entire namespace wiil be returned.
      * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
      */
-    Builder.prototype.lookup = function(path) {
+    BuilderPrototype.lookup = function(path) {
         return path ? this.ns.resolve(path) : this.ns;
     };
 
@@ -570,7 +576,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @return {string} String representation as of "Builder"
      * @expose
      */
-    Builder.prototype.toString = function() {
+    BuilderPrototype.toString = function() {
         return "Builder";
     };
 

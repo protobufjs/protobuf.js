@@ -24,8 +24,11 @@ var Method = function(builder, svc, name, options) {
     this.options = options || {};
 };
 
-// Extends T
-Method.prototype = Object.create(T.prototype);
+/**
+ * @alias ProtoBuf.Reflect.Service.Method.prototype
+ * @inner
+ */
+var MethodPrototype = Method.prototype = Object.create(T.prototype);
 
 /**
  * Builds the method's '$options' property.
@@ -33,4 +36,4 @@ Method.prototype = Object.create(T.prototype);
  * @function
  * @return {Object.<string,*>}
  */
-Method.prototype.buildOpt = Namespace.prototype.buildOpt;
+MethodPrototype.buildOpt = NamespacePrototype.buildOpt;

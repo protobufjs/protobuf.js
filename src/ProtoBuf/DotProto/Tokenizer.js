@@ -5,7 +5,7 @@
 /**
  * Constructs a new Tokenizer.
  * @exports ProtoBuf.DotProto.Tokenizer
- * @class proto tokenizer
+ * @class prototype tokenizer
  * @param {string} proto Proto to tokenize
  * @constructor
  */
@@ -55,12 +55,18 @@ var Tokenizer = function(proto) {
 };
 
 /**
+ * @alias ProtoBuf.DotProto.Tokenizer.prototype
+ * @inner
+ */
+var TokenizerPrototype = Tokenizer.prototype;
+
+/**
  * Reads a string beginning at the current index.
  * @return {string} The string
  * @throws {Error} If it's not a valid string
  * @private
  */
-Tokenizer.prototype._readString = function() {
+TokenizerPrototype._readString = function() {
     Lang.STRING.lastIndex = this.index-1; // Include the open quote
     var match;
     if ((match = Lang.STRING.exec(this.source)) !== null) {
@@ -69,7 +75,7 @@ Tokenizer.prototype._readString = function() {
         this.stack.push(this.stringEndsWith);
         return s;
     }
-    throw Error("Illegal string value at line "+this.line+", index "+this.index);
+    throw Error("Unterminated string at line "+this.line+", index "+this.index);
 };
 
 /**
@@ -78,7 +84,7 @@ Tokenizer.prototype._readString = function() {
  * @throws {Error} If it's not a valid proto file
  * @expose
  */
-Tokenizer.prototype.next = function() {
+TokenizerPrototype.next = function() {
     if (this.stack.length > 0)
         return this.stack.shift();
     if (this.index >= this.source.length)
@@ -121,7 +127,7 @@ Tokenizer.prototype.next = function() {
                 this.index++;
                 repeat = true;
             } else
-                throw Error("Invalid comment at line "+this.line+": /"+this.source.charAt(this.index)+" ('/' or '*' expected)");
+                throw Error("Unterminated comment at line "+this.line+": /"+this.source.charAt(this.index));
         }
     } while (repeat);
     if (this.index === this.source.length) return null;
@@ -152,7 +158,7 @@ Tokenizer.prototype.next = function() {
  * @throws {Error} If it's not a valid proto file
  * @expose
  */
-Tokenizer.prototype.peek = function() {
+TokenizerPrototype.peek = function() {
     if (this.stack.length === 0) {
         var token = this.next();
         if (token === null)
@@ -167,6 +173,6 @@ Tokenizer.prototype.peek = function() {
  * @return {string} String representation as of "Tokenizer(index/length)"
  * @expose
  */
-Tokenizer.prototype.toString = function() {
+TokenizerPrototype.toString = function() {
     return "Tokenizer("+this.index+"/"+this.source.length+" at line "+this.line+")";
 };

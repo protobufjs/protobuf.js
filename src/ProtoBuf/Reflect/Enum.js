@@ -24,15 +24,18 @@ var Enum = function(builder, parent, name, options) {
     this.object = null;
 };
 
-// Extends Namespace
-Enum.prototype = Object.create(Namespace.prototype);
+/**
+ * @alias ProtoBuf.Reflect.Enum.prototype
+ * @inner
+ */
+var EnumPrototype = Enum.prototype = Object.create(Namespace.prototype);
 
 /**
  * Builds this enum and returns the runtime counterpart.
  * @return {Object<string,*>}
  * @expose
  */
-Enum.prototype.build = function() {
+EnumPrototype.build = function() {
     var enm = {},
         values = this.getChildren(Enum.Value);
     for (var i=0, k=values.length; i<k; ++i)

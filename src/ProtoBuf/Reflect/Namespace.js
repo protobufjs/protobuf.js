@@ -29,8 +29,11 @@ var Namespace = function(builder, parent, name, options) {
     this.options = options || {};
 };
 
-// Extends T
-Namespace.prototype = Object.create(T.prototype);
+/**
+ * @alias ProtoBuf.Reflect.Namespace.prototype
+ * @inner
+ */
+var NamespacePrototype = Namespace.prototype = Object.create(T.prototype);
 
 /**
  * Returns an array of the namespace's children.
@@ -38,7 +41,7 @@ Namespace.prototype = Object.create(T.prototype);
  * @return {Array.<ProtoBuf.Reflect.T>}
  * @expose
  */
-Namespace.prototype.getChildren = function(type) {
+NamespacePrototype.getChildren = function(type) {
     type = type || null;
     if (type == null)
         return this.children.slice();
@@ -55,7 +58,7 @@ Namespace.prototype.getChildren = function(type) {
  * @throws {Error} If the child cannot be added (duplicate)
  * @expose
  */
-Namespace.prototype.addChild = function(child) {
+NamespacePrototype.addChild = function(child) {
     var other;
     if (other = this.getChild(child.name)) {
         // Try to revert camelcase transformation on collision
@@ -75,7 +78,7 @@ Namespace.prototype.addChild = function(child) {
  * @return {?ProtoBuf.Reflect.T} The child or null if not found
  * @expose
  */
-Namespace.prototype.getChild = function(nameOrId) {
+NamespacePrototype.getChild = function(nameOrId) {
     var key = typeof nameOrId === 'number' ? 'id' : 'name';
     for (var i=0, k=this.children.length; i<k; ++i)
         if (this.children[i][key] === nameOrId)
@@ -90,7 +93,7 @@ Namespace.prototype.getChild = function(nameOrId) {
  * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
  * @expose
  */
-Namespace.prototype.resolve = function(qn, excludeFields) {
+NamespacePrototype.resolve = function(qn, excludeFields) {
     var part = qn.split("."),
         ptr = this,
         i = 0;
@@ -124,7 +127,7 @@ Namespace.prototype.resolve = function(qn, excludeFields) {
  * @return {Object.<string,Function|Object>} Runtime namespace
  * @expose
  */
-Namespace.prototype.build = function() {
+NamespacePrototype.build = function() {
     /** @dict */
     var ns = {};
     var children = this.children;
@@ -142,7 +145,7 @@ Namespace.prototype.build = function() {
  * Builds the namespace's '$options' property.
  * @return {Object.<string,*>}
  */
-Namespace.prototype.buildOpt = function() {
+NamespacePrototype.buildOpt = function() {
     var opt = {},
         keys = Object.keys(this.options);
     for (var i=0, k=keys.length; i<k; ++i) {
@@ -163,7 +166,7 @@ Namespace.prototype.buildOpt = function() {
  * @param {string=} name Returns the option value if specified, otherwise all options are returned.
  * @return {*|Object.<string,*>}null} Option value or NULL if there is no such option
  */
-Namespace.prototype.getOption = function(name) {
+NamespacePrototype.getOption = function(name) {
     if (typeof name === 'undefined')
         return this.options;
     return typeof this.options[name] !== 'undefined' ? this.options[name] : null;

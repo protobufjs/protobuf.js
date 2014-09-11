@@ -27,12 +27,15 @@ var Service = function(rpcImpl) {
     };
 };
 
-// Extends ProtoBuf.Builder.Service
-Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
+/**
+ * @alias ProtoBuf.Builder.Service.prototype
+ * @inner
+ */
+var ServicePrototype = Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
 
 if (Object.defineProperty)
     Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
-    Object.defineProperty(Service.prototype, "$options", { "value": Service["$options"] });
+    Object.defineProperty(ServicePrototype, "$options", { "value": Service["$options"] });
 
 /**
  * Asynchronously performs an RPC call using the given RPC implementation.
@@ -60,7 +63,7 @@ for (var i=0; i<rpc.length; i++) {
     (function(method) {
 
         // service#Method(message, callback)
-        Service.prototype[method.name] = function(req, callback) {
+        ServicePrototype[method.name] = function(req, callback) {
             try {
                 if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
                     setTimeout(callback.bind(this, Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
@@ -90,6 +93,6 @@ for (var i=0; i<rpc.length; i++) {
 
         if (Object.defineProperty)
             Object.defineProperty(Service[method.name], "$options", { "value": method.buildOpt() }),
-            Object.defineProperty(Service.prototype[method.name], "$options", { "value": Service[method.name]["$options"] });
+            Object.defineProperty(ServicePrototype[method.name], "$options", { "value": Service[method.name]["$options"] });
     })(rpc[i]);
 }

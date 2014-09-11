@@ -39,11 +39,17 @@ var T = function(builder, parent, name) {
 };
 
 /**
+ * @alias ProtoBuf.Reflect.T.prototype
+ * @inner
+ */
+var TPrototype = T.prototype;
+
+/**
  * Returns the fully qualified name of this object.
  * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
  * @expose
  */
-T.prototype.fqn = function() {
+TPrototype.fqn = function() {
     var name = this.name,
         ptr = this;
     do {
@@ -61,7 +67,7 @@ T.prototype.fqn = function() {
  * @return String representation
  * @expose
  */
-T.prototype.toString = function(includeClass) {
+TPrototype.toString = function(includeClass) {
     return (includeClass ? this.className + " " : "") + this.fqn();
 };
 
@@ -70,6 +76,6 @@ T.prototype.toString = function(includeClass) {
  * @throws {Error} If this type cannot be built directly
  * @expose
  */
-T.prototype.build = function() {
+TPrototype.build = function() {
     throw Error(this.toString(true)+" cannot be built directly");
 };

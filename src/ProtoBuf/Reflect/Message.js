@@ -62,8 +62,11 @@ var Message = function(builder, parent, name, options, isGroup) {
     this._fieldsByName = null;
 };
 
-// Extends Namespace
-Message.prototype = Object.create(Namespace.prototype);
+/**
+ * @alias ProtoBuf.Reflect.Message.prototype
+ * @inner
+ */
+var MessagePrototype = Message.prototype = Object.create(Namespace.prototype);
 
 /**
  * Builds the message and returns the runtime counterpart, which is a fully functional class.
@@ -73,7 +76,7 @@ Message.prototype = Object.create(Namespace.prototype);
  * @throws {Error} If the message cannot be built
  * @expose
  */
-Message.prototype.build = function(rebuild) {
+MessagePrototype.build = function(rebuild) {
     if (this.clazz && !rebuild)
         return this.clazz;
 
@@ -117,7 +120,7 @@ Message.prototype.build = function(rebuild) {
  * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
  * @expose
  */
-Message.prototype.encode = function(message, buffer, noVerify) {
+MessagePrototype.encode = function(message, buffer, noVerify) {
     var fieldMissing = null,
         field;
     for (var i=0, k=this._fields.length, val; i<k; ++i) {
@@ -144,7 +147,7 @@ Message.prototype.encode = function(message, buffer, noVerify) {
  * @throws {Error} If required fields are missing or the message cannot be calculated for another reason
  * @expose
  */
-Message.prototype.calculate = function(message) {
+MessagePrototype.calculate = function(message) {
     for (var n=0, i=0, k=this._fields.length, field, val; i<k; ++i) {
         field = this._fields[i];
         val = message[field.name];
@@ -206,7 +209,7 @@ function skipTillGroupEnd(expectedId, buf) {
  * @throws {Error} If the message cannot be decoded
  * @expose
  */
-Message.prototype.decode = function(buffer, length, expectedGroupEndId) {
+MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
     length = typeof length === 'number' ? length : -1;
     var start = buffer.offset,
         msg = new (this.clazz)(),

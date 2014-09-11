@@ -101,15 +101,18 @@ Field._toCamelCase = function(name) {
     });
 };
 
-// Extends T
-Field.prototype = Object.create(T.prototype);
+/**
+ * @alias ProtoBuf.Reflect.Message.Field.prototype
+ * @inner
+ */
+var FieldPrototype = Field.prototype = Object.create(T.prototype);
 
 /**
  * Builds the field.
  * @override
  * @expose
  */
-Field.prototype.build = function() {
+FieldPrototype.build = function() {
     this.defaultValue = typeof this.options['default'] !== 'undefined'
         ? this.verifyValue(this.options['default']) : null;
 };
@@ -142,7 +145,7 @@ function mkLong(value, unsigned) {
  * @throws {Error} If the value cannot be set for this field
  * @expose
  */
-Field.prototype.verifyValue = function(value, skipRepeated) {
+FieldPrototype.verifyValue = function(value, skipRepeated) {
     skipRepeated = skipRepeated || false;
     var fail = function(val, msg) {
         throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
@@ -276,7 +279,7 @@ Field.prototype.verifyValue = function(value, skipRepeated) {
  * @throws {Error} If the field cannot be encoded
  * @expose
  */
-Field.prototype.encode = function(value, buffer) {
+FieldPrototype.encode = function(value, buffer) {
     if (this.type === null || typeof this.type !== 'object')
         throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
     if (value === null || (this.repeated && value.length == 0))
@@ -328,7 +331,7 @@ Field.prototype.encode = function(value, buffer) {
  * @throws {Error} If the value cannot be encoded
  * @expose
  */
-Field.prototype.encodeValue = function(value, buffer) {
+FieldPrototype.encodeValue = function(value, buffer) {
     if (value === null) return buffer; // Nothing to encode
     // Tag has already been written
 
@@ -449,7 +452,7 @@ Field.prototype.encodeValue = function(value, buffer) {
  * @returns {number} Byte length
  * @expose
  */
-Field.prototype.calculate = function(value) {
+FieldPrototype.calculate = function(value) {
     value = this.verifyValue(value); // May throw
     if (this.type === null || typeof this.type !== 'object')
         throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
@@ -488,7 +491,7 @@ Field.prototype.calculate = function(value) {
  * @throws {Error} If the value cannot be calculated
  * @expose
  */
-Field.prototype.calculateValue = function(value) {
+FieldPrototype.calculateValue = function(value) {
     if (value === null) return 0; // Nothing to encode
     // Tag has already been written
     var n;
@@ -544,7 +547,7 @@ Field.prototype.calculateValue = function(value) {
  * @throws {Error} If the field cannot be decoded
  * @expose
  */
-Field.prototype.decode = function(wireType, buffer, skipRepeated) {
+FieldPrototype.decode = function(wireType, buffer, skipRepeated) {
     var value, nBytes;
     if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated)))
         throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");

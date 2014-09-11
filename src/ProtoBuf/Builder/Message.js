@@ -17,9 +17,10 @@ var fields = T.getChildren(ProtoBuf.Reflect.Message.Field),
 var Message = function(values, var_args) {
     ProtoBuf.Builder.Message.call(this);
 
-    // Create fields on the object itself and set default values
+    // Create virtual oneof properties
     for (var i=0, k=oneofs.length; i<k; ++i)
         this[oneofs[i].name] = null;
+    // Create fields and set default values
     for (i=0, k=fields.length; i<k; ++i) {
         var field = fields[i];
         this[field.name] = field.repeated ? [] : null;
@@ -45,14 +46,10 @@ var Message = function(values, var_args) {
 };
 
 /**
- * The message's reflection type.
- * @name ProtoBuf.Builder.Message#$type
- * @type {!ProtoBuf.Reflect.Message}
- * @expose
+ * @alias ProtoBuf.Builder.Message.prototype
+ * @inner
  */
-
-// Extends ProtoBuf.Builder.Message
-Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
+var MessagePrototype = Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
 
 /**
  * Adds a value to a repeated field.
@@ -64,7 +61,7 @@ Message.prototype = Object.create(ProtoBuf.Builder.Message.prototype);
  * @throws {Error} If the value cannot be added
  * @expose
  */
-Message.prototype.add = function(key, value, noAssert) {
+MessagePrototype.add = function(key, value, noAssert) {
     var field = T._fieldsByName[key];
     if (!noAssert) {
         if (!field)
@@ -89,7 +86,7 @@ Message.prototype.add = function(key, value, noAssert) {
  * @throws {Error} If the value cannot be added
  * @expose
  */
-Message.prototype.$add = Message.prototype.add;
+MessagePrototype.$add = MessagePrototype.add;
 
 /**
  * Sets a field's value.
@@ -102,7 +99,7 @@ Message.prototype.$add = Message.prototype.add;
  * @throws {Error} If the value cannot be set
  * @expose
  */
-Message.prototype.set = function(key, value, noAssert) {
+MessagePrototype.set = function(key, value, noAssert) {
     if (key && typeof key === 'object') {
         for (var i in key)
             if (key.hasOwnProperty(i))
@@ -140,7 +137,7 @@ Message.prototype.set = function(key, value, noAssert) {
  * @throws {Error} If the value cannot be set
  * @expose
  */
-Message.prototype.$set = Message.prototype.set;
+MessagePrototype.$set = MessagePrototype.set;
 
 /**
  * Gets a field's value.
@@ -152,7 +149,7 @@ Message.prototype.$set = Message.prototype.set;
  * @throws {Error} If there is no such field
  * @expose
  */
-Message.prototype.get = function(key, noAssert) {
+MessagePrototype.get = function(key, noAssert) {
     if (noAssert)
         return this[key];
     var field = T._fieldsByName[key];
@@ -172,7 +169,7 @@ Message.prototype.get = function(key, noAssert) {
  * @throws {Error} If there is no such field
  * @expose
  */
-Message.prototype.$get = Message.prototype.get;
+MessagePrototype.$get = MessagePrototype.get;
 
 // Getters and setters
 
@@ -230,7 +227,7 @@ for (var i=0; i<fields.length; i++) {
              * @throws {Error} If the value cannot be set
              */
             if (T.getChild("set"+Name) === null)
-                Message.prototype["set"+Name] = setter;
+                MessagePrototype["set"+Name] = setter;
 
             /**
              * Sets a value. This method is present for each field, but only if there is no name conflict with
@@ -244,7 +241,7 @@ for (var i=0; i<fields.length; i++) {
              * @throws {Error} If the value cannot be set
              */
             if (T.getChild("set_"+name) === null)
-                Message.prototype["set_"+name] = setter;
+                MessagePrototype["set_"+name] = setter;
 
             /**
              * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -255,7 +252,7 @@ for (var i=0; i<fields.length; i++) {
              * @return {*} The value
              */
             if (T.getChild("get"+Name) === null)
-                Message.prototype["get"+Name] = getter;
+                MessagePrototype["get"+Name] = getter;
 
             /**
              * Gets a value. This method is present for each field, but only if there is no name conflict with
@@ -266,7 +263,7 @@ for (var i=0; i<fields.length; i++) {
              * @abstract
              */
             if (T.getChild("get_"+name) === null)
-                Message.prototype["get_"+name] = getter;
+                MessagePrototype["get_"+name] = getter;
 
         })(field);
 }
@@ -287,7 +284,7 @@ for (var i=0; i<fields.length; i++) {
  * @see ProtoBuf.Builder.Message#encodeHex
  * @see ProtoBuf.Builder.Message#encodeAB
  */
-Message.prototype.encode = function(buffer, noVerify) {
+MessagePrototype.encode = function(buffer, noVerify) {
     if (typeof buffer === 'boolean')
         noVerify = buffer,
         buffer = undefined;
@@ -313,7 +310,7 @@ Message.prototype.encode = function(buffer, noVerify) {
  * @throws {Error} If the message cannot be calculated or if required fields are missing.
  * @expose
  */
-Message.prototype.calculate = function() {
+MessagePrototype.calculate = function() {
     return T.calculate(this);
 };
 
@@ -327,7 +324,7 @@ Message.prototype.calculate = function() {
  *  returns the encoded ByteBuffer in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.encodeDelimited = function(buffer) {
+MessagePrototype.encodeDelimited = function(buffer) {
     var isNew = false;
     if (!buffer)
         buffer = new ByteBuffer(),
@@ -348,7 +345,7 @@ Message.prototype.encodeDelimited = function(buffer) {
  *  returns the encoded ArrayBuffer in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.encodeAB = function() {
+MessagePrototype.encodeAB = function() {
     try {
         return this.encode().toArrayBuffer();
     } catch (e) {
@@ -366,7 +363,7 @@ Message.prototype.encodeAB = function() {
  *  returns the encoded ArrayBuffer in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
+MessagePrototype.toArrayBuffer = MessagePrototype.encodeAB;
 
 /**
  * Directly encodes the message to a node Buffer.
@@ -377,7 +374,7 @@ Message.prototype.toArrayBuffer = Message.prototype.encodeAB;
  *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.encodeNB = function() {
+MessagePrototype.encodeNB = function() {
     try {
         return this.encode().toBuffer();
     } catch (e) {
@@ -395,7 +392,7 @@ Message.prototype.encodeNB = function() {
  *  returns the encoded node Buffer in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.toBuffer = Message.prototype.encodeNB;
+MessagePrototype.toBuffer = MessagePrototype.encodeNB;
 
 /**
  * Directly encodes the message to a base64 encoded string.
@@ -406,7 +403,7 @@ Message.prototype.toBuffer = Message.prototype.encodeNB;
  *  still returns the encoded base64 string in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.encode64 = function() {
+MessagePrototype.encode64 = function() {
     try {
         return this.encode().toBase64();
     } catch (e) {
@@ -424,7 +421,7 @@ Message.prototype.encode64 = function() {
  *  returns the encoded base64 string in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.toBase64 = Message.prototype.encode64;
+MessagePrototype.toBase64 = MessagePrototype.encode64;
 
 /**
  * Directly encodes the message to a hex encoded string.
@@ -435,7 +432,7 @@ Message.prototype.toBase64 = Message.prototype.encode64;
  *  still returns the encoded hex string in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.encodeHex = function() {
+MessagePrototype.encodeHex = function() {
     try {
         return this.encode().toHex();
     } catch (e) {
@@ -453,7 +450,7 @@ Message.prototype.encodeHex = function() {
  *  returns the encoded hex string in the `encoded` property on the error.
  * @expose
  */
-Message.prototype.toHex = Message.prototype.encodeHex;
+MessagePrototype.toHex = MessagePrototype.encodeHex;
 
 /**
  * Clones a message object to a raw object.
@@ -483,7 +480,7 @@ function cloneRaw(obj, includeBuffers) {
  * @returns {Object.<string,*>} Raw payload
  * @expose
  */
-Message.prototype.toRaw = function(includeBuffers) {
+MessagePrototype.toRaw = function(includeBuffers) {
     return cloneRaw(this, !!includeBuffers);
 };
 
@@ -585,7 +582,7 @@ Message.decodeHex = function(str) {
  * @return {string} String representation as of ".Fully.Qualified.MessageName"
  * @expose
  */
-Message.prototype.toString = function() {
+MessagePrototype.toString = function() {
     return T.toString();
 };
 
@@ -609,6 +606,6 @@ var $type; // cc
 
 if (Object.defineProperty)
     Object.defineProperty(Message, '$options', { "value": T.buildOpt() }),
-    Object.defineProperty(Message.prototype, "$type", {
+    Object.defineProperty(MessagePrototype, "$type", {
         get: function() { return T; }
     });
