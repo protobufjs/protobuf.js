@@ -1,4 +1,4 @@
-module.exports = require("protobufjs").newBuilder()["import"]({
+module.exports = require("protobufjs").newBuilder({})["import"]({
     "package": "js",
     "messages": [
         {
@@ -9,54 +9,72 @@ module.exports = require("protobufjs").newBuilder()["import"]({
                     "options": {},
                     "type": "sint32",
                     "name": "integer",
-                    "id": 1
+                    "id": 1,
+                    "oneof": "type"
                 },
                 {
                     "rule": "optional",
                     "options": {},
                     "type": "double",
                     "name": "double",
-                    "id": 2
+                    "id": 2,
+                    "oneof": "type"
                 },
                 {
                     "rule": "optional",
                     "options": {},
                     "type": "string",
                     "name": "string",
-                    "id": 3
+                    "id": 3,
+                    "oneof": "type"
                 },
                 {
                     "rule": "optional",
                     "options": {},
                     "type": "bool",
                     "name": "boolean",
-                    "id": 4
+                    "id": 4,
+                    "oneof": "type"
                 },
                 {
                     "rule": "optional",
                     "options": {},
                     "type": "bool",
                     "name": "null",
-                    "id": 5
+                    "id": 5,
+                    "oneof": "type"
                 },
                 {
                     "rule": "optional",
                     "options": {},
                     "type": "Array",
                     "name": "array",
-                    "id": 6
+                    "id": 6,
+                    "oneof": "type"
                 },
                 {
                     "rule": "optional",
                     "options": {},
                     "type": "Object",
                     "name": "object",
-                    "id": 7
+                    "id": 7,
+                    "oneof": "type"
                 }
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {
+                "type": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
+                ]
+            }
         },
         {
             "name": "Array",
@@ -71,7 +89,8 @@ module.exports = require("protobufjs").newBuilder()["import"]({
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         },
         {
             "name": "Object",
@@ -93,7 +112,8 @@ module.exports = require("protobufjs").newBuilder()["import"]({
             ],
             "enums": [],
             "messages": [],
-            "options": {}
+            "options": {},
+            "oneofs": {}
         }
     ],
     "enums": [],

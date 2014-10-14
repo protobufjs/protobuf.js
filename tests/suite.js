@@ -1621,10 +1621,13 @@
                   , util = require('util');
         
                 var code = fs.readFileSync(__dirname+"/../dist/"+FILE);
+                var exports = {};
                 var sandbox = new Sandbox({
                     module: {
-                        exports: {}
+                        exports: exports,
+                        id: "protobufjs"
                     },
+                    exports: exports,
                     require: (function() {
                         function require(mod) {
                             if (mod == 'bytebuffer') require.called = true;

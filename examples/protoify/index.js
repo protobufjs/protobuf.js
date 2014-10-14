@@ -63,37 +63,35 @@ function _protoify(val) {
  * @inner
  */
 function _jsonify(value) {
-    // Omitted optional fields are always `null`
-    if (value['integer'] !== null)
-        return value['integer'];
-    if (value['double'] !== null)
-        return value['double'];
-    if (value['string'] !== null)
-        return value['string'];
-    if (value['boolean'] !== null)
-        return value['boolean'];
-    if (value['null'] === true)
-        return null;
-    if (value['array'] !== null) {
-        var values = value['array']['values'],
-            i = 0,
-            k = values.length,
-            arr = new Array(k);
-        for (; i<k; ++i)
-            arr[i] = _jsonify(values[i]);
-        return arr;
+    if (value.type === null)
+        return undefined;
+    switch (value.type) {
+        case 'null':
+            return null;
+        case 'array':
+            return (function() {
+                var values = value['array']['values'],
+                    i = 0,
+                    k = values.length,
+                    arr = new Array(k);
+                for (; i<k; ++i)
+                    arr[i] = _jsonify(values[i]);
+                return arr;
+            })();
+        case 'object':
+            return (function() {
+                var keys = value['object']['keys'],
+                    values = value['object']['values'],
+                    i = 0,
+                    k = keys.length,
+                    obj = {};
+                for (; i<k; ++i)
+                    obj[keys[i]['string'] /* is a JS.Value, here always a string */] = _jsonify(values[i]);
+                return obj;
+            })();
+        default:
+            return value[value.type];
     }
-    if (value['object'] !== null) {
-        var keys = value['object']['keys'],
-            values = value['object']['values'],
-            i = 0,
-            k = keys.length,
-            obj = {};
-        for (; i<k; ++i)
-            obj[keys[i]['string'] /* is a JS.Value, here always a string */] = _jsonify(values[i]);
-        return obj;
-    }
-    /* If nothing is set */ return undefined;
 }
 
 // And this is how we actually encode and decode them:

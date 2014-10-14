@@ -1,7 +1,7 @@
 /*?
-    // --- Scope -----------------
-    // Lang : Language expressions
-    */
+// --- Scope -----------------
+// Lang : Language expressions
+*/
 /**
  * Constructs a new Tokenizer.
  * @exports ProtoBuf.DotProto.Tokenizer

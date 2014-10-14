@@ -20,7 +20,7 @@
     },
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "dependencies": {
-        "bytebuffer": "~3.3",
+        "bytebuffer": "~3 >=3.5",
         "ascli": "~0.3"
     },
     "devDependencies": {
