@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "dependencies": {
-        "protobufjs": "~3.6"
+        "protobufjs": "~3.7"
     },
     "engines": {
         "node": ">=0.8"
