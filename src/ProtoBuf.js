@@ -401,7 +401,7 @@
         return ProtoBuf;
     }
 
-    /* CommonJS */ if (typeof require === 'function' && typeof module === 'object' && module && module.id && typeof exports === 'object' && exports)
+    /* CommonJS */ if (typeof require === 'function' && typeof module === 'object' && module && typeof exports === 'object' && exports)
         module['exports'] = init(require("bytebuffer"));
     /* AMD */ else if (typeof define === 'function' && define["amd"])
         define(["ByteBuffer"], init);

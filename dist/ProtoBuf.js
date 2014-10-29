@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.7.0";
+        ProtoBuf.VERSION = "3.8.0";
 
         /**
          * Wire types.
@@ -2139,33 +2139,33 @@
                     /**
                      * Clones a message object to a raw object.
                      * @param {*} obj Object to clone
-                     * @param {boolean} includeBuffers Whether to include native buffer data or not
+                     * @param {boolean} includeBinaryAsBase64 Whether to include binary data as base64 strings or not
                      * @returns {*} Cloned object
                      * @inner
                      */
-                    function cloneRaw(obj, includeBuffers) {
+                    function cloneRaw(obj, includeBinaryAsBase64) {
                         var clone = {};
                         for (var i in obj)
                             if (obj.hasOwnProperty(i)) {
                                 if (obj[i] === null || typeof obj[i] !== 'object')
                                     clone[i] = obj[i];
                                 else if (obj[i] instanceof ByteBuffer) {
-                                    if (includeBuffers)
-                                        clone[i] = obj.toBuffer();
+                                    if (includeBinaryAsBase64)
+                                        clone[i] = obj[i].toBase64();
                                 } else // is a non-null object
-                                    clone[i] = cloneRaw(obj[i], includeBuffers);
+                                    clone[i] = cloneRaw(obj[i], includeBinaryAsBase64);
                             }
                         return clone;
                     }
 
                     /**
                      * Returns the message's raw payload.
-                     * @param {boolean=} includeBuffers Whether to include native buffer data or not, defaults to `false`
+                     * @param {boolean=} includeBinaryAsBase64 Whether to include binary data as base64 strings or not, defaults to `false`
                      * @returns {Object.<string,*>} Raw payload
                      * @expose
                      */
-                    MessagePrototype.toRaw = function(includeBuffers) {
-                        return cloneRaw(this, !!includeBuffers);
+                    MessagePrototype.toRaw = function(includeBinaryAsBase64) {
+                        return cloneRaw(this, !!includeBinaryAsBase64);
                     };
 
                     /**
@@ -2723,9 +2723,9 @@
 
                     // Length-delimited bytes
                     case ProtoBuf.TYPES["bytes"]:
-                        return value && value instanceof ByteBuffer
-                            ? value
-                            : ByteBuffer.wrap(value);
+                        if (ByteBuffer.isByteBuffer(value))
+                            return value;
+                        return ByteBuffer.wrap(value, "base64");
 
                     // Constant enum value
                     case ProtoBuf.TYPES["enum"]: {
@@ -4326,7 +4326,7 @@
         return ProtoBuf;
     }
 
-    /* CommonJS */ if (typeof require === 'function' && typeof module === 'object' && module && module.id && typeof exports === 'object' && exports)
+    /* CommonJS */ if (typeof require === 'function' && typeof module === 'object' && module && typeof exports === 'object' && exports)
         module['exports'] = init(require("bytebuffer"));
     /* AMD */ else if (typeof define === 'function' && define["amd"])
         define(["ByteBuffer"], init);

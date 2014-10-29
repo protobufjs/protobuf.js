@@ -233,9 +233,9 @@ FieldPrototype.verifyValue = function(value, skipRepeated) {
 
         // Length-delimited bytes
         case ProtoBuf.TYPES["bytes"]:
-            return value && value instanceof ByteBuffer
-                ? value
-                : ByteBuffer.wrap(value);
+            if (ByteBuffer.isByteBuffer(value))
+                return value;
+            return ByteBuffer.wrap(value, "base64");
 
         // Constant enum value
         case ProtoBuf.TYPES["enum"]: {
