@@ -1,6 +1,6 @@
 {
     "name": "protobufjs",
-    "version": "3.8.0",
+    "version": "4.0.0-pre",
     "description": "Protocol Buffers for JavaScript. Finally.",
     "author": "Daniel Wirtz <dcode@dcode.io>",
     "contributors": [
@@ -21,10 +21,10 @@
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "dependencies": {
         "bytebuffer": "~3 >=3.5",
-        "ascli": "~0.3"
+        "ascli": "~1"
     },
     "devDependencies": {
-        "testjs": "~1",
+        "testjs": "~1 >=1.0.4",
         "metascript": ">=0.18 <1",
         "closurecompiler": "~1",
         "jsdoc": "~3.3"

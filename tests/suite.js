@@ -870,7 +870,7 @@
                 var root = builder.build();
                 test.ok(!!root.Test1);
                 test.ok(!!root.Test2);
-                test.ok(!!root.My.Test2);
+                test.ok(!!root.My.Test3);
                 test.notEqual(root.Test2, root.My.Test2);
             } catch (e) {
                 fail(e);

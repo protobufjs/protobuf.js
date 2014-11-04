@@ -1,0 +1,83 @@
+{
+    "package": "My",
+    "messages": [
+        {
+            "name": "Test3",
+            "fields": [
+                {
+                    "rule": "required",
+                    "options": {},
+                    "type": "Test1",
+                    "name": "test1",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "options": {},
+                    "type": ".Test2",
+                    "name": "test2",
+                    "id": 2
+                }
+            ],
+            "enums": [],
+            "messages": [],
+            "options": {},
+            "oneofs": {}
+        }
+    ],
+    "enums": [],
+    "imports": [
+        {
+            "package": null,
+            "messages": [
+                {
+                    "name": "Test1",
+                    "fields": [
+                        {
+                            "rule": "required",
+                            "options": {},
+                            "type": "int32",
+                            "name": "a",
+                            "id": 1
+                        }
+                    ],
+                    "enums": [],
+                    "messages": [],
+                    "options": {},
+                    "oneofs": {}
+                }
+            ],
+            "enums": [],
+            "imports": [],
+            "options": {},
+            "services": []
+        },
+        {
+            "package": null,
+            "messages": [
+                {
+                    "name": "Test2",
+                    "fields": [
+                        {
+                            "rule": "required",
+                            "options": {},
+                            "type": "string",
+                            "name": "b",
+                            "id": 2
+                        }
+                    ],
+                    "enums": [],
+                    "messages": [],
+                    "options": {},
+                    "oneofs": {}
+                }
+            ],
+            "enums": [],
+            "imports": [],
+            "options": {},
+            "services": []
+        }
+    ],
+    "options": {},
+    "services": []
+}

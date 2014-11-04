@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.8.0";
+        ProtoBuf.VERSION = "4.0.0-pre";
 
         /**
          * Wire types.
@@ -599,13 +599,13 @@
 
             /**
              * Resolves a reflect object inside of this namespace.
-             * @param {string} qn Qualified name to resolve
+             * @param {string|!Array.<string>} qn Qualified name to resolve
              * @param {boolean=} excludeFields Excludes fields, defaults to `false`
              * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
              * @expose
              */
             NamespacePrototype.resolve = function(qn, excludeFields) {
-                var part = qn.split("."),
+                var part = typeof qn === 'string' ? qn.split(".") : qn,
                     ptr = this,
                     i = 0;
                 if (part[i] === "") { // Fully qualified name, e.g. ".My.Message'
@@ -631,6 +631,26 @@
                     }
                 } while (ptr != null);
                 return ptr;
+            };
+
+            /**
+             * Determines the shortest qualified name of the specified type, if any, relative to this namespace.
+             * @param {!ProtoBuf.Reflect.T} t Reflection type
+             * @returns {string} The shortest qualified name or, if there is none, the fqn
+             * @expose
+             */
+            NamespacePrototype.qn = function(t) {
+                var part = [], ptr = t;
+                do {
+                    part.unshift(ptr.name);
+                    ptr = ptr.parent;
+                } while (ptr !== null);
+                for (var len=1; len <= part.length; len++) {
+                    var qn = part.slice(part.length-len);
+                    if (t === this.resolve(qn))
+                        return qn.join(".");
+                }
+                return t.fqn();
             };
 
             /**
@@ -2752,22 +2772,22 @@
             /**
              * Defines a package on top of the current pointer position and places the pointer on it.
              * @param {string} pkg
-             * @param {Object.<string,*>=} options
              * @return {ProtoBuf.Builder} this
              * @throws {Error} If the package name is invalid
              * @expose
              */
-            BuilderPrototype.define = function(pkg, options) {
+            BuilderPrototype.define = function(pkg) {
                 if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
                     throw Error("Illegal package: "+pkg);
-                var part = pkg.split("."), i;
+                var part = pkg.split("."), i, ns;
                 for (i=0; i<part.length; i++) // To be absolutely sure
                     if (!Lang.NAME.test(part[i]))
                         throw Error("Illegal package: "+part[i]);
                 for (i=0; i<part.length; i++) {
-                    if (this.ptr.getChild(part[i]) === null) // Keep existing namespace
-                        this.ptr.addChild(new Reflect.Namespace(this, this.ptr, part[i], options));
-                    this.ptr = this.ptr.getChild(part[i]);
+                    ns = this.ptr.getChild(part[i]);
+                    if (ns === null) // Keep existing
+                        this.ptr.addChild(ns = new Reflect.Namespace(this, this.ptr, part[i]));
+                    this.ptr = ns;
                 }
                 return this;
             };
@@ -2885,7 +2905,7 @@
                     return this; // Nothing to create
                 if (!ProtoBuf.Util.isArray(defs))
                     defs = [defs];
-                if (defs.length == 0)
+                if (defs.length === 0)
                     return this;
 
                 // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
@@ -3083,30 +3103,25 @@
                     if (resetRoot) // Reset import root override when all imports are done
                         this.importRoot = null;
                 }
-                if (json['messages']) {
-                    if (json['package'])
-                        this.define(json['package'], json["options"]);
-                    this.create(json['messages']);
-                    this.reset();
-                }
-                if (json['enums']) {
-                    if (json['package'])
-                        this.define(json['package'], json["options"]);
-                    this.create(json['enums']);
-                    this.reset();
-                }
-                if (json['services']) {
-                    if (json['package'])
-                        this.define(json['package'], json["options"]);
-                    this.create(json['services']);
-                    this.reset();
-                }
-                if (json['extends']) {
-                    if (json['package'])
-                        this.define(json['package'], json["options"]);
+                if (json['package'])
+                    this.define(json['package']);
+                var base = this.ptr;
+                if (json['options'])
+                    Object.keys(json['options']).forEach(function(key) {
+                        base.options[key] = json['options'][key];
+                    });
+                if (json['messages'])
+                    this.create(json['messages']),
+                    this.ptr = base;
+                if (json['enums'])
+                    this.create(json['enums']),
+                    this.ptr = base;
+                if (json['services'])
+                    this.create(json['services']),
+                    this.ptr = base;
+                if (json['extends'])
                     this.create(json['extends']);
-                    this.reset();
-                }
+                this.reset();
                 return this;
             };
 
@@ -3204,7 +3219,7 @@
             /**
              * Builds the protocol. This will first try to resolve all definitions and, if this has been successful,
              * return the built package.
-             * @param {string=} path Specifies what to return. If omitted, the entire namespace will be returned.
+             * @param {(string|Array.<string>)=} path Specifies what to return. If omitted, the entire namespace will be returned.
              * @return {ProtoBuf.Builder.Message|Object.<string,*>}
              * @throws {Error} If a type could not be resolved
              * @expose
@@ -3215,13 +3230,13 @@
                     this.resolveAll(),
                     this.resolved = true,
                     this.result = null; // Require re-build
-                if (this.result == null) // (Re-)Build
+                if (this.result === null) // (Re-)Build
                     this.result = this.ns.build();
                 if (!path)
                     return this.result;
                 else {
-                    var part = path.split(".");
-                    var ptr = this.result; // Build namespace pointer (no hasChild etc.)
+                    var part = typeof path === 'string' ? path.split(".") : path,
+                        ptr = this.result; // Build namespace pointer (no hasChild etc.)
                     for (var i=0; i<part.length; i++)
                         if (ptr[part[i]])
                             ptr = ptr[part[i]];

@@ -1,0 +1,2 @@
+#!/usr/bin/env node
+process.exit(require(__dirname+"/../cli/pbjs.js").main(process.argv));

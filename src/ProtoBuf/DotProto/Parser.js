@@ -64,8 +64,6 @@ ParserPrototype.parse = function() {
                 head = false;
                 break;
             case 'option':
-                if (!head)
-                    throw Error("Unexpected option at line "+this.tn.line);
                 this._parseOption(topLevel, token);
                 break;
             case 'service':

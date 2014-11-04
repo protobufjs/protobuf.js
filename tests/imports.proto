@@ -3,7 +3,7 @@ package My;
 import public "example1.proto";
 import "example2.proto";
 
-message Test2 {
+message Test3 {
     required Test1 test1 = 1;
     required .Test2 test2 = 2;
 }

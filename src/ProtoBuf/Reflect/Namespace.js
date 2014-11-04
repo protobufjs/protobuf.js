@@ -88,13 +88,13 @@ NamespacePrototype.getChild = function(nameOrId) {
 
 /**
  * Resolves a reflect object inside of this namespace.
- * @param {string} qn Qualified name to resolve
+ * @param {string|!Array.<string>} qn Qualified name to resolve
  * @param {boolean=} excludeFields Excludes fields, defaults to `false`
  * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
  * @expose
  */
 NamespacePrototype.resolve = function(qn, excludeFields) {
-    var part = qn.split("."),
+    var part = typeof qn === 'string' ? qn.split(".") : qn,
         ptr = this,
         i = 0;
     if (part[i] === "") { // Fully qualified name, e.g. ".My.Message'
@@ -120,6 +120,26 @@ NamespacePrototype.resolve = function(qn, excludeFields) {
         }
     } while (ptr != null);
     return ptr;
+};
+
+/**
+ * Determines the shortest qualified name of the specified type, if any, relative to this namespace.
+ * @param {!ProtoBuf.Reflect.T} t Reflection type
+ * @returns {string} The shortest qualified name or, if there is none, the fqn
+ * @expose
+ */
+NamespacePrototype.qn = function(t) {
+    var part = [], ptr = t;
+    do {
+        part.unshift(ptr.name);
+        ptr = ptr.parent;
+    } while (ptr !== null);
+    for (var len=1; len <= part.length; len++) {
+        var qn = part.slice(part.length-len);
+        if (t === this.resolve(qn))
+            return qn.join(".");
+    }
+    return t.fqn();
 };
 
 /**
