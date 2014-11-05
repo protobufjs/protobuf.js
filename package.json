@@ -8,8 +8,7 @@
     ],
     "main": "index.js",
     "bin": {
-        "proto2js": "./bin/proto2js",
-        "json2proto": "./bin/json2proto"
+        "pbjs": "./bin/pbjs"
     },
     "repository": {
         "type": "git",
