@@ -483,6 +483,10 @@
                     "id": 999
                 }
             ],
+            "extensions": [
+                1000,
+                536870911
+            ],
             "enums": [
                 {
                     "name": "OptimizeMode",
@@ -530,6 +534,10 @@
                     "name": "uninterpreted_option",
                     "id": 999
                 }
+            ],
+            "extensions": [
+                1000,
+                536870911
             ]
         },
         {
@@ -590,6 +598,10 @@
                     "id": 999
                 }
             ],
+            "extensions": [
+                1000,
+                536870911
+            ],
             "enums": [
                 {
                     "name": "CType",
@@ -628,6 +640,10 @@
                     "name": "uninterpreted_option",
                     "id": 999
                 }
+            ],
+            "extensions": [
+                1000,
+                536870911
             ]
         },
         {
@@ -639,6 +655,10 @@
                     "name": "uninterpreted_option",
                     "id": 999
                 }
+            ],
+            "extensions": [
+                1000,
+                536870911
             ]
         },
         {
@@ -650,6 +670,10 @@
                     "name": "uninterpreted_option",
                     "id": 999
                 }
+            ],
+            "extensions": [
+                1000,
+                536870911
             ]
         },
         {
@@ -661,6 +685,10 @@
                     "name": "uninterpreted_option",
                     "id": 999
                 }
+            ],
+            "extensions": [
+                1000,
+                536870911
             ]
         },
         {
