@@ -6,26 +6,79 @@
             "fields": [
                 {
                     "rule": "required",
-                    "options": {},
                     "type": "string",
                     "name": "model",
                     "id": 1
                 },
                 {
                     "rule": "required",
-                    "options": {},
                     "type": "Vendor",
                     "name": "vendor",
                     "id": 2
                 },
                 {
                     "rule": "optional",
-                    "options": {
-                        "default": "FAST"
-                    },
                     "type": "Speed",
                     "name": "speed",
-                    "id": 3
+                    "id": 3,
+                    "options": {
+                        "default": "FAST"
+                    }
+                }
+            ],
+            "messages": [
+                {
+                    "name": "Vendor",
+                    "fields": [
+                        {
+                            "rule": "required",
+                            "type": "string",
+                            "name": "name",
+                            "id": 1
+                        },
+                        {
+                            "rule": "optional",
+                            "type": "Address",
+                            "name": "address",
+                            "id": 2
+                        }
+                    ],
+                    "messages": [
+                        {
+                            "name": "Address",
+                            "fields": [
+                                {
+                                    "rule": "required",
+                                    "type": "string",
+                                    "name": "country",
+                                    "id": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Holder",
+                    "fields": [
+                        {
+                            "rule": "optional",
+                            "type": "string",
+                            "name": "first_name",
+                            "id": 1
+                        },
+                        {
+                            "rule": "required",
+                            "type": "string",
+                            "name": "last_name",
+                            "id": 2
+                        },
+                        {
+                            "rule": "optional",
+                            "type": "Vendor.Address",
+                            "name": "address",
+                            "id": 3
+                        }
+                    ]
                 }
             ],
             "enums": [
@@ -40,88 +93,9 @@
                             "name": "SUPERFAST",
                             "id": 2
                         }
-                    ],
-                    "options": {}
+                    ]
                 }
-            ],
-            "messages": [
-                {
-                    "name": "Vendor",
-                    "fields": [
-                        {
-                            "rule": "required",
-                            "options": {},
-                            "type": "string",
-                            "name": "name",
-                            "id": 1
-                        },
-                        {
-                            "rule": "optional",
-                            "options": {},
-                            "type": "Address",
-                            "name": "address",
-                            "id": 2
-                        }
-                    ],
-                    "enums": [],
-                    "messages": [
-                        {
-                            "name": "Address",
-                            "fields": [
-                                {
-                                    "rule": "required",
-                                    "options": {},
-                                    "type": "string",
-                                    "name": "country",
-                                    "id": 1
-                                }
-                            ],
-                            "enums": [],
-                            "messages": [],
-                            "options": {},
-                            "oneofs": {}
-                        }
-                    ],
-                    "options": {},
-                    "oneofs": {}
-                },
-                {
-                    "name": "Holder",
-                    "fields": [
-                        {
-                            "rule": "optional",
-                            "options": {},
-                            "type": "string",
-                            "name": "first_name",
-                            "id": 1
-                        },
-                        {
-                            "rule": "required",
-                            "options": {},
-                            "type": "string",
-                            "name": "last_name",
-                            "id": 2
-                        },
-                        {
-                            "rule": "optional",
-                            "options": {},
-                            "type": "Vendor.Address",
-                            "name": "address",
-                            "id": 3
-                        }
-                    ],
-                    "enums": [],
-                    "messages": [],
-                    "options": {},
-                    "oneofs": {}
-                }
-            ],
-            "options": {},
-            "oneofs": {}
+            ]
         }
-    ],
-    "enums": [],
-    "imports": [],
-    "options": {},
-    "services": []
+    ]
 }

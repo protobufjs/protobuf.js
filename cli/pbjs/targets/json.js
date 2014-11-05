@@ -36,8 +36,9 @@ var json = module.exports = function(builder, options) {
         ptr = ptr.children[0];
 
     // Start by building the package namespace
-    var out = {
-        "package": ptr.name !== "" ? ptr.name : null /*,
+    var pkg = ptr.fqn().substring(1),
+        out = {
+        "package": pkg !== "" ? pkg : null /*,
         "imports": [] */
     };
     buildNamespace(ptr, out);

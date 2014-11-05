@@ -34,10 +34,10 @@
     },
     "scripts": {
         "prepublish": "npm test",
-        "test": "node bin/proto2js tests/complex.proto > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
-        "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && dos2unix bin/proto2js && dos2unix bin/json2proto && npm test && npm run-script jsdoc",
+        "test": "node bin/pbjs tests/complex.proto -target=json > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
+        "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && npm test && npm run-script jsdoc",
         "build": "node scripts/build.js",
-        "descriptor2json": "node bin/proto2js src/google/protobuf/descriptor.proto > src/google/protobuf/descriptor.json",
+        "descriptor2json": "node bin/pbjs src/google/protobuf/descriptor.proto -target=json > src/google/protobuf/descriptor.json",
         "compile": "npm run-script compile-full && npm run-script compile-noparse",
         "compile-full": "ccjs dist/ProtoBuf.js --create_source_map=dist/ProtoBuf.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.min.js",
         "compile-noparse": "ccjs dist/ProtoBuf.noparse.js --create_source_map=dist/ProtoBuf.noparse.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.noparse.min.js",
