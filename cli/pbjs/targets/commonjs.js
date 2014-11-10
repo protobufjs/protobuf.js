@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-var description = "Runtime structures as a CommonJS module";
+var description = "Runtime structures as CommonJS module";
 
 var util = require("../util.js"),
     js = require("./js.js");

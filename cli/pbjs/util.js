@@ -15,6 +15,11 @@
  */
 var ProtoBuf = require("../../index.js");
 
+/**
+ * Utility namespace.
+ * @exports pbjs/util
+ * @namespace
+ */
 var util = module.exports = {};
 
 /**
@@ -47,11 +52,12 @@ util.getBuilderOptions = function(options, prefix) {
  * Pads a string to the specified length.
  * @param {string} str String to pad
  * @param {number} len Pad length
+ * @param {boolean=} left Whether to pad to the left, defaults to `false`
  * @returns {string}
  */
-util.pad = function(str, len) {
+util.pad = function(str, len, left) {
     while (str.length < len)
-        str += " ";
+        left ? str = " "+str : str += " ";
     return str;
 };
 
@@ -62,6 +68,8 @@ util.pad = function(str, len) {
  * @returns {string}
  */
 util.indent = function(str, ws) {
+    if (ws === 0 || ws === "")
+        return str;
     var lines = str.split(/\r?\n/);
     if (typeof ws === 'number') {
         var n = ws; ws = "";

@@ -17,14 +17,20 @@ var ProtoBuf = require(__dirname+"/../index.js"),
     fs       = require("fs"),
     path     = require("path"),
     cli      = require("ascli")("pbjs"),
-    util     = require(__dirname+"/pbjs/util.js"),
-    pkg      = require(__dirname+"/../package.json");
+    util     = require("./pbjs/util.js"),
+    pkg      = require("../package.json");
 
 /**
  * pbjs namespace.
+ * @exports pbjs
  * @namespace
  */
 var pbjs = module.exports = {};
+
+/**
+ * @alias pbjs/util
+ */
+pbjs.util = util;
 
 /**
  * Source formats.
@@ -32,7 +38,8 @@ var pbjs = module.exports = {};
  */
 pbjs.sources = {};
 fs.readdirSync(__dirname+"/pbjs/sources").forEach(function(source) {
-    pbjs.sources[source.substring(0, source.lastIndexOf("."))] = require(__dirname+"/pbjs/sources/"+source);
+    if (/\.js$/.test(source))
+        pbjs.sources[source.substring(0, source.lastIndexOf("."))] = require(__dirname+"/pbjs/sources/"+source);
 });
 
 /**
@@ -41,7 +48,8 @@ fs.readdirSync(__dirname+"/pbjs/sources").forEach(function(source) {
  */
 pbjs.targets = {};
 fs.readdirSync(__dirname+"/pbjs/targets").forEach(function(target) {
-    pbjs.targets[target.substring(0, target.lastIndexOf("."))] = require(__dirname+"/pbjs/targets/"+target);
+    if (/\.js$/.test(target))
+        pbjs.targets[target.substring(0, target.lastIndexOf("."))] = require(__dirname+"/pbjs/targets/"+target);
 });
 
 /**
@@ -95,7 +103,7 @@ pbjs.main = function(argv) {
 
     // Display usage information
     if (argv.length < 3) {
-        cli.banner("pb".white.bold+"js".green.bold, "             ProtoBuf.js v"+pkg['version']+" "+"https://github.com/dcodeIO/ProtoBuf.js".grey);
+        cli.banner("pb".white.bold+"js".green.bold, util.pad("ProtoBuf.js v"+pkg['version'], 31, true)+" "+"https://github.com/dcodeIO/ProtoBuf.js".grey);
         cli.log("CLI utility to convert between .proto and JSON syntax / to generate classes.\n");
         cli.log("Usage: ".white.bold+path.basename(argv[1]).green.bold+" filename -target=FORMAT [-min] [> outFile]\n");
         cli.log("General options:\n");
@@ -104,7 +112,7 @@ pbjs.main = function(argv) {
             cli.log("                             "+util.pad(key, 10)+"   "+pbjs.sources[key].description);
         });
         cli.log("");
-        cli.log("                          If omitted, the application will attempt to detect it.\n");
+        cli.log("                          If omitted, the application will try to detect it.\n");
         cli.log("  -target=FORMAT          Specifies the target format. Valid formats are:\n");
         Object.keys(pbjs.targets).forEach(function(key) {
             cli.log("                             "+util.pad(key, 10)+"   "+pbjs.targets[key].description);
@@ -112,7 +120,7 @@ pbjs.main = function(argv) {
         cli.log("");
         cli.log("                          If omitted, target format defaults to json.\n");
         cli.log("  -using:NAME[=VALUE]     Specifies an option to apply to the volatile builder");
-        cli.log("                          loading the source file, e.g. convertFieldsToCamelCase.\n");
+        cli.log("                          loading the source, e.g. convertFieldsToCamelCase.\n");
         cli.log("  -min                    Minifies the output.\n");
         cli.log("  -path=DIR               Adds a directory to the include path.\n");
         cli.log("  -legacy                 Includes legacy descriptors from google/protobuf/ if");
