@@ -360,7 +360,6 @@
                 json = JSON.parse(json);
             builder["import"](json, filename);
             builder.resolveAll();
-            builder.build();
             return builder;
         };
 

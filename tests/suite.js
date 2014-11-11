@@ -877,6 +877,28 @@
             }
             test.done();
         },
+
+        "importExtensions": function(test) {
+            var x = "package x; \
+            message Test { \
+                extensions 1 to 10; \
+            } \
+            extend Test { \
+                optional int32 first_val = 1; \
+            }";
+            var y = "package y; \
+            extend x.Test { \
+                optional int32 second_val = 2; \
+            }";
+            var builder = ProtoBuf.newBuilder();
+            ProtoBuf.loadProto(x, builder);
+            ProtoBuf.loadProto(y, builder);
+            var Test = builder.build('x.Test');
+            var inst = new Test();
+            test.strictEqual(inst[".x.first_val"], null);
+            test.strictEqual(inst[".y.second_val"], null);
+            test.done();
+        },
         
         "toplevel": function(test) {
             try {

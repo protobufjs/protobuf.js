@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "3.8.0";
+        ProtoBuf.VERSION = "3.8.1";
 
         /**
          * Wire types.
@@ -3295,7 +3295,6 @@
                 json = JSON.parse(json);
             builder["import"](json, filename);
             builder.resolveAll();
-            builder.build();
             return builder;
         };
 
