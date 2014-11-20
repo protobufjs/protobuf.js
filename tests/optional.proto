@@ -1,3 +1,12 @@
 message Test1 {
     optional int32 a = 1;
+    optional Test2 b = 2;
+}
+
+message Test2 {
+    optional int32 c = 1;
+    optional Test3 d = 2;
+}
+
+message Test3 {
 }
