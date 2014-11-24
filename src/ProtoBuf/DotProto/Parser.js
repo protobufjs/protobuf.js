@@ -112,12 +112,12 @@ ParserPrototype._parseNumber = function(val) {
  * @private
  */
 ParserPrototype._parseString = function() {
-    var value = "", token;
+    var value = "", token, delim;
     do {
-        token = this.tn.next(); // Known to be = this.tn.stringEndsWith
+        delim = this.tn.next();
         value += this.tn.next();
         token = this.tn.next();
-        if (token !== this.tn.stringEndsWith)
+        if (token !== delim)
             throw Error("Illegal end of string at line "+this.tn.line+": "+token);
         token = this.tn.peek();
     } while (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ);

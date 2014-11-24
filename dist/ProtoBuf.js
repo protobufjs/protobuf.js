@@ -402,7 +402,7 @@
             ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
             NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
             WHITESPACE: /\s/,
-            STRING: /['"]([^'"\\]*(\\.[^"\\]*)*)['"]/g,
+            STRING: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")|(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
             BOOL: /^(?:true|false)$/i
         };
 
@@ -488,7 +488,7 @@
                 Lang.STRING.lastIndex = this.index-1; // Include the open quote
                 var match;
                 if ((match = Lang.STRING.exec(this.source)) !== null) {
-                    var s = match[1];
+                    var s = typeof match[1] !== 'undefined' ? match[1] : match[2];
                     this.index = Lang.STRING.lastIndex;
                     this.stack.push(this.stringEndsWith);
                     return s;
@@ -710,12 +710,12 @@
              * @private
              */
             ParserPrototype._parseString = function() {
-                var value = "", token;
+                var value = "", token, delim;
                 do {
-                    token = this.tn.next(); // Known to be = this.tn.stringEndsWith
+                    delim = this.tn.next();
                     value += this.tn.next();
                     token = this.tn.next();
-                    if (token !== this.tn.stringEndsWith)
+                    if (token !== delim)
                         throw Error("Illegal end of string at line "+this.tn.line+": "+token);
                     token = this.tn.peek();
                 } while (token === Lang.STRINGOPEN || token === Lang.STRINGOPEN_SQ);
