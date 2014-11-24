@@ -70,7 +70,7 @@ TokenizerPrototype._readString = function() {
     Lang.STRING.lastIndex = this.index-1; // Include the open quote
     var match;
     if ((match = Lang.STRING.exec(this.source)) !== null) {
-        var s = match[1];
+        var s = typeof match[1] !== 'undefined' ? match[1] : match[2];
         this.index = Lang.STRING.lastIndex;
         this.stack.push(this.stringEndsWith);
         return s;

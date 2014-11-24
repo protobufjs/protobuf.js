@@ -4,6 +4,8 @@ option (toplevel_2) = "Hello world!";
 
 message Test {
     optional string name = 1 [default="Max"];
+    optional string desc1 = 2 [default="Shouldn't mix quotes"];
+    optional string desc2 = 3 [default='Shouldn"t mix quotes'];
     option (inmessage) = My.Test;
     option (foo.my_option).bar = false;
 }
