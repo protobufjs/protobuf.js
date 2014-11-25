@@ -1394,10 +1394,21 @@
                      * @type {!ProtoBuf.Reflect.Message}
                      * @expose
                      */
-                    var $type; // cc
+                    var $typeP; // cc
+
+                    /**
+                     * Reflection type.
+                     * @name ProtoBuf.Builder.Message.$type
+                     * @type {!ProtoBuf.Reflect.Message}
+                     * @expose
+                     */
+                    var $typeS;
 
                     if (Object.defineProperty)
                         Object.defineProperty(Message, '$options', { "value": T.buildOpt() }),
+                        Object.defineProperty(Message, "$type", {
+                            get: function() { return T; }
+                        }),
                         Object.defineProperty(MessagePrototype, "$type", {
                             get: function() { return T; }
                         });
