@@ -93,6 +93,40 @@ for (var i=0; i<rpc.length; i++) {
     })(rpc[i]);
 }
 
+// Properties
+
+/**
+ * Service options.
+ * @name ProtoBuf.Builder.Service.$options
+ * @type {Object.<string,*>}
+ * @expose
+ */
+var $optionsS; // cc needs this
+
+/**
+ * Service options.
+ * @name ProtoBuf.Builder.Service#$options
+ * @type {Object.<string,*>}
+ * @expose
+ */
+var $options;
+
+/**
+ * Reflection type.
+ * @name ProtoBuf.Builder.Service.$type
+ * @type {!ProtoBuf.Reflect.Service}
+ * @expose
+ */
+var $typeS;
+
+/**
+ * Reflection type.
+ * @name ProtoBuf.Builder.Service#$type
+ * @type {!ProtoBuf.Reflect.Service}
+ * @expose
+ */
+var $type;
+
 if (Object.defineProperty)
     Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
     Object.defineProperty(ServicePrototype, "$options", { "value": Service["$options"] }),

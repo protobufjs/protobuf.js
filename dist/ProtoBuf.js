@@ -1739,10 +1739,7 @@
                                 /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                                 /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                                 /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
-                                var keys = Object.keys(values);
-                                for (i=0, k=keys.length; i<k; ++i)
-                                    if (typeof (value = values[keys[i]]) !== 'undefined')
-                                        this.$set(keys[i], value); // May throw
+                                this.$set(values);
                             } else // Set field values from arguments, in declaration order
                                 for (i=0, k=arguments.length; i<k; ++i)
                                     if (typeof (value = arguments[i]) !== 'undefined')
@@ -1797,26 +1794,27 @@
                      * Sets a field's value.
                      * @name ProtoBuf.Builder.Message#set
                      * @function
-                     * @param {string} key Key
-                     * @param {*} value Value to set
+                     * @param {string|!Object.<string,*>} keyOrObj String key or plain object holding multiple values
+                     * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
                      * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
                      * @returns {!ProtoBuf.Builder.Message} this
                      * @throws {Error} If the value cannot be set
                      * @expose
                      */
-                    MessagePrototype.set = function(key, value, noAssert) {
-                        if (key && typeof key === 'object') {
-                            for (var i in key)
-                                if (key.hasOwnProperty(i))
-                                    this.$set(i, key[i], noAssert);
+                    MessagePrototype.set = function(keyOrObj, value, noAssert) {
+                        if (keyOrObj && typeof keyOrObj === 'object') {
+                            noAssert = value;
+                            for (var ikey in keyOrObj)
+                                if (keyOrObj.hasOwnProperty(ikey) && typeof (value = keyOrObj[ikey]) !== 'undefined')
+                                    this.$set(ikey, value, noAssert);
                             return this;
                         }
-                        var field = T._fieldsByName[key];
+                        var field = T._fieldsByName[keyOrObj];
                         if (!noAssert) {
                             if (!field)
-                                throw Error(this+"#"+key+" is not a field: undefined");
+                                throw Error(this+"#"+keyOrObj+" is not a field: undefined");
                             if (!(field instanceof ProtoBuf.Reflect.Message.Field))
-                                throw Error(this+"#"+key+" is not a field: "+field.toString(true));
+                                throw Error(this+"#"+keyOrObj+" is not a field: "+field.toString(true));
                             this[field.name] = (value = field.verifyValue(value)); // May throw
                         } else {
                             this[field.name] = value;
@@ -1826,7 +1824,7 @@
                                 if (this[field.oneof.name] !== null)
                                     this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
                                 this[field.oneof.name] = field.name;
-                            } else if (field.oneof.name === key)
+                            } else if (field.oneof.name === keyOrObj)
                                 this[field.oneof.name] = null;
                         }
                         return this;
@@ -1836,8 +1834,8 @@
                      * Sets a field's value. This is an alias for [@link ProtoBuf.Builder.Message#set}.
                      * @name ProtoBuf.Builder.Message#$set
                      * @function
-                     * @param {string} key Key
-                     * @param {*} value Value to set
+                     * @param {string|!Object.<string,*>} keyOrObj String key or plain object holding multiple values
+                     * @param {*=} value Value to set if key is a string
                      * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
                      * @throws {Error} If the value cannot be set
                      * @expose
@@ -3494,6 +3492,40 @@
                                 Object.defineProperty(ServicePrototype[method.name], "$options", { "value": Service[method.name]["$options"] });
                         })(rpc[i]);
                     }
+
+                    // Properties
+
+                    /**
+                     * Service options.
+                     * @name ProtoBuf.Builder.Service.$options
+                     * @type {Object.<string,*>}
+                     * @expose
+                     */
+                    var $optionsS; // cc needs this
+
+                    /**
+                     * Service options.
+                     * @name ProtoBuf.Builder.Service#$options
+                     * @type {Object.<string,*>}
+                     * @expose
+                     */
+                    var $options;
+
+                    /**
+                     * Reflection type.
+                     * @name ProtoBuf.Builder.Service.$type
+                     * @type {!ProtoBuf.Reflect.Service}
+                     * @expose
+                     */
+                    var $typeS;
+
+                    /**
+                     * Reflection type.
+                     * @name ProtoBuf.Builder.Service#$type
+                     * @type {!ProtoBuf.Reflect.Service}
+                     * @expose
+                     */
+                    var $type;
 
                     if (Object.defineProperty)
                         Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
