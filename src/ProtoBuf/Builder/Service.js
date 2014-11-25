@@ -33,10 +33,6 @@ var Service = function(rpcImpl) {
  */
 var ServicePrototype = Service.prototype = Object.create(ProtoBuf.Builder.Service.prototype);
 
-if (Object.defineProperty)
-    Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
-    Object.defineProperty(ServicePrototype, "$options", { "value": Service["$options"] });
-
 /**
  * Asynchronously performs an RPC call using the given RPC implementation.
  * @name ProtoBuf.Builder.Service.[Method]
@@ -96,3 +92,9 @@ for (var i=0; i<rpc.length; i++) {
             Object.defineProperty(ServicePrototype[method.name], "$options", { "value": Service[method.name]["$options"] });
     })(rpc[i]);
 }
+
+if (Object.defineProperty)
+    Object.defineProperty(Service, "$options", { "value": T.buildOpt() }),
+    Object.defineProperty(ServicePrototype, "$options", { "value": Service["$options"] }),
+    Object.defineProperty(Service, "$type", { "value": T }),
+    Object.defineProperty(ServicePrototype, "$type", { "value": T });

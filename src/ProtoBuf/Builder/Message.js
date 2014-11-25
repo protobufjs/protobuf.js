@@ -29,6 +29,7 @@ var Message = function(values, var_args) {
     }
 
     if (arguments.length > 0) {
+        var value;
         // Set field values from a values object
         if (arguments.length === 1 && typeof values === 'object' &&
             /* not another Message */ typeof values.encode !== 'function' &&
@@ -38,10 +39,12 @@ var Message = function(values, var_args) {
             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
             var keys = Object.keys(values);
             for (i=0, k=keys.length; i<k; ++i)
-                this.$set(keys[i], values[keys[i]]); // May throw
+                if (typeof (value = values[keys[i]]) !== 'undefined')
+                    this.$set(keys[i], value); // May throw
         } else // Set field values from arguments, in declaration order
             for (i=0, k=arguments.length; i<k; ++i)
-                this.$set(fields[i].name, arguments[i]); // May throw
+                if (typeof (value = arguments[i]) !== 'undefined')
+                    this.$set(fields[i].name, value); // May throw
     }
 };
 
@@ -589,20 +592,20 @@ MessagePrototype.toString = function() {
 // Properties
 
 /**
- * Options.
+ * Message options.
  * @name ProtoBuf.Builder.Message.$options
  * @type {Object.<string,*>}
  * @expose
  */
-var $options; // cc
+var $optionsS; // cc needs this
 
 /**
- * Reflection type.
- * @name ProtoBuf.Builder.Message#$type
- * @type {!ProtoBuf.Reflect.Message}
+ * Message options.
+ * @name ProtoBuf.Builder.Message#$options
+ * @type {Object.<string,*>}
  * @expose
  */
-var $typeP; // cc
+var $options;
 
 /**
  * Reflection type.
@@ -612,11 +615,16 @@ var $typeP; // cc
  */
 var $typeS;
 
+/**
+ * Reflection type.
+ * @name ProtoBuf.Builder.Message#$type
+ * @type {!ProtoBuf.Reflect.Message}
+ * @expose
+ */
+var $type;
+
 if (Object.defineProperty)
     Object.defineProperty(Message, '$options', { "value": T.buildOpt() }),
-    Object.defineProperty(Message, "$type", {
-        get: function() { return T; }
-    }),
-    Object.defineProperty(MessagePrototype, "$type", {
-        get: function() { return T; }
-    });
+    Object.defineProperty(MessagePrototype, "$options", { "value": Message["$options"] }),
+    Object.defineProperty(Message, "$type", { "value": T }),
+    Object.defineProperty(MessagePrototype, "$type", { "value": T });
