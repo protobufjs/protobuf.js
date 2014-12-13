@@ -9,4 +9,6 @@ message Msg {
     required int32 hex = 2 [default=-0x1F];
     required int32 oct = 3 [default=-017];
     required int32 exp = 4 [default=0.1e5];
+    required int32 nod = 5 [default=1.];
+    required int32 exn = 6 [default=1e8];
 }
