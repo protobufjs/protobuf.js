@@ -357,7 +357,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 return this; // Skip duplicate imports
             }
             this.files[filename] = true;
-        } else { // Object with root, filename.
+        } else if (typeof filename == 'object') { // Assume object with root, filename.
             var root = filename.root
             if (ProtoBuf.Util.IS_NODE)
               root = require("path")['resolve'](root);
