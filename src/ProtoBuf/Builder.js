@@ -4,7 +4,7 @@
  */
 ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     "use strict";
-    
+
     /**
      * Constructs a new Builder.
      * @exports ProtoBuf.Builder
@@ -216,7 +216,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             defs = [defs];
         if (defs.length === 0)
             return this;
-        
+
         // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
         var stack = [];
         stack.push(defs); // One level [a, b, c]
@@ -357,6 +357,16 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 return this; // Skip duplicate imports
             }
             this.files[filename] = true;
+        } else { // Object with root, filename.
+            var root = filename.root
+            if (ProtoBuf.Util.IS_NODE)
+              root = require("path")['resolve'](root);
+            var fname = [root, filename.file].join('/');
+            if (this.files[fname] === true) {
+              this.reset();
+              return this; // Skip duplicate imports
+            }
+            this.files[fname] = true;
         }
         if (!!json['imports'] && json['imports'].length > 0) {
             var importRoot, delim = '/', resetRoot = false;
@@ -579,7 +589,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     // Exist for the sole purpose of being able to "... instanceof ProtoBuf.Builder.Message" etc.
     Builder.Message = function() {};
     Builder.Service = function() {};
-    
+
     return Builder;
-    
+
 })(ProtoBuf, ProtoBuf.Lang, ProtoBuf.Reflect);
