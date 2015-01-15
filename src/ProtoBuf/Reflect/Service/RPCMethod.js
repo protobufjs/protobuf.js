@@ -10,7 +10,8 @@
  * @constructor
  * @extends ProtoBuf.Reflect.Service.Method
  */
-var RPCMethod = function(builder, svc, name, request, response, options) {
+var RPCMethod = function(builder, svc, name, request, response, request_stream,
+                         response_stream, options) {
     Method.call(this, builder, svc, name, options);
 
     /**
@@ -31,6 +32,20 @@ var RPCMethod = function(builder, svc, name, request, response, options) {
      * @expose
      */
     this.responseName = response;
+
+    /**
+     * Whether requests are streamed
+     * @type {bool}
+     * @expose
+     */
+  this.requestStream = request_stream;
+
+    /**
+     * Whether responses are streamed
+     * @type {bool}
+     * @expose
+     */
+    this.responseStream = response_stream;
 
     /**
      * Resolved request message type.
