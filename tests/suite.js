@@ -23,7 +23,7 @@
     var FILE = "ProtoBuf.js";
     var BROWSER = !!global.window;
     
-    var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require(__dirname+"/../dist/"+FILE),
+    var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require("../dist/"+FILE),
         ByteBuffer = BROWSER ? global.dcodeIO.ByteBuffer : ByteBuffer || require("bytebuffer"),
         util = BROWSER ? null : require("util"),
         fs = BROWSER ? null : require("fs");
@@ -370,7 +370,7 @@
             try {
                 var builder = ProtoBuf.loadProto("message Image { required bytes data = 1; }"),
                     Image = builder.build("Image"),
-                    data = fs.readFileSync(__dirname+"/../ProtoBuf.png"),
+                    data = fs.readFileSync("../ProtoBuf.png"),
                     image = new Image({ data: data }),
                     bb = image.encode(),
                     imageDec = Image.decode(bb),
@@ -1522,7 +1522,7 @@
                   , vm = require("vm")
                   , util = require('util');
         
-                var code = fs.readFileSync(__dirname+"/../dist/"+FILE);
+                var code = fs.readFileSync("../dist/"+FILE);
                 var sandbox = new Sandbox({
                     module: {
                         exports: {}
@@ -1548,7 +1548,7 @@
                   , vm = require("vm")
                   , util = require('util');
         
-                var code = fs.readFileSync(__dirname+"/../dist/"+FILE);
+                var code = fs.readFileSync("../dist/"+FILE);
                 var sandbox = new Sandbox({
                     define: (function() {
                         function define() {
@@ -1570,7 +1570,7 @@
                   , vm = require("vm")
                   , util = require('util');
         
-                var code = fs.readFileSync(__dirname+"/../dist/"+FILE);
+                var code = fs.readFileSync("../dist/"+FILE);
                 var sandbox = new Sandbox({
                     dcodeIO: {
                         ByteBuffer: ByteBuffer

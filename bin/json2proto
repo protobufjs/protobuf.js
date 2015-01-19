@@ -21,12 +21,12 @@
  * see: https://github.com/dcodeIO/ProtoBuf.js for details
  */
 
-var ProtoBuf = require(__dirname+"/../index.js"),
+var ProtoBuf = require("../dist/ProtoBuf.js"),
     Builder = ProtoBuf.Builder,
     Lang = ProtoBuf.Lang,
     fs = require("fs"),
     path = require("path"),
-    pkg = require(__dirname+"/../package.json"),
+    pkg = require("../package.json"),
     ascli = require("ascli");
 
 if (!fs.existsSync) fs.existsSync = path.existsSync; // node 0.6
