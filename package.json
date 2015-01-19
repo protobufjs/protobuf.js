@@ -6,7 +6,7 @@
     "contributors": [
         "Frank Xu <yyfrankyy@gmail.com>"
     ],
-    "main": "index.js",
+    "main": "./dist/ProtoBuf.js",
     "bin": {
         "pbjs": "./bin/pbjs"
     },
