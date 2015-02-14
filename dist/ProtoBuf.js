@@ -394,11 +394,11 @@
             TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
             TYPEREF: /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
             FQTYPEREF: /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/,
-            NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|([0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?))$/,
+            NUMBER: /^-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+|([0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?)|inf|nan)$/,
             NUMBER_DEC: /^(?:[1-9][0-9]*|0)$/,
             NUMBER_HEX: /^0x[0-9a-fA-F]+$/,
             NUMBER_OCT: /^0[0-7]+$/,
-            NUMBER_FLT: /^[0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?$/,
+            NUMBER_FLT: /^([0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?|inf|nan)$/,
             ID: /^(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
             NEGID: /^\-?(?:[1-9][0-9]*|0|0x[0-9a-fA-F]+|0[0-7]+)$/,
             WHITESPACE: /\s/,
@@ -699,8 +699,15 @@
                     return sign*parseInt(val.substring(2), 16);
                 else if (Lang.NUMBER_OCT.test(val))
                     return sign*parseInt(val.substring(1), 8);
-                else if (Lang.NUMBER_FLT.test(val))
-                    return sign*parseFloat(val);
+                else if (Lang.NUMBER_FLT.test(val)) {
+                    if(val === 'inf')
+                        return sign*Infinity;
+                    else if (val === 'nan')
+                        return NaN;
+                    else
+                        return sign*parseFloat(val);
+                }
+
                 throw Error("Illegal number at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
             };
 
