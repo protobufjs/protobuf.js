@@ -1,2 +1,31 @@
 node_modules/
 npm-debug.log
+
+# Files in npm
+
+# cli
+# dist/ProtoBuf.js
+# dist/README.md
+# .npmignore
+# ProtoBuf.png
+# README.md
+# LICENSE
+# package.json
+
+# github only
+
+docs
+examples
+externs
+scripts
+src
+tests
+.gitignore
+.travis.yml
+bower.json
+jsdoc.json
+dist/Protobuf.min.js
+dist/Protobuf.min.js.gz
+dist/Protobuf.noparse.js
+dist/Protobuf.noparse.min.js
+dist/Protobuf.noparse.min.js.gz
