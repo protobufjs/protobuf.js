@@ -357,6 +357,16 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 return this; // Skip duplicate imports
             }
             this.files[filename] = true;
+        } else if (typeof filename == 'object') { // Assume object with root, filename.
+            var root = filename.root
+            if (ProtoBuf.Util.IS_NODE)
+              root = require("path")['resolve'](root);
+            var fname = [root, filename.file].join('/');
+            if (this.files[fname] === true) {
+              this.reset();
+              return this; // Skip duplicate imports
+            }
+            this.files[fname] = true;
         }
         if (!!json['imports'] && json['imports'].length > 0) {
             var importRoot, delim = '/', resetRoot = false;
