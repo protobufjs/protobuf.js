@@ -101,8 +101,15 @@ ParserPrototype._parseNumber = function(val) {
         return sign*parseInt(val.substring(2), 16);
     else if (Lang.NUMBER_OCT.test(val))
         return sign*parseInt(val.substring(1), 8);
-    else if (Lang.NUMBER_FLT.test(val))
-        return sign*parseFloat(val);
+    else if (Lang.NUMBER_FLT.test(val)) {
+        if(val === 'inf')
+            return sign*Infinity;
+        else if (val === 'nan')
+            return NaN;
+        else
+            return sign*parseFloat(val);
+    }
+
     throw Error("Illegal number at line "+this.tn.line+": "+(sign < 0 ? '-' : '')+val);
 };
 

@@ -257,6 +257,11 @@
                 test.strictEqual(msg.hex, -31);
                 test.strictEqual(msg.oct, -15);
                 test.strictEqual(msg.exp, 0.1e5);
+                test.strictEqual(msg.nod, 1.);
+                test.strictEqual(msg.exn, 1e8);
+                test.strictEqual(msg.sp1, Infinity);
+                test.strictEqual(msg.sp2, -Infinity);
+                test.ok(isNaN(msg.sp3));
             } catch (e) {
                 fail(e);
             }

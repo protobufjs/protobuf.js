@@ -8,5 +8,10 @@ message Msg {
     required int32 dec = 1 [default=-1];
     required int32 hex = 2 [default=-0x1F];
     required int32 oct = 3 [default=-017];
-    required int32 exp = 4 [default=0.1e5];
+    required double exp = 4 [default=0.1e5];
+    required double nod = 5 [default=1.];
+    required double exn = 6 [default=1e8];
+    required double sp1 = 7 [default=inf];
+    required double sp2 = 8 [default=-inf];
+    required double sp3 = 9 [default=nan];
 }
