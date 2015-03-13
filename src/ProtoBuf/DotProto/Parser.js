@@ -173,7 +173,7 @@ ParserPrototype._parsePackage = function(token) {
 /**
  * Parses an import definition.
  * @param {string} token Initial token
- * @return {string} Import file name 
+ * @return {string} Import file name
  * @throws {Error} If the import definition cannot be parsed
  * @private
  */
@@ -307,12 +307,18 @@ ParserPrototype._parseServiceRPC = function(svc, token) {
     var method = {
         "request": null,
         "response": null,
+        "request_stream": false,
+        "response_stream": false,
         "options": {}
     };
     token = this.tn.next();
     if (token !== Lang.COPTOPEN)
         throw Error("Illegal start of request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
     token = this.tn.next();
+    if (token.toLowerCase() === "stream") {
+      method["request_stream"] = true;
+      token = this.tn.next();
+    }
     if (!Lang.TYPEREF.test(token))
         throw Error("Illegal request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
     method["request"] = token;
@@ -326,6 +332,10 @@ ParserPrototype._parseServiceRPC = function(svc, token) {
     if (token != Lang.COPTOPEN)
         throw Error("Illegal start of response type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
     token = this.tn.next();
+    if (token.toLowerCase() === "stream") {
+      method["response_stream"] = true;
+      token = this.tn.next();
+    }
     method["response"] = token;
     token = this.tn.next();
     if (token !== Lang.COPTCLOSE)

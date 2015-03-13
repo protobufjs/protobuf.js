@@ -905,12 +905,18 @@
                 var method = {
                     "request": null,
                     "response": null,
+                    "request_stream": false,
+                    "response_stream": false,
                     "options": {}
                 };
                 token = this.tn.next();
                 if (token !== Lang.COPTOPEN)
                     throw Error("Illegal start of request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
+                if (token.toLowerCase() === "stream") {
+                  method["request_stream"] = true;
+                  token = this.tn.next();
+                }
                 if (!Lang.TYPEREF.test(token))
                     throw Error("Illegal request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 method["request"] = token;
@@ -924,6 +930,10 @@
                 if (token != Lang.COPTOPEN)
                     throw Error("Illegal start of response type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
+                if (token.toLowerCase() === "stream") {
+                  method["response_stream"] = true;
+                  token = this.tn.next();
+                }
                 method["response"] = token;
                 token = this.tn.next();
                 if (token !== Lang.COPTCLOSE)
@@ -3602,7 +3612,8 @@
              * @constructor
              * @extends ProtoBuf.Reflect.Service.Method
              */
-            var RPCMethod = function(builder, svc, name, request, response, options) {
+            var RPCMethod = function(builder, svc, name, request, response, request_stream,
+                                     response_stream, options) {
                 Method.call(this, builder, svc, name, options);
 
                 /**
@@ -3623,6 +3634,20 @@
                  * @expose
                  */
                 this.responseName = response;
+
+                /**
+                 * Whether requests are streamed
+                 * @type {bool}
+                 * @expose
+                 */
+              this.requestStream = request_stream;
+
+                /**
+                 * Whether responses are streamed
+                 * @type {bool}
+                 * @expose
+                 */
+                this.responseStream = response_stream;
 
                 /**
                  * Resolved request message type.
@@ -3952,7 +3977,7 @@
                                 obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                                 for (i in def["rpc"])
                                     if (def["rpc"].hasOwnProperty(i))
-                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
+                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["request_stream"], def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
                                 this.ptr.addChild(obj);
                                 obj = null;
                             } else if (Builder.isValidExtend(def)) {

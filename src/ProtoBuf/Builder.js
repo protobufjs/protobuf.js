@@ -4,7 +4,7 @@
  */
 ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     "use strict";
-    
+
     /**
      * Constructs a new Builder.
      * @exports ProtoBuf.Builder
@@ -216,7 +216,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             defs = [defs];
         if (defs.length === 0)
             return this;
-        
+
         // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
         var stack = [];
         stack.push(defs); // One level [a, b, c]
@@ -298,7 +298,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                         for (i in def["rpc"])
                             if (def["rpc"].hasOwnProperty(i))
-                                obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
+                                obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["request_stream"], def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidExtend(def)) {
@@ -579,7 +579,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     // Exist for the sole purpose of being able to "... instanceof ProtoBuf.Builder.Message" etc.
     Builder.Message = function() {};
     Builder.Service = function() {};
-    
+
     return Builder;
-    
+
 })(ProtoBuf, ProtoBuf.Lang, ProtoBuf.Reflect);

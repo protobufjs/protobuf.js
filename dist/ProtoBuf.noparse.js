@@ -2692,7 +2692,8 @@
              * @constructor
              * @extends ProtoBuf.Reflect.Service.Method
              */
-            var RPCMethod = function(builder, svc, name, request, response, options) {
+            var RPCMethod = function(builder, svc, name, request, response, request_stream,
+                                     response_stream, options) {
                 Method.call(this, builder, svc, name, options);
 
                 /**
@@ -2713,6 +2714,20 @@
                  * @expose
                  */
                 this.responseName = response;
+
+                /**
+                 * Whether requests are streamed
+                 * @type {bool}
+                 * @expose
+                 */
+              this.requestStream = request_stream;
+
+                /**
+                 * Whether responses are streamed
+                 * @type {bool}
+                 * @expose
+                 */
+                this.responseStream = response_stream;
 
                 /**
                  * Resolved request message type.
@@ -3042,7 +3057,7 @@
                                 obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                                 for (i in def["rpc"])
                                     if (def["rpc"].hasOwnProperty(i))
-                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
+                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["request_stream"], def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
                                 this.ptr.addChild(obj);
                                 obj = null;
                             } else if (Builder.isValidExtend(def)) {
