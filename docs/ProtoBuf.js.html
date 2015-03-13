@@ -22,7 +22,6 @@
     
 
 
-
     
     <section>
         <article>
@@ -66,7 +65,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "4.0.0-pre";
+        ProtoBuf.VERSION = "4.0.0-b1";
 
         /**
          * Wire types.
@@ -940,12 +939,18 @@
                 var method = {
                     "request": null,
                     "response": null,
+                    "request_stream": false,
+                    "response_stream": false,
                     "options": {}
                 };
                 token = this.tn.next();
                 if (token !== Lang.COPTOPEN)
                     throw Error("Illegal start of request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
+                if (token.toLowerCase() === "stream") {
+                  method["request_stream"] = true;
+                  token = this.tn.next();
+                }
                 if (!Lang.TYPEREF.test(token))
                     throw Error("Illegal request type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 method["request"] = token;
@@ -959,6 +964,10 @@
                 if (token != Lang.COPTOPEN)
                     throw Error("Illegal start of response type in service "+svc["name"]+"#"+name+" at line "+this.tn.line+": "+token);
                 token = this.tn.next();
+                if (token.toLowerCase() === "stream") {
+                  method["response_stream"] = true;
+                  token = this.tn.next();
+                }
                 method["response"] = token;
                 token = this.tn.next();
                 if (token !== Lang.COPTCLOSE)
@@ -1870,7 +1879,7 @@
                      * @name ProtoBuf.Builder.Message#$set
                      * @function
                      * @param {string|!Object.&lt;string,*>} keyOrObj String key or plain object holding multiple values
-                     * @param {*=} value Value to set if key is a string
+                     * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
                      * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
                      * @throws {Error} If the value cannot be set
                      * @expose
@@ -3637,7 +3646,8 @@
              * @constructor
              * @extends ProtoBuf.Reflect.Service.Method
              */
-            var RPCMethod = function(builder, svc, name, request, response, options) {
+            var RPCMethod = function(builder, svc, name, request, response, request_stream,
+                                     response_stream, options) {
                 Method.call(this, builder, svc, name, options);
 
                 /**
@@ -3658,6 +3668,20 @@
                  * @expose
                  */
                 this.responseName = response;
+
+                /**
+                 * Whether requests are streamed
+                 * @type {bool}
+                 * @expose
+                 */
+              this.requestStream = request_stream;
+
+                /**
+                 * Whether responses are streamed
+                 * @type {bool}
+                 * @expose
+                 */
+                this.responseStream = response_stream;
 
                 /**
                  * Resolved request message type.
@@ -3987,7 +4011,7 @@
                                 obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                                 for (i in def["rpc"])
                                     if (def["rpc"].hasOwnProperty(i))
-                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["options"]));
+                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["request_stream"], def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
                                 this.ptr.addChild(obj);
                                 obj = null;
                             } else if (Builder.isValidExtend(def)) {
@@ -4046,6 +4070,16 @@
                         return this; // Skip duplicate imports
                     }
                     this.files[filename] = true;
+                } else if (typeof filename == 'object') { // Assume object with root, filename.
+                    var root = filename.root
+                    if (ProtoBuf.Util.IS_NODE)
+                      root = require("path")['resolve'](root);
+                    var fname = [root, filename.file].join('/');
+                    if (this.files[fname] === true) {
+                      this.reset();
+                      return this; // Skip duplicate imports
+                    }
+                    this.files[fname] = true;
                 }
                 if (!!json['imports'] &amp;&amp; json['imports'].length > 0) {
                     var importRoot, delim = '/', resetRoot = false;
@@ -4444,13 +4478,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
 </nav>
 
-<br class="clear">
+<br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sat Feb 14 2015 13:01:01 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Mar 13 2015 01:43:29 GMT+0100 (Mitteleuropäische Zeit)
 </footer>
 
 <script> prettyPrint(); </script>

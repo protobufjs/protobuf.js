@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "4.0.0-pre";
+        ProtoBuf.VERSION = "4.0.0-b1";
 
         /**
          * Wire types.
@@ -1852,7 +1852,7 @@
                      * @name ProtoBuf.Builder.Message#$set
                      * @function
                      * @param {string|!Object.<string,*>} keyOrObj String key or plain object holding multiple values
-                     * @param {*=} value Value to set if key is a string
+                     * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
                      * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
                      * @throws {Error} If the value cannot be set
                      * @expose
@@ -4043,6 +4043,16 @@
                         return this; // Skip duplicate imports
                     }
                     this.files[filename] = true;
+                } else if (typeof filename == 'object') { // Assume object with root, filename.
+                    var root = filename.root
+                    if (ProtoBuf.Util.IS_NODE)
+                      root = require("path")['resolve'](root);
+                    var fname = [root, filename.file].join('/');
+                    if (this.files[fname] === true) {
+                      this.reset();
+                      return this; // Skip duplicate imports
+                    }
+                    this.files[fname] = true;
                 }
                 if (!!json['imports'] && json['imports'].length > 0) {
                     var importRoot, delim = '/', resetRoot = false;

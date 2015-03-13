@@ -133,7 +133,7 @@ MessagePrototype.set = function(keyOrObj, value, noAssert) {
  * @name ProtoBuf.Builder.Message#$set
  * @function
  * @param {string|!Object.<string,*>} keyOrObj String key or plain object holding multiple values
- * @param {*=} value Value to set if key is a string
+ * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
  * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
  * @throws {Error} If the value cannot be set
  * @expose
