@@ -73,7 +73,8 @@
                 // Address from object
                 "address": {
                     "country": "US"
-                }
+                },
+                "models": ["m1"]
             }),
             // Speed from enum object
             Speed.SUPERFAST
@@ -82,14 +83,15 @@
         test.equal(car.vendor.name, "Iron Inc.");
         test.equal(car.vendor.address.country, "US");
         test.equal(car.vendor.address.country, car.getVendor().get_address().country);
-        var bb = new ByteBuffer(28);
+        var bb = new ByteBuffer(32);
         car.encode(bb);
-        test.equal(bb.flip().toString("debug"), "<0A 05 52 75 73 74 79 12 11 0A 09 49 72 6F 6E 20 49 6E 63 2E 12 04 0A 02 55 53 18 02>");
+        test.equal(bb.flip().toString("debug"), "<0A 05 52 75 73 74 79 12 15 0A 09 49 72 6F 6E 20 49 6E 63 2E 12 04 0A 02 55 53 1A 02 6D 31 18 02>");
         var carDec = Car.decode(bb);
         test.equal(carDec.model, "Rusty");
         test.equal(carDec.vendor.name, "Iron Inc.");
         test.equal(carDec.vendor.address.country, "US");
         test.equal(carDec.vendor.address.country, carDec.getVendor().get_address().country);
+        test.equal(carDec.vendor.models[0], "m1");
     }
 
     /**

@@ -13,6 +13,7 @@ message Car {
         }
         
         optional Address address = 2;
+        repeated string models = 3;               // The models sold here.
     }
     
     required  string  model  = 1;                 // Model name
