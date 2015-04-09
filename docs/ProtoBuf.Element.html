@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Element</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: Element</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a>.</span>
+        
+        Element
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="Element"><span class="type-signature"></span>new Element<span class="signature">(type, resolvedType, isMapKey, syntax)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Constructs a new Element implementation that checks and converts values for a
+particular field type, as appropriate.</p>
+<p>An Element represents a single value: either the value of a singular field,
+or a value contained in one entry of a repeated field or map field. This
+class does not implement these higher-level concepts; it only encapsulates
+the low-level typechecking and conversion.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Object.html">Object</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Resolved data type</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resolvedType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Resolved type, if relevant
+(e.g. submessage field).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isMapKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Is this element a Map key? The value will be
+converted to string form if so.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>syntax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Syntax level of defining message type, e.g.,
+proto2 or proto3.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3710">line 3710</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="isMapKey"><span class="type-signature"></span>isMapKey<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Element is a map key.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3727">line 3727</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="resolvedType"><span class="type-signature"></span>resolvedType<span class="type-signature"> :<a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a>|null</span></h4>
+
+
+
+
+<div class="description">
+    <p>Element type reference to submessage or enum definition, if needed.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="ProtoBuf.Reflect.T.html">ProtoBuf.Reflect.T</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3721">line 3721</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="syntax"><span class="type-signature"></span>syntax<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    <p>Syntax level of defining message type, e.g., proto2 or proto3.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3733">line 3733</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="type"><span class="type-signature"></span>type<span class="type-signature"> :<a href="Object.html">Object</a></span></h4>
+
+
+
+
+<div class="description">
+    <p>Element type, as a string (e.g., int32).</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Object.html">Object</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3715">line 3715</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Element.html">Element</a></li><li><a href="ProtoBuf.Map.html">Map</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Apr 09 2015 12:57:38 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
