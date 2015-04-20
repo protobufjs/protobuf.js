@@ -175,8 +175,9 @@ function buildMessage(msg) {
  * @returns {!*}
  */
 function buildMessageField(fld) {
+    var fieldType = fld.repeated ? "repeated" : (fld.required ? "required" : "optional");
     return {
-        "rule"    : fld.required ? "required" : "optional",
+        "rule"    : fieldType,
         "type"    : fld.resolvedType ? fld.parent.qn(fld.resolvedType) : fld.type['name'],
         "name"    : fld instanceof ProtoBuf.Reflect.Message.ExtensionField ? fld.name.substring(fld.name.lastIndexOf(".")+1): fld.name,
         "id"      : fld.id,

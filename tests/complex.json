@@ -41,6 +41,12 @@
                             "type": "Address",
                             "name": "address",
                             "id": 2
+                        },
+                        {
+                            "rule": "repeated",
+                            "type": "string",
+                            "name": "models",
+                            "id": 3
                         }
                     ],
                     "messages": [
