@@ -73,7 +73,7 @@ ParserPrototype.parse = function() {
                 this._parseExtend(topLevel, token);
                 break;
             case 'syntax':
-                this._parseIgnoredStatement(topLevel, token);
+                topLevel["syntax"] = this._parseSyntax(topLevel);
                 break;
             default:
                 throw Error("Unexpected token at line "+this.tn.line+": "+token);
@@ -427,6 +427,9 @@ ParserPrototype._parseMessage = function(parent, fld, token) {
             msg["extensions"] = this._parseExtensions(msg, token);
         else if (token === "extend")
             this._parseExtend(msg, token);
+        // proto3 syntax style: optional fields without 'optional' keyword.
+        else if (Lang.TYPE.test(token) || Lang.TYPEREF.test(token))
+            this._parseMessageField(msg, "optional", token);
         else
             throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
     } while (true);
@@ -438,18 +441,67 @@ ParserPrototype._parseMessage = function(parent, fld, token) {
  * Parses a message field.
  * @param {Object} msg Message definition
  * @param {string} token Initial token
+ * @param {string=} nextToken Next token, if not null.
  * @returns {!Object} Field descriptor
  * @throws {Error} If the message field cannot be parsed
  * @private
  */
-ParserPrototype._parseMessageField = function(msg, token) {
+ParserPrototype._parseMessageField = function(msg, token, nextToken) {
     /** @dict */
     var fld = {}, grp = null;
     fld["rule"] = token;
     /** @dict */
     fld["options"] = {};
-    token = this.tn.next();
-    if (token === "group") {
+    if (nextToken) {
+        token = nextToken;
+    } else {
+        token = this.tn.next();
+    }
+    if (fld["rule"] === "map") {
+        if (token != Lang.LT)  // <
+            throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+
+        token = this.tn.next();
+        if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token))
+            throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+        fld["keytype"] = token;
+
+        token = this.tn.next();
+        if (token !== Lang.COMMA)
+            throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+
+        token = this.tn.next();
+        if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token))
+            throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+        fld["type"] = token;
+
+        token = this.tn.next();
+        if (token !== Lang.GT)  // >
+            throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+
+        token = this.tn.next();
+        if (!Lang.NAME.test(token))
+            throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+        fld["name"] = token;
+
+        token = this.tn.next();
+        if (token !== Lang.EQUAL)
+            throw Error("Illegal token in field "+msg.name+"#"+fld.name+" at line "+this.line+": "+token);
+        token = this.tn.next();
+        try {
+            fld["id"] = this._parseId(token);
+        } catch (e) {
+            throw Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
+        }
+
+        token = this.tn.next();
+        if (token === Lang.OPTOPEN) {
+            this._parseFieldOptions(msg, fld, token);
+            token = this.tn.next();
+        }
+        if (token !== Lang.END)
+            throw Error("Illegal delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
+    } else if (token === "group") {
         // "A [legacy] group simply combines a nested message type and a field into a single declaration. In your
         // code, you can treat this message just as if it had a Result type field called result (the latter name is
         // converted to lower-case so that it does not conflict with the former)."
@@ -507,7 +559,7 @@ ParserPrototype._parseMessageOneOf = function(msg, token) {
     if (token !== Lang.OPEN)
         throw Error("Illegal start of oneof "+name+" at line "+this.tn.line+": "+token);
     while (this.tn.peek() !== Lang.CLOSE) {
-        fld = this._parseMessageField(msg, "optional");
+        fld = this._parseMessageField(msg, "optional", "");
         fld["oneof"] = name;
         fields.push(fld["id"]);
     }
@@ -710,12 +762,32 @@ ParserPrototype._parseExtend = function(parent, token) {
                 this.tn.next();
             break;
         } else if (Lang.RULE.test(token))
-            this._parseMessageField(ext, token);
+            this._parseMessageField(ext, token, "");
         else
             throw Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token);
     } while (true);
     parent["messages"].push(ext);
     return ext;
+};
+
+/**
+ * Parses a syntax statement.
+ * @param {Object} parent Parent object
+ * @throws {Error} If the syntax statement cannot be parsed
+ * @private
+ */
+ParserPrototype._parseSyntax = function(parent) {
+    var token = this.tn.next();
+    if (token !== Lang.EQUAL)
+        throw Error("Illegal token at line "+this.tn.line+": "+token);
+    token = this.tn.peek();
+    if (token !== Lang.STRINGOPEN && token !== Lang.STRINGOPEN_SQ)
+        throw Error("Illegal token at line "+this.tn.line+": "+token);
+    var syntax_str = this._parseString();
+    token = this.tn.next();
+    if (token !== Lang.END)
+        throw Error("Illegal token at line "+this.tn.line+": "+token);
+    return syntax_str;
 };
 
 /**

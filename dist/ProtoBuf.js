@@ -38,7 +38,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "4.0.0-b2";
+        ProtoBuf.VERSION = "4.0.0-b3";
 
         /**
          * Wire types.
@@ -380,15 +380,18 @@
             OPTEND: ",",
             EQUAL: "=",
             END: ";",
+            COMMA: ",",
             STRINGOPEN: '"',
             STRINGCLOSE: '"',
             STRINGOPEN_SQ: "'",
             STRINGCLOSE_SQ: "'",
             COPTOPEN: '(',
             COPTCLOSE: ')',
-            DELIM: /[\s\{\}=;\[\],'"\(\)]/g,
+            LT: '<',
+            GT: '>',
+            DELIM: /[\s\{\}=;\[\],'"\(\)<>]/g,
             // KEYWORD: /^(?:package|option|import|message|enum|extend|service|syntax|extensions|group)$/,
-            RULE: /^(?:required|optional|repeated)$/,
+            RULE: /^(?:required|optional|repeated|map)$/,
             TYPE: /^(?:double|float|int32|uint32|sint32|int64|uint64|sint64|fixed32|sfixed32|fixed64|sfixed64|bool|string|bytes)$/,
             NAME: /^[a-zA-Z_][a-zA-Z_0-9]*$/,
             TYPEDEF: /^[a-zA-Z][a-zA-Z_0-9]*$/,
@@ -671,7 +674,7 @@
                             this._parseExtend(topLevel, token);
                             break;
                         case 'syntax':
-                            this._parseIgnoredStatement(topLevel, token);
+                            topLevel["syntax"] = this._parseSyntax(topLevel);
                             break;
                         default:
                             throw Error("Unexpected token at line "+this.tn.line+": "+token);
@@ -1025,6 +1028,9 @@
                         msg["extensions"] = this._parseExtensions(msg, token);
                     else if (token === "extend")
                         this._parseExtend(msg, token);
+                    // proto3 syntax style: optional fields without 'optional' keyword.
+                    else if (Lang.TYPE.test(token) || Lang.TYPEREF.test(token))
+                        this._parseMessageField(msg, "optional", token);
                     else
                         throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
                 } while (true);
@@ -1036,18 +1042,67 @@
              * Parses a message field.
              * @param {Object} msg Message definition
              * @param {string} token Initial token
+             * @param {string=} nextToken Next token, if not null.
              * @returns {!Object} Field descriptor
              * @throws {Error} If the message field cannot be parsed
              * @private
              */
-            ParserPrototype._parseMessageField = function(msg, token) {
+            ParserPrototype._parseMessageField = function(msg, token, nextToken) {
                 /** @dict */
                 var fld = {}, grp = null;
                 fld["rule"] = token;
                 /** @dict */
                 fld["options"] = {};
-                token = this.tn.next();
-                if (token === "group") {
+                if (nextToken) {
+                    token = nextToken;
+                } else {
+                    token = this.tn.next();
+                }
+                if (fld["rule"] === "map") {
+                    if (token != Lang.LT)  // <
+                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+
+                    token = this.tn.next();
+                    if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token))
+                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+                    fld["keytype"] = token;
+
+                    token = this.tn.next();
+                    if (token !== Lang.COMMA)
+                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+
+                    token = this.tn.next();
+                    if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token))
+                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+                    fld["type"] = token;
+
+                    token = this.tn.next();
+                    if (token !== Lang.GT)  // >
+                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+
+                    token = this.tn.next();
+                    if (!Lang.NAME.test(token))
+                        throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
+                    fld["name"] = token;
+
+                    token = this.tn.next();
+                    if (token !== Lang.EQUAL)
+                        throw Error("Illegal token in field "+msg.name+"#"+fld.name+" at line "+this.line+": "+token);
+                    token = this.tn.next();
+                    try {
+                        fld["id"] = this._parseId(token);
+                    } catch (e) {
+                        throw Error("Illegal field id in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
+                    }
+
+                    token = this.tn.next();
+                    if (token === Lang.OPTOPEN) {
+                        this._parseFieldOptions(msg, fld, token);
+                        token = this.tn.next();
+                    }
+                    if (token !== Lang.END)
+                        throw Error("Illegal delimiter in message "+msg.name+"#"+fld.name+" at line "+this.tn.line+": "+token);
+                } else if (token === "group") {
                     // "A [legacy] group simply combines a nested message type and a field into a single declaration. In your
                     // code, you can treat this message just as if it had a Result type field called result (the latter name is
                     // converted to lower-case so that it does not conflict with the former)."
@@ -1105,7 +1160,7 @@
                 if (token !== Lang.OPEN)
                     throw Error("Illegal start of oneof "+name+" at line "+this.tn.line+": "+token);
                 while (this.tn.peek() !== Lang.CLOSE) {
-                    fld = this._parseMessageField(msg, "optional");
+                    fld = this._parseMessageField(msg, "optional", "");
                     fld["oneof"] = name;
                     fields.push(fld["id"]);
                 }
@@ -1308,12 +1363,32 @@
                             this.tn.next();
                         break;
                     } else if (Lang.RULE.test(token))
-                        this._parseMessageField(ext, token);
+                        this._parseMessageField(ext, token, "");
                     else
                         throw Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token);
                 } while (true);
                 parent["messages"].push(ext);
                 return ext;
+            };
+
+            /**
+             * Parses a syntax statement.
+             * @param {Object} parent Parent object
+             * @throws {Error} If the syntax statement cannot be parsed
+             * @private
+             */
+            ParserPrototype._parseSyntax = function(parent) {
+                var token = this.tn.next();
+                if (token !== Lang.EQUAL)
+                    throw Error("Illegal token at line "+this.tn.line+": "+token);
+                token = this.tn.peek();
+                if (token !== Lang.STRINGOPEN && token !== Lang.STRINGOPEN_SQ)
+                    throw Error("Illegal token at line "+this.tn.line+": "+token);
+                var syntax_str = this._parseString();
+                token = this.tn.next();
+                if (token !== Lang.END)
+                    throw Error("Illegal token at line "+this.tn.line+": "+token);
+                return syntax_str;
             };
 
             /**
@@ -1443,10 +1518,11 @@
              * @param {?ProtoBuf.Reflect.Namespace} parent Namespace parent
              * @param {string} name Namespace name
              * @param {Object.<string,*>=} options Namespace options
+             * @param {string?} syntax The syntax level of this definition (e.g., proto3)
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Namespace = function(builder, parent, name, options) {
+            var Namespace = function(builder, parent, name, options, syntax) {
                 T.call(this, builder, parent, name);
 
                 /**
@@ -1465,6 +1541,12 @@
                  * @type {!Object.<string, *>}
                  */
                 this.options = options || {};
+
+                /**
+                 * Syntax level (e.g., proto2 or proto3).
+                 * @type {!string}
+                 */
+                this.syntax = syntax || "proto2";
             };
 
             /**
@@ -1644,11 +1726,12 @@
              * @param {string} name Message name
              * @param {Object.<string,*>=} options Message options
              * @param {boolean=} isGroup `true` if this is a legacy group
+             * @param {string?} syntax The syntax level of this definition (e.g., proto3)
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Message = function(builder, parent, name, options, isGroup) {
-                Namespace.call(this, builder, parent, name, options);
+            var Message = function(builder, parent, name, options, isGroup, syntax) {
+                Namespace.call(this, builder, parent, name, options, syntax);
 
                 /**
                  * @override
@@ -1742,8 +1825,11 @@
                         // Create fields and set default values
                         for (i=0, k=fields.length; i<k; ++i) {
                             var field = fields[i];
-                            this[field.name] = field.repeated ? [] : null;
-                            if (field.required && field.defaultValue !== null)
+                            this[field.name] =
+                                field.repeated ? [] :
+                                (field.map ? new ProtoBuf.Map(field) : null);
+                            if ((field.required || T.syntax === 'proto3') &&
+                                field.defaultValue !== null)
                                 this[field.name] = field.defaultValue;
                         }
 
@@ -1753,6 +1839,7 @@
                             if (arguments.length === 1 && typeof values === 'object' &&
                                 /* not another Message */ typeof values.encode !== 'function' &&
                                 /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
+                                /* not a Map */ !(values instanceof ProtoBuf.Map) &&
                                 /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                                 /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                                 /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
@@ -1935,54 +2022,54 @@
                                     return this[field.name];
                                 };
 
-                                /**
-                                 * Sets a value. This method is present for each field, but only if there is no name conflict with
-                                 *  another field.
-                                 * @name ProtoBuf.Builder.Message#set[SomeField]
-                                 * @function
-                                 * @param {*} value Value to set
-                                 * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
-                                 * @returns {!ProtoBuf.Builder.Message} this
-                                 * @abstract
-                                 * @throws {Error} If the value cannot be set
-                                 */
                                 if (T.getChild("set"+Name) === null)
+                                    /**
+                                     * Sets a value. This method is present for each field, but only if there is no name conflict with
+                                     *  another field.
+                                     * @name ProtoBuf.Builder.Message#set[SomeField]
+                                     * @function
+                                     * @param {*} value Value to set
+                                     * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+                                     * @returns {!ProtoBuf.Builder.Message} this
+                                     * @abstract
+                                     * @throws {Error} If the value cannot be set
+                                     */
                                     MessagePrototype["set"+Name] = setter;
 
-                                /**
-                                 * Sets a value. This method is present for each field, but only if there is no name conflict with
-                                 *  another field.
-                                 * @name ProtoBuf.Builder.Message#set_[some_field]
-                                 * @function
-                                 * @param {*} value Value to set
-                                 * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
-                                 * @returns {!ProtoBuf.Builder.Message} this
-                                 * @abstract
-                                 * @throws {Error} If the value cannot be set
-                                 */
                                 if (T.getChild("set_"+name) === null)
+                                    /**
+                                     * Sets a value. This method is present for each field, but only if there is no name conflict with
+                                     *  another field.
+                                     * @name ProtoBuf.Builder.Message#set_[some_field]
+                                     * @function
+                                     * @param {*} value Value to set
+                                     * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+                                     * @returns {!ProtoBuf.Builder.Message} this
+                                     * @abstract
+                                     * @throws {Error} If the value cannot be set
+                                     */
                                     MessagePrototype["set_"+name] = setter;
 
-                                /**
-                                 * Gets a value. This method is present for each field, but only if there is no name conflict with
-                                 *  another field.
-                                 * @name ProtoBuf.Builder.Message#get[SomeField]
-                                 * @function
-                                 * @abstract
-                                 * @return {*} The value
-                                 */
                                 if (T.getChild("get"+Name) === null)
+                                    /**
+                                     * Gets a value. This method is present for each field, but only if there is no name conflict with
+                                     *  another field.
+                                     * @name ProtoBuf.Builder.Message#get[SomeField]
+                                     * @function
+                                     * @abstract
+                                     * @return {*} The value
+                                     */
                                     MessagePrototype["get"+Name] = getter;
 
-                                /**
-                                 * Gets a value. This method is present for each field, but only if there is no name conflict with
-                                 *  another field.
-                                 * @name ProtoBuf.Builder.Message#get_[some_field]
-                                 * @function
-                                 * @return {*} The value
-                                 * @abstract
-                                 */
                                 if (T.getChild("get_"+name) === null)
+                                    /**
+                                     * Gets a value. This method is present for each field, but only if there is no name conflict with
+                                     *  another field.
+                                     * @name ProtoBuf.Builder.Message#get_[some_field]
+                                     * @function
+                                     * @return {*} The value
+                                     * @abstract
+                                     */
                                     MessagePrototype["get_"+name] = getter;
 
                             })(field);
@@ -2173,39 +2260,104 @@
                     MessagePrototype.toHex = MessagePrototype.encodeHex;
 
                     /**
-                     * Clones a message object to a raw object.
+                     * Clones a message object or field value to a raw object.
                      * @param {*} obj Object to clone
-                     * @param {boolean} includeBinaryAsBase64 Whether to include binary data as base64 strings instead of Buffers
+                     * @param {boolean} binaryAsBase64 Whether to include binary data as base64 strings or as a buffer otherwise
+                     * @param {boolean} longsAsStrings Whether to encode longs as strings
+                     * @param {{name: string, wireType: number}} fieldType The field type, if
+                     * appropriate
+                     * @param {ProtoBuf.Reflect.T} resolvedType The resolved field type, if appropriate
                      * @returns {*} Cloned object
                      * @inner
                      */
-                    function cloneRaw(obj, includeBinaryAsBase64) {
-                        var clone = {};
-                        for (var i in obj)
-                            if (obj.hasOwnProperty(i)) {
-                                if (obj[i] === null || typeof obj[i] !== 'object')
-                                    clone[i] = obj[i];
-                                else if (obj[i] instanceof ByteBuffer) {
-                                    if (includeBinaryAsBase64) {
-                                        clone[i] = obj[i].toBase64();
-                                    } else {
-                                        clone[i] = obj[i].toBuffer();
+                    function cloneRaw(obj, binaryAsBase64, longsAsStrings,
+                                      fieldType, resolvedType) {
+                        var clone = undefined;
+                        if (obj === null || typeof obj !== 'object') {
+                            if (fieldType == ProtoBuf.TYPES["enum"]) {
+                                var values = resolvedType.getChildren(ProtoBuf.Reflect.Enum.Value);
+                                for (var i = 0; i < values.length; i++) {
+                                    if (values[i]['id'] === obj) {
+                                        obj = values[i]['name'];
+                                        break;
                                     }
-                                } else // is a non-null object
-                                    clone[i] = cloneRaw(obj[i], includeBinaryAsBase64);
+                                }
                             }
+                            clone = obj;
+                        } else if (obj instanceof ByteBuffer) {
+                            if (binaryAsBase64) {
+                                clone = obj.toBase64();
+                            } else {
+                                clone = obj.toBuffer();
+                            }
+                        } else if (ProtoBuf.Util.isArray(obj)) {
+                            var src = obj;
+                            var result = [];
+                            for (var idx = 0; idx < src.length; idx++) {
+                                result.push(cloneRaw(src[idx], binaryAsBase64,
+                                                     longsAsStrings, fieldType, resolvedType));
+                            }
+                            clone = result;
+                        } else if (obj instanceof ProtoBuf.Map) {
+                            var result = {};
+                            var it = obj.entries();
+                            for (var e = it.next(); !e.done; e = it.next()) {
+                                result[obj.keyElem.valueToString(e.value[0])] =
+                                    cloneRaw(e.value[1],
+                                             binaryAsBase64, longsAsStrings,
+                                             obj.valueElem.type, obj.valueElem.resolvedType);
+                            }
+                            clone = result;
+                        } else if (obj instanceof ProtoBuf.Long) {
+                            if (longsAsStrings) {
+                                // int64s are encoded as strings
+                                clone = obj.toString();
+                            } else {
+                                clone = new ProtoBuf.Long(obj);
+                            }
+                        } else { // is a non-null object
+                            clone = {};
+                            var type = obj.$type;
+                            var field = undefined;
+                            for (var i in obj) {
+                                if (obj.hasOwnProperty(i)) {
+                                    var value = obj[i];
+                                    if (type) {
+                                        field = type.getChild(i);
+                                    }
+                                    clone[i] = cloneRaw(value,
+                                                        binaryAsBase64, longsAsStrings,
+                                                        field.type, field.resolvedType);
+                                }
+                            }
+                        }
                         return clone;
                     }
 
                     /**
                      * Returns the message's raw payload.
-                     * @param {boolean=} includeBinaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
+                     * @param {boolean=} binaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
+                     * @param {boolean} longsAsStrings Whether to encode longs as strings
                      * @returns {Object.<string,*>} Raw payload
                      * @expose
                      */
-                    MessagePrototype.toRaw = function(includeBinaryAsBase64) {
-                        return cloneRaw(this, !!includeBinaryAsBase64);
+                    MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
+                        return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, ProtoBuf.TYPES["message"], this.$type);
                     };
+
+                    /**
+                     * Encodes a message to JSON.
+                     * @returns {string} JSON string
+                     * @expose
+                     */
+                    MessagePrototype.encodeJSON = function() {
+                        return JSON.stringify(
+                            cloneRaw(this,
+                                     /* binary-as-base64 */ true,
+                                     /* longs-as-strings */ true,
+                                     ProtoBuf.TYPES["message"],
+                                     this.$type));
+                    }
 
                     /**
                      * Decodes a message from the specified buffer or string.
@@ -2295,6 +2447,20 @@
                     Message.decodeHex = function(str) {
                         return Message.decode(str, "hex");
                     };
+
+                    /**
+                     * Decodes the message from a JSON string.
+                     * @name ProtoBuf.Builder.Message.decodeJSON
+                     * @function
+                     * @param {string} str String to decode from
+                     * @return {!ProtoBuf.Builder.Message} Decoded message
+                     * @throws {Error} If the message cannot be decoded or if required fields are
+                     * missing.
+                     * @expose
+                     */
+                    Message.decodeJSON = function(str) {
+                        return new Message(JSON.parse(str));
+                    }
 
                     // Utility
 
@@ -2434,7 +2600,7 @@
             function skipTillGroupEnd(expectedId, buf) {
                 var tag = buf.readVarint32(), // Throws on OOB
                     wireType = tag & 0x07,
-                    id = tag >> 3;
+                    id = tag >>> 3;
                 switch (wireType) {
                     case ProtoBuf.WIRE_TYPES.VARINT:
                         do tag = buf.readUint8();
@@ -2481,7 +2647,7 @@
                 while (buffer.offset < start+length || (length === -1 && buffer.remaining() > 0)) {
                     tag = buffer.readVarint32();
                     wireType = tag & 0x07;
-                    id = tag >> 3;
+                    id = tag >>> 3;
                     if (wireType === ProtoBuf.WIRE_TYPES.ENDGROUP) {
                         if (id !== expectedGroupEndId)
                             throw Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")");
@@ -2511,9 +2677,12 @@
                         }
                         continue;
                     }
-                    if (field.repeated && !field.options["packed"])
+                    if (field.repeated && !field.options["packed"]) {
                         msg[field.name].push(field.decode(wireType, buffer));
-                    else {
+                    } else if (field.map) {
+                        var keyval = field.decode(wireType, buffer);
+                        msg[field.name].set(keyval[0], keyval[1]);
+                    } else {
                         msg[field.name] = field.decode(wireType, buffer);
                         if (field.oneof) {
                             if (this[field.oneof.name] !== null)
@@ -2549,15 +2718,18 @@
              * @param {!ProtoBuf.Builder} builder Builder reference
              * @param {!ProtoBuf.Reflect.Message} message Message reference
              * @param {string} rule Rule, one of requried, optional, repeated
+             * @param {string?} keytype Key data type, if any.
              * @param {string} type Data type, e.g. int32
              * @param {string} name Field name
              * @param {number} id Unique field id
              * @param {Object.<string,*>=} options Options
              * @param {!ProtoBuf.Reflect.Message.OneOf=} oneof Enclosing OneOf
+             * @param {string?} syntax The syntax level of this definition (e.g., proto3)
              * @constructor
              * @extends ProtoBuf.Reflect.T
              */
-            var Field = function(builder, message, rule, type, name, id, options, oneof) {
+            var Field = function(builder, message, rule, keytype, type, name, id, options, oneof,
+                                 syntax) {
                 T.call(this, builder, message, name);
 
                 /**
@@ -2580,7 +2752,23 @@
                 this.repeated = rule === "repeated";
 
                 /**
-                 * Message field type. Type reference string if unresolved, protobuf type if resolved.
+                 * Message field map flag.
+                 * @type {boolean}
+                 * @expose
+                 */
+                this.map = rule === "map";
+
+                /**
+                 * Message field key type. Type reference string if unresolved, protobuf
+                 * type if resolved. Valid only if this.map === true, null otherwise.
+                 * @type {string|{name: string, wireType: number}|null}
+                 * @expose
+                 */
+                this.keyType = keytype || null;
+
+                /**
+                 * Message field type. Type reference string if unresolved, protobuf type if
+                 * resolved. In a map field, this is the value type.
                  * @type {string|{name: string, wireType: number}}
                  * @expose
                  */
@@ -2623,11 +2811,33 @@
                 this.oneof = oneof || null;
 
                 /**
+                 * Syntax level of this definition (e.g., proto3).
+                 * @type {string}
+                 * @expose
+                 */
+                this.syntax = syntax || 'proto2';
+
+                /**
                  * Original field name.
                  * @type {string}
                  * @expose
                  */
                 this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
+
+                /**
+                 * Element implementation. Created in build() after types are resolved.
+                 * @type {ProtoBuf.Element|null}
+                 * @expose
+                 */
+                this.element = null;
+
+                /**
+                 * Key element implementation, for map fields. Created in build() after
+                 * types are resolved.
+                 * @type {ProtoBuf.Element|null}
+                 * @expose
+                 */
+                this.keyElement = null;
 
                 // Convert field names to camel case notation if the override is set
                 if (this.builder.options['convertFieldsToCamelCase'] && !(this instanceof Message.ExtensionField))
@@ -2658,29 +2868,22 @@
              * @expose
              */
             FieldPrototype.build = function() {
+                this.element = new ProtoBuf.Element(this.type, this.resolvedType,
+                                                    false, this.syntax);
+
+                if (this.map) {
+                    this.keyElement = new ProtoBuf.Element(this.keyType, undefined,
+                                                           true, this.syntax);
+                }
+
                 this.defaultValue = typeof this.options['default'] !== 'undefined'
                     ? this.verifyValue(this.options['default']) : null;
-            };
 
-            /**
-             * Makes a Long from a value.
-             * @param {{low: number, high: number, unsigned: boolean}|string|number} value Value
-             * @param {boolean=} unsigned Whether unsigned or not, defaults to reuse it from Long-like objects or to signed for
-             *  strings and numbers
-             * @returns {!Long}
-             * @throws {Error} If the value cannot be converted to a Long
-             * @inner
-             */
-            function mkLong(value, unsigned) {
-                if (value && typeof value.low === 'number' && typeof value.high === 'number' && typeof value.unsigned === 'boolean'
-                    && value.low === value.low && value.high === value.high)
-                    return new ProtoBuf.Long(value.low, value.high, typeof unsigned === 'undefined' ? value.unsigned : unsigned);
-                if (typeof value === 'string')
-                    return ProtoBuf.Long.fromString(value, unsigned || false, 10);
-                if (typeof value === 'number')
-                    return ProtoBuf.Long.fromNumber(value, unsigned || false);
-                throw Error("not convertible to Long");
-            }
+                // In proto3, fields do not have field presence, and every field is set to
+                // its type's default value ("", 0, 0.0, or false).
+                if (this.syntax === 'proto3' && !this.repeated && !this.map)
+                    this.defaultValue = this.element.defaultFieldValue(this.type);
+            };
 
             /**
              * Checks if the given value can be set for this field.
@@ -2698,6 +2901,9 @@
                 if (value === null) { // NULL values for optional fields
                     if (this.required)
                         fail(typeof value, "required");
+                    if (this.syntax === 'proto3' && this.type !== ProtoBuf.TYPES["message"])
+                        fail(typeof value,
+                             "proto3 field without field presence cannot be null");
                     return null;
                 }
                 var i;
@@ -2706,114 +2912,75 @@
                         value = [value];
                     var res = [];
                     for (i=0; i<value.length; i++)
-                        res.push(this.verifyValue(value[i], true));
+                        res.push(this.element.verifyValue(value[i]));
                     return res;
+                }
+                if (this.map && !skipRepeated) { // Map values as objects
+                    if (!(value instanceof ProtoBuf.Map)) {
+                        // If not already a Map, attempt to convert.
+                        if (!(value instanceof Object)) {
+                            fail(typeof value,
+                                 "expected ProtoBuf.Map or raw object for map field");
+                        }
+                        return new ProtoBuf.Map(this, value);
+                    } else {
+                        return value;
+                    }
                 }
                 // All non-repeated fields expect no array
                 if (!this.repeated && ProtoBuf.Util.isArray(value))
                     fail(typeof value, "no array expected");
 
-                switch (this.type) {
-                    // Signed 32bit
-                    case ProtoBuf.TYPES["int32"]:
-                    case ProtoBuf.TYPES["sint32"]:
-                    case ProtoBuf.TYPES["sfixed32"]:
-                        // Account for !NaN: value === value
-                        if (typeof value !== 'number' || (value === value && value % 1 !== 0))
-                            fail(typeof value, "not an integer");
-                        return value > 4294967295 ? value | 0 : value;
+                return this.element.verifyValue(value);
+            };
 
-                    // Unsigned 32bit
-                    case ProtoBuf.TYPES["uint32"]:
-                    case ProtoBuf.TYPES["fixed32"]:
-                        if (typeof value !== 'number' || (value === value && value % 1 !== 0))
-                            fail(typeof value, "not an integer");
-                        return value < 0 ? value >>> 0 : value;
+            /**
+             * Determines whether the field will have a presence on the wire given its
+             * value.
+             * @param {*} value Verified field value
+             * @return {boolean} Whether the field will be present on the wire
+             */
+            FieldPrototype.hasWirePresence = function(value) {
+                if (this.syntax !== 'proto3') {
+                    return (value !== null);
+                } else {
+                    switch (this.type) {
+                        case ProtoBuf.TYPES["int32"]:
+                        case ProtoBuf.TYPES["sint32"]:
+                        case ProtoBuf.TYPES["sfixed32"]:
+                        case ProtoBuf.TYPES["uint32"]:
+                        case ProtoBuf.TYPES["fixed32"]:
+                            return value !== 0;
 
-                    // Signed 64bit
-                    case ProtoBuf.TYPES["int64"]:
-                    case ProtoBuf.TYPES["sint64"]:
-                    case ProtoBuf.TYPES["sfixed64"]: {
-                        if (ProtoBuf.Long)
-                            try {
-                                return mkLong(value, false);
-                            } catch (e) {
-                                fail(typeof value, e.message);
-                            }
-                        else
-                            fail(typeof value, "requires Long.js");
-                    }
+                        case ProtoBuf.TYPES["int64"]:
+                        case ProtoBuf.TYPES["sint64"]:
+                        case ProtoBuf.TYPES["sfixed64"]:
+                        case ProtoBuf.TYPES["uint64"]:
+                        case ProtoBuf.TYPES["fixed64"]:
+                            return value.low !== 0 || value.high !== 0;
 
-                    // Unsigned 64bit
-                    case ProtoBuf.TYPES["uint64"]:
-                    case ProtoBuf.TYPES["fixed64"]: {
-                        if (ProtoBuf.Long)
-                            try {
-                                return mkLong(value, true);
-                            } catch (e) {
-                                fail(typeof value, e.message);
-                            }
-                        else
-                            fail(typeof value, "requires Long.js");
-                    }
-
-                    // Bool
-                    case ProtoBuf.TYPES["bool"]:
-                        if (typeof value !== 'boolean')
-                            fail(typeof value, "not a boolean");
-                        return value;
-
-                    // Float
-                    case ProtoBuf.TYPES["float"]:
-                    case ProtoBuf.TYPES["double"]:
-                        if (typeof value !== 'number')
-                            fail(typeof value, "not a number");
-                        return value;
-
-                    // Length-delimited string
-                    case ProtoBuf.TYPES["string"]:
-                        if (typeof value !== 'string' && !(value && value instanceof String))
-                            fail(typeof value, "not a string");
-                        return ""+value; // Convert String object to string
-
-                    // Length-delimited bytes
-                    case ProtoBuf.TYPES["bytes"]:
-                        if (ByteBuffer.isByteBuffer(value))
+                        case ProtoBuf.TYPES["bool"]:
                             return value;
-                        return ByteBuffer.wrap(value, "base64");
 
-                    // Constant enum value
-                    case ProtoBuf.TYPES["enum"]: {
-                        var values = this.resolvedType.getChildren(Enum.Value);
-                        for (i=0; i<values.length; i++)
-                            if (values[i].name == value)
-                                return values[i].id;
-                            else if (values[i].id == value)
-                                return values[i].id;
-                        fail(value, "not a valid enum value");
-                    }
-                    // Embedded message
-                    case ProtoBuf.TYPES["group"]:
-                    case ProtoBuf.TYPES["message"]: {
-                        if (!value || typeof value !== 'object')
-                            fail(typeof value, "object expected");
-                        if (value instanceof this.resolvedType.clazz)
-                            return value;
-                        if (value instanceof ProtoBuf.Builder.Message) {
-                            // Mismatched type: Convert to object (see: https://github.com/dcodeIO/ProtoBuf.js/issues/180)
-                            var obj = {};
-                            for (var i in value)
-                                if (value.hasOwnProperty(i))
-                                    obj[i] = value[i];
-                            value = obj;
-                        }
-                        // Else let's try to construct one from a key-value object
-                        return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
+                        case ProtoBuf.TYPES["float"]:
+                        case ProtoBuf.TYPES["double"]:
+                            return value !== 0.0;
+
+                        case ProtoBuf.TYPES["string"]:
+                            return value.length > 0;
+
+                        case ProtoBuf.TYPES["bytes"]:
+                            return value.remaining() > 0;
+
+                        case ProtoBuf.TYPES["enum"]:
+                            return value !== 0;
+
+                        case ProtoBuf.TYPES["message"]:
+                            return value !== null;
+                        default:
+                            return true;
                     }
                 }
-
-                // We should never end here
-                throw Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")");
             };
 
             /**
@@ -2842,7 +3009,7 @@
                             buffer.ensureCapacity(buffer.offset += 1); // We do not know the length yet, so let's assume a varint of length 1
                             var start = buffer.offset; // Remember where the contents begin
                             for (i=0; i<value.length; i++)
-                                this.encodeValue(value[i], buffer);
+                                this.element.encodeValue(this.id, value[i], buffer);
                             var len = buffer.offset-start,
                                 varintLen = ByteBuffer.calculateVarint32(len);
                             if (varintLen > 1) { // We need to move the contents
@@ -2857,136 +3024,36 @@
                             // message has zero or more key-value pairs with the same tag number"
                             for (i=0; i<value.length; i++)
                                 buffer.writeVarint32((this.id << 3) | this.type.wireType),
-                                this.encodeValue(value[i], buffer);
+                                this.element.encodeValue(this.id, value[i], buffer);
                         }
-                    } else
-                        buffer.writeVarint32((this.id << 3) | this.type.wireType),
-                        this.encodeValue(value, buffer);
+                    } else if (this.map) {
+                        // Write out each map entry as a submessage.
+                        value.forEach(function(val, key, m) {
+                            // Compute the length of the submessage (key, val) pair.
+                            var length =
+                                ByteBuffer.calculateVarint32((1 << 3) | this.keyType.wireType) +
+                                this.keyElement.calculateLength(1, key) +
+                                ByteBuffer.calculateVarint32((2 << 3) | this.type.wireType) +
+                                this.element.calculateLength(2, val);
+
+                            // Submessage with wire type of length-delimited.
+                            buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
+                            buffer.writeVarint32(length);
+
+                            // Write out the key and val.
+                            buffer.writeVarint32((1 << 3) | this.keyType.wireType);
+                            this.keyElement.encodeValue(1, key, buffer);
+                            buffer.writeVarint32((2 << 3) | this.type.wireType);
+                            this.element.encodeValue(2, val, buffer);
+                        }, this);
+                    } else {
+                        if (this.hasWirePresence(value)) {
+                            buffer.writeVarint32((this.id << 3) | this.type.wireType);
+                            this.element.encodeValue(this.id, value, buffer);
+                        }
+                    }
                 } catch (e) {
                     throw Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")");
-                }
-                return buffer;
-            };
-
-            /**
-             * Encodes a value to the specified buffer. Does not encode the key.
-             * @param {*} value Field value
-             * @param {ByteBuffer} buffer ByteBuffer to encode to
-             * @return {ByteBuffer} The ByteBuffer for chaining
-             * @throws {Error} If the value cannot be encoded
-             * @expose
-             */
-            FieldPrototype.encodeValue = function(value, buffer) {
-                if (value === null) return buffer; // Nothing to encode
-                // Tag has already been written
-
-                switch (this.type) {
-                    // 32bit signed varint
-                    case ProtoBuf.TYPES["int32"]:
-                        // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
-                        // long – it is, effectively, treated like a very large unsigned integer." (see #122)
-                        if (value < 0)
-                            buffer.writeVarint64(value);
-                        else
-                            buffer.writeVarint32(value);
-                        break;
-
-                    // 32bit unsigned varint
-                    case ProtoBuf.TYPES["uint32"]:
-                        buffer.writeVarint32(value);
-                        break;
-
-                    // 32bit varint zig-zag
-                    case ProtoBuf.TYPES["sint32"]:
-                        buffer.writeVarint32ZigZag(value);
-                        break;
-
-                    // Fixed unsigned 32bit
-                    case ProtoBuf.TYPES["fixed32"]:
-                        buffer.writeUint32(value);
-                        break;
-
-                    // Fixed signed 32bit
-                    case ProtoBuf.TYPES["sfixed32"]:
-                        buffer.writeInt32(value);
-                        break;
-
-                    // 64bit varint as-is
-                    case ProtoBuf.TYPES["int64"]:
-                    case ProtoBuf.TYPES["uint64"]:
-                        buffer.writeVarint64(value); // throws
-                        break;
-
-                    // 64bit varint zig-zag
-                    case ProtoBuf.TYPES["sint64"]:
-                        buffer.writeVarint64ZigZag(value); // throws
-                        break;
-
-                    // Fixed unsigned 64bit
-                    case ProtoBuf.TYPES["fixed64"]:
-                        buffer.writeUint64(value); // throws
-                        break;
-
-                    // Fixed signed 64bit
-                    case ProtoBuf.TYPES["sfixed64"]:
-                        buffer.writeInt64(value); // throws
-                        break;
-
-                    // Bool
-                    case ProtoBuf.TYPES["bool"]:
-                        if (typeof value === 'string')
-                            buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
-                        else
-                            buffer.writeVarint32(value ? 1 : 0);
-                        break;
-
-                    // Constant enum value
-                    case ProtoBuf.TYPES["enum"]:
-                        buffer.writeVarint32(value);
-                        break;
-
-                    // 32bit float
-                    case ProtoBuf.TYPES["float"]:
-                        buffer.writeFloat32(value);
-                        break;
-
-                    // 64bit float
-                    case ProtoBuf.TYPES["double"]:
-                        buffer.writeFloat64(value);
-                        break;
-
-                    // Length-delimited string
-                    case ProtoBuf.TYPES["string"]:
-                        buffer.writeVString(value);
-                        break;
-
-                    // Length-delimited bytes
-                    case ProtoBuf.TYPES["bytes"]:
-                        if (value.remaining() < 0)
-                            throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
-                        var prevOffset = value.offset;
-                        buffer.writeVarint32(value.remaining());
-                        buffer.append(value);
-                        value.offset = prevOffset;
-                        break;
-
-                    // Embedded message
-                    case ProtoBuf.TYPES["message"]:
-                        var bb = new ByteBuffer().LE();
-                        this.resolvedType.encode(value, bb);
-                        buffer.writeVarint32(bb.offset);
-                        buffer.append(bb.flip());
-                        break;
-
-                    // Legacy group
-                    case ProtoBuf.TYPES["group"]:
-                        this.resolvedType.encode(value, buffer);
-                        buffer.writeVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
-                        break;
-
-                    default:
-                        // We should never end here
-                        throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
                 }
                 return buffer;
             };
@@ -3011,17 +3078,33 @@
                             n += ByteBuffer.calculateVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
                             ni = 0;
                             for (i=0; i<value.length; i++)
-                                ni += this.calculateValue(value[i]);
+                                ni += this.element.calculateLength(this.id, value[i]);
                             n += ByteBuffer.calculateVarint32(ni);
                             n += ni;
                         } else {
                             for (i=0; i<value.length; i++)
                                 n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType),
-                                n += this.calculateValue(value[i]);
+                                n += this.element.calculateLength(this.id, value[i]);
                         }
+                    } else if (this.map) {
+                        // Each map entry becomes a submessage.
+                        value.forEach(function(val, key, m) {
+                            // Compute the length of the submessage (key, val) pair.
+                            var length =
+                                ByteBuffer.calculateVarint32((1 << 3) | this.keyType.wireType) +
+                                this.keyElement.calculateLength(1, key) +
+                                ByteBuffer.calculateVarint32((2 << 3) | this.type.wireType) +
+                                this.element.calculateLength(2, val);
+
+                            n += ByteBuffer.calculateVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.LDELIM);
+                            n += ByteBuffer.calculateVarint32(length);
+                            n += length;
+                        }, this);
                     } else {
-                        n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType);
-                        n += this.calculateValue(value);
+                        if (this.hasWirePresence(value)) {
+                            n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType);
+                            n += this.element.calculateLength(this.id, value);
+                        }
                     }
                 } catch (e) {
                     throw Error("Illegal value for "+this.toString(true)+": "+value+" ("+e+")");
@@ -3030,73 +3113,32 @@
             };
 
             /**
-             * Calculates the byte length of a value.
-             * @param {*} value Field value
-             * @returns {number} Byte length
-             * @throws {Error} If the value cannot be calculated
-             * @expose
-             */
-            FieldPrototype.calculateValue = function(value) {
-                if (value === null) return 0; // Nothing to encode
-                // Tag has already been written
-                var n;
-                switch (this.type) {
-                    case ProtoBuf.TYPES["int32"]:
-                        return value < 0 ? ByteBuffer.calculateVarint64(value) : ByteBuffer.calculateVarint32(value);
-                    case ProtoBuf.TYPES["uint32"]:
-                        return ByteBuffer.calculateVarint32(value);
-                    case ProtoBuf.TYPES["sint32"]:
-                        return ByteBuffer.calculateVarint32(ByteBuffer.zigZagEncode32(value));
-                    case ProtoBuf.TYPES["fixed32"]:
-                    case ProtoBuf.TYPES["sfixed32"]:
-                    case ProtoBuf.TYPES["float"]:
-                        return 4;
-                    case ProtoBuf.TYPES["int64"]:
-                    case ProtoBuf.TYPES["uint64"]:
-                        return ByteBuffer.calculateVarint64(value);
-                    case ProtoBuf.TYPES["sint64"]:
-                        return ByteBuffer.calculateVarint64(ByteBuffer.zigZagEncode64(value));
-                    case ProtoBuf.TYPES["fixed64"]:
-                    case ProtoBuf.TYPES["sfixed64"]:
-                        return 8;
-                    case ProtoBuf.TYPES["bool"]:
-                        return 1;
-                    case ProtoBuf.TYPES["enum"]:
-                        return ByteBuffer.calculateVarint32(value);
-                    case ProtoBuf.TYPES["double"]:
-                        return 8;
-                    case ProtoBuf.TYPES["string"]:
-                        n = ByteBuffer.calculateUTF8Bytes(value);
-                        return ByteBuffer.calculateVarint32(n) + n;
-                    case ProtoBuf.TYPES["bytes"]:
-                        if (value.remaining() < 0)
-                            throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
-                        return ByteBuffer.calculateVarint32(value.remaining()) + value.remaining();
-                    case ProtoBuf.TYPES["message"]:
-                        n = this.resolvedType.calculate(value);
-                        return ByteBuffer.calculateVarint32(n) + n;
-                    case ProtoBuf.TYPES["group"]:
-                        n = this.resolvedType.calculate(value);
-                        return n + ByteBuffer.calculateVarint32((this.id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
-                }
-                // We should never end here
-                throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
-            };
-
-            /**
              * Decode the field value from the specified buffer.
              * @param {number} wireType Leading wire type
              * @param {ByteBuffer} buffer ByteBuffer to decode from
              * @param {boolean=} skipRepeated Whether to skip the repeated check or not. Defaults to false.
-             * @return {*} Decoded value
+             * @return {*} Decoded value: array for packed repeated fields, [key, value] for
+             *             map fields, or an individual value otherwise.
              * @throws {Error} If the field cannot be decoded
              * @expose
              */
             FieldPrototype.decode = function(wireType, buffer, skipRepeated) {
                 var value, nBytes;
-                if (wireType != this.type.wireType && (skipRepeated || (wireType != ProtoBuf.WIRE_TYPES.LDELIM || !this.repeated)))
+
+                // We expect wireType to match the underlying type's wireType unless we see
+                // a packed repeated field, or unless this is a map field.
+                var wireTypeOK =
+                    (!this.map && wireType == this.type.wireType) ||
+                    (!skipRepeated && this.repeated && this.options["packed"] &&
+                     wireType == ProtoBuf.WIRE_TYPES.LDELIM) ||
+                    (this.map && wireType == ProtoBuf.WIRE_TYPES.LDELIM);
+                if (!wireTypeOK)
                     throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");
-                if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"] && ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
+
+                // Handle packed repeated fields.
+                if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated &&
+                    this.options["packed"] &&
+                    ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
                     if (!skipRepeated) {
                         nBytes = buffer.readVarint32();
                         nBytes = buffer.offset + nBytes; // Limit
@@ -3107,91 +3149,41 @@
                     }
                     // Read the next value otherwise...
                 }
-                switch (this.type) {
-                    // 32bit signed varint
-                    case ProtoBuf.TYPES["int32"]:
-                        return buffer.readVarint32() | 0;
 
-                    // 32bit unsigned varint
-                    case ProtoBuf.TYPES["uint32"]:
-                        return buffer.readVarint32() >>> 0;
+                // Handle maps.
+                if (this.map) {
+                    // Read one (key, value) submessage, and return [key, value]
+                    var key = this.keyElement.defaultFieldValue(this.keyType);
+                    value = this.element.defaultFieldValue(this.type);
 
-                    // 32bit signed varint zig-zag
-                    case ProtoBuf.TYPES["sint32"]:
-                        return buffer.readVarint32ZigZag() | 0;
+                    // Read the length
+                    nBytes = buffer.readVarint32();
+                    if (buffer.remaining() < nBytes)
+                        throw Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining());
 
-                    // Fixed 32bit unsigned
-                    case ProtoBuf.TYPES["fixed32"]:
-                        return buffer.readUint32() >>> 0;
+                    // Get a sub-buffer of this key/value submessage
+                    var msgbuf = buffer.clone();
+                    msgbuf.limit = msgbuf.offset + nBytes;
+                    buffer.offset += nBytes;
 
-                    case ProtoBuf.TYPES["sfixed32"]:
-                        return buffer.readInt32() | 0;
-
-                    // 64bit signed varint
-                    case ProtoBuf.TYPES["int64"]:
-                        return buffer.readVarint64();
-
-                    // 64bit unsigned varint
-                    case ProtoBuf.TYPES["uint64"]:
-                        return buffer.readVarint64().toUnsigned();
-
-                    // 64bit signed varint zig-zag
-                    case ProtoBuf.TYPES["sint64"]:
-                        return buffer.readVarint64ZigZag();
-
-                    // Fixed 64bit unsigned
-                    case ProtoBuf.TYPES["fixed64"]:
-                        return buffer.readUint64();
-
-                    // Fixed 64bit signed
-                    case ProtoBuf.TYPES["sfixed64"]:
-                        return buffer.readInt64();
-
-                    // Bool varint
-                    case ProtoBuf.TYPES["bool"]:
-                        return !!buffer.readVarint32();
-
-                    // Constant enum value (varint)
-                    case ProtoBuf.TYPES["enum"]:
-                        // The following Builder.Message#set will already throw
-                        return buffer.readVarint32();
-
-                    // 32bit float
-                    case ProtoBuf.TYPES["float"]:
-                        return buffer.readFloat();
-
-                    // 64bit float
-                    case ProtoBuf.TYPES["double"]:
-                        return buffer.readDouble();
-
-                    // Length-delimited string
-                    case ProtoBuf.TYPES["string"]:
-                        return buffer.readVString();
-
-                    // Length-delimited bytes
-                    case ProtoBuf.TYPES["bytes"]: {
-                        nBytes = buffer.readVarint32();
-                        if (buffer.remaining() < nBytes)
-                            throw Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining());
-                        value = buffer.clone(); // Offset already set
-                        value.limit = value.offset+nBytes;
-                        buffer.offset += nBytes;
-                        return value;
+                    while (msgbuf.remaining() > 0) {
+                        var tag = msgbuf.readVarint32();
+                        wireType = tag & 0x07;
+                        var id = tag >>> 3;
+                        if (id === 1) {
+                            key = this.keyElement.decode(msgbuf, wireType, id);
+                        } else if (id === 2) {
+                            value = this.element.decode(msgbuf, wireType, id);
+                        } else {
+                            throw Error("Unexpected tag in map field key/value submessage");
+                        }
                     }
 
-                    // Length-delimited embedded message
-                    case ProtoBuf.TYPES["message"]: {
-                        nBytes = buffer.readVarint32();
-                        return this.resolvedType.decode(buffer, nBytes);
-                    }
-
-                    // Legacy group
-                    case ProtoBuf.TYPES["group"]:
-                        return this.resolvedType.decode(buffer, -1, this.id);
+                    return [key, value];
                 }
 
-                // We should never end here
-                throw Error("[INTERNAL] Illegal wire type for "+this.toString(true)+": "+wireType);
+                // Handle singular and non-packed repeated field values.
+                return this.element.decode(buffer, wireType, this.id);
             };
 
             /**
@@ -3214,7 +3206,7 @@
              * @extends ProtoBuf.Reflect.Message.Field
              */
             var ExtensionField = function(builder, message, rule, type, name, id, options) {
-                Field.call(this, builder, message, rule, type, name, id, options);
+                Field.call(this, builder, message, rule, /* keytype = */ null, type, name, id, options);
 
                 /**
                  * Extension reference.
@@ -3266,11 +3258,12 @@
              * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
              * @param {string} name Enum name
              * @param {Object.<string,*>=} options Enum options
+             * @param {string?} syntax The syntax level (e.g., proto3)
              * @constructor
              * @extends ProtoBuf.Reflect.Namespace
              */
-            var Enum = function(builder, parent, name, options) {
-                Namespace.call(this, builder, parent, name, options);
+            var Enum = function(builder, parent, name, options, syntax) {
+                Namespace.call(this, builder, parent, name, options, syntax);
 
                 /**
                  * @override
@@ -3688,11 +3681,667 @@
         })(ProtoBuf);
 
         /**
+         * @alias ProtoBuf.Element
+         * @expose
+         */
+        ProtoBuf.Element = (function(ProtoBuf) {
+            "use strict";
+
+            /**
+             * Constructs a new Element implementation that checks and converts values for a
+             * particular field type, as appropriate.
+             *
+             * An Element represents a single value: either the value of a singular field,
+             * or a value contained in one entry of a repeated field or map field. This
+             * class does not implement these higher-level concepts; it only encapsulates
+             * the low-level typechecking and conversion.
+             *
+             * @exports ProtoBuf.Element
+             * @param {{name: string, wireType: number}} type Resolved data type
+             * @param {ProtoBuf.Reflect.T|null} resolvedType Resolved type, if relevant
+             * (e.g. submessage field).
+             * @param {boolean} isMapKey Is this element a Map key? The value will be
+             * converted to string form if so.
+             * @param {string} syntax Syntax level of defining message type, e.g.,
+             * proto2 or proto3.
+             * @constructor
+             */
+            var Element = function(type, resolvedType, isMapKey, syntax) {
+                /**
+                 * Element type, as a string (e.g., int32).
+                 * @type {{name: string, wireType: number}}
+                 */
+                this.type = type;
+
+                /**
+                 * Element type reference to submessage or enum definition, if needed.
+                 * @type {ProtoBuf.Reflect.T|null}
+                 */
+                this.resolvedType = resolvedType;
+
+                /**
+                 * Element is a map key.
+                 * @type {boolean}
+                 */
+                this.isMapKey = isMapKey;
+
+                /**
+                 * Syntax level of defining message type, e.g., proto2 or proto3.
+                 * @type {string}
+                 */
+                this.syntax = syntax;
+
+                if (isMapKey) {
+                    // Verify that an allowable map key type is in use.
+                    switch (type) {
+                        case ProtoBuf.TYPES["int32"]:
+                        case ProtoBuf.TYPES["sint32"]:
+                        case ProtoBuf.TYPES["sfixed32"]:
+                        case ProtoBuf.TYPES["uint32"]:
+                        case ProtoBuf.TYPES["fixed32"]:
+                        case ProtoBuf.TYPES["int64"]:
+                        case ProtoBuf.TYPES["sint64"]:
+                        case ProtoBuf.TYPES["sfixed64"]:
+                        case ProtoBuf.TYPES["uint64"]:
+                        case ProtoBuf.TYPES["fixed64"]:
+                        case ProtoBuf.TYPES["bool"]:
+                        case ProtoBuf.TYPES["string"]:
+                        case ProtoBuf.TYPES["bytes"]:
+                            break;
+
+                        case ProtoBuf.TYPES["float"]:
+                        case ProtoBuf.TYPES["double"]:
+                        case ProtoBuf.TYPES["enum"]:
+                        case ProtoBuf.TYPES["message"]:
+                            throw Error("Invalid map key type: " + type);
+                    }
+                }
+            };
+
+            var ElementPrototype = Element.prototype;
+
+            /**
+             * Returns the default value for this field in proto3.
+             * @param type {string|{name: string, wireType: number}} the field type
+             * @returns {*} the field value
+             */
+            ElementPrototype.defaultFieldValue = function(type) {
+                switch (type) {
+                    // 32-bit integers
+                    case ProtoBuf.TYPES["int32"]:
+                    case ProtoBuf.TYPES["sint32"]:
+                    case ProtoBuf.TYPES["sfixed32"]:
+                    case ProtoBuf.TYPES["uint32"]:
+                    case ProtoBuf.TYPES["fixed32"]:
+                        return 0;
+
+                    // Signed 64-bit integers
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["sint64"]:
+                    case ProtoBuf.TYPES["sfixed64"]: {
+                        if (ProtoBuf.Long)
+                            return mkLong(0, false);
+                        else
+                            throw Error("requires Long.js");
+                    }
+
+                    // Unsigned 64-bit integers
+                    case ProtoBuf.TYPES["uint64"]:
+                    case ProtoBuf.TYPES["fixed64"]: {
+                        if (ProtoBuf.Long)
+                            return mkLong(0, true);
+                        else
+                            throw Error("requires Long.js");
+                    }
+
+                    // Bool
+                    case ProtoBuf.TYPES["bool"]:
+                        return false;
+
+                    // Float
+                    case ProtoBuf.TYPES["float"]:
+                    case ProtoBuf.TYPES["double"]:
+                        return 0.0;
+
+                    // Length-delimited string
+                    case ProtoBuf.TYPES["string"]:
+                        return "";
+
+                    // Length-delimited bytes
+                    case ProtoBuf.TYPES["bytes"]:
+                        return new ByteBuffer(0);
+
+                    // Constant enum value
+                    case ProtoBuf.TYPES["enum"]:
+                        return 0;  // proto3 enums must have a default value with id == 0.
+
+                    // Embedded message
+                    case ProtoBuf.TYPES["message"]:
+                        return null;
+                }
+            };
+
+            /**
+             * Makes a Long from a value.
+             * @param {{low: number, high: number, unsigned: boolean}|string|number} value Value
+             * @param {boolean=} unsigned Whether unsigned or not, defaults to reuse it from Long-like objects or to signed for
+             *  strings and numbers
+             * @returns {!Long}
+             * @throws {Error} If the value cannot be converted to a Long
+             * @inner
+             */
+            function mkLong(value, unsigned) {
+                if (value && typeof value.low === 'number' && typeof value.high === 'number' && typeof value.unsigned === 'boolean'
+                    && value.low === value.low && value.high === value.high)
+                    return new ProtoBuf.Long(value.low, value.high, typeof unsigned === 'undefined' ? value.unsigned : unsigned);
+                if (typeof value === 'string')
+                    return ProtoBuf.Long.fromString(value, unsigned || false, 10);
+                if (typeof value === 'number')
+                    return ProtoBuf.Long.fromNumber(value, unsigned || false);
+                throw Error("not convertible to Long");
+            }
+
+            /**
+             * Checks if the given value can be set for an element of this type (singular
+             * field or one element of a repeated field or map).
+             * @param {*} value Value to check
+             * @return {*} Verified, maybe adjusted, value
+             * @throws {Error} If the value cannot be verified for this element slot
+             * @expose
+             */
+            ElementPrototype.verifyValue = function(value) {
+                var fail = function(val, msg) {
+                    throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
+                }.bind(this);
+                switch (this.type) {
+                    // Signed 32bit
+                    case ProtoBuf.TYPES["int32"]:
+                    case ProtoBuf.TYPES["sint32"]:
+                    case ProtoBuf.TYPES["sfixed32"]:
+                        // Account for !NaN: value === value
+                        if (typeof value !== 'number' || (value === value && value % 1 !== 0))
+                            fail(typeof value, "not an integer");
+                        return value > 4294967295 ? value | 0 : value;
+
+                    // Unsigned 32bit
+                    case ProtoBuf.TYPES["uint32"]:
+                    case ProtoBuf.TYPES["fixed32"]:
+                        if (typeof value !== 'number' || (value === value && value % 1 !== 0))
+                            fail(typeof value, "not an integer");
+                        return value < 0 ? value >>> 0 : value;
+
+                    // Signed 64bit
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["sint64"]:
+                    case ProtoBuf.TYPES["sfixed64"]: {
+                        if (ProtoBuf.Long)
+                            try {
+                                return mkLong(value, false);
+                            } catch (e) {
+                                fail(typeof value, e.message);
+                            }
+                        else
+                            fail(typeof value, "requires Long.js");
+                    }
+
+                    // Unsigned 64bit
+                    case ProtoBuf.TYPES["uint64"]:
+                    case ProtoBuf.TYPES["fixed64"]: {
+                        if (ProtoBuf.Long)
+                            try {
+                                return mkLong(value, true);
+                            } catch (e) {
+                                fail(typeof value, e.message);
+                            }
+                        else
+                            fail(typeof value, "requires Long.js");
+                    }
+
+                    // Bool
+                    case ProtoBuf.TYPES["bool"]:
+                        if (typeof value !== 'boolean')
+                            fail(typeof value, "not a boolean");
+                        return value;
+
+                    // Float
+                    case ProtoBuf.TYPES["float"]:
+                    case ProtoBuf.TYPES["double"]:
+                        if (typeof value !== 'number')
+                            fail(typeof value, "not a number");
+                        return value;
+
+                    // Length-delimited string
+                    case ProtoBuf.TYPES["string"]:
+                        if (typeof value !== 'string' && !(value && value instanceof String))
+                            fail(typeof value, "not a string");
+                        return ""+value; // Convert String object to string
+
+                    // Length-delimited bytes
+                    case ProtoBuf.TYPES["bytes"]:
+                        if (ByteBuffer.isByteBuffer(value))
+                            return value;
+                        return ByteBuffer.wrap(value, "base64");
+
+                    // Constant enum value
+                    case ProtoBuf.TYPES["enum"]: {
+                        var values = this.resolvedType.getChildren(ProtoBuf.Reflect.Enum.Value);
+                        for (i=0; i<values.length; i++)
+                            if (values[i].name == value)
+                                return values[i].id;
+                            else if (values[i].id == value)
+                                return values[i].id;
+
+                        if (this.syntax === 'proto3') {
+                            // proto3: just make sure it's an integer.
+                            if (typeof value !== 'number' || (value === value && value % 1 !== 0))
+                                fail(typeof value, "not an integer");
+                            if (value > 4294967295 || value < 0)
+                                fail(typeof value, "not in range for uint32")
+                            return value;
+                        } else {
+                            // proto2 requires enum values to be valid.
+                            fail(value, "not a valid enum value");
+                        }
+                    }
+                    // Embedded message
+                    case ProtoBuf.TYPES["group"]:
+                    case ProtoBuf.TYPES["message"]: {
+                        if (!value || typeof value !== 'object')
+                            fail(typeof value, "object expected");
+                        if (value instanceof this.resolvedType.clazz)
+                            return value;
+                        if (value instanceof ProtoBuf.Builder.Message) {
+                            // Mismatched type: Convert to object (see: https://github.com/dcodeIO/ProtoBuf.js/issues/180)
+                            var obj = {};
+                            for (var i in value)
+                                if (value.hasOwnProperty(i))
+                                    obj[i] = value[i];
+                            value = obj;
+                        }
+                        // Else let's try to construct one from a key-value object
+                        return new (this.resolvedType.clazz)(value); // May throw for a hundred of reasons
+                    }
+                }
+
+                // We should never end here
+                throw Error("[INTERNAL] Illegal value for "+this.toString(true)+": "+value+" (undefined type "+this.type+")");
+            };
+
+            /**
+             * Calculates the byte length of an element on the wire.
+             * @param {number} id Field number
+             * @param {*} value Field value
+             * @returns {number} Byte length
+             * @throws {Error} If the value cannot be calculated
+             * @expose
+             */
+            ElementPrototype.calculateLength = function(id, value) {
+                if (value === null) return 0; // Nothing to encode
+                // Tag has already been written
+                var n;
+                switch (this.type) {
+                    case ProtoBuf.TYPES["int32"]:
+                        return value < 0 ? ByteBuffer.calculateVarint64(value) : ByteBuffer.calculateVarint32(value);
+                    case ProtoBuf.TYPES["uint32"]:
+                        return ByteBuffer.calculateVarint32(value);
+                    case ProtoBuf.TYPES["sint32"]:
+                        return ByteBuffer.calculateVarint32(ByteBuffer.zigZagEncode32(value));
+                    case ProtoBuf.TYPES["fixed32"]:
+                    case ProtoBuf.TYPES["sfixed32"]:
+                    case ProtoBuf.TYPES["float"]:
+                        return 4;
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["uint64"]:
+                        return ByteBuffer.calculateVarint64(value);
+                    case ProtoBuf.TYPES["sint64"]:
+                        return ByteBuffer.calculateVarint64(ByteBuffer.zigZagEncode64(value));
+                    case ProtoBuf.TYPES["fixed64"]:
+                    case ProtoBuf.TYPES["sfixed64"]:
+                        return 8;
+                    case ProtoBuf.TYPES["bool"]:
+                        return 1;
+                    case ProtoBuf.TYPES["enum"]:
+                        return ByteBuffer.calculateVarint32(value);
+                    case ProtoBuf.TYPES["double"]:
+                        return 8;
+                    case ProtoBuf.TYPES["string"]:
+                        n = ByteBuffer.calculateUTF8Bytes(value);
+                        return ByteBuffer.calculateVarint32(n) + n;
+                    case ProtoBuf.TYPES["bytes"]:
+                        if (value.remaining() < 0)
+                            throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
+                        return ByteBuffer.calculateVarint32(value.remaining()) + value.remaining();
+                    case ProtoBuf.TYPES["message"]:
+                        n = this.resolvedType.calculate(value);
+                        return ByteBuffer.calculateVarint32(n) + n;
+                    case ProtoBuf.TYPES["group"]:
+                        n = this.resolvedType.calculate(value);
+                        return n + ByteBuffer.calculateVarint32((id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
+                }
+                // We should never end here
+                throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
+            };
+
+            /**
+             * Encodes a value to the specified buffer. Does not encode the key.
+             * @param {number} id Field number
+             * @param {*} value Field value
+             * @param {ByteBuffer} buffer ByteBuffer to encode to
+             * @return {ByteBuffer} The ByteBuffer for chaining
+             * @throws {Error} If the value cannot be encoded
+             * @expose
+             */
+            ElementPrototype.encodeValue = function(id, value, buffer) {
+                if (value === null) return buffer; // Nothing to encode
+                // Tag has already been written
+
+                switch (this.type) {
+                    // 32bit signed varint
+                    case ProtoBuf.TYPES["int32"]:
+                        // "If you use int32 or int64 as the type for a negative number, the resulting varint is always ten bytes
+                        // long – it is, effectively, treated like a very large unsigned integer." (see #122)
+                        if (value < 0)
+                            buffer.writeVarint64(value);
+                        else
+                            buffer.writeVarint32(value);
+                        break;
+
+                    // 32bit unsigned varint
+                    case ProtoBuf.TYPES["uint32"]:
+                        buffer.writeVarint32(value);
+                        break;
+
+                    // 32bit varint zig-zag
+                    case ProtoBuf.TYPES["sint32"]:
+                        buffer.writeVarint32ZigZag(value);
+                        break;
+
+                    // Fixed unsigned 32bit
+                    case ProtoBuf.TYPES["fixed32"]:
+                        buffer.writeUint32(value);
+                        break;
+
+                    // Fixed signed 32bit
+                    case ProtoBuf.TYPES["sfixed32"]:
+                        buffer.writeInt32(value);
+                        break;
+
+                    // 64bit varint as-is
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["uint64"]:
+                        buffer.writeVarint64(value); // throws
+                        break;
+
+                    // 64bit varint zig-zag
+                    case ProtoBuf.TYPES["sint64"]:
+                        buffer.writeVarint64ZigZag(value); // throws
+                        break;
+
+                    // Fixed unsigned 64bit
+                    case ProtoBuf.TYPES["fixed64"]:
+                        buffer.writeUint64(value); // throws
+                        break;
+
+                    // Fixed signed 64bit
+                    case ProtoBuf.TYPES["sfixed64"]:
+                        buffer.writeInt64(value); // throws
+                        break;
+
+                    // Bool
+                    case ProtoBuf.TYPES["bool"]:
+                        if (typeof value === 'string')
+                            buffer.writeVarint32(value.toLowerCase() === 'false' ? 0 : !!value);
+                        else
+                            buffer.writeVarint32(value ? 1 : 0);
+                        break;
+
+                    // Constant enum value
+                    case ProtoBuf.TYPES["enum"]:
+                        buffer.writeVarint32(value);
+                        break;
+
+                    // 32bit float
+                    case ProtoBuf.TYPES["float"]:
+                        buffer.writeFloat32(value);
+                        break;
+
+                    // 64bit float
+                    case ProtoBuf.TYPES["double"]:
+                        buffer.writeFloat64(value);
+                        break;
+
+                    // Length-delimited string
+                    case ProtoBuf.TYPES["string"]:
+                        buffer.writeVString(value);
+                        break;
+
+                    // Length-delimited bytes
+                    case ProtoBuf.TYPES["bytes"]:
+                        if (value.remaining() < 0)
+                            throw Error("Illegal value for "+this.toString(true)+": "+value.remaining()+" bytes remaining");
+                        var prevOffset = value.offset;
+                        buffer.writeVarint32(value.remaining());
+                        buffer.append(value);
+                        value.offset = prevOffset;
+                        break;
+
+                    // Embedded message
+                    case ProtoBuf.TYPES["message"]:
+                        var bb = new ByteBuffer().LE();
+                        this.resolvedType.encode(value, bb);
+                        buffer.writeVarint32(bb.offset);
+                        buffer.append(bb.flip());
+                        break;
+
+                    // Legacy group
+                    case ProtoBuf.TYPES["group"]:
+                        this.resolvedType.encode(value, buffer);
+                        buffer.writeVarint32((id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
+                        break;
+
+                    default:
+                        // We should never end here
+                        throw Error("[INTERNAL] Illegal value to encode in "+this.toString(true)+": "+value+" (unknown type)");
+                }
+                return buffer;
+            };
+
+            /**
+             * Decode one element value from the specified buffer.
+             * @param {ByteBuffer} buffer ByteBuffer to decode from
+             * @param {number} wireType The field wire type
+             * @param {number} id The field number
+             * @return {*} Decoded value
+             * @throws {Error} If the field cannot be decoded
+             * @expose
+             */
+            ElementPrototype.decode = function(buffer, wireType, id) {
+                if (wireType != this.type.wireType)
+                    throw Error("Unexpected wire type for element");
+
+                var value, nBytes;
+                switch (this.type) {
+                    // 32bit signed varint
+                    case ProtoBuf.TYPES["int32"]:
+                        return buffer.readVarint32() | 0;
+
+                    // 32bit unsigned varint
+                    case ProtoBuf.TYPES["uint32"]:
+                        return buffer.readVarint32() >>> 0;
+
+                    // 32bit signed varint zig-zag
+                    case ProtoBuf.TYPES["sint32"]:
+                        return buffer.readVarint32ZigZag() | 0;
+
+                    // Fixed 32bit unsigned
+                    case ProtoBuf.TYPES["fixed32"]:
+                        return buffer.readUint32() >>> 0;
+
+                    case ProtoBuf.TYPES["sfixed32"]:
+                        return buffer.readInt32() | 0;
+
+                    // 64bit signed varint
+                    case ProtoBuf.TYPES["int64"]:
+                        return buffer.readVarint64();
+
+                    // 64bit unsigned varint
+                    case ProtoBuf.TYPES["uint64"]:
+                        return buffer.readVarint64().toUnsigned();
+
+                    // 64bit signed varint zig-zag
+                    case ProtoBuf.TYPES["sint64"]:
+                        return buffer.readVarint64ZigZag();
+
+                    // Fixed 64bit unsigned
+                    case ProtoBuf.TYPES["fixed64"]:
+                        return buffer.readUint64();
+
+                    // Fixed 64bit signed
+                    case ProtoBuf.TYPES["sfixed64"]:
+                        return buffer.readInt64();
+
+                    // Bool varint
+                    case ProtoBuf.TYPES["bool"]:
+                        return !!buffer.readVarint32();
+
+                    // Constant enum value (varint)
+                    case ProtoBuf.TYPES["enum"]:
+                        // The following Builder.Message#set will already throw
+                        return buffer.readVarint32();
+
+                    // 32bit float
+                    case ProtoBuf.TYPES["float"]:
+                        return buffer.readFloat();
+
+                    // 64bit float
+                    case ProtoBuf.TYPES["double"]:
+                        return buffer.readDouble();
+
+                    // Length-delimited string
+                    case ProtoBuf.TYPES["string"]:
+                        return buffer.readVString();
+
+                    // Length-delimited bytes
+                    case ProtoBuf.TYPES["bytes"]: {
+                        nBytes = buffer.readVarint32();
+                        if (buffer.remaining() < nBytes)
+                            throw Error("Illegal number of bytes for "+this.toString(true)+": "+nBytes+" required but got only "+buffer.remaining());
+                        value = buffer.clone(); // Offset already set
+                        value.limit = value.offset+nBytes;
+                        buffer.offset += nBytes;
+                        return value;
+                    }
+
+                    // Length-delimited embedded message
+                    case ProtoBuf.TYPES["message"]: {
+                        nBytes = buffer.readVarint32();
+                        return this.resolvedType.decode(buffer, nBytes);
+                    }
+
+                    // Legacy group
+                    case ProtoBuf.TYPES["group"]:
+                        return this.resolvedType.decode(buffer, -1, id);
+                }
+
+                // We should never end here
+                throw Error("[INTERNAL] Illegal decode type");
+            };
+
+            /**
+             * Converts a value from a string to the canonical element type.
+             *
+             * Legal only when isMapKey is true.
+             *
+             * @param {string} str The string value
+             * @returns {*} The value
+             */
+            ElementPrototype.valueFromString = function(str) {
+                if (!this.isMapKey) {
+                    throw Error("valueFromString() called on non-map-key element");
+                }
+
+                switch (this.type) {
+                    case ProtoBuf.TYPES["int32"]:
+                    case ProtoBuf.TYPES["sint32"]:
+                    case ProtoBuf.TYPES["sfixed32"]:
+                    case ProtoBuf.TYPES["uint32"]:
+                    case ProtoBuf.TYPES["fixed32"]:
+                        return this.verifyValue(parseInt(str));
+
+                    case ProtoBuf.TYPES["int64"]:
+                    case ProtoBuf.TYPES["sint64"]:
+                    case ProtoBuf.TYPES["sfixed64"]:
+                    case ProtoBuf.TYPES["uint64"]:
+                    case ProtoBuf.TYPES["fixed64"]:
+                          // Long-based fields support conversions from string already.
+                          return this.verifyValue(str);
+
+                    case ProtoBuf.TYPES["bool"]:
+                          return str === "true";
+
+                    case ProtoBuf.TYPES["string"]:
+                          return this.verifyValue(str);
+
+                    case ProtoBuf.TYPES["bytes"]:
+                          return ByteBuffer.fromBinary(str);
+                }
+            };
+
+            /**
+             * Converts a value from the canonical element type to a string.
+             *
+             * It should be the case that `valueFromString(valueToString(val))` returns
+             * a value equivalent to `verifyValue(val)` for every legal value of `val`
+             * according to this element type.
+             *
+             * This may be used when the element must be stored or used as a string,
+             * e.g., as a map key on an Object.
+             *
+             * Legal only when isMapKey is true.
+             *
+             * @param {*} val The value
+             * @returns {string} The string form of the value.
+             */
+            ElementPrototype.valueToString = function(value) {
+                if (!this.isMapKey) {
+                    throw Error("valueToString() called on non-map-key element");
+                }
+
+                if (this.type === ProtoBuf.TYPES["bytes"]) {
+                    return value.toString("binary");
+                } else {
+                    return value.toString();
+                }
+            };
+
+            return Element;
+        })(ProtoBuf);
+
+        /**
          * @alias ProtoBuf.Builder
          * @expose
          */
         ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             "use strict";
+
+            /**
+             * Helper for builder: propagate a top-level syntax annotation (e.g.,
+             * 'proto3') down to all message and enum JSON descriptions.
+             * @param {Object} msg The top-level JSON object
+             */
+            function propagateSyntax(syntax, msg) {
+              msg['syntax'] = syntax;
+              if (msg['messages']) {
+                  msg['messages'].forEach(function(msg) {
+                      propagateSyntax(syntax, msg);
+                  });
+              }
+              if (msg['enums']) {
+                  msg['enums'].forEach(function(en) {
+                      propagateSyntax(syntax, en);
+                  });
+              }
+            }
 
             /**
              * Constructs a new Builder.
@@ -3836,6 +4485,29 @@
                 if (typeof def["extensions"] !== 'undefined')
                     if (!ProtoBuf.Util.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number')
                         return false;
+
+                if (def["syntax"] === 'proto3') {
+                    for (i=0; i<def["fields"].length; i++) {
+                        var field = def["fields"][i];
+                        // proto3 messages cannot contain required fields.
+                        if (field["rule"] === "required")
+                            return false;
+                        // proto3 message fields cannot contain default values.
+                        if (field["default"])
+                            return false;
+                        if (field["options"]) {
+                            var optionKeys = Object.keys(field["options"]);
+                            for (var j=0; j<optionKeys.length; j++) {
+                                if (optionKeys[j] === "default") {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    // proto3 messages cannot contain extensions.
+                    if (def["extensions"])
+                        return false;
+                }
                 return true;
             };
 
@@ -3887,6 +4559,12 @@
                     if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"]))
                         return false;
                 }
+                // If this is a proto3 enum, the default (first) value must be 0.
+                if (def["syntax"] === 'proto3') {
+                    if (def["values"][0]["id"] !== 0) {
+                        return false;
+                    }
+                }
                 // It's not important if there are other fields because ["values"] is already unique
                 return true;
             };
@@ -3915,7 +4593,7 @@
                         while (defs.length > 0) {
                             var def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
-                                var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
+                                var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"], def["syntax"]);
                                 // Create OneOfs
                                 var oneofs = {};
                                 if (def["oneofs"]) {
@@ -3944,7 +4622,7 @@
                                             if (typeof oneof === 'undefined')
                                                 throw Error("Illegal oneof in message "+obj.name+"#"+fld["name"]+": "+fld["oneof"]);
                                         }
-                                        fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["type"], fld["name"], fld["id"], fld["options"], oneof);
+                                        fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["keytype"], fld["type"], fld["name"], fld["id"], fld["options"], oneof, def["syntax"]);
                                         if (oneof)
                                             oneof.fields.push(fld);
                                         obj.addChild(fld);
@@ -3978,7 +4656,7 @@
                                 subObj = null;
                                 obj = null;
                             } else if (Builder.isValidEnum(def)) {
-                                obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"]);
+                                obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"], def["syntax"]);
                                 for (i=0; i<def["values"].length; i++)
                                     obj.addChild(new Reflect.Enum.Value(this, obj, def["values"][i]["name"], def["values"][i]["id"]));
                                 this.ptr.addChild(obj);
@@ -4113,6 +4791,10 @@
                 }
                 if (json['package'])
                     this.define(json['package']);
+                if (json['syntax']) {
+                    // Propagate syntax to all submessages and subenums
+                    propagateSyntax(json['syntax'], json);
+                }
                 var base = this.ptr;
                 if (json['options'])
                     Object.keys(json['options']).forEach(function(key) {
@@ -4195,14 +4877,29 @@
                         if (!res)
                             throw Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                         this.ptr.resolvedType = res;
-                        if (res instanceof Reflect.Enum)
+                        if (res instanceof Reflect.Enum) {
                             this.ptr.type = ProtoBuf.TYPES["enum"];
+                            if (this.ptr.syntax === 'proto3' && res.syntax !== 'proto3')
+                                throw Error("Proto3 message refers to proto2 enum; " +
+                                            "this is not allowed due to differing " +
+                                            "enum semantics in proto3");
+                        }
                         else if (res instanceof Reflect.Message)
                             this.ptr.type = res.isGroup ? ProtoBuf.TYPES["group"] : ProtoBuf.TYPES["message"];
                         else
                             throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                     } else
                         this.ptr.type = ProtoBuf.TYPES[this.ptr.type];
+
+                    // If it's a map field, also resolve the key type. The key type can
+                    // be only a numeric, string, or bool type (i.e., no enums or
+                    // messages), so we don't need to resolve against the current
+                    // namespace.
+                    if (this.ptr.map) {
+                        if (!Lang.TYPE.test(this.ptr.keyType))
+                            throw Error("Illegal key type for map field in "+this.ptr.toString(true)+": "+this.ptr.type);
+                        this.ptr.keyType = ProtoBuf.TYPES[this.ptr.keyType];
+                    }
                 } else if (this.ptr instanceof ProtoBuf.Reflect.Enum.Value) {
                     // No need to build enum values (built in enum)
                 } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {
@@ -4282,6 +4979,223 @@
             return Builder;
 
         })(ProtoBuf, ProtoBuf.Lang, ProtoBuf.Reflect);
+
+        /**
+         * @alias ProtoBuf.Map
+         * @expose
+         */
+        ProtoBuf.Map = (function(ProtoBuf) {
+            "use strict";
+
+            /**
+             * Constructs a new Map. A Map is a container that is used to implement map
+             * fields on message objects. It closely follows the ES6 Map API; however,
+             * it is distinct because we do not want to depend on external polyfills or
+             * on ES6 itself.
+             *
+             * @exports ProtoBuf.Map
+             * @param {ProtoBuf.Reflect.Field} field The map field
+             * @param {Object.<string,*>=} contents Initial contents
+             * @constructor
+             */
+            var Map = function(field, contents) {
+
+                if (!field.map) {
+                    throw Error("Constructing a Map for a field that is not a map");
+                }
+
+                /**
+                 * The field corresponding to this map.
+                 * @type {ProtoBuf.Reflect.Field}
+                 */
+                this.field = field;
+
+                /**
+                 * Element instance corresponding to key type.
+                 * @type {ProtoBuf.Element}
+                 */
+                this.keyElem = new ProtoBuf.Element(field.keyType, null,
+                                                    true, field.syntax);
+
+                /**
+                 * Element instance corresponding to value type.
+                 * @type {ProtoBuf.Element}
+                 */
+                this.valueElem = new ProtoBuf.Element(field.type, field.resolvedType,
+                                                      false, field.syntax);
+
+                /**
+                 * Internal map: stores mapping of (string form of key) -> (key, value)
+                 * pair.
+                 *
+                 * We provide map semantics for arbitrary key types, but we build on top
+                 * of an Object, which has only string keys. In order to avoid the need
+                 * to convert a string key back to its native type in many situations,
+                 * we store the native key value alongside the value. Thus, we only need
+                 * a one-way mapping from a key type to its string form that guarantees
+                 * uniqueness and equality (i.e., str(K1) === str(K2) if and only if K1
+                 * === K2).
+                 *
+                 * @type {Object<string, {key: *, value: *}>}
+                 */
+                this.map = {};
+
+                /**
+                 * Returns the number of elements in the map.
+                 */
+                Object.defineProperty(this, "size", {
+                    get: function() { return Object.keys(this.map).length; }
+                });
+
+                // Fill initial contents from a raw object.
+                if (contents) {
+                    var keys = Object.keys(contents);
+                    for (var i = 0; i < keys.length; i++) {
+                        var key = this.keyElem.valueFromString(keys[i]);
+                        var val = this.valueElem.verifyValue(contents[keys[i]]);
+                        this.map[this.keyElem.valueToString(key)] =
+                            { key: key, value: val };
+                    }
+                }
+            };
+
+            var MapPrototype = Map.prototype;
+
+            /**
+             * Helper: return an iterator over an array.
+             * @param{Array<*>} the array
+             * @returns {Object} an iterator
+             */
+            function arrayIterator(arr) {
+                var idx = 0;
+                return {
+                    next: function() {
+                        if (idx < arr.length) {
+                            return { done: false, value: arr[idx++] };
+                        } else {
+                            return { done: true };
+                        }
+                    }
+                }
+            }
+
+            /**
+             * Clears the map.
+             */
+            MapPrototype.clear = function() {
+                this.map = {};
+            }
+
+            /**
+             * Deletes a particular key from the map.
+             * @returns {boolean} Whether any entry with this key was deleted.
+             */
+            MapPrototype["delete"] = function(key) {
+                var keyValue = this.keyElem.valueToString(
+                    this.keyElem.verifyValue(key));
+                var hadKey = keyValue in this.map;
+                delete this.map[keyValue];
+                return hadKey;
+            };
+
+            /**
+             * Returns an iterator over [key, value] pairs in the map.
+             * @returns {Object} The iterator
+             */
+            MapPrototype.entries = function() {
+                var entries = [];
+                var strKeys = Object.keys(this.map);
+                for (var i = 0; i < strKeys.length; i++) {
+                    var entry = this.map[strKeys[i]];
+                    entries.push([entry.key, entry.value]);
+                }
+                return arrayIterator(entries);
+            };
+
+            /**
+             * Returns an iterator over keys in the map.
+             * @returns {Object} The iterator
+             */
+            MapPrototype.keys = function() {
+                var keys = [];
+                var strKeys = Object.keys(this.map);
+                for (var i = 0; i < strKeys.length; i++) {
+                    var entry = this.map[strKeys[i]];
+                    keys.push(entry.key);
+                }
+                return arrayIterator(keys);
+            };
+
+            /**
+             * Returns an iterator over values in the map.
+             * @returns {Object} The iterator
+             */
+            MapPrototype.values = function() {
+                var values = [];
+                var strKeys = Object.keys(this.map);
+                for (var i = 0; i < strKeys.length; i++) {
+                    var entry = this.map[strKeys[i]];
+                    values.push(entry.value);
+                }
+                return arrayIterator(values);
+            };
+
+            /**
+             * Iterates over entries in the map, calling a function on each.
+             * @param {function(this:*, *, *, *)} The callback to invoke with value,
+             *                                    key, and map arguments.
+             * @param {Object=} The `this` value for the callback
+             */
+            MapPrototype.forEach = function(cb, thisArg) {
+                var strKeys = Object.keys(this.map);
+                for (var i = 0; i < strKeys.length; i++) {
+                    var entry = this.map[strKeys[i]];
+                    cb.call(thisArg, entry.value, entry.key, this);
+                }
+            };
+
+            /**
+             * Sets a key in the map to the given value.
+             * @param {*} key The key
+             * @param {*} value The value
+             * @returns {ProtoBuf.Map} The map instance
+             */
+            MapPrototype.set = function(key, value) {
+                var keyValue = this.keyElem.verifyValue(key);
+                var valValue = this.valueElem.verifyValue(value);
+                this.map[this.keyElem.valueToString(keyValue)] =
+                    { key: keyValue, value: valValue };
+                return this;
+            };
+
+            /**
+             * Gets the value corresponding to a key in the map.
+             * @param {*} key The key
+             * @returns {*|undefined} The value, or `undefined` if key not present
+             */
+            MapPrototype.get = function(key) {
+                var keyValue = this.keyElem.valueToString(
+                    this.keyElem.verifyValue(key));
+                if (!(keyValue in this.map)) {
+                    return undefined;
+                } else {
+                    return this.map[keyValue].value;
+                }
+            };
+
+            /**
+             * Determines whether the given key is present in the map.
+             * @param {*} key The key
+             * @returns {boolean} `true` if the key is present
+             */
+            MapPrototype.has = function(key) {
+                var keyValue = this.keyElem.valueToString(
+                    this.keyElem.verifyValue(key));
+                return (keyValue in this.map);
+            };
+
+            return Map;
+        })(ProtoBuf);
 
 
         /**

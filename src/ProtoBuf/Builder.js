@@ -6,6 +6,25 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     "use strict";
 
     /**
+     * Helper for builder: propagate a top-level syntax annotation (e.g.,
+     * 'proto3') down to all message and enum JSON descriptions.
+     * @param {Object} msg The top-level JSON object
+     */
+    function propagateSyntax(syntax, msg) {
+      msg['syntax'] = syntax;
+      if (msg['messages']) {
+          msg['messages'].forEach(function(msg) {
+              propagateSyntax(syntax, msg);
+          });
+      }
+      if (msg['enums']) {
+          msg['enums'].forEach(function(en) {
+              propagateSyntax(syntax, en);
+          });
+      }
+    }
+
+    /**
      * Constructs a new Builder.
      * @exports ProtoBuf.Builder
      * @class Provides the functionality to build protocol messages.
@@ -147,6 +166,29 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         if (typeof def["extensions"] !== 'undefined')
             if (!ProtoBuf.Util.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number')
                 return false;
+
+        if (def["syntax"] === 'proto3') {
+            for (i=0; i<def["fields"].length; i++) {
+                var field = def["fields"][i];
+                // proto3 messages cannot contain required fields.
+                if (field["rule"] === "required")
+                    return false;
+                // proto3 message fields cannot contain default values.
+                if (field["default"])
+                    return false;
+                if (field["options"]) {
+                    var optionKeys = Object.keys(field["options"]);
+                    for (var j=0; j<optionKeys.length; j++) {
+                        if (optionKeys[j] === "default") {
+                            return false;
+                        }
+                    }
+                }
+            }
+            // proto3 messages cannot contain extensions.
+            if (def["extensions"])
+                return false;
+        }
         return true;
     };
 
@@ -198,6 +240,12 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"]))
                 return false;
         }
+        // If this is a proto3 enum, the default (first) value must be 0.
+        if (def["syntax"] === 'proto3') {
+            if (def["values"][0]["id"] !== 0) {
+                return false;
+            }
+        }
         // It's not important if there are other fields because ["values"] is already unique
         return true;
     };
@@ -226,7 +274,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 while (defs.length > 0) {
                     var def = defs.shift(); // Namespace always contains an array of messages, enums and services
                     if (Builder.isValidMessage(def)) {
-                        var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"]);
+                        var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"], def["syntax"]);
                         // Create OneOfs
                         var oneofs = {};
                         if (def["oneofs"]) {
@@ -255,7 +303,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                     if (typeof oneof === 'undefined')
                                         throw Error("Illegal oneof in message "+obj.name+"#"+fld["name"]+": "+fld["oneof"]);
                                 }
-                                fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["type"], fld["name"], fld["id"], fld["options"], oneof);
+                                fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["keytype"], fld["type"], fld["name"], fld["id"], fld["options"], oneof, def["syntax"]);
                                 if (oneof)
                                     oneof.fields.push(fld);
                                 obj.addChild(fld);
@@ -289,7 +337,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         subObj = null;
                         obj = null;
                     } else if (Builder.isValidEnum(def)) {
-                        obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"]);
+                        obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"], def["syntax"]);
                         for (i=0; i<def["values"].length; i++)
                             obj.addChild(new Reflect.Enum.Value(this, obj, def["values"][i]["name"], def["values"][i]["id"]));
                         this.ptr.addChild(obj);
@@ -424,6 +472,10 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         }
         if (json['package'])
             this.define(json['package']);
+        if (json['syntax']) {
+            // Propagate syntax to all submessages and subenums
+            propagateSyntax(json['syntax'], json);
+        }
         var base = this.ptr;
         if (json['options'])
             Object.keys(json['options']).forEach(function(key) {
@@ -506,14 +558,29 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 if (!res)
                     throw Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                 this.ptr.resolvedType = res;
-                if (res instanceof Reflect.Enum)
+                if (res instanceof Reflect.Enum) {
                     this.ptr.type = ProtoBuf.TYPES["enum"];
+                    if (this.ptr.syntax === 'proto3' && res.syntax !== 'proto3')
+                        throw Error("Proto3 message refers to proto2 enum; " +
+                                    "this is not allowed due to differing " +
+                                    "enum semantics in proto3");
+                }
                 else if (res instanceof Reflect.Message)
                     this.ptr.type = res.isGroup ? ProtoBuf.TYPES["group"] : ProtoBuf.TYPES["message"];
                 else
                     throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
             } else
                 this.ptr.type = ProtoBuf.TYPES[this.ptr.type];
+
+            // If it's a map field, also resolve the key type. The key type can
+            // be only a numeric, string, or bool type (i.e., no enums or
+            // messages), so we don't need to resolve against the current
+            // namespace.
+            if (this.ptr.map) {
+                if (!Lang.TYPE.test(this.ptr.keyType))
+                    throw Error("Illegal key type for map field in "+this.ptr.toString(true)+": "+this.ptr.type);
+                this.ptr.keyType = ProtoBuf.TYPES[this.ptr.keyType];
+            }
         } else if (this.ptr instanceof ProtoBuf.Reflect.Enum.Value) {
             // No need to build enum values (built in enum)
         } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {

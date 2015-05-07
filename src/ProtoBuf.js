@@ -234,19 +234,23 @@
          * @expose
          */
         ProtoBuf.populateAccessors = true;
-        
+
         //? include("ProtoBuf/Util.js");
-        
+
         //? include("ProtoBuf/Lang.js");
-        
+
         //? if (!NOPARSE) include("ProtoBuf/DotProto.js");
-        
+
         //? include("ProtoBuf/Reflect.js");
-        
+
+        //? include("ProtoBuf/Element.js");
+
         //? include("ProtoBuf/Builder.js");
 
+        //? include("ProtoBuf/Map.js");
+
         //? if (!NOPARSE) {
-        
+
         /**
          * Loads a .proto string and returns the Builder.
          * @param {string} proto .proto file contents

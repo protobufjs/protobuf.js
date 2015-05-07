@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Field"><span class="type-signature"></span>new Field<span class="signature">(builder<span class="signature-attributes">non-null</span>, message<span class="signature-attributes">non-null</span>, rule, type, name, id, options<span class="signature-attributes">opt</span>, oneof<span class="signature-attributes">opt, non-null</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Field"><span class="type-signature"></span>new Field<span class="signature">(builder<span class="signature-attributes">non-null</span>, message<span class="signature-attributes">non-null</span>, rule, keytype<span class="signature-attributes">nullable</span>, type, name, id, options<span class="signature-attributes">opt</span>, oneof<span class="signature-attributes">opt, non-null</span>, syntax<span class="signature-attributes">nullable</span>)</span><span class="type-signature"></span></h4>
 
     
 </dt>
@@ -172,6 +172,39 @@
             
 
             <td class="description last"><p>Rule, one of requried, optional, repeated</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>keytype</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Key data type, if any.</p></td>
         </tr>
 
     
@@ -334,6 +367,39 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>syntax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The syntax level of this definition (e.g., proto3)</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
     
@@ -361,7 +427,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2560">line 2560</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2731">line 2731</a>
     </li></ul></dd>
     
 
@@ -466,7 +532,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1367">line 1367</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1442">line 1442</a>
     </li></ul></dd>
     
 
@@ -518,7 +584,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2566">line 2566</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2738">line 2738</a>
     </li></ul></dd>
     
 
@@ -584,7 +650,76 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2616">line 2616</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2804">line 2804</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="element"><span class="type-signature"></span>element<span class="type-signature"> :<a href="ProtoBuf.Element.html">ProtoBuf.Element</a>|null</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Element implementation. Created in build() after types are resolved.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="ProtoBuf.Element.html">ProtoBuf.Element</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2832">line 2832</a>
     </li></ul></dd>
     
 
@@ -650,7 +785,216 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2601">line 2601</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2789">line 2789</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="keyElement"><span class="type-signature"></span>keyElement<span class="type-signature"> :<a href="ProtoBuf.Element.html">ProtoBuf.Element</a>|null</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Key element implementation, for map fields. Created in build() after
+types are resolved.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="ProtoBuf.Element.html">ProtoBuf.Element</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2840">line 2840</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="keyType"><span class="type-signature"></span>keyType<span class="type-signature"> :string|<a href="Object.html">Object</a>|null</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Message field key type. Type reference string if unresolved, protobuf
+type if resolved. Valid only if this.map === true, null otherwise.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="Object.html">Object</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2767">line 2767</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="map"><span class="type-signature"></span>map<span class="type-signature"> :boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Message field map flag.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2759">line 2759</a>
     </li></ul></dd>
     
 
@@ -721,7 +1065,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1381">line 1381</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1456">line 1456</a>
     </li></ul></dd>
     
 
@@ -787,7 +1131,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2623">line 2623</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2811">line 2811</a>
     </li></ul></dd>
     
 
@@ -853,7 +1197,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2609">line 2609</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2797">line 2797</a>
     </li></ul></dd>
     
 
@@ -919,7 +1263,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2630">line 2630</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2825">line 2825</a>
     </li></ul></dd>
     
 
@@ -990,7 +1334,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1374">line 1374</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1449">line 1449</a>
     </li></ul></dd>
     
 
@@ -1056,7 +1400,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2580">line 2580</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2752">line 2752</a>
     </li></ul></dd>
     
 
@@ -1122,7 +1466,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2573">line 2573</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2745">line 2745</a>
     </li></ul></dd>
     
 
@@ -1191,7 +1535,73 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2594">line 2594</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2782">line 2782</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="syntax"><span class="type-signature"></span>syntax<span class="type-signature"> :string</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Syntax level of this definition (e.g., proto3).</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2818">line 2818</a>
     </li></ul></dd>
     
 
@@ -1218,7 +1628,8 @@
 <dd>
     
     <div class="description">
-        <p>Message field type. Type reference string if unresolved, protobuf type if resolved.</p>
+        <p>Message field type. Type reference string if unresolved, protobuf type if
+resolved. In a map field, this is the value type.</p>
     </div>
     
 
@@ -1260,7 +1671,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2587">line 2587</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2775">line 2775</a>
     </li></ul></dd>
     
 
@@ -1327,7 +1738,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2660">line 2660</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2870">line 2870</a>
     </li></ul></dd>
     
 
@@ -1446,7 +1857,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3000">line 3000</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3067">line 3067</a>
     </li></ul></dd>
     
 
@@ -1467,174 +1878,6 @@
     
 
     
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Byte length</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-        
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="calculateValue"><span class="type-signature"></span>calculateValue<span class="signature">(value)</span><span class="type-signature"> &rarr; {number}</span></h4>
-
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Calculates the byte length of a value.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Field value</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3039">line 3039</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Throws:</h5>
-    
-            
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If the value cannot be calculated
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">Error</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-
-        
 
     
     <h5>Returns:</h5>
@@ -1829,7 +2072,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3095">line 3095</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line3125">line 3125</a>
     </li></ul></dd>
     
 
@@ -1883,7 +2126,8 @@
     
             
 <div class="param-desc">
-    <p>Decoded value</p>
+    <p>Decoded value: array for packed repeated fields, [key, value] for
+            map fields, or an individual value otherwise.</p>
 </div>
 
 
@@ -2020,7 +2264,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2827">line 2827</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2994">line 2994</a>
     </li></ul></dd>
     
 
@@ -2049,197 +2293,6 @@
     <dt>
         <div class="param-desc">
         If the field cannot be encoded
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">Error</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-
-        
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The ByteBuffer for chaining</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ByteBuffer</span>
-
-
-    </dd>
-</dl>
-
-        
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="encodeValue"><span class="type-signature"></span>encodeValue<span class="signature">(value, buffer)</span><span class="type-signature"> &rarr; {ByteBuffer}</span></h4>
-
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Encodes a value to the specified buffer. Does not encode the key.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Field value</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>buffer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ByteBuffer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>ByteBuffer to encode to</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2879">line 2879</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Throws:</h5>
-    
-            
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If the value cannot be encoded
         </div>
     </dt>
     <dt>
@@ -2336,7 +2389,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1402">line 1402</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1477">line 1477</a>
     </li></ul></dd>
     
 
@@ -2375,6 +2428,148 @@
     <dd>
         
 <span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="hasWirePresence"><span class="type-signature"></span>hasWirePresence<span class="signature">(value)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Determines whether the field will have a presence on the wire given its
+value.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Verified field value</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2943">line 2943</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Whether the field will be present on the wire</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
 
 
     </dd>
@@ -2494,7 +2689,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1420">line 1420</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1495">line 1495</a>
     </li></ul></dd>
     
 
@@ -2666,7 +2861,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2693">line 2693</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line2896">line 2896</a>
     </li></ul></dd>
     
 
@@ -2758,13 +2953,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Element.html">Element</a></li><li><a href="ProtoBuf.Map.html">Map</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu May 07 2015 21:26:10 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu May 07 2015 21:37:30 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

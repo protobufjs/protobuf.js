@@ -6,11 +6,12 @@
  * @param {string} name Message name
  * @param {Object.<string,*>=} options Message options
  * @param {boolean=} isGroup `true` if this is a legacy group
+ * @param {string?} syntax The syntax level of this definition (e.g., proto3)
  * @constructor
  * @extends ProtoBuf.Reflect.Namespace
  */
-var Message = function(builder, parent, name, options, isGroup) {
-    Namespace.call(this, builder, parent, name, options);
+var Message = function(builder, parent, name, options, isGroup, syntax) {
+    Namespace.call(this, builder, parent, name, options, syntax);
 
     /**
      * @override
@@ -170,7 +171,7 @@ MessagePrototype.calculate = function(message) {
 function skipTillGroupEnd(expectedId, buf) {
     var tag = buf.readVarint32(), // Throws on OOB
         wireType = tag & 0x07,
-        id = tag >> 3;
+        id = tag >>> 3;
     switch (wireType) {
         case ProtoBuf.WIRE_TYPES.VARINT:
             do tag = buf.readUint8();
@@ -217,7 +218,7 @@ MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
     while (buffer.offset < start+length || (length === -1 && buffer.remaining() > 0)) {
         tag = buffer.readVarint32();
         wireType = tag & 0x07;
-        id = tag >> 3;
+        id = tag >>> 3;
         if (wireType === ProtoBuf.WIRE_TYPES.ENDGROUP) {
             if (id !== expectedGroupEndId)
                 throw Error("Illegal group end indicator for "+this.toString(true)+": "+id+" ("+(expectedGroupEndId ? expectedGroupEndId+" expected" : "not a group")+")");
@@ -247,9 +248,12 @@ MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
             }
             continue;
         }
-        if (field.repeated && !field.options["packed"])
+        if (field.repeated && !field.options["packed"]) {
             msg[field.name].push(field.decode(wireType, buffer));
-        else {
+        } else if (field.map) {
+            var keyval = field.decode(wireType, buffer);
+            msg[field.name].set(keyval[0], keyval[1]);
+        } else {
             msg[field.name] = field.decode(wireType, buffer);
             if (field.oneof) {
                 if (this[field.oneof.name] !== null)

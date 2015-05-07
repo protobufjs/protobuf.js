@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Parser</title>
+    <title>JSDoc: Class: Map</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Parser</h1>
+    <h1 class="page-title">Class: Map</h1>
 
     
 
@@ -27,12 +27,10 @@
 
 <header>
     <h2>
-        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a><a href="ProtoBuf.DotProto.html">.DotProto</a>.</span>
+        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a>.</span>
     
-    Parser
+    Map
     </h2>
-    
-        <div class="class-description"><p>prototype parser</p></div>
     
 </header>
 
@@ -43,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Parser"><span class="type-signature"></span>new Parser<span class="signature">(proto)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Map"><span class="type-signature"></span>new Map<span class="signature">(field, contents<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 </dt>
@@ -51,7 +49,10 @@
 
     
     <div class="description">
-        <p>Constructs a new Parser.</p>
+        <p>Constructs a new Map. A Map is a container that is used to implement map
+fields on message objects. It closely follows the ES6 Map API; however,
+it is distinct because we do not want to depend on external polyfills or
+on ES6 itself.</p>
     </div>
     
 
@@ -73,6 +74,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -85,23 +88,64 @@
 
         <tr>
             
-                <td class="name"><code>proto</code></td>
+                <td class="name"><code>field</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">ProtoBuf.Reflect.Field</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Protocol source</p></td>
+            <td class="description last"><p>The map field</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Object.html">Object</a>.&lt;string, *></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Initial contents</p></td>
         </tr>
 
     
@@ -132,7 +176,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line614">line 614</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line5001">line 5001</a>
     </li></ul></dd>
     
 
@@ -180,14 +224,14 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="tn"><span class="type-signature"></span>tn<span class="type-signature"> :<a href="ProtoBuf.DotProto.Tokenizer.html">ProtoBuf.DotProto.Tokenizer</a></span></h4>
+    <h4 class="name" id="field"><span class="type-signature"></span>field<span class="type-signature"> :ProtoBuf.Reflect.Field</span></h4>
 
     
 </dt>
 <dd>
     
     <div class="description">
-        <p>Tokenizer.</p>
+        <p>The field corresponding to this map.</p>
     </div>
     
 
@@ -196,7 +240,7 @@
         <ul>
             <li>
                 
-<span class="param-type"><a href="ProtoBuf.DotProto.Tokenizer.html">ProtoBuf.DotProto.Tokenizer</a></span>
+<span class="param-type">ProtoBuf.Reflect.Field</span>
 
 
             </li>
@@ -226,7 +270,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line621">line 621</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line5011">line 5011</a>
     </li></ul></dd>
     
 
@@ -243,147 +287,30 @@
     
 </dd>
 
-        </dl>
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
+        
             
 <dt>
-    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Object.html">Object</a>}</span></h4>
+    <h4 class="name" id="keyElem"><span class="type-signature"></span>keyElem<span class="type-signature"> :<a href="ProtoBuf.Element.html">ProtoBuf.Element</a></span></h4>
 
     
 </dt>
 <dd>
-
     
     <div class="description">
-        <p>Runs the parser.</p>
+        <p>Element instance corresponding to key type.</p>
     </div>
     
 
     
-
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line636">line 636</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Throws:</h5>
-    
-            
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If the source cannot be parsed
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
+        <h5>Type:</h5>
+        <ul>
+            <li>
                 
-<span class="param-type">Error</span>
+<span class="param-type"><a href="ProtoBuf.Element.html">ProtoBuf.Element</a></span>
 
 
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-
-        
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Object.html">Object</a></span>
-
-
-    </dd>
-</dl>
-
-        
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Returns a string representation of this object.</p>
-    </div>
-    
-
-    
-
-    
-
+            </li>
+        </ul>
     
 
     
@@ -409,7 +336,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line1398">line 1398</a>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line5017">line 5017</a>
     </li></ul></dd>
     
 
@@ -424,41 +351,151 @@
     
 
     
+</dd>
 
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>String representation as of &quot;Parser&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
         
-<span class="param-type">string</span>
+            
+<dt>
+    <h4 class="name" id="map"><span class="type-signature"></span>map<span class="type-signature"> :<a href="Object.html">Object</a>.&lt;string, <a href="Object.html">Object</a>></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Internal map: stores mapping of (string form of key) -&gt; (key, value)
+pair.</p>
+<p>We provide map semantics for arbitrary key types, but we build on top
+of an Object, which has only string keys. In order to avoid the need
+to convert a string key back to its native type in many situations,
+we store the native key value alongside the value. Thus, we only need
+a one-way mapping from a key type to its string form that guarantees
+uniqueness and equality (i.e., str(K1) === str(K2) if and only if K1
+=== K2).</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="Object.html">Object</a>.&lt;string, <a href="Object.html">Object</a>></span>
 
 
-    </dd>
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line5041">line 5041</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
 </dl>
 
+
+    
+
+    
+</dd>
+
         
+            
+<dt>
+    <h4 class="name" id="valueElem"><span class="type-signature"></span>valueElem<span class="type-signature"> :<a href="ProtoBuf.Element.html">ProtoBuf.Element</a></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Element instance corresponding to value type.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="ProtoBuf.Element.html">ProtoBuf.Element</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ProtoBuf.js.html">ProtoBuf.js</a>, <a href="ProtoBuf.js.html#line5024">line 5024</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
 
     
 </dd>
 
         </dl>
+    
+
     
 
     

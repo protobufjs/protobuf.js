@@ -1641,6 +1641,430 @@
             test.done();
         },
 
+        "proto3": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/proto3.proto");
+                test.doesNotThrow(function() {
+                    ProtoBuf.loadProtoFile(__dirname+"/proto3.proto", builder);
+                });
+                var root = builder.build();
+                test.ok(root.test.Foo.$type.syntax === 'proto3');
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "proto3DisallowedFeatures": function(test) {
+            try {
+                // Required field
+                var proto = "syntax = \"proto3\"; message Foo { required int32 field = 1; }";
+                var builder = ProtoBuf.newBuilder();
+                ProtoBuf.loadProto(proto, builder, "tests/proto3DisallowedFeatures.proto");
+                test.ok(false);  // ^ should throw
+            } catch (e) {
+                test.ok(/^Not a valid definition/.test(e.message));
+            }
+
+            try {
+                // Field with default value
+                var proto = "syntax = \"proto3\"; message Foo { int32 field = 1 [default=42]; }";
+                var builder = ProtoBuf.newBuilder();
+                ProtoBuf.loadProto(proto, builder, "tests/proto3DisallowedFeatures.proto");
+                test.ok(false);  // ^ should throw
+            } catch (e) {
+                test.ok(/^Not a valid definition/.test(e.message));
+            }
+
+            try {
+                // Message with extension range
+                var proto = "syntax = \"proto3\"; message Foo { extensions 100 to max; } ";
+                var builder = ProtoBuf.newBuilder();
+                ProtoBuf.loadProto(proto, builder, "tests/proto3DisallowedFeatures.proto");
+                test.ok(false);  // ^ should throw
+            } catch (e) {
+                test.ok(/^Not a valid definition/.test(e.message));
+            }
+
+            try {
+                // Message with extension
+                var proto = "syntax = \"proto3\"; message Foo { extensions 100 to max; } " +
+                            "message Bar { extend Foo { optional Bar bar = 100; } }";
+                var builder = ProtoBuf.newBuilder();
+                ProtoBuf.loadProto(proto, builder, "tests/proto3DisallowedFeatures.proto");
+                test.ok(false);  // ^ should throw
+            } catch (e) {
+                test.ok(/^Not a valid definition/.test(e.message));
+            }
+
+            try {
+                // Enum with non-zero first entry.
+                var proto = "syntax = \"proto3\"; enum E { A = 1; B = 2; }";
+                var builder = ProtoBuf.newBuilder();
+                ProtoBuf.loadProto(proto, builder, "tests/proto3DisallowedFeatures.proto");
+                test.ok(false);  // ^ should throw
+            } catch (e) {
+                test.ok(/^Not a valid definition/.test(e.message));
+            }
+
+            try {
+                // Proto3 message referring to proto2 enum.
+                var proto2 = "syntax = \"proto2\"; enum E { A = 1; B = 2; }";
+                var proto3 = "syntax = \"proto3\"; message Test { E enum_field = 1; }";
+                var builder = ProtoBuf.newBuilder();
+                ProtoBuf.loadProto(proto2, builder, "tests/proto3DisallowedFeatures1.proto");
+                ProtoBuf.loadProto(proto3, builder, "tests/proto3DisallowedFeatures3.proto");
+                test.ok(false);  // ^ should throw
+            } catch (e) {
+                test.ok(/^Proto3 message refers to proto2 enum/.test(e.message));
+            }
+
+            test.done();
+        },
+
+        "proto3FieldPresence": function(test) {
+            var proto =
+                "syntax = \"proto3\";\n" +
+                "message Test {\n" +
+                "  int32 field_int32 = 1;\n" +
+                "  int64 field_int64 = 2;\n" +
+                "  string field_str = 3;\n" +
+                "  bytes field_bytes = 4;\n" +
+                "  Test field_msg = 5;\n" +
+                "  Enum field_enum = 6;\n" +
+                "  repeated int32 rpt_int32 = 11;\n" +
+                "  repeated int64 rpt_int64 = 12;\n" +
+                "  repeated string rpt_str = 13;\n" +
+                "  repeated bytes rpt_bytes = 14;\n" +
+                "  repeated Test rpt_msg = 15;\n" +
+                "  repeated Enum rpt_enum = 16;\n" +
+                "}\n" +
+                "enum Enum { Default = 0; A = 1; B = 2; }\n";
+            var builder = ProtoBuf.newBuilder();
+            ProtoBuf.loadProto(proto, builder, "test/proto3FieldPresence.proto");
+            var Test = builder.build('Test'),
+                Enum = builder.build('Enum');
+
+            var testMsg = new Test();
+            test.strictEqual(testMsg.field_int32, 0);
+            test.strictEqual(testMsg.field_int64.low, 0);
+            test.strictEqual(testMsg.field_int64.high, 0);
+            test.strictEqual(testMsg.field_str, "");
+            test.strictEqual(testMsg.field_msg, null);
+            test.ok(testMsg.field_bytes instanceof ByteBuffer);
+            test.strictEqual(testMsg.field_bytes.remaining(), 0);
+            test.strictEqual(testMsg.rpt_int32.length, 0);
+
+            // No fields should go on the wire, even though they're set
+            var encoded = testMsg.encode();
+            test.strictEqual(encoded.remaining(), 0);
+            testMsg.field_int32 = 42;
+            encoded = testMsg.encode();
+            test.strictEqual(encoded.remaining(), 2);
+            testMsg.field_int32 = 0;
+            encoded = testMsg.encode();
+            test.strictEqual(encoded.remaining(), 0);
+
+            // Enum fields should be able to carry arbitrary values.
+            testMsg.field_enum = 42;
+            test.strictEqual(testMsg.field_enum, 42);
+            encoded = testMsg.encode();
+            testMsg = Test.decode(encoded);
+            test.strictEqual(testMsg.field_enum, 42);
+
+            test.done();
+        },
+
+        "mapContainer": function(test) {
+            var proto =
+                "message Test {\n" +
+                "  map<string, int32> map_string_int32 = 1;\n" +
+                "  map<string, int64> map_string_int64 = 2;\n" +
+                "  map<string, string> map_string_string = 3;\n" +
+                "  map<string, Test> map_string_msg = 4;\n" +
+                "  map<string, Enum> map_string_enum = 5;\n" +
+                "  map<int32, string> map_int32_string = 6;\n" +
+                "  map<int64, string> map_int64_string = 7;\n" +
+                "  map<bool, string> map_bool_string = 9;\n" +
+                "}\n" +
+                "enum Enum { Default = 0; A = 1; B = 2; }\n";
+            var builder = ProtoBuf.newBuilder();
+            ProtoBuf.loadProto(proto, builder, "test/mapContainer.proto");
+
+            var map_string_int32 =
+                new ProtoBuf.Map(builder.lookup("Test.map_string_int32"));
+            test.strictEqual(map_string_int32.size, 0);
+            test.strictEqual(map_string_int32.has("asdf"), false);
+            test.strictEqual(map_string_int32.get("asdf"), undefined);
+            map_string_int32.set("asdf", 42);
+            test.strictEqual(map_string_int32.has("asdf"), true);
+            test.strictEqual(map_string_int32.get("asdf"), 42);
+
+            var it = map_string_int32.keys();
+            var itVal = it.next();
+            test.strictEqual(itVal.done, false);
+            test.strictEqual(itVal.value, "asdf");
+            itVal = it.next();
+            test.strictEqual(itVal.done, true);
+
+            it = map_string_int32.values();
+            itVal = it.next();
+            test.strictEqual(itVal.done, false);
+            test.strictEqual(itVal.value, 42);
+            itVal = it.next();
+            test.strictEqual(itVal.done, true);
+
+            it = map_string_int32.entries();
+            itVal = it.next();
+            test.strictEqual(itVal.done, false);
+            test.deepEqual(itVal.value, ["asdf", 42]);
+            itVal = it.next();
+            test.strictEqual(itVal.done, true);
+
+            map_string_int32.set("jkl;", 84);
+            test.strictEqual(map_string_int32.has("jkl;"), true);
+            test.strictEqual(map_string_int32.has("asdf"), true);
+            test.strictEqual(map_string_int32.size, 2);
+            map_string_int32.delete("jkl;");
+            test.strictEqual(map_string_int32.has("jkl;"), false);
+            test.strictEqual(map_string_int32.get("jkl;"), undefined);
+            test.strictEqual(map_string_int32.size, 1);
+
+            map_string_int32.clear();
+            test.strictEqual(map_string_int32.size, 0);
+
+            try {
+                map_string_int32.set("asdf", 42.1);
+                test.ok(false); // ^ should throw
+            } catch(e) {
+                test.ok(e.message.match(/not an integer/));
+            }
+
+            try {
+                map_string_int32.set(42, 42);
+                test.ok(false); // ^ should throw
+            } catch(e) {
+                test.ok(e.message.match(/not a string/));
+            }
+
+            // Test various key types to ensure that value->string->value
+            // conversion works.
+            var map_int32_string =
+                new ProtoBuf.Map(builder.lookup("Test.map_int32_string"));
+            test.strictEqual(map_int32_string.size, 0);
+            map_int32_string.set(12345678, "asdf");
+            test.strictEqual(map_int32_string.size, 1);
+            test.strictEqual(map_int32_string.has(12345678), true);
+            test.strictEqual(map_int32_string.get(12345678), "asdf");
+
+            var map_int64_string =
+                new ProtoBuf.Map(builder.lookup("Test.map_int64_string"));
+            test.strictEqual(map_int64_string.size, 0);
+            map_int64_string.set("9223372036854775807", "asdf");
+            test.strictEqual(map_int64_string.size, 1);
+            test.strictEqual(map_int64_string.has("9223372036854775807"), true);
+            test.strictEqual(map_int64_string.get("9223372036854775807"), "asdf");
+
+            // Ensure that initialization from a raw object works.
+            var map_int32_string =
+                new ProtoBuf.Map(builder.lookup("Test.map_int32_string"),
+                                 { 42: "asdf" });
+            test.strictEqual(map_int32_string.size, 1);
+            test.strictEqual(map_int32_string.keys().next().value, 42);
+
+            var map_int64_string =
+                new ProtoBuf.Map(builder.lookup("Test.map_int64_string"),
+                                 { "9223372036854775807": "asdf" });
+            test.strictEqual(map_int64_string.size, 1);
+            var i64 = map_int64_string.keys().next().value;
+            test.ok(i64 instanceof ProtoBuf.Long);
+            test.strictEqual(i64.toString(), "9223372036854775807");
+
+            test.done();
+        },
+
+        "mapField": function(test) {
+            var proto =
+                "message Test {\n" +
+                "  map<string, int32> map_string_int32 = 1;\n" +
+                "  map<string, int64> map_string_int64 = 2;\n" +
+                "  map<string, string> map_string_string = 3;\n" +
+                "  map<string, Test> map_string_msg = 4;\n" +
+                "  map<string, Enum> map_string_enum = 5;\n" +
+                "  map<int32, string> map_int32_string = 6;\n" +
+                "  map<int64, string> map_int64_string = 7;\n" +
+                "  map<bool, string> map_bool_string = 9;\n" +
+                "}\n" +
+                "enum Enum { Default = 0; A = 1; B = 2; }\n";
+            var builder = ProtoBuf.newBuilder();
+            ProtoBuf.loadProto(proto, builder, "test/mapField.proto");
+            var Test = builder.build('Test'),
+                Enum = builder.build('Enum');
+
+            var testMsg = new Test();
+            test.strictEqual(testMsg.map_string_int32.size, 0);
+            test.strictEqual(testMsg.map_string_int64.size, 0);
+            test.strictEqual(testMsg.map_string_string.size, 0);
+            test.strictEqual(testMsg.map_string_msg.size, 0);
+            test.strictEqual(testMsg.map_string_enum.size, 0);
+            test.strictEqual(testMsg.map_int32_string.size, 0);
+            test.strictEqual(testMsg.map_int64_string.size, 0);
+            test.strictEqual(testMsg.map_bool_string.size, 0);
+
+            testMsg.$set('map_string_int32', { 'asdf': 42 });
+
+            try {
+                testMsg.$set('map_string_int32', { 'asdf': 42.1 });
+                test.ok(false); // ^ should throw
+            } catch (e) {
+                test.ok(e.message.match(/Illegal/));
+            }
+
+            test.done();
+        },
+
+        "mapEncodeDecode": function(test) {
+            var proto =
+                "message Test {\n" +
+                "  map<string, int32> map_string_int32 = 1;\n" +
+                "  map<string, int64> map_string_int64 = 2;\n" +
+                "  map<string, string> map_string_string = 3;\n" +
+                "  map<string, Test> map_string_msg = 4;\n" +
+                "  map<string, Enum> map_string_enum = 5;\n" +
+                "  map<int32, string> map_int32_string = 6;\n" +
+                "  map<int64, string> map_int64_string = 7;\n" +
+                "  map<bool, string> map_bool_string = 9;\n" +
+                "}\n" +
+                "enum Enum { Default = 0; A = 1; B = 2; }\n";
+            var builder = ProtoBuf.newBuilder();
+            ProtoBuf.loadProto(proto, builder, "test/mapField.proto");
+            var Test = builder.build('Test'),
+                Enum = builder.build('Enum');
+
+            var testMsg = new Test();
+            testMsg.map_string_int32.set("a", 1);
+            testMsg.map_string_int32.set("b", 2);
+            testMsg.map_string_int64.set("c", "12345678901234");
+            testMsg.map_string_int64.set("d", "98765432109876");
+            testMsg.map_string_string.set("e", "asdf");
+            testMsg.map_string_string.set("f", "jkl;");
+            testMsg.map_string_enum.set("g", Enum.A);
+            testMsg.map_string_enum.set("h", Enum.B);
+            testMsg.map_int32_string.set(9, "a");
+            testMsg.map_int32_string.set(10, "b");
+            testMsg.map_int64_string.set("12345678901234", "a");
+            testMsg.map_int64_string.set("98765432109876", "b");
+            testMsg.map_bool_string.set(false, "a");
+            testMsg.map_bool_string.set(true, "b");
+
+            var encoded = testMsg.encode();
+            testMsg = Test.decode(encoded);
+
+            test.strictEqual(testMsg.map_string_int32.get("a"), 1);
+            test.strictEqual(testMsg.map_string_int32.get("b"), 2);
+            test.strictEqual(testMsg.map_string_int64.get("c").toString(), "12345678901234");
+            test.strictEqual(testMsg.map_string_int64.get("d").toString(), "98765432109876");
+            test.strictEqual(testMsg.map_string_string.get("e"), "asdf");
+            test.strictEqual(testMsg.map_string_string.get("f"), "jkl;");
+            test.strictEqual(testMsg.map_string_enum.get("g"), Enum.A);
+            test.strictEqual(testMsg.map_string_enum.get("h"), Enum.B);
+            test.strictEqual(testMsg.map_int32_string.get(9), "a");
+            test.strictEqual(testMsg.map_int32_string.get(10), "b");
+            test.strictEqual(testMsg.map_int64_string.get("12345678901234"), "a");
+            test.strictEqual(testMsg.map_int64_string.get("98765432109876"), "b");
+            test.strictEqual(testMsg.map_bool_string.get(false), "a");
+            test.strictEqual(testMsg.map_bool_string.get(true), "b");
+
+            test.done();
+        },
+
+        "proto3Json": function(test) {
+            var proto =
+                "message Test {\n" +
+                "  int32 optional_int32 = 1;\n" +
+                "  int64 optional_int64 = 2;\n" +
+                "  string optional_string = 3;\n" +
+                "  bytes optional_bytes = 4;\n" +
+                "  bool optional_bool = 5;\n" +
+                "  Enum optional_enum = 6;\n" +
+                "  repeated int32 repeated_int32 = 11;\n" +
+                "  repeated int64 repeated_int64 = 12;\n" +
+                "  repeated string repeated_string = 13;\n" +
+                "  repeated bytes repeated_bytes = 14;\n" +
+                "  repeated bool repeated_bool = 15;\n" +
+                "  repeated Enum repeated_enum = 16;\n" +
+                "  map<string, int32> map_string_int32 = 20;\n" +
+                "  map<string, int64> map_string_int64 = 21;\n" +
+                "  map<string, string> map_string_string = 22;\n" +
+                "  map<string, Enum> map_string_enum = 24;\n" +
+                "  map<int32, string> map_int32_string = 25;\n" +
+                "  map<int64, string> map_int64_string = 26;\n" +
+                "  map<bool, string> map_bool_string = 27;\n" +
+                "}\n" +
+                "enum Enum { Default = 0; A = 1; B = 2; }\n";
+            var builder = ProtoBuf.newBuilder();
+            ProtoBuf.loadProto(proto, builder, "test/mapField.proto");
+            var Test = builder.build('Test'),
+                Enum = builder.build('Enum');
+
+            var testMsg = new Test();
+            testMsg.optional_int32 = 1;
+            testMsg.optional_int64 = "12345678901234";
+            testMsg.optional_string = "hello";
+            testMsg.optional_bytes = ProtoBuf.ByteBuffer.fromBinary("\x00\xFF\x80");
+            testMsg.optional_bool = true;
+            testMsg.optional_enum = Enum.A;
+            testMsg.repeated_int32.push(1);
+            testMsg.repeated_int64.push("12345678901234");
+            testMsg.repeated_string.push("hello");
+            testMsg.repeated_bytes.push(ProtoBuf.ByteBuffer.fromBinary("\x00\xFF\x80"));
+            testMsg.repeated_bool.push(true);
+            testMsg.repeated_enum.push(Enum.A);
+            testMsg.map_string_int32.set("a", 1);
+            testMsg.map_string_int32.set("b", 2);
+            testMsg.map_string_int64.set("c", "12345678901234");
+            testMsg.map_string_int64.set("d", "98765432109876");
+            testMsg.map_string_string.set("e", "asdf");
+            testMsg.map_string_string.set("f", "jkl;");
+            testMsg.map_string_enum.set("g", Enum.A);
+            testMsg.map_string_enum.set("h", Enum.B);
+            testMsg.map_int32_string.set(9, "a");
+            testMsg.map_int32_string.set(10, "b");
+            testMsg.map_int64_string.set("12345678901234", "a");
+            testMsg.map_int64_string.set("98765432109876", "b");
+            testMsg.map_bool_string.set(false, "a");
+            testMsg.map_bool_string.set(true, "b");
+
+            var jsonObj = JSON.parse(testMsg.encodeJSON());
+            test.deepEqual(jsonObj,
+                {
+                    optional_int32: 1,
+                    optional_int64: "12345678901234",
+                    optional_string: "hello",
+                    optional_bytes: "AP+A",  // base64
+                    optional_bool: true,
+                    optional_enum: "A",
+                    repeated_int32: [1],
+                    repeated_int64: ["12345678901234"],
+                    repeated_string: ["hello"],
+                    repeated_bytes: ["AP+A"],  // base64
+                    repeated_bool: [true],
+                    repeated_enum: ["A"],
+                    map_string_int32: { "a": 1, "b": 2 },
+                    map_string_int64: { "c": "12345678901234", "d": "98765432109876" },
+                    map_string_string: { "e": "asdf", "f": "jkl;" },
+                    map_string_enum: { "g": "A", "h": "B" },
+                    map_int32_string: { "9": "a", "10": "b" },
+                    map_int64_string: { "12345678901234": "a", "98765432109876": "b" },
+                    map_bool_string: { "false": "a", "true": "b" },
+                });
+
+            var testMsg2 = Test.decodeJSON(testMsg.encodeJSON());
+            test.strictEqual(testMsg2.encodeJSON(), testMsg.encodeJSON());
+
+            test.done();
+        },
+
         // Node.js only
         "loaders": BROWSER ? {} : {
 
