@@ -23,8 +23,11 @@ var Message = function(values, var_args) {
     // Create fields and set default values
     for (i=0, k=fields.length; i<k; ++i) {
         var field = fields[i];
-        this[field.name] = field.repeated ? [] : null;
-        if (field.required && field.defaultValue !== null)
+        this[field.name] =
+            field.repeated ? [] :
+            (field.map ? new ProtoBuf.Map(field) : null);
+        if ((field.required || T.syntax === 'proto3') &&
+            field.defaultValue !== null)
             this[field.name] = field.defaultValue;
     }
 
@@ -34,6 +37,7 @@ var Message = function(values, var_args) {
         if (arguments.length === 1 && typeof values === 'object' &&
             /* not another Message */ typeof values.encode !== 'function' &&
             /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
+            /* not a Map */ !(values instanceof ProtoBuf.Map) &&
             /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
@@ -216,54 +220,54 @@ for (var i=0; i<fields.length; i++) {
                 return this[field.name];
             };
 
-            /**
-             * Sets a value. This method is present for each field, but only if there is no name conflict with
-             *  another field.
-             * @name ProtoBuf.Builder.Message#set[SomeField]
-             * @function
-             * @param {*} value Value to set
-             * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
-             * @returns {!ProtoBuf.Builder.Message} this
-             * @abstract
-             * @throws {Error} If the value cannot be set
-             */
             if (T.getChild("set"+Name) === null)
+                /**
+                 * Sets a value. This method is present for each field, but only if there is no name conflict with
+                 *  another field.
+                 * @name ProtoBuf.Builder.Message#set[SomeField]
+                 * @function
+                 * @param {*} value Value to set
+                 * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+                 * @returns {!ProtoBuf.Builder.Message} this
+                 * @abstract
+                 * @throws {Error} If the value cannot be set
+                 */
                 MessagePrototype["set"+Name] = setter;
 
-            /**
-             * Sets a value. This method is present for each field, but only if there is no name conflict with
-             *  another field.
-             * @name ProtoBuf.Builder.Message#set_[some_field]
-             * @function
-             * @param {*} value Value to set
-             * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
-             * @returns {!ProtoBuf.Builder.Message} this
-             * @abstract
-             * @throws {Error} If the value cannot be set
-             */
             if (T.getChild("set_"+name) === null)
+                /**
+                 * Sets a value. This method is present for each field, but only if there is no name conflict with
+                 *  another field.
+                 * @name ProtoBuf.Builder.Message#set_[some_field]
+                 * @function
+                 * @param {*} value Value to set
+                 * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
+                 * @returns {!ProtoBuf.Builder.Message} this
+                 * @abstract
+                 * @throws {Error} If the value cannot be set
+                 */
                 MessagePrototype["set_"+name] = setter;
 
-            /**
-             * Gets a value. This method is present for each field, but only if there is no name conflict with
-             *  another field.
-             * @name ProtoBuf.Builder.Message#get[SomeField]
-             * @function
-             * @abstract
-             * @return {*} The value
-             */
             if (T.getChild("get"+Name) === null)
+                /**
+                 * Gets a value. This method is present for each field, but only if there is no name conflict with
+                 *  another field.
+                 * @name ProtoBuf.Builder.Message#get[SomeField]
+                 * @function
+                 * @abstract
+                 * @return {*} The value
+                 */
                 MessagePrototype["get"+Name] = getter;
 
-            /**
-             * Gets a value. This method is present for each field, but only if there is no name conflict with
-             *  another field.
-             * @name ProtoBuf.Builder.Message#get_[some_field]
-             * @function
-             * @return {*} The value
-             * @abstract
-             */
             if (T.getChild("get_"+name) === null)
+                /**
+                 * Gets a value. This method is present for each field, but only if there is no name conflict with
+                 *  another field.
+                 * @name ProtoBuf.Builder.Message#get_[some_field]
+                 * @function
+                 * @return {*} The value
+                 * @abstract
+                 */
                 MessagePrototype["get_"+name] = getter;
 
         })(field);
@@ -454,39 +458,104 @@ MessagePrototype.encodeHex = function() {
 MessagePrototype.toHex = MessagePrototype.encodeHex;
 
 /**
- * Clones a message object to a raw object.
+ * Clones a message object or field value to a raw object.
  * @param {*} obj Object to clone
- * @param {boolean} includeBinaryAsBase64 Whether to include binary data as base64 strings instead of Buffers
+ * @param {boolean} binaryAsBase64 Whether to include binary data as base64 strings or as a buffer otherwise
+ * @param {boolean} longsAsStrings Whether to encode longs as strings
+ * @param {{name: string, wireType: number}} fieldType The field type, if
+ * appropriate
+ * @param {ProtoBuf.Reflect.T} resolvedType The resolved field type, if appropriate
  * @returns {*} Cloned object
  * @inner
  */
-function cloneRaw(obj, includeBinaryAsBase64) {
-    var clone = {};
-    for (var i in obj)
-        if (obj.hasOwnProperty(i)) {
-            if (obj[i] === null || typeof obj[i] !== 'object')
-                clone[i] = obj[i];
-            else if (obj[i] instanceof ByteBuffer) {
-                if (includeBinaryAsBase64) {
-                    clone[i] = obj[i].toBase64();
-                } else {
-                    clone[i] = obj[i].toBuffer();
+function cloneRaw(obj, binaryAsBase64, longsAsStrings,
+                  fieldType, resolvedType) {
+    var clone = undefined;
+    if (obj === null || typeof obj !== 'object') {
+        if (fieldType == ProtoBuf.TYPES["enum"]) {
+            var values = resolvedType.getChildren(ProtoBuf.Reflect.Enum.Value);
+            for (var i = 0; i < values.length; i++) {
+                if (values[i]['id'] === obj) {
+                    obj = values[i]['name'];
+                    break;
                 }
-            } else // is a non-null object
-                clone[i] = cloneRaw(obj[i], includeBinaryAsBase64);
+            }
         }
+        clone = obj;
+    } else if (obj instanceof ByteBuffer) {
+        if (binaryAsBase64) {
+            clone = obj.toBase64();
+        } else {
+            clone = obj.toBuffer();
+        }
+    } else if (ProtoBuf.Util.isArray(obj)) {
+        var src = obj;
+        var result = [];
+        for (var idx = 0; idx < src.length; idx++) {
+            result.push(cloneRaw(src[idx], binaryAsBase64,
+                                 longsAsStrings, fieldType, resolvedType));
+        }
+        clone = result;
+    } else if (obj instanceof ProtoBuf.Map) {
+        var result = {};
+        var it = obj.entries();
+        for (var e = it.next(); !e.done; e = it.next()) {
+            result[obj.keyElem.valueToString(e.value[0])] =
+                cloneRaw(e.value[1],
+                         binaryAsBase64, longsAsStrings,
+                         obj.valueElem.type, obj.valueElem.resolvedType);
+        }
+        clone = result;
+    } else if (obj instanceof ProtoBuf.Long) {
+        if (longsAsStrings) {
+            // int64s are encoded as strings
+            clone = obj.toString();
+        } else {
+            clone = new ProtoBuf.Long(obj);
+        }
+    } else { // is a non-null object
+        clone = {};
+        var type = obj.$type;
+        var field = undefined;
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                var value = obj[i];
+                if (type) {
+                    field = type.getChild(i);
+                }
+                clone[i] = cloneRaw(value,
+                                    binaryAsBase64, longsAsStrings,
+                                    field.type, field.resolvedType);
+            }
+        }
+    }
     return clone;
 }
 
 /**
  * Returns the message's raw payload.
- * @param {boolean=} includeBinaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
+ * @param {boolean=} binaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
+ * @param {boolean} longsAsStrings Whether to encode longs as strings
  * @returns {Object.<string,*>} Raw payload
  * @expose
  */
-MessagePrototype.toRaw = function(includeBinaryAsBase64) {
-    return cloneRaw(this, !!includeBinaryAsBase64);
+MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
+    return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, ProtoBuf.TYPES["message"], this.$type);
 };
+
+/**
+ * Encodes a message to JSON.
+ * @returns {string} JSON string
+ * @expose
+ */
+MessagePrototype.encodeJSON = function() {
+    return JSON.stringify(
+        cloneRaw(this,
+                 /* binary-as-base64 */ true,
+                 /* longs-as-strings */ true,
+                 ProtoBuf.TYPES["message"],
+                 this.$type));
+}
 
 /**
  * Decodes a message from the specified buffer or string.
@@ -576,6 +645,20 @@ Message.decode64 = function(str) {
 Message.decodeHex = function(str) {
     return Message.decode(str, "hex");
 };
+
+/**
+ * Decodes the message from a JSON string.
+ * @name ProtoBuf.Builder.Message.decodeJSON
+ * @function
+ * @param {string} str String to decode from
+ * @return {!ProtoBuf.Builder.Message} Decoded message
+ * @throws {Error} If the message cannot be decoded or if required fields are
+ * missing.
+ * @expose
+ */
+Message.decodeJSON = function(str) {
+    return new Message(JSON.parse(str));
+}
 
 // Utility
 

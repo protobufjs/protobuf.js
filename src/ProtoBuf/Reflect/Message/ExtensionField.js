@@ -12,7 +12,7 @@
  * @extends ProtoBuf.Reflect.Message.Field
  */
 var ExtensionField = function(builder, message, rule, type, name, id, options) {
-    Field.call(this, builder, message, rule, type, name, id, options);
+    Field.call(this, builder, message, rule, /* keytype = */ null, type, name, id, options);
 
     /**
      * Extension reference.

@@ -5,11 +5,12 @@
  * @param {!ProtoBuf.Reflect.T} parent Parent Reflect object
  * @param {string} name Enum name
  * @param {Object.<string,*>=} options Enum options
+ * @param {string?} syntax The syntax level (e.g., proto3)
  * @constructor
  * @extends ProtoBuf.Reflect.Namespace
  */
-var Enum = function(builder, parent, name, options) {
-    Namespace.call(this, builder, parent, name, options);
+var Enum = function(builder, parent, name, options, syntax) {
+    Namespace.call(this, builder, parent, name, options, syntax);
 
     /**
      * @override

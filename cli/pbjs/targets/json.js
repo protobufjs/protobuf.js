@@ -175,10 +175,10 @@ function buildMessage(msg) {
  * @returns {!*}
  */
 function buildMessageField(fld) {
-    var fieldType = fld.repeated ? "repeated" : (fld.required ? "required" : "optional");
     return {
-        "rule"    : fieldType,
+        "rule"    : fld.map ? "map" : (fld.repeated ? "repeated" : (fld.required ? "required" : "optional")),
         "type"    : fld.resolvedType ? fld.parent.qn(fld.resolvedType) : fld.type['name'],
+        "keytype" : (typeof(fld.keyType) === 'string') ? fld.keyType : (fld.keyType !== null ? fld.keyType.name : undefined),
         "name"    : fld instanceof ProtoBuf.Reflect.Message.ExtensionField ? fld.name.substring(fld.name.lastIndexOf(".")+1): fld.name,
         "id"      : fld.id,
         "options" : Object.keys(fld.options).length > 0 ? buildOptions(fld.options) : undefined

@@ -5,10 +5,11 @@
  * @param {?ProtoBuf.Reflect.Namespace} parent Namespace parent
  * @param {string} name Namespace name
  * @param {Object.<string,*>=} options Namespace options
+ * @param {string?} syntax The syntax level of this definition (e.g., proto3)
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */
-var Namespace = function(builder, parent, name, options) {
+var Namespace = function(builder, parent, name, options, syntax) {
     T.call(this, builder, parent, name);
 
     /**
@@ -27,6 +28,12 @@ var Namespace = function(builder, parent, name, options) {
      * @type {!Object.<string, *>}
      */
     this.options = options || {};
+
+    /**
+     * Syntax level (e.g., proto2 or proto3).
+     * @type {!string}
+     */
+    this.syntax = syntax || "proto2";
 };
 
 /**

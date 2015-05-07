@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package test;
+
+message Foo {
+  int32 optional_int32 = 1;
+}
