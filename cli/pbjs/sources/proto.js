@@ -18,7 +18,7 @@ var description = "Plain .proto descriptor";
 var ProtoBuf = require(__dirname+"/../../../index.js"),
     util = require(__dirname+"/../util.js"),
     fs = require("fs"),
-    path = require("path");
+    node_path = require("path");
 
 /**
  * pbjs source: Plain .proto descriptor
@@ -49,7 +49,7 @@ proto.description = description;
  * @returns {*} JSON descriptor
  */
 proto.load = function(filename, options, dedupe) {
-    filename = path.resolve(filename);
+    filename = node_path.resolve(filename);
     dedupe = dedupe || {};
     if (dedupe[filename]) return dedupe[filename];
 
@@ -67,7 +67,11 @@ proto.load = function(filename, options, dedupe) {
                 var path = options.path || [];
                 for (var j=0; j<path.length; ++j) {
                     try {
-                        imports[i] = proto.load(path[j]+"/"+imports[i], options, dedupe);
+                        var import_file = node_path.normalize(path[j]+"/"+imports[i]);
+                        var path_import = node_path.dirname(import_file);
+                        var found = options.path.some( function(el) { return el === path_import; });
+                        if (!found) options.path.push(path_import);
+                        imports[i] = proto.load(import_file, options);
                         return;
                     } catch (e) {}
                 }
