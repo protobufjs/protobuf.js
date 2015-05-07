@@ -1248,7 +1248,7 @@
                     /**
                      * Clones a message object to a raw object.
                      * @param {*} obj Object to clone
-                     * @param {boolean} includeBinaryAsBase64 Whether to include binary data as base64 strings or not
+                     * @param {boolean} includeBinaryAsBase64 Whether to include binary data as base64 strings instead of Buffers
                      * @returns {*} Cloned object
                      * @inner
                      */
@@ -1259,8 +1259,11 @@
                                 if (obj[i] === null || typeof obj[i] !== 'object')
                                     clone[i] = obj[i];
                                 else if (obj[i] instanceof ByteBuffer) {
-                                    if (includeBinaryAsBase64)
+                                    if (includeBinaryAsBase64) {
                                         clone[i] = obj[i].toBase64();
+                                    } else {
+                                        clone[i] = obj[i].toBuffer();
+                                    }
                                 } else // is a non-null object
                                     clone[i] = cloneRaw(obj[i], includeBinaryAsBase64);
                             }
@@ -1269,7 +1272,7 @@
 
                     /**
                      * Returns the message's raw payload.
-                     * @param {boolean=} includeBinaryAsBase64 Whether to include binary data as base64 strings or not, defaults to `false`
+                     * @param {boolean=} includeBinaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
                      * @returns {Object.<string,*>} Raw payload
                      * @expose
                      */

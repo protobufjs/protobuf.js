@@ -10,7 +10,7 @@
             "name": "FileDescriptorSet",
             "fields": [
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "FileDescriptorProto",
                     "name": "file",
                     "id": 1
@@ -33,43 +33,43 @@
                     "id": 2
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "string",
                     "name": "dependency",
                     "id": 3
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "int32",
                     "name": "public_dependency",
                     "id": 10
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "int32",
                     "name": "weak_dependency",
                     "id": 11
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "DescriptorProto",
                     "name": "message_type",
                     "id": 4
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "EnumDescriptorProto",
                     "name": "enum_type",
                     "id": 5
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "ServiceDescriptorProto",
                     "name": "service",
                     "id": 6
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "FieldDescriptorProto",
                     "name": "extension",
                     "id": 7
@@ -98,31 +98,31 @@
                     "id": 1
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "FieldDescriptorProto",
                     "name": "field",
                     "id": 2
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "FieldDescriptorProto",
                     "name": "extension",
                     "id": 6
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "DescriptorProto",
                     "name": "nested_type",
                     "id": 3
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "EnumDescriptorProto",
                     "name": "enum_type",
                     "id": 4
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "ExtensionRange",
                     "name": "extension_range",
                     "id": 5
@@ -313,7 +313,7 @@
                     "id": 1
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "EnumValueDescriptorProto",
                     "name": "value",
                     "id": 2
@@ -359,7 +359,7 @@
                     "id": 1
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "MethodDescriptorProto",
                     "name": "method",
                     "id": 2
@@ -477,7 +477,7 @@
                     }
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "UninterpretedOption",
                     "name": "uninterpreted_option",
                     "id": 999
@@ -529,7 +529,7 @@
                     }
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "UninterpretedOption",
                     "name": "uninterpreted_option",
                     "id": 999
@@ -592,7 +592,7 @@
                     }
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "UninterpretedOption",
                     "name": "uninterpreted_option",
                     "id": 999
@@ -635,7 +635,7 @@
                     }
                 },
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "UninterpretedOption",
                     "name": "uninterpreted_option",
                     "id": 999
@@ -650,7 +650,7 @@
             "name": "EnumValueOptions",
             "fields": [
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "UninterpretedOption",
                     "name": "uninterpreted_option",
                     "id": 999
@@ -665,7 +665,7 @@
             "name": "ServiceOptions",
             "fields": [
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "UninterpretedOption",
                     "name": "uninterpreted_option",
                     "id": 999
@@ -680,7 +680,7 @@
             "name": "MethodOptions",
             "fields": [
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "UninterpretedOption",
                     "name": "uninterpreted_option",
                     "id": 999
@@ -695,7 +695,7 @@
             "name": "UninterpretedOption",
             "fields": [
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "NamePart",
                     "name": "name",
                     "id": 2
@@ -761,7 +761,7 @@
             "name": "SourceCodeInfo",
             "fields": [
                 {
-                    "rule": "optional",
+                    "rule": "repeated",
                     "type": "Location",
                     "name": "location",
                     "id": 1
@@ -772,7 +772,7 @@
                     "name": "Location",
                     "fields": [
                         {
-                            "rule": "optional",
+                            "rule": "repeated",
                             "type": "int32",
                             "name": "path",
                             "id": 1,
@@ -781,7 +781,7 @@
                             }
                         },
                         {
-                            "rule": "optional",
+                            "rule": "repeated",
                             "type": "int32",
                             "name": "span",
                             "id": 2,
