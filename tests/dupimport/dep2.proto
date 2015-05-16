@@ -1,5 +1,8 @@
-package My;
+package main;
 
-message dep2 {
-    optional uint64 test1 = 0;
+import "dep1.proto";
+
+message Dep2 {
+    optional main.Dep1 test1 = 1;
+    optional main.Common test2 = 2;
 }

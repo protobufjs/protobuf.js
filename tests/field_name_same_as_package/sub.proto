@@ -1,0 +1,5 @@
+package main.sub;
+
+message Sub {
+    optional string test1 = 1;
+}

@@ -22,6 +22,8 @@
 
     var FILE = "ProtoBuf.js";
     var BROWSER = !!global.window;
+    var StdOutFixture = require('fixture-stdout');
+    var fixture = new StdOutFixture();
 
     var ProtoBuf = BROWSER ? global.dcodeIO.ProtoBuf : require(__dirname+"/../dist/"+FILE),
         ByteBuffer = BROWSER ? global.dcodeIO.ByteBuffer : ByteBuffer || require("bytebuffer"),
@@ -971,6 +973,31 @@
                 test.ok(rootA.Common);
                 test.ok(rootB.Common);
             } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
+
+        "dupimport": function(test) {
+            try {
+                // Suppress logging result to stdout
+                fixture.capture(function() { return false;});
+                require(__dirname+"/../cli/pbjs.js").main(["node", "bin/pbjs", __dirname+"/dupimport/main.proto", "-quiet"]);
+                fixture.release();
+            } catch (e) {
+                fixture.release();
+                fail(e);
+            }
+            test.done();
+        },
+
+        "field_name_same_as_package": function(test) {
+            try {
+                fixture.capture(function() { return false;});
+                require(__dirname+"/../cli/pbjs.js").main(["node", "bin/pbjs", __dirname+"/field_name_same_as_package/main.proto", "-quiet"]);
+                fixture.release();
+            } catch (e) {
+                fixture.release();
                 fail(e);
             }
             test.done();

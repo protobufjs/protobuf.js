@@ -1,0 +1,7 @@
+package main;
+
+import "sub.proto";
+
+message MainMessage {
+    optional main.sub.Sub sub = 1;
+}
