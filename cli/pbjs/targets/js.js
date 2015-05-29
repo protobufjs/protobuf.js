@@ -51,7 +51,7 @@ js.build = function(builder, options) {
         ")['import'](",
         json(builder, options),
         ").build(",
-        options.exports === 'string' ? JSON.stringify(options.exports.split(".")) : "",
+        typeof options.exports === 'string' ? JSON.stringify(options.exports.split(".")) : "",
         ");"
     ].join('');
 };
