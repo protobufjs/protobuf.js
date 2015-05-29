@@ -70,7 +70,7 @@ proto.load = function(filename, options, loaded) {
                     var import_filename = node_path.resolve(path[j] + "/", imports[i]);
                     if (!fs.existsSync(import_filename))
                         continue;
-                    imports[i] = proto.load(import_filename, options, dedupe);
+                    imports[i] = proto.load(import_filename, options, loaded);
                 }
                 throw Error("File not found: "+imports[i]);
             })();
