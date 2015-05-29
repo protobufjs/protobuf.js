@@ -427,8 +427,7 @@ ParserPrototype._parseMessage = function(parent, fld, token) {
             msg["extensions"] = this._parseExtensions(msg, token);
         else if (token === "extend")
             this._parseExtend(msg, token);
-        // proto3 syntax style: optional fields without 'optional' keyword.
-        else if (Lang.TYPE.test(token) || Lang.TYPEREF.test(token))
+        else if (Lang.TYPEREF.test(token))
             this._parseMessageField(msg, "optional", token);
         else
             throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
@@ -441,7 +440,7 @@ ParserPrototype._parseMessage = function(parent, fld, token) {
  * Parses a message field.
  * @param {Object} msg Message definition
  * @param {string} token Initial token
- * @param {string=} nextToken Next token, if not null.
+ * @param {string=} nextToken Next token, if any
  * @returns {!Object} Field descriptor
  * @throws {Error} If the message field cannot be parsed
  * @private
@@ -452,15 +451,10 @@ ParserPrototype._parseMessageField = function(msg, token, nextToken) {
     fld["rule"] = token;
     /** @dict */
     fld["options"] = {};
-    if (nextToken) {
-        token = nextToken;
-    } else {
-        token = this.tn.next();
-    }
+    token = typeof nextToken !== 'undefined' ? nextToken : this.tn.next();
     if (fld["rule"] === "map") {
-        if (token != Lang.LT)  // <
+        if (token !== Lang.LT)  // <
             throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
-
         token = this.tn.next();
         if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token))
             throw Error("Illegal token in message "+msg.name+" at line "+this.tn.line+": "+token);
@@ -559,7 +553,7 @@ ParserPrototype._parseMessageOneOf = function(msg, token) {
     if (token !== Lang.OPEN)
         throw Error("Illegal start of oneof "+name+" at line "+this.tn.line+": "+token);
     while (this.tn.peek() !== Lang.CLOSE) {
-        fld = this._parseMessageField(msg, "optional", "");
+        fld = this._parseMessageField(msg, "optional");
         fld["oneof"] = name;
         fields.push(fld["id"]);
     }
@@ -762,7 +756,9 @@ ParserPrototype._parseExtend = function(parent, token) {
                 this.tn.next();
             break;
         } else if (Lang.RULE.test(token))
-            this._parseMessageField(ext, token, "");
+            this._parseMessageField(ext, token);
+        else if (Lang.TYPEREF.test(token))
+            this._parseMessageField(ext, "optional", token);
         else
             throw Error("Illegal token in extend "+ext.name+" at line "+this.tn.line+": "+token);
     } while (true);

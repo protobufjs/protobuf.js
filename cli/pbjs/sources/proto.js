@@ -31,7 +31,7 @@ var ProtoBuf = require(__dirname+"/../../../index.js"),
 var proto = module.exports = function(filename, options) {
     options = options || [];
     var builder = ProtoBuf.newBuilder(util.getBuilderOptions(options, "using")),
-        data = proto.load(filename, options);
+        data = proto.load(filename, options, []);
     ProtoBuf.loadJson(data, builder, filename);
     return builder;
 };
@@ -46,16 +46,17 @@ proto.description = description;
  * Loads a .proto descriptor including imports.
  * @param {string} filename Source file
  * @param {!Object.<string,*>} options Options
+ * @param {!Array.<string>=} loaded An array of already loaded filenames
  * @returns {*} JSON descriptor
  */
-proto.load = function(filename, options, dedupe) {
+proto.load = function(filename, options, loaded) {
     filename = node_path.resolve(filename);
-    dedupe = dedupe || {};
-    if (dedupe[filename]) return dedupe[filename];
-
+    loaded = loaded || [];
+    if (loaded.indexOf(filename) >= 0)
+        return {};
     var parser = new ProtoBuf.DotProto.Parser(fs.readFileSync(filename).toString("utf8")),
         data = parser.parse();
-    dedupe[filename] = data;
+    loaded.push(filename);
     if (Array.isArray(data['imports'])) {
         var imports = data['imports'];
         for (var i=0; i<imports.length; i++) {
@@ -66,14 +67,10 @@ proto.load = function(filename, options, dedupe) {
             (function() {
                 var path = options.path || [];
                 for (var j=0; j<path.length; ++j) {
-                    try {
-                        var import_file = node_path.normalize(path[j]+"/"+imports[i]);
-                        var path_import = node_path.dirname(import_file);
-                        var found = options.path.some( function(el) { return el === path_import; });
-                        if (!found) options.path.push(path_import);
-                        imports[i] = proto.load(import_file, options);
-                        return;
-                    } catch (e) {}
+                    var import_filename = node_path.resolve(path[j] + "/", imports[i]);
+                    if (!fs.existsSync(import_filename))
+                        continue;
+                    imports[i] = proto.load(import_filename, options, dedupe);
                 }
                 throw Error("File not found: "+imports[i]);
             })();
