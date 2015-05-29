@@ -212,7 +212,7 @@ var proto = module.exports = function(builder, options) {
     // Start by building the package namespace
     var pkg = ptr.fqn().substring(1);
     if (pkg !== "")
-        out.push("package ", value(pkg), options.min ? ";" : ";\n\n");
+        out.push("package ", pkg, options.min ? ";" : ";\n\n");
     buildOptions(ptr.options, "");
     buildNamespace(ptr, "");
     return out.join('');
