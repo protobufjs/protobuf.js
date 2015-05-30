@@ -71,6 +71,7 @@ proto.load = function(filename, options, loaded) {
                     if (!fs.existsSync(import_filename))
                         continue;
                     imports[i] = proto.load(import_filename, options, loaded);
+                    return;
                 }
                 throw Error("File not found: "+imports[i]);
             })();

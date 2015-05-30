@@ -32,6 +32,18 @@
          * @expose
          */
         var ProtoBuf = {};
+
+        /**
+         * @type {!function(new: ByteBuffer, ...[*])}
+         * @expose
+         */
+        ProtoBuf.ByteBuffer = ByteBuffer;
+
+        /**
+         * @type {?function(new: Long, ...[*])}
+         * @expose
+         */
+        ProtoBuf.Long = ByteBuffer.Long || null;
         
         /**
          * ProtoBuf.js version.
@@ -111,7 +123,7 @@
         /**
          * Types.
          * @dict
-         * @type {Object.<string,{name: string, wireType: number}>}
+         * @type {!Object.<string,{name: string, wireType: number, defaultValue: *}>}
          * @const
          * @expose
          */
@@ -119,77 +131,117 @@
             // According to the protobuf spec.
             "int32": {
                 name: "int32",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: 0
             },
             "uint32": {
                 name: "uint32",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: 0
             },
             "sint32": {
                 name: "sint32",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: 0
             },
             "int64": {
                 name: "int64",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: ProtoBuf.Long ? ProtoBuf.Long.ZERO : undefined
             },
             "uint64": {
                 name: "uint64",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: ProtoBuf.Long ? ProtoBuf.Long.UZERO : undefined
             },
             "sint64": {
                 name: "sint64",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: ProtoBuf.Long ? ProtoBuf.Long.ZERO : undefined
             },
             "bool": {
                 name: "bool",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: false
             },
             "double": {
                 name: "double",
-                wireType: ProtoBuf.WIRE_TYPES.BITS64
+                wireType: ProtoBuf.WIRE_TYPES.BITS64,
+                defaultValue: 0
             },
             "string": {
                 name: "string",
-                wireType: ProtoBuf.WIRE_TYPES.LDELIM
+                wireType: ProtoBuf.WIRE_TYPES.LDELIM,
+                defaultValue: ""
             },
             "bytes": {
                 name: "bytes",
-                wireType: ProtoBuf.WIRE_TYPES.LDELIM
+                wireType: ProtoBuf.WIRE_TYPES.LDELIM,
+                defaultValue: null // overridden in the code, must be a unique instance
             },
             "fixed32": {
                 name: "fixed32",
-                wireType: ProtoBuf.WIRE_TYPES.BITS32
+                wireType: ProtoBuf.WIRE_TYPES.BITS32,
+                defaultValue: 0
             },
             "sfixed32": {
                 name: "sfixed32",
-                wireType: ProtoBuf.WIRE_TYPES.BITS32
+                wireType: ProtoBuf.WIRE_TYPES.BITS32,
+                defaultValue: 0
             },
             "fixed64": {
                 name: "fixed64",
-                wireType: ProtoBuf.WIRE_TYPES.BITS64
+                wireType: ProtoBuf.WIRE_TYPES.BITS64,
+                defaultValue:  ProtoBuf.Long ? ProtoBuf.Long.UZERO : undefined
             },
             "sfixed64": {
                 name: "sfixed64",
-                wireType: ProtoBuf.WIRE_TYPES.BITS64
+                wireType: ProtoBuf.WIRE_TYPES.BITS64,
+                defaultValue: ProtoBuf.Long ? ProtoBuf.Long.ZERO : undefined
             },
             "float": {
                 name: "float",
-                wireType: ProtoBuf.WIRE_TYPES.BITS32
+                wireType: ProtoBuf.WIRE_TYPES.BITS32,
+                defaultValue: 0
             },
             "enum": {
                 name: "enum",
-                wireType: ProtoBuf.WIRE_TYPES.VARINT
+                wireType: ProtoBuf.WIRE_TYPES.VARINT,
+                defaultValue: 0
             },
             "message": {
                 name: "message",
-                wireType: ProtoBuf.WIRE_TYPES.LDELIM
+                wireType: ProtoBuf.WIRE_TYPES.LDELIM,
+                defaultValue: null
             },
             "group": {
                 name: "group",
-                wireType: ProtoBuf.WIRE_TYPES.STARTGROUP
+                wireType: ProtoBuf.WIRE_TYPES.STARTGROUP,
+                defaultValue: null
             }
         };
+
+        /**
+         * Valid map key types.
+         * @type {!Array.<!Object.<string,{name: string, wireType: number, defaultValue: *}>>}
+         * @const
+         * @expose
+         */
+        ProtoBuf.MAP_KEY_TYPES = [
+            ProtoBuf.TYPES["int32"],
+            ProtoBuf.TYPES["sint32"],
+            ProtoBuf.TYPES["sfixed32"],
+            ProtoBuf.TYPES["uint32"],
+            ProtoBuf.TYPES["fixed32"],
+            ProtoBuf.TYPES["int64"],
+            ProtoBuf.TYPES["sint64"],
+            ProtoBuf.TYPES["sfixed64"],
+            ProtoBuf.TYPES["uint64"],
+            ProtoBuf.TYPES["fixed64"],
+            ProtoBuf.TYPES["bool"],
+            ProtoBuf.TYPES["string"],
+            ProtoBuf.TYPES["bytes"]
+        ];
 
         /**
          * Minimum field id.
@@ -206,18 +258,6 @@
          * @expose
          */
         ProtoBuf.ID_MAX = 0x1FFFFFFF;
-
-        /**
-         * @type {!function(new: ByteBuffer, ...[*])}
-         * @expose
-         */
-        ProtoBuf.ByteBuffer = ByteBuffer;
-
-        /**
-         * @type {?function(new: Long, ...[*])}
-         * @expose
-         */
-        ProtoBuf.Long = ByteBuffer.Long || null;
 
         /**
          * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.

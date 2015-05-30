@@ -14,8 +14,7 @@
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */
-var Field = function(builder, message, rule, keytype, type, name, id, options, oneof,
-                     syntax) {
+var Field = function(builder, message, rule, keytype, type, name, id, options, oneof, syntax) {
     T.call(this, builder, message, name);
 
     /**
@@ -188,8 +187,7 @@ FieldPrototype.verifyValue = function(value, skipRepeated) {
         if (this.required)
             fail(typeof value, "required");
         if (this.syntax === 'proto3' && this.type !== ProtoBuf.TYPES["message"])
-            fail(typeof value,
-                 "proto3 field without field presence cannot be null");
+            fail(typeof value, "proto3 field without field presence cannot be null");
         return null;
     }
     var i;
@@ -422,9 +420,7 @@ FieldPrototype.decode = function(wireType, buffer, skipRepeated) {
         throw Error("Illegal wire type for field "+this.toString(true)+": "+wireType+" ("+this.type.wireType+" expected)");
 
     // Handle packed repeated fields.
-    if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated &&
-        this.options["packed"] &&
-        ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
+    if (wireType == ProtoBuf.WIRE_TYPES.LDELIM && this.repeated && this.options["packed"] && ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.type.wireType) >= 0) {
         if (!skipRepeated) {
             nBytes = buffer.readVarint32();
             nBytes = buffer.offset + nBytes; // Limit

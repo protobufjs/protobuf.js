@@ -81,63 +81,26 @@ ProtoBuf.Element = (function(ProtoBuf) {
     /**
      * Returns the default value for this field in proto3.
      * @param type {string|{name: string, wireType: number}} the field type
-     * @returns {*} the field value
+     * @returns {*} Default value
      */
     ElementPrototype.defaultFieldValue = function(type) {
-        switch (type) {
-            // 32-bit integers
-            case ProtoBuf.TYPES["int32"]:
-            case ProtoBuf.TYPES["sint32"]:
-            case ProtoBuf.TYPES["sfixed32"]:
-            case ProtoBuf.TYPES["uint32"]:
-            case ProtoBuf.TYPES["fixed32"]:
-                return 0;
-
-            // Signed 64-bit integers
-            case ProtoBuf.TYPES["int64"]:
-            case ProtoBuf.TYPES["sint64"]:
-            case ProtoBuf.TYPES["sfixed64"]: {
-                if (ProtoBuf.Long)
-                    return mkLong(0, false);
-                else
-                    throw Error("requires Long.js");
-            }
-
-            // Unsigned 64-bit integers
-            case ProtoBuf.TYPES["uint64"]:
-            case ProtoBuf.TYPES["fixed64"]: {
-                if (ProtoBuf.Long)
-                    return mkLong(0, true);
-                else
-                    throw Error("requires Long.js");
-            }
-
-            // Bool
-            case ProtoBuf.TYPES["bool"]:
-                return false;
-
-            // Float
-            case ProtoBuf.TYPES["float"]:
-            case ProtoBuf.TYPES["double"]:
-                return 0.0;
-
-            // Length-delimited string
-            case ProtoBuf.TYPES["string"]:
-                return "";
-
-            // Length-delimited bytes
-            case ProtoBuf.TYPES["bytes"]:
-                return new ByteBuffer(0);
-
-            // Constant enum value
-            case ProtoBuf.TYPES["enum"]:
-                return 0;  // proto3 enums must have a default value with id == 0.
-
-            // Embedded message
-            case ProtoBuf.TYPES["message"]:
-                return null;
-        }
+        return mkDefault(type);
     };
+
+    /**
+     * Obtains a (new) default value for the specified type.
+     * @param type {string|{name: string, wireType: number}} Field type
+     * @returns {*} Default value
+     */
+    function mkDefault(type) {
+        if (typeof type === 'string')
+            type = ProtoBuf.TYPES[type];
+        if (typeof type.defaultValue === 'undefined')
+            throw Error("default value for type "+type.name+" is not supported");
+        if (type == ProtoBuf.TYPES["bytes"])
+            return new ByteBuffer(0);
+        return type.defaultValue;
+    }
 
     /**
      * Makes a Long from a value.
