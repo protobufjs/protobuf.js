@@ -275,6 +275,14 @@
         ProtoBuf.populateAccessors = true;
 
         /**
+         * By default, messages are populated with default values if a field is not present on the wire. To disable
+         *  this behavior, set this setting to `false`.
+         * @type {boolean}
+         * @expose
+         */
+        ProtoBuf.populateDefaults = true;
+
+        /**
          * @alias ProtoBuf.Util
          * @expose
          */
@@ -1740,7 +1748,7 @@
                             var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
                             err["decoded"] = msg; // Still expose what we got
                             throw(err);
-                        } else if (field.defaultValue !== null)
+                        } else if (field.defaultValue !== null && ProtoBuf.populateDefaults)
                             msg[field.name] = field.defaultValue;
                 }
                 return msg;
@@ -3729,10 +3737,10 @@
                         return this; // Skip duplicate imports
                     }
                     this.files[filename] = true;
-                } else if (typeof filename == 'object') { // Assume object with root, filename.
+                } else if (typeof filename === 'object') { // Assume object with root, filename.
                     var root = filename.root
                     if (ProtoBuf.Util.IS_NODE)
-                      root = require("path")['resolve'](root);
+                        root = require("path")['resolve'](root);
                     var fname = [root, filename.file].join('/');
                     if (this.files[fname] === true) {
                       this.reset();
@@ -3771,7 +3779,7 @@
                             var importFilename = json['imports'][i];
                             if (/^google\/protobuf\//.test(importFilename))
                                 continue; // Not needed and therefore not used
-                            importFilename = importRoot+delim+importFilename;
+                            importFilename = importRoot + delim + importFilename;
                             if (this.files[importFilename] === true)
                                 continue; // Already imported
                             if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto)     // If this is a NOPARSE build

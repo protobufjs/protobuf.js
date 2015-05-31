@@ -405,10 +405,10 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 return this; // Skip duplicate imports
             }
             this.files[filename] = true;
-        } else if (typeof filename == 'object') { // Assume object with root, filename.
+        } else if (typeof filename === 'object') { // Assume object with root, filename.
             var root = filename.root
             if (ProtoBuf.Util.IS_NODE)
-              root = require("path")['resolve'](root);
+                root = require("path")['resolve'](root);
             var fname = [root, filename.file].join('/');
             if (this.files[fname] === true) {
               this.reset();
@@ -447,7 +447,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                     var importFilename = json['imports'][i];
                     if (/^google\/protobuf\//.test(importFilename))
                         continue; // Not needed and therefore not used
-                    importFilename = importRoot+delim+importFilename;
+                    importFilename = importRoot + delim + importFilename;
                     if (this.files[importFilename] === true)
                         continue; // Already imported
                     if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto)     // If this is a NOPARSE build
