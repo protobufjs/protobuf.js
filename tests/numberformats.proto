@@ -14,4 +14,5 @@ message Msg {
     required double sp1 = 7 [default=inf];
     required double sp2 = 8 [default=-inf];
     required double sp3 = 9 [default=nan];
+    required int32 hexUC = 10 [default=0X209];
 }
