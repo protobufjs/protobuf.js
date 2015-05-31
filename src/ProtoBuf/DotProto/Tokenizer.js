@@ -34,7 +34,7 @@ var Tokenizer = function(proto) {
 
     /**
      * Stacked values.
-     * @type {Array}
+     * @type {!Array.<string>}
      * @expose
      */
     this.stack = [];

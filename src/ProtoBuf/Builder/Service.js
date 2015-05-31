@@ -61,6 +61,13 @@ for (var i=0; i<rpc.length; i++) {
         // service#Method(message, callback)
         ServicePrototype[method.name] = function(req, callback) {
             try {
+                try {
+                    // If given as a buffer, decode the request. Will throw a TypeError if not a valid buffer.
+                    req = method.resolvedRequestType.clazz.decode(ByteBuffer.wrap(req));
+                } catch (err) {
+                    if (!(err instanceof TypeError))
+                        throw err;
+                }
                 if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
                     setTimeout(callback.bind(this, Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
                     return;
