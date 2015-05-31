@@ -1,0 +1,13 @@
+package services;
+
+message resume {
+    message Resume {
+        repeated string experience = 1;
+    }
+}
+
+message profile {
+    message Profile {
+        optional services.resume.Resume resume = 1;
+    }
+}

@@ -1671,9 +1671,8 @@
                     if (ptr != null)
                         break; // Found
                     // Else search the parent
-                    if (this.parent !== null) {
+                    if (this.parent !== null)
                         return this.parent.resolve(qn, excludeFields);
-                    }
                 } while (ptr != null);
                 return ptr;
             };
@@ -1692,7 +1691,7 @@
                 } while (ptr !== null);
                 for (var len=1; len <= part.length; len++) {
                     var qn = part.slice(part.length-len);
-                    if (t === this.resolve(qn))
+                    if (t === this.resolve(qn, !(t instanceof Reflect.Message.Field)))
                         return qn.join(".");
                 }
                 return t.fqn();
