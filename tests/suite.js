@@ -421,7 +421,7 @@
                 t.setOk(false);
                 test.strictEqual(t.ok, false);
                 t.setOk(null); // Not set
-                test.strictEqual(Test.decode(t.encode()).ok, false); // = default when missing
+                test.strictEqual(Test.decode(t.encode()).ok, null); // = not set when missing
             } catch (err) {
                 fail(err);
             }

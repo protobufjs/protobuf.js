@@ -271,8 +271,7 @@ MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
                 var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
                 err["decoded"] = msg; // Still expose what we got
                 throw(err);
-            } else if (field.defaultValue !== null)
-                msg[field.name] = field.defaultValue;
+            }
     }
     return msg;
 };
