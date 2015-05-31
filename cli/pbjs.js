@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-var ProtoBuf = require(__dirname+"/../index.js"),
+var ProtoBuf = require(__dirname+"/../dist/ProtoBuf.js"),
     fs       = require("fs"),
     path     = require("path"),
     cli      = require("ascli")("pbjs"),
