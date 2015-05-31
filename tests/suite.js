@@ -1204,6 +1204,15 @@
                     test.ok(res instanceof ResponseType);
                     test.done();
                 });
+                myService.MyMethod(new RequestType().encode(), function(err, res) {
+                    // We get: err = null, res = our prebuilt response. And that's it.
+                    if (err !== null) {
+                        fail(err);
+                    }
+                    test.strictEqual(called, true);
+                    test.ok(res instanceof ResponseType);
+                    test.done();
+                });
             } catch (e) {
                 fail(e);
             }
