@@ -111,7 +111,7 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
 
     /**
      * Element implementation. Created in build() after types are resolved.
-     * @type {ProtoBuf.Element|null}
+     * @type {ProtoBuf.Element}
      * @expose
      */
     this.element = null;
@@ -119,7 +119,7 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
     /**
      * Key element implementation, for map fields. Created in build() after
      * types are resolved.
-     * @type {ProtoBuf.Element|null}
+     * @type {ProtoBuf.Element}
      * @expose
      */
     this.keyElement = null;
@@ -153,16 +153,11 @@ var FieldPrototype = Field.prototype = Object.create(T.prototype);
  * @expose
  */
 FieldPrototype.build = function() {
-    this.element = new ProtoBuf.Element(this.type, this.resolvedType,
-                                        false, this.syntax);
+    this.element = new Element(this.type, this.resolvedType, false, this.syntax);
+    if (this.map)
+        this.keyElement = new Element(this.keyType, undefined, true, this.syntax);
 
-    if (this.map) {
-        this.keyElement = new ProtoBuf.Element(this.keyType, undefined,
-                                               true, this.syntax);
-    }
-
-    this.defaultValue = typeof this.options['default'] !== 'undefined'
-        ? this.verifyValue(this.options['default']) : null;
+    this.defaultValue = typeof this.options['default'] !== 'undefined' ? this.verifyValue(this.options['default']) : null;
 
     // In proto3, fields do not have field presence, and every field is set to
     // its type's default value ("", 0, 0.0, or false).

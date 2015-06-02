@@ -12,35 +12,31 @@ ProtoBuf.Map = (function(ProtoBuf) {
      * on ES6 itself.
      *
      * @exports ProtoBuf.Map
-     * @param {ProtoBuf.Reflect.Field} field The map field
+     * @param {!ProtoBuf.Reflect.Field} field Map field
      * @param {Object.<string,*>=} contents Initial contents
      * @constructor
      */
     var Map = function(field, contents) {
-
-        if (!field.map) {
-            throw Error("Constructing a Map for a field that is not a map");
-        }
+        if (!field.map)
+            throw Error("field is not a map");
 
         /**
          * The field corresponding to this map.
-         * @type {ProtoBuf.Reflect.Field}
+         * @type {!ProtoBuf.Reflect.Field}
          */
         this.field = field;
 
         /**
          * Element instance corresponding to key type.
-         * @type {ProtoBuf.Element}
+         * @type {!ProtoBuf.Reflect.Element}
          */
-        this.keyElem = new ProtoBuf.Element(field.keyType, null,
-                                            true, field.syntax);
+        this.keyElem = new ProtoBuf.Reflect.Element(field.keyType, null, true, field.syntax);
 
         /**
          * Element instance corresponding to value type.
-         * @type {ProtoBuf.Element}
+         * @type {!ProtoBuf.Reflect.Element}
          */
-        this.valueElem = new ProtoBuf.Element(field.type, field.resolvedType,
-                                              false, field.syntax);
+        this.valueElem = new ProtoBuf.Reflect.Element(field.type, field.resolvedType, false, field.syntax);
 
         /**
          * Internal map: stores mapping of (string form of key) -> (key, value)
@@ -54,7 +50,7 @@ ProtoBuf.Map = (function(ProtoBuf) {
          * uniqueness and equality (i.e., str(K1) === str(K2) if and only if K1
          * === K2).
          *
-         * @type {Object<string, {key: *, value: *}>}
+         * @type {!Object<string, {key: *, value: *}>}
          */
         this.map = {};
 
@@ -81,18 +77,17 @@ ProtoBuf.Map = (function(ProtoBuf) {
 
     /**
      * Helper: return an iterator over an array.
-     * @param{Array<*>} the array
-     * @returns {Object} an iterator
+     * @param {!Array<*>} arr the array
+     * @returns {!Object} an iterator
+     * @inner
      */
     function arrayIterator(arr) {
         var idx = 0;
         return {
             next: function() {
-                if (idx < arr.length) {
+                if (idx < arr.length)
                     return { done: false, value: arr[idx++] };
-                } else {
-                    return { done: true };
-                }
+                return { done: true };
             }
         }
     }
@@ -102,15 +97,14 @@ ProtoBuf.Map = (function(ProtoBuf) {
      */
     MapPrototype.clear = function() {
         this.map = {};
-    }
+    };
 
     /**
      * Deletes a particular key from the map.
      * @returns {boolean} Whether any entry with this key was deleted.
      */
     MapPrototype["delete"] = function(key) {
-        var keyValue = this.keyElem.valueToString(
-            this.keyElem.verifyValue(key));
+        var keyValue = this.keyElem.valueToString(this.keyElem.verifyValue(key));
         var hadKey = keyValue in this.map;
         delete this.map[keyValue];
         return hadKey;
@@ -123,10 +117,8 @@ ProtoBuf.Map = (function(ProtoBuf) {
     MapPrototype.entries = function() {
         var entries = [];
         var strKeys = Object.keys(this.map);
-        for (var i = 0; i < strKeys.length; i++) {
-            var entry = this.map[strKeys[i]];
-            entries.push([entry.key, entry.value]);
-        }
+        for (var i = 0, entry; i < strKeys.length; i++)
+            entries.push([(entry=this.map[strKeys[i]]).key, entry.value]);
         return arrayIterator(entries);
     };
 
@@ -137,46 +129,39 @@ ProtoBuf.Map = (function(ProtoBuf) {
     MapPrototype.keys = function() {
         var keys = [];
         var strKeys = Object.keys(this.map);
-        for (var i = 0; i < strKeys.length; i++) {
-            var entry = this.map[strKeys[i]];
-            keys.push(entry.key);
-        }
+        for (var i = 0; i < strKeys.length; i++)
+            keys.push(this.map[strKeys[i]].key);
         return arrayIterator(keys);
     };
 
     /**
      * Returns an iterator over values in the map.
-     * @returns {Object} The iterator
+     * @returns {!Object} The iterator
      */
     MapPrototype.values = function() {
         var values = [];
         var strKeys = Object.keys(this.map);
-        for (var i = 0; i < strKeys.length; i++) {
-            var entry = this.map[strKeys[i]];
-            values.push(entry.value);
-        }
+        for (var i = 0; i < strKeys.length; i++)
+            values.push(this.map[strKeys[i]].value);
         return arrayIterator(values);
     };
 
     /**
      * Iterates over entries in the map, calling a function on each.
-     * @param {function(this:*, *, *, *)} The callback to invoke with value,
-     *                                    key, and map arguments.
-     * @param {Object=} The `this` value for the callback
+     * @param {function(this:*, *, *, *)} cb The callback to invoke with value, key, and map arguments.
+     * @param {Object=} thisArg The `this` value for the callback
      */
     MapPrototype.forEach = function(cb, thisArg) {
         var strKeys = Object.keys(this.map);
-        for (var i = 0; i < strKeys.length; i++) {
-            var entry = this.map[strKeys[i]];
-            cb.call(thisArg, entry.value, entry.key, this);
-        }
+        for (var i = 0, entry; i < strKeys.length; i++)
+            cb.call(thisArg, (entry=this.map[strKeys[i]]).value, entry.key, this);
     };
 
     /**
      * Sets a key in the map to the given value.
      * @param {*} key The key
      * @param {*} value The value
-     * @returns {ProtoBuf.Map} The map instance
+     * @returns {!ProtoBuf.Map} The map instance
      */
     MapPrototype.set = function(key, value) {
         var keyValue = this.keyElem.verifyValue(key);
@@ -192,13 +177,10 @@ ProtoBuf.Map = (function(ProtoBuf) {
      * @returns {*|undefined} The value, or `undefined` if key not present
      */
     MapPrototype.get = function(key) {
-        var keyValue = this.keyElem.valueToString(
-            this.keyElem.verifyValue(key));
-        if (!(keyValue in this.map)) {
+        var keyValue = this.keyElem.valueToString(this.keyElem.verifyValue(key));
+        if (!(keyValue in this.map))
             return undefined;
-        } else {
-            return this.map[keyValue].value;
-        }
+        return this.map[keyValue].value;
     };
 
     /**
@@ -207,8 +189,7 @@ ProtoBuf.Map = (function(ProtoBuf) {
      * @returns {boolean} `true` if the key is present
      */
     MapPrototype.has = function(key) {
-        var keyValue = this.keyElem.valueToString(
-            this.keyElem.verifyValue(key));
+        var keyValue = this.keyElem.valueToString(this.keyElem.verifyValue(key));
         return (keyValue in this.map);
     };
 

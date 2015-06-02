@@ -490,29 +490,20 @@ function cloneRaw(obj, binaryAsBase64, longsAsStrings,
         }
     } else if (ProtoBuf.Util.isArray(obj)) {
         var src = obj;
-        var result = [];
-        for (var idx = 0; idx < src.length; idx++) {
-            result.push(cloneRaw(src[idx], binaryAsBase64,
-                                 longsAsStrings, fieldType, resolvedType));
-        }
-        clone = result;
+        clone = [];
+        for (var idx = 0; idx < src.length; idx++)
+            clone.push(cloneRaw(src[idx], binaryAsBase64, longsAsStrings, fieldType, resolvedType));
     } else if (obj instanceof ProtoBuf.Map) {
-        var result = {};
         var it = obj.entries();
-        for (var e = it.next(); !e.done; e = it.next()) {
-            result[obj.keyElem.valueToString(e.value[0])] =
-                cloneRaw(e.value[1],
-                         binaryAsBase64, longsAsStrings,
-                         obj.valueElem.type, obj.valueElem.resolvedType);
-        }
-        clone = result;
+        clone = {};
+        for (var e = it.next(); !e.done; e = it.next())
+            clone[obj.keyElem.valueToString(e.value[0])] = cloneRaw(e.value[1], binaryAsBase64, longsAsStrings, obj.valueElem.type, obj.valueElem.resolvedType);
     } else if (obj instanceof ProtoBuf.Long) {
-        if (longsAsStrings) {
+        if (longsAsStrings)
             // int64s are encoded as strings
             clone = obj.toString();
-        } else {
+        else
             clone = new ProtoBuf.Long(obj);
-        }
     } else { // is a non-null object
         clone = {};
         var type = obj.$type;
@@ -523,9 +514,7 @@ function cloneRaw(obj, binaryAsBase64, longsAsStrings,
                 if (type) {
                     field = type.getChild(i);
                 }
-                clone[i] = cloneRaw(value,
-                                    binaryAsBase64, longsAsStrings,
-                                    field.type, field.resolvedType);
+                clone[i] = cloneRaw(value, binaryAsBase64, longsAsStrings, field.type, field.resolvedType);
             }
         }
     }
@@ -551,11 +540,13 @@ MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
 MessagePrototype.encodeJSON = function() {
     return JSON.stringify(
         cloneRaw(this,
-                 /* binary-as-base64 */ true,
-                 /* longs-as-strings */ true,
-                 ProtoBuf.TYPES["message"],
-                 this.$type));
-}
+             /* binary-as-base64 */ true,
+             /* longs-as-strings */ true,
+             ProtoBuf.TYPES["message"],
+             this.$type
+        )
+    );
+};
 
 /**
  * Decodes a message from the specified buffer or string.
@@ -658,7 +649,7 @@ Message.decodeHex = function(str) {
  */
 Message.decodeJSON = function(str) {
     return new Message(JSON.parse(str));
-}
+};
 
 // Utility
 

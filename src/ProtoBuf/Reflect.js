@@ -19,7 +19,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @expose
      */
     Reflect.T = T;
-    
+
     //? include("Reflect/Namespace.js");
 
     /**
@@ -27,6 +27,14 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
      * @expose
      */
     Reflect.Namespace = Namespace;
+
+    //? include("Reflect/Element.js");
+
+    /**
+     * @alias ProtoBuf.Reflect.Element
+     * @expose
+     */
+    Reflect.Element = Element;
     
     //? include("Reflect/Message.js");
 
