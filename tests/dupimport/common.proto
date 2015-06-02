@@ -1,0 +1,5 @@
+package main;
+
+message Common {
+    optional string commonField = 1;
+}

@@ -1,8 +1,11 @@
-package My;
-import public "dep1.proto";
-import public "dep2.proto";
+package main;
 
-message main {
-    optional dep1 test1 = 0;
-    optional dep2 test2 = 0;
+import "dep1.proto";
+import "dep2.proto";
+import "common.proto";
+
+message MainMessage {
+    optional main.Dep1 test1 = 1;
+    optional main.Dep2 test2 = 2;
+    optional main.Common test3 = 3;
 }

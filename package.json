@@ -24,6 +24,7 @@
     },
     "devDependencies": {
         "testjs": "~1 >=1.0.4",
+        "fixture-stdout": "^0.2.1",
         "metascript": ">=0.18 <1",
         "closurecompiler": "~1",
         "jsdoc": "~3.3.0-alpha10"
