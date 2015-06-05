@@ -1486,6 +1486,7 @@
                      * @param {string} key Field name
                      * @param {*} value Value to add
                      * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+                     * @returns {!ProtoBuf.Builder.Message} this
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
@@ -1502,6 +1503,7 @@
                         if (this[field.name] === null)
                             this[field.name] = [];
                         this[field.name].push(noAssert ? value : field.verifyValue(value, true));
+                        return this;
                     };
 
                     /**
@@ -1511,6 +1513,7 @@
                      * @param {string} key Field name
                      * @param {*} value Value to add
                      * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+                     * @returns {!ProtoBuf.Builder.Message} this
                      * @throws {Error} If the value cannot be added
                      * @expose
                      */
@@ -3373,6 +3376,12 @@
                  * @expose
                  */
                 this.options = options || {};
+
+                /**
+                 * Syntax used, either "proto2" or "proto3".
+                 * @type {string}
+                 */
+                this.syntax = this.options["syntax"] === "proto3" ? "proto3" : "proto2";
             };
 
             /**
