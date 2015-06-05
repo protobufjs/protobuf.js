@@ -62,6 +62,7 @@ var MessagePrototype = Message.prototype = Object.create(ProtoBuf.Builder.Messag
  * @param {string} key Field name
  * @param {*} value Value to add
  * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+ * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be added
  * @expose
  */
@@ -78,6 +79,7 @@ MessagePrototype.add = function(key, value, noAssert) {
     if (this[field.name] === null)
         this[field.name] = [];
     this[field.name].push(noAssert ? value : field.verifyValue(value, true));
+    return this;
 };
 
 /**
@@ -87,6 +89,7 @@ MessagePrototype.add = function(key, value, noAssert) {
  * @param {string} key Field name
  * @param {*} value Value to add
  * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+ * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be added
  * @expose
  */
