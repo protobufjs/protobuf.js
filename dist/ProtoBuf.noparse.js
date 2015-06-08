@@ -3743,7 +3743,7 @@
                             if (!importRoot)
                                 throw Error("Cannot determine import root: File name is unknown");
                             var importFilename = json['imports'][i];
-                            if (/^google\/protobuf\//.test(importFilename))
+                            if (importFilename == "google/protobuf/descriptor.proto")
                                 continue; // Not needed and therefore not used
                             importFilename = importRoot + delim + importFilename;
                             if (this.files[importFilename] === true)
