@@ -982,7 +982,7 @@
             try {
                 // Suppress logging result to stdout
                 fixture.capture(function() { return false;});
-                require(__dirname+"/../cli/pbjs.js").main(["node", "bin/pbjs", __dirname+"/dupimport/main.proto", "-quiet"]);
+                require(__dirname+"/../cli/pbjs.js").main(["node", "bin/pbjs", __dirname+"/dupimport/main.proto", "--quiet"]);
                 fixture.release();
             } catch (e) {
                 fixture.release();
@@ -994,7 +994,7 @@
         "field_name_same_as_package": function(test) {
             try {
                 fixture.capture(function() { return false;});
-                require(__dirname+"/../cli/pbjs.js").main(["node", "bin/pbjs", __dirname+"/field_name_same_as_package/main.proto", "-quiet"]);
+                require(__dirname+"/../cli/pbjs.js").main(["node", "bin/pbjs", __dirname+"/field_name_same_as_package/main.proto", "--quiet"]);
                 fixture.release();
             } catch (e) {
                 fixture.release();
