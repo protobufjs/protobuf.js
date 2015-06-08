@@ -174,11 +174,11 @@ pbjs.main = function(argv) {
         })
         .check(function (args) {
             if (args.source && Object.keys(pbjs.sources).indexOf(args.source) === -1) {
-                return "Unrecognized source format.";
+                return "Unrecognized source format: '" + args.source + "'";
             }
 
             if (args.target && Object.keys(pbjs.targets).indexOf(args.target) === -1) {
-                return "Unrecognized target format.";
+                return "Unrecognized target format: '" + args.target + "'";
             }
 
             if (args._.length < 3) {
