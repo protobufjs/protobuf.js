@@ -38,13 +38,9 @@ pbjs.util = util;
  * @type {!Object.<string,!function(string,!Object.<string,*>)>}
  */
 pbjs.sources = {};
-var availableSources = [];
 fs.readdirSync(__dirname+"/pbjs/sources").forEach(function(source) {
-    if (/\.js$/.test(source)) {
-        var name = source.substring(0, source.lastIndexOf("."));
-        var info = pbjs.sources[name] = require(__dirname + "/pbjs/sources/" + source);
-        availableSources.push(util.pad(name, 10)+info.description);
-    }
+    if (/\.js$/.test(source))
+        pbjs.sources[source.substring(0, source.lastIndexOf("."))] = require(__dirname + "/pbjs/sources/" + source);
 });
 
 /**
@@ -52,13 +48,9 @@ fs.readdirSync(__dirname+"/pbjs/sources").forEach(function(source) {
  * @type {!Object.<string,!function(!ProtoBuf.Builder,!Object.<string,*>)>}
  */
 pbjs.targets = {};
-var availableTargets = [];
 fs.readdirSync(__dirname+"/pbjs/targets").forEach(function(target) {
-    if (/\.js$/.test(target)) {
-        var name = target.substring(0, target.lastIndexOf("."));
-        var info = pbjs.targets[name] = require(__dirname + "/pbjs/targets/" + target);
-        availableTargets.push(util.pad(name, 10)+info.description);
-    }
+    if (/\.js$/.test(target))
+        pbjs.targets[target.substring(0, target.lastIndexOf("."))] = require(__dirname + "/pbjs/targets/" + target);
 });
 
 /**
@@ -103,13 +95,12 @@ pbjs.STATUS_ERR_NAMESPACE = 5;
  */
 pbjs.STATUS_ERR_DEPENDENCY = 6;
 
-function _options(obj) {
+// Makes a table of available source or target formats
+function mkOptions(obj) {
     var str = '';
-
     Object.keys(obj).forEach(function(key) {
-        str += "\n    "+util.pad(key, 10)+"   "+obj[key].description;
+        str += "\n   "+util.pad(key, 10)+" "+obj[key].description;
     });
-
     return str;
 }
 
@@ -121,20 +112,19 @@ function _options(obj) {
 pbjs.main = function(argv) {
     var options = yargs
         .usage(cli("pb".white.bold+"js".green.bold, util.pad("ProtoBuf.js v"+pkg['version'], 31, true)+" "+pkg['homepage'].grey) + "\n" +
-                    "CLI utility to convert between .proto and JSON syntax / to generate classes.\n" +
-                    "Usage: ".white.bold+path.basename(argv[1]).green.bold+" <filename> [options] [> outFile]\n")
+                    "CLI utility to convert between .proto and JSON syntax / to generate classes.\n\n" +
+                    "Usage: ".white.bold+path.basename(argv[1]).green.bold+" <filename> [options] [> outFile]")
         .help("help")
         .version(pkg["version"])
         .wrap(null)
         .options({
             source: {
                 alias: "s",
-                describe: "Specifies the source format. Valid formats are:" + _options(pbjs.sources)
+                describe: "Specifies the source format. Valid formats are:\n" + mkOptions(pbjs.sources)+"\n"
             },
             target: {
                 alias: "t",
-                describe: "Specifies the target format. Valid formats are:" + _options(pbjs.targets),
-                default: "json"
+                describe: "Specifies the target format. Valid formats are:\n" + mkOptions(pbjs.targets)+"\n"
             },
             using: {
                 alias: "u",
@@ -172,6 +162,8 @@ pbjs.main = function(argv) {
                 describe: "Library dependency to use when generating classes.\nDefaults to 'protobufjs' for CommonJS, 'ProtoBuf' for\nAMD modules and 'dcodeIO.ProtoBuf' for classes."
             }
         })
+        .alias("help", "h")
+        .alias("version", "v")
         .check(function (args) {
             if (args.source && typeof pbjs.sources[args.source] !== "function") {
                 return "Unrecognized source format: '" + args.source + "'";
