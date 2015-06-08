@@ -17,6 +17,7 @@ var ProtoBuf = require(__dirname+"/../dist/ProtoBuf.js"),
     fs       = require("fs"),
     path     = require("path"),
     cli      = require("ascli")("pbjs"),
+    yargs    = require("yargs"),
     util     = require("./pbjs/util.js"),
     pkg      = require("../package.json");
 
@@ -102,65 +103,94 @@ pbjs.STATUS_ERR_NAMESPACE = 5;
  */
 pbjs.STATUS_ERR_DEPENDENCY = 6;
 
+function _options(obj) {
+    var str = '';
+
+    Object.keys(obj).forEach(function(key) {
+        str += "\n    "+util.pad(key, 10)+"   "+obj[key].description;
+    });
+
+    return str;
+}
+
 /**
  * Executes the program.
  * @param {!Array.<string>} argv Command line arguments
  * @returns {number} Status code
  */
 pbjs.main = function(argv) {
-    // Display usage information
-    if (argv.length < 3) {
-        cli.banner("pb".white.bold+"js".green.bold, util.pad("ProtoBuf.js v"+pkg['version'], 31, true)+" "+"https://github.com/dcodeIO/ProtoBuf.js".grey);
-        cli.log("CLI utility to convert between .proto and JSON syntax / to generate classes.\n");
-        cli.log("Usage: ".white.bold+path.basename(argv[1]).green.bold+" filename -target=FORMAT [-min] [> outFile]\n");
-        cli.log("General options:\n");
-        cli.log("  -source=FORMAT          Specifies the source format. Valid formats are:\n");
-        Object.keys(pbjs.sources).forEach(function(key) {
-            cli.log("                             "+util.pad(key, 10)+"   "+pbjs.sources[key].description);
-        });
-        cli.log("");
-        cli.log("                          If omitted, the application will try to detect it.\n");
-        cli.log("  -target=FORMAT          Specifies the target format. Valid formats are:\n");
-        Object.keys(pbjs.targets).forEach(function(key) {
-            cli.log("                             "+util.pad(key, 10)+"   "+pbjs.targets[key].description);
-        });
-        cli.log("");
-        cli.log("                          If omitted, target format defaults to json.\n");
-        cli.log("  -using:NAME[=VALUE]     Specifies an option to apply to the volatile builder");
-        cli.log("                          loading the source, e.g. convertFieldsToCamelCase.\n");
-        cli.log("  -min                    Minifies the output.\n");
-        cli.log("  -path=DIR               Adds a directory to the include path.\n");
-        cli.log("  -legacy                 Includes legacy descriptors from google/protobuf/ if");
-        cli.log("                          explicitly referenced.\n");
-        cli.log("  -quiet                  Suppresses any informatory output to stderr.\n");
-        cli.log("Specific to classes:\n");
-        cli.log("  -use:NAME[=VALUE]       Specifies an option to apply to the emitted builder");
-        cli.log("                          utilized by your program, e.g. populateAccessors\n");
-        cli.log("  -exports=FQN            Specifies the namespace to export. Defaults to export");
-        cli.log("                          the root namespace.\n");
-        cli.log("  -dependency=ProtoBuf    Library dependency to use when generating classes.");
-        cli.log("                          Defaults to 'protobufjs' for CommonJS, 'ProtoBuf' for");
-        cli.log("                          AMD modules and 'dcodeIO.ProtoBuf' for classes.\n");
-        return pbjs.STATUS_USAGE;
-    }
+    var options = yargs
+        .usage(cli("pb".white.bold+"js".green.bold, util.pad("ProtoBuf.js v"+pkg['version'], 31, true)+" "+pkg['homepage'].grey) + "\n" +
+                    "CLI utility to convert between .proto and JSON syntax / to generate classes.\n" +
+                    "Usage: ".white.bold+path.basename(argv[1]).green.bold+" <filename> [options] [> outFile]\n")
+        .help("help")
+        .version(pkg["version"])
+        .wrap(null)
+        .options({
+            source: {
+                alias: "s",
+                describe: "Specifies the source format. Valid formats are:" + _options(pbjs.sources)
+            },
+            target: {
+                alias: "t",
+                describe: "Specifies the target format. Valid formats are:" + _options(pbjs.targets),
+                default: "json"
+            },
+            using: {
+                alias: "u",
+                describe: "Specifies an option to apply to the volatile builder\nloading the source, e.g. convertFieldsToCamelCase."
+            },
+            min: {
+                alias: "m",
+                describe: "Minifies the output.",
+                default: false
+            },
+            path: {
+                alias: "p",
+                describe: "Adds a directory to the include path."
+            },
+            legacy: {
+                alias: "l",
+                describe: "Includes legacy descriptors from google/protobuf/ if\nexplicitly referenced.",
+                default: false
+            },
+            quiet: {
+                alias: "q",
+                describe: "Suppresses any informatory output to stderr.",
+                default: false
+            },
+            use: {
+                alias: "i",
+                describe: "Specifies an option to apply to the emitted builder\nutilized by your program, e.g. populateAccessors."
+            },
+            exports: {
+                alias: "e",
+                describe: "Specifies the namespace to export. Defaults to export\nthe root namespace."
+            },
+            dependency: {
+                alias: "d",
+                describe: "Library dependency to use when generating classes.\nDefaults to 'protobufjs' for CommonJS, 'ProtoBuf' for\nAMD modules and 'dcodeIO.ProtoBuf' for classes."
+            }
+        })
+        .check(function (args) {
+            if (args.source && Object.keys(pbjs.sources).indexOf(args.source) === -1) {
+                return "Unrecognized source format.";
+            }
+
+            if (args.target && Object.keys(pbjs.targets).indexOf(args.target) === -1) {
+                return "Unrecognized target format.";
+            }
+
+            if (args._.length < 3) {
+                return "The filename to parse is required.";
+            }
+
+            return true;
+        })
+        .parse(argv);
 
     var start = Date.now(),
-        sourceFile = argv[2];
-
-    // Parse options
-    var options = {};
-    for (var i=3; i<argv.length; i++) {
-        var option = argv[i];
-        if (option.substring(0,1) == "-") {
-            var opt = option.split("=", 2), key = opt[0].substring(1);
-            if (typeof options[key] === 'string' && typeof opt[1] === 'string')
-                options[key] = [options[key], opt[1]]; // Make it an array
-            else if (Array.isArray(options[key]) && typeof opt[1] === 'string')
-                options[key].push(opt[1]); // Add it
-            else
-                options[key] = opt.length == 2 ? opt[1] : true; // Create or overwrite
-        }
-    }
+        sourceFile = options._[2];
 
     // Set up include paths
     var includePath = Array.isArray(options['path']) ? options['path'] : (typeof options['path'] === 'string' ? [options['path']] : []);

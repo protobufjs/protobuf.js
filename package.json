@@ -17,10 +17,12 @@
     "bugs": {
         "url": "https://github.com/dcodeIO/ProtoBuf.js/issues"
     },
+    "homepage": "https://github.com/dcodeIO/ProtoBuf.js",
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "dependencies": {
         "bytebuffer": "~3 >=3.5",
-        "ascli": "~1"
+        "ascli": "~1",
+        "yargs": "^3.10.0"
     },
     "devDependencies": {
         "testjs": "~1 >=1.0.4",
