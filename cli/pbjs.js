@@ -173,11 +173,11 @@ pbjs.main = function(argv) {
             }
         })
         .check(function (args) {
-            if (args.source && Object.keys(pbjs.sources).indexOf(args.source) === -1) {
+            if (args.source && typeof pbjs.sources[args.source] !== "function") {
                 return "Unrecognized source format: '" + args.source + "'";
             }
 
-            if (args.target && Object.keys(pbjs.targets).indexOf(args.target) === -1) {
+            if (args.target && typeof pbjs.targets[args.target] !== "function") {
                 return "Unrecognized target format: '" + args.target + "'";
             }
 
@@ -211,20 +211,6 @@ pbjs.main = function(argv) {
             options.source = "json";
         else
             options.source = "proto";
-    }
-    if (!pbjs.sources.hasOwnProperty(options.source) || typeof pbjs.sources[options.source] !== 'function') {
-        if (!options.quiet)
-            cli.fail("No such source format: "+options.source);
-        return pbjs.STATUS_ERR_SOURCE_FORMAT;
-    }
-
-    // Set default target format if not specified, then verify
-    if (typeof options.target !== 'string')
-        options.target = "json";
-    if (!pbjs.targets.hasOwnProperty(options.target) || typeof pbjs.targets[options.target] !== 'function') {
-        if (!options.quiet)
-            cli.fail("No such target format: "+options.target);
-        return pbjs.STATUS_ERR_TARGET_FORMAT;
     }
 
     // Load the source file to a builder
