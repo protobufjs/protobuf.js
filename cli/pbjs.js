@@ -37,9 +37,13 @@ pbjs.util = util;
  * @type {!Object.<string,!function(string,!Object.<string,*>)>}
  */
 pbjs.sources = {};
+var availableSources = [];
 fs.readdirSync(__dirname+"/pbjs/sources").forEach(function(source) {
-    if (/\.js$/.test(source))
-        pbjs.sources[source.substring(0, source.lastIndexOf("."))] = require(__dirname+"/pbjs/sources/"+source);
+    if (/\.js$/.test(source)) {
+        var name = source.substring(0, source.lastIndexOf("."));
+        var info = pbjs.sources[name] = require(__dirname + "/pbjs/sources/" + source);
+        availableSources.push(util.pad(name, 10)+info.description);
+    }
 });
 
 /**
@@ -47,9 +51,13 @@ fs.readdirSync(__dirname+"/pbjs/sources").forEach(function(source) {
  * @type {!Object.<string,!function(!ProtoBuf.Builder,!Object.<string,*>)>}
  */
 pbjs.targets = {};
+var availableTargets = [];
 fs.readdirSync(__dirname+"/pbjs/targets").forEach(function(target) {
-    if (/\.js$/.test(target))
-        pbjs.targets[target.substring(0, target.lastIndexOf("."))] = require(__dirname+"/pbjs/targets/"+target);
+    if (/\.js$/.test(target)) {
+        var name = target.substring(0, target.lastIndexOf("."));
+        var info = pbjs.targets[name] = require(__dirname + "/pbjs/targets/" + target);
+        availableTargets.push(util.pad(name, 10)+info.description);
+    }
 });
 
 /**
@@ -100,7 +108,6 @@ pbjs.STATUS_ERR_DEPENDENCY = 6;
  * @returns {number} Status code
  */
 pbjs.main = function(argv) {
-
     // Display usage information
     if (argv.length < 3) {
         cli.banner("pb".white.bold+"js".green.bold, util.pad("ProtoBuf.js v"+pkg['version'], 31, true)+" "+"https://github.com/dcodeIO/ProtoBuf.js".grey);

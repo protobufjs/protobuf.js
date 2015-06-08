@@ -262,8 +262,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             return this; // Nothing to create
         if (!ProtoBuf.Util.isArray(defs))
             defs = [defs];
-        if (defs.length === 0)
-            return this;
+        else {
+            if (defs.length === 0)
+                return this;
+            defs = defs.slice();
+        }
 
         // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
         var stack = [];

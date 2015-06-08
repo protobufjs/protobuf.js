@@ -4371,12 +4371,6 @@
                  * @expose
                  */
                 this.options = options || {};
-
-                /**
-                 * Syntax used, either "proto2" or "proto3".
-                 * @type {string}
-                 */
-                this.syntax = this.options["syntax"] === "proto3" ? "proto3" : "proto2";
             };
 
             /**
@@ -4558,8 +4552,11 @@
                     return this; // Nothing to create
                 if (!ProtoBuf.Util.isArray(defs))
                     defs = [defs];
-                if (defs.length === 0)
-                    return this;
+                else {
+                    if (defs.length === 0)
+                        return this;
+                    defs = defs.slice();
+                }
 
                 // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
                 var stack = [];
