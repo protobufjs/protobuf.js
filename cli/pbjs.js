@@ -184,6 +184,9 @@ pbjs.main = function(argv) {
     var start = Date.now(),
         sourceFile = options._[2];
 
+    if (!options.target)
+        options.target = "json";
+
     // Set up include paths
     var includePath = Array.isArray(options['path']) ? options['path'] : (typeof options['path'] === 'string' ? [options['path']] : []);
     includePath.push(path.dirname(sourceFile));

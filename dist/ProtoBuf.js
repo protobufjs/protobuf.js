@@ -50,7 +50,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "4.0.0-b3";
+        ProtoBuf.VERSION = "4.0.0-b4";
 
         /**
          * Wire types.
@@ -4738,7 +4738,7 @@
                             if (!importRoot)
                                 throw Error("Cannot determine import root: File name is unknown");
                             var importFilename = json['imports'][i];
-                            if (importFilename == "google/protobuf/descriptor.proto")
+                            if (importFilename === "google/protobuf/descriptor.proto")
                                 continue; // Not needed and therefore not used
                             importFilename = importRoot + delim + importFilename;
                             if (this.files[importFilename] === true)
