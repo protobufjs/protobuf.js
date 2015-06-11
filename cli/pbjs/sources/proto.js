@@ -24,15 +24,19 @@ var ProtoBuf = require(__dirname+"/../../../index.js"),
  * pbjs source: Plain .proto descriptor
  * @exports pbjs/sources/proto
  * @function
- * @param {string} filename Source file
+ * @param {!Array.<string>} filenames Source files
  * @param {!Object.<string,*>=} options Options
  * @returns {!ProtoBuf.Builder}
  */
-var proto = module.exports = function(filename, options) {
+var proto = module.exports = function(filenames, options) {
     options = options || [];
     var builder = ProtoBuf.newBuilder(util.getBuilderOptions(options, "using")),
-        data = proto.load(filename, options, []);
-    ProtoBuf.loadJson(data, builder, filename);
+        loaded = [];
+    filenames.forEach(function(filename) {
+        var data = proto.load(filename, options, loaded);
+        builder["import"](data, filename);
+    });
+    builder.resolveAll();
     return builder;
 };
 

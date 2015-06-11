@@ -113,7 +113,7 @@ pbjs.main = function(argv) {
     var options = yargs
         .usage(cli("pb".white.bold+"js".green.bold, util.pad("ProtoBuf.js v"+pkg['version'], 31, true)+" "+pkg['homepage'].grey) + "\n" +
                     "CLI utility to convert between .proto and JSON syntax / to generate classes.\n\n" +
-                    "Usage: ".white.bold+path.basename(argv[1]).green.bold+" <filename> [options] [> outFile]")
+                    "Usage: ".white.bold+path.basename(argv[1]).green.bold+" <source files...> [options] [> outFile]")
         .help("help")
         .version(pkg["version"])
         .wrap(null)
@@ -182,14 +182,19 @@ pbjs.main = function(argv) {
         .parse(argv);
 
     var start = Date.now(),
-        sourceFile = options._[2];
+        sourceFiles = options._.slice(2);
 
     if (!options.target)
         options.target = "json";
 
     // Set up include paths
     var includePath = Array.isArray(options['path']) ? options['path'] : (typeof options['path'] === 'string' ? [options['path']] : []);
-    includePath.push(path.dirname(sourceFile));
+    sourceFiles.forEach(function (sourceFile) {
+        var dir = path.dirname(sourceFile);
+        if (includePath.indexOf(dir) === -1) {
+            includePath.push(dir);
+        }
+    });
     includePath.forEach(function(path) { // Verify that include paths actually exist
         if (!fs.existsSync(path)) {
             if (!options.quiet)
@@ -201,7 +206,7 @@ pbjs.main = function(argv) {
 
     // Detect source format if not specified, then verify
     if (typeof options.source !== 'string') {
-        var source = fs.readFileSync(sourceFile).toString("utf8").trim();
+        var source = fs.readFileSync(sourceFiles[0]).toString("utf8").trim();
         if (source.substring(0,1) === "{")
             options.source = "json";
         else
@@ -209,7 +214,7 @@ pbjs.main = function(argv) {
     }
 
     // Load the source file to a builder
-    var builder = pbjs.sources[options.source](sourceFile, options);
+    var builder = pbjs.sources[options.source](sourceFiles, options);
 
     // Validate exports and dependency if set
     if (typeof options.exports !== 'undefined') {
@@ -230,12 +235,12 @@ pbjs.main = function(argv) {
 
     // Perform target conversion
     if (!options.quiet)
-        cli.error("\nProcessing '"+sourceFile+"' ...\n");
+        cli.error("\nProcessing: "+sourceFiles.join(", ")+" ...\n");
     var res = pbjs.targets[options.target](builder, options);
     process.stdout.write(res);
     if (!options.quiet)
         cli.error(""),
-        cli.ok("Converted '"+sourceFile+"' to "+options.target+" ("+res.length+" bytes, "+(Date.now()-start)+" ms)");
+        cli.ok("Converted "+sourceFiles.length+" source files to "+options.target+" ("+res.length+" bytes, "+(Date.now()-start)+" ms)");
 
     return pbjs.STATUS_OK;
 };

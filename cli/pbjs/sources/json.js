@@ -17,21 +17,26 @@ var description = "Plain JSON descriptor";
 
 var ProtoBuf = require(__dirname+"/../../../index.js"),
     util = require(__dirname+"/../util.js"),
+    node_path = require("path"),
     fs = require("fs");
 
 /**
  * pbjs source: Plain JSON descriptor
  * @exports pbjs/sources/json
  * @function
- * @param {string} filename Source file
+ * @param {!Array.<string>} filenames Source files
  * @param {!Object.<string,*>=} options Options
  * @returns {!ProtoBuf.Builder}
  */
-var json = module.exports = function(filename, options) {
+var json = module.exports = function(filenames, options) {
     options = options || [];
     var builder = ProtoBuf.newBuilder(util.getBuilderOptions(options, "using")),
-        data = json.load(filename, options);
-    ProtoBuf.loadJson(data, builder, filename);
+        loaded = [];
+    filenames.forEach(function(filename) {
+        var data = json.load(filename, options, loaded);
+        builder["import"](data, filename);
+    });
+    builder.resolveAll();
     return builder;
 };
 
@@ -45,11 +50,17 @@ json.description = description;
  * Loads a JSON descriptor including imports.
  * @param {string} filename Source file
  * @param {!Object.<string,*>} options Options
+ * @param {!Array.<string>=} loaded An array of already loaded filenames
  * @returns {*} JSON descriptor
  */
-json.load = function(filename, options) {
+json.load = function(filename, options, loaded) {
+    filename = node_path.resolve(filename);
+    loaded = loaded || [];
+    if (loaded.indexOf(filename) >= 0)
+        return {};
     var data = JSON.parse(fs.readFileSync(filename).toString("utf8")),
         imports = data['imports'];
+    loaded.push(filename);
     if (Array.isArray(imports)) {
         for (var i=0; i<imports.length; ++i) {
             // Skip pulled imports and legacy descriptors
@@ -59,10 +70,11 @@ json.load = function(filename, options) {
             (function() {
                 var path = options.path || [];
                 for (var j=0; j<path.length; ++j) {
-                    try {
-                        imports[i] = json.load(path[j]+"/"+imports[i], options);
-                        return;
-                    } catch (e) {}
+                    var import_filename = node_path.resolve(path[j] + "/", imports[i]);
+                    if (!fs.existsSync(import_filename))
+                        continue;
+                    imports[i] = json.load(import_filename, options, loaded);
+                    return;
                 }
                 throw Error("File not found: "+imports[i]);
             })();
