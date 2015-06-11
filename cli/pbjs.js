@@ -135,7 +135,8 @@ pbjs.main = function(argv) {
             },
             using: {
                 alias: "u",
-                describe: "Specifies an option to apply to the volatile builder\nloading the source, e.g. convertFieldsToCamelCase."
+                describe: "Specifies an option to apply to the volatile builder\nloading the source, e.g. convertFieldsToCamelCase.",
+                type: "array"
             },
             min: {
                 alias: "m",
@@ -158,7 +159,8 @@ pbjs.main = function(argv) {
             },
             use: {
                 alias: "i",
-                describe: "Specifies an option to apply to the emitted builder\nutilized by your program, e.g. populateAccessors."
+                describe: "Specifies an option to apply to the emitted builder\nutilized by your program, e.g. populateAccessors.",
+                type: "array"
             },
             exports: {
                 alias: "e",

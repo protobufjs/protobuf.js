@@ -29,21 +29,29 @@ var util = module.exports = {};
  * @returns {!Object.<string,*>}
  */
 util.getBuilderOptions = function(options, prefix) {
+    if (!options[prefix])
+        return {};
     var builderOptions = {};
-    Object.keys(options || {}).forEach(function(key) {
-        if (key.substring(0,prefix.length+1) === prefix+':') {
-            var val = options[key];
-            if (val === 'true')
+    options[prefix].forEach(function(kv) {
+        var key, val;
+        var p = kv.indexOf("=");
+        if (p < 0) {
+            key = kv;
+            val = true;
+        } else {
+            key = kv.substring(0, p);
+            val = kv.substring(p+1);
+            if (val === "true")
                 val = true;
-            else if (val === 'false')
+            else if (val === "false")
                 val = false;
             else {
                 var intval = parseInt(val, 10);
                 if (intval == val)
                     val = intval;
             }
-            builderOptions[key.substring(prefix.length+1)] = val;
         }
+        builderOptions[key] = val;
     });
     return builderOptions;
 };
