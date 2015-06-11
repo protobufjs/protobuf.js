@@ -112,6 +112,10 @@ NamespacePrototype.resolve = function(qn, excludeFields) {
     var child;
     do {
         do {
+            if (!(ptr instanceof Reflect.Namespace)) {
+                ptr = null;
+                break;
+            }
             child = ptr.getChild(part[i]);
             if (!child || !(child instanceof Reflect.T) || (excludeFields && child instanceof Reflect.Message.Field)) {
                 ptr = null;
