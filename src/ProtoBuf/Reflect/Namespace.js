@@ -96,11 +96,11 @@ NamespacePrototype.getChild = function(nameOrId) {
 /**
  * Resolves a reflect object inside of this namespace.
  * @param {string|!Array.<string>} qn Qualified name to resolve
- * @param {boolean=} excludeFields Excludes fields, defaults to `false`
+ * @param {boolean=} excludeNonNamespace Excludes non-namespace types, defaults to `false`
  * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
  * @expose
  */
-NamespacePrototype.resolve = function(qn, excludeFields) {
+NamespacePrototype.resolve = function(qn, excludeNonNamespace) {
     var part = typeof qn === 'string' ? qn.split(".") : qn,
         ptr = this,
         i = 0;
@@ -117,7 +117,7 @@ NamespacePrototype.resolve = function(qn, excludeFields) {
                 break;
             }
             child = ptr.getChild(part[i]);
-            if (!child || !(child instanceof Reflect.T) || (excludeFields && child instanceof Reflect.Message.Field)) {
+            if (!child || !(child instanceof Reflect.T) || (excludeNonNamespace && !(child instanceof Reflect.Namespace))) {
                 ptr = null;
                 break;
             }
@@ -127,7 +127,7 @@ NamespacePrototype.resolve = function(qn, excludeFields) {
             break; // Found
         // Else search the parent
         if (this.parent !== null)
-            return this.parent.resolve(qn, excludeFields);
+            return this.parent.resolve(qn, excludeNonNamespace);
     } while (ptr != null);
     return ptr;
 };
@@ -146,7 +146,7 @@ NamespacePrototype.qn = function(t) {
     } while (ptr !== null);
     for (var len=1; len <= part.length; len++) {
         var qn = part.slice(part.length-len);
-        if (t === this.resolve(qn, !(t instanceof Reflect.Message.Field)))
+        if (t === this.resolve(qn, !(t instanceof Reflect.Namespace)))
             return qn.join(".");
     }
     return t.fqn();

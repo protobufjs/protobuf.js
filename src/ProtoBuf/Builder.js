@@ -353,7 +353,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidExtend(def)) {
-                        obj = this.ptr.resolve(def["ref"]);
+                        obj = this.ptr.resolve(def["ref"], true);
                         if (obj) {
                             for (i=0; i<def["fields"].length; i++) { // i=Fields
                                 if (obj.getChild(def['fields'][i]['id']) !== null)
@@ -588,11 +588,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             // No need to build enum values (built in enum)
         } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {
             if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
-                res = this.ptr.parent.resolve(this.ptr.requestName);
+                res = this.ptr.parent.resolve(this.ptr.requestName, true);
                 if (!res || !(res instanceof ProtoBuf.Reflect.Message))
                     throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName);
                 this.ptr.resolvedRequestType = res;
-                res = this.ptr.parent.resolve(this.ptr.responseName);
+                res = this.ptr.parent.resolve(this.ptr.responseName, true);
                 if (!res || !(res instanceof ProtoBuf.Reflect.Message))
                     throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
                 this.ptr.resolvedResponseType = res;
@@ -640,10 +640,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     /**
      * Similar to {@link ProtoBuf.Builder#build}, but looks up the internal reflection descriptor.
      * @param {string=} path Specifies what to return. If omitted, the entire namespace wiil be returned.
+     * @param {boolean=} excludeNonNamespace Excludes non-namespace types like fields, defaults to `false`
      * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
      */
-    BuilderPrototype.lookup = function(path) {
-        return path ? this.ns.resolve(path) : this.ns;
+    BuilderPrototype.lookup = function(path, excludeNonNamespace) {
+        return path ? this.ns.resolve(path, excludeNonNamespace) : this.ns;
     };
 
     /**

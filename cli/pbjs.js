@@ -196,8 +196,8 @@ pbjs.main = function(argv) {
     // Expand glob expressions
     var sourceFilesExpand = [];
     for (var i=0; i<sourceFiles.length; ++i) {
-        var filename = sourceFiles[i];
-        var files = glob.sync(filename);
+        var filename = sourceFiles[i],
+            files = glob.sync(filename);
         if (files.length === 0) {
             cli.fail("No matching source files: "+filename);
             return pbjs.STATUS_ERR_NOSOURCE;

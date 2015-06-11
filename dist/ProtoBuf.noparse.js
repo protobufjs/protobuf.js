@@ -658,11 +658,11 @@
             /**
              * Resolves a reflect object inside of this namespace.
              * @param {string|!Array.<string>} qn Qualified name to resolve
-             * @param {boolean=} excludeFields Excludes fields, defaults to `false`
+             * @param {boolean=} excludeNonNamespace Excludes non-namespace types, defaults to `false`
              * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
              * @expose
              */
-            NamespacePrototype.resolve = function(qn, excludeFields) {
+            NamespacePrototype.resolve = function(qn, excludeNonNamespace) {
                 var part = typeof qn === 'string' ? qn.split(".") : qn,
                     ptr = this,
                     i = 0;
@@ -679,7 +679,7 @@
                             break;
                         }
                         child = ptr.getChild(part[i]);
-                        if (!child || !(child instanceof Reflect.T) || (excludeFields && child instanceof Reflect.Message.Field)) {
+                        if (!child || !(child instanceof Reflect.T) || (excludeNonNamespace && !(child instanceof Reflect.Namespace))) {
                             ptr = null;
                             break;
                         }
@@ -689,7 +689,7 @@
                         break; // Found
                     // Else search the parent
                     if (this.parent !== null)
-                        return this.parent.resolve(qn, excludeFields);
+                        return this.parent.resolve(qn, excludeNonNamespace);
                 } while (ptr != null);
                 return ptr;
             };
@@ -708,7 +708,7 @@
                 } while (ptr !== null);
                 for (var len=1; len <= part.length; len++) {
                     var qn = part.slice(part.length-len);
-                    if (t === this.resolve(qn, !(t instanceof Reflect.Message.Field)))
+                    if (t === this.resolve(qn, !(t instanceof Reflect.Namespace)))
                         return qn.join(".");
                 }
                 return t.fqn();
@@ -3652,7 +3652,7 @@
                                 this.ptr.addChild(obj);
                                 obj = null;
                             } else if (Builder.isValidExtend(def)) {
-                                obj = this.ptr.resolve(def["ref"]);
+                                obj = this.ptr.resolve(def["ref"], true);
                                 if (obj) {
                                     for (i=0; i<def["fields"].length; i++) { // i=Fields
                                         if (obj.getChild(def['fields'][i]['id']) !== null)
@@ -3887,11 +3887,11 @@
                     // No need to build enum values (built in enum)
                 } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {
                     if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
-                        res = this.ptr.parent.resolve(this.ptr.requestName);
+                        res = this.ptr.parent.resolve(this.ptr.requestName, true);
                         if (!res || !(res instanceof ProtoBuf.Reflect.Message))
                             throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.requestName);
                         this.ptr.resolvedRequestType = res;
-                        res = this.ptr.parent.resolve(this.ptr.responseName);
+                        res = this.ptr.parent.resolve(this.ptr.responseName, true);
                         if (!res || !(res instanceof ProtoBuf.Reflect.Message))
                             throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
                         this.ptr.resolvedResponseType = res;
@@ -3939,10 +3939,11 @@
             /**
              * Similar to {@link ProtoBuf.Builder#build}, but looks up the internal reflection descriptor.
              * @param {string=} path Specifies what to return. If omitted, the entire namespace wiil be returned.
+             * @param {boolean=} excludeNonNamespace Excludes non-namespace types like fields, defaults to `false`
              * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
              */
-            BuilderPrototype.lookup = function(path) {
-                return path ? this.ns.resolve(path) : this.ns;
+            BuilderPrototype.lookup = function(path, excludeNonNamespace) {
+                return path ? this.ns.resolve(path, excludeNonNamespace) : this.ns;
             };
 
             /**
