@@ -146,7 +146,7 @@ NamespacePrototype.qn = function(t) {
     } while (ptr !== null);
     for (var len=1; len <= part.length; len++) {
         var qn = part.slice(part.length-len);
-        if (t === this.resolve(qn, !(t instanceof Reflect.Namespace)))
+        if (t === this.resolve(qn, t instanceof Reflect.Namespace))
             return qn.join(".");
     }
     return t.fqn();
