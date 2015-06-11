@@ -19,6 +19,7 @@ var ProtoBuf = require(__dirname+"/../dist/ProtoBuf.js"),
     cli      = require("ascli")("pbjs"),
     yargs    = require("yargs"),
     util     = require("./pbjs/util.js"),
+    glob     = require("glob"),
     pkg      = require("../package.json");
 
 /**
@@ -94,6 +95,12 @@ pbjs.STATUS_ERR_NAMESPACE = 5;
  * @type {number}
  */
 pbjs.STATUS_ERR_DEPENDENCY = 6;
+
+/**
+ * Status code: No matching source files
+ * @type {number}
+ */
+pbjs.STATUS_ERR_NOSOURCE = 7;
 
 // Makes a table of available source or target formats
 function mkOptions(obj) {
@@ -184,6 +191,22 @@ pbjs.main = function(argv) {
     var start = Date.now(),
         sourceFiles = options._.slice(2);
 
+    // Expand glob expressions
+    var sourceFilesExpand = [];
+    for (var i=0; i<sourceFiles.length; ++i) {
+        var filename = sourceFiles[i];
+        var files = glob.sync(filename);
+        if (files.length === 0) {
+            cli.fail("No matching source files: "+filename);
+            return pbjs.STATUS_ERR_NOSOURCE;
+        }
+        files.forEach(function(filename) {
+            if (sourceFilesExpand.indexOf(filename) === -1)
+                sourceFilesExpand.push(filename);
+        });
+    }
+    sourceFiles = sourceFilesExpand;
+
     if (!options.target)
         options.target = "json";
 
@@ -213,7 +236,7 @@ pbjs.main = function(argv) {
             options.source = "proto";
     }
 
-    // Load the source file to a builder
+    // Load the source files to a common builder
     var builder = pbjs.sources[options.source](sourceFiles, options);
 
     // Validate exports and dependency if set
