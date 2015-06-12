@@ -25,21 +25,20 @@ ProtoBuf.Util = (function() {
     var Util = {};
 
     /**
-     * Flag if running in node (fs is available) or not.
+     * Flag if running in node or not.
      * @type {boolean}
      * @const
      * @expose
      */
-    Util.IS_NODE = false;
-    try {
-        // There is no reliable way to detect node.js as an environment, so our
-        // best bet is to feature-detect what we actually need.
-        Util.IS_NODE =
-            typeof require === 'function' &&
-            typeof require("fs").readFileSync === 'function' &&
-            typeof require("path").resolve === 'function';
-    } catch (e) {}
-    
+    Util.IS_NODE = !!(
+        // Feature detection causes packaging for the browser to fail or include
+        // redundant modules.
+        // * Works for browserify because node-process does not implement toString
+        //   https://github.com/defunctzombie/node-process
+        typeof process === 'object' &&
+        process+'' === '[object process]'
+    );
+
     /**
      * Constructs a XMLHttpRequest object.
      * @return {XMLHttpRequest}

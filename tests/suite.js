@@ -113,6 +113,11 @@
             test.done();
         },
 
+        "IS_NODE": function(test) {
+            test.ok(ProtoBuf.Util.IS_NODE);
+            test.done();
+        },
+
         // Example "A Simple Message" from the protobuf docs
         // https://developers.google.com/protocol-buffers/docs/encoding#simple
         "example1": function(test) {
