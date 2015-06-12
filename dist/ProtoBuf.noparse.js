@@ -1739,6 +1739,18 @@
                     };
 
                     /**
+                     * Encodes a message using the specified data payload.
+                     * @param {!Object.<string,*>} data Data payload
+                     * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
+                     * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
+                     * @return {!ByteBuffer} Encoded message as a ByteBuffer
+                     * @expose
+                     */
+                    Message.encode = function(data, buffer, noVerify) {
+                        return new Message(data).encode(buffer, noVerify);
+                    };
+
+                    /**
                      * Calculates the byte length of the message.
                      * @name ProtoBuf.Builder.Message#calculate
                      * @function
