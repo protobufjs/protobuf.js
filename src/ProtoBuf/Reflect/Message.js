@@ -96,17 +96,17 @@ MessagePrototype.build = function(rebuild) {
     this._fieldsByName = {};
     for (var i=0, k=this.children.length, child; i<k; i++) {
         child = this.children[i];
-        if (child instanceof Enum)
+        if (child instanceof Enum || child instanceof Message || child instanceof Service) {
+            if (clazz.hasOwnProperty(child.name))
+                throw Error("Illegal reflect child of "+this.toString(true)+": "+child.toString(true)+" cannot override static property '"+child.name+"'");
             clazz[child.name] = child.build();
-        else if (child instanceof Message)
-            clazz[child.name] = child.build();
-        else if (child instanceof Message.Field)
+        } else if (child instanceof Message.Field)
             child.build(),
             this._fields.push(child),
             this._fieldsById[child.id] = child,
             this._fieldsByName[child.name] = child;
         else if (!(child instanceof Message.OneOf) && !(child instanceof Extension)) // Not built
-            throw Error("Illegal reflect child of "+this.toString(true)+": "+children[i].toString(true));
+            throw Error("Illegal reflect child of "+this.toString(true)+": "+this.children[i].toString(true));
     }
 
     return this.clazz = clazz;

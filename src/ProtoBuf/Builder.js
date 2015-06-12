@@ -312,7 +312,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                 obj.addChild(fld);
                             }
                         }
-                        // Push enums and messages to stack
+                        // Push enums, messages and services to stack
                         var subObj = [];
                         if (typeof def["enums"] !== 'undefined' && def['enums'].length > 0)
                             for (i=0; i<def["enums"].length; i++)
@@ -320,6 +320,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         if (def["messages"] && def["messages"].length > 0)
                             for (i=0; i<def["messages"].length; i++)
                                 subObj.push(def["messages"][i]);
+                        if (def["services"] && def["services"].length > 0)
+                            for (i=0; i<def["services"].length; i++)
+                                subObj.push(def["services"][i]);
                         // Set extension range
                         if (def["extensions"]) {
                             obj.extensions = def["extensions"];
