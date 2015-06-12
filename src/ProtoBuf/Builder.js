@@ -349,7 +349,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                         obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                         for (i in def["rpc"])
                             if (def["rpc"].hasOwnProperty(i))
-                                obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["request_stream"], def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
+                                obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], !!def["rpc"][i]["request_stream"], !!def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
                         this.ptr.addChild(obj);
                         obj = null;
                     } else if (Builder.isValidExtend(def)) {

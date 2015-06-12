@@ -6,6 +6,8 @@
  * @param {string} name Method name
  * @param {string} request Request message name
  * @param {string} response Response message name
+ * @param {boolean} request_stream Whether requests are streamed
+ * @param {boolean} response_stream Whether responses are streamed
  * @param {Object.<string,*>=} options Options
  * @constructor
  * @extends ProtoBuf.Reflect.Service.Method

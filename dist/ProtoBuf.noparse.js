@@ -50,7 +50,7 @@
          * @const
          * @expose
          */
-        ProtoBuf.VERSION = "4.0.0-b4";
+        ProtoBuf.VERSION = "4.0.0-b5";
 
         /**
          * Wire types.
@@ -3240,6 +3240,8 @@
              * @param {string} name Method name
              * @param {string} request Request message name
              * @param {string} response Response message name
+             * @param {boolean} request_stream Whether requests are streamed
+             * @param {boolean} response_stream Whether responses are streamed
              * @param {Object.<string,*>=} options Options
              * @constructor
              * @extends ProtoBuf.Reflect.Service.Method
@@ -3659,7 +3661,7 @@
                                 obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                                 for (i in def["rpc"])
                                     if (def["rpc"].hasOwnProperty(i))
-                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], def["rpc"][i]["request_stream"], def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
+                                        obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], !!def["rpc"][i]["request_stream"], !!def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
                                 this.ptr.addChild(obj);
                                 obj = null;
                             } else if (Builder.isValidExtend(def)) {

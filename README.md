@@ -47,6 +47,14 @@ Downloads
 * [ZIP-Archive](https://github.com/dcodeIO/ProtoBuf.js/archive/master.zip)
 * [Tarball](https://github.com/dcodeIO/ProtoBuf.js/tarball/master)
 
+CDN usage
+---------
+```html
+<script src="//cdn.rawgit.com/dcodeIO/ProtoBuf.js/VERSION/dist/ProtoBuf.js"></script>
+```
+With `VERSION` replaced by [a valid tag](https://github.com/dcodeIO/ProtoBuf.js/releases) or just `master` for testing
+the latest master build.
+
 Contributors
 ------------
 [Daniel Wirtz](https://github.com/dcodeIO) (maintainer), [Frank Xu](https://github.com/yyfrankyy),
