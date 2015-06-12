@@ -35,7 +35,7 @@ var Message = function(values, var_args) {
         var value;
         // Set field values from a values object
         if (arguments.length === 1 && typeof values === 'object' &&
-            /* not another Message */ typeof values.encode !== 'function' &&
+            /* not _another_ Message */ (typeof values.encode !== 'function' || values instanceof Message) &&
             /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
             /* not a Map */ !(values instanceof ProtoBuf.Map) &&
             /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&

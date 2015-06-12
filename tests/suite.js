@@ -253,6 +253,17 @@
             test.done();
         },
 
+        "constructor": function(test) {
+            var builder = ProtoBuf.loadProtoFile(__dirname+"/example1.proto");
+            var Test1 = builder.build("Test1");
+            var t1 = new Test1(123),
+                t2 = new Test1({a: 123}),
+                t3 = new Test1(t1);
+            test.deepEqual(t1, t2);
+            test.deepEqual(t2, t3);
+            test.done();
+        },
+
         "numberFormats": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/numberformats.proto");
