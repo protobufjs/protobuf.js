@@ -4738,7 +4738,7 @@
                             importFilename = importRoot + delim + importFilename;
                             if (this.files[importFilename] === true)
                                 continue; // Already imported
-                            if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto)     // If this is a NOPARSE build
+                            if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto)       // If this is a light build
                                 importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
                             var contents = ProtoBuf.Util.fetch(importFilename);
                             if (contents === null)

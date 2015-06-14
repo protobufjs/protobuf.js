@@ -26,7 +26,6 @@ Features
 * Well tested through [test.js](https://github.com/dcodeIO/test.js)
 * [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
 * Fully compatible to the official implementation including advanced features
-* Small footprint (even smaller if you use a noparse build)
 * proto2js command line utility
 
 Documentation

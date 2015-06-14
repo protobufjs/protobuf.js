@@ -653,7 +653,7 @@
             test.done();
         },
 
-        // The same created without calling upon the parser to do so (noparse)
+        // The same created without calling upon the parser to do so
         "complexJSON": function(test) {
             try {
                 var builder = ProtoBuf.loadJsonFile(__dirname+"/complex.json");
