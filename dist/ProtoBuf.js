@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 /**
  * @license ProtoBuf.js (c) 2013 Daniel Wirtz <dcode@dcode.io>
  * Released under the Apache License, Version 2.0
@@ -289,18 +288,6 @@
         ProtoBuf.Util = (function() {
             "use strict";
 
-            // Object.create polyfill
-            // ref: https://developer.mozilla.org/de/docs/JavaScript/Reference/Global_Objects/Object/create
-            if (!Object.create)
-                /** @expose */
-                Object.create = function (o) {
-                    if (arguments.length > 1)
-                        throw Error('Object.create polyfill only accepts the first parameter.');
-                    function F() {}
-                    F.prototype = o;
-                    return new F();
-                };
-
             /**
              * ProtoBuf utilities.
              * @exports ProtoBuf.Util
@@ -401,14 +388,15 @@
             };
 
             /**
-             * Tests if an object is an array.
-             * @function
-             * @param {*} obj Object to test
-             * @returns {boolean} true if it is an array, else false
+             * Converts a string to camel case.
+             * @param {string} str
+             * @returns {string}
              * @expose
              */
-            Util.isArray = Array.isArray || function(obj) {
-                return Object.prototype.toString.call(obj) === "[object Array]";
+            Util.toCamelCase = function(str) {
+                return str.replace(/_([a-zA-Z])/g, function ($0, $1) {
+                    return $1.toUpperCase();
+                });
             };
 
             return Util;
@@ -2458,7 +2446,7 @@
                             // Set field values from a values object
                             if (arguments.length === 1 && typeof values === 'object' &&
                                 /* not _another_ Message */ (typeof values.encode !== 'function' || values instanceof Message) &&
-                                /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
+                                /* not a repeated field */ !Array.isArray(values) &&
                                 /* not a Map */ !(values instanceof ProtoBuf.Map) &&
                                 /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
                                 /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
@@ -2905,8 +2893,7 @@
                      * @returns {*} Cloned object
                      * @inner
                      */
-                    function cloneRaw(obj, binaryAsBase64, longsAsStrings,
-                                      fieldType, resolvedType) {
+                    function cloneRaw(obj, binaryAsBase64, longsAsStrings, fieldType, resolvedType) {
                         var clone = undefined;
                         if (obj === null || typeof obj !== 'object') {
                             if (fieldType == ProtoBuf.TYPES["enum"]) {
@@ -2925,7 +2912,7 @@
                             } else {
                                 clone = obj.toBuffer();
                             }
-                        } else if (ProtoBuf.Util.isArray(obj)) {
+                        } else if (Array.isArray(obj)) {
                             var src = obj;
                             clone = [];
                             for (var idx = 0; idx < src.length; idx++)
@@ -3466,19 +3453,7 @@
 
                 // Convert field names to camel case notation if the override is set
                 if (this.builder.options['convertFieldsToCamelCase'] && !(this instanceof Message.ExtensionField))
-                    this.name = Field._toCamelCase(this.name);
-            };
-
-            /**
-             * Converts a field name to camel case.
-             * @param {string} name Likely underscore notated name
-             * @returns {string} Camel case notated name
-             * @private
-             */
-            Field._toCamelCase = function(name) {
-                return name.replace(/_([a-zA-Z])/g, function($0, $1) {
-                    return $1.toUpperCase();
-                });
+                    this.name = ProtoBuf.Util.toCamelCase(this.name);
             };
 
             /**
@@ -3527,7 +3502,7 @@
                 }
                 var i;
                 if (this.repeated && !skipRepeated) { // Repeated values as arrays
-                    if (!ProtoBuf.Util.isArray(value))
+                    if (!Array.isArray(value))
                         value = [value];
                     var res = [];
                     for (i=0; i<value.length; i++)
@@ -3547,7 +3522,7 @@
                     }
                 }
                 // All non-repeated fields expect no array
-                if (!this.repeated && ProtoBuf.Util.isArray(value))
+                if (!this.repeated && Array.isArray(value))
                     fail(typeof value, "no array expected");
 
                 return this.element.verifyValue(value);
@@ -4443,7 +4418,7 @@
                 // Fields, enums and messages are arrays if provided
                 var i;
                 if (typeof def["fields"] !== 'undefined') {
-                    if (!ProtoBuf.Util.isArray(def["fields"]))
+                    if (!Array.isArray(def["fields"]))
                         return false;
                     var ids = [], id; // IDs must be unique
                     for (i=0; i<def["fields"].length; i++) {
@@ -4457,21 +4432,21 @@
                     ids = null;
                 }
                 if (typeof def["enums"] !== 'undefined') {
-                    if (!ProtoBuf.Util.isArray(def["enums"]))
+                    if (!Array.isArray(def["enums"]))
                         return false;
                     for (i=0; i<def["enums"].length; i++)
                         if (!Builder.isValidEnum(def["enums"][i]))
                             return false;
                 }
                 if (typeof def["messages"] !== 'undefined') {
-                    if (!ProtoBuf.Util.isArray(def["messages"]))
+                    if (!Array.isArray(def["messages"]))
                         return false;
                     for (i=0; i<def["messages"].length; i++)
                         if (!Builder.isValidMessage(def["messages"][i]) && !Builder.isValidExtend(def["messages"][i]))
                             return false;
                 }
                 if (typeof def["extensions"] !== 'undefined')
-                    if (!ProtoBuf.Util.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number')
+                    if (!Array.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number')
                         return false;
 
                 if (def["syntax"] === 'proto3') {
@@ -4535,7 +4510,7 @@
                 if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]))
                     return false;
                 // Enums require at least one value
-                if (typeof def["values"] === 'undefined' || !ProtoBuf.Util.isArray(def["values"]) || def["values"].length == 0)
+                if (typeof def["values"] === 'undefined' || !Array.isArray(def["values"]) || def["values"].length == 0)
                     return false;
                 for (var i=0; i<def["values"].length; i++) {
                     // Values are objects
@@ -4567,7 +4542,7 @@
             BuilderPrototype.create = function(defs) {
                 if (!defs)
                     return this; // Nothing to create
-                if (!ProtoBuf.Util.isArray(defs))
+                if (!Array.isArray(defs))
                     defs = [defs];
                 else {
                     if (defs.length === 0)
@@ -4580,7 +4555,7 @@
                 stack.push(defs); // One level [a, b, c]
                 while (stack.length > 0) {
                     defs = stack.pop();
-                    if (ProtoBuf.Util.isArray(defs)) { // Stack always contains entire namespaces
+                    if (Array.isArray(defs)) { // Stack always contains entire namespaces
                         while (defs.length > 0) {
                             var def = defs.shift(); // Namespace always contains an array of messages, enums and services
                             if (Builder.isValidMessage(def)) {
@@ -4673,7 +4648,7 @@
                                         // Convert extension field names to camel case notation if the override is set
                                         var name = def["fields"][i]["name"];
                                         if (this.options['convertFieldsToCamelCase'])
-                                            name = Reflect.Message.Field._toCamelCase(def["fields"][i]["name"]);
+                                            name = ProtoBuf.Util.toCamelCase(def["fields"][i]["name"]);
                                         // see #161: Extensions use their fully qualified name as their runtime key and...
                                         fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
                                         // ...are added on top of the current namespace as an extension which is used for
@@ -4831,7 +4806,7 @@
                     return false;
                 var i;
                 if (typeof def["fields"] !== 'undefined') {
-                    if (!ProtoBuf.Util.isArray(def["fields"]))
+                    if (!Array.isArray(def["fields"]))
                         return false;
                     var ids = [], id; // IDs must be unique (does not yet test for the extended message's ids)
                     for (i=0; i<def["fields"].length; i++) {

@@ -50,12 +50,12 @@
     "make": "npm run-script build && npm run-script compile && npm run-script descriptor2json && npm run-script compress && npm test && npm run-script jsdoc",
     "build": "node scripts/build.js",
     "descriptor2json": "node bin/pbjs src/google/protobuf/descriptor.proto --target=json > src/google/protobuf/descriptor.json",
-    "compile": "npm run-script compile-full && npm run-script compile-noparse",
+    "compile": "npm run-script compile-full && npm run-script compile-light",
     "compile-full": "ccjs dist/ProtoBuf.js --create_source_map=dist/ProtoBuf.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.min.js",
-    "compile-noparse": "ccjs dist/ProtoBuf.noparse.js --create_source_map=dist/ProtoBuf.noparse.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.noparse.min.js",
-    "compress": "npm run-script compress-full && npm run-script compress-noparse",
+    "compile-light": "ccjs dist/ProtoBuf-light.js --create_source_map=dist/ProtoBuf-light.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf-light.min.js",
+    "compress": "npm run-script compress-full && npm run-script compress-light",
     "compress-full": "gzip -c -9 dist/ProtoBuf.min.js > dist/ProtoBuf.min.js.gz",
-    "compress-noparse": "gzip -c -9 dist/ProtoBuf.noparse.min.js > dist/ProtoBuf.noparse.min.js.gz",
+    "compress-light": "gzip -c -9 dist/ProtoBuf-light.min.js > dist/ProtoBuf-light.min.js.gz",
     "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json"
   }
 }

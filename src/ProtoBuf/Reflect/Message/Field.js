@@ -126,19 +126,7 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
 
     // Convert field names to camel case notation if the override is set
     if (this.builder.options['convertFieldsToCamelCase'] && !(this instanceof Message.ExtensionField))
-        this.name = Field._toCamelCase(this.name);
-};
-
-/**
- * Converts a field name to camel case.
- * @param {string} name Likely underscore notated name
- * @returns {string} Camel case notated name
- * @private
- */
-Field._toCamelCase = function(name) {
-    return name.replace(/_([a-zA-Z])/g, function($0, $1) {
-        return $1.toUpperCase();
-    });
+        this.name = ProtoBuf.Util.toCamelCase(this.name);
 };
 
 /**
@@ -187,7 +175,7 @@ FieldPrototype.verifyValue = function(value, skipRepeated) {
     }
     var i;
     if (this.repeated && !skipRepeated) { // Repeated values as arrays
-        if (!ProtoBuf.Util.isArray(value))
+        if (!Array.isArray(value))
             value = [value];
         var res = [];
         for (i=0; i<value.length; i++)
@@ -207,7 +195,7 @@ FieldPrototype.verifyValue = function(value, skipRepeated) {
         }
     }
     // All non-repeated fields expect no array
-    if (!this.repeated && ProtoBuf.Util.isArray(value))
+    if (!this.repeated && Array.isArray(value))
         fail(typeof value, "no array expected");
 
     return this.element.verifyValue(value);

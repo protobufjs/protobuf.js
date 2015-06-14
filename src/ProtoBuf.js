@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-//? if (typeof NOPARSE === 'undefined') NOPARSE = false;
-
 /**
  * @license ProtoBuf.js (c) 2013 Daniel Wirtz <dcode@dcode.io>
  * Released under the Apache License, Version 2.0
@@ -287,7 +285,7 @@
 
         //? include("ProtoBuf/Lang.js");
 
-        //? if (!NOPARSE) include("ProtoBuf/DotProto.js");
+        //? if (DOTPROTO) include("ProtoBuf/DotProto.js");
 
         //? include("ProtoBuf/Reflect.js");
 
@@ -295,7 +293,7 @@
 
         //? include("ProtoBuf/Map.js");
 
-        //? if (!NOPARSE) {
+        //? if (DOTPROTO) {
 
         /**
          * Loads a .proto string and returns the Builder.
@@ -374,7 +372,7 @@
          */
         ProtoBuf.protoFromFile = ProtoBuf.loadProtoFile; // Legacy
 
-        //? } // !NOPARSE
+        //? } // DOTPROTO
 
         /**
          * Constructs a new empty Builder.

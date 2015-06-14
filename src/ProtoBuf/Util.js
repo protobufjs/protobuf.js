@@ -5,18 +5,6 @@
 ProtoBuf.Util = (function() {
     "use strict";
 
-    // Object.create polyfill
-    // ref: https://developer.mozilla.org/de/docs/JavaScript/Reference/Global_Objects/Object/create
-    if (!Object.create)
-        /** @expose */
-        Object.create = function (o) {
-            if (arguments.length > 1)
-                throw Error('Object.create polyfill only accepts the first parameter.');
-            function F() {}
-            F.prototype = o;
-            return new F();
-        };
-
     /**
      * ProtoBuf utilities.
      * @exports ProtoBuf.Util
@@ -117,14 +105,15 @@ ProtoBuf.Util = (function() {
     };
 
     /**
-     * Tests if an object is an array.
-     * @function
-     * @param {*} obj Object to test
-     * @returns {boolean} true if it is an array, else false
+     * Converts a string to camel case.
+     * @param {string} str
+     * @returns {string}
      * @expose
      */
-    Util.isArray = Array.isArray || function(obj) {
-        return Object.prototype.toString.call(obj) === "[object Array]";
+    Util.toCamelCase = function(str) {
+        return str.replace(/_([a-zA-Z])/g, function ($0, $1) {
+            return $1.toUpperCase();
+        });
     };
     
     return Util;

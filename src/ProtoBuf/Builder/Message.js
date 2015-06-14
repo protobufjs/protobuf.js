@@ -36,7 +36,7 @@ var Message = function(values, var_args) {
         // Set field values from a values object
         if (arguments.length === 1 && typeof values === 'object' &&
             /* not _another_ Message */ (typeof values.encode !== 'function' || values instanceof Message) &&
-            /* not a repeated field */ !ProtoBuf.Util.isArray(values) &&
+            /* not a repeated field */ !Array.isArray(values) &&
             /* not a Map */ !(values instanceof ProtoBuf.Map) &&
             /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
@@ -483,8 +483,7 @@ MessagePrototype.toHex = MessagePrototype.encodeHex;
  * @returns {*} Cloned object
  * @inner
  */
-function cloneRaw(obj, binaryAsBase64, longsAsStrings,
-                  fieldType, resolvedType) {
+function cloneRaw(obj, binaryAsBase64, longsAsStrings, fieldType, resolvedType) {
     var clone = undefined;
     if (obj === null || typeof obj !== 'object') {
         if (fieldType == ProtoBuf.TYPES["enum"]) {
@@ -503,7 +502,7 @@ function cloneRaw(obj, binaryAsBase64, longsAsStrings,
         } else {
             clone = obj.toBuffer();
         }
-    } else if (ProtoBuf.Util.isArray(obj)) {
+    } else if (Array.isArray(obj)) {
         var src = obj;
         clone = [];
         for (var idx = 0; idx < src.length; idx++)

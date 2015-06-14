@@ -31,7 +31,7 @@ var rootDir = path.join(__dirname, ".."),
 
 var scope = {
     VERSION: pkg.version,           // Version
-    NOPARSE: false                  // Whether to exclude the ProtoBuf.DotProto package (no parser, JSON only) or not
+    DOTPROTO: true                  // Whether to include the ProtoBuf.DotProto package for .proto syntax support
 };
 
 // Make full build
@@ -41,11 +41,11 @@ fs.writeFileSync(
     MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "ProtoBuf.js")), filename, scope, srcDir)
 );
 
-// Make NOPARSE build
-scope.NOPARSE = true;
-console.log("Building ProtoBuf.noparse.js with scope", JSON.stringify(scope, null, 2));
+// Make light build
+scope.DOTPROTO = false;
+console.log("Building ProtoBuf-light.js with scope", JSON.stringify(scope, null, 2));
 fs.writeFileSync(
-    path.join(distDir, "ProtoBuf.noparse.js"),
+    path.join(distDir, "ProtoBuf-light.js"),
     MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "ProtoBuf.js")), filename, scope, srcDir)
 );
 
