@@ -2485,10 +2485,11 @@
                                 throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
                             if (!field.repeated)
                                 throw Error(this+"#"+key+" is not a repeated field");
+                            value = field.verifyValue(value, true);
                         }
-                        if (this[field.name] === null)
-                            this[field.name] = [];
-                        this[field.name].push(noAssert ? value : field.verifyValue(value, true));
+                        if (this[key] === null)
+                            this[key] = [];
+                        this[key].push(value);
                         return this;
                     };
 
@@ -2531,10 +2532,9 @@
                             if (!(field instanceof ProtoBuf.Reflect.Message.Field))
                                 throw Error(this+"#"+keyOrObj+" is not a field: "+field.toString(true));
                             this[field.name] = (value = field.verifyValue(value)); // May throw
-                        } else {
-                            this[field.name] = value;
-                        }
-                        if (field.oneof) {
+                        } else
+                            this[keyOrObj] = value;
+                        if (field && field.oneof) {
                             if (value !== null) {
                                 if (this[field.oneof.name] !== null)
                                     this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
