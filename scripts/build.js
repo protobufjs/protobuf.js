@@ -38,7 +38,7 @@ var scope = {
 console.log("Building ProtoBuf.js with scope", JSON.stringify(scope, null, 2));
 fs.writeFileSync(
     path.join(distDir, "ProtoBuf.js"),
-    MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "ProtoBuf.js")), filename, scope, srcDir)
+    MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "wrap.js")), filename, scope, srcDir)
 );
 
 // Make light build
@@ -46,7 +46,7 @@ scope.DOTPROTO = false;
 console.log("Building ProtoBuf-light.js with scope", JSON.stringify(scope, null, 2));
 fs.writeFileSync(
     path.join(distDir, "ProtoBuf-light.js"),
-    MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "ProtoBuf.js")), filename, scope, srcDir)
+    MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "wrap.js")), filename, scope, srcDir)
 );
 
 // Update bower.json

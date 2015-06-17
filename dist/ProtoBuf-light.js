@@ -4234,5 +4234,4 @@
     };
 
     return ProtoBuf;
-
 });

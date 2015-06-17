@@ -5307,5 +5307,4 @@
     };
 
     return ProtoBuf;
-
 });
