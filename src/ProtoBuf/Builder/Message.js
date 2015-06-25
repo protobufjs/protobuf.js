@@ -38,7 +38,7 @@ var Message = function(values, var_args) {
             /* not _another_ Message */ (typeof values.encode !== 'function' || values instanceof Message) &&
             /* not a repeated field */ !Array.isArray(values) &&
             /* not a Map */ !(values instanceof ProtoBuf.Map) &&
-            /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
+            /* not a ByteBuffer */ !(ByteBuffer.isByteBuffer(values)) &&
             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
             this.$set(values);
@@ -496,7 +496,7 @@ function cloneRaw(obj, binaryAsBase64, longsAsStrings, fieldType, resolvedType) 
             }
         }
         clone = obj;
-    } else if (obj instanceof ByteBuffer) {
+    } else if (ByteBuffer.isByteBuffer(obj)) {
         if (binaryAsBase64) {
             clone = obj.toBase64();
         } else {
@@ -578,7 +578,7 @@ MessagePrototype.encodeJSON = function() {
 Message.decode = function(buffer, enc) {
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-    buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
+    buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw
     var le = buffer.littleEndian;
     try {
         var msg = T.decode(buffer.LE());
@@ -604,7 +604,7 @@ Message.decode = function(buffer, enc) {
 Message.decodeDelimited = function(buffer, enc) {
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-    buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
+    buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw
     if (buffer.remaining() < 1)
         return null;
     var off = buffer.offset,
