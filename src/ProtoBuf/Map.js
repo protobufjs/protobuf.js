@@ -2,7 +2,7 @@
  * @alias ProtoBuf.Map
  * @expose
  */
-ProtoBuf.Map = (function(ProtoBuf) {
+ProtoBuf.Map = (function(ProtoBuf, Reflect) {
     "use strict";
 
     /**
@@ -30,13 +30,13 @@ ProtoBuf.Map = (function(ProtoBuf) {
          * Element instance corresponding to key type.
          * @type {!ProtoBuf.Reflect.Element}
          */
-        this.keyElem = new ProtoBuf.Reflect.Element(field.keyType, null, true, field.syntax);
+        this.keyElem = new Reflect.Element(field.keyType, null, true, field.syntax);
 
         /**
          * Element instance corresponding to value type.
          * @type {!ProtoBuf.Reflect.Element}
          */
-        this.valueElem = new ProtoBuf.Reflect.Element(field.type, field.resolvedType, false, field.syntax);
+        this.valueElem = new Reflect.Element(field.type, field.resolvedType, false, field.syntax);
 
         /**
          * Internal map: stores mapping of (string form of key) -> (key, value)
@@ -194,4 +194,4 @@ ProtoBuf.Map = (function(ProtoBuf) {
     };
 
     return Map;
-})(ProtoBuf);
+})(ProtoBuf, ProtoBuf.Reflect);

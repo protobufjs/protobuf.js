@@ -24,7 +24,7 @@
     /* AMD */ if (typeof define === 'function' && define["amd"])
         define(["ByteBuffer"], factory);
     /* CommonJS */ else if (typeof require === "function" && typeof module === "object" && module && module["exports"])
-        module['exports'] = factory(require("bytebuffer"));
+        module["exports"] = factory(require("bytebuffer"));
     /* Global */ else
         (global["dcodeIO"] = global["dcodeIO"] || {})["ProtoBuf"] = factory(global["dcodeIO"]["ByteBuffer"]);
 
@@ -57,7 +57,7 @@
      * @const
      * @expose
      */
-    ProtoBuf.VERSION = "4.0.0-b5";
+    ProtoBuf.VERSION = "4.0.0";
 
     /**
      * Wire types.
@@ -1457,11 +1457,11 @@
                     if (arguments.length > 0) {
                         var value;
                         // Set field values from a values object
-                        if (arguments.length === 1 && typeof values === 'object' &&
+                        if (arguments.length === 1 && values !== null && typeof values === 'object' &&
                             /* not _another_ Message */ (typeof values.encode !== 'function' || values instanceof Message) &&
                             /* not a repeated field */ !Array.isArray(values) &&
                             /* not a Map */ !(values instanceof ProtoBuf.Map) &&
-                            /* not a ByteBuffer */ !(values instanceof ByteBuffer) &&
+                            /* not a ByteBuffer */ !ByteBuffer.isByteBuffer(values) &&
                             /* not an ArrayBuffer */ !(values instanceof ArrayBuffer) &&
                             /* not a Long */ !(ProtoBuf.Long && values instanceof ProtoBuf.Long)) {
                             this.$set(values);
@@ -1919,7 +1919,7 @@
                             }
                         }
                         clone = obj;
-                    } else if (obj instanceof ByteBuffer) {
+                    } else if (ByteBuffer.isByteBuffer(obj)) {
                         if (binaryAsBase64) {
                             clone = obj.toBase64();
                         } else {
@@ -2001,7 +2001,7 @@
                 Message.decode = function(buffer, enc) {
                     if (typeof buffer === 'string')
                         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-                    buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
+                    buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw
                     var le = buffer.littleEndian;
                     try {
                         var msg = T.decode(buffer.LE());
@@ -2027,7 +2027,7 @@
                 Message.decodeDelimited = function(buffer, enc) {
                     if (typeof buffer === 'string')
                         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-                    buffer = buffer instanceof ByteBuffer ? buffer : ByteBuffer.wrap(buffer); // May throw
+                    buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw
                     if (buffer.remaining() < 1)
                         return null;
                     var off = buffer.offset,
@@ -3967,7 +3967,7 @@
      * @alias ProtoBuf.Map
      * @expose
      */
-    ProtoBuf.Map = (function(ProtoBuf) {
+    ProtoBuf.Map = (function(ProtoBuf, Reflect) {
         "use strict";
 
         /**
@@ -3995,13 +3995,13 @@
              * Element instance corresponding to key type.
              * @type {!ProtoBuf.Reflect.Element}
              */
-            this.keyElem = new ProtoBuf.Reflect.Element(field.keyType, null, true, field.syntax);
+            this.keyElem = new Reflect.Element(field.keyType, null, true, field.syntax);
 
             /**
              * Element instance corresponding to value type.
              * @type {!ProtoBuf.Reflect.Element}
              */
-            this.valueElem = new ProtoBuf.Reflect.Element(field.type, field.resolvedType, false, field.syntax);
+            this.valueElem = new Reflect.Element(field.type, field.resolvedType, false, field.syntax);
 
             /**
              * Internal map: stores mapping of (string form of key) -> (key, value)
@@ -4159,7 +4159,7 @@
         };
 
         return Map;
-    })(ProtoBuf);
+    })(ProtoBuf, ProtoBuf.Reflect);
 
 
     /**
