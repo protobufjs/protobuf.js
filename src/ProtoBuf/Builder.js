@@ -415,7 +415,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             var root = filename.root
             if (ProtoBuf.Util.IS_NODE)
                 root = require("path")['resolve'](root);
-            var fname = [root, filename.file].join('/');
+            var delim = '/';
+            if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0) delim = '\\';
+            var fname = [root, filename.file].join(delim);
             if (this.files[fname] === true) {
               this.reset();
               return this; // Skip duplicate imports
