@@ -23,8 +23,7 @@ ProtoBuf.Util = (function() {
         // redundant modules.
         // * Works for browserify because node-process does not implement toString
         //   https://github.com/defunctzombie/node-process
-        typeof process === 'object' &&
-        process+'' === '[object process]'
+        typeof process === 'object' && process+'' === '[object process]'
     );
 
     /**
@@ -66,7 +65,7 @@ ProtoBuf.Util = (function() {
             callback = null;
         if (Util.IS_NODE) {
             if (callback) {
-                require("fs").readFile(path, function(err, data) {
+                Util.require("fs").readFile(path, function(err, data) {
                     if (err)
                         callback(null);
                     else
@@ -74,7 +73,7 @@ ProtoBuf.Util = (function() {
                 });
             } else
                 try {
-                    return require("fs").readFileSync(path);
+                    return Util.require("fs").readFileSync(path);
                 } catch (e) {
                     return null;
                 }
@@ -103,6 +102,18 @@ ProtoBuf.Util = (function() {
             }
         }
     };
+
+    /**
+     * Requires a node module.
+     * @function
+     * @param {string} path
+     * @returns {*}
+     * @throws Error If node require is not supported
+     * @expose
+     */
+    Util.require = Util.IS_NODE
+        ? function(path) { return nodeRequire(path); }
+        : function(path) { throw Error("node require is not supported by this platform")};
 
     /**
      * Converts a string to camel case.

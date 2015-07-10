@@ -405,7 +405,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     BuilderPrototype["import"] = function(json, filename) {
         if (typeof filename === 'string') {
             if (ProtoBuf.Util.IS_NODE)
-                filename = require("path")['resolve'](filename);
+                filename = ProtoBuf.Util.require("path")['resolve'](filename);
             if (this.files[filename] === true) {
                 this.reset();
                 return this; // Skip duplicate imports
@@ -414,7 +414,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         } else if (typeof filename === 'object') { // Assume object with root, filename.
             var root = filename.root
             if (ProtoBuf.Util.IS_NODE)
-                root = require("path")['resolve'](root);
+                root = ProtoBuf.Util.require("path")['resolve'](root);
             var delim = '/';
             if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0) delim = '\\';
             var fname = [root, filename.file].join(delim);

@@ -24,11 +24,11 @@
     /* AMD */ if (typeof define === 'function' && define["amd"])
         define(["ByteBuffer"], factory);
     /* CommonJS */ else if (typeof require === "function" && typeof module === "object" && module && module["exports"])
-        module["exports"] = factory(require("bytebuffer"));
+        module["exports"] = factory(require("bytebuffer"), require);
     /* Global */ else
         (global["dcodeIO"] = global["dcodeIO"] || {})["ProtoBuf"] = factory(global["dcodeIO"]["ByteBuffer"]);
 
-})(this, function(ByteBuffer) {
+})(this, function(ByteBuffer, nodeRequire) {
     "use strict";
 
     /**
@@ -57,7 +57,7 @@
      * @const
      * @expose
      */
-    ProtoBuf.VERSION = "4.0.0";
+    ProtoBuf.VERSION = "4.0.1";
 
     /**
      * Wire types.
@@ -314,8 +314,7 @@
             // redundant modules.
             // * Works for browserify because node-process does not implement toString
             //   https://github.com/defunctzombie/node-process
-            typeof process === 'object' &&
-            process+'' === '[object process]'
+            typeof process === 'object' && process+'' === '[object process]'
         );
 
         /**
@@ -357,7 +356,7 @@
                 callback = null;
             if (Util.IS_NODE) {
                 if (callback) {
-                    require("fs").readFile(path, function(err, data) {
+                    Util.require("fs").readFile(path, function(err, data) {
                         if (err)
                             callback(null);
                         else
@@ -365,7 +364,7 @@
                     });
                 } else
                     try {
-                        return require("fs").readFileSync(path);
+                        return Util.require("fs").readFileSync(path);
                     } catch (e) {
                         return null;
                     }
@@ -394,6 +393,18 @@
                 }
             }
         };
+
+        /**
+         * Requires a node module.
+         * @function
+         * @param {string} path
+         * @returns {*}
+         * @throws Error If node require is not supported
+         * @expose
+         */
+        Util.require = Util.IS_NODE
+            ? function(path) { return nodeRequire(path); }
+            : function(path) { throw Error("node require is not supported by this platform")};
 
         /**
          * Converts a string to camel case.
@@ -3700,7 +3711,7 @@
         BuilderPrototype["import"] = function(json, filename) {
             if (typeof filename === 'string') {
                 if (ProtoBuf.Util.IS_NODE)
-                    filename = require("path")['resolve'](filename);
+                    filename = ProtoBuf.Util.require("path")['resolve'](filename);
                 if (this.files[filename] === true) {
                     this.reset();
                     return this; // Skip duplicate imports
@@ -3709,7 +3720,7 @@
             } else if (typeof filename === 'object') { // Assume object with root, filename.
                 var root = filename.root
                 if (ProtoBuf.Util.IS_NODE)
-                    root = require("path")['resolve'](root);
+                    root = ProtoBuf.Util.require("path")['resolve'](root);
                 var delim = '/';
                 if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0) delim = '\\';
                 var fname = [root, filename.file].join(delim);
