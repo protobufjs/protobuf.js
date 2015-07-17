@@ -4214,25 +4214,6 @@
         "use strict";
 
         /**
-         * Helper for builder: propagate a top-level syntax annotation (e.g.,
-         * 'proto3') down to all message and enum JSON descriptions.
-         * @param {Object} msg The top-level JSON object
-         */
-        function propagateSyntax(syntax, msg) {
-          msg['syntax'] = syntax;
-          if (msg['messages']) {
-              msg['messages'].forEach(function(msg) {
-                  propagateSyntax(syntax, msg);
-              });
-          }
-          if (msg['enums']) {
-              msg['enums'].forEach(function(en) {
-                  propagateSyntax(syntax, en);
-              });
-          }
-        }
-
-        /**
          * Constructs a new Builder.
          * @exports ProtoBuf.Builder
          * @class Provides the functionality to build protocol messages.
@@ -4297,6 +4278,80 @@
          */
         var BuilderPrototype = Builder.prototype;
 
+        // ----- Definition tests -----
+
+        /**
+         * Tests if a definition most likely describes a message.
+         * @param {!Object} def
+         * @returns {boolean}
+         * @expose
+         */
+        Builder.isMessage = function(def) {
+            // Messages require a string name
+            if (typeof def["name"] !== 'string')
+                return false;
+            // Messages do not contain values (enum) or rpc methods (service)
+            if (typeof def["values"] !== 'undefined' || typeof def["rpc"] !== 'undefined')
+                return false;
+            return true;
+        };
+
+        /**
+         * Tests if a definition most likely describes a message field.
+         * @param {!Object} def
+         * @returns {boolean}
+         * @expose
+         */
+        Builder.isMessageField = function(def) {
+            // Message fields require a string rule, name and type and an id
+            if (typeof def["rule"] !== 'string' || typeof def["name"] !== 'string' || typeof def["type"] !== 'string' || typeof def["id"] === 'undefined')
+                return false;
+            return true;
+        };
+
+        /**
+         * Tests if a definition most likely describes an enum.
+         * @param {!Object} def
+         * @returns {boolean}
+         * @expose
+         */
+        Builder.isEnum = function(def) {
+            // Enums require a string name
+            if (typeof def["name"] !== 'string')
+                return false;
+            // Enums require at least one value
+            if (typeof def["values"] === 'undefined' || !Array.isArray(def["values"]) || def["values"].length === 0)
+                return false;
+            return true;
+        };
+
+        /**
+         * Tests if a definition most likely describes a service.
+         * @param {!Object} def
+         * @returns {boolean}
+         * @expose
+         */
+        Builder.isService = function(def) {
+            // Services require a string name and an rpc object
+            if (typeof def["name"] !== 'string' || typeof def["rpc"] !== 'object' || !def["rpc"])
+                return false;
+            return true;
+        };
+
+        /**
+         * Tests if a definition most likely describes an extended message
+         * @param {!Object} def
+         * @returns {boolean}
+         * @expose
+         */
+        Builder.isExtend = function(def) {
+            if (typeof def["ref"] !== 'string')
+                return false;
+            return true;
+        };
+
+        // ----- Building -----
+
         /**
          * Resets the pointer to the root namespace.
          * @expose
@@ -4306,151 +4361,21 @@
         };
 
         /**
-         * Defines a package on top of the current pointer position and places the pointer on it.
-         * @param {string} pkg
-         * @return {ProtoBuf.Builder} this
-         * @throws {Error} If the package name is invalid
+         * Defines a namespace on top of the current pointer position and places the pointer on it.
+         * @param {string} namespace
+         * @return {!ProtoBuf.Builder} this
          * @expose
          */
-        BuilderPrototype.define = function(pkg) {
-            if (typeof pkg !== 'string' || !Lang.TYPEREF.test(pkg))
-                throw Error("Illegal package: "+pkg);
-            var part = pkg.split("."), i, ns;
-            for (i=0; i&lt;part.length; i++) // To be absolutely sure
-                if (!Lang.NAME.test(part[i]))
-                    throw Error("Illegal package: "+part[i]);
-            for (i=0; i&lt;part.length; i++) {
-                ns = this.ptr.getChild(part[i]);
+        BuilderPrototype.define = function(namespace) {
+            if (typeof namespace !== 'string' || !Lang.TYPEREF.test(namespace))
+                throw Error("illegal namespace: "+namespace);
+            namespace.split(".").forEach(function(part) {
+                var ns = this.ptr.getChild(part);
                 if (ns === null) // Keep existing
-                    this.ptr.addChild(ns = new Reflect.Namespace(this, this.ptr, part[i]));
+                    this.ptr.addChild(ns = new Reflect.Namespace(this, this.ptr, part));
                 this.ptr = ns;
-            }
+            }, this);
             return this;
-        };
-
-        /**
-         * Tests if a definition is a valid message definition.
-         * @param {Object.&lt;string,*>} def Definition
-         * @return {boolean} true if valid, else false
-         * @expose
-         */
-        Builder.isValidMessage = function(def) {
-            // Messages require a string name
-            if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]))
-                return false;
-            // Messages must not contain values (that'd be an enum) or methods (that'd be a service)
-            if (typeof def["values"] !== 'undefined' || typeof def["rpc"] !== 'undefined')
-                return false;
-            // Fields, enums and messages are arrays if provided
-            var i;
-            if (typeof def["fields"] !== 'undefined') {
-                if (!Array.isArray(def["fields"]))
-                    return false;
-                var ids = [], id; // IDs must be unique
-                for (i=0; i&lt;def["fields"].length; i++) {
-                    if (!Builder.isValidMessageField(def["fields"][i]))
-                        return false;
-                    id = parseInt(def["fields"][i]["id"], 10);
-                    if (ids.indexOf(id) >= 0)
-                        return false;
-                    ids.push(id);
-                }
-                ids = null;
-            }
-            if (typeof def["enums"] !== 'undefined') {
-                if (!Array.isArray(def["enums"]))
-                    return false;
-                for (i=0; i&lt;def["enums"].length; i++)
-                    if (!Builder.isValidEnum(def["enums"][i]))
-                        return false;
-            }
-            if (typeof def["messages"] !== 'undefined') {
-                if (!Array.isArray(def["messages"]))
-                    return false;
-                for (i=0; i&lt;def["messages"].length; i++)
-                    if (!Builder.isValidMessage(def["messages"][i]) &amp;&amp; !Builder.isValidExtend(def["messages"][i]))
-                        return false;
-            }
-            if (typeof def["extensions"] !== 'undefined')
-                if (!Array.isArray(def["extensions"]) || def["extensions"].length !== 2 || typeof def["extensions"][0] !== 'number' || typeof def["extensions"][1] !== 'number')
-                    return false;
-
-            if (def["syntax"] === 'proto3') {
-                for (i=0; i&lt;def["fields"].length; i++) {
-                    var field = def["fields"][i];
-                    // proto3 messages cannot contain required fields.
-                    if (field["rule"] === "required")
-                        return false;
-                    // proto3 message fields cannot contain default values.
-                    if (field["default"])
-                        return false;
-                    if (field["options"]) {
-                        var optionKeys = Object.keys(field["options"]);
-                        for (var j=0; j&lt;optionKeys.length; j++) {
-                            if (optionKeys[j] === "default") {
-                                return false;
-                            }
-                        }
-                    }
-                }
-                // proto3 messages cannot contain extensions.
-                if (def["extensions"])
-                    return false;
-            }
-            return true;
-        };
-
-        /**
-         * Tests if a definition is a valid message field definition.
-         * @param {Object} def Definition
-         * @return {boolean} true if valid, else false
-         * @expose
-         */
-        Builder.isValidMessageField = function(def) {
-            // Message fields require a string rule, name and type and an id
-            if (typeof def["rule"] !== 'string' || typeof def["name"] !== 'string' || typeof def["type"] !== 'string' || typeof def["id"] === 'undefined')
-                return false;
-            if (!Lang.RULE.test(def["rule"]) || !Lang.NAME.test(def["name"]) || !Lang.TYPEREF.test(def["type"]) || !Lang.ID.test(""+def["id"]))
-                return false;
-            if (typeof def["options"] !== 'undefined') {
-                // Options are objects
-                if (typeof def["options"] !== 'object')
-                    return false;
-            }
-            return true;
-        };
-
-        /**
-         * Tests if a definition is a valid enum definition.
-         * @param {Object} def Definition
-         * @return {boolean} true if valid, else false
-         * @expose
-         */
-        Builder.isValidEnum = function(def) {
-            // Enums require a string name
-            if (typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]))
-                return false;
-            // Enums require at least one value
-            if (typeof def["values"] === 'undefined' || !Array.isArray(def["values"]) || def["values"].length == 0)
-                return false;
-            for (var i=0; i&lt;def["values"].length; i++) {
-                // Values are objects
-                if (typeof def["values"][i] != "object")
-                    return false;
-                // Values require a string name and an id
-                if (typeof def["values"][i]["name"] !== 'string' || typeof def["values"][i]["id"] === 'undefined')
-                    return false;
-                if (!Lang.NAME.test(def["values"][i]["name"]) || !Lang.NEGID.test(""+def["values"][i]["id"]))
-                    return false;
-            }
-            // If this is a proto3 enum, the default (first) value must be 0.
-            if (def["syntax"] === 'proto3') {
-                if (def["values"][0]["id"] !== 0) {
-                    return false;
-                }
-            }
-            // It's not important if there are other fields because ["values"] is already unique
-            return true;
         };
 
         /**
@@ -4479,7 +4404,7 @@
                 if (Array.isArray(defs)) { // Stack always contains entire namespaces
                     while (defs.length > 0) {
                         var def = defs.shift(); // Namespace always contains an array of messages, enums and services
-                        if (Builder.isValidMessage(def)) {
+                        if (Builder.isMessage(def)) {
                             var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"], def["syntax"]);
                             // Create OneOfs
                             var oneofs = {};
@@ -4538,20 +4463,20 @@
                             }
                             subObj = null;
                             obj = null;
-                        } else if (Builder.isValidEnum(def)) {
+                        } else if (Builder.isEnum(def)) {
                             obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"], def["syntax"]);
                             for (i=0; i&lt;def["values"].length; i++)
                                 obj.addChild(new Reflect.Enum.Value(this, obj, def["values"][i]["name"], def["values"][i]["id"]));
                             this.ptr.addChild(obj);
                             obj = null;
-                        } else if (Builder.isValidService(def)) {
+                        } else if (Builder.isService(def)) {
                             obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
                             for (i in def["rpc"])
                                 if (def["rpc"].hasOwnProperty(i))
                                     obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], !!def["rpc"][i]["request_stream"], !!def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
                             this.ptr.addChild(obj);
                             obj = null;
-                        } else if (Builder.isValidExtend(def)) {
+                        } else if (Builder.isExtend(def)) {
                             obj = this.ptr.resolve(def["ref"], true);
                             if (obj) {
                                 for (i=0; i&lt;def["fields"].length; i++) { // i=Fields
@@ -4589,6 +4514,25 @@
             this.result = null; // Require re-build
             return this;
         };
+
+        /**
+         * Propagates syntax to all children.
+         * @param {!Object} parent
+         * @inner
+         */
+        function propagateSyntax(parent) {
+            if (parent['messages']) {
+                parent['messages'].forEach(function(child) {
+                    child["syntax"] = parent["syntax"];
+                    propagateSyntax(child);
+                });
+            }
+            if (parent['enums']) {
+                parent['enums'].forEach(function(child) {
+                    child["syntax"] = parent["syntax"];
+                });
+            }
+        }
 
         /**
          * Imports another definition into this builder.
@@ -4676,10 +4620,8 @@
             }
             if (json['package'])
                 this.define(json['package']);
-            if (json['syntax']) {
-                // Propagate syntax to all submessages and subenums
-                propagateSyntax(json['syntax'], json);
-            }
+            if (json['syntax'])
+                propagateSyntax(json);
             var base = this.ptr;
             if (json['options'])
                 Object.keys(json['options']).forEach(function(key) {
@@ -4698,44 +4640,6 @@
                 this.create(json['extends']);
             this.reset();
             return this;
-        };
-
-        /**
-         * Tests if a definition is a valid service definition.
-         * @param {Object} def Definition
-         * @return {boolean} true if valid, else false
-         * @expose
-         */
-        Builder.isValidService = function(def) {
-            // Services require a string name and an rpc object
-            return !(typeof def["name"] !== 'string' || !Lang.NAME.test(def["name"]) || typeof def["rpc"] !== 'object');
-        };
-
-        /**
-         * Tests if a definition is a valid extension.
-         * @param {Object} def Definition
-         * @returns {boolean} true if valid, else false
-         * @expose
-        */
-        Builder.isValidExtend = function(def) {
-            if (typeof def["ref"] !== 'string' || !Lang.TYPEREF.test(def["ref"]))
-                return false;
-            var i;
-            if (typeof def["fields"] !== 'undefined') {
-                if (!Array.isArray(def["fields"]))
-                    return false;
-                var ids = [], id; // IDs must be unique (does not yet test for the extended message's ids)
-                for (i=0; i&lt;def["fields"].length; i++) {
-                    if (!Builder.isValidMessageField(def["fields"][i]))
-                        return false;
-                    id = parseInt(def["id"], 10);
-                    if (ids.indexOf(id) >= 0)
-                        return false;
-                    ids.push(id);
-                }
-                ids = null;
-            }
-            return true;
         };
 
         /**
@@ -5232,7 +5136,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Jul 17 2015 16:13:26 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Jul 17 2015 18:07:21 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>
