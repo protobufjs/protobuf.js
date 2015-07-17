@@ -166,10 +166,14 @@ TokenizerPrototype.skip = function(expected) {
 /**
  * Omits an optional token.
  * @param {string} expected Expected optional token
+ * @returns {boolean} `true` if the token exists
  */
 TokenizerPrototype.omit = function(expected) {
-    if (this.peek() === expected)
+    if (this.peek() === expected) {
         this.next();
+        return true;
+    }
+    return false;
 };
 
 /**

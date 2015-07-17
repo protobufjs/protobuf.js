@@ -596,8 +596,18 @@
                     test.equal(root["package"], "My");
                     test.strictEqual(root["options"]["(toplevel_1)"], 10);
                     test.equal(root["options"]["(toplevel_2)"], "Hello world!");
-                    test.equal(root["messages"][0]["fields"][0]["options"]["default"], "Max");
-                    test.equal(root["messages"][0]["options"]["(inmessage)"], "My.Test")
+                    var opt = root["messages"][0]["fields"][0]["options"];
+                    test.equal(opt["default"], "Max");
+                    opt = root["messages"][0]["options"];
+                    test.strictEqual(opt["(inmessage)"], "My.Test");
+                    test.strictEqual(opt["(foo.my_option).bar"], false);
+                    opt = root["messages"][0]["fields"][1]["options"];
+                    test.strictEqual(opt["default"], "Shouldn't mix quotes");
+                    opt = root["messages"][0]["fields"][2]["options"];
+                    test.strictEqual(opt["default"], 'Shouldn"t mix quotes');
+                    opt = root["messages"][0]["fields"][3]["options"];
+                    test.strictEqual(opt["(foo_options).opt1"], 123);
+                    test.strictEqual(opt["(foo_options).opt2"], "baz");
                 } catch (e) {
                     fail(e);
                 }

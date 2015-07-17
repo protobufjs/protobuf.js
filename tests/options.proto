@@ -6,6 +6,8 @@ message Test {
     optional string name = 1 [default="Max"];
     optional string desc1 = 2 [default="Shouldn't mix quotes"];
     optional string desc2 = 3 [default='Shouldn"t mix quotes'];
+    optional string desc3 = 4 [(foo_options) = { opt1: 123 opt2: "baz" }];
+    optional string desc4 = 5 [(foo_options) = {options { opt1: 1234 opt2: "baz" } options { opt1: 4321 opt2: "foo" }} ];
     option (inmessage) = My.Test;
     option (foo.my_option).bar = false;
 }

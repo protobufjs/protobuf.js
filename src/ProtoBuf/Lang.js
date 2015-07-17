@@ -6,7 +6,7 @@
 ProtoBuf.Lang = {
 
     // Characters always ending a statement
-    DELIM: /[\s\{\}=;\[\],'"\(\)<>]/g,
+    DELIM: /[\s\{\}=;:\[\],'"\(\)<>]/g,
 
     // Field rules
     RULE: /^(?:required|optional|repeated|map)$/,

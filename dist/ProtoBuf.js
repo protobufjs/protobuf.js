@@ -429,7 +429,7 @@
     ProtoBuf.Lang = {
 
         // Characters always ending a statement
-        DELIM: /[\s\{\}=;\[\],'"\(\)<>]/g,
+        DELIM: /[\s\{\}=;:\[\],'"\(\)<>]/g,
 
         // Field rules
         RULE: /^(?:required|optional|repeated|map)$/,
@@ -664,10 +664,14 @@
         /**
          * Omits an optional token.
          * @param {string} expected Expected optional token
+         * @returns {boolean} `true` if the token exists
          */
         TokenizerPrototype.omit = function(expected) {
-            if (this.peek() === expected)
+            if (this.peek() === expected) {
                 this.next();
+                return true;
+            }
+            return false;
         };
 
         /**
@@ -916,9 +920,32 @@
                 }
             }
             this.tn.skip('=');
-            parent["options"][name] = this._readValue(true);
+            this._parseOptionValue(parent, name);
             if (!isList)
                 this.tn.skip(";");
+        };
+
+        /**
+         * Parses an option value.
+         * @param {!Object} parent
+         * @param {string} name
+         * @private
+         */
+        ParserPrototype._parseOptionValue = function(parent, name) {
+            var token = this.tn.peek();
+            if (token !== '{') { // Plain value
+                parent["options"][name] = this._readValue(true);
+            } else { // Aggregate options
+                this.tn.skip("{");
+                while ((token = this.tn.next()) !== '}') {
+                    if (!Lang.NAME.test(token))
+                        throw Error("illegal option name: " + name + "." + token);
+                    if (this.tn.omit(":"))
+                        parent["options"][name + "." + token] = this._readValue(true);
+                    else
+                        this._parseOptionValue(parent, name + "." + token);
+                }
+            }
         };
 
         /**
