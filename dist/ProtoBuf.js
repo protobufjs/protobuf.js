@@ -476,6 +476,12 @@
         // All strings
         STRING: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")|(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
 
+        // Double quoted strings
+        STRING_DQ: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
+
+        // Single quoted strings
+        STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
+
         // Booleans
         BOOL: /^(?:true|false)$/i
     };
@@ -508,7 +514,7 @@
              * @type {string}
              * @expose
              */
-            this.source = ""+proto; // In case it's a buffer
+            this.source = proto+"";
 
             /**
              * Current index.
@@ -525,25 +531,18 @@
             this.line = 1;
 
             /**
-             * Stacked values.
+             * Token stack.
              * @type {!Array.<string>}
              * @expose
              */
             this.stack = [];
 
             /**
-             * Whether currently reading a string or not.
-             * @type {boolean}
-             * @expose
+             * Opening character of the current string read, if any.
+             * @type {?string}
+             * @private
              */
-            this.readingString = false;
-
-            /**
-             * Whatever character ends the string. Either a single or double quote character.
-             * @type {string}
-             * @expose
-             */
-            this.stringEndsWith = '"';
+            this._stringOpen = null;
         };
 
         /**
@@ -554,37 +553,33 @@
 
         /**
          * Reads a string beginning at the current index.
-         * @return {string} The string
-         * @throws {Error} If it's not a valid string
+         * @return {string}
          * @private
          */
         TokenizerPrototype._readString = function() {
-            Lang.STRING.lastIndex = this.index-1; // Include the open quote
-            var match;
-            if ((match = Lang.STRING.exec(this.source)) !== null) {
-                var s = typeof match[1] !== 'undefined' ? match[1] : match[2];
-                this.index = Lang.STRING.lastIndex;
-                this.stack.push(this.stringEndsWith);
-                return s;
-            }
-            throw Error("Unterminated string at line "+this.line+", index "+this.index);
+            var re = this._stringOpen === '"' ? Lang.STRING_DQ : Lang.STRING_SQ;
+            re.lastIndex = this.index - 1; // Include the open quote
+            var match = re.exec(this.source);
+            if (!match)
+                throw Error("unterminated string");
+            this.index = re.lastIndex;
+            this.stack.push(this._stringOpen);
+            this._stringOpen = null;
+            return match[1];
         };
 
         /**
          * Gets the next token and advances by one.
          * @return {?string} Token or `null` on EOF
-         * @throws {Error} If it's not a valid proto file
          * @expose
          */
         TokenizerPrototype.next = function() {
             if (this.stack.length > 0)
                 return this.stack.shift();
             if (this.index >= this.source.length)
-                return null; // No more tokens
-            if (this.readingString) {
-                this.readingString = false;
+                return null;
+            if (this._stringOpen !== null)
                 return this._readString();
-            }
             var repeat, last;
             do {
                 repeat = false;
@@ -619,7 +614,7 @@
                         this.index++;
                         repeat = true;
                     } else
-                        throw Error("Unterminated comment at line "+this.line+": /"+this.source.charAt(this.index));
+                        throw Error("unterminated comment");
                 }
             } while (repeat);
             if (this.index === this.source.length) return null;
@@ -635,19 +630,14 @@
             } else
                 ++end;
             var token = this.source.substring(this.index, this.index = end);
-            if (token === '"')
-                this.readingString = true,
-                this.stringEndsWith = '"';
-            else if (token === "'")
-                this.readingString = true,
-                this.stringEndsWith = "'";
+            if (token === '"' || token === "'")
+                this._stringOpen = token;
             return token;
         };
 
         /**
          * Peeks for the next token.
          * @return {?string} Token or `null` on EOF
-         * @throws {Error} If it's not a valid proto file
          * @expose
          */
         TokenizerPrototype.peek = function() {
@@ -668,7 +658,7 @@
         TokenizerPrototype.skip = function(expected) {
             var actual = this.next();
             if (actual !== expected)
-                throw Error("illegal '"+actual+"', '"+expected+"' expected");
+                throw Error("illegal '"+actual+"', expected '"+expected+"'");
         };
 
         /**
@@ -866,7 +856,7 @@
             do {
                 delim = this.tn.next();
                 if (delim !== "'" && delim !== '"')
-                    throw this.Error("illegal string delimiter: "+delim);
+                    throw Error("illegal string delimiter: "+delim);
                 value += this.tn.next();
                 this.tn.skip(delim);
                 token = this.tn.peek();
@@ -939,7 +929,7 @@
         ParserPrototype._parseService = function(parent) {
             var token = this.tn.next();
             if (!Lang.NAME.test(token))
-                throw Error("Illegal service name at line "+this.tn.line+": "+token);
+                throw Error("illegal service name at line "+this.tn.line+": "+token);
             var name = token;
             var svc = {
                 "name": name,
@@ -1035,7 +1025,7 @@
                 // "extensions": undefined
             };
             if (!Lang.NAME.test(token))
-                throw Error("Illegal "+(isGroup ? "group" : "message")+" name: "+token);
+                throw Error("illegal "+(isGroup ? "group" : "message")+" name: "+token);
             msg["name"] = token;
             if (isGroup) {
                 this.tn.skip("=");
@@ -1102,7 +1092,7 @@
                 this.tn.skip(',');
                 token = this.tn.next();
                 if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token))
-                    throw Error("Illegal message field: " + token);
+                    throw Error("illegal message field: " + token);
                 fld["type"] = token;
                 this.tn.skip('>');
                 token = this.tn.next();
@@ -1284,6 +1274,8 @@
             parent["messages"].push(ext);
             return ext;
         };
+
+        // ----- General -----
 
         /**
          * Returns a string representation of this parser.

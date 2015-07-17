@@ -53,6 +53,12 @@ ProtoBuf.Lang = {
     // All strings
     STRING: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")|(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
 
+    // Double quoted strings
+    STRING_DQ: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
+
+    // Single quoted strings
+    STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
+
     // Booleans
     BOOL: /^(?:true|false)$/i
 };

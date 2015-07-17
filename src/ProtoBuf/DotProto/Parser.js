@@ -174,7 +174,7 @@ ParserPrototype._readString = function() {
     do {
         delim = this.tn.next();
         if (delim !== "'" && delim !== '"')
-            throw this.Error("illegal string delimiter: "+delim);
+            throw Error("illegal string delimiter: "+delim);
         value += this.tn.next();
         this.tn.skip(delim);
         token = this.tn.peek();
@@ -247,7 +247,7 @@ ParserPrototype._parseOption = function(parent, isList) {
 ParserPrototype._parseService = function(parent) {
     var token = this.tn.next();
     if (!Lang.NAME.test(token))
-        throw Error("Illegal service name at line "+this.tn.line+": "+token);
+        throw Error("illegal service name at line "+this.tn.line+": "+token);
     var name = token;
     var svc = {
         "name": name,
@@ -343,7 +343,7 @@ ParserPrototype._parseMessage = function(parent, fld) {
         // "extensions": undefined
     };
     if (!Lang.NAME.test(token))
-        throw Error("Illegal "+(isGroup ? "group" : "message")+" name: "+token);
+        throw Error("illegal "+(isGroup ? "group" : "message")+" name: "+token);
     msg["name"] = token;
     if (isGroup) {
         this.tn.skip("=");
@@ -410,7 +410,7 @@ ParserPrototype._parseMessageField = function(msg, rule, type) {
         this.tn.skip(',');
         token = this.tn.next();
         if (!Lang.TYPE.test(token) && !Lang.TYPEREF.test(token))
-            throw Error("Illegal message field: " + token);
+            throw Error("illegal message field: " + token);
         fld["type"] = token;
         this.tn.skip('>');
         token = this.tn.next();
@@ -592,6 +592,8 @@ ParserPrototype._parseExtend = function(parent) {
     parent["messages"].push(ext);
     return ext;
 };
+
+// ----- General -----
 
 /**
  * Returns a string representation of this parser.
