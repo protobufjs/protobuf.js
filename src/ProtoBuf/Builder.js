@@ -147,10 +147,12 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
     /**
      * Resets the pointer to the root namespace.
+     * @returns {!ProtoBuf.Builder} this
      * @expose
      */
     BuilderPrototype.reset = function() {
         this.ptr = this.ns;
+        return this;
     };
 
     /**
@@ -172,9 +174,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     };
 
     /**
-     * Creates ths specified protocol types at the current pointer position.
-     * @param {Array.<Object.<string,*>>} defs Messages, enums or services to create
-     * @return {ProtoBuf.Builder} this
+     * Creates the specified definitions at the current pointer position.
+     * @param {!Array.<!Object>} defs Messages, enums or services to create
+     * @returns {!ProtoBuf.Builder} this
      * @throws {Error} If a message definition is invalid
      * @expose
      */
@@ -190,12 +192,13 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         }
 
         // It's quite hard to keep track of scopes and memory here, so let's do this iteratively.
-        var stack = [];
-        stack.push(defs); // One level [a, b, c]
+        var stack = [defs];
         while (stack.length > 0) {
             defs = stack.pop();
+
             if (!Array.isArray(defs)) // Stack always contains entire namespaces
                 throw Error("not a valid namespace: "+JSON.stringify(defs));
+
             while (defs.length > 0) {
                 var def = defs.shift(); // Namespaces always contain an array of messages, enums and services
 
@@ -343,36 +346,37 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Imports another definition into this builder.
      * @param {Object.<string,*>} json Parsed import
      * @param {(string|{root: string, file: string})=} filename Imported file name
-     * @return {ProtoBuf.Builder} this
+     * @returns {!ProtoBuf.Builder} this
      * @throws {Error} If the definition or file cannot be imported
      * @expose
      */
     BuilderPrototype["import"] = function(json, filename) {
         var delim = '/';
 
+        // Make sure to skip duplicate imports
+
         if (typeof filename === 'string') {
 
             if (ProtoBuf.Util.IS_NODE)
                 filename = ProtoBuf.Util.require("path")['resolve'](filename);
-            if (this.files[filename] === true) {
-                this.reset();
-                return this; // Skip duplicate imports
-            }
+            if (this.files[filename] === true)
+                return this.reset();
             this.files[filename] = true;
 
-        } else if (typeof filename === 'object') { // Assume object with root, filename.
+        } else if (typeof filename === 'object') { // Object with root, file.
 
-            var root = filename.root
+            var root = filename.root;
             if (ProtoBuf.Util.IS_NODE)
                 root = ProtoBuf.Util.require("path")['resolve'](root);
-            if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0) delim = '\\';
-            var fname = [root, filename.file].join(delim);
-            if (this.files[fname] === true) {
-                this.reset();
-                return this; // Skip duplicate imports
-            }
+            if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0)
+                delim = '\\';
+            var fname = root + delim + filename.file;
+            if (this.files[fname] === true)
+                return this.reset();
             this.files[fname] = true;
         }
+
+        // Import imports
 
         if (json['imports'] && json['imports'].length > 0) {
             var importRoot,
@@ -383,7 +387,8 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
                 importRoot = this.importRoot;
                 filename = filename["file"];
-                if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
+                if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0)
+                    delim = '\\';
 
             } else if (typeof filename === 'string') {
 
@@ -434,6 +439,9 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             if (resetRoot) // Reset import root override when all imports are done
                 this.importRoot = null;
         }
+
+        // Import structures
+
         if (json['package'])
             this.define(json['package']);
         if (json['syntax'])
@@ -454,20 +462,21 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             this.ptr = base;
         if (json['extends'])
             this.create(json['extends']);
-        this.reset();
-        return this;
+
+        return this.reset();
     };
 
     /**
      * Resolves all namespace objects.
      * @throws {Error} If a type cannot be resolved
+     * @returns {!ProtoBuf.Builder} this
      * @expose
      */
     BuilderPrototype.resolveAll = function() {
         // Resolve all reflected objects
         var res;
         if (this.ptr == null || typeof this.ptr.type === 'object')
-            return; // Done (already resolved)
+            return this; // Done (already resolved)
 
         if (this.ptr instanceof Reflect.Namespace) { // Resolve children
 
@@ -525,14 +534,15 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             !(this.ptr instanceof ProtoBuf.Reflect.Enum.Value) // Built in enum
         )
             throw Error("illegal object in namespace: "+typeof(this.ptr)+": "+this.ptr);
-        this.reset();
+
+        return this.reset();
     };
 
     /**
      * Builds the protocol. This will first try to resolve all definitions and, if this has been successful,
      * return the built package.
      * @param {(string|Array.<string>)=} path Specifies what to return. If omitted, the entire namespace will be returned.
-     * @return {ProtoBuf.Builder.Message|Object.<string,*>}
+     * @returns {!ProtoBuf.Builder.Message|!Object.<string,*>}
      * @throws {Error} If a type could not be resolved
      * @expose
      */
@@ -546,25 +556,23 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             this.result = this.ns.build();
         if (!path)
             return this.result;
-        else {
-            var part = typeof path === 'string' ? path.split(".") : path,
-                ptr = this.result; // Build namespace pointer (no hasChild etc.)
-            for (var i=0; i<part.length; i++)
-                if (ptr[part[i]])
-                    ptr = ptr[part[i]];
-                else {
-                    ptr = null;
-                    break;
-                }
-            return ptr;
-        }
+        var part = typeof path === 'string' ? path.split(".") : path,
+            ptr = this.result; // Build namespace pointer (no hasChild etc.)
+        for (var i=0; i<part.length; i++)
+            if (ptr[part[i]])
+                ptr = ptr[part[i]];
+            else {
+                ptr = null;
+                break;
+            }
+        return ptr;
     };
 
     /**
      * Similar to {@link ProtoBuf.Builder#build}, but looks up the internal reflection descriptor.
      * @param {string=} path Specifies what to return. If omitted, the entire namespace wiil be returned.
      * @param {boolean=} excludeNonNamespace Excludes non-namespace types like fields, defaults to `false`
-     * @return {ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
+     * @returns {?ProtoBuf.Reflect.T} Reflection descriptor or `null` if not found
      */
     BuilderPrototype.lookup = function(path, excludeNonNamespace) {
         return path ? this.ns.resolve(path, excludeNonNamespace) : this.ns;
