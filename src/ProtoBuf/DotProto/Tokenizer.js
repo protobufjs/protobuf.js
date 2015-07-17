@@ -51,7 +51,7 @@ var Tokenizer = function(proto) {
      * @type {string}
      * @expose
      */
-    this.stringEndsWith = Lang.STRINGCLOSE;
+    this.stringEndsWith = '"';
 };
 
 /**
@@ -143,12 +143,12 @@ TokenizerPrototype.next = function() {
     } else
         ++end;
     var token = this.source.substring(this.index, this.index = end);
-    if (token === Lang.STRINGOPEN)
+    if (token === '"')
         this.readingString = true,
-        this.stringEndsWith = Lang.STRINGCLOSE;
-    else if (token === Lang.STRINGOPEN_SQ)
+        this.stringEndsWith = '"';
+    else if (token === "'")
         this.readingString = true,
-        this.stringEndsWith = Lang.STRINGCLOSE_SQ;
+        this.stringEndsWith = "'";
     return token;
 };
 
