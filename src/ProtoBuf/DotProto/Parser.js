@@ -1,7 +1,7 @@
 /*?
  // --- Scope ----------------------
  // Lang      : Language expressions
- // Tokenizer : .proto tokenizer
+ // Tokenizer : DotProto Tokenizer
  */
 /**
  * Constructs a new Parser.
@@ -240,6 +240,23 @@ ParserPrototype._parseOption = function(parent, isList) {
 };
 
 /**
+ * Sets an option on the specified options object.
+ * @param {!Object.<string,*>} options
+ * @param {string} name
+ * @param {string|number|boolean} value
+ * @inner
+ */
+function setOption(options, name, value) {
+    if (typeof options[name] === 'undefined')
+        options[name] = value;
+    else {
+        if (!Array.isArray(options[name]))
+            options[name] = [ options[name] ];
+        options[name].push(value);
+    }
+}
+
+/**
  * Parses an option value.
  * @param {!Object} parent
  * @param {string} name
@@ -248,14 +265,14 @@ ParserPrototype._parseOption = function(parent, isList) {
 ParserPrototype._parseOptionValue = function(parent, name) {
     var token = this.tn.peek();
     if (token !== '{') { // Plain value
-        parent["options"][name] = this._readValue(true);
+        setOption(parent["options"], name, this._readValue(true));
     } else { // Aggregate options
         this.tn.skip("{");
         while ((token = this.tn.next()) !== '}') {
             if (!Lang.NAME.test(token))
                 throw Error("illegal option name: " + name + "." + token);
             if (this.tn.omit(":"))
-                parent["options"][name + "." + token] = this._readValue(true);
+                setOption(parent["options"], name + "." + token, this._readValue(true));
             else
                 this._parseOptionValue(parent, name + "." + token);
         }

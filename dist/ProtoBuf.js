@@ -926,6 +926,23 @@
         };
 
         /**
+         * Sets an option on the specified options object.
+         * @param {!Object.<string,*>} options
+         * @param {string} name
+         * @param {string|number|boolean} value
+         * @inner
+         */
+        function setOption(options, name, value) {
+            if (typeof options[name] === 'undefined')
+                options[name] = value;
+            else {
+                if (!Array.isArray(options[name]))
+                    options[name] = [ options[name] ];
+                options[name].push(value);
+            }
+        }
+
+        /**
          * Parses an option value.
          * @param {!Object} parent
          * @param {string} name
@@ -934,14 +951,14 @@
         ParserPrototype._parseOptionValue = function(parent, name) {
             var token = this.tn.peek();
             if (token !== '{') { // Plain value
-                parent["options"][name] = this._readValue(true);
+                setOption(parent["options"], name, this._readValue(true));
             } else { // Aggregate options
                 this.tn.skip("{");
                 while ((token = this.tn.next()) !== '}') {
                     if (!Lang.NAME.test(token))
                         throw Error("illegal option name: " + name + "." + token);
                     if (this.tn.omit(":"))
-                        parent["options"][name + "." + token] = this._readValue(true);
+                        setOption(parent["options"], name + "." + token, this._readValue(true));
                     else
                         this._parseOptionValue(parent, name + "." + token);
                 }
@@ -4372,11 +4389,6 @@
                 // Options are objects
                 if (typeof def["options"] !== 'object')
                     return false;
-                // Options are <string,string|number|boolean>
-                var keys = Object.keys(def["options"]);
-                for (var i=0, key; i<keys.length; i++)
-                    if (typeof (key = keys[i]) !== 'string' || (typeof def["options"][key] !== 'string' && typeof def["options"][key] !== 'number' && typeof def["options"][key] !== 'boolean'))
-                        return false;
             }
             return true;
         };
@@ -4455,15 +4467,8 @@
                                     var fld = def['fields'][i];
                                     if (obj.getChild(fld['id']) !== null)
                                         throw Error("Duplicate field id in message "+obj.name+": "+fld['id']);
-                                    if (fld["options"]) {
-                                        var opts = Object.keys(fld["options"]);
-                                        for (var j= 0,l=opts.length; j<l; ++j) { // j:l=Option names
-                                            if (typeof opts[j] !== 'string')
-                                                throw Error("Illegal field option name in message "+obj.name+"#"+fld["name"]+": "+opts[j]);
-                                            if (typeof fld["options"][opts[j]] !== 'string' && typeof fld["options"][opts[j]] !== 'number' && typeof fld["options"][opts[j]] !== 'boolean')
-                                                throw Error("Illegal field option value in message "+obj.name+"#"+fld["name"]+"#"+opts[j]+": "+fld["options"][opts[j]]);
-                                        }
-                                    }
+                                    if (fld["options"] && typeof fld["options"] !== 'object')
+                                        throw Error("illegal field options in message "+obj.name+"#"+fld["name"]);
                                     var oneof = null;
                                     if (typeof fld["oneof"] === 'string') {
                                         oneof = oneofs[fld["oneof"]];

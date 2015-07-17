@@ -208,11 +208,6 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
             // Options are objects
             if (typeof def["options"] !== 'object')
                 return false;
-            // Options are <string,string|number|boolean>
-            var keys = Object.keys(def["options"]);
-            for (var i=0, key; i<keys.length; i++)
-                if (typeof (key = keys[i]) !== 'string' || (typeof def["options"][key] !== 'string' && typeof def["options"][key] !== 'number' && typeof def["options"][key] !== 'boolean'))
-                    return false;
         }
         return true;
     };
@@ -291,15 +286,8 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                                 var fld = def['fields'][i];
                                 if (obj.getChild(fld['id']) !== null)
                                     throw Error("Duplicate field id in message "+obj.name+": "+fld['id']);
-                                if (fld["options"]) {
-                                    var opts = Object.keys(fld["options"]);
-                                    for (var j= 0,l=opts.length; j<l; ++j) { // j:l=Option names
-                                        if (typeof opts[j] !== 'string')
-                                            throw Error("Illegal field option name in message "+obj.name+"#"+fld["name"]+": "+opts[j]);
-                                        if (typeof fld["options"][opts[j]] !== 'string' && typeof fld["options"][opts[j]] !== 'number' && typeof fld["options"][opts[j]] !== 'boolean')
-                                            throw Error("Illegal field option value in message "+obj.name+"#"+fld["name"]+"#"+opts[j]+": "+fld["options"][opts[j]]);
-                                    }
-                                }
+                                if (fld["options"] && typeof fld["options"] !== 'object')
+                                    throw Error("illegal field options in message "+obj.name+"#"+fld["name"]);
                                 var oneof = null;
                                 if (typeof fld["oneof"] === 'string') {
                                     oneof = oneofs[fld["oneof"]];
