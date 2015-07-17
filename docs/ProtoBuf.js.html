@@ -4345,6 +4345,7 @@
          * @expose
          */
         Builder.isExtend = function(def) {
+            // Extends rquire a string ref
             if (typeof def["ref"] !== 'string')
                 return false;
             return true;
@@ -4401,114 +4402,126 @@
             stack.push(defs); // One level [a, b, c]
             while (stack.length > 0) {
                 defs = stack.pop();
-                if (Array.isArray(defs)) { // Stack always contains entire namespaces
-                    while (defs.length > 0) {
-                        var def = defs.shift(); // Namespace always contains an array of messages, enums and services
-                        if (Builder.isMessage(def)) {
-                            var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"], def["syntax"]);
-                            // Create OneOfs
-                            var oneofs = {};
-                            if (def["oneofs"]) {
-                                var keys = Object.keys(def["oneofs"]);
-                                for (var i=0, k=keys.length; i&lt;k; ++i)
-                                    obj.addChild(oneofs[keys[i]] = new Reflect.Message.OneOf(this, obj, keys[i]));
-                            }
-                            // Create fields
-                            if (def["fields"] &amp;&amp; def["fields"].length > 0) {
-                                for (i=0, k=def["fields"].length; i&lt;k; ++i) { // i:k=Fields
-                                    var fld = def['fields'][i];
-                                    if (obj.getChild(fld['id']) !== null)
-                                        throw Error("Duplicate field id in message "+obj.name+": "+fld['id']);
-                                    if (fld["options"] &amp;&amp; typeof fld["options"] !== 'object')
-                                        throw Error("illegal field options in message "+obj.name+"#"+fld["name"]);
-                                    var oneof = null;
-                                    if (typeof fld["oneof"] === 'string') {
-                                        oneof = oneofs[fld["oneof"]];
-                                        if (typeof oneof === 'undefined')
-                                            throw Error("Illegal oneof in message "+obj.name+"#"+fld["name"]+": "+fld["oneof"]);
-                                    }
-                                    fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["keytype"], fld["type"], fld["name"], fld["id"], fld["options"], oneof, def["syntax"]);
-                                    if (oneof)
-                                        oneof.fields.push(fld);
-                                    obj.addChild(fld);
-                                }
-                            }
-                            // Push enums, messages and services to stack
-                            var subObj = [];
-                            if (typeof def["enums"] !== 'undefined' &amp;&amp; def['enums'].length > 0)
-                                for (i=0; i&lt;def["enums"].length; i++)
-                                    subObj.push(def["enums"][i]);
-                            if (def["messages"] &amp;&amp; def["messages"].length > 0)
-                                for (i=0; i&lt;def["messages"].length; i++)
-                                    subObj.push(def["messages"][i]);
-                            if (def["services"] &amp;&amp; def["services"].length > 0)
-                                for (i=0; i&lt;def["services"].length; i++)
-                                    subObj.push(def["services"][i]);
-                            // Set extension range
-                            if (def["extensions"]) {
-                                obj.extensions = def["extensions"];
-                                if (obj.extensions[0] &lt; ProtoBuf.ID_MIN)
-                                    obj.extensions[0] = ProtoBuf.ID_MIN;
-                                if (obj.extensions[1] > ProtoBuf.ID_MAX)
-                                    obj.extensions[1] = ProtoBuf.ID_MAX;
-                            }
-                            this.ptr.addChild(obj); // Add to current namespace
-                            if (subObj.length > 0) {
-                                stack.push(defs); // Push the current level back
-                                defs = subObj; // Continue processing sub level
-                                subObj = null;
-                                this.ptr = obj; // And move the pointer to this namespace
-                                obj = null;
-                                continue;
-                            }
+                if (!Array.isArray(defs)) // Stack always contains entire namespaces
+                    throw Error("not a valid namespace: "+JSON.stringify(defs));
+                while (defs.length > 0) {
+                    var def = defs.shift(); // Namespaces always contain an array of messages, enums and services
+
+                    if (Builder.isMessage(def)) {
+                        var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"], def["syntax"]);
+
+                        // Create OneOfs
+                        var oneofs = {};
+                        if (def["oneofs"])
+                            Object.keys(def["oneofs"]).forEach(function(name) {
+                                obj.addChild(oneofs[name] = new Reflect.Message.OneOf(this, obj, name));
+                            }, this);
+
+                        // Create fields
+                        if (def["fields"])
+                            def["fields"].forEach(function(fld) {
+                                if (obj.getChild(fld["id"]|0) !== null)
+                                    throw Error("duplicate or invalid field id in "+obj.name+": "+fld['id']);
+                                if (fld["options"] &amp;&amp; typeof fld["options"] !== 'object')
+                                    throw Error("illegal field options in "+obj.name+"#"+fld["name"]);
+                                var oneof = null;
+                                if (typeof fld["oneof"] === 'string' &amp;&amp; !(oneof = oneofs[fld["oneof"]]))
+                                    throw Error("illegal oneof in "+obj.name+"#"+fld["name"]+": "+fld["oneof"]);
+                                fld = new Reflect.Message.Field(this, obj, fld["rule"], fld["keytype"], fld["type"], fld["name"], fld["id"], fld["options"], oneof, def["syntax"]);
+                                if (oneof)
+                                    oneof.fields.push(fld);
+                                obj.addChild(fld);
+                            }, this);
+
+                        // Push children to stack
+                        var subObj = [];
+                        if (def["enums"])
+                            def["enums"].forEach(function(enm) {
+                                subObj.push(enm);
+                            });
+                        if (def["messages"])
+                            def["messages"].forEach(function(msg) {
+                                subObj.push(msg);
+                            });
+                        if (def["services"])
+                            def["services"].forEach(function(svc) {
+                                subObj.push(svc);
+                            });
+
+                        // Set extension range
+                        if (def["extensions"]) {
+                            obj.extensions = def["extensions"];
+                            if (obj.extensions[0] &lt; ProtoBuf.ID_MIN)
+                                obj.extensions[0] = ProtoBuf.ID_MIN;
+                            if (obj.extensions[1] > ProtoBuf.ID_MAX)
+                                obj.extensions[1] = ProtoBuf.ID_MAX;
+                        }
+
+                        // Create on top of current namespace
+                        this.ptr.addChild(obj);
+                        if (subObj.length > 0) {
+                            stack.push(defs); // Push the current level back
+                            defs = subObj; // Continue processing sub level
                             subObj = null;
+                            this.ptr = obj; // And move the pointer to this namespace
                             obj = null;
-                        } else if (Builder.isEnum(def)) {
-                            obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"], def["syntax"]);
-                            for (i=0; i&lt;def["values"].length; i++)
-                                obj.addChild(new Reflect.Enum.Value(this, obj, def["values"][i]["name"], def["values"][i]["id"]));
-                            this.ptr.addChild(obj);
-                            obj = null;
-                        } else if (Builder.isService(def)) {
-                            obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
-                            for (i in def["rpc"])
-                                if (def["rpc"].hasOwnProperty(i))
-                                    obj.addChild(new Reflect.Service.RPCMethod(this, obj, i, def["rpc"][i]["request"], def["rpc"][i]["response"], !!def["rpc"][i]["request_stream"], !!def["rpc"][i]["response_stream"], def["rpc"][i]["options"]));
-                            this.ptr.addChild(obj);
-                            obj = null;
-                        } else if (Builder.isExtend(def)) {
-                            obj = this.ptr.resolve(def["ref"], true);
-                            if (obj) {
-                                for (i=0; i&lt;def["fields"].length; i++) { // i=Fields
-                                    if (obj.getChild(def['fields'][i]['id']) !== null)
-                                        throw Error("Duplicate extended field id in message "+obj.name+": "+def['fields'][i]['id']);
-                                    if (def['fields'][i]['id'] &lt; obj.extensions[0] || def['fields'][i]['id'] > obj.extensions[1])
-                                        throw Error("Illegal extended field id in message "+obj.name+": "+def['fields'][i]['id']+" ("+obj.extensions.join(' to ')+" expected)");
-                                    // Convert extension field names to camel case notation if the override is set
-                                    var name = def["fields"][i]["name"];
-                                    if (this.options['convertFieldsToCamelCase'])
-                                        name = ProtoBuf.Util.toCamelCase(def["fields"][i]["name"]);
-                                    // see #161: Extensions use their fully qualified name as their runtime key and...
-                                    fld = new Reflect.Message.ExtensionField(this, obj, def["fields"][i]["rule"], def["fields"][i]["type"], this.ptr.fqn()+'.'+name, def["fields"][i]["id"], def["fields"][i]["options"]);
-                                    // ...are added on top of the current namespace as an extension which is used for
-                                    // resolving their type later on (the extension always keeps the original name to
-                                    // prevent naming collisions)
-                                    var ext = new Reflect.Extension(this, this.ptr, def["fields"][i]["name"], fld);
-                                    fld.extension = ext;
-                                    this.ptr.addChild(ext);
-                                    obj.addChild(fld);
-                                }
-                            } else if (!/\.?google\.protobuf\./.test(def["ref"])) // Silently skip internal extensions
-                                throw Error("Extended message "+def["ref"]+" is not defined");
-                        } else
-                            throw Error("Not a valid definition: "+JSON.stringify(def));
-                        def = null;
-                    }
-                    // Break goes here
-                } else
-                    throw Error("Not a valid namespace: "+JSON.stringify(defs));
+                            continue;
+                        }
+                        subObj = null;
+
+                    } else if (Builder.isEnum(def)) {
+
+                        obj = new Reflect.Enum(this, this.ptr, def["name"], def["options"], def["syntax"]);
+                        def["values"].forEach(function(val) {
+                            obj.addChild(new Reflect.Enum.Value(this, obj, val["name"], val["id"]));
+                        }, this);
+                        this.ptr.addChild(obj);
+
+                    } else if (Builder.isService(def)) {
+
+                        obj = new Reflect.Service(this, this.ptr, def["name"], def["options"]);
+                        Object.keys(def["rpc"]).forEach(function(name) {
+                            var mtd = def["rpc"][name];
+                            obj.addChild(new Reflect.Service.RPCMethod(this, obj, name, mtd["request"], mtd["response"], !!mtd["request_stream"], !!mtd["response_stream"], mtd["options"]));
+                        }, this);
+                        this.ptr.addChild(obj);
+
+                    } else if (Builder.isExtend(def)) {
+
+                        obj = this.ptr.resolve(def["ref"], true);
+                        if (obj) {
+                            def["fields"].forEach(function(fld) {
+                                if (obj.getChild(fld['id']|0) !== null)
+                                    throw Error("duplicate extended field id in "+obj.name+": "+fld['id']);
+                                if (fld['id'] &lt; obj.extensions[0] || fld['id'] > obj.extensions[1])
+                                    throw Error("illegal extended field id in "+obj.name+": "+fld['id']+" ("+obj.extensions.join(' to ')+" expected)");
+                                // Convert extension field names to camel case notation if the override is set
+                                var name = fld["name"];
+                                if (this.options['convertFieldsToCamelCase'])
+                                    name = ProtoBuf.Util.toCamelCase(name);
+                                // see #161: Extensions use their fully qualified name as their runtime key and...
+                                var field = new Reflect.Message.ExtensionField(this, obj, fld["rule"], fld["type"], this.ptr.fqn()+'.'+name, fld["id"], fld["options"]);
+                                // ...are added on top of the current namespace as an extension which is used for
+                                // resolving their type later on (the extension always keeps the original name to
+                                // prevent naming collisions)
+                                var ext = new Reflect.Extension(this, this.ptr, fld["name"], field);
+                                field.extension = ext;
+                                this.ptr.addChild(ext);
+                                obj.addChild(field);
+                            }, this);
+
+                        } else if (!/\.?google\.protobuf\./.test(def["ref"])) // Silently skip internal extensions
+                            throw Error("extended message "+def["ref"]+" is not defined");
+
+                    } else
+                        throw Error("not a valid definition: "+JSON.stringify(def));
+
+                    def = null;
+                    obj = null;
+                }
+                // Break goes here
                 defs = null;
-                this.ptr = this.ptr.parent; // This namespace is s done
+                this.ptr = this.ptr.parent; // Namespace done, continue at parent
             }
             this.resolved = false; // Require re-resolve
             this.result = null; // Require re-build
@@ -4543,7 +4556,10 @@
          * @expose
          */
         BuilderPrototype["import"] = function(json, filename) {
+            var delim = '/';
+
             if (typeof filename === 'string') {
+
                 if (ProtoBuf.Util.IS_NODE)
                     filename = ProtoBuf.Util.require("path")['resolve'](filename);
                 if (this.files[filename] === true) {
@@ -4551,27 +4567,34 @@
                     return this; // Skip duplicate imports
                 }
                 this.files[filename] = true;
+
             } else if (typeof filename === 'object') { // Assume object with root, filename.
+
                 var root = filename.root
                 if (ProtoBuf.Util.IS_NODE)
                     root = ProtoBuf.Util.require("path")['resolve'](root);
-                var delim = '/';
                 if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0) delim = '\\';
                 var fname = [root, filename.file].join(delim);
                 if (this.files[fname] === true) {
-                  this.reset();
-                  return this; // Skip duplicate imports
+                    this.reset();
+                    return this; // Skip duplicate imports
                 }
                 this.files[fname] = true;
             }
-            if (!!json['imports'] &amp;&amp; json['imports'].length > 0) {
-                var importRoot, delim = '/', resetRoot = false;
+
+            if (json['imports'] &amp;&amp; json['imports'].length > 0) {
+                var importRoot,
+                    resetRoot = false;
+
                 if (typeof filename === 'object') { // If an import root is specified, override
+
                     this.importRoot = filename["root"]; resetRoot = true; // ... and reset afterwards
                     importRoot = this.importRoot;
                     filename = filename["file"];
                     if (importRoot.indexOf("\\") >= 0 || filename.indexOf("\\") >= 0) delim = '\\';
+
                 } else if (typeof filename === 'string') {
+
                     if (this.importRoot) // If import root is overridden, use it
                         importRoot = this.importRoot;
                     else { // Otherwise compute from filename
@@ -4585,13 +4608,14 @@
                         } else
                             importRoot = ".";
                     }
+
                 } else
                     importRoot = null;
 
                 for (var i=0; i&lt;json['imports'].length; i++) {
                     if (typeof json['imports'][i] === 'string') { // Import file
                         if (!importRoot)
-                            throw Error("Cannot determine import root: File name is unknown");
+                            throw Error("cannot determine import root");
                         var importFilename = json['imports'][i];
                         if (importFilename === "google/protobuf/descriptor.proto")
                             continue; // Not needed and therefore not used
@@ -4602,7 +4626,7 @@
                             importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
                         var contents = ProtoBuf.Util.fetch(importFilename);
                         if (contents === null)
-                            throw Error("Failed to import '"+importFilename+"' in '"+filename+"': File not found");
+                            throw Error("failed to import '"+importFilename+"' in '"+filename+"': file not found");
                         if (/\.json$/i.test(importFilename)) // Always possible
                             this["import"](JSON.parse(contents+""), importFilename); // May throw
                         else
@@ -4652,46 +4676,45 @@
             var res;
             if (this.ptr == null || typeof this.ptr.type === 'object')
                 return; // Done (already resolved)
-            if (this.ptr instanceof Reflect.Namespace) {
-                // Build all children
-                var children = this.ptr.children;
-                for (var i= 0, k=children.length; i&lt;k; ++i)
-                    this.ptr = children[i],
+
+            if (this.ptr instanceof Reflect.Namespace) { // Resolve children
+
+                this.ptr.children.forEach(function(child) {
+                    this.ptr = child;
                     this.resolveAll();
-            } else if (this.ptr instanceof Reflect.Message.Field) {
-                if (!Lang.TYPE.test(this.ptr.type)) { // Resolve type...
+                }, this);
+
+            } else if (this.ptr instanceof Reflect.Message.Field) { // Resolve type
+
+                if (!Lang.TYPE.test(this.ptr.type)) {
                     if (!Lang.TYPEREF.test(this.ptr.type))
-                        throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
+                        throw Error("illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                     res = (this.ptr instanceof Reflect.Message.ExtensionField ? this.ptr.extension.parent : this.ptr.parent).resolve(this.ptr.type, true);
                     if (!res)
-                        throw Error("Unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
+                        throw Error("unresolvable type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                     this.ptr.resolvedType = res;
                     if (res instanceof Reflect.Enum) {
                         this.ptr.type = ProtoBuf.TYPES["enum"];
                         if (this.ptr.syntax === 'proto3' &amp;&amp; res.syntax !== 'proto3')
-                            throw Error("Proto3 message refers to proto2 enum; " +
-                                        "this is not allowed due to differing " +
-                                        "enum semantics in proto3");
+                            throw Error("proto3 message cannot reference proto2 enum");
                     }
                     else if (res instanceof Reflect.Message)
                         this.ptr.type = res.isGroup ? ProtoBuf.TYPES["group"] : ProtoBuf.TYPES["message"];
                     else
-                        throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
+                        throw Error("illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.type);
                 } else
                     this.ptr.type = ProtoBuf.TYPES[this.ptr.type];
 
-                // If it's a map field, also resolve the key type. The key type can
-                // be only a numeric, string, or bool type (i.e., no enums or
-                // messages), so we don't need to resolve against the current
-                // namespace.
+                // If it's a map field, also resolve the key type. The key type can be only a numeric, string, or bool type
+                // (i.e., no enums or messages), so we don't need to resolve against the current namespace.
                 if (this.ptr.map) {
                     if (!Lang.TYPE.test(this.ptr.keyType))
-                        throw Error("Illegal key type for map field in "+this.ptr.toString(true)+": "+this.ptr.type);
+                        throw Error("illegal key type for map field in "+this.ptr.toString(true)+": "+this.ptr.keyType);
                     this.ptr.keyType = ProtoBuf.TYPES[this.ptr.keyType];
                 }
-            } else if (this.ptr instanceof ProtoBuf.Reflect.Enum.Value) {
-                // No need to build enum values (built in enum)
+
             } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {
+
                 if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
                     res = this.ptr.parent.resolve(this.ptr.requestName, true);
                     if (!res || !(res instanceof ProtoBuf.Reflect.Message))
@@ -4701,12 +4724,15 @@
                     if (!res || !(res instanceof ProtoBuf.Reflect.Message))
                         throw Error("Illegal type reference in "+this.ptr.toString(true)+": "+this.ptr.responseName);
                     this.ptr.resolvedResponseType = res;
-                } else {
-                    // Should not happen as nothing else is implemented
-                    throw Error("Illegal service type in "+this.ptr.toString(true));
-                }
-            } else if (!(this.ptr instanceof ProtoBuf.Reflect.Message.OneOf) &amp;&amp; !(this.ptr instanceof ProtoBuf.Reflect.Extension))
-                throw Error("Illegal object in namespace: "+typeof(this.ptr)+":"+this.ptr);
+                } else // Should not happen as nothing else is implemented
+                    throw Error("illegal service type in "+this.ptr.toString(true));
+
+            } else if (
+                !(this.ptr instanceof ProtoBuf.Reflect.Message.OneOf) &amp;&amp; // Not built
+                !(this.ptr instanceof ProtoBuf.Reflect.Extension) &amp;&amp; // Not built
+                !(this.ptr instanceof ProtoBuf.Reflect.Enum.Value) // Built in enum
+            )
+                throw Error("illegal object in namespace: "+typeof(this.ptr)+": "+this.ptr);
             this.reset();
         };
 
@@ -4761,9 +4787,17 @@
             return "Builder";
         };
 
-        // Pseudo types documented in Reflect.js.
+        // ----- Base classes -----
         // Exist for the sole purpose of being able to "... instanceof ProtoBuf.Builder.Message" etc.
+
+        /**
+         * @alias ProtoBuf.Builder.Message
+         */
         Builder.Message = function() {};
+
+        /**
+         * @alias ProtoBuf.Builder.Message
+         */
         Builder.Service = function() {};
 
         return Builder;
@@ -5136,7 +5170,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Jul 17 2015 18:07:21 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Jul 17 2015 18:49:16 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>
