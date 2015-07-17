@@ -169,6 +169,26 @@ TokenizerPrototype.peek = function() {
 };
 
 /**
+ * Skips a specific token and throws if it differs.
+ * @param {string} expected Expected token
+ * @throws {Error} If the actual token differs
+ */
+TokenizerPrototype.skip = function(expected) {
+    var actual = this.next();
+    if (actual !== expected)
+        throw Error("illegal '"+actual+"', '"+expected+"' expected");
+};
+
+/**
+ * Omits an optional token.
+ * @param {string} expected Expected optional token
+ */
+TokenizerPrototype.omit = function(expected) {
+    if (this.peek() === expected)
+        this.next();
+};
+
+/**
  * Returns a string representation of this object.
  * @return {string} String representation as of "Tokenizer(index/length)"
  * @expose
