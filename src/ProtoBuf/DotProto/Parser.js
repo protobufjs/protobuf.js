@@ -103,6 +103,16 @@ ParserPrototype.parse = function() {
     return topLevel;
 };
 
+/**
+ * Parses the specified source.
+ * @returns {!Object}
+ * @throws {Error} If the source cannot be parsed
+ * @expose
+ */
+Parser.parse = function(source) {
+    return new Parser(source).parse();
+};
+
 // ----- Conversion ------
 
 /**

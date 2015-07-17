@@ -789,6 +789,16 @@
             return topLevel;
         };
 
+        /**
+         * Parses the specified source.
+         * @returns {!Object}
+         * @throws {Error} If the source cannot be parsed
+         * @expose
+         */
+        Parser.parse = function(source) {
+            return new Parser(source).parse();
+        };
+
         // ----- Conversion ------
 
         /**
@@ -4603,7 +4613,7 @@
                         if (/\.json$/i.test(importFilename)) // Always possible
                             this["import"](JSON.parse(contents+""), importFilename); // May throw
                         else
-                            this["import"]((new ProtoBuf.DotProto.Parser(contents+"")).parse(), importFilename); // May throw
+                            this["import"](ProtoBuf.DotProto.Parser.parse(contents), importFilename); // May throw
                     } else // Import structure
                         if (!filename)
                             this["import"](json['imports'][i]);
@@ -4989,7 +4999,7 @@
         if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
             filename = builder,
             builder = undefined;
-        return ProtoBuf.loadJson((new ProtoBuf.DotProto.Parser(proto)).parse(), builder, filename);
+        return ProtoBuf.loadJson(ProtoBuf.DotProto.Parser.parse(proto), builder, filename);
     };
 
     /**

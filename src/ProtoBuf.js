@@ -283,7 +283,7 @@ ProtoBuf.loadProto = function(proto, builder, filename) {
     if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
         filename = builder,
         builder = undefined;
-    return ProtoBuf.loadJson((new ProtoBuf.DotProto.Parser(proto)).parse(), builder, filename);
+    return ProtoBuf.loadJson(ProtoBuf.DotProto.Parser.parse(proto), builder, filename);
 };
 
 /**

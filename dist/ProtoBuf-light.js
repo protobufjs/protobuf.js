@@ -3751,7 +3751,7 @@
                         if (/\.json$/i.test(importFilename)) // Always possible
                             this["import"](JSON.parse(contents+""), importFilename); // May throw
                         else
-                            this["import"]((new ProtoBuf.DotProto.Parser(contents+"")).parse(), importFilename); // May throw
+                            this["import"](ProtoBuf.DotProto.Parser.parse(contents), importFilename); // May throw
                     } else // Import structure
                         if (!filename)
                             this["import"](json['imports'][i]);

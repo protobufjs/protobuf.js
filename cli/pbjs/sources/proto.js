@@ -58,8 +58,7 @@ proto.load = function(filename, options, loaded) {
     loaded = loaded || [];
     if (loaded.indexOf(filename) >= 0)
         return {};
-    var parser = new ProtoBuf.DotProto.Parser(fs.readFileSync(filename).toString("utf8")),
-        data = parser.parse();
+    var data = ProtoBuf.DotProto.Parser.parse(fs.readFileSync(filename).toString("utf8"));
     loaded.push(filename);
     if (Array.isArray(data['imports'])) {
         var imports = data['imports'];
