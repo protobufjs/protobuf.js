@@ -7,17 +7,17 @@
  * Constructs a new Parser.
  * @exports ProtoBuf.DotProto.Parser
  * @class prototype parser
- * @param {string} proto Protocol source
+ * @param {string} source Source
  * @constructor
  */
-var Parser = function(proto) {
+var Parser = function(source) {
 
     /**
      * Tokenizer.
      * @type {!ProtoBuf.DotProto.Tokenizer}
      * @expose
      */
-    this.tn = new Tokenizer(proto);
+    this.tn = new Tokenizer(source);
 };
 
 /**
@@ -28,7 +28,7 @@ var ParserPrototype = Parser.prototype;
 
 /**
  * Parses the source.
- * @returns {!{package: string|null, messages: Array.<object>, enums: Array.<object>, imports: Array.<string>, options: object<string,*>}}
+ * @returns {!Object}
  * @throws {Error} If the source cannot be parsed
  * @expose
  */
@@ -306,8 +306,9 @@ ParserPrototype._parseServiceRPC = function(svc) {
     }
     method["response"] = token;
     this.tn.skip(")");
-    token = this.tn.next();
+    token = this.tn.peek();
     if (token === '{') {
+        this.tn.next();
         while ((token = this.tn.next()) !== '}') {
             if (token === 'option')
                 this._parseOption(method);
