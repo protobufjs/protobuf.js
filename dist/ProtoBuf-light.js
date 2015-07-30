@@ -2914,7 +2914,7 @@
         };
 
         /**
-         * Gets the name of an enum value.
+         * Gets the string name of an enum value.
          * @param {!ProtoBuf.Builder.Enum} enm Runtime enum
          * @param {number} value Enum value
          * @returns {?string} Name or `null` if not present
@@ -2944,18 +2944,11 @@
                 values = this.getChildren(Enum.Value);
             for (var i=0, k=values.length; i<k; ++i)
                 enm[values[i]['name']] = values[i]['id'];
-            if (Object.defineProperty) {
+            if (Object.defineProperty)
                 Object.defineProperty(enm, '$options', {
                     "value": this.buildOpt(),
                     "enumerable": false
                 });
-                Object.defineProperty(enm, "getName", {
-                    "value": function(id) {
-                        return Enum.getName(enm, id);
-                    },
-                    "enumerable": false
-                });
-            }
             return this.object = enm;
         };
 
@@ -3946,7 +3939,7 @@
         Builder.Message = function() {};
 
         /**
-         * @alias ProtOBuf.Builder.Enum
+         * @alias ProtoBuf.Builder.Enum
          */
         Builder.Enum = function() {};
 
