@@ -59,7 +59,9 @@ var TokenizerPrototype = Tokenizer.prototype;
  * @private
  */
 TokenizerPrototype._readString = function() {
-    var re = this._stringOpen === '"' ? Lang.STRING_DQ : Lang.STRING_SQ;
+    var re = this._stringOpen === '"'
+        ? Lang.STRING_DQ
+        : Lang.STRING_SQ;
     re.lastIndex = this.index - 1; // Include the open quote
     var match = re.exec(this.source);
     if (!match)
@@ -82,55 +84,57 @@ TokenizerPrototype.next = function() {
         return null;
     if (this._stringOpen !== null)
         return this._readString();
-    var repeat, last;
+
+    var repeat,
+        prev,
+        next;
     do {
         repeat = false;
+
         // Strip white spaces
-        while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
-            this.index++;
-            if (last === "\n")
-                this.line++;
-            if (this.index === this.source.length)
+        while (Lang.WHITESPACE.test(next = this.source.charAt(this.index))) {
+            if (next === '\n')
+                ++this.line;
+            if (++this.index === this.source.length)
                 return null;
         }
+
         // Strip comments
         if (this.source.charAt(this.index) === '/') {
-            if (this.source.charAt(++this.index) === '/') { // Single line
-                while (this.source.charAt(this.index) !== "\n") {
-                    this.index++;
+            ++this.index;
+            if (this.source.charAt(this.index) === '/') { // Line
+                while (this.source.charAt(++this.index) !== '\n')
                     if (this.index == this.source.length)
                         return null;
-                }
-                this.index++;
-                this.line++;
+                ++this.index;
+                ++this.line;
                 repeat = true;
-            } else if (this.source.charAt(this.index) === '*') { /* Block */
-                last = '';
-                while (last+(last=this.source.charAt(this.index)) !== '*/') {
-                    this.index++;
-                    if (last === "\n")
-                        this.line++;
-                    if (this.index === this.source.length)
+            } else if ((next = this.source.charAt(this.index)) === '*') { /* Block */
+                do {
+                    if (next === '\n')
+                        ++this.line;
+                    if (++this.index === this.source.length)
                         return null;
-                }
-                this.index++;
+                    prev = next;
+                    next = this.source.charAt(this.index);
+                } while (prev !== '*' || next !== '/');
+                ++this.index;
                 repeat = true;
             } else
-                throw Error("unterminated comment");
+                return '/';
         }
     } while (repeat);
-    if (this.index === this.source.length) return null;
+
+    if (this.index === this.source.length)
+        return null;
 
     // Read the next token
     var end = this.index;
     Lang.DELIM.lastIndex = 0;
-    var delim = Lang.DELIM.test(this.source.charAt(end));
-    if (!delim) {
-        ++end;
+    var delim = Lang.DELIM.test(this.source.charAt(end++));
+    if (!delim)
         while(end < this.source.length && !Lang.DELIM.test(this.source.charAt(end)))
-            end++;
-    } else
-        ++end;
+            ++end;
     var token = this.source.substring(this.index, this.index = end);
     if (token === '"' || token === "'")
         this._stringOpen = token;
@@ -160,7 +164,7 @@ TokenizerPrototype.peek = function() {
 TokenizerPrototype.skip = function(expected) {
     var actual = this.next();
     if (actual !== expected)
-        throw Error("illegal '"+actual+"', expected '"+expected+"'");
+        throw Error("illegal '"+actual+"', '"+expected+"' expected");
 };
 
 /**
@@ -182,5 +186,5 @@ TokenizerPrototype.omit = function(expected) {
  * @expose
  */
 TokenizerPrototype.toString = function() {
-    return "Tokenizer("+this.index+"/"+this.source.length+" at line "+this.line+")";
+    return "Tokenizer ("+this.index+"/"+this.source.length+" at line "+this.line+")";
 };

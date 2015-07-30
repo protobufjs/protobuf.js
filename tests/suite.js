@@ -20,7 +20,7 @@
  */
 (function(global) {
 
-    var FILE = "ProtoBuf.js";
+    var FILE = "ProtoBuf.min.js";
     var BROWSER = !!global.window;
     var StdOutFixture = require('fixture-stdout');
     var fixture = new StdOutFixture();

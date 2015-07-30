@@ -310,11 +310,7 @@
          * @expose
          */
         Util.IS_NODE = !!(
-            // Feature detection causes packaging for the browser to fail or include
-            // redundant modules.
-            // * Works for browserify because node-process does not implement toString
-            //   https://github.com/defunctzombie/node-process
-            typeof process === 'object' && process+'' === '[object process]'
+            typeof process === 'object' && process+'' === '[object process]' && !process['browser']
         );
 
         /**
@@ -464,6 +460,9 @@
         // Floating point numbers
         NUMBER_FLT: /^([0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?|inf|nan)$/,
 
+        // Booleans
+        BOOL: /^(?:true|false)$/i,
+
         // Id numbers
         ID: /^(?:[1-9][0-9]*|0|0[xX][0-9a-fA-F]+|0[0-7]+)$/,
 
@@ -480,10 +479,7 @@
         STRING_DQ: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
 
         // Single quoted strings
-        STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
-
-        // Booleans
-        BOOL: /^(?:true|false)$/i
+        STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g
     };
 
 
@@ -2840,7 +2836,7 @@
          * @param {string} type Data type, e.g. int32
          * @param {string} name Field name
          * @param {number} id Unique field id
-         * @param {Object.<string,*>=} options Options
+         * @param {!Object.<string,*>=} options Options
          * @constructor
          * @extends ProtoBuf.Reflect.Message.Field
          */
@@ -2918,6 +2914,21 @@
         };
 
         /**
+         * Gets the name of an enum value.
+         * @param {!ProtoBuf.Builder.Enum} enm Runtime enum
+         * @param {number} value Enum value
+         * @returns {?string} Name or `null` if not present
+         * @expose
+         */
+        Enum.getName = function(enm, value) {
+            var keys = Object.keys(enm);
+            for (var i=0; i<keys.length; ++i)
+                if (enm[key] === value)
+                    return key;
+            return null;
+        };
+
+        /**
          * @alias ProtoBuf.Reflect.Enum.prototype
          * @inner
          */
@@ -2929,12 +2940,22 @@
          * @expose
          */
         EnumPrototype.build = function() {
-            var enm = {},
+            var enm = new ProtoBuf.Builder.Enum(),
                 values = this.getChildren(Enum.Value);
             for (var i=0, k=values.length; i<k; ++i)
                 enm[values[i]['name']] = values[i]['id'];
-            if (Object.defineProperty)
-                Object.defineProperty(enm, '$options', { "value": this.buildOpt() });
+            if (Object.defineProperty) {
+                Object.defineProperty(enm, '$options', {
+                    "value": this.buildOpt(),
+                    "enumerable": false
+                });
+                Object.defineProperty(enm, "getName", {
+                    "value": function(id) {
+                        return Enum.getName(enm, id);
+                    },
+                    "enumerable": false
+                });
+            }
             return this.object = enm;
         };
 
@@ -3923,6 +3944,11 @@
          * @alias ProtoBuf.Builder.Message
          */
         Builder.Message = function() {};
+
+        /**
+         * @alias ProtOBuf.Builder.Enum
+         */
+        Builder.Enum = function() {};
 
         /**
          * @alias ProtoBuf.Builder.Message

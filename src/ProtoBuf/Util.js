@@ -19,11 +19,7 @@ ProtoBuf.Util = (function() {
      * @expose
      */
     Util.IS_NODE = !!(
-        // Feature detection causes packaging for the browser to fail or include
-        // redundant modules.
-        // * Works for browserify because node-process does not implement toString
-        //   https://github.com/defunctzombie/node-process
-        typeof process === 'object' && process+'' === '[object process]'
+        typeof process === 'object' && process+'' === '[object process]' && !process['browser']
     );
 
     /**

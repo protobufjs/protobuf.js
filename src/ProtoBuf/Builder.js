@@ -596,6 +596,11 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     Builder.Message = function() {};
 
     /**
+     * @alias ProtOBuf.Builder.Enum
+     */
+    Builder.Enum = function() {};
+
+    /**
      * @alias ProtoBuf.Builder.Message
      */
     Builder.Service = function() {};

@@ -26,6 +26,21 @@ var Enum = function(builder, parent, name, options, syntax) {
 };
 
 /**
+ * Gets the name of an enum value.
+ * @param {!ProtoBuf.Builder.Enum} enm Runtime enum
+ * @param {number} value Enum value
+ * @returns {?string} Name or `null` if not present
+ * @expose
+ */
+Enum.getName = function(enm, value) {
+    var keys = Object.keys(enm);
+    for (var i=0; i<keys.length; ++i)
+        if (enm[key] === value)
+            return key;
+    return null;
+};
+
+/**
  * @alias ProtoBuf.Reflect.Enum.prototype
  * @inner
  */
@@ -37,11 +52,21 @@ var EnumPrototype = Enum.prototype = Object.create(Namespace.prototype);
  * @expose
  */
 EnumPrototype.build = function() {
-    var enm = {},
+    var enm = new ProtoBuf.Builder.Enum(),
         values = this.getChildren(Enum.Value);
     for (var i=0, k=values.length; i<k; ++i)
         enm[values[i]['name']] = values[i]['id'];
-    if (Object.defineProperty)
-        Object.defineProperty(enm, '$options', { "value": this.buildOpt() });
+    if (Object.defineProperty) {
+        Object.defineProperty(enm, '$options', {
+            "value": this.buildOpt(),
+            "enumerable": false
+        });
+        Object.defineProperty(enm, "getName", {
+            "value": function(id) {
+                return Enum.getName(enm, id);
+            },
+            "enumerable": false
+        });
+    }
     return this.object = enm;
 };

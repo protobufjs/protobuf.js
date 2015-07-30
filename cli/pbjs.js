@@ -40,8 +40,11 @@ pbjs.util = util;
  */
 pbjs.sources = {};
 fs.readdirSync(__dirname+"/pbjs/sources").forEach(function(source) {
-    if (/\.js$/.test(source))
-        pbjs.sources[source.substring(0, source.lastIndexOf("."))] = require(__dirname + "/pbjs/sources/" + source);
+    if (/\.js$/.test(source)) {
+        var src = require(__dirname + "/pbjs/sources/" + source);
+        if (!src.exclude)
+            pbjs.sources[source.substring(0, source.lastIndexOf("."))] = src;
+    }
 });
 
 /**

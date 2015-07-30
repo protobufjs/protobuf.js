@@ -41,6 +41,9 @@ ProtoBuf.Lang = {
     // Floating point numbers
     NUMBER_FLT: /^([0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?|inf|nan)$/,
 
+    // Booleans
+    BOOL: /^(?:true|false)$/i,
+
     // Id numbers
     ID: /^(?:[1-9][0-9]*|0|0[xX][0-9a-fA-F]+|0[0-7]+)$/,
 
@@ -57,8 +60,5 @@ ProtoBuf.Lang = {
     STRING_DQ: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
 
     // Single quoted strings
-    STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
-
-    // Booleans
-    BOOL: /^(?:true|false)$/i
+    STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g
 };

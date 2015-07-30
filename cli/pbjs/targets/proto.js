@@ -141,7 +141,7 @@ var proto = module.exports = function(builder, options) {
         if (!options.min)
             out.push(indent);
         if (!isOneOf)
-            out.push(fld.required ? "required " : "optional ");
+            out.push(fld.required ? "required " : (fld.repeated ? "repeated " : "optional "));
         if (fld.resolvedType !== null)
             out.push(msg.qn(fld.resolvedType));
         else

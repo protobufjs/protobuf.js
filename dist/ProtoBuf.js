@@ -310,11 +310,7 @@
          * @expose
          */
         Util.IS_NODE = !!(
-            // Feature detection causes packaging for the browser to fail or include
-            // redundant modules.
-            // * Works for browserify because node-process does not implement toString
-            //   https://github.com/defunctzombie/node-process
-            typeof process === 'object' && process+'' === '[object process]'
+            typeof process === 'object' && process+'' === '[object process]' && !process['browser']
         );
 
         /**
@@ -464,6 +460,9 @@
         // Floating point numbers
         NUMBER_FLT: /^([0-9]*(\.[0-9]*)?([Ee][+-]?[0-9]+)?|inf|nan)$/,
 
+        // Booleans
+        BOOL: /^(?:true|false)$/i,
+
         // Id numbers
         ID: /^(?:[1-9][0-9]*|0|0[xX][0-9a-fA-F]+|0[0-7]+)$/,
 
@@ -480,10 +479,7 @@
         STRING_DQ: /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
 
         // Single quoted strings
-        STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g,
-
-        // Booleans
-        BOOL: /^(?:true|false)$/i
+        STRING_SQ: /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g
     };
 
     /**
@@ -557,7 +553,9 @@
          * @private
          */
         TokenizerPrototype._readString = function() {
-            var re = this._stringOpen === '"' ? Lang.STRING_DQ : Lang.STRING_SQ;
+            var re = this._stringOpen === '"'
+                ? Lang.STRING_DQ
+                : Lang.STRING_SQ;
             re.lastIndex = this.index - 1; // Include the open quote
             var match = re.exec(this.source);
             if (!match)
@@ -580,55 +578,57 @@
                 return null;
             if (this._stringOpen !== null)
                 return this._readString();
-            var repeat, last;
+
+            var repeat,
+                prev,
+                next;
             do {
                 repeat = false;
+
                 // Strip white spaces
-                while (Lang.WHITESPACE.test(last = this.source.charAt(this.index))) {
-                    this.index++;
-                    if (last === "\n")
-                        this.line++;
-                    if (this.index === this.source.length)
+                while (Lang.WHITESPACE.test(next = this.source.charAt(this.index))) {
+                    if (next === '\n')
+                        ++this.line;
+                    if (++this.index === this.source.length)
                         return null;
                 }
+
                 // Strip comments
                 if (this.source.charAt(this.index) === '/') {
-                    if (this.source.charAt(++this.index) === '/') { // Single line
-                        while (this.source.charAt(this.index) !== "\n") {
-                            this.index++;
+                    ++this.index;
+                    if (this.source.charAt(this.index) === '/') { // Line
+                        while (this.source.charAt(++this.index) !== '\n')
                             if (this.index == this.source.length)
                                 return null;
-                        }
-                        this.index++;
-                        this.line++;
+                        ++this.index;
+                        ++this.line;
                         repeat = true;
-                    } else if (this.source.charAt(this.index) === '*') { /* Block */
-                        last = '';
-                        while (last+(last=this.source.charAt(this.index)) !== '*/') {
-                            this.index++;
-                            if (last === "\n")
-                                this.line++;
-                            if (this.index === this.source.length)
+                    } else if ((next = this.source.charAt(this.index)) === '*') { /* Block */
+                        do {
+                            if (next === '\n')
+                                ++this.line;
+                            if (++this.index === this.source.length)
                                 return null;
-                        }
-                        this.index++;
+                            prev = next;
+                            next = this.source.charAt(this.index);
+                        } while (prev !== '*' || next !== '/');
+                        ++this.index;
                         repeat = true;
                     } else
-                        throw Error("unterminated comment");
+                        return '/';
                 }
             } while (repeat);
-            if (this.index === this.source.length) return null;
+
+            if (this.index === this.source.length)
+                return null;
 
             // Read the next token
             var end = this.index;
             Lang.DELIM.lastIndex = 0;
-            var delim = Lang.DELIM.test(this.source.charAt(end));
-            if (!delim) {
-                ++end;
+            var delim = Lang.DELIM.test(this.source.charAt(end++));
+            if (!delim)
                 while(end < this.source.length && !Lang.DELIM.test(this.source.charAt(end)))
-                    end++;
-            } else
-                ++end;
+                    ++end;
             var token = this.source.substring(this.index, this.index = end);
             if (token === '"' || token === "'")
                 this._stringOpen = token;
@@ -658,7 +658,7 @@
         TokenizerPrototype.skip = function(expected) {
             var actual = this.next();
             if (actual !== expected)
-                throw Error("illegal '"+actual+"', expected '"+expected+"'");
+                throw Error("illegal '"+actual+"', '"+expected+"' expected");
         };
 
         /**
@@ -680,7 +680,7 @@
          * @expose
          */
         TokenizerPrototype.toString = function() {
-            return "Tokenizer("+this.index+"/"+this.source.length+" at line "+this.line+")";
+            return "Tokenizer ("+this.index+"/"+this.source.length+" at line "+this.line+")";
         };
 
         /**
@@ -893,7 +893,7 @@
             if (Lang.NUMBER.test(token))
                 return mkNumber(token);
             if (Lang.BOOL.test(token))
-                return (token === 'true');
+                return (token.toLowerCase() === 'true');
             if (mayBeTypeRef && Lang.TYPEREF.test(token))
                 return token;
             throw Error("illegal value: "+token);
@@ -3702,7 +3702,7 @@
          * @param {string} type Data type, e.g. int32
          * @param {string} name Field name
          * @param {number} id Unique field id
-         * @param {Object.<string,*>=} options Options
+         * @param {!Object.<string,*>=} options Options
          * @constructor
          * @extends ProtoBuf.Reflect.Message.Field
          */
@@ -3780,6 +3780,21 @@
         };
 
         /**
+         * Gets the name of an enum value.
+         * @param {!ProtoBuf.Builder.Enum} enm Runtime enum
+         * @param {number} value Enum value
+         * @returns {?string} Name or `null` if not present
+         * @expose
+         */
+        Enum.getName = function(enm, value) {
+            var keys = Object.keys(enm);
+            for (var i=0; i<keys.length; ++i)
+                if (enm[key] === value)
+                    return key;
+            return null;
+        };
+
+        /**
          * @alias ProtoBuf.Reflect.Enum.prototype
          * @inner
          */
@@ -3791,12 +3806,22 @@
          * @expose
          */
         EnumPrototype.build = function() {
-            var enm = {},
+            var enm = new ProtoBuf.Builder.Enum(),
                 values = this.getChildren(Enum.Value);
             for (var i=0, k=values.length; i<k; ++i)
                 enm[values[i]['name']] = values[i]['id'];
-            if (Object.defineProperty)
-                Object.defineProperty(enm, '$options', { "value": this.buildOpt() });
+            if (Object.defineProperty) {
+                Object.defineProperty(enm, '$options', {
+                    "value": this.buildOpt(),
+                    "enumerable": false
+                });
+                Object.defineProperty(enm, "getName", {
+                    "value": function(id) {
+                        return Enum.getName(enm, id);
+                    },
+                    "enumerable": false
+                });
+            }
             return this.object = enm;
         };
 
@@ -4785,6 +4810,11 @@
          * @alias ProtoBuf.Builder.Message
          */
         Builder.Message = function() {};
+
+        /**
+         * @alias ProtOBuf.Builder.Enum
+         */
+        Builder.Enum = function() {};
 
         /**
          * @alias ProtoBuf.Builder.Message

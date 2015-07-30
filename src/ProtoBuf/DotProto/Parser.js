@@ -207,7 +207,7 @@ ParserPrototype._readValue = function(mayBeTypeRef) {
     if (Lang.NUMBER.test(token))
         return mkNumber(token);
     if (Lang.BOOL.test(token))
-        return (token === 'true');
+        return (token.toLowerCase() === 'true');
     if (mayBeTypeRef && Lang.TYPEREF.test(token))
         return token;
     throw Error("illegal value: "+token);
