@@ -68,10 +68,7 @@ for (var i=0; i<rpc.length; i++) {
                     if (!(err instanceof TypeError))
                         throw err;
                 }
-                if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
-                    setTimeout(callback.bind(this, Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
-                    return;
-                }
+                req = new method.resolvedRequestType.clazz(req);
                 this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                     if (err) {
                         callback(err);
