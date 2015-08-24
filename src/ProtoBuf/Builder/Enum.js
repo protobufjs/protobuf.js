@@ -1,9 +1,9 @@
+// This file is not included currently and exists for documentation purposes only.
+
 /*?
  // --- Scope ------------------
  // T : Reflect.Enum instance
  */
-
-// This file is not included currently and exists for documentation purposes only.
 
 /**
  * Constructs a new runtime Enum.

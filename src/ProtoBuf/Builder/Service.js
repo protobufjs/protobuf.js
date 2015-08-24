@@ -68,7 +68,10 @@ for (var i=0; i<rpc.length; i++) {
                     if (!(err instanceof TypeError))
                         throw err;
                 }
-                req = new method.resolvedRequestType.clazz(req);
+                if (req === null || typeof req !== 'object')
+                    throw Error("Illegal arguments");
+                if (!(req instanceof method.resolvedRequestType.clazz))
+                    req = new method.resolvedRequestType.clazz(req);
                 this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                     if (err) {
                         callback(err);

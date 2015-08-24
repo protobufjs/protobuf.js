@@ -2936,10 +2936,13 @@
 
         /**
          * Builds this enum and returns the runtime counterpart.
-         * @return {Object<string,*>}
+         * @param {boolean} rebuild Whether to rebuild or not, defaults to false
+         * @returns {!Object.<string,number>}
          * @expose
          */
-        EnumPrototype.build = function() {
+        EnumPrototype.build = function(rebuild) {
+            if (this.object && !rebuild)
+                return this.object;
             var enm = new ProtoBuf.Builder.Enum(),
                 values = this.getChildren(Enum.Value);
             for (var i=0, k=values.length; i<k; ++i)
@@ -3134,10 +3137,10 @@
                                     if (!(err instanceof TypeError))
                                         throw err;
                                 }
-                                if (!req || !(req instanceof method.resolvedRequestType.clazz)) {
-                                    setTimeout(callback.bind(this, Error("Illegal request type provided to service method "+T.name+"#"+method.name)), 0);
-                                    return;
-                                }
+                                if (req === null || typeof req !== 'object')
+                                    throw Error("Illegal arguments");
+                                if (!(req instanceof method.resolvedRequestType.clazz))
+                                    req = new method.resolvedRequestType.clazz(req);
                                 this.rpcImpl(method.fqn(), req, function(err, res) { // Assumes that this is properly async
                                     if (err) {
                                         callback(err);
