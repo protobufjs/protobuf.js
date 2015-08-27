@@ -34,8 +34,8 @@ var Enum = function(builder, parent, name, options, syntax) {
  */
 Enum.getName = function(enm, value) {
     var keys = Object.keys(enm);
-    for (var i=0; i<keys.length; ++i)
-        if (enm[key] === value)
+    for (var i=0, key; i<keys.length; ++i)
+        if (enm[key = keys[i]] === value)
             return key;
     return null;
 };
