@@ -44,6 +44,9 @@
   "engines": {
     "node": ">=0.8"
   },
+  "browser": {
+   "fs": false
+  },
   "scripts": {
     "prepublish": "npm test",
     "test": "node bin/pbjs tests/complex.proto --target=json > tests/complex.json && node node_modules/testjs/bin/testjs tests/suite.js",
