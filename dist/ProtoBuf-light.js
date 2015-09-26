@@ -1931,61 +1931,54 @@
                  * @param {*} obj Object to clone
                  * @param {boolean} binaryAsBase64 Whether to include binary data as base64 strings or as a buffer otherwise
                  * @param {boolean} longsAsStrings Whether to encode longs as strings
-                 * @param {{name: string, wireType: number}} fieldType The field type, if
-                 * appropriate
-                 * @param {ProtoBuf.Reflect.T} resolvedType The resolved field type, if appropriate
+                 * @param {!ProtoBuf.Reflect.T=} resolvedType The resolved field type if a field
                  * @returns {*} Cloned object
                  * @inner
                  */
-                function cloneRaw(obj, binaryAsBase64, longsAsStrings, fieldType, resolvedType) {
-                    var clone = undefined;
+                function cloneRaw(obj, binaryAsBase64, longsAsStrings, resolvedType) {
                     if (obj === null || typeof obj !== 'object') {
-                        if (fieldType == ProtoBuf.TYPES["enum"]) {
-                            var values = resolvedType.getChildren(ProtoBuf.Reflect.Enum.Value);
-                            for (var i = 0; i < values.length; i++) {
-                                if (values[i]['id'] === obj) {
-                                    obj = values[i]['name'];
-                                    break;
-                                }
-                            }
+                        // Convert enum values to their respective names
+                        if (resolvedType && resolvedType instanceof ProtoBuf.Reflect.Enum) {
+                            var name = ProtoBuf.Reflect.Enum.getName(resolvedType.object, obj);
+                            if (name !== null)
+                                return name;
                         }
-                        clone = obj;
-                    } else if (ByteBuffer.isByteBuffer(obj)) {
-                        if (binaryAsBase64) {
-                            clone = obj.toBase64();
-                        } else {
-                            clone = obj.toBuffer();
-                        }
-                    } else if (Array.isArray(obj)) {
-                        var src = obj;
-                        clone = [];
-                        for (var idx = 0; idx < src.length; idx++)
-                            clone.push(cloneRaw(src[idx], binaryAsBase64, longsAsStrings, fieldType, resolvedType));
-                    } else if (obj instanceof ProtoBuf.Map) {
-                        var it = obj.entries();
-                        clone = {};
-                        for (var e = it.next(); !e.done; e = it.next())
-                            clone[obj.keyElem.valueToString(e.value[0])] = cloneRaw(e.value[1], binaryAsBase64, longsAsStrings, obj.valueElem.type, obj.valueElem.resolvedType);
-                    } else if (obj instanceof ProtoBuf.Long) {
-                        if (longsAsStrings)
-                            // int64s are encoded as strings
-                            clone = obj.toString();
-                        else
-                            clone = new ProtoBuf.Long(obj);
-                    } else { // is a non-null object
-                        clone = {};
-                        var type = obj.$type;
-                        var field = undefined;
-                        for (var i in obj) {
-                            if (obj.hasOwnProperty(i)) {
-                                var value = obj[i];
-                                if (type) {
-                                    field = type.getChild(i);
-                                }
-                                clone[i] = cloneRaw(value, binaryAsBase64, longsAsStrings, field.type, field.resolvedType);
-                            }
-                        }
+                        // Pass-through string, number, boolean, null...
+                        return obj;
                     }
+                    // Convert ByteBuffers to raw buffer or strings
+                    if (ByteBuffer.isByteBuffer(obj))
+                        return binaryAsBase64 ? obj.toBase64() : obj.toBuffer();
+                    // Convert Longs to proper objects or strings
+                    if (ProtoBuf.Long.isLong(obj))
+                        return longsAsStrings ? obj.toString() : new ProtoBuf.Long(obj);
+                    var clone;
+                    // Clone arrays
+                    if (Array.isArray(obj)) {
+                        clone = [];
+                        obj.forEach(function(v, k) {
+                            clone[k] = cloneRaw(v, binaryAsBase64, longsAsStrings, resolvedType);
+                        });
+                        return clone;
+                    }
+                    clone = {};
+                    // Convert maps to objects
+                    if (obj instanceof ProtoBuf.Map) {
+                        var it = obj.entries();
+                        for (var e = it.next(); !e.done; e = it.next())
+                            clone[obj.keyElem.valueToString(e.value[0])] = cloneRaw(e.value[1], binaryAsBase64, longsAsStrings, obj.valueElem.resolvedType);
+                        return clone;
+                    }
+                    // Everything else is a non-null object
+                    var type = obj.$type,
+                        field = undefined;
+                    for (var i in obj)
+                        if (obj.hasOwnProperty(i)) {
+                            if (type && (field = type.getChild(i)))
+                                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings, field.resolvedType);
+                            else
+                                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings);
+                        }
                     return clone;
                 }
 
@@ -1997,7 +1990,7 @@
                  * @expose
                  */
                 MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
-                    return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, ProtoBuf.TYPES["message"], this.$type);
+                    return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, this.$type);
                 };
 
                 /**
@@ -2010,7 +2003,6 @@
                         cloneRaw(this,
                              /* binary-as-base64 */ true,
                              /* longs-as-strings */ true,
-                             ProtoBuf.TYPES["message"],
                              this.$type
                         )
                     );
