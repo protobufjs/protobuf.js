@@ -131,7 +131,7 @@ MessagePrototype.encode = function(message, buffer, noVerify) {
             if (fieldMissing === null)
                 fieldMissing = field;
         } else
-            field.encode(noVerify ? val : field.verifyValue(val), buffer);
+            field.encode(noVerify ? val : field.verifyValue(val), buffer, message);
     }
     if (fieldMissing !== null) {
         var err = Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
@@ -155,7 +155,7 @@ MessagePrototype.calculate = function(message) {
         if (field.required && val === null)
            throw Error("Missing at least one required field for "+this.toString(true)+": "+field);
         else
-            n += field.calculate(val);
+            n += field.calculate(val, message);
     }
     return n;
 };
@@ -267,13 +267,16 @@ MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
     // Check if all required fields are present and set default values for optional fields that are not
     for (var i=0, k=this._fields.length; i<k; ++i) {
         field = this._fields[i];
-        if (msg[field.name] === null)
-            if (field.required) {
-                var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
+        if (msg[field.name] === null) {
+            if (this.syntax === "proto3") { // Proto3 sets default values by specification
+                msg[field.name] = field.defaultValue;
+            } else if (field.required) {
+                var err = Error("Missing at least one required field for " + this.toString(true) + ": " + field.name);
                 err["decoded"] = msg; // Still expose what we got
                 throw(err);
             } else if (ProtoBuf.populateDefaults && field.defaultValue !== null)
                 msg[field.name] = field.defaultValue;
+        }
     }
     return msg;
 };

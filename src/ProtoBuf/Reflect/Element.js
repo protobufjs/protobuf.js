@@ -71,7 +71,7 @@ function mkDefault(type) {
  * @param type {string|{name: string, wireType: number}} the field type
  * @returns {*} Default value
  */
-ElementPrototype.defaultFieldValue = mkDefault;
+Element.defaultFieldValue = mkDefault;
 
 /**
  * Makes a Long from a value.

@@ -20,7 +20,7 @@
  */
 (function(global) {
 
-    var FILE = "ProtoBuf.min.js";
+    var FILE = "ProtoBuf.js";
     var BROWSER = !!global.window;
     var StdOutFixture = require('fixture-stdout');
     var fixture = new StdOutFixture();
@@ -1684,6 +1684,20 @@
             test.done();
         },
 
+        /* "mismatchedType": function(test) {
+            try {
+                var proto  = "message Test1 { optional string foo = 1; }";
+                    proto += "message Test2 { optional int32 foo = 1; }";
+                var builder = ProtoBuf.loadProto(proto, "tests/mistmatchedType.proto");
+                var root = builder.build();
+                var test1 = new root.Test1({ foo: 'bar' });
+                var test2 = root.Test2.decode(test1.encode());
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        }, */
+
         "builderOptions": function(test) {
             try {
                 var proto = "message Foo { optional uint32 foo_bar = 1; }";
@@ -1804,6 +1818,7 @@
                 "  repeated bytes rpt_bytes = 14;\n" +
                 "  repeated Test rpt_msg = 15;\n" +
                 "  repeated Enum rpt_enum = 16;\n" +
+                "  oneof oneof_type { bool oneof_bool = 17; };\n" +
                 "}\n" +
                 "enum Enum { Default = 0; A = 1; B = 2; }\n";
             var builder = ProtoBuf.newBuilder();
@@ -1820,6 +1835,8 @@
             test.ok(testMsg.field_bytes instanceof ByteBuffer);
             test.strictEqual(testMsg.field_bytes.remaining(), 0);
             test.strictEqual(testMsg.rpt_int32.length, 0);
+            test.strictEqual(testMsg.oneof_type, null);
+            test.strictEqual(testMsg.oneof_bool, false);
 
             // No fields should go on the wire, even though they're set
             var encoded = testMsg.encode();
@@ -1837,6 +1854,17 @@
             encoded = testMsg.encode();
             testMsg = Test.decode(encoded);
             test.strictEqual(testMsg.field_enum, 42);
+
+            // Explicitly set fields that are part of an oneof should
+            // be encoded even if set to their default value
+            testMsg = new Test();
+            testMsg.set("oneof_bool", false);
+            test.strictEqual(testMsg.oneof_type, "oneof_bool");
+            encoded = testMsg.encode().compact();
+            test.strictEqual(encoded.toString("debug"), "<88 01 00>"); // 17|varint (0term) + varint 0
+            var decoded = Test.decode(encoded);
+            test.strictEqual(decoded.oneof_type, "oneof_bool");
+            test.strictEqual(decoded.oneof_bool, false);
 
             test.done();
         },

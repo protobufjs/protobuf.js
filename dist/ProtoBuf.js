@@ -1734,7 +1734,7 @@
          * @param type {string|{name: string, wireType: number}} the field type
          * @returns {*} Default value
          */
-        ElementPrototype.defaultFieldValue = mkDefault;
+        Element.defaultFieldValue = mkDefault;
 
         /**
          * Makes a Long from a value.
@@ -3083,7 +3083,7 @@
                     if (fieldMissing === null)
                         fieldMissing = field;
                 } else
-                    field.encode(noVerify ? val : field.verifyValue(val), buffer);
+                    field.encode(noVerify ? val : field.verifyValue(val), buffer, message);
             }
             if (fieldMissing !== null) {
                 var err = Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
@@ -3107,7 +3107,7 @@
                 if (field.required && val === null)
                    throw Error("Missing at least one required field for "+this.toString(true)+": "+field);
                 else
-                    n += field.calculate(val);
+                    n += field.calculate(val, message);
             }
             return n;
         };
@@ -3219,13 +3219,16 @@
             // Check if all required fields are present and set default values for optional fields that are not
             for (var i=0, k=this._fields.length; i<k; ++i) {
                 field = this._fields[i];
-                if (msg[field.name] === null)
-                    if (field.required) {
-                        var err = Error("Missing at least one required field for "+this.toString(true)+": "+field.name);
+                if (msg[field.name] === null) {
+                    if (this.syntax === "proto3") { // Proto3 sets default values by specification
+                        msg[field.name] = field.defaultValue;
+                    } else if (field.required) {
+                        var err = Error("Missing at least one required field for " + this.toString(true) + ": " + field.name);
                         err["decoded"] = msg; // Still expose what we got
                         throw(err);
                     } else if (ProtoBuf.populateDefaults && field.defaultValue !== null)
                         msg[field.name] = field.defaultValue;
+                }
             }
             return msg;
         };
@@ -3383,12 +3386,14 @@
             if (this.map)
                 this.keyElement = new Element(this.keyType, undefined, true, this.syntax);
 
-            this.defaultValue = typeof this.options['default'] !== 'undefined' ? this.verifyValue(this.options['default']) : null;
-
             // In proto3, fields do not have field presence, and every field is set to
             // its type's default value ("", 0, 0.0, or false).
             if (this.syntax === 'proto3' && !this.repeated && !this.map)
-                this.defaultValue = this.element.defaultFieldValue(this.type);
+                this.defaultValue = Element.defaultFieldValue(this.type);
+
+            // Otherwise, default values are present when explicitly specified
+            else if (typeof this.options['default'] !== 'undefined')
+                this.defaultValue = this.verifyValue(this.options['default']);
         };
 
         /**
@@ -3443,48 +3448,49 @@
          * Determines whether the field will have a presence on the wire given its
          * value.
          * @param {*} value Verified field value
+         * @param {!ProtoBuf.Builder.Message} message Runtime message
          * @return {boolean} Whether the field will be present on the wire
          */
-        FieldPrototype.hasWirePresence = function(value) {
-            if (this.syntax !== 'proto3') {
+        FieldPrototype.hasWirePresence = function(value, message) {
+            if (this.syntax !== 'proto3')
                 return (value !== null);
-            } else {
-                switch (this.type) {
-                    case ProtoBuf.TYPES["int32"]:
-                    case ProtoBuf.TYPES["sint32"]:
-                    case ProtoBuf.TYPES["sfixed32"]:
-                    case ProtoBuf.TYPES["uint32"]:
-                    case ProtoBuf.TYPES["fixed32"]:
-                        return value !== 0;
+            if (this.oneof && message[this.oneof.name] === this.name)
+                return true;
+            switch (this.type) {
+                case ProtoBuf.TYPES["int32"]:
+                case ProtoBuf.TYPES["sint32"]:
+                case ProtoBuf.TYPES["sfixed32"]:
+                case ProtoBuf.TYPES["uint32"]:
+                case ProtoBuf.TYPES["fixed32"]:
+                    return value !== 0;
 
-                    case ProtoBuf.TYPES["int64"]:
-                    case ProtoBuf.TYPES["sint64"]:
-                    case ProtoBuf.TYPES["sfixed64"]:
-                    case ProtoBuf.TYPES["uint64"]:
-                    case ProtoBuf.TYPES["fixed64"]:
-                        return value.low !== 0 || value.high !== 0;
+                case ProtoBuf.TYPES["int64"]:
+                case ProtoBuf.TYPES["sint64"]:
+                case ProtoBuf.TYPES["sfixed64"]:
+                case ProtoBuf.TYPES["uint64"]:
+                case ProtoBuf.TYPES["fixed64"]:
+                    return value.low !== 0 || value.high !== 0;
 
-                    case ProtoBuf.TYPES["bool"]:
-                        return value;
+                case ProtoBuf.TYPES["bool"]:
+                    return value;
 
-                    case ProtoBuf.TYPES["float"]:
-                    case ProtoBuf.TYPES["double"]:
-                        return value !== 0.0;
+                case ProtoBuf.TYPES["float"]:
+                case ProtoBuf.TYPES["double"]:
+                    return value !== 0.0;
 
-                    case ProtoBuf.TYPES["string"]:
-                        return value.length > 0;
+                case ProtoBuf.TYPES["string"]:
+                    return value.length > 0;
 
-                    case ProtoBuf.TYPES["bytes"]:
-                        return value.remaining() > 0;
+                case ProtoBuf.TYPES["bytes"]:
+                    return value.remaining() > 0;
 
-                    case ProtoBuf.TYPES["enum"]:
-                        return value !== 0;
+                case ProtoBuf.TYPES["enum"]:
+                    return value !== 0;
 
-                    case ProtoBuf.TYPES["message"]:
-                        return value !== null;
-                    default:
-                        return true;
-                }
+                case ProtoBuf.TYPES["message"]:
+                    return value !== null;
+                default:
+                    return true;
             }
         };
 
@@ -3492,11 +3498,12 @@
          * Encodes the specified field value to the specified buffer.
          * @param {*} value Verified field value
          * @param {ByteBuffer} buffer ByteBuffer to encode to
+         * @param {!ProtoBuf.Builder.Message} message Runtime message
          * @return {ByteBuffer} The ByteBuffer for chaining
          * @throws {Error} If the field cannot be encoded
          * @expose
          */
-        FieldPrototype.encode = function(value, buffer) {
+        FieldPrototype.encode = function(value, buffer, message) {
             if (this.type === null || typeof this.type !== 'object')
                 throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
             if (value === null || (this.repeated && value.length == 0))
@@ -3552,7 +3559,7 @@
                         this.element.encodeValue(2, val, buffer);
                     }, this);
                 } else {
-                    if (this.hasWirePresence(value)) {
+                    if (this.hasWirePresence(value, message)) {
                         buffer.writeVarint32((this.id << 3) | this.type.wireType);
                         this.element.encodeValue(this.id, value, buffer);
                     }
@@ -3566,10 +3573,11 @@
         /**
          * Calculates the length of this field's value on the network level.
          * @param {*} value Field value
+         * @param {!ProtoBuf.Builder.Message} message Runtime message
          * @returns {number} Byte length
          * @expose
          */
-        FieldPrototype.calculate = function(value) {
+        FieldPrototype.calculate = function(value, message) {
             value = this.verifyValue(value); // May throw
             if (this.type === null || typeof this.type !== 'object')
                 throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
@@ -3606,7 +3614,7 @@
                         n += length;
                     }, this);
                 } else {
-                    if (this.hasWirePresence(value)) {
+                    if (this.hasWirePresence(value, message)) {
                         n += ByteBuffer.calculateVarint32((this.id << 3) | this.type.wireType);
                         n += this.element.calculateLength(this.id, value);
                     }
@@ -3656,8 +3664,8 @@
             // Handle maps.
             if (this.map) {
                 // Read one (key, value) submessage, and return [key, value]
-                var key = this.keyElement.defaultFieldValue(this.keyType);
-                value = this.element.defaultFieldValue(this.type);
+                var key = Element.defaultFieldValue(this.keyType);
+                value = Element.defaultFieldValue(this.type);
 
                 // Read the length
                 nBytes = buffer.readVarint32();
