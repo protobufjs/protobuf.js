@@ -255,10 +255,11 @@ MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
             msg[field.name].set(keyval[0], keyval[1]);
         } else {
             msg[field.name] = field.decode(wireType, buffer);
-            if (field.oneof) {
-                if (this[field.oneof.name] !== null)
-                    this[this[field.oneof.name]] = null;
-                msg[field.oneof.name] = field.name;
+            if (field.oneof) { // Field is part of an OneOf (not a virtual OneOf field)
+                var currentField = msg[field.oneof.name]; // Virtual field references currently set field
+                if (currentField !== null && currentField !== field.name)
+                    msg[currentField] = null; // Clear currently set field
+                msg[field.oneof.name] = field.name; // Point virtual field at this field
             }
         }
     }

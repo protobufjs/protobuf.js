@@ -124,13 +124,14 @@ MessagePrototype.set = function(keyOrObj, value, noAssert) {
         this[field.name] = (value = field.verifyValue(value)); // May throw
     } else
         this[keyOrObj] = value;
-    if (field && field.oneof) {
+    if (field && field.oneof) { // Field is part of an OneOf (not a virtual OneOf field)
+        var currentField = this[field.oneof.name]; // Virtual field references currently set field
         if (value !== null) {
-            if (this[field.oneof.name] !== null)
-                this[this[field.oneof.name]] = null; // Unset the previous (field name is the oneof field's value)
-            this[field.oneof.name] = field.name;
-        } else if (field.oneof.name === keyOrObj)
-            this[field.oneof.name] = null;
+            if (currentField !== null && currentField !== field.name)
+                this[currentField] = null; // Clear currently set field
+            this[field.oneof.name] = field.name; // Point virtual field at this field
+        } else if (/* value === null && */currentField === keyOrObj)
+            this[field.oneof.name] = null; // Clear virtual field (current field explicitly cleared)
     }
     return this;
 };
