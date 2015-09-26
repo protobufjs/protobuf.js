@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "ascli": "~1",
-    "bytebuffer": "~4",
+    "bytebuffer": "~4 >=4.1",
     "glob": "^5.0.10",
     "yargs": "^3.10.0"
   },
