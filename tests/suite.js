@@ -2074,6 +2074,7 @@
 
         "proto3Json": function(test) {
             var proto =
+                "syntax = \"proto3\";\n" +
                 "message Test {\n" +
                 "  int32 optional_int32 = 1;\n" +
                 "  int64 optional_int64 = 2;\n" +

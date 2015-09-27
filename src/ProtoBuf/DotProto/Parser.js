@@ -18,6 +18,12 @@ var Parser = function(source) {
      * @expose
      */
     this.tn = new Tokenizer(source);
+
+    /**
+     * Whether parsing proto3 or not.
+     * @type {boolean}
+     */
+    this.proto3 = false;
 };
 
 /**
@@ -71,7 +77,8 @@ ParserPrototype.parse = function() {
                     if (!head)
                         throw Error("unexpected 'syntax'");
                     this.tn.skip("=");
-                    topLevel["syntax"] = this._readString();
+                    if ((topLevel["syntax"] = this._readString()) === "proto3")
+                        this.proto3 = true;
                     this.tn.skip(";");
                     break;
                 case 'message':
@@ -419,9 +426,11 @@ ParserPrototype._parseMessage = function(parent, fld) {
             this._parseExtensions(msg);
         else if (token === "extend")
             this._parseExtend(msg);
-        else if (Lang.TYPEREF.test(token))
+        else if (Lang.TYPEREF.test(token)) {
+            if (!this.proto3)
+                throw Error("illegal field rule: "+token);
             this._parseMessageField(msg, "optional", token);
-        else
+        } else
             throw Error("illegal message token: "+token);
     }
     this.tn.omit(";");
@@ -633,9 +642,11 @@ ParserPrototype._parseExtend = function(parent) {
     while ((token = this.tn.next()) !== '}') {
         if (Lang.RULE.test(token))
             this._parseMessageField(ext, token);
-        else if (Lang.TYPEREF.test(token))
+        else if (Lang.TYPEREF.test(token)) {
+            if (!this.proto3)
+                throw Error("illegal field rule: "+token);
             this._parseMessageField(ext, "optional", token);
-        else
+        } else
             throw Error("illegal extend token: "+token);
     }
     this.tn.omit(";");
