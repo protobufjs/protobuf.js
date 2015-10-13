@@ -358,7 +358,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         if (typeof filename === 'string') {
 
             if (ProtoBuf.Util.IS_NODE)
-                filename = ProtoBuf.Util.require("path")['resolve'](filename);
+                filename = require("path")['resolve'](filename);
             if (this.files[filename] === true)
                 return this.reset();
             this.files[filename] = true;
@@ -367,7 +367,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
             var root = filename.root;
             if (ProtoBuf.Util.IS_NODE)
-                root = ProtoBuf.Util.require("path")['resolve'](root);
+                root = require("path")['resolve'](root);
             if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0)
                 delim = '\\';
             var fname = root + delim + filename.file;

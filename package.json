@@ -45,7 +45,8 @@
     "node": ">=0.8"
   },
   "browser": {
-   "fs": false
+    "fs": false,
+    "path": false
   },
   "scripts": {
     "prepublish": "npm test",

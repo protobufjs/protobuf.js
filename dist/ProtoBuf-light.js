@@ -24,11 +24,11 @@
     /* AMD */ if (typeof define === 'function' && define["amd"])
         define(["ByteBuffer"], factory);
     /* CommonJS */ else if (typeof require === "function" && typeof module === "object" && module && module["exports"])
-        module["exports"] = factory(require("bytebuffer"), require);
+        module["exports"] = factory(require("bytebuffer"), true);
     /* Global */ else
         (global["dcodeIO"] = global["dcodeIO"] || {})["ProtoBuf"] = factory(global["dcodeIO"]["ByteBuffer"]);
 
-})(this, function(ByteBuffer, nodeRequire) {
+})(this, function(ByteBuffer, isCommonJS) {
     "use strict";
 
     /**
@@ -310,7 +310,7 @@
          * @expose
          */
         Util.IS_NODE = !!(
-            typeof process === 'object' && process+'' === '[object process]' && !process['browser']
+            isCommonJS && typeof process === 'object' && process+'' === '[object process]' && !process['browser']
         );
 
         /**
@@ -351,8 +351,9 @@
             if (callback && typeof callback != 'function')
                 callback = null;
             if (Util.IS_NODE) {
+                var fs = require("fs");
                 if (callback) {
-                    Util.require("fs").readFile(path, function(err, data) {
+                    fs.readFile(path, function(err, data) {
                         if (err)
                             callback(null);
                         else
@@ -360,7 +361,7 @@
                     });
                 } else
                     try {
-                        return Util.require("fs").readFileSync(path);
+                        return fs.readFileSync(path);
                     } catch (e) {
                         return null;
                     }
@@ -389,18 +390,6 @@
                 }
             }
         };
-
-        /**
-         * Requires a node module.
-         * @function
-         * @param {string} path
-         * @returns {*}
-         * @throws Error If node require is not supported
-         * @expose
-         */
-        Util.require = Util.IS_NODE
-            ? function(path) { return nodeRequire(path); }
-            : function(path) { throw Error("node require is not supported by this platform")};
 
         /**
          * Converts a string to camel case.
@@ -3706,7 +3695,7 @@
             if (typeof filename === 'string') {
 
                 if (ProtoBuf.Util.IS_NODE)
-                    filename = ProtoBuf.Util.require("path")['resolve'](filename);
+                    filename = require("path")['resolve'](filename);
                 if (this.files[filename] === true)
                     return this.reset();
                 this.files[filename] = true;
@@ -3715,7 +3704,7 @@
 
                 var root = filename.root;
                 if (ProtoBuf.Util.IS_NODE)
-                    root = ProtoBuf.Util.require("path")['resolve'](root);
+                    root = require("path")['resolve'](root);
                 if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0)
                     delim = '\\';
                 var fname = root + delim + filename.file;
