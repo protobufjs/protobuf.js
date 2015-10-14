@@ -57,7 +57,7 @@
      * @const
      * @expose
      */
-    ProtoBuf.VERSION = "4.1.1";
+    ProtoBuf.VERSION = "4.1.2";
 
     /**
      * Wire types.
@@ -310,7 +310,7 @@
          * @expose
          */
         Util.IS_NODE = !!(
-            isCommonJS && typeof process === 'object' && process+'' === '[object process]' && !process['browser']
+            typeof process === 'object' && process+'' === '[object process]' && !process['browser']
         );
 
         /**

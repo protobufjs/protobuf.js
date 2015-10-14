@@ -19,7 +19,7 @@ ProtoBuf.Util = (function() {
      * @expose
      */
     Util.IS_NODE = !!(
-        isCommonJS && typeof process === 'object' && process+'' === '[object process]' && !process['browser']
+        typeof process === 'object' && process+'' === '[object process]' && !process['browser']
     );
 
     /**
