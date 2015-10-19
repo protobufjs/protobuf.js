@@ -27,7 +27,17 @@
  */
 
 /**
- * {@type object.<string.*>}
+ * @typedef {Array}
+ */
+var Buffer;
+
+/**
+ * @typedef {Object}
+ */
+var dcodeIO;
+
+/**
+ * {@type Object.<string.*>}
  */
 var ProtoBuf = {};
 
@@ -38,7 +48,7 @@ var ProtoBuf = {};
 ProtoBuf.VERSION;
 
 /**
- * @type {!object.<string,number>}
+ * @type {!Object.<string,number>}
  * @const
  */
 ProtoBuf.WIRE_TYPES = {};
@@ -97,7 +107,7 @@ ProtoBuf.populateAccessors;
 
 /**
  * @dict
- * @type {!object.<string,{name: string, wireType: number}>}
+ * @type {!Object<string,{name: string, wireType: number}>}
  * @const
  */
 ProtoBuf.TYPES;
@@ -113,22 +123,22 @@ ProtoBuf.ID_MIN;
 ProtoBuf.ID_MAX;
 
 /**
- * @type {!function(new: ByteBuffer, ...[*])}
+ * @type {!function(new: ByteBuffer, ...*)}
  */
 ProtoBuf.ByteBuffer;
 
 /**
- * @type {?function(new: Long, ...[*])}
+ * @type {?function(new: Long, ...*)}
  */
 ProtoBuf.Long;
 
 /**
- * @type {!object.<string,string|RegExp>}
+ * @type {!Object<string,string|RegExp>}
  */
 ProtoBuf.Lang;
 
 /**
- * @type {!object.<string,function>}
+ * @type {Object<string, function(*)>}
  */
 ProtoBuf.DotProto;
 
@@ -154,7 +164,7 @@ ProtoBuf.DotProto.Tokenizer.prototype.index;
 ProtoBuf.DotProto.Tokenizer.prototype.line;
 
 /**
- * @type {array.<string>}
+ * @type {Array.<string>}
  */
 ProtoBuf.DotProto.Tokenizer.prototype.stack;
 
@@ -171,7 +181,7 @@ ProtoBuf.DotProto.Tokenizer.prototype.next = function() {};
 
 /**
  * @return {?string}
- * @thorws {Error}
+ * @throws {Error}
  */
 ProtoBuf.DotProto.Tokenizer.prototype.peek = function() {};
 
@@ -193,7 +203,7 @@ ProtoBuf.DotProto.Parser = function(proto) {};
 ProtoBuf.DotProto.Parser.prototype.tn;
 
 /**
- * @return {{package: string|null, messages: Array.<object>, enums: Array.<object>, imports: Array.<string>, options: object<string,*>}}
+ * @return {{package: (string|null), messages: Array.<Object>, enums: Array.<Object>, imports: Array.<string>, options: Object<string,*>}}
  * @throws {Error}
  */
 ProtoBuf.DotProto.Parser.prototype.parse = function() {};
@@ -205,7 +215,7 @@ ProtoBuf.DotProto.Parser.prototype.parse = function() {};
 ProtoBuf.DotProto.Parser.prototype.toString = function() {};
 
 /**
- * @type {Object.<string,function>}
+ * @type {Object<string, function(*)>}
  */
 ProtoBuf.Reflect.Reflect = {};
 
@@ -366,7 +376,7 @@ ProtoBuf.Reflect.Message.prototype.decodeDelimited = function(buffer, length) {}
  * @param {string} type
  * @param {string} name
  * @param {number} id
- * @param {Object.<string.*>=} options
+ * @param {Object<string>=} options
  * @constructor
  * @extends ProtoBuf.Reflect.T
  */
@@ -873,7 +883,7 @@ ProtoBuf.loadProtoFile = function(filename, callback, builder) {};
 ProtoBuf.protoFromFile = function(filename, callback, builder) {};
 
 /**
- * @param {!*|string} proto
+ * @param {!*|string} json
  * @param {(ProtoBuf.Builder|string|{root: string, file: string})=} builder
  * @param {(string|{root: string, file: string})=} filename
  * @return {!ProtoBuf.Builder}
