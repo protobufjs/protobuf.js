@@ -1067,6 +1067,7 @@
                             "enums": [],
                             "messages": [],
                             "options": {},
+                            "services": [],
                             "extensions": [
                                 2,
                                 536870911
@@ -1087,11 +1088,13 @@
                         },
                         {
                             "name": "Bar",
+                            "services": [],
                             "fields": [],
                             "enums": [],
                             "messages": [
                                 {
                                     "name": "Foo",
+                                    "services": [],
                                     "fields": [],
                                     "enums": [],
                                     "messages": [],

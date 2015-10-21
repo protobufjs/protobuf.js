@@ -396,6 +396,7 @@ ParserPrototype._parseMessage = function(parent, fld) {
         "enums": [],
         "messages": [],
         "options": {},
+        "services": [],
         "oneofs": {}
         // "extensions": undefined
     };
@@ -422,6 +423,8 @@ ParserPrototype._parseMessage = function(parent, fld) {
             this._parseMessage(msg);
         else if (token === "option")
             this._parseOption(msg);
+        else if (token === "service")
+            this._parseService(msg);
         else if (token === "extensions")
             this._parseExtensions(msg);
         else if (token === "extend")
