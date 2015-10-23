@@ -20,7 +20,7 @@
  */
 (function(global) {
 
-    var FILE = "ProtoBuf.js";
+    var FILE = "protobuf.js";
     var BROWSER = !!global.window;
     var StdOutFixture = require('fixture-stdout');
     var fixture = new StdOutFixture();
@@ -1088,16 +1088,15 @@
                         },
                         {
                             "name": "Bar",
-                            "services": [],
                             "fields": [],
                             "enums": [],
                             "messages": [
                                 {
                                     "name": "Foo",
-                                    "services": [],
                                     "fields": [],
                                     "enums": [],
                                     "messages": [],
+                                    "services": [],
                                     "options": {},
                                     "oneofs": []
                                 },
@@ -1115,6 +1114,7 @@
                                 }
                             ],
                             "options": {},
+                            "services": [],
                             "oneofs": []
                         }
                     ],

@@ -1,12 +1,12 @@
 {
   "name": "protobufjs",
-  "version": "4.1.2",
+  "version": "5.0.0",
   "description": "Protocol Buffers for JavaScript. Finally.",
   "author": "Daniel Wirtz <dcode@dcode.io>",
   "contributors": [
     "Frank Xu <yyfrankyy@gmail.com>"
   ],
-  "main": "dist/ProtoBuf.js",
+  "main": "./dist/protobuf.js",
   "bin": {
     "pbjs": "./bin/pbjs"
   },
@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "ascli": "~1",
-    "bytebuffer": "~4 >=4.1",
+    "bytebuffer": "~5",
     "glob": "^5.0.10",
     "yargs": "^3.10.0"
   },
@@ -55,11 +55,11 @@
     "build": "node scripts/build.js",
     "descriptor2json": "node bin/pbjs src/google/protobuf/descriptor.proto --target=json > src/google/protobuf/descriptor.json",
     "compile": "npm run-script compile-full && npm run-script compile-light",
-    "compile-full": "ccjs dist/ProtoBuf.js --create_source_map=dist/ProtoBuf.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf.min.js",
-    "compile-light": "ccjs dist/ProtoBuf-light.js --create_source_map=dist/ProtoBuf-light.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/ProtoBuf-light.min.js",
+    "compile-full": "ccjs dist/protobuf.js --create_source_map=dist/protobuf.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/protobuf.min.js",
+    "compile-light": "ccjs dist/protobuf-light.js --create_source_map=dist/protobuf-light.min.map --compilation_level=SIMPLE_OPTIMIZATIONS > dist/protobuf-light.min.js",
     "compress": "npm run-script compress-full && npm run-script compress-light",
-    "compress-full": "gzip -c -9 dist/ProtoBuf.min.js > dist/ProtoBuf.min.js.gz",
-    "compress-light": "gzip -c -9 dist/ProtoBuf-light.min.js > dist/ProtoBuf-light.min.js.gz",
+    "compress-full": "gzip -c -9 dist/protobuf.min.js > dist/protobuf.min.js.gz",
+    "compress-light": "gzip -c -9 dist/protobuf-light.min.js > dist/protobuf-light.min.js.gz",
     "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json"
   }
 }

@@ -37,15 +37,15 @@ var scope = {
 // Make full build
 console.log("Building ProtoBuf.js with scope", JSON.stringify(scope, null, 2));
 fs.writeFileSync(
-    path.join(distDir, "ProtoBuf.js"),
+    path.join(distDir, "protobuf.js"),
     MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "wrap.js")), filename, scope, srcDir)
 );
 
 // Make light build
 scope.DOTPROTO = false;
-console.log("Building ProtoBuf-light.js with scope", JSON.stringify(scope, null, 2));
+console.log("Building protobuf-light.js with scope", JSON.stringify(scope, null, 2));
 fs.writeFileSync(
-    path.join(distDir, "ProtoBuf-light.js"),
+    path.join(distDir, "protobuf-light.js"),
     MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "wrap.js")), filename, scope, srcDir)
 );
 
