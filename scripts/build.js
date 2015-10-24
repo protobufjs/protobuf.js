@@ -14,11 +14,6 @@
  limitations under the License.
  */
 
-/**
- * @overview ProtoBuf.js Build Script (c) 2014 Daniel Wirtz <dcode@dcode.io>
- * Released under the Apache License, Version 2.0
- * see: https://github.com/dcodeIO/ProtoBuf.js for details
- */
 var MetaScript = require("metascript"),
     path = require("path"),
     fs = require("fs");
@@ -35,7 +30,7 @@ var scope = {
 };
 
 // Make full build
-console.log("Building ProtoBuf.js with scope", JSON.stringify(scope, null, 2));
+console.log("Building protobuf.js with scope", JSON.stringify(scope, null, 2));
 fs.writeFileSync(
     path.join(distDir, "protobuf.js"),
     MetaScript.transform(fs.readFileSync(filename = path.join(srcDir, "wrap.js")), filename, scope, srcDir)

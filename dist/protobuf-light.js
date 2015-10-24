@@ -15,9 +15,9 @@
  */
 
 /**
- * @license ProtoBuf.js (c) 2013 Daniel Wirtz <dcode@dcode.io>
+ * @license protobuf.js (c) 2013 Daniel Wirtz <dcode@dcode.io>
  * Released under the Apache License, Version 2.0
- * see: https://github.com/dcodeIO/ProtoBuf.js for details
+ * see: https://github.com/dcodeIO/protobuf.js for details
  */
 (function(global, factory) {
 

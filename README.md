@@ -1,19 +1,19 @@
-![ProtoBuf.js - Protocol Buffers for JavaScript. Finally.](https://raw.github.com/dcodeIO/ProtoBuf.js/master/ProtoBuf.png)
+![protobuf.js - Protocol Buffers for JavaScript. Finally.](https://raw.github.com/dcodeIO/protobuf.js/master/protobuf.png)
 =====================================
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use
 in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
 
-**ProtoBuf.js** is a pure JavaScript implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js)
+**protobuf.js** is a pure JavaScript implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js)
 including a .proto parser, message class building and simple encoding and decoding. There is no compilation step
 required, it's super easy to use and it works out of the box on .proto files!
 
-[![Build Status](https://travis-ci.org/dcodeIO/ProtoBuf.js.svg?branch=master)](https://travis-ci.org/dcodeIO/ProtoBuf.js)
-[![Donate](https://raw.githubusercontent.com/dcodeIO/Long.js/master/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=info%40code-emitter.com&item_name=Open%20Source%3A%20ProtoBuf.js)
+[![Build Status](https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master)](https://travis-ci.org/dcodeIO/protobuf.js)
+[![Donate](https://raw.githubusercontent.com/dcodeIO/Long.js/master/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%3A%20protobuf.js)
 
 Getting started
 ---------------
 * **Step 1:** Become familar with [Google's Protocol Buffers (protobuf)](https://developers.google.com/protocol-buffers/docs/overview)
-* **Step 2:** Head straight to [our wiki for up to date usage information, changes and examples](https://github.com/dcodeIO/ProtoBuf.js/wiki)
+* **Step 2:** Head straight to [our wiki for up to date usage information, changes and examples](https://github.com/dcodeIO/protobuf.js/wiki)
 * **Step 3:** Build something cool! :-)
 
 Features
@@ -21,7 +21,7 @@ Features
 * [RequireJS](http://requirejs.org/)/AMD compatible
 * [node.js](http://nodejs.org)/CommonJS compatible, also available via [npm](https://npmjs.org/package/protobufjs)
 * Browser compatible
-* [Closure Compiler](https://developers.google.com/closure/compiler/) compatible (fully annotated, [externs](https://github.com/dcodeIO/ProtoBuf.js/tree/master/externs))
+* [Closure Compiler](https://developers.google.com/closure/compiler/) compatible (fully annotated, [externs](https://github.com/dcodeIO/protobuf.js/tree/master/externs))
 * Fully documented using [jsdoc3](https://github.com/jsdoc3/jsdoc)
 * Well tested through [test.js](https://github.com/dcodeIO/test.js)
 * [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
@@ -31,27 +31,27 @@ Features
 Documentation
 -------------
 * [Read the official protobuf guide](https://developers.google.com/protocol-buffers/docs/overview)
-* [Read our wiki](https://github.com/dcodeIO/ProtoBuf.js/wiki)
-* [Read the API docs](http://htmlpreview.github.io/?https://raw.githubusercontent.com/dcodeIO/ProtoBuf.js/master/docs/ProtoBuf.html)
-* [Check out the examples](https://github.com/dcodeIO/ProtoBuf.js/tree/master/examples)
+* [Read our wiki](https://github.com/dcodeIO/protobuf.js/wiki)
+* [Read the API docs](http://htmlpreview.github.io/?https://raw.githubusercontent.com/dcodeIO/protobuf.js/master/docs/ProtoBuf.html)
+* [Check out the examples](https://github.com/dcodeIO/protobuf.js/tree/master/examples)
 
 Tests
 -----
-* [View source](https://github.com/dcodeIO/ProtoBuf.js/blob/master/tests/suite.js)
-* [View report](https://travis-ci.org/dcodeIO/ProtoBuf.js)
+* [View source](https://github.com/dcodeIO/protobuf.js/blob/master/tests/suite.js)
+* [View report](https://travis-ci.org/dcodeIO/protobuf.js)
 
 Downloads
 ---------
-* [Distributions](https://github.com/dcodeIO/ProtoBuf.js/tree/master/dist)
-* [ZIP-Archive](https://github.com/dcodeIO/ProtoBuf.js/archive/master.zip)
-* [Tarball](https://github.com/dcodeIO/ProtoBuf.js/tarball/master)
+* [Distributions](https://github.com/dcodeIO/protobuf.js/tree/master/dist)
+* [ZIP-Archive](https://github.com/dcodeIO/protobuf.js/archive/master.zip)
+* [Tarball](https://github.com/dcodeIO/protobuf.js/tarball/master)
 
 CDN usage
 ---------
 ```html
-<script src="//cdn.rawgit.com/dcodeIO/ProtoBuf.js/VERSION/dist/ProtoBuf.js"></script>
+<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/VERSION/dist/protobuf.js"></script>
 ```
-With `VERSION` replaced by [a valid tag](https://github.com/dcodeIO/ProtoBuf.js/releases) or just `master` for testing
+With `VERSION` replaced by [a valid tag](https://github.com/dcodeIO/protobuf.js/releases) or just `master` for testing
 the latest master build.
 
 Contributors
