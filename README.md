@@ -8,7 +8,7 @@ including a .proto parser, message class building and simple encoding and decodi
 required, it's super easy to use and it works out of the box on .proto files!
 
 [![Build Status](https://travis-ci.org/dcodeIO/protobuf.js.svg?branch=master)](https://travis-ci.org/dcodeIO/protobuf.js)
-[![Donate](https://raw.githubusercontent.com/dcodeIO/Long.js/master/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=Open%20Source%3A%20protobuf.js)
+[![Donate](https://raw.githubusercontent.com/dcodeIO/protobuf.js/master/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=%3C3%20protobuf.js)
 
 Getting started
 ---------------
