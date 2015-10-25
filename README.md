@@ -3,7 +3,7 @@
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use
 in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
 
-**protobuf.js** is a pure JavaScript implementation on top of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js)
+**protobuf.js** is a pure JavaScript implementation on top of [bytebuffer.js](https://github.com/dcodeIO/bytebuffer.js)
 including a .proto parser, message class building and simple encoding and decoding. There is no compilation step
 required, it's super easy to use and it works out of the box on .proto files!
 
@@ -24,7 +24,7 @@ Features
 * [Closure Compiler](https://developers.google.com/closure/compiler/) compatible (fully annotated, [externs](https://github.com/dcodeIO/protobuf.js/tree/master/externs))
 * Fully documented using [jsdoc3](https://github.com/jsdoc3/jsdoc)
 * Well tested through [test.js](https://github.com/dcodeIO/test.js)
-* [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js) is the only production dependency
+* [bytebuffer.js](https://github.com/dcodeIO/bytebuffer.js) is the only production dependency
 * Fully compatible to the official implementation including advanced features
 * proto2js command line utility
 
