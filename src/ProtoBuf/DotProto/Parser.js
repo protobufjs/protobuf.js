@@ -429,6 +429,8 @@ ParserPrototype._parseMessage = function(parent, fld) {
             this._parseExtensions(msg);
         else if (token === "extend")
             this._parseExtend(msg);
+        else if (token === "reserved")
+            this._parseMessageReserved(msg);
         else if (Lang.TYPEREF.test(token)) {
             if (!this.proto3)
                 throw Error("illegal field rule: "+token);
@@ -439,6 +441,23 @@ ParserPrototype._parseMessage = function(parent, fld) {
     this.tn.omit(";");
     parent["messages"].push(msg);
     return msg;
+};
+
+/**
+ * Parses a message's reserved ids / names statement.
+ * @param {!Object} msg Message definition
+ * @private
+ */
+ParserPrototype._parseMessageReserved = function(msg) {
+    // FIXME: Currently this just skips reserved statements to make it parse.
+    // Valid formats are
+    //   reserved 2, 15, 9 to 11;
+    // for reserved ids or
+    //   reserved "foo", "bar";
+    // for reserved names.
+    while (this.tn.peek() !== ';')
+        this.tn.next();
+    this.tn.skip(";");
 };
 
 /**
