@@ -449,7 +449,7 @@ ParserPrototype._parseMessage = function(parent, fld) {
  * @private
  */
 ParserPrototype._parseMessageReserved = function(msg) {
-    // FIXME: Currently this just skips reserved statements to make it parse.
+    // TODO: This currently just skips a reserved statement for compatibility.
     // Valid formats are
     //   reserved 2, 15, 9 to 11;
     // for reserved ids or
