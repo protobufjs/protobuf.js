@@ -61,7 +61,8 @@ var proto = module.exports = function(builder, options) {
             buildEnum(enm, indent);
         });
         ns.getChildren(ProtoBuf.Reflect.Message).forEach(function(msg) {
-            buildMessage(msg, indent);
+            if (!msg.isGroup) // legacy groups are build within the respective field
+                buildMessage(msg, indent);
         });
         var exts = util.groupExtensions(ns);
         if (exts !== null) {
@@ -98,9 +99,12 @@ var proto = module.exports = function(builder, options) {
 
     // Builds a message
     function buildMessage(msg, indent) {
-        if (!options.min)
-            out.push(indent);
-        out.push("message ", msg.name, options.min ? "{" : " {\n");
+        if (!msg.isGroup) {
+            if (!options.min)
+                out.push(indent);
+            out.push("message ", msg.name);
+        }
+        out.push(options.min ? "{" : " {\n");
         buildOptions(msg.options, indent+"    ");
         var n = 0, oneofFields = [];
         msg.getChildren(ProtoBuf.Reflect.Message.OneOf).forEach(function(oneof) {
@@ -138,31 +142,42 @@ var proto = module.exports = function(builder, options) {
 
     // Builds a message field
     function buildMessageField(msg, fld, indent, isOneOf) {
+        var isGroup = false;
         if (!options.min)
             out.push(indent);
         if (!isOneOf)
             out.push(fld.required ? "required " : (fld.repeated ? "repeated " : "optional "));
-        if (fld.resolvedType !== null)
-            out.push(msg.qn(fld.resolvedType));
-        else
+        if (fld.resolvedType !== null) {
+            if (fld.resolvedType instanceof ProtoBuf.Reflect.Message && fld.resolvedType.isGroup) {
+                out.push("group ", msg.qn(fld.resolvedType));
+                isGroup = true;
+            } else
+                out.push(msg.qn(fld.resolvedType));
+        } else
             out.push(fld.type['name']);
-        out.push(" ", fld instanceof ProtoBuf.Reflect.Message.ExtensionField ? fld.name.substring(fld.name.lastIndexOf(".")+1) : fld.name, options.min ? "=" : " = ", fld.id);
-        var keys = Object.keys(fld.options);
-        if (keys.length > 0) {
-            out.push(options.min ? "[" : " [");
-            var n = 0;
-            keys.forEach(function(key) {
-                if (n > 0)
-                    out.push(options.min ? "," : ", ");
-                out.push(key, options.min ? "=" : " = ",
-                    // BEWARE: Monkey patch for string enum defaults
-                    key === "default" && fld.type === ProtoBuf.TYPES["enum"] && typeof fld.options[key] === 'string' ? fld.options[key] : value(fld.options[key])
-                );
-                n++;
-            });
-            out.push("]");
+        if (!isGroup)
+            out.push(" ", fld instanceof ProtoBuf.Reflect.Message.ExtensionField ? fld.name.substring(fld.name.lastIndexOf(".")+1) : fld.name);
+        out.push(options.min ? "=" : " = ", fld.id);
+        if (isGroup)
+            buildMessage(fld.resolvedType, indent);
+        else {
+            var keys = Object.keys(fld.options);
+            if (keys.length > 0) {
+                out.push(options.min ? "[" : " [");
+                var n = 0;
+                keys.forEach(function (key) {
+                    if (n > 0)
+                        out.push(options.min ? "," : ", ");
+                    out.push(key, options.min ? "=" : " = ",
+                        // BEWARE: Monkey patch for string enum defaults
+                        key === "default" && fld.type === ProtoBuf.TYPES["enum"] && typeof fld.options[key] === 'string' ? fld.options[key] : value(fld.options[key])
+                    );
+                    n++;
+                });
+                out.push("]");
+            }
+            out.push(options.min ? ";" : ";\n");
         }
-        out.push(options.min ? ";" : ";\n");
     }
 
     // Builds an enum
