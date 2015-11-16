@@ -149,16 +149,17 @@ var proto = module.exports = function(builder, options) {
             out.push(fld.required ? "required " : (fld.repeated ? "repeated " : "optional "));
         if (fld.resolvedType !== null) {
             if (fld.resolvedType instanceof ProtoBuf.Reflect.Message && fld.resolvedType.isGroup) {
-                out.push("group ", msg.qn(fld.resolvedType));
+                // inline legacy groups
+                out.push("group ");
                 isGroup = true;
-            } else
-                out.push(msg.qn(fld.resolvedType));
+            }
+            out.push(msg.qn(fld.resolvedType));
         } else
             out.push(fld.type['name']);
         if (!isGroup)
             out.push(" ", fld instanceof ProtoBuf.Reflect.Message.ExtensionField ? fld.name.substring(fld.name.lastIndexOf(".")+1) : fld.name);
         out.push(options.min ? "=" : " = ", fld.id);
-        if (isGroup)
+        if (isGroup) // inline
             buildMessage(fld.resolvedType, indent);
         else {
             var keys = Object.keys(fld.options);
