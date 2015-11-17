@@ -57,7 +57,7 @@
      * @const
      * @expose
      */
-    ProtoBuf.VERSION = "4.1.2";
+    ProtoBuf.VERSION = "4.1.3";
 
     /**
      * Wire types.
@@ -2817,7 +2817,7 @@
                         return binaryAsBase64 ? obj.toBase64() : obj.toBuffer();
                     // Convert Longs to proper objects or strings
                     if (ProtoBuf.Long.isLong(obj))
-                        return longsAsStrings ? obj.toString() : new ProtoBuf.Long(obj);
+                        return longsAsStrings ? obj.toString() : ProtoBuf.Long.fromValue(obj);
                     var clone;
                     // Clone arrays
                     if (Array.isArray(obj)) {

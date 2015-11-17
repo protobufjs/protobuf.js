@@ -23,46 +23,50 @@
 
 
 
+
 <section>
 
 <header>
-    <h2>
-        <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a>.</span>
     
-    Map
-    </h2>
+        <h2>
+            <span class="ancestors"><a href="ProtoBuf.html">ProtoBuf</a>.</span>
+        
+        Map
+        </h2>
+        
     
 </header>
 
 <article>
     <div class="container-overview">
     
+        
 
     
-        
-<dt>
+
     <h4 class="name" id="Map"><span class="type-signature"></span>new Map<span class="signature">(field<span class="signature-attributes">non-null</span>, contents<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
-</dt>
-<dd>
 
-    
-    <div class="description">
-        <p>Constructs a new Map. A Map is a container that is used to implement map
+
+
+<div class="description">
+    <p>Constructs a new Map. A Map is a container that is used to implement map
 fields on message objects. It closely follows the ES6 Map API; however,
 it is distinct because we do not want to depend on external polyfills or
 on ES6 itself.</p>
-    </div>
-    
+</div>
 
-    
 
-    
 
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
-        <h5>Parameters:</h5>
-        
 
 <table class="params">
     <thead>
@@ -151,10 +155,20 @@ on ES6 itself.</p>
     
     </tbody>
 </table>
+
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -188,25 +202,22 @@ on ES6 itself.</p>
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-</dd>
+
+
+
+
+
+
+
 
     
     </div>
-
-    
 
     
 
@@ -221,34 +232,41 @@ on ES6 itself.</p>
     
         <h3 class="subsection-title">Members</h3>
 
-        <dl>
+        
             
-<dt>
-    <h4 class="name" id="field"><span class="type-signature">(non-null) </span>field<span class="type-signature"> :ProtoBuf.Reflect.Field</span></h4>
+<h4 class="name" id="field"><span class="type-signature">(non-null) </span>field<span class="type-signature"> :ProtoBuf.Reflect.Field</span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The field corresponding to this map.</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>The field corresponding to this map.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type">ProtoBuf.Reflect.Field</span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -282,39 +300,45 @@ on ES6 itself.</p>
 </dl>
 
 
-    
 
-    
-</dd>
+
+
 
         
             
-<dt>
-    <h4 class="name" id="keyElem"><span class="type-signature">(non-null) </span>keyElem<span class="type-signature"> :<a href="ProtoBuf.Reflect.Element.html">ProtoBuf.Reflect.Element</a></span></h4>
+<h4 class="name" id="keyElem"><span class="type-signature">(non-null) </span>keyElem<span class="type-signature"> :<a href="ProtoBuf.Reflect.Element.html">ProtoBuf.Reflect.Element</a></span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Element instance corresponding to key type.</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>Element instance corresponding to key type.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type"><a href="ProtoBuf.Reflect.Element.html">ProtoBuf.Reflect.Element</a></span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -348,22 +372,19 @@ on ES6 itself.</p>
 </dl>
 
 
-    
 
-    
-</dd>
+
+
 
         
             
-<dt>
-    <h4 class="name" id="map"><span class="type-signature">(non-null) </span>map<span class="type-signature"> :Object.&lt;string, Object></span></h4>
+<h4 class="name" id="map"><span class="type-signature">(non-null) </span>map<span class="type-signature"> :Object.&lt;string, {key: *, value: *}></span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Internal map: stores mapping of (string form of key) -&gt; (key, value)
+
+
+
+<div class="description">
+    <p>Internal map: stores mapping of (string form of key) -&gt; (key, value)
 pair.</p>
 <p>We provide map semantics for arbitrary key types, but we build on top
 of an Object, which has only string keys. In order to avoid the need
@@ -372,23 +393,32 @@ we store the native key value alongside the value. Thus, we only need
 a one-way mapping from a key type to its string form that guarantees
 uniqueness and equality (i.e., str(K1) === str(K2) if and only if K1
 === K2).</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Object.&lt;string, Object></span>
+</div>
 
 
-            </li>
-        </ul>
-    
 
-    
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object.&lt;string, {key: *, value: *}></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
 <dl class="details">
+
+    
+
+    
+
+    
+
     
 
     
@@ -422,39 +452,45 @@ uniqueness and equality (i.e., str(K1) === str(K2) if and only if K1
 </dl>
 
 
-    
 
-    
-</dd>
+
+
 
         
             
-<dt>
-    <h4 class="name" id="valueElem"><span class="type-signature">(non-null) </span>valueElem<span class="type-signature"> :<a href="ProtoBuf.Reflect.Element.html">ProtoBuf.Reflect.Element</a></span></h4>
+<h4 class="name" id="valueElem"><span class="type-signature">(non-null) </span>valueElem<span class="type-signature"> :<a href="ProtoBuf.Reflect.Element.html">ProtoBuf.Reflect.Element</a></span></h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Element instance corresponding to value type.</p>
-    </div>
-    
 
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+
+
+<div class="description">
+    <p>Element instance corresponding to value type.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
 <span class="param-type"><a href="ProtoBuf.Reflect.Element.html">ProtoBuf.Reflect.Element</a></span>
 
 
-            </li>
-        </ul>
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
     
 
     
-<dl class="details">
+
+    
+
     
 
     
@@ -488,12 +524,11 @@ uniqueness and equality (i.e., str(K1) === str(K2) if and only if K1
 </dl>
 
 
-    
 
-    
-</dd>
 
-        </dl>
+
+
+        
     
 
     
@@ -511,13 +546,13 @@ uniqueness and equality (i.e., str(K1) === str(K2) if and only if K1
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Map.html">Map</a></li><li><a href="ProtoBuf.Reflect.Element.html">Element</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ProtoBuf.Builder.html">Builder</a></li><li><a href="ProtoBuf.Builder.Message.html">Message</a></li><li><a href="ProtoBuf.Builder.Service.html">Service</a></li><li><a href="ProtoBuf.DotProto.Parser.html">Parser</a></li><li><a href="ProtoBuf.DotProto.Tokenizer.html">Tokenizer</a></li><li><a href="ProtoBuf.Map.html">Map</a></li><li><a href="ProtoBuf.Reflect.Element.html">Element</a></li><li><a href="ProtoBuf.Reflect.Enum.html">Enum</a></li><li><a href="ProtoBuf.Reflect.Enum.Value.html">Value</a></li><li><a href="ProtoBuf.Reflect.Extension.html">Extension</a></li><li><a href="ProtoBuf.Reflect.Message.html">Message</a></li><li><a href="ProtoBuf.Reflect.Message.ExtensionField.html">ExtensionField</a></li><li><a href="ProtoBuf.Reflect.Message.Field.html">Field</a></li><li><a href="ProtoBuf.Reflect.Message.OneOf.html">OneOf</a></li><li><a href="ProtoBuf.Reflect.Namespace.html">Namespace</a></li><li><a href="ProtoBuf.Reflect.Service.html">Service</a></li><li><a href="ProtoBuf.Reflect.Service.Method.html">Method</a></li><li><a href="ProtoBuf.Reflect.Service.RPCMethod.html">RPCMethod</a></li><li><a href="ProtoBuf.Reflect.T.html">T</a></li></ul><h3>Namespaces</h3><ul><li><a href="ProtoBuf.html">ProtoBuf</a></li><li><a href="ProtoBuf.DotProto.html">DotProto</a></li><li><a href="ProtoBuf.Reflect.html">Reflect</a></li><li><a href="ProtoBuf.Util.html">Util</a></li></ul>
 </nav>
 
-<br clear="both">
+<br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Oct 14 2015 18:20:52 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Nov 17 2015 01:51:27 GMT+0100 (Mitteleuropäische Zeit)
 </footer>
 
 <script> prettyPrint(); </script>
