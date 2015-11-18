@@ -20,10 +20,10 @@ var Message = function(builder, parent, name, options, isGroup, syntax) {
 
     /**
      * Extensions range.
-     * @type {!Array.<number>}
+     * @type {!Array.<number>|undefined}
      * @expose
      */
-    this.extensions = [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX];
+    this.extensions = undefined;
 
     /**
      * Runtime message class.

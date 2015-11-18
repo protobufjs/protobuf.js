@@ -426,11 +426,11 @@ ParserPrototype._parseMessage = function(parent, fld) {
         else if (token === "service")
             this._parseService(msg);
         else if (token === "extensions")
-            this._parseExtensions(msg);
+            msg["extensions"] = this._parseExtensionRanges();
+        else if (token === "reserved")
+            this._parseIgnored(); // TODO
         else if (token === "extend")
             this._parseExtend(msg);
-        else if (token === "reserved")
-            this._parseMessageReserved(msg);
         else if (Lang.TYPEREF.test(token)) {
             if (!this.proto3)
                 throw Error("illegal field rule: "+token);
@@ -444,17 +444,10 @@ ParserPrototype._parseMessage = function(parent, fld) {
 };
 
 /**
- * Parses a message's reserved ids / names statement.
- * @param {!Object} msg Message definition
+ * Parses an ignored statement.
  * @private
  */
-ParserPrototype._parseMessageReserved = function(msg) {
-    // TODO: This currently just skips a reserved statement for compatibility.
-    // Valid formats are
-    //   reserved 2, 15, 9 to 11;
-    // for reserved ids or
-    //   reserved "foo", "bar";
-    // for reserved names.
+ParserPrototype._parseIgnored = function() {
     while (this.tn.peek() !== ';')
         this.tn.next();
     this.tn.skip(";");
@@ -622,29 +615,43 @@ ParserPrototype._parseEnum = function(msg) {
 };
 
 /**
- * Parses an extensions statement.
- * @param {!Object} msg Message object
+ * Parses extension / reserved ranges.
+ * @returns {!Array.<!Array.<number>>}
  * @private
  */
-ParserPrototype._parseExtensions = function(msg) {
-    var token = this.tn.next(),
+ParserPrototype._parseExtensionRanges = function() {
+    var ranges = [];
+    var token,
+        range,
+        value;
+    do {
         range = [];
-    if (token === "min")
-        range.push(ProtoBuf.ID_MIN);
-    else if (token === "max")
-        range.push(ProtoBuf.ID_MAX);
-    else
-        range.push(mkNumber(token));
-    this.tn.skip("to");
-    token = this.tn.next();
-    if (token === "min")
-        range.push(ProtoBuf.ID_MIN);
-    else if (token === "max")
-        range.push(ProtoBuf.ID_MAX);
-    else
-        range.push(mkNumber(token));
+        while (true) {
+            token = this.tn.next();
+            switch (token) {
+                case "min":
+                    value = ProtoBuf.ID_MIN;
+                    break;
+                case "max":
+                    value = ProtoBuf.ID_MAX;
+                    break;
+                default:
+                    value = mkNumber(token);
+                    break;
+            }
+            range.push(value);
+            if (range.length === 2)
+                break;
+            if (this.tn.peek() !== "to") {
+                range.push(value);
+                break;
+            }
+            this.tn.next();
+        }
+        ranges.push(range);
+    } while (this.tn.omit(","));
     this.tn.skip(";");
-    msg["extensions"] = range;
+    return ranges;
 };
 
 /**

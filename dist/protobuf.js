@@ -57,7 +57,7 @@
      * @const
      * @expose
      */
-    ProtoBuf.VERSION = "5.0.0";
+    ProtoBuf.VERSION = "5.0.1";
 
     /**
      * Wire types.
@@ -1101,11 +1101,11 @@
                 else if (token === "service")
                     this._parseService(msg);
                 else if (token === "extensions")
-                    this._parseExtensions(msg);
+                    msg["extensions"] = this._parseExtensionRanges();
+                else if (token === "reserved")
+                    this._parseIgnored(); // TODO
                 else if (token === "extend")
                     this._parseExtend(msg);
-                else if (token === "reserved")
-                    this._parseMessageReserved(msg);
                 else if (Lang.TYPEREF.test(token)) {
                     if (!this.proto3)
                         throw Error("illegal field rule: "+token);
@@ -1119,17 +1119,10 @@
         };
 
         /**
-         * Parses a message's reserved ids / names statement.
-         * @param {!Object} msg Message definition
+         * Parses an ignored statement.
          * @private
          */
-        ParserPrototype._parseMessageReserved = function(msg) {
-            // TODO: This currently just skips a reserved statement for compatibility.
-            // Valid formats are
-            //   reserved 2, 15, 9 to 11;
-            // for reserved ids or
-            //   reserved "foo", "bar";
-            // for reserved names.
+        ParserPrototype._parseIgnored = function() {
             while (this.tn.peek() !== ';')
                 this.tn.next();
             this.tn.skip(";");
@@ -1297,29 +1290,43 @@
         };
 
         /**
-         * Parses an extensions statement.
-         * @param {!Object} msg Message object
+         * Parses extension / reserved ranges.
+         * @returns {!Array.<!Array.<number>>}
          * @private
          */
-        ParserPrototype._parseExtensions = function(msg) {
-            var token = this.tn.next(),
+        ParserPrototype._parseExtensionRanges = function() {
+            var ranges = [];
+            var token,
+                range,
+                value;
+            do {
                 range = [];
-            if (token === "min")
-                range.push(ProtoBuf.ID_MIN);
-            else if (token === "max")
-                range.push(ProtoBuf.ID_MAX);
-            else
-                range.push(mkNumber(token));
-            this.tn.skip("to");
-            token = this.tn.next();
-            if (token === "min")
-                range.push(ProtoBuf.ID_MIN);
-            else if (token === "max")
-                range.push(ProtoBuf.ID_MAX);
-            else
-                range.push(mkNumber(token));
+                while (true) {
+                    token = this.tn.next();
+                    switch (token) {
+                        case "min":
+                            value = ProtoBuf.ID_MIN;
+                            break;
+                        case "max":
+                            value = ProtoBuf.ID_MAX;
+                            break;
+                        default:
+                            value = mkNumber(token);
+                            break;
+                    }
+                    range.push(value);
+                    if (range.length === 2)
+                        break;
+                    if (this.tn.peek() !== "to") {
+                        range.push(value);
+                        break;
+                    }
+                    this.tn.next();
+                }
+                ranges.push(range);
+            } while (this.tn.omit(","));
             this.tn.skip(";");
-            msg["extensions"] = range;
+            return ranges;
         };
 
         /**
@@ -2279,10 +2286,10 @@
 
             /**
              * Extensions range.
-             * @type {!Array.<number>}
+             * @type {!Array.<number>|undefined}
              * @expose
              */
-            this.extensions = [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX];
+            this.extensions = undefined;
 
             /**
              * Runtime message class.
@@ -4479,13 +4486,12 @@
                                 subObj.push(svc);
                             });
 
-                        // Set extension range
+                        // Set extension ranges
                         if (def["extensions"]) {
-                            obj.extensions = def["extensions"];
-                            if (obj.extensions[0] < ProtoBuf.ID_MIN)
-                                obj.extensions[0] = ProtoBuf.ID_MIN;
-                            if (obj.extensions[1] > ProtoBuf.ID_MAX)
-                                obj.extensions[1] = ProtoBuf.ID_MAX;
+                            if (typeof def["extensions"][0] === 'number') // pre 5.0.1
+                                obj.extensions = [ def["extensions"] ];
+                            else
+                                obj.extensions = def["extensions"];
                         }
 
                         // Create on top of current namespace
@@ -4524,8 +4530,16 @@
                             def["fields"].forEach(function(fld) {
                                 if (obj.getChild(fld['id']|0) !== null)
                                     throw Error("duplicate extended field id in "+obj.name+": "+fld['id']);
-                                if (fld['id'] < obj.extensions[0] || fld['id'] > obj.extensions[1])
-                                    throw Error("illegal extended field id in "+obj.name+": "+fld['id']+" ("+obj.extensions.join(' to ')+" expected)");
+                                // Check if field id is allowed to be extended
+                                if (obj.extensions) {
+                                    var valid = false;
+                                    obj.extensions.forEach(function(range) {
+                                        if (fld["id"] >= range[0] && fld["id"] <= range[1])
+                                            valid = true;
+                                    });
+                                    if (!valid)
+                                        throw Error("illegal extended field id in "+obj.name+": "+fld['id']+" (not within valid ranges)");
+                                }
                                 // Convert extension field names to camel case notation if the override is set
                                 var name = fld["name"];
                                 if (this.options['convertFieldsToCamelCase'])

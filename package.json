@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Protocol Buffers for JavaScript. Finally.",
   "author": "Daniel Wirtz <dcode@dcode.io>",
   "contributors": [

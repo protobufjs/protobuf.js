@@ -129,10 +129,18 @@ var proto = module.exports = function(builder, options) {
         });
         if (n > 0 && !options.min)
             out[out.length-1] += "\n";
-        if (msg.extensions[0] !== ProtoBuf.ID_MIN || msg.extensions[1] !== ProtoBuf.ID_MAX) {
+        if (msg.extensions) { // array of ranges
             if (!options.min)
                 out.push(indent, "    ");
-            out.push("extensions ", value(msg.extensions[0]), " to ", msg.extensions[1] === ProtoBuf.ID_MAX ? "max" : value(msg.extensions[1]), options.min ? ";" : ";\n\n");
+            out.push("extensions ");
+            msg.extensions.forEach(function(range, index) {
+                if (index > 0)
+                    out.push(options.min ? "," : ", ");
+                out.push(value(range[0]));
+                if (range[1] !== range[0])
+                    out.push(" to ", range[1] === ProtoBuf.ID_MAX ? "max" : value(range[1]));
+            });
+            out.push(options.min ? ";" : ";\n\n");
         }
         buildNamespace(msg, indent+"    ");
         if (!options.min)

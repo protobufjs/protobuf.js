@@ -1046,85 +1046,51 @@
         "extend": function(test) {
             try {
                 var ast = new ProtoBuf.DotProto.Parser(fs.readFileSync(__dirname+"/extend.proto")).parse();
-                test.deepEqual(ast,  {
-                    "package": null,
-                    "messages": [
-                        {
-                            "ref": "google.protobuf.MessageOptions",
-                            "fields": [
-                                {
-                                    "rule": "optional",
-                                    "options": {},
-                                    "type": "int32",
-                                    "name": "foo",
-                                    "id": 1001
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Foo",
-                            "fields": [],
-                            "enums": [],
-                            "messages": [],
-                            "options": {},
-                            "services": [],
-                            "extensions": [
-                                2,
-                                536870911
-                            ],
-                            "oneofs": []
-                        },
-                        {
-                            "ref": "Foo",
-                            "fields":[
-                                {
-                                    "rule": "optional",
-                                    "options": {},
-                                    "type": "string",
-                                    "name": "bar",
-                                    "id": 2
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Bar",
-                            "fields": [],
-                            "enums": [],
-                            "messages": [
-                                {
-                                    "name": "Foo",
-                                    "fields": [],
-                                    "enums": [],
-                                    "messages": [],
-                                    "services": [],
-                                    "options": {},
-                                    "oneofs": []
-                                },
-                                {
-                                    "ref": ".Foo",
-                                    "fields": [
-                                        {
-                                            "rule": "optional",
-                                            "options": {},
-                                            "type": "Foo",
-                                            "name": "foo",
-                                            "id": 3
-                                        }
-                                    ]
-                                }
-                            ],
-                            "options": {},
-                            "services": [],
-                            "oneofs": []
-                        }
-                    ],
-                    "enums": [],
-                    "imports": [
-                        "google/protobuf/descriptor.proto"
-                    ],
-                    "options": {},
-                    "services": []
-                });
+                test.deepEqual(ast, { package: null,
+                    messages:
+                        [ { ref: 'google.protobuf.MessageOptions',
+                            fields:
+                                [ { rule: 'optional',
+                                    type: 'int32',
+                                    name: 'foo',
+                                    options: {},
+                                    id: 1001 } ] },
+                            { name: 'Foo',
+                                fields: [],
+                                enums: [],
+                                messages: [],
+                                options: {},
+                                services: [],
+                                oneofs: {},
+                                extensions: [ [ 2, 536870911 ] ] },
+                            { ref: 'Foo',
+                                fields:
+                                    [ { rule: 'optional',
+                                        type: 'string',
+                                        name: 'bar',
+                                        options: {},
+                                        id: 2 } ] },
+                            { name: 'Bar',
+                                fields: [],
+                                enums: [],
+                                messages:
+                                    [ { name: 'Foo',
+                                        fields: [],
+                                        enums: [],
+                                        messages: [],
+                                        options: {},
+                                        services: [],
+                                        oneofs: {} },
+                                        { ref: '.Foo',
+                                            fields: [ { rule: 'optional', type: 'Foo', name: 'foo', options: {}, id: 3 } ] } ],
+                                options: {},
+                                services: [],
+                                oneofs: {} } ],
+                    enums: [],
+                    imports: [ 'google/protobuf/descriptor.proto' ],
+                    options: {},
+                    services: [] }
+                );
 
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/extend.proto");
                 var TFoo = builder.lookup(".Foo"),
@@ -1136,8 +1102,8 @@
                 test.strictEqual(fields[0].id, 2);
                 test.strictEqual(fields[1].name, ".Bar.foo");
                 test.strictEqual(fields[1].id, 3);
-                test.deepEqual(TFoo.extensions, [2, ProtoBuf.ID_MAX]); // Defined
-                test.deepEqual(TBar.extensions, [ProtoBuf.ID_MIN, ProtoBuf.ID_MAX]); // Undefined
+                test.deepEqual(TFoo.extensions, [[2, ProtoBuf.ID_MAX]]); // explicitly defined
+                test.strictEqual(TBar.extensions, undefined); // none defined
                 test.deepEqual(TBar.getChild("foo"), { builder: builder, parent: TBar, name: "foo", field: TFoo.getChild('.Bar.foo') });
                 test.strictEqual(TBar.getChildren(ProtoBuf.Reflect.Message.Field).length, 0);
                 var root = builder.build();
