@@ -17,6 +17,13 @@
                     "type": ".Test2",
                     "name": "test2",
                     "id": 2
+                },
+                {
+                    "rule": "required",
+                    "options": {},
+                    "type": ".Test4",
+                    "name": "test4",
+                    "id": 3
                 }
             ],
             "enums": [],
