@@ -726,6 +726,7 @@
             };
             var token,
                 head = true;
+            var weak;
             try {
                 while (token = this.tn.next()) {
                     switch (token) {
@@ -742,11 +743,16 @@
                             if (!head)
                                 throw Error("unexpected 'import'");
                             token = this.tn.peek();
-                            if (token === "public") // ignored
+                            if (token === "public" || token === "weak") // ignored
                                 this.tn.next();
+                            weak = false;
+                            if (token === "weak")
+                                weak = true;
                             token = this._readString();
                             this.tn.skip(";");
-                            topLevel["imports"].push(token);
+                            if (!weak) {
+                                topLevel["imports"].push(token);
+                            }
                             break;
                         case 'syntax':
                             if (!head)

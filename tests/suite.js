@@ -914,6 +914,19 @@
             test.done();
         },
 
+        "weakImports": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/imports-weak.proto");
+                var root = builder.build();
+            } catch (e) {
+                test.ok(e.message.indexOf("unresolvable type reference") >= 0);
+                test.done();
+                return;
+            }
+            var e = new Error("Weak import was imported.");
+            fail(e);
+        },
+
         "importExtensions": function(test) {
             var x = "package x; \
             message Test { \
