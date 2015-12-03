@@ -102,9 +102,10 @@ function mkLong(value, unsigned) {
  * @expose
  */
 ElementPrototype.verifyValue = function(value) {
+    var self = this;
     var fail = function(val, msg) {
-        throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
-    }.bind(this);
+        throw Error("Illegal value for "+self.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
+    };
     switch (this.type) {
         // Signed 32bit
         case ProtoBuf.TYPES["int32"]:
