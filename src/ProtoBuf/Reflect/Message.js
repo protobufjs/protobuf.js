@@ -109,6 +109,13 @@ MessagePrototype.build = function(rebuild) {
             throw Error("Illegal reflect child of "+this.toString(true)+": "+this.children[i].toString(true));
     }
 
+    // Default values
+    for (i=0, k=this._fields.length; i<k; i++) {
+        var field = this._fields[i];
+        if (!field.repeated && !field.map && T.syntax !== 'proto3')
+            clazz.prototype[field.name] = field.defaultValue;
+    }
+
     return this.clazz = clazz;
 };
 
@@ -130,7 +137,7 @@ MessagePrototype.encode = function(message, buffer, noVerify) {
         if (field.required && val === null) {
             if (fieldMissing === null)
                 fieldMissing = field;
-        } else
+        } else if (field.required || message.hasOwnProperty(field.name))
             field.encode(noVerify ? val : field.verifyValue(val), buffer, message);
     }
     if (fieldMissing !== null) {
@@ -258,7 +265,7 @@ MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
             if (field.oneof) { // Field is part of an OneOf (not a virtual OneOf field)
                 var currentField = msg[field.oneof.name]; // Virtual field references currently set field
                 if (currentField !== null && currentField !== field.name)
-                    msg[currentField] = null; // Clear currently set field
+                    delete msg[currentField]; // Clear currently set field
                 msg[field.oneof.name] = field.name; // Point virtual field at this field
             }
         }
@@ -267,15 +274,14 @@ MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
     // Check if all required fields are present and set default values for optional fields that are not
     for (var i=0, k=this._fields.length; i<k; ++i) {
         field = this._fields[i];
-        if (msg[field.name] === null) {
+        if (!msg.hasOwnProperty(field.name)) {
             if (this.syntax === "proto3") { // Proto3 sets default values by specification
                 msg[field.name] = field.defaultValue;
             } else if (field.required) {
                 var err = Error("Missing at least one required field for " + this.toString(true) + ": " + field.name);
                 err["decoded"] = msg; // Still expose what we got
                 throw(err);
-            } else if (ProtoBuf.populateDefaults && field.defaultValue !== null)
-                msg[field.name] = field.defaultValue;
+            }
         }
     }
     return msg;

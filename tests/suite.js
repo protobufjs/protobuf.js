@@ -432,7 +432,7 @@
                 var builder = ProtoBuf.loadProto("message Test { optional bool ok = 1 [ default = false ]; }"),
                     Test = builder.build("Test"),
                     t =  new Test();
-                test.strictEqual(t.ok, null); // Not set as it is optional
+                test.strictEqual(t.ok, false); // = default when missing
                 t.setOk(true);
                 test.strictEqual(t.ok, true);
                 test.strictEqual(Test.decode(t.encode()).ok, true);
@@ -561,6 +561,7 @@
                 var Test = builder.build("Test");
                 var t = new Test(), bb = new ByteBuffer(2);
                 t.setA(1);
+                t.b = null;
                 try {
                     bb = t.encode(bb).flip();
                     test.ok(false);
@@ -577,7 +578,7 @@
                     // But still be able to access the rest
                     var t3 = e.decoded;
                     test.strictEqual(t3.a, 1);
-                    test.strictEqual(t3.b, null);
+                    test.strictEqual(t3.b, 0);
                 }
                 test.strictEqual(t2, undefined);
             } catch (e) {
@@ -931,8 +932,8 @@
             ProtoBuf.loadProto(y, builder);
             var Test = builder.build('x.Test');
             var inst = new Test();
-            test.strictEqual(inst[".x.first_val"], null);
-            test.strictEqual(inst[".y.second_val"], null);
+            test.strictEqual(inst[".x.first_val"], 0);
+            test.strictEqual(inst[".y.second_val"], 0);
             test.done();
         },
 
@@ -1148,13 +1149,13 @@
                 test.strictEqual(myOneOf.my_oneof, "id");
                 myOneOf.set("name", "me");
                 test.strictEqual(myOneOf.my_oneof, "name");
-                test.strictEqual(myOneOf.id, null);
+                test.strictEqual(myOneOf.id, 0);
                 var bb = myOneOf.encode().compact();
                 test.strictEqual(bb.toString("debug"), "<12 02 6D 65>"); // id 2, wt 2, len 2
                 myOneOf = MyOneOf.decode(bb);
                 test.strictEqual(myOneOf.my_oneof, "name");
                 test.strictEqual(myOneOf.name, "me");
-                test.strictEqual(myOneOf.id, null);
+                test.strictEqual(myOneOf.id, 0);
             } catch (e) {
                 fail(e);
             }
@@ -1299,12 +1300,12 @@
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/optional.proto");
                 var Test1 = builder.build("Test1");
                 var test1 = new Test1();
-                test.strictEqual(test1.a, null);
-                test.deepEqual(Object.keys(test1), ['a','b']);
+                test.strictEqual(test1.a, 0);
+                test.deepEqual(Object.keys(test1), []);
                 var bb = test1.encode();
                 test1 = Test1.decode(bb);
-                test.strictEqual(test1.a, null);
-                test.deepEqual(Object.keys(test1), ['a','b']);
+                test.strictEqual(test1.a, 0);
+                test.deepEqual(Object.keys(test1), []);
             } catch (e) {
                 fail(e);
             }
@@ -1320,20 +1321,20 @@
                 var msg = new Test();
 
                 // Reverted collision on 1st
-                test.strictEqual(msg.some_field, null);
-                test.strictEqual(msg.someField, null);
+                test.strictEqual(msg.some_field, 0);
+                test.strictEqual(msg.someField, 0);
                 test.equal(TTest.getChild("some_field").id, 1);
                 test.equal(TTest.getChild("someField").id, 2);
 
 
                 // Reverted collision on 2nd
-                test.strictEqual(msg.aField, null);
-                test.strictEqual(msg.a_field, null);
+                test.strictEqual(msg.aField, 0);
+                test.strictEqual(msg.a_field, 0);
                 test.equal(TTest.getChild("aField").id, 3);
                 test.equal(TTest.getChild("a_field").id, 4);
 
                 // No collision
-                test.strictEqual(msg.itsAField, null);
+                test.strictEqual(msg.itsAField, 0);
                 test.equal(TTest.getChild("itsAField").id, 5);
 
                 test.ok(typeof msg.set_its_a_field === "function");

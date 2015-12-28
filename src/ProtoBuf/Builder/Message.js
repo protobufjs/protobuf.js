@@ -23,10 +23,11 @@ var Message = function(values, var_args) {
     // Create fields and set default values
     for (i=0, k=fields.length; i<k; ++i) {
         var field = fields[i];
-        this[field.name] =
-            field.repeated ? [] :
-            (field.map ? new ProtoBuf.Map(field) : null);
-        if ((field.required || T.syntax === 'proto3') &&
+        if (field.repeated)
+            this[field.name] = [];
+        else if (field.map)
+            this[field.name] = new ProtoBuf.Map(field);
+        else if (T.syntax === 'proto3' &&
             field.defaultValue !== null)
             this[field.name] = field.defaultValue;
     }
@@ -128,7 +129,7 @@ MessagePrototype.set = function(keyOrObj, value, noAssert) {
         var currentField = this[field.oneof.name]; // Virtual field references currently set field
         if (value !== null) {
             if (currentField !== null && currentField !== field.name)
-                this[currentField] = null; // Clear currently set field
+                delete this[currentField]; // Clear currently set field
             this[field.oneof.name] = field.name; // Point virtual field at this field
         } else if (/* value === null && */currentField === keyOrObj)
             this[field.oneof.name] = null; // Clear virtual field (current field explicitly cleared)

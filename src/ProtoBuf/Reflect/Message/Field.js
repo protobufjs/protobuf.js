@@ -145,14 +145,10 @@ FieldPrototype.build = function() {
     if (this.map)
         this.keyElement = new Element(this.keyType, undefined, true, this.syntax);
 
-    // In proto3, fields do not have field presence, and every field is set to
-    // its type's default value ("", 0, 0.0, or false).
-    if (this.syntax === 'proto3' && !this.repeated && !this.map)
-        this.defaultValue = Element.defaultFieldValue(this.type);
-
-    // Otherwise, default values are present when explicitly specified
-    else if (typeof this.options['default'] !== 'undefined')
+    if (typeof this.options['default'] !== 'undefined')
         this.defaultValue = this.verifyValue(this.options['default']);
+    else if (!this.repeated && !this.map)
+        this.defaultValue = Element.defaultFieldValue(this.type);
 };
 
 /**

@@ -248,14 +248,6 @@ ProtoBuf.convertFieldsToCamelCase = false;
  */
 ProtoBuf.populateAccessors = true;
 
-/**
- * By default, messages are populated with default values if a field is not present on the wire. To disable
- *  this behavior, set this setting to `false`.
- * @type {boolean}
- * @expose
- */
-ProtoBuf.populateDefaults = true;
-
 //? include("ProtoBuf/Util.js");
 
 //? include("ProtoBuf/Lang.js");
