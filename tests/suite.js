@@ -1241,7 +1241,8 @@
         },
 
         // Properly ignore "syntax" and "extensions" keywords
-        "gtfs-realtime": function(test) {
+        // The corresponding .proto file has been removed upon request
+        /* "gtfs-realtime": function(test) {
             try {
                 test.doesNotThrow(function() {
                     ProtoBuf.loadProtoFile(__dirname+"/gtfs-realtime.proto");
@@ -1250,7 +1251,7 @@
                 fail(e);
             }
             test.done();
-        },
+        }, */
 
         "delimited": function(test) {
             try {
