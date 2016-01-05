@@ -40,8 +40,6 @@ var json = module.exports = function(builder, options) {
         out = {
             "package": pkg !== "" ? pkg : null
         };
-    if (options.syntax)
-        out.syntax = options.syntax
     buildNamespace(ptr, out);
     return JSON.stringify(out, null, options.min ? 0 : 4);
 };
