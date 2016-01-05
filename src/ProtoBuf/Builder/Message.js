@@ -560,6 +560,7 @@ MessagePrototype.encodeJSON = function() {
  * @name ProtoBuf.Builder.Message.decode
  * @function
  * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
+ * @param {(number|string)=} length Message length. Defaults to decode all the remainig data.
  * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
  * @return {!ProtoBuf.Builder.Message} Decoded message
  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
@@ -568,7 +569,10 @@ MessagePrototype.encodeJSON = function() {
  * @see ProtoBuf.Builder.Message.decode64
  * @see ProtoBuf.Builder.Message.decodeHex
  */
-Message.decode = function(buffer, enc) {
+Message.decode = function(buffer, length, enc) {
+    if (typeof length === 'string')
+        enc = length,
+        length = -1;
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
     buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw

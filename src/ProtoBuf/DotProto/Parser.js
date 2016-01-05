@@ -67,7 +67,7 @@ ParserPrototype.parse = function() {
                     if (!head)
                         throw Error("unexpected 'import'");
                     token = this.tn.peek();
-                    if (token === "public") // ignored
+                    if (token === "public" || token === "weak") // ignored
                         this.tn.next();
                     token = this._readString();
                     this.tn.skip(";");

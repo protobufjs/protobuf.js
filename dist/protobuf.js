@@ -742,7 +742,7 @@
                             if (!head)
                                 throw Error("unexpected 'import'");
                             token = this.tn.peek();
-                            if (token === "public") // ignored
+                            if (token === "public" || token === "weak") // ignored
                                 this.tn.next();
                             token = this._readString();
                             this.tn.skip(";");
@@ -1794,9 +1794,10 @@
          * @expose
          */
         ElementPrototype.verifyValue = function(value) {
-            var fail = function(val, msg) {
-                throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
-            }.bind(this);
+            var self = this;
+            function fail(val, msg) {
+                throw Error("Illegal value for "+self.toString(true)+" of type "+self.type.name+": "+val+" ("+msg+")");
+            }
             switch (this.type) {
                 // Signed 32bit
                 case ProtoBuf.TYPES["int32"]:
@@ -2908,6 +2909,7 @@
                  * @name ProtoBuf.Builder.Message.decode
                  * @function
                  * @param {!ByteBuffer|!ArrayBuffer|!Buffer|string} buffer Buffer to decode from
+                 * @param {(number|string)=} length Message length. Defaults to decode all the remainig data.
                  * @param {string=} enc Encoding if buffer is a string: hex, utf8 (not recommended), defaults to base64
                  * @return {!ProtoBuf.Builder.Message} Decoded message
                  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
@@ -2916,7 +2918,10 @@
                  * @see ProtoBuf.Builder.Message.decode64
                  * @see ProtoBuf.Builder.Message.decodeHex
                  */
-                Message.decode = function(buffer, enc) {
+                Message.decode = function(buffer, length, enc) {
+                    if (typeof length === 'string')
+                        enc = length,
+                        length = -1;
                     if (typeof buffer === 'string')
                         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
                     buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw
@@ -3177,7 +3182,7 @@
         /**
          * Decodes an encoded message and returns the decoded message.
          * @param {ByteBuffer} buffer ByteBuffer to decode from
-         * @param {number=} length Message length. Defaults to decode all the available data.
+         * @param {number=} length Message length. Defaults to decode all remaining data.
          * @param {number=} expectedGroupEndId Expected GROUPEND id if this is a legacy group
          * @return {ProtoBuf.Builder.Message} Decoded message
          * @throws {Error} If the message cannot be decoded

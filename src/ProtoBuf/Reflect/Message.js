@@ -204,7 +204,7 @@ function skipTillGroupEnd(expectedId, buf) {
 /**
  * Decodes an encoded message and returns the decoded message.
  * @param {ByteBuffer} buffer ByteBuffer to decode from
- * @param {number=} length Message length. Defaults to decode all the available data.
+ * @param {number=} length Message length. Defaults to decode all remaining data.
  * @param {number=} expectedGroupEndId Expected GROUPEND id if this is a legacy group
  * @return {ProtoBuf.Builder.Message} Decoded message
  * @throws {Error} If the message cannot be decoded
