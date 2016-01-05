@@ -77,6 +77,9 @@ for (var i=0; i<rpc.length; i++) {
                         callback(err);
                         return;
                     }
+                    // Coalesce to empty string when service response has empty content
+                    if (res === null)
+                        res = ''
                     try { res = method.resolvedResponseType.clazz.decode(res); } catch (notABuffer) {}
                     if (!res || !(res instanceof method.resolvedResponseType.clazz)) {
                         callback(Error("Illegal response type received in service method "+ T.name+"#"+method.name));
