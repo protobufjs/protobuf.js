@@ -165,9 +165,10 @@ FieldPrototype.build = function() {
  */
 FieldPrototype.verifyValue = function(value, skipRepeated) {
     skipRepeated = skipRepeated || false;
-    var fail = function(val, msg) {
-        throw Error("Illegal value for "+this.toString(true)+" of type "+this.type.name+": "+val+" ("+msg+")");
-    }.bind(this);
+    var self = this;
+    function fail(val, msg) {
+        throw Error("Illegal value for "+self.toString(true)+" of type "+self.type.name+": "+val+" ("+msg+")");
+    }
     if (value === null) { // NULL values for optional fields
         if (this.required)
             fail(typeof value, "required");
