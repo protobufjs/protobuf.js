@@ -725,7 +725,8 @@
                 // "syntax": undefined
             };
             var token,
-                head = true;
+                head = true,
+                weak;
             try {
                 while (token = this.tn.next()) {
                     switch (token) {
@@ -742,11 +743,12 @@
                             if (!head)
                                 throw Error("unexpected 'import'");
                             token = this.tn.peek();
-                            if (token === "public" || token === "weak") // ignored
+                            if (token === "public" || (weak = token === "weak")) // token ignored
                                 this.tn.next();
                             token = this._readString();
                             this.tn.skip(";");
-                            topLevel["imports"].push(token);
+                            if (!weak) // import ignored
+                                topLevel["imports"].push(token);
                             break;
                         case 'syntax':
                             if (!head)
@@ -2689,18 +2691,19 @@
                  * @name ProtoBuf.Builder.Message#encodeDelimited
                  * @function
                  * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
+                 * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
                  * @return {!ByteBuffer} Encoded message as a ByteBuffer
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded ByteBuffer in the `encoded` property on the error.
                  * @expose
                  */
-                MessagePrototype.encodeDelimited = function(buffer) {
+                MessagePrototype.encodeDelimited = function(buffer, noVerify) {
                     var isNew = false;
                     if (!buffer)
                         buffer = new ByteBuffer(),
                         isNew = true;
                     var enc = new ByteBuffer().LE();
-                    T.encode(this, enc).flip();
+                    T.encode(this, enc, noVerify).flip();
                     buffer.writeVarint32(enc.remaining());
                     buffer.append(enc);
                     return isNew ? buffer.flip() : buffer;
@@ -4049,6 +4052,9 @@
                                         callback(err);
                                         return;
                                     }
+                                    // Coalesce to empty string when service response has empty content
+                                    if (res === null)
+                                        res = ''
                                     try { res = method.resolvedResponseType.clazz.decode(res); } catch (notABuffer) {}
                                     if (!res || !(res instanceof method.resolvedResponseType.clazz)) {
                                         callback(Error("Illegal response type received in service method "+ T.name+"#"+method.name));

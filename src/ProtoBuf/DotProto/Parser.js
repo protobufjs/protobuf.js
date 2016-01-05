@@ -50,7 +50,8 @@ ParserPrototype.parse = function() {
         // "syntax": undefined
     };
     var token,
-        head = true;
+        head = true,
+        weak;
     try {
         while (token = this.tn.next()) {
             switch (token) {
@@ -67,11 +68,12 @@ ParserPrototype.parse = function() {
                     if (!head)
                         throw Error("unexpected 'import'");
                     token = this.tn.peek();
-                    if (token === "public" || token === "weak") // ignored
+                    if (token === "public" || (weak = token === "weak")) // token ignored
                         this.tn.next();
                     token = this._readString();
                     this.tn.skip(";");
-                    topLevel["imports"].push(token);
+                    if (!weak) // import ignored
+                        topLevel["imports"].push(token);
                     break;
                 case 'syntax':
                     if (!head)
