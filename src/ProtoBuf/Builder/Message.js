@@ -110,9 +110,11 @@ MessagePrototype.$add = MessagePrototype.add;
 MessagePrototype.set = function(keyOrObj, value, noAssert) {
     if (keyOrObj && typeof keyOrObj === 'object') {
         noAssert = value;
-        for (var ikey in keyOrObj)
-            if (keyOrObj.hasOwnProperty(ikey) && typeof (value = keyOrObj[ikey]) !== 'undefined')
+        for (var ikey in keyOrObj) {
+            // Check if virtual oneof field - don't set these
+            if (keyOrObj.hasOwnProperty(ikey) && typeof (value = keyOrObj[ikey]) !== 'undefined' && T._oneofsByName[ikey] === undefined)
                 this.$set(ikey, value, noAssert);
+        }
         return this;
     }
     var field = T._fieldsByName[keyOrObj];

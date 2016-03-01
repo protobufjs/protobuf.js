@@ -1103,7 +1103,11 @@
                 else if (token === "service")
                     this._parseService(msg);
                 else if (token === "extensions")
-                    msg["extensions"] = this._parseExtensionRanges();
+                    if (msg.hasOwnProperty("extensions")) {
+                        msg["extensions"] = msg["extensions"].concat(this._parseExtensionRanges())
+                    } else {
+                        msg["extensions"] = this._parseExtensionRanges();
+                    }
                 else if (token === "reserved")
                     this._parseIgnored(); // TODO
                 else if (token === "extend")
@@ -2461,9 +2465,11 @@
                 MessagePrototype.set = function(keyOrObj, value, noAssert) {
                     if (keyOrObj && typeof keyOrObj === 'object') {
                         noAssert = value;
-                        for (var ikey in keyOrObj)
-                            if (keyOrObj.hasOwnProperty(ikey) && typeof (value = keyOrObj[ikey]) !== 'undefined')
+                        for (var ikey in keyOrObj) {
+                            // Check if virtual oneof field - don't set these
+                            if (keyOrObj.hasOwnProperty(ikey) && typeof (value = keyOrObj[ikey]) !== 'undefined' && T._oneofsByName[ikey] === undefined)
                                 this.$set(ikey, value, noAssert);
+                        }
                         return this;
                     }
                     var field = T._fieldsByName[keyOrObj];
@@ -3075,6 +3081,7 @@
             this._fields = [];
             this._fieldsById = {};
             this._fieldsByName = {};
+            this._oneofsByName = {};
             for (var i=0, k=this.children.length, child; i<k; i++) {
                 child = this.children[i];
                 if (child instanceof Enum || child instanceof Message || child instanceof Service) {
@@ -3086,6 +3093,9 @@
                     this._fields.push(child),
                     this._fieldsById[child.id] = child,
                     this._fieldsByName[child.name] = child;
+                else if (child instanceof Message.OneOf) {
+                    this._oneofsByName[child.name] = child;
+                }
                 else if (!(child instanceof Message.OneOf) && !(child instanceof Extension)) // Not built
                     throw Error("Illegal reflect child of "+this.toString(true)+": "+this.children[i].toString(true));
             }
