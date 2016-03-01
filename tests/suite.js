@@ -293,7 +293,41 @@
             }
             test.done();
         },
-
+        
+        "constructorShallowCopy": function(test) {
+            var builder = ProtoBuf.loadProtoFile(__dirname+"/example3.proto");
+            var Test1 = builder.build("Test1");
+            var t1 = new Test1({a: 123}),
+                t1Copy = new Test1(t1);
+                t1DecodeCopy = Test1.decode(t1.toArrayBuffer());
+            test.deepEqual(t1, t1Copy);
+            test.deepEqual(t1, t1DecodeCopy);
+            
+            t1.a = 42;
+            
+            test.notEqual(t1.a, t1Copy.a);
+            test.notEqual(t1.a, t1DecodeCopy.a);
+            
+            test.done();
+        },
+        
+        "constructorDeepCopy": function(test) {
+            var builder = ProtoBuf.loadProtoFile(__dirname+"/example3.proto");
+            var Test3 = builder.build("Test3");
+            var t3 = new Test3({c: {a: 123}}),
+                t3Copy = new Test3(t3);
+                t3DecodeCopy = Test3.decode(t3.toArrayBuffer());
+            test.deepEqual(t3, t3Copy);
+            test.deepEqual(t3, t3DecodeCopy);
+            
+            t3.c.a = 42;
+            
+            test.notEqual(t3.c.a, t3Copy.c.a);
+            test.notEqual(t3.c.a, t3DecodeCopy.c.a);
+            
+            test.done();
+        },
+        
         "numberFormats": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/numberformats.proto");
