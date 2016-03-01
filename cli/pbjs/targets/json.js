@@ -131,6 +131,7 @@ function buildOptions(options) {
             case 'string':
             case 'number':
             case 'boolean':
+            case 'object':
                 break;
             default:
                 throw Error("Illegal option type: "+typeof(val));
