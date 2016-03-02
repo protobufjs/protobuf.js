@@ -66,7 +66,7 @@ ProtoBuf.Map = (function(ProtoBuf, Reflect) {
             var keys = Object.keys(contents);
             for (var i = 0; i < keys.length; i++) {
                 var key = this.keyElem.valueFromString(keys[i]);
-                var val = this.valueElem.verifyValue(contents[keys[i]]);
+                var val = this.valueElem.verifyValue(contents[keys[i]], true);
                 this.map[this.keyElem.valueToString(key)] =
                     { key: key, value: val };
             }
@@ -164,8 +164,8 @@ ProtoBuf.Map = (function(ProtoBuf, Reflect) {
      * @returns {!ProtoBuf.Map} The map instance
      */
     MapPrototype.set = function(key, value) {
-        var keyValue = this.keyElem.verifyValue(key);
-        var valValue = this.valueElem.verifyValue(value);
+        var keyValue = this.keyElem.verifyValue(key, true);
+        var valValue = this.valueElem.verifyValue(value, true);
         this.map[this.keyElem.valueToString(keyValue)] =
             { key: keyValue, value: valValue };
         return this;

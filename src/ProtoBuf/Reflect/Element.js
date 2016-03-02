@@ -97,11 +97,14 @@ function mkLong(value, unsigned) {
  * Checks if the given value can be set for an element of this type (singular
  * field or one element of a repeated field or map).
  * @param {*} value Value to check
+ * @param {*} deepCopy Whether to make a deep copy of the value. Defaults to false.
  * @return {*} Verified, maybe adjusted, value
  * @throws {Error} If the value cannot be verified for this element slot
  * @expose
  */
-ElementPrototype.verifyValue = function(value) {
+ElementPrototype.verifyValue = function(value, deepCopy) {
+    deepCopy = deepCopy || false;
+    
     var self = this;
     function fail(val, msg) {
         throw Error("Illegal value for "+self.toString(true)+" of type "+self.type.name+": "+val+" ("+msg+")");
@@ -171,8 +174,12 @@ ElementPrototype.verifyValue = function(value) {
 
         // Length-delimited bytes
         case ProtoBuf.TYPES["bytes"]:
-            if (ByteBuffer.isByteBuffer(value))
-                return value;
+            if (ByteBuffer.isByteBuffer(value)) {
+                if(deepCopy)
+                    return value;
+                else
+                    return value.copy();
+            }
             return ByteBuffer.wrap(value, "base64");
 
         // Constant enum value
@@ -201,8 +208,12 @@ ElementPrototype.verifyValue = function(value) {
         case ProtoBuf.TYPES["message"]: {
             if (!value || typeof value !== 'object')
                 fail(typeof value, "object expected");
-            if (value instanceof this.resolvedType.clazz)
-                return value;
+            if (value instanceof this.resolvedType.clazz) {
+                if(deepCopy)
+                    return new (this.resolvedType.clazz)(value);
+                else
+                    return value;
+            }
             if (value instanceof ProtoBuf.Builder.Message) {
                 // Mismatched type: Convert to object (see: https://github.com/dcodeIO/ProtoBuf.js/issues/180)
                 var obj = {};

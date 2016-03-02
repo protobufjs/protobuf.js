@@ -883,11 +883,14 @@
          * Checks if the given value can be set for an element of this type (singular
          * field or one element of a repeated field or map).
          * @param {*} value Value to check
+         * @param {*} deepCopy Whether to make a deep copy of the value. Defaults to false.
          * @return {*} Verified, maybe adjusted, value
          * @throws {Error} If the value cannot be verified for this element slot
          * @expose
          */
-        ElementPrototype.verifyValue = function(value) {
+        ElementPrototype.verifyValue = function(value, deepCopy) {
+            deepCopy = deepCopy || false;
+
             var self = this;
             function fail(val, msg) {
                 throw Error("Illegal value for "+self.toString(true)+" of type "+self.type.name+": "+val+" ("+msg+")");
@@ -957,8 +960,12 @@
 
                 // Length-delimited bytes
                 case ProtoBuf.TYPES["bytes"]:
-                    if (ByteBuffer.isByteBuffer(value))
-                        return value;
+                    if (ByteBuffer.isByteBuffer(value)) {
+                        if(deepCopy)
+                            return value;
+                        else
+                            return value.copy();
+                    }
                     return ByteBuffer.wrap(value, "base64");
 
                 // Constant enum value
@@ -987,8 +994,12 @@
                 case ProtoBuf.TYPES["message"]: {
                     if (!value || typeof value !== 'object')
                         fail(typeof value, "object expected");
-                    if (value instanceof this.resolvedType.clazz)
-                        return value;
+                    if (value instanceof this.resolvedType.clazz) {
+                        if(deepCopy)
+                            return new (this.resolvedType.clazz)(value);
+                        else
+                            return value;
+                    }
                     if (value instanceof ProtoBuf.Builder.Message) {
                         // Mismatched type: Convert to object (see: https://github.com/dcodeIO/ProtoBuf.js/issues/180)
                         var obj = {};
@@ -1504,7 +1515,7 @@
                  * @function
                  * @param {string} key Field name
                  * @param {*} value Value to add
-                 * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+                 * @param {boolean=} noAssert Whether to assert the value or not (asserts by default). If false (default), a deep copy will be made.
                  * @returns {!ProtoBuf.Builder.Message} this
                  * @throws {Error} If the value cannot be added
                  * @expose
@@ -1518,7 +1529,7 @@
                             throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
                         if (!field.repeated)
                             throw Error(this+"#"+key+" is not a repeated field");
-                        value = field.verifyValue(value, true);
+                        value = field.copyValue(value, true);
                     }
                     if (this[key] === null)
                         this[key] = [];
@@ -1545,7 +1556,7 @@
                  * @function
                  * @param {string|!Object.<string,*>} keyOrObj String key or plain object holding multiple values
                  * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
-                 * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
+                 * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`. If false, a deep copy will be made.
                  * @returns {!ProtoBuf.Builder.Message} this
                  * @throws {Error} If the value cannot be set
                  * @expose
@@ -1566,7 +1577,7 @@
                             throw Error(this+"#"+keyOrObj+" is not a field: undefined");
                         if (!(field instanceof ProtoBuf.Reflect.Message.Field))
                             throw Error(this+"#"+keyOrObj+" is not a field: "+field.toString(true));
-                        this[field.name] = (value = field.verifyValue(value)); // May throw
+                        this[field.name] = (value = field.copyValue(value)); // May throw
                     } else
                         this[keyOrObj] = value;
                     if (field && field.oneof) { // Field is part of an OneOf (not a virtual OneOf field)
@@ -2527,12 +2538,15 @@
          * Checks if the given value can be set for this field.
          * @param {*} value Value to check
          * @param {boolean=} skipRepeated Whether to skip the repeated value check or not. Defaults to false.
+         * @param {*} deepCopy Whether to make a deep copy of the value. Defaults to false.
          * @return {*} Verified, maybe adjusted, value
          * @throws {Error} If the value cannot be set for this field
          * @expose
          */
-        FieldPrototype.verifyValue = function(value, skipRepeated) {
+        FieldPrototype.verifyValue = function(value, skipRepeated, deepCopy) {
             skipRepeated = skipRepeated || false;
+            deepCopy = deepCopy || false;
+
             var self = this;
             function fail(val, msg) {
                 throw Error("Illegal value for "+self.toString(true)+" of type "+self.type.name+": "+val+" ("+msg+")");
@@ -2550,7 +2564,7 @@
                     value = [value];
                 var res = [];
                 for (i=0; i<value.length; i++)
-                    res.push(this.element.verifyValue(value[i]));
+                    res.push(this.element.verifyValue(value[i], deepCopy));
                 return res;
             }
             if (this.map && !skipRepeated) { // Map values as objects
@@ -2562,15 +2576,41 @@
                     }
                     return new ProtoBuf.Map(this, value);
                 } else {
-                    return value;
+                    if(deepCopy)
+                    {
+                        var map = new ProtoBuf.Map(this, {});
+
+                        for(var i in value.map) {
+                            var item = value.map[i];
+                            map.set(item.key, this.verifyValue(item.value, true, true));
+                        }
+
+                        return map;
+                    }
+                    else
+                        return value;
                 }
             }
             // All non-repeated fields expect no array
             if (!this.repeated && Array.isArray(value))
                 fail(typeof value, "no array expected");
 
-            return this.element.verifyValue(value);
+            return this.element.verifyValue(value, deepCopy);
         };
+
+        /**
+         * Checks if the given value can be set for this field, and makes a deep copy.
+         * @param {*} value Value to check & copy
+         *  * @param {boolean=} skipRepeated Whether to skip the repeated value check or not. Defaults to false. Useful for copying values that belong in an array.
+         * @return {*} Verified, maybe adjusted, deep copy of value
+         * @throws {Error} If the value cannot be set for this field
+         * @expose
+         */
+        FieldPrototype.copyValue = function(value, skipRepeated) {
+            skipRepeated = skipRepeated || false;
+            value = this.verifyValue(value, skipRepeated, true);
+            return value;
+        }
 
         /**
          * Determines whether the field will have a presence on the wire given its
@@ -4037,7 +4077,7 @@
                 var keys = Object.keys(contents);
                 for (var i = 0; i < keys.length; i++) {
                     var key = this.keyElem.valueFromString(keys[i]);
-                    var val = this.valueElem.verifyValue(contents[keys[i]]);
+                    var val = this.valueElem.verifyValue(contents[keys[i]], true);
                     this.map[this.keyElem.valueToString(key)] =
                         { key: key, value: val };
                 }
@@ -4135,8 +4175,8 @@
          * @returns {!ProtoBuf.Map} The map instance
          */
         MapPrototype.set = function(key, value) {
-            var keyValue = this.keyElem.verifyValue(key);
-            var valValue = this.valueElem.verifyValue(value);
+            var keyValue = this.keyElem.verifyValue(key, true);
+            var valValue = this.valueElem.verifyValue(value, true);
             this.map[this.keyElem.valueToString(keyValue)] =
                 { key: keyValue, value: valValue };
             return this;

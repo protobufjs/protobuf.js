@@ -328,6 +328,69 @@
             test.done();
         },
         
+        "constructorDeepCopyWithArray": function(test) {
+            var builder = ProtoBuf.loadProtoFile(__dirname+"/setarray.proto");
+            var Outer = builder.build("Outer");
+            var Inner = builder.build("Inner");
+            
+            var o = new Outer({inners: [{str: "hello"}, {str: "world"}]}),
+                oCopy = new Outer(o);
+                oDecodeCopy = Outer.decode(o.toArrayBuffer());
+            test.deepEqual(o, oCopy);
+            test.deepEqual(o, oDecodeCopy);
+            
+            o.inners[0].str = "hi";
+            
+            test.notEqual(o.inners[0].str, oDecodeCopy.inners[0].str);
+            test.notEqual(o.inners[0].str, oCopy.inners[0].str);
+            
+            // Test copying on add
+            var inner = new Inner("new");
+            o.add("inners", inner);
+            
+            test.equal(inner.str, o.inners[2].str);
+            inner.str = "changed";
+            test.notEqual(inner.str, o.inners[2].str);
+            
+            test.done();
+        },
+        
+        "constructorDeepCopyWithMap": function(test) {
+            var builder = ProtoBuf.loadProtoFile(__dirname+"/map.proto");
+            var Obj = builder.build("Obj");
+            var Key = builder.build("Key");
+            var Inner = builder.build("Inner");
+            
+            var o = new Obj({
+                things: {
+                    "hello": {num: 42},
+                    "world": {num: 57}
+                }
+            });
+            
+            var oCopy = new Obj(o);
+                oDecodeCopy = Obj.decode(o.toArrayBuffer());
+                
+            test.deepEqual(o, oCopy);
+            test.deepEqual(o, oDecodeCopy);
+            
+            o.things.map["hello"].value.num = 3;
+            
+            test.notEqual(o.things.map["hello"].value.num, oDecodeCopy.things.map["hello"].value.num);
+            test.notEqual(o.things.map["hello"].value.num, oCopy.things.map["hello"].value.num);
+            
+            test.equal(o.things.map["hello"].value.num, 3);
+            test.equal(oCopy.things.map["hello"].value.num, 42);
+            
+            var inner = new Inner(8);
+            o.things.set("new", inner);
+            test.equal(inner.num, o.things.map["new"].value.num);
+            inner.num = 9;
+            test.notEqual(inner.num, o.things.map["new"].value.num);
+            
+            test.done();
+        },
+        
         "numberFormats": function(test) {
             try {
                 var builder = ProtoBuf.loadProtoFile(__dirname+"/numberformats.proto");

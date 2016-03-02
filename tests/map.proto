@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+message Inner {
+    int32 num = 1;
+}
+
+message Obj {
+    map<string, Inner> things = 1;
+}

@@ -61,7 +61,7 @@ var MessagePrototype = Message.prototype = Object.create(ProtoBuf.Builder.Messag
  * @function
  * @param {string} key Field name
  * @param {*} value Value to add
- * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
+ * @param {boolean=} noAssert Whether to assert the value or not (asserts by default). If false (default), a deep copy will be made.
  * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be added
  * @expose
@@ -75,7 +75,7 @@ MessagePrototype.add = function(key, value, noAssert) {
             throw Error(this+"#"+key+" is not a field: "+field.toString(true)); // May throw if it's an enum or embedded message
         if (!field.repeated)
             throw Error(this+"#"+key+" is not a repeated field");
-        value = field.verifyValue(value, true);
+        value = field.copyValue(value, true);
     }
     if (this[key] === null)
         this[key] = [];
@@ -102,7 +102,7 @@ MessagePrototype.$add = MessagePrototype.add;
  * @function
  * @param {string|!Object.<string,*>} keyOrObj String key or plain object holding multiple values
  * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
- * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
+ * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`. If false, a deep copy will be made.
  * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be set
  * @expose
@@ -123,7 +123,7 @@ MessagePrototype.set = function(keyOrObj, value, noAssert) {
             throw Error(this+"#"+keyOrObj+" is not a field: undefined");
         if (!(field instanceof ProtoBuf.Reflect.Message.Field))
             throw Error(this+"#"+keyOrObj+" is not a field: "+field.toString(true));
-        this[field.name] = (value = field.verifyValue(value)); // May throw
+        this[field.name] = (value = field.copyValue(value)); // May throw
     } else
         this[keyOrObj] = value;
     if (field && field.oneof) { // Field is part of an OneOf (not a virtual OneOf field)

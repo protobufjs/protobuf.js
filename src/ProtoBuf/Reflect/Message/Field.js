@@ -159,12 +159,15 @@ FieldPrototype.build = function() {
  * Checks if the given value can be set for this field.
  * @param {*} value Value to check
  * @param {boolean=} skipRepeated Whether to skip the repeated value check or not. Defaults to false.
+ * @param {*} deepCopy Whether to make a deep copy of the value. Defaults to false.
  * @return {*} Verified, maybe adjusted, value
  * @throws {Error} If the value cannot be set for this field
  * @expose
  */
-FieldPrototype.verifyValue = function(value, skipRepeated) {
+FieldPrototype.verifyValue = function(value, skipRepeated, deepCopy) {
     skipRepeated = skipRepeated || false;
+    deepCopy = deepCopy || false;
+    
     var self = this;
     function fail(val, msg) {
         throw Error("Illegal value for "+self.toString(true)+" of type "+self.type.name+": "+val+" ("+msg+")");
@@ -182,7 +185,7 @@ FieldPrototype.verifyValue = function(value, skipRepeated) {
             value = [value];
         var res = [];
         for (i=0; i<value.length; i++)
-            res.push(this.element.verifyValue(value[i]));
+            res.push(this.element.verifyValue(value[i], deepCopy));
         return res;
     }
     if (this.map && !skipRepeated) { // Map values as objects
@@ -194,15 +197,41 @@ FieldPrototype.verifyValue = function(value, skipRepeated) {
             }
             return new ProtoBuf.Map(this, value);
         } else {
-            return value;
+            if(deepCopy)
+            {
+                var map = new ProtoBuf.Map(this, {});
+                
+                for(var i in value.map) {
+                    var item = value.map[i];
+                    map.set(item.key, this.verifyValue(item.value, true, true));
+                }
+                
+                return map;
+            }
+            else
+                return value;
         }
     }
     // All non-repeated fields expect no array
     if (!this.repeated && Array.isArray(value))
         fail(typeof value, "no array expected");
 
-    return this.element.verifyValue(value);
+    return this.element.verifyValue(value, deepCopy);
 };
+
+/**
+ * Checks if the given value can be set for this field, and makes a deep copy.
+ * @param {*} value Value to check & copy
+ *  * @param {boolean=} skipRepeated Whether to skip the repeated value check or not. Defaults to false. Useful for copying values that belong in an array.
+ * @return {*} Verified, maybe adjusted, deep copy of value
+ * @throws {Error} If the value cannot be set for this field
+ * @expose
+ */
+FieldPrototype.copyValue = function(value, skipRepeated) {
+    skipRepeated = skipRepeated || false;
+    value = this.verifyValue(value, skipRepeated, true);
+    return value;
+}
 
 /**
  * Determines whether the field will have a presence on the wire given its
