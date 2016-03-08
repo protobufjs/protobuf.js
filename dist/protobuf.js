@@ -1800,7 +1800,8 @@
          * @expose
          */
         ElementPrototype.verifyValue = function(value) {
-            var self = this;
+            var self = this,
+                i;
             function fail(val, msg) {
                 throw Error("Illegal value for "+self.toString(true)+" of type "+self.type.name+": "+val+" ("+msg+")");
             }
