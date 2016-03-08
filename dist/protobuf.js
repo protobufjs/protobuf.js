@@ -1103,7 +1103,11 @@
                 else if (token === "service")
                     this._parseService(msg);
                 else if (token === "extensions")
-                    msg["extensions"] = this._parseExtensionRanges();
+                    if (msg.hasOwnProperty("extensions")) {
+                        msg["extensions"] = msg["extensions"].concat(this._parseExtensionRanges())
+                    } else {
+                        msg["extensions"] = this._parseExtensionRanges();
+                    }
                 else if (token === "reserved")
                     this._parseIgnored(); // TODO
                 else if (token === "extend")
