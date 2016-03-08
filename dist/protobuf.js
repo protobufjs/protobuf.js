@@ -35,19 +35,19 @@
      * The ProtoBuf namespace.
      * @exports ProtoBuf
      * @namespace
-     * @expose
+     * @export
      */
     var ProtoBuf = {};
 
     /**
      * @type {!function(new: ByteBuffer, ...[*])}
-     * @expose
+     * @export
      */
     ProtoBuf.ByteBuffer = ByteBuffer;
 
     /**
      * @type {?function(new: Long, ...[*])}
-     * @expose
+     * @export
      */
     ProtoBuf.Long = ByteBuffer.Long || null;
 
@@ -55,7 +55,7 @@
      * ProtoBuf.js version.
      * @type {string}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.VERSION = "5.0.1";
 
@@ -63,14 +63,14 @@
      * Wire types.
      * @type {Object.<string,number>}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.WIRE_TYPES = {};
 
     /**
      * Varint wire type.
      * @type {number}
-     * @expose
+     * @export
      */
     ProtoBuf.WIRE_TYPES.VARINT = 0;
 
@@ -78,7 +78,7 @@
      * Fixed 64 bits wire type.
      * @type {number}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.WIRE_TYPES.BITS64 = 1;
 
@@ -86,7 +86,7 @@
      * Length delimited wire type.
      * @type {number}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.WIRE_TYPES.LDELIM = 2;
 
@@ -94,7 +94,7 @@
      * Start group wire type.
      * @type {number}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.WIRE_TYPES.STARTGROUP = 3;
 
@@ -102,7 +102,7 @@
      * End group wire type.
      * @type {number}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
 
@@ -110,7 +110,7 @@
      * Fixed 32 bits wire type.
      * @type {number}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.WIRE_TYPES.BITS32 = 5;
 
@@ -118,7 +118,7 @@
      * Packable wire types.
      * @type {!Array.<number>}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.PACKABLE_WIRE_TYPES = [
         ProtoBuf.WIRE_TYPES.VARINT,
@@ -131,7 +131,7 @@
      * @dict
      * @type {!Object.<string,{name: string, wireType: number, defaultValue: *}>}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.TYPES = {
         // According to the protobuf spec.
@@ -231,7 +231,7 @@
      * Valid map key types.
      * @type {!Array.<!Object.<string,{name: string, wireType: number, defaultValue: *}>>}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.MAP_KEY_TYPES = [
         ProtoBuf.TYPES["int32"],
@@ -253,7 +253,7 @@
      * Minimum field id.
      * @type {number}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.ID_MIN = 1;
 
@@ -261,7 +261,7 @@
      * Maximum field id.
      * @type {number}
      * @const
-     * @expose
+     * @export
      */
     ProtoBuf.ID_MAX = 0x1FFFFFFF;
 
@@ -269,7 +269,7 @@
      * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
      *  Must be set prior to parsing.
      * @type {boolean}
-     * @expose
+     * @export
      */
     ProtoBuf.convertFieldsToCamelCase = false;
 
@@ -277,7 +277,7 @@
      * By default, messages are populated with (setX, set_x) accessors for each field. This can be disabled by
      *  setting this to `false` prior to building messages.
      * @type {boolean}
-     * @expose
+     * @export
      */
     ProtoBuf.populateAccessors = true;
 
@@ -285,13 +285,13 @@
      * By default, messages are populated with default values if a field is not present on the wire. To disable
      *  this behavior, set this setting to `false`.
      * @type {boolean}
-     * @expose
+     * @export
      */
     ProtoBuf.populateDefaults = true;
 
     /**
      * @alias ProtoBuf.Util
-     * @expose
+     * @export
      */
     ProtoBuf.Util = (function() {
         "use strict";
@@ -307,7 +307,7 @@
          * Flag if running in node or not.
          * @type {boolean}
          * @const
-         * @expose
+         * @export
          */
         Util.IS_NODE = !!(
             typeof process === 'object' && process+'' === '[object process]' && !process['browser']
@@ -317,7 +317,7 @@
          * Constructs a XMLHttpRequest object.
          * @return {XMLHttpRequest}
          * @throws {Error} If XMLHttpRequest is not supported
-         * @expose
+         * @export
          */
         Util.XHR = function() {
             // No dependencies please, ref: http://www.quirksmode.org/js/xmlhttp.html
@@ -345,7 +345,7 @@
          * @param {function(?string)=} callback Callback receiving the resource's contents. If omitted the resource will
          *   be fetched synchronously. If the request failed, contents will be null.
          * @return {?string|undefined} Resource contents if callback is omitted (null if the request failed), else undefined.
-         * @expose
+         * @export
          */
         Util.fetch = function(path, callback) {
             if (callback && typeof callback != 'function')
@@ -395,7 +395,7 @@
          * Converts a string to camel case.
          * @param {string} str
          * @returns {string}
-         * @expose
+         * @export
          */
         Util.toCamelCase = function(str) {
             return str.replace(/_([a-zA-Z])/g, function ($0, $1) {
@@ -409,7 +409,7 @@
     /**
      * Language expressions.
      * @type {!Object.<string,!RegExp>}
-     * @expose
+     * @export
      */
     ProtoBuf.Lang = {
 
@@ -473,7 +473,7 @@
 
     /**
      * @alias ProtoBuf.DotProto
-     * @expose
+     * @export
      */
     ProtoBuf.DotProto = (function(ProtoBuf, Lang) {
         "use strict";
@@ -497,28 +497,28 @@
             /**
              * Source to parse.
              * @type {string}
-             * @expose
+             * @export
              */
             this.source = proto+"";
 
             /**
              * Current index.
              * @type {number}
-             * @expose
+             * @export
              */
             this.index = 0;
 
             /**
              * Current line.
              * @type {number}
-             * @expose
+             * @export
              */
             this.line = 1;
 
             /**
              * Token stack.
              * @type {!Array.<string>}
-             * @expose
+             * @export
              */
             this.stack = [];
 
@@ -558,7 +558,7 @@
         /**
          * Gets the next token and advances by one.
          * @return {?string} Token or `null` on EOF
-         * @expose
+         * @export
          */
         TokenizerPrototype.next = function() {
             if (this.stack.length > 0)
@@ -627,7 +627,7 @@
         /**
          * Peeks for the next token.
          * @return {?string} Token or `null` on EOF
-         * @expose
+         * @export
          */
         TokenizerPrototype.peek = function() {
             if (this.stack.length === 0) {
@@ -666,7 +666,7 @@
         /**
          * Returns a string representation of this object.
          * @return {string} String representation as of "Tokenizer(index/length)"
-         * @expose
+         * @export
          */
         TokenizerPrototype.toString = function() {
             return "Tokenizer ("+this.index+"/"+this.source.length+" at line "+this.line+")";
@@ -674,7 +674,7 @@
 
         /**
          * @alias ProtoBuf.DotProto.Tokenizer
-         * @expose
+         * @export
          */
         DotProto.Tokenizer = Tokenizer;
 
@@ -690,7 +690,7 @@
             /**
              * Tokenizer.
              * @type {!ProtoBuf.DotProto.Tokenizer}
-             * @expose
+             * @export
              */
             this.tn = new Tokenizer(source);
 
@@ -711,7 +711,7 @@
          * Parses the source.
          * @returns {!Object}
          * @throws {Error} If the source cannot be parsed
-         * @expose
+         * @export
          */
         ParserPrototype.parse = function() {
             var topLevel = {
@@ -791,7 +791,7 @@
          * Parses the specified source.
          * @returns {!Object}
          * @throws {Error} If the source cannot be parsed
-         * @expose
+         * @export
          */
         Parser.parse = function(source) {
             return new Parser(source).parse();
@@ -1376,7 +1376,7 @@
 
         /**
          * @alias ProtoBuf.DotProto.Parser
-         * @expose
+         * @export
          */
         DotProto.Parser = Parser;
 
@@ -1386,7 +1386,7 @@
 
     /**
      * @alias ProtoBuf.Reflect
-     * @expose
+     * @export
      */
     ProtoBuf.Reflect = (function(ProtoBuf) {
         "use strict";
@@ -1412,28 +1412,28 @@
             /**
              * Builder reference.
              * @type {!ProtoBuf.Builder}
-             * @expose
+             * @export
              */
             this.builder = builder;
 
             /**
              * Parent object.
              * @type {?ProtoBuf.Reflect.T}
-             * @expose
+             * @export
              */
             this.parent = parent;
 
             /**
              * Object name in namespace.
              * @type {string}
-             * @expose
+             * @export
              */
             this.name = name;
 
             /**
              * Fully qualified class name
              * @type {string}
-             * @expose
+             * @export
              */
             this.className;
         };
@@ -1447,7 +1447,7 @@
         /**
          * Returns the fully qualified name of this object.
          * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
-         * @expose
+         * @export
          */
         TPrototype.fqn = function() {
             var name = this.name,
@@ -1465,7 +1465,7 @@
          * Returns a string representation of this Reflect object (its fully qualified name).
          * @param {boolean=} includeClass Set to true to include the class name. Defaults to false.
          * @return String representation
-         * @expose
+         * @export
          */
         TPrototype.toString = function(includeClass) {
             return (includeClass ? this.className + " " : "") + this.fqn();
@@ -1474,7 +1474,7 @@
         /**
          * Builds this type.
          * @throws {Error} If this type cannot be built directly
-         * @expose
+         * @export
          */
         TPrototype.build = function() {
             throw Error(this.toString(true)+" cannot be built directly");
@@ -1482,7 +1482,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.T
-         * @expose
+         * @export
          */
         Reflect.T = T;
 
@@ -1534,7 +1534,7 @@
          * Returns an array of the namespace's children.
          * @param {ProtoBuf.Reflect.T=} type Filter type (returns instances of this type only). Defaults to null (all children).
          * @return {Array.<ProtoBuf.Reflect.T>}
-         * @expose
+         * @export
          */
         NamespacePrototype.getChildren = function(type) {
             type = type || null;
@@ -1551,7 +1551,7 @@
          * Adds a child to the namespace.
          * @param {ProtoBuf.Reflect.T} child Child
          * @throws {Error} If the child cannot be added (duplicate)
-         * @expose
+         * @export
          */
         NamespacePrototype.addChild = function(child) {
             var other;
@@ -1571,7 +1571,7 @@
          * Gets a child by its name or id.
          * @param {string|number} nameOrId Child name or id
          * @return {?ProtoBuf.Reflect.T} The child or null if not found
-         * @expose
+         * @export
          */
         NamespacePrototype.getChild = function(nameOrId) {
             var key = typeof nameOrId === 'number' ? 'id' : 'name';
@@ -1586,7 +1586,7 @@
          * @param {string|!Array.<string>} qn Qualified name to resolve
          * @param {boolean=} excludeNonNamespace Excludes non-namespace types, defaults to `false`
          * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
-         * @expose
+         * @export
          */
         NamespacePrototype.resolve = function(qn, excludeNonNamespace) {
             var part = typeof qn === 'string' ? qn.split(".") : qn,
@@ -1624,7 +1624,7 @@
          * Determines the shortest qualified name of the specified type, if any, relative to this namespace.
          * @param {!ProtoBuf.Reflect.T} t Reflection type
          * @returns {string} The shortest qualified name or, if there is none, the fqn
-         * @expose
+         * @export
          */
         NamespacePrototype.qn = function(t) {
             var part = [], ptr = t;
@@ -1643,7 +1643,7 @@
         /**
          * Builds the namespace and returns the runtime counterpart.
          * @return {Object.<string,Function|Object>} Runtime namespace
-         * @expose
+         * @export
          */
         NamespacePrototype.build = function() {
             /** @dict */
@@ -1692,7 +1692,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Namespace
-         * @expose
+         * @export
          */
         Reflect.Namespace = Namespace;
 
@@ -1797,7 +1797,7 @@
          * @param {*} value Value to check
          * @return {*} Verified, maybe adjusted, value
          * @throws {Error} If the value cannot be verified for this element slot
-         * @expose
+         * @export
          */
         ElementPrototype.verifyValue = function(value) {
             var self = this,
@@ -1925,7 +1925,7 @@
          * @param {*} value Field value
          * @returns {number} Byte length
          * @throws {Error} If the value cannot be calculated
-         * @expose
+         * @export
          */
         ElementPrototype.calculateLength = function(id, value) {
             if (value === null) return 0; // Nothing to encode
@@ -1981,7 +1981,7 @@
          * @param {ByteBuffer} buffer ByteBuffer to encode to
          * @return {ByteBuffer} The ByteBuffer for chaining
          * @throws {Error} If the value cannot be encoded
-         * @expose
+         * @export
          */
         ElementPrototype.encodeValue = function(id, value, buffer) {
             if (value === null) return buffer; // Nothing to encode
@@ -2105,7 +2105,7 @@
          * @param {number} id The field number
          * @return {*} Decoded value
          * @throws {Error} If the field cannot be decoded
-         * @expose
+         * @export
          */
         ElementPrototype.decode = function(buffer, wireType, id) {
             if (wireType != this.type.wireType)
@@ -2268,7 +2268,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Element
-         * @expose
+         * @export
          */
         Reflect.Element = Element;
 
@@ -2295,21 +2295,21 @@
             /**
              * Extensions range.
              * @type {!Array.<number>|undefined}
-             * @expose
+             * @export
              */
             this.extensions = undefined;
 
             /**
              * Runtime message class.
              * @type {?function(new:ProtoBuf.Builder.Message)}
-             * @expose
+             * @export
              */
             this.clazz = null;
 
             /**
              * Whether this is a legacy group or not.
              * @type {boolean}
-             * @expose
+             * @export
              */
             this.isGroup = !!isGroup;
 
@@ -2349,7 +2349,7 @@
          * @param {boolean=} rebuild Whether to rebuild or not, defaults to false
          * @return {ProtoBuf.Reflect.Message} Message class
          * @throws {Error} If the message cannot be built
-         * @expose
+         * @export
          */
         MessagePrototype.build = function(rebuild) {
             if (this.clazz && !rebuild)
@@ -2420,7 +2420,7 @@
                  * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
                  * @returns {!ProtoBuf.Builder.Message} this
                  * @throws {Error} If the value cannot be added
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.add = function(key, value, noAssert) {
                     var field = T._fieldsByName[key];
@@ -2448,7 +2448,7 @@
                  * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
                  * @returns {!ProtoBuf.Builder.Message} this
                  * @throws {Error} If the value cannot be added
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.$add = MessagePrototype.add;
 
@@ -2461,7 +2461,7 @@
                  * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
                  * @returns {!ProtoBuf.Builder.Message} this
                  * @throws {Error} If the value cannot be set
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.set = function(keyOrObj, value, noAssert) {
                     if (keyOrObj && typeof keyOrObj === 'object') {
@@ -2500,7 +2500,7 @@
                  * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
                  * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
                  * @throws {Error} If the value cannot be set
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.$set = MessagePrototype.set;
 
@@ -2512,7 +2512,7 @@
                  * @param {boolean=} noAssert Whether to not assert for an actual field, defaults to `false`
                  * @return {*} Value
                  * @throws {Error} If there is no such field
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.get = function(key, noAssert) {
                     if (noAssert)
@@ -2532,7 +2532,7 @@
                  * @param {string} key Key
                  * @return {*} Value
                  * @throws {Error} If there is no such field
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.$get = MessagePrototype.get;
 
@@ -2644,7 +2644,7 @@
                  * @return {!ByteBuffer} Encoded message as a ByteBuffer
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded ByteBuffer in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  * @see ProtoBuf.Builder.Message#encode64
                  * @see ProtoBuf.Builder.Message#encodeHex
                  * @see ProtoBuf.Builder.Message#encodeAB
@@ -2673,7 +2673,7 @@
                  * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
                  * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
                  * @return {!ByteBuffer} Encoded message as a ByteBuffer
-                 * @expose
+                 * @export
                  */
                 Message.encode = function(data, buffer, noVerify) {
                     return new Message(data).encode(buffer, noVerify);
@@ -2685,7 +2685,7 @@
                  * @function
                  * @returns {number} Byte length
                  * @throws {Error} If the message cannot be calculated or if required fields are missing.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.calculate = function() {
                     return T.calculate(this);
@@ -2700,7 +2700,7 @@
                  * @return {!ByteBuffer} Encoded message as a ByteBuffer
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded ByteBuffer in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.encodeDelimited = function(buffer, noVerify) {
                     var isNew = false;
@@ -2721,7 +2721,7 @@
                  * @return {ArrayBuffer} Encoded message as ArrayBuffer
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded ArrayBuffer in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.encodeAB = function() {
                     try {
@@ -2739,7 +2739,7 @@
                  * @return {ArrayBuffer} Encoded message as ArrayBuffer
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded ArrayBuffer in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.toArrayBuffer = MessagePrototype.encodeAB;
 
@@ -2750,7 +2750,7 @@
                  * @return {!Buffer}
                  * @throws {Error} If the message cannot be encoded, not running under node.js or if required fields are
                  *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.encodeNB = function() {
                     try {
@@ -2768,7 +2768,7 @@
                  * @return {!Buffer}
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded node Buffer in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.toBuffer = MessagePrototype.encodeNB;
 
@@ -2779,7 +2779,7 @@
                  * @return {string} Base64 encoded string
                  * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
                  *  still returns the encoded base64 string in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.encode64 = function() {
                     try {
@@ -2797,7 +2797,7 @@
                  * @return {string} Base64 encoded string
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded base64 string in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.toBase64 = MessagePrototype.encode64;
 
@@ -2808,7 +2808,7 @@
                  * @return {string} Hex encoded string
                  * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
                  *  still returns the encoded hex string in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.encodeHex = function() {
                     try {
@@ -2826,7 +2826,7 @@
                  * @return {string} Hex encoded string
                  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
                  *  returns the encoded hex string in the `encoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.toHex = MessagePrototype.encodeHex;
 
@@ -2891,7 +2891,7 @@
                  * @param {boolean=} binaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
                  * @param {boolean} longsAsStrings Whether to encode longs as strings
                  * @returns {Object.<string,*>} Raw payload
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
                     return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, this.$type);
@@ -2900,7 +2900,7 @@
                 /**
                  * Encodes a message to JSON.
                  * @returns {string} JSON string
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.encodeJSON = function() {
                     return JSON.stringify(
@@ -2922,7 +2922,7 @@
                  * @return {!ProtoBuf.Builder.Message} Decoded message
                  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
                  *  returns the decoded message with missing fields in the `decoded` property on the error.
-                 * @expose
+                 * @export
                  * @see ProtoBuf.Builder.Message.decode64
                  * @see ProtoBuf.Builder.Message.decodeHex
                  */
@@ -2953,7 +2953,7 @@
                  * @return {ProtoBuf.Builder.Message} Decoded message or `null` if not enough bytes are available yet
                  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
                  *  returns the decoded message with missing fields in the `decoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 Message.decodeDelimited = function(buffer, enc) {
                     if (typeof buffer === 'string')
@@ -2985,7 +2985,7 @@
                  * @return {!ProtoBuf.Builder.Message} Decoded message
                  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
                  *  returns the decoded message with missing fields in the `decoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 Message.decode64 = function(str) {
                     return Message.decode(str, "base64");
@@ -2999,7 +2999,7 @@
                  * @return {!ProtoBuf.Builder.Message} Decoded message
                  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
                  *  returns the decoded message with missing fields in the `decoded` property on the error.
-                 * @expose
+                 * @export
                  */
                 Message.decodeHex = function(str) {
                     return Message.decode(str, "hex");
@@ -3013,7 +3013,7 @@
                  * @return {!ProtoBuf.Builder.Message} Decoded message
                  * @throws {Error} If the message cannot be decoded or if required fields are
                  * missing.
-                 * @expose
+                 * @export
                  */
                 Message.decodeJSON = function(str) {
                     return new Message(JSON.parse(str));
@@ -3026,7 +3026,7 @@
                  * @name ProtoBuf.Builder.Message#toString
                  * @function
                  * @return {string} String representation as of ".Fully.Qualified.MessageName"
-                 * @expose
+                 * @export
                  */
                 MessagePrototype.toString = function() {
                     return T.toString();
@@ -3038,7 +3038,7 @@
                  * Message options.
                  * @name ProtoBuf.Builder.Message.$options
                  * @type {Object.<string,*>}
-                 * @expose
+                 * @export
                  */
                 var $optionsS; // cc needs this
 
@@ -3046,7 +3046,7 @@
                  * Message options.
                  * @name ProtoBuf.Builder.Message#$options
                  * @type {Object.<string,*>}
-                 * @expose
+                 * @export
                  */
                 var $options;
 
@@ -3054,7 +3054,7 @@
                  * Reflection type.
                  * @name ProtoBuf.Builder.Message.$type
                  * @type {!ProtoBuf.Reflect.Message}
-                 * @expose
+                 * @export
                  */
                 var $typeS;
 
@@ -3062,7 +3062,7 @@
                  * Reflection type.
                  * @name ProtoBuf.Builder.Message#$type
                  * @type {!ProtoBuf.Reflect.Message}
-                 * @expose
+                 * @export
                  */
                 var $type;
 
@@ -3105,7 +3105,7 @@
          * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
          * @return {ByteBuffer} The ByteBuffer for chaining
          * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
-         * @expose
+         * @export
          */
         MessagePrototype.encode = function(message, buffer, noVerify) {
             var fieldMissing = null,
@@ -3132,7 +3132,7 @@
          * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
          * @returns {number} Byte length
          * @throws {Error} If required fields are missing or the message cannot be calculated for another reason
-         * @expose
+         * @export
          */
         MessagePrototype.calculate = function(message) {
             for (var n=0, i=0, k=this._fields.length, field, val; i<k; ++i) {
@@ -3194,7 +3194,7 @@
          * @param {number=} expectedGroupEndId Expected GROUPEND id if this is a legacy group
          * @return {ProtoBuf.Builder.Message} Decoded message
          * @throws {Error} If the message cannot be decoded
-         * @expose
+         * @export
          */
         MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
             length = typeof length === 'number' ? length : -1;
@@ -3269,7 +3269,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Message
-         * @expose
+         * @export
          */
         Reflect.Message = Message;
 
@@ -3300,21 +3300,21 @@
             /**
              * Message field required flag.
              * @type {boolean}
-             * @expose
+             * @export
              */
             this.required = rule === "required";
 
             /**
              * Message field repeated flag.
              * @type {boolean}
-             * @expose
+             * @export
              */
             this.repeated = rule === "repeated";
 
             /**
              * Message field map flag.
              * @type {boolean}
-             * @expose
+             * @export
              */
             this.map = rule === "map";
 
@@ -3322,7 +3322,7 @@
              * Message field key type. Type reference string if unresolved, protobuf
              * type if resolved. Valid only if this.map === true, null otherwise.
              * @type {string|{name: string, wireType: number}|null}
-             * @expose
+             * @export
              */
             this.keyType = keytype || null;
 
@@ -3330,21 +3330,21 @@
              * Message field type. Type reference string if unresolved, protobuf type if
              * resolved. In a map field, this is the value type.
              * @type {string|{name: string, wireType: number}}
-             * @expose
+             * @export
              */
             this.type = type;
 
             /**
              * Resolved type reference inside the global namespace.
              * @type {ProtoBuf.Reflect.T|null}
-             * @expose
+             * @export
              */
             this.resolvedType = null;
 
             /**
              * Unique message field id.
              * @type {number}
-             * @expose
+             * @export
              */
             this.id = id;
 
@@ -3352,42 +3352,42 @@
              * Message field options.
              * @type {!Object.<string,*>}
              * @dict
-             * @expose
+             * @export
              */
             this.options = options || {};
 
             /**
              * Default value.
              * @type {*}
-             * @expose
+             * @export
              */
             this.defaultValue = null;
 
             /**
              * Enclosing OneOf.
              * @type {?ProtoBuf.Reflect.Message.OneOf}
-             * @expose
+             * @export
              */
             this.oneof = oneof || null;
 
             /**
              * Syntax level of this definition (e.g., proto3).
              * @type {string}
-             * @expose
+             * @export
              */
             this.syntax = syntax || 'proto2';
 
             /**
              * Original field name.
              * @type {string}
-             * @expose
+             * @export
              */
             this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
 
             /**
              * Element implementation. Created in build() after types are resolved.
              * @type {ProtoBuf.Element}
-             * @expose
+             * @export
              */
             this.element = null;
 
@@ -3395,7 +3395,7 @@
              * Key element implementation, for map fields. Created in build() after
              * types are resolved.
              * @type {ProtoBuf.Element}
-             * @expose
+             * @export
              */
             this.keyElement = null;
 
@@ -3413,7 +3413,7 @@
         /**
          * Builds the field.
          * @override
-         * @expose
+         * @export
          */
         FieldPrototype.build = function() {
             this.element = new Element(this.type, this.resolvedType, false, this.syntax);
@@ -3436,7 +3436,7 @@
          * @param {boolean=} skipRepeated Whether to skip the repeated value check or not. Defaults to false.
          * @return {*} Verified, maybe adjusted, value
          * @throws {Error} If the value cannot be set for this field
-         * @expose
+         * @export
          */
         FieldPrototype.verifyValue = function(value, skipRepeated) {
             skipRepeated = skipRepeated || false;
@@ -3536,7 +3536,7 @@
          * @param {!ProtoBuf.Builder.Message} message Runtime message
          * @return {ByteBuffer} The ByteBuffer for chaining
          * @throws {Error} If the field cannot be encoded
-         * @expose
+         * @export
          */
         FieldPrototype.encode = function(value, buffer, message) {
             if (this.type === null || typeof this.type !== 'object')
@@ -3610,7 +3610,7 @@
          * @param {*} value Field value
          * @param {!ProtoBuf.Builder.Message} message Runtime message
          * @returns {number} Byte length
-         * @expose
+         * @export
          */
         FieldPrototype.calculate = function(value, message) {
             value = this.verifyValue(value); // May throw
@@ -3668,7 +3668,7 @@
          * @return {*} Decoded value: array for packed repeated fields, [key, value] for
          *             map fields, or an individual value otherwise.
          * @throws {Error} If the field cannot be decoded
-         * @expose
+         * @export
          */
         FieldPrototype.decode = function(wireType, buffer, skipRepeated) {
             var value, nBytes;
@@ -3734,7 +3734,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Message.Field
-         * @expose
+         * @export
          */
         Reflect.Message.Field = Field;
 
@@ -3757,7 +3757,7 @@
             /**
              * Extension reference.
              * @type {!ProtoBuf.Reflect.Extension}
-             * @expose
+             * @export
              */
             this.extension;
         };
@@ -3767,7 +3767,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Message.ExtensionField
-         * @expose
+         * @export
          */
         Reflect.Message.ExtensionField = ExtensionField;
 
@@ -3786,14 +3786,14 @@
             /**
              * Enclosed fields.
              * @type {!Array.<!ProtoBuf.Reflect.Message.Field>}
-             * @expose
+             * @export
              */
             this.fields = [];
         };
 
         /**
          * @alias ProtoBuf.Reflect.Message.OneOf
-         * @expose
+         * @export
          */
         Reflect.Message.OneOf = OneOf;
 
@@ -3819,7 +3819,7 @@
             /**
              * Runtime enum object.
              * @type {Object.<string,number>|null}
-             * @expose
+             * @export
              */
             this.object = null;
         };
@@ -3829,7 +3829,7 @@
          * @param {!ProtoBuf.Builder.Enum} enm Runtime enum
          * @param {number} value Enum value
          * @returns {?string} Name or `null` if not present
-         * @expose
+         * @export
          */
         Enum.getName = function(enm, value) {
             var keys = Object.keys(enm);
@@ -3849,7 +3849,7 @@
          * Builds this enum and returns the runtime counterpart.
          * @param {boolean} rebuild Whether to rebuild or not, defaults to false
          * @returns {!Object.<string,number>}
-         * @expose
+         * @export
          */
         EnumPrototype.build = function(rebuild) {
             if (this.object && !rebuild)
@@ -3868,7 +3868,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Enum
-         * @expose
+         * @export
          */
         Reflect.Enum = Enum;
 
@@ -3893,7 +3893,7 @@
             /**
              * Unique enum value id.
              * @type {number}
-             * @expose
+             * @export
              */
             this.id = id;
         };
@@ -3903,7 +3903,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Enum.Value
-         * @expose
+         * @export
          */
         Reflect.Enum.Value = Value;
 
@@ -3922,7 +3922,7 @@
             /**
              * Extended message field.
              * @type {!ProtoBuf.Reflect.Message.Field}
-             * @expose
+             * @export
              */
             this.field = field;
         };
@@ -3932,7 +3932,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Extension
-         * @expose
+         * @export
          */
         Reflect.Extension = Extension;
 
@@ -3973,7 +3973,7 @@
          * @param {boolean=} rebuild Whether to rebuild or not
          * @return {Function} Service class
          * @throws {Error} If the message cannot be built
-         * @expose
+         * @export
          */
         ServicePrototype.build = function(rebuild) {
             if (this.clazz && !rebuild)
@@ -3997,7 +3997,7 @@
                      * Service implementation.
                      * @name ProtoBuf.Builder.Service#rpcImpl
                      * @type {!function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))}
-                     * @expose
+                     * @export
                      */
                     this.rpcImpl = rpcImpl || function(name, msg, callback) {
                         // This is what a user has to implement: A function receiving the method name, the actual message to
@@ -4089,7 +4089,7 @@
                  * Service options.
                  * @name ProtoBuf.Builder.Service.$options
                  * @type {Object.<string,*>}
-                 * @expose
+                 * @export
                  */
                 var $optionsS; // cc needs this
 
@@ -4097,7 +4097,7 @@
                  * Service options.
                  * @name ProtoBuf.Builder.Service#$options
                  * @type {Object.<string,*>}
-                 * @expose
+                 * @export
                  */
                 var $options;
 
@@ -4105,7 +4105,7 @@
                  * Reflection type.
                  * @name ProtoBuf.Builder.Service.$type
                  * @type {!ProtoBuf.Reflect.Service}
-                 * @expose
+                 * @export
                  */
                 var $typeS;
 
@@ -4113,7 +4113,7 @@
                  * Reflection type.
                  * @name ProtoBuf.Builder.Service#$type
                  * @type {!ProtoBuf.Reflect.Service}
-                 * @expose
+                 * @export
                  */
                 var $type;
 
@@ -4130,7 +4130,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Service
-         * @expose
+         * @export
          */
         Reflect.Service = Service;
 
@@ -4155,7 +4155,7 @@
             /**
              * Options.
              * @type {Object.<string, *>}
-             * @expose
+             * @export
              */
             this.options = options || {};
         };
@@ -4176,7 +4176,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Service.Method
-         * @expose
+         * @export
          */
         Reflect.Service.Method = Method;
 
@@ -4205,42 +4205,42 @@
             /**
              * Request message name.
              * @type {string}
-             * @expose
+             * @export
              */
             this.requestName = request;
 
             /**
              * Response message name.
              * @type {string}
-             * @expose
+             * @export
              */
             this.responseName = response;
 
             /**
              * Whether requests are streamed
              * @type {bool}
-             * @expose
+             * @export
              */
             this.requestStream = request_stream;
 
             /**
              * Whether responses are streamed
              * @type {bool}
-             * @expose
+             * @export
              */
             this.responseStream = response_stream;
 
             /**
              * Resolved request message type.
              * @type {ProtoBuf.Reflect.Message}
-             * @expose
+             * @export
              */
             this.resolvedRequestType = null;
 
             /**
              * Resolved response message type.
              * @type {ProtoBuf.Reflect.Message}
-             * @expose
+             * @export
              */
             this.resolvedResponseType = null;
         };
@@ -4250,7 +4250,7 @@
 
         /**
          * @alias ProtoBuf.Reflect.Service.RPCMethod
-         * @expose
+         * @export
          */
         Reflect.Service.RPCMethod = RPCMethod;
 
@@ -4260,7 +4260,7 @@
 
     /**
      * @alias ProtoBuf.Builder
-     * @expose
+     * @export
      */
     ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         "use strict";
@@ -4277,49 +4277,49 @@
             /**
              * Namespace.
              * @type {ProtoBuf.Reflect.Namespace}
-             * @expose
+             * @export
              */
             this.ns = new Reflect.Namespace(this, null, ""); // Global namespace
 
             /**
              * Namespace pointer.
              * @type {ProtoBuf.Reflect.T}
-             * @expose
+             * @export
              */
             this.ptr = this.ns;
 
             /**
              * Resolved flag.
              * @type {boolean}
-             * @expose
+             * @export
              */
             this.resolved = false;
 
             /**
              * The current building result.
              * @type {Object.<string,ProtoBuf.Builder.Message|Object>|null}
-             * @expose
+             * @export
              */
             this.result = null;
 
             /**
              * Imported files.
              * @type {Array.<string>}
-             * @expose
+             * @export
              */
             this.files = {};
 
             /**
              * Import root override.
              * @type {?string}
-             * @expose
+             * @export
              */
             this.importRoot = null;
 
             /**
              * Options.
              * @type {!Object.<string, *>}
-             * @expose
+             * @export
              */
             this.options = options || {};
         };
@@ -4336,7 +4336,7 @@
          * Tests if a definition most likely describes a message.
          * @param {!Object} def
          * @returns {boolean}
-         * @expose
+         * @export
          */
         Builder.isMessage = function(def) {
             // Messages require a string name
@@ -4352,7 +4352,7 @@
          * Tests if a definition most likely describes a message field.
          * @param {!Object} def
          * @returns {boolean}
-         * @expose
+         * @export
          */
         Builder.isMessageField = function(def) {
             // Message fields require a string rule, name and type and an id
@@ -4365,7 +4365,7 @@
          * Tests if a definition most likely describes an enum.
          * @param {!Object} def
          * @returns {boolean}
-         * @expose
+         * @export
          */
         Builder.isEnum = function(def) {
             // Enums require a string name
@@ -4381,7 +4381,7 @@
          * Tests if a definition most likely describes a service.
          * @param {!Object} def
          * @returns {boolean}
-         * @expose
+         * @export
          */
         Builder.isService = function(def) {
             // Services require a string name and an rpc object
@@ -4394,7 +4394,7 @@
          * Tests if a definition most likely describes an extended message
          * @param {!Object} def
          * @returns {boolean}
-         * @expose
+         * @export
          */
         Builder.isExtend = function(def) {
             // Extends rquire a string ref
@@ -4408,7 +4408,7 @@
         /**
          * Resets the pointer to the root namespace.
          * @returns {!ProtoBuf.Builder} this
-         * @expose
+         * @export
          */
         BuilderPrototype.reset = function() {
             this.ptr = this.ns;
@@ -4419,7 +4419,7 @@
          * Defines a namespace on top of the current pointer position and places the pointer on it.
          * @param {string} namespace
          * @return {!ProtoBuf.Builder} this
-         * @expose
+         * @export
          */
         BuilderPrototype.define = function(namespace) {
             if (typeof namespace !== 'string' || !Lang.TYPEREF.test(namespace))
@@ -4438,7 +4438,7 @@
          * @param {!Array.<!Object>} defs Messages, enums or services to create
          * @returns {!ProtoBuf.Builder} this
          * @throws {Error} If a message definition is invalid
-         * @expose
+         * @export
          */
         BuilderPrototype.create = function(defs) {
             if (!defs)
@@ -4615,7 +4615,7 @@
          * @param {(string|{root: string, file: string})=} filename Imported file name
          * @returns {!ProtoBuf.Builder} this
          * @throws {Error} If the definition or file cannot be imported
-         * @expose
+         * @export
          */
         BuilderPrototype["import"] = function(json, filename) {
             var delim = '/';
@@ -4737,7 +4737,7 @@
          * Resolves all namespace objects.
          * @throws {Error} If a type cannot be resolved
          * @returns {!ProtoBuf.Builder} this
-         * @expose
+         * @export
          */
         BuilderPrototype.resolveAll = function() {
             // Resolve all reflected objects
@@ -4811,7 +4811,7 @@
          * @param {(string|Array.<string>)=} path Specifies what to return. If omitted, the entire namespace will be returned.
          * @returns {!ProtoBuf.Builder.Message|!Object.<string,*>}
          * @throws {Error} If a type could not be resolved
-         * @expose
+         * @export
          */
         BuilderPrototype.build = function(path) {
             this.reset();
@@ -4848,7 +4848,7 @@
         /**
          * Returns a string representation of this object.
          * @return {string} String representation as of "Builder"
-         * @expose
+         * @export
          */
         BuilderPrototype.toString = function() {
             return "Builder";
@@ -4878,7 +4878,7 @@
 
     /**
      * @alias ProtoBuf.Map
-     * @expose
+     * @export
      */
     ProtoBuf.Map = (function(ProtoBuf, Reflect) {
         "use strict";
@@ -5082,7 +5082,7 @@
      * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
      * @return {ProtoBuf.Builder} Builder to create new messages
      * @throws {Error} If the definition cannot be parsed or built
-     * @expose
+     * @export
      */
     ProtoBuf.loadProto = function(proto, builder, filename) {
         if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
@@ -5099,7 +5099,7 @@
      * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
      * @return {ProtoBuf.Builder} Builder to create new messages
      * @throws {Error} If the definition cannot be parsed or built
-     * @expose
+     * @export
      */
     ProtoBuf.protoFromString = ProtoBuf.loadProto; // Legacy
 
@@ -5113,7 +5113,7 @@
      * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
      * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
      *   request has failed), else undefined
-     * @expose
+     * @export
      */
     ProtoBuf.loadProtoFile = function(filename, callback, builder) {
         if (callback && typeof callback === 'object')
@@ -5148,7 +5148,7 @@
      * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
      * @return {!ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
      *   request has failed), else undefined
-     * @expose
+     * @export
      */
     ProtoBuf.protoFromFile = ProtoBuf.loadProtoFile; // Legacy
 
@@ -5157,7 +5157,7 @@
      * Constructs a new empty Builder.
      * @param {Object.<string,*>=} options Builder options, defaults to global options set on ProtoBuf
      * @return {!ProtoBuf.Builder} Builder
-     * @expose
+     * @export
      */
     ProtoBuf.newBuilder = function(options) {
         options = options || {};
@@ -5175,7 +5175,7 @@
      * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
      * @return {ProtoBuf.Builder} Builder to create new messages
      * @throws {Error} If the definition cannot be parsed or built
-     * @expose
+     * @export
      */
     ProtoBuf.loadJson = function(json, builder, filename) {
         if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
@@ -5200,7 +5200,7 @@
      * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
      * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
      *   request has failed), else undefined
-     * @expose
+     * @export
      */
     ProtoBuf.loadJsonFile = function(filename, callback, builder) {
         if (callback && typeof callback === 'object')

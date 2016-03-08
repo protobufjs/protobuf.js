@@ -21,21 +21,21 @@ var Message = function(builder, parent, name, options, isGroup, syntax) {
     /**
      * Extensions range.
      * @type {!Array.<number>|undefined}
-     * @expose
+     * @export
      */
     this.extensions = undefined;
 
     /**
      * Runtime message class.
      * @type {?function(new:ProtoBuf.Builder.Message)}
-     * @expose
+     * @export
      */
     this.clazz = null;
 
     /**
      * Whether this is a legacy group or not.
      * @type {boolean}
-     * @expose
+     * @export
      */
     this.isGroup = !!isGroup;
 
@@ -75,7 +75,7 @@ var MessagePrototype = Message.prototype = Object.create(Namespace.prototype);
  * @param {boolean=} rebuild Whether to rebuild or not, defaults to false
  * @return {ProtoBuf.Reflect.Message} Message class
  * @throws {Error} If the message cannot be built
- * @expose
+ * @export
  */
 MessagePrototype.build = function(rebuild) {
     if (this.clazz && !rebuild)
@@ -119,7 +119,7 @@ MessagePrototype.build = function(rebuild) {
  * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If required fields are missing or the message cannot be encoded for another reason
- * @expose
+ * @export
  */
 MessagePrototype.encode = function(message, buffer, noVerify) {
     var fieldMissing = null,
@@ -146,7 +146,7 @@ MessagePrototype.encode = function(message, buffer, noVerify) {
  * @param {!ProtoBuf.Builder.Message} message Runtime message to encode
  * @returns {number} Byte length
  * @throws {Error} If required fields are missing or the message cannot be calculated for another reason
- * @expose
+ * @export
  */
 MessagePrototype.calculate = function(message) {
     for (var n=0, i=0, k=this._fields.length, field, val; i<k; ++i) {
@@ -208,7 +208,7 @@ function skipTillGroupEnd(expectedId, buf) {
  * @param {number=} expectedGroupEndId Expected GROUPEND id if this is a legacy group
  * @return {ProtoBuf.Builder.Message} Decoded message
  * @throws {Error} If the message cannot be decoded
- * @expose
+ * @export
  */
 MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
     length = typeof length === 'number' ? length : -1;

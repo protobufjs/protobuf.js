@@ -2,19 +2,19 @@
  * The ProtoBuf namespace.
  * @exports ProtoBuf
  * @namespace
- * @expose
+ * @export
  */
 var ProtoBuf = {};
 
 /**
  * @type {!function(new: ByteBuffer, ...[*])}
- * @expose
+ * @export
  */
 ProtoBuf.ByteBuffer = ByteBuffer;
 
 /**
  * @type {?function(new: Long, ...[*])}
- * @expose
+ * @export
  */
 ProtoBuf.Long = ByteBuffer.Long || null;
 
@@ -22,7 +22,7 @@ ProtoBuf.Long = ByteBuffer.Long || null;
  * ProtoBuf.js version.
  * @type {string}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.VERSION = "/*?= VERSION */";
 
@@ -30,14 +30,14 @@ ProtoBuf.VERSION = "/*?= VERSION */";
  * Wire types.
  * @type {Object.<string,number>}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.WIRE_TYPES = {};
 
 /**
  * Varint wire type.
  * @type {number}
- * @expose
+ * @export
  */
 ProtoBuf.WIRE_TYPES.VARINT = 0;
 
@@ -45,7 +45,7 @@ ProtoBuf.WIRE_TYPES.VARINT = 0;
  * Fixed 64 bits wire type.
  * @type {number}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.WIRE_TYPES.BITS64 = 1;
 
@@ -53,7 +53,7 @@ ProtoBuf.WIRE_TYPES.BITS64 = 1;
  * Length delimited wire type.
  * @type {number}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.WIRE_TYPES.LDELIM = 2;
 
@@ -61,7 +61,7 @@ ProtoBuf.WIRE_TYPES.LDELIM = 2;
  * Start group wire type.
  * @type {number}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.WIRE_TYPES.STARTGROUP = 3;
 
@@ -69,7 +69,7 @@ ProtoBuf.WIRE_TYPES.STARTGROUP = 3;
  * End group wire type.
  * @type {number}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
 
@@ -77,7 +77,7 @@ ProtoBuf.WIRE_TYPES.ENDGROUP = 4;
  * Fixed 32 bits wire type.
  * @type {number}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.WIRE_TYPES.BITS32 = 5;
 
@@ -85,7 +85,7 @@ ProtoBuf.WIRE_TYPES.BITS32 = 5;
  * Packable wire types.
  * @type {!Array.<number>}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.PACKABLE_WIRE_TYPES = [
     ProtoBuf.WIRE_TYPES.VARINT,
@@ -98,7 +98,7 @@ ProtoBuf.PACKABLE_WIRE_TYPES = [
  * @dict
  * @type {!Object.<string,{name: string, wireType: number, defaultValue: *}>}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.TYPES = {
     // According to the protobuf spec.
@@ -198,7 +198,7 @@ ProtoBuf.TYPES = {
  * Valid map key types.
  * @type {!Array.<!Object.<string,{name: string, wireType: number, defaultValue: *}>>}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.MAP_KEY_TYPES = [
     ProtoBuf.TYPES["int32"],
@@ -220,7 +220,7 @@ ProtoBuf.MAP_KEY_TYPES = [
  * Minimum field id.
  * @type {number}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.ID_MIN = 1;
 
@@ -228,7 +228,7 @@ ProtoBuf.ID_MIN = 1;
  * Maximum field id.
  * @type {number}
  * @const
- * @expose
+ * @export
  */
 ProtoBuf.ID_MAX = 0x1FFFFFFF;
 
@@ -236,7 +236,7 @@ ProtoBuf.ID_MAX = 0x1FFFFFFF;
  * If set to `true`, field names will be converted from underscore notation to camel case. Defaults to `false`.
  *  Must be set prior to parsing.
  * @type {boolean}
- * @expose
+ * @export
  */
 ProtoBuf.convertFieldsToCamelCase = false;
 
@@ -244,7 +244,7 @@ ProtoBuf.convertFieldsToCamelCase = false;
  * By default, messages are populated with (setX, set_x) accessors for each field. This can be disabled by
  *  setting this to `false` prior to building messages.
  * @type {boolean}
- * @expose
+ * @export
  */
 ProtoBuf.populateAccessors = true;
 
@@ -252,7 +252,7 @@ ProtoBuf.populateAccessors = true;
  * By default, messages are populated with default values if a field is not present on the wire. To disable
  *  this behavior, set this setting to `false`.
  * @type {boolean}
- * @expose
+ * @export
  */
 ProtoBuf.populateDefaults = true;
 
@@ -277,7 +277,7 @@ ProtoBuf.populateDefaults = true;
  * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
  * @return {ProtoBuf.Builder} Builder to create new messages
  * @throws {Error} If the definition cannot be parsed or built
- * @expose
+ * @export
  */
 ProtoBuf.loadProto = function(proto, builder, filename) {
     if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
@@ -294,7 +294,7 @@ ProtoBuf.loadProto = function(proto, builder, filename) {
  * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
  * @return {ProtoBuf.Builder} Builder to create new messages
  * @throws {Error} If the definition cannot be parsed or built
- * @expose
+ * @export
  */
 ProtoBuf.protoFromString = ProtoBuf.loadProto; // Legacy
 
@@ -308,7 +308,7 @@ ProtoBuf.protoFromString = ProtoBuf.loadProto; // Legacy
  * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
  * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
  *   request has failed), else undefined
- * @expose
+ * @export
  */
 ProtoBuf.loadProtoFile = function(filename, callback, builder) {
     if (callback && typeof callback === 'object')
@@ -343,7 +343,7 @@ ProtoBuf.loadProtoFile = function(filename, callback, builder) {
  * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
  * @return {!ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
  *   request has failed), else undefined
- * @expose
+ * @export
  */
 ProtoBuf.protoFromFile = ProtoBuf.loadProtoFile; // Legacy
 
@@ -353,7 +353,7 @@ ProtoBuf.protoFromFile = ProtoBuf.loadProtoFile; // Legacy
  * Constructs a new empty Builder.
  * @param {Object.<string,*>=} options Builder options, defaults to global options set on ProtoBuf
  * @return {!ProtoBuf.Builder} Builder
- * @expose
+ * @export
  */
 ProtoBuf.newBuilder = function(options) {
     options = options || {};
@@ -371,7 +371,7 @@ ProtoBuf.newBuilder = function(options) {
  * @param {(string|{root: string, file: string})=} filename The corresponding file name if known. Must be specified for imports.
  * @return {ProtoBuf.Builder} Builder to create new messages
  * @throws {Error} If the definition cannot be parsed or built
- * @expose
+ * @export
  */
 ProtoBuf.loadJson = function(json, builder, filename) {
     if (typeof builder === 'string' || (builder && typeof builder["file"] === 'string' && typeof builder["root"] === 'string'))
@@ -396,7 +396,7 @@ ProtoBuf.loadJson = function(json, builder, filename) {
  * @param {ProtoBuf.Builder=} builder Builder to append to. Will create a new one if omitted.
  * @return {?ProtoBuf.Builder|undefined} The Builder if synchronous (no callback specified, will be NULL if the
  *   request has failed), else undefined
- * @expose
+ * @export
  */
 ProtoBuf.loadJsonFile = function(filename, callback, builder) {
     if (callback && typeof callback === 'object')

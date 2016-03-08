@@ -20,7 +20,7 @@ var Enum = function(builder, parent, name, options, syntax) {
     /**
      * Runtime enum object.
      * @type {Object.<string,number>|null}
-     * @expose
+     * @export
      */
     this.object = null;
 };
@@ -30,7 +30,7 @@ var Enum = function(builder, parent, name, options, syntax) {
  * @param {!ProtoBuf.Builder.Enum} enm Runtime enum
  * @param {number} value Enum value
  * @returns {?string} Name or `null` if not present
- * @expose
+ * @export
  */
 Enum.getName = function(enm, value) {
     var keys = Object.keys(enm);
@@ -50,7 +50,7 @@ var EnumPrototype = Enum.prototype = Object.create(Namespace.prototype);
  * Builds this enum and returns the runtime counterpart.
  * @param {boolean} rebuild Whether to rebuild or not, defaults to false
  * @returns {!Object.<string,number>}
- * @expose
+ * @export
  */
 EnumPrototype.build = function(rebuild) {
     if (this.object && !rebuild)

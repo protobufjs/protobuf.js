@@ -25,21 +25,21 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
     /**
      * Message field required flag.
      * @type {boolean}
-     * @expose
+     * @export
      */
     this.required = rule === "required";
 
     /**
      * Message field repeated flag.
      * @type {boolean}
-     * @expose
+     * @export
      */
     this.repeated = rule === "repeated";
 
     /**
      * Message field map flag.
      * @type {boolean}
-     * @expose
+     * @export
      */
     this.map = rule === "map";
 
@@ -47,7 +47,7 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
      * Message field key type. Type reference string if unresolved, protobuf
      * type if resolved. Valid only if this.map === true, null otherwise.
      * @type {string|{name: string, wireType: number}|null}
-     * @expose
+     * @export
      */
     this.keyType = keytype || null;
 
@@ -55,21 +55,21 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
      * Message field type. Type reference string if unresolved, protobuf type if
      * resolved. In a map field, this is the value type.
      * @type {string|{name: string, wireType: number}}
-     * @expose
+     * @export
      */
     this.type = type;
 
     /**
      * Resolved type reference inside the global namespace.
      * @type {ProtoBuf.Reflect.T|null}
-     * @expose
+     * @export
      */
     this.resolvedType = null;
 
     /**
      * Unique message field id.
      * @type {number}
-     * @expose
+     * @export
      */
     this.id = id;
 
@@ -77,42 +77,42 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
      * Message field options.
      * @type {!Object.<string,*>}
      * @dict
-     * @expose
+     * @export
      */
     this.options = options || {};
 
     /**
      * Default value.
      * @type {*}
-     * @expose
+     * @export
      */
     this.defaultValue = null;
 
     /**
      * Enclosing OneOf.
      * @type {?ProtoBuf.Reflect.Message.OneOf}
-     * @expose
+     * @export
      */
     this.oneof = oneof || null;
 
     /**
      * Syntax level of this definition (e.g., proto3).
      * @type {string}
-     * @expose
+     * @export
      */
     this.syntax = syntax || 'proto2';
 
     /**
      * Original field name.
      * @type {string}
-     * @expose
+     * @export
      */
     this.originalName = this.name; // Used to revert camelcase transformation on naming collisions
 
     /**
      * Element implementation. Created in build() after types are resolved.
      * @type {ProtoBuf.Element}
-     * @expose
+     * @export
      */
     this.element = null;
 
@@ -120,7 +120,7 @@ var Field = function(builder, message, rule, keytype, type, name, id, options, o
      * Key element implementation, for map fields. Created in build() after
      * types are resolved.
      * @type {ProtoBuf.Element}
-     * @expose
+     * @export
      */
     this.keyElement = null;
 
@@ -138,7 +138,7 @@ var FieldPrototype = Field.prototype = Object.create(T.prototype);
 /**
  * Builds the field.
  * @override
- * @expose
+ * @export
  */
 FieldPrototype.build = function() {
     this.element = new Element(this.type, this.resolvedType, false, this.syntax);
@@ -161,7 +161,7 @@ FieldPrototype.build = function() {
  * @param {boolean=} skipRepeated Whether to skip the repeated value check or not. Defaults to false.
  * @return {*} Verified, maybe adjusted, value
  * @throws {Error} If the value cannot be set for this field
- * @expose
+ * @export
  */
 FieldPrototype.verifyValue = function(value, skipRepeated) {
     skipRepeated = skipRepeated || false;
@@ -261,7 +261,7 @@ FieldPrototype.hasWirePresence = function(value, message) {
  * @param {!ProtoBuf.Builder.Message} message Runtime message
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If the field cannot be encoded
- * @expose
+ * @export
  */
 FieldPrototype.encode = function(value, buffer, message) {
     if (this.type === null || typeof this.type !== 'object')
@@ -335,7 +335,7 @@ FieldPrototype.encode = function(value, buffer, message) {
  * @param {*} value Field value
  * @param {!ProtoBuf.Builder.Message} message Runtime message
  * @returns {number} Byte length
- * @expose
+ * @export
  */
 FieldPrototype.calculate = function(value, message) {
     value = this.verifyValue(value); // May throw
@@ -393,7 +393,7 @@ FieldPrototype.calculate = function(value, message) {
  * @return {*} Decoded value: array for packed repeated fields, [key, value] for
  *             map fields, or an individual value otherwise.
  * @throws {Error} If the field cannot be decoded
- * @expose
+ * @export
  */
 FieldPrototype.decode = function(wireType, buffer, skipRepeated) {
     var value, nBytes;

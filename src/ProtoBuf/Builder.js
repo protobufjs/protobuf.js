@@ -1,6 +1,6 @@
 /**
  * @alias ProtoBuf.Builder
- * @expose
+ * @export
  */
 ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     "use strict";
@@ -17,49 +17,49 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         /**
          * Namespace.
          * @type {ProtoBuf.Reflect.Namespace}
-         * @expose
+         * @export
          */
         this.ns = new Reflect.Namespace(this, null, ""); // Global namespace
 
         /**
          * Namespace pointer.
          * @type {ProtoBuf.Reflect.T}
-         * @expose
+         * @export
          */
         this.ptr = this.ns;
 
         /**
          * Resolved flag.
          * @type {boolean}
-         * @expose
+         * @export
          */
         this.resolved = false;
 
         /**
          * The current building result.
          * @type {Object.<string,ProtoBuf.Builder.Message|Object>|null}
-         * @expose
+         * @export
          */
         this.result = null;
 
         /**
          * Imported files.
          * @type {Array.<string>}
-         * @expose
+         * @export
          */
         this.files = {};
 
         /**
          * Import root override.
          * @type {?string}
-         * @expose
+         * @export
          */
         this.importRoot = null;
 
         /**
          * Options.
          * @type {!Object.<string, *>}
-         * @expose
+         * @export
          */
         this.options = options || {};
     };
@@ -76,7 +76,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Tests if a definition most likely describes a message.
      * @param {!Object} def
      * @returns {boolean}
-     * @expose
+     * @export
      */
     Builder.isMessage = function(def) {
         // Messages require a string name
@@ -92,7 +92,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Tests if a definition most likely describes a message field.
      * @param {!Object} def
      * @returns {boolean}
-     * @expose
+     * @export
      */
     Builder.isMessageField = function(def) {
         // Message fields require a string rule, name and type and an id
@@ -105,7 +105,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Tests if a definition most likely describes an enum.
      * @param {!Object} def
      * @returns {boolean}
-     * @expose
+     * @export
      */
     Builder.isEnum = function(def) {
         // Enums require a string name
@@ -121,7 +121,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Tests if a definition most likely describes a service.
      * @param {!Object} def
      * @returns {boolean}
-     * @expose
+     * @export
      */
     Builder.isService = function(def) {
         // Services require a string name and an rpc object
@@ -134,7 +134,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Tests if a definition most likely describes an extended message
      * @param {!Object} def
      * @returns {boolean}
-     * @expose
+     * @export
      */
     Builder.isExtend = function(def) {
         // Extends rquire a string ref
@@ -148,7 +148,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     /**
      * Resets the pointer to the root namespace.
      * @returns {!ProtoBuf.Builder} this
-     * @expose
+     * @export
      */
     BuilderPrototype.reset = function() {
         this.ptr = this.ns;
@@ -159,7 +159,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Defines a namespace on top of the current pointer position and places the pointer on it.
      * @param {string} namespace
      * @return {!ProtoBuf.Builder} this
-     * @expose
+     * @export
      */
     BuilderPrototype.define = function(namespace) {
         if (typeof namespace !== 'string' || !Lang.TYPEREF.test(namespace))
@@ -178,7 +178,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @param {!Array.<!Object>} defs Messages, enums or services to create
      * @returns {!ProtoBuf.Builder} this
      * @throws {Error} If a message definition is invalid
-     * @expose
+     * @export
      */
     BuilderPrototype.create = function(defs) {
         if (!defs)
@@ -355,7 +355,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @param {(string|{root: string, file: string})=} filename Imported file name
      * @returns {!ProtoBuf.Builder} this
      * @throws {Error} If the definition or file cannot be imported
-     * @expose
+     * @export
      */
     BuilderPrototype["import"] = function(json, filename) {
         var delim = '/';
@@ -477,7 +477,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * Resolves all namespace objects.
      * @throws {Error} If a type cannot be resolved
      * @returns {!ProtoBuf.Builder} this
-     * @expose
+     * @export
      */
     BuilderPrototype.resolveAll = function() {
         // Resolve all reflected objects
@@ -551,7 +551,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
      * @param {(string|Array.<string>)=} path Specifies what to return. If omitted, the entire namespace will be returned.
      * @returns {!ProtoBuf.Builder.Message|!Object.<string,*>}
      * @throws {Error} If a type could not be resolved
-     * @expose
+     * @export
      */
     BuilderPrototype.build = function(path) {
         this.reset();
@@ -588,7 +588,7 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
     /**
      * Returns a string representation of this object.
      * @return {string} String representation as of "Builder"
-     * @expose
+     * @export
      */
     BuilderPrototype.toString = function() {
         return "Builder";

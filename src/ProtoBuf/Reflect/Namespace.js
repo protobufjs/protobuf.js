@@ -46,7 +46,7 @@ var NamespacePrototype = Namespace.prototype = Object.create(T.prototype);
  * Returns an array of the namespace's children.
  * @param {ProtoBuf.Reflect.T=} type Filter type (returns instances of this type only). Defaults to null (all children).
  * @return {Array.<ProtoBuf.Reflect.T>}
- * @expose
+ * @export
  */
 NamespacePrototype.getChildren = function(type) {
     type = type || null;
@@ -63,7 +63,7 @@ NamespacePrototype.getChildren = function(type) {
  * Adds a child to the namespace.
  * @param {ProtoBuf.Reflect.T} child Child
  * @throws {Error} If the child cannot be added (duplicate)
- * @expose
+ * @export
  */
 NamespacePrototype.addChild = function(child) {
     var other;
@@ -83,7 +83,7 @@ NamespacePrototype.addChild = function(child) {
  * Gets a child by its name or id.
  * @param {string|number} nameOrId Child name or id
  * @return {?ProtoBuf.Reflect.T} The child or null if not found
- * @expose
+ * @export
  */
 NamespacePrototype.getChild = function(nameOrId) {
     var key = typeof nameOrId === 'number' ? 'id' : 'name';
@@ -98,7 +98,7 @@ NamespacePrototype.getChild = function(nameOrId) {
  * @param {string|!Array.<string>} qn Qualified name to resolve
  * @param {boolean=} excludeNonNamespace Excludes non-namespace types, defaults to `false`
  * @return {?ProtoBuf.Reflect.Namespace} The resolved type or null if not found
- * @expose
+ * @export
  */
 NamespacePrototype.resolve = function(qn, excludeNonNamespace) {
     var part = typeof qn === 'string' ? qn.split(".") : qn,
@@ -136,7 +136,7 @@ NamespacePrototype.resolve = function(qn, excludeNonNamespace) {
  * Determines the shortest qualified name of the specified type, if any, relative to this namespace.
  * @param {!ProtoBuf.Reflect.T} t Reflection type
  * @returns {string} The shortest qualified name or, if there is none, the fqn
- * @expose
+ * @export
  */
 NamespacePrototype.qn = function(t) {
     var part = [], ptr = t;
@@ -155,7 +155,7 @@ NamespacePrototype.qn = function(t) {
 /**
  * Builds the namespace and returns the runtime counterpart.
  * @return {Object.<string,Function|Object>} Runtime namespace
- * @expose
+ * @export
  */
 NamespacePrototype.build = function() {
     /** @dict */

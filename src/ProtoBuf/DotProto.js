@@ -1,6 +1,6 @@
 /**
  * @alias ProtoBuf.DotProto
- * @expose
+ * @export
  */
 ProtoBuf.DotProto = (function(ProtoBuf, Lang) {
     "use strict";
@@ -16,7 +16,7 @@ ProtoBuf.DotProto = (function(ProtoBuf, Lang) {
 
     /**
      * @alias ProtoBuf.DotProto.Tokenizer
-     * @expose
+     * @export
      */
     DotProto.Tokenizer = Tokenizer;
     
@@ -24,7 +24,7 @@ ProtoBuf.DotProto = (function(ProtoBuf, Lang) {
 
     /**
      * @alias ProtoBuf.DotProto.Parser
-     * @expose
+     * @export
      */
     DotProto.Parser = Parser;
     

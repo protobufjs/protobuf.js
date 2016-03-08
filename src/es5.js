@@ -3,7 +3,7 @@
 
 // ref: https://developer.mozilla.org/de/docs/JavaScript/Reference/Global_Objects/Object/create
 if (!Object.create)
-    /** @expose */
+    /** @export */
     Object.create = function (o) {
         if (arguments.length > 1)
             throw Error('illegal number of arguments');
@@ -14,14 +14,14 @@ if (!Object.create)
 
 // ref: https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
 if (!Array.isArray)
-    /** @expose */
+    /** @export */
     Array.isArray = function(o) {
         return Object.prototype.toString.call(o) === "[object Array]";
     };
 
 // ref: https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
 if (!Array.prototype.forEach)
-    /** @expose */
+    /** @export */
     Array.prototype.forEach = function(callback, thisArg) {
         var T, k;
         if (this == null)

@@ -13,7 +13,7 @@ var Extension = function(builder, parent, name, field) {
     /**
      * Extended message field.
      * @type {!ProtoBuf.Reflect.Message.Field}
-     * @expose
+     * @export
      */
     this.field = field;
 };

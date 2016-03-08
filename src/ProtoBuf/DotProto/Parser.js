@@ -15,7 +15,7 @@ var Parser = function(source) {
     /**
      * Tokenizer.
      * @type {!ProtoBuf.DotProto.Tokenizer}
-     * @expose
+     * @export
      */
     this.tn = new Tokenizer(source);
 
@@ -36,7 +36,7 @@ var ParserPrototype = Parser.prototype;
  * Parses the source.
  * @returns {!Object}
  * @throws {Error} If the source cannot be parsed
- * @expose
+ * @export
  */
 ParserPrototype.parse = function() {
     var topLevel = {
@@ -116,7 +116,7 @@ ParserPrototype.parse = function() {
  * Parses the specified source.
  * @returns {!Object}
  * @throws {Error} If the source cannot be parsed
- * @expose
+ * @export
  */
 Parser.parse = function(source) {
     return new Parser(source).parse();

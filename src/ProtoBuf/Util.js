@@ -1,6 +1,6 @@
 /**
  * @alias ProtoBuf.Util
- * @expose
+ * @export
  */
 ProtoBuf.Util = (function() {
     "use strict";
@@ -16,7 +16,7 @@ ProtoBuf.Util = (function() {
      * Flag if running in node or not.
      * @type {boolean}
      * @const
-     * @expose
+     * @export
      */
     Util.IS_NODE = !!(
         typeof process === 'object' && process+'' === '[object process]' && !process['browser']
@@ -26,7 +26,7 @@ ProtoBuf.Util = (function() {
      * Constructs a XMLHttpRequest object.
      * @return {XMLHttpRequest}
      * @throws {Error} If XMLHttpRequest is not supported
-     * @expose
+     * @export
      */
     Util.XHR = function() {
         // No dependencies please, ref: http://www.quirksmode.org/js/xmlhttp.html
@@ -54,7 +54,7 @@ ProtoBuf.Util = (function() {
      * @param {function(?string)=} callback Callback receiving the resource's contents. If omitted the resource will
      *   be fetched synchronously. If the request failed, contents will be null.
      * @return {?string|undefined} Resource contents if callback is omitted (null if the request failed), else undefined.
-     * @expose
+     * @export
      */
     Util.fetch = function(path, callback) {
         if (callback && typeof callback != 'function')
@@ -104,7 +104,7 @@ ProtoBuf.Util = (function() {
      * Converts a string to camel case.
      * @param {string} str
      * @returns {string}
-     * @expose
+     * @export
      */
     Util.toCamelCase = function(str) {
         return str.replace(/_([a-zA-Z])/g, function ($0, $1) {

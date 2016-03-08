@@ -35,7 +35,7 @@ var ServicePrototype = Service.prototype = Object.create(Namespace.prototype);
  * @param {boolean=} rebuild Whether to rebuild or not
  * @return {Function} Service class
  * @throws {Error} If the message cannot be built
- * @expose
+ * @export
  */
 ServicePrototype.build = function(rebuild) {
     if (this.clazz && !rebuild)

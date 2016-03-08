@@ -1,6 +1,6 @@
 /**
  * @alias ProtoBuf.Map
- * @expose
+ * @export
  */
 ProtoBuf.Map = (function(ProtoBuf, Reflect) {
     "use strict";

@@ -23,42 +23,42 @@ var RPCMethod = function(builder, svc, name, request, response, request_stream, 
     /**
      * Request message name.
      * @type {string}
-     * @expose
+     * @export
      */
     this.requestName = request;
 
     /**
      * Response message name.
      * @type {string}
-     * @expose
+     * @export
      */
     this.responseName = response;
 
     /**
      * Whether requests are streamed
      * @type {bool}
-     * @expose
+     * @export
      */
     this.requestStream = request_stream;
 
     /**
      * Whether responses are streamed
      * @type {bool}
-     * @expose
+     * @export
      */
     this.responseStream = response_stream;
 
     /**
      * Resolved request message type.
      * @type {ProtoBuf.Reflect.Message}
-     * @expose
+     * @export
      */
     this.resolvedRequestType = null;
 
     /**
      * Resolved response message type.
      * @type {ProtoBuf.Reflect.Message}
-     * @expose
+     * @export
      */
     this.resolvedResponseType = null;
 };

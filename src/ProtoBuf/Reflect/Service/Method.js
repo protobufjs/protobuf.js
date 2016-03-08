@@ -19,7 +19,7 @@ var Method = function(builder, svc, name, options) {
     /**
      * Options.
      * @type {Object.<string, *>}
-     * @expose
+     * @export
      */
     this.options = options || {};
 };

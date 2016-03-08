@@ -14,28 +14,28 @@ var Tokenizer = function(proto) {
     /**
      * Source to parse.
      * @type {string}
-     * @expose
+     * @export
      */
     this.source = proto+"";
 
     /**
      * Current index.
      * @type {number}
-     * @expose
+     * @export
      */
     this.index = 0;
 
     /**
      * Current line.
      * @type {number}
-     * @expose
+     * @export
      */
     this.line = 1;
 
     /**
      * Token stack.
      * @type {!Array.<string>}
-     * @expose
+     * @export
      */
     this.stack = [];
 
@@ -75,7 +75,7 @@ TokenizerPrototype._readString = function() {
 /**
  * Gets the next token and advances by one.
  * @return {?string} Token or `null` on EOF
- * @expose
+ * @export
  */
 TokenizerPrototype.next = function() {
     if (this.stack.length > 0)
@@ -144,7 +144,7 @@ TokenizerPrototype.next = function() {
 /**
  * Peeks for the next token.
  * @return {?string} Token or `null` on EOF
- * @expose
+ * @export
  */
 TokenizerPrototype.peek = function() {
     if (this.stack.length === 0) {
@@ -183,7 +183,7 @@ TokenizerPrototype.omit = function(expected) {
 /**
  * Returns a string representation of this object.
  * @return {string} String representation as of "Tokenizer(index/length)"
- * @expose
+ * @export
  */
 TokenizerPrototype.toString = function() {
     return "Tokenizer ("+this.index+"/"+this.source.length+" at line "+this.line+")";

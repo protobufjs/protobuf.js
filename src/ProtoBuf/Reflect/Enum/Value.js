@@ -19,7 +19,7 @@ var Value = function(builder, enm, name, id) {
     /**
      * Unique enum value id.
      * @type {number}
-     * @expose
+     * @export
      */
     this.id = id;
 };

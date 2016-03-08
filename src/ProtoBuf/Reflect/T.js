@@ -12,28 +12,28 @@ var T = function(builder, parent, name) {
     /**
      * Builder reference.
      * @type {!ProtoBuf.Builder}
-     * @expose
+     * @export
      */
     this.builder = builder;
 
     /**
      * Parent object.
      * @type {?ProtoBuf.Reflect.T}
-     * @expose
+     * @export
      */
     this.parent = parent;
 
     /**
      * Object name in namespace.
      * @type {string}
-     * @expose
+     * @export
      */
     this.name = name;
 
     /**
      * Fully qualified class name
      * @type {string}
-     * @expose
+     * @export
      */
     this.className;
 };
@@ -47,7 +47,7 @@ var TPrototype = T.prototype;
 /**
  * Returns the fully qualified name of this object.
  * @returns {string} Fully qualified name as of ".PATH.TO.THIS"
- * @expose
+ * @export
  */
 TPrototype.fqn = function() {
     var name = this.name,
@@ -65,7 +65,7 @@ TPrototype.fqn = function() {
  * Returns a string representation of this Reflect object (its fully qualified name).
  * @param {boolean=} includeClass Set to true to include the class name. Defaults to false.
  * @return String representation
- * @expose
+ * @export
  */
 TPrototype.toString = function(includeClass) {
     return (includeClass ? this.className + " " : "") + this.fqn();
@@ -74,7 +74,7 @@ TPrototype.toString = function(includeClass) {
 /**
  * Builds this type.
  * @throws {Error} If this type cannot be built directly
- * @expose
+ * @export
  */
 TPrototype.build = function() {
     throw Error(this.toString(true)+" cannot be built directly");

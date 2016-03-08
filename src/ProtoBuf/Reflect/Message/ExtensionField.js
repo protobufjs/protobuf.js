@@ -17,7 +17,7 @@ var ExtensionField = function(builder, message, rule, type, name, id, options) {
     /**
      * Extension reference.
      * @type {!ProtoBuf.Reflect.Extension}
-     * @expose
+     * @export
      */
     this.extension;
 };

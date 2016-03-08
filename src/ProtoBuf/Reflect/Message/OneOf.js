@@ -13,7 +13,7 @@ var OneOf = function(builder, message, name) {
     /**
      * Enclosed fields.
      * @type {!Array.<!ProtoBuf.Reflect.Message.Field>}
-     * @expose
+     * @export
      */
     this.fields = [];
 };

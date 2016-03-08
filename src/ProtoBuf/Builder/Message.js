@@ -64,7 +64,7 @@ var MessagePrototype = Message.prototype = Object.create(ProtoBuf.Builder.Messag
  * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
  * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be added
- * @expose
+ * @export
  */
 MessagePrototype.add = function(key, value, noAssert) {
     var field = T._fieldsByName[key];
@@ -92,7 +92,7 @@ MessagePrototype.add = function(key, value, noAssert) {
  * @param {boolean=} noAssert Whether to assert the value or not (asserts by default)
  * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be added
- * @expose
+ * @export
  */
 MessagePrototype.$add = MessagePrototype.add;
 
@@ -105,7 +105,7 @@ MessagePrototype.$add = MessagePrototype.add;
  * @param {boolean=} noAssert Whether to not assert for an actual field / proper value type, defaults to `false`
  * @returns {!ProtoBuf.Builder.Message} this
  * @throws {Error} If the value cannot be set
- * @expose
+ * @export
  */
 MessagePrototype.set = function(keyOrObj, value, noAssert) {
     if (keyOrObj && typeof keyOrObj === 'object') {
@@ -144,7 +144,7 @@ MessagePrototype.set = function(keyOrObj, value, noAssert) {
  * @param {(*|boolean)=} value Value to set if key is a string, otherwise omitted
  * @param {boolean=} noAssert Whether to not assert the value, defaults to `false`
  * @throws {Error} If the value cannot be set
- * @expose
+ * @export
  */
 MessagePrototype.$set = MessagePrototype.set;
 
@@ -156,7 +156,7 @@ MessagePrototype.$set = MessagePrototype.set;
  * @param {boolean=} noAssert Whether to not assert for an actual field, defaults to `false`
  * @return {*} Value
  * @throws {Error} If there is no such field
- * @expose
+ * @export
  */
 MessagePrototype.get = function(key, noAssert) {
     if (noAssert)
@@ -176,7 +176,7 @@ MessagePrototype.get = function(key, noAssert) {
  * @param {string} key Key
  * @return {*} Value
  * @throws {Error} If there is no such field
- * @expose
+ * @export
  */
 MessagePrototype.$get = MessagePrototype.get;
 
@@ -288,7 +288,7 @@ for (var i=0; i<fields.length; i++) {
  * @return {!ByteBuffer} Encoded message as a ByteBuffer
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded ByteBuffer in the `encoded` property on the error.
- * @expose
+ * @export
  * @see ProtoBuf.Builder.Message#encode64
  * @see ProtoBuf.Builder.Message#encodeHex
  * @see ProtoBuf.Builder.Message#encodeAB
@@ -317,7 +317,7 @@ MessagePrototype.encode = function(buffer, noVerify) {
  * @param {(!ByteBuffer|boolean)=} buffer ByteBuffer to encode to. Will create a new one and flip it if omitted.
  * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
  * @return {!ByteBuffer} Encoded message as a ByteBuffer
- * @expose
+ * @export
  */
 Message.encode = function(data, buffer, noVerify) {
     return new Message(data).encode(buffer, noVerify);
@@ -329,7 +329,7 @@ Message.encode = function(data, buffer, noVerify) {
  * @function
  * @returns {number} Byte length
  * @throws {Error} If the message cannot be calculated or if required fields are missing.
- * @expose
+ * @export
  */
 MessagePrototype.calculate = function() {
     return T.calculate(this);
@@ -344,7 +344,7 @@ MessagePrototype.calculate = function() {
  * @return {!ByteBuffer} Encoded message as a ByteBuffer
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded ByteBuffer in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.encodeDelimited = function(buffer, noVerify) {
     var isNew = false;
@@ -365,7 +365,7 @@ MessagePrototype.encodeDelimited = function(buffer, noVerify) {
  * @return {ArrayBuffer} Encoded message as ArrayBuffer
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded ArrayBuffer in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.encodeAB = function() {
     try {
@@ -383,7 +383,7 @@ MessagePrototype.encodeAB = function() {
  * @return {ArrayBuffer} Encoded message as ArrayBuffer
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded ArrayBuffer in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.toArrayBuffer = MessagePrototype.encodeAB;
 
@@ -394,7 +394,7 @@ MessagePrototype.toArrayBuffer = MessagePrototype.encodeAB;
  * @return {!Buffer}
  * @throws {Error} If the message cannot be encoded, not running under node.js or if required fields are
  *  missing. The later still returns the encoded node Buffer in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.encodeNB = function() {
     try {
@@ -412,7 +412,7 @@ MessagePrototype.encodeNB = function() {
  * @return {!Buffer}
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded node Buffer in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.toBuffer = MessagePrototype.encodeNB;
 
@@ -423,7 +423,7 @@ MessagePrototype.toBuffer = MessagePrototype.encodeNB;
  * @return {string} Base64 encoded string
  * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
  *  still returns the encoded base64 string in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.encode64 = function() {
     try {
@@ -441,7 +441,7 @@ MessagePrototype.encode64 = function() {
  * @return {string} Base64 encoded string
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded base64 string in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.toBase64 = MessagePrototype.encode64;
 
@@ -452,7 +452,7 @@ MessagePrototype.toBase64 = MessagePrototype.encode64;
  * @return {string} Hex encoded string
  * @throws {Error} If the underlying buffer cannot be encoded or if required fields are missing. The later
  *  still returns the encoded hex string in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.encodeHex = function() {
     try {
@@ -470,7 +470,7 @@ MessagePrototype.encodeHex = function() {
  * @return {string} Hex encoded string
  * @throws {Error} If the message cannot be encoded or if required fields are missing. The later still
  *  returns the encoded hex string in the `encoded` property on the error.
- * @expose
+ * @export
  */
 MessagePrototype.toHex = MessagePrototype.encodeHex;
 
@@ -535,7 +535,7 @@ function cloneRaw(obj, binaryAsBase64, longsAsStrings, resolvedType) {
  * @param {boolean=} binaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
  * @param {boolean} longsAsStrings Whether to encode longs as strings
  * @returns {Object.<string,*>} Raw payload
- * @expose
+ * @export
  */
 MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
     return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, this.$type);
@@ -544,7 +544,7 @@ MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
 /**
  * Encodes a message to JSON.
  * @returns {string} JSON string
- * @expose
+ * @export
  */
 MessagePrototype.encodeJSON = function() {
     return JSON.stringify(
@@ -566,7 +566,7 @@ MessagePrototype.encodeJSON = function() {
  * @return {!ProtoBuf.Builder.Message} Decoded message
  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
  *  returns the decoded message with missing fields in the `decoded` property on the error.
- * @expose
+ * @export
  * @see ProtoBuf.Builder.Message.decode64
  * @see ProtoBuf.Builder.Message.decodeHex
  */
@@ -597,7 +597,7 @@ Message.decode = function(buffer, length, enc) {
  * @return {ProtoBuf.Builder.Message} Decoded message or `null` if not enough bytes are available yet
  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
  *  returns the decoded message with missing fields in the `decoded` property on the error.
- * @expose
+ * @export
  */
 Message.decodeDelimited = function(buffer, enc) {
     if (typeof buffer === 'string')
@@ -629,7 +629,7 @@ Message.decodeDelimited = function(buffer, enc) {
  * @return {!ProtoBuf.Builder.Message} Decoded message
  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
  *  returns the decoded message with missing fields in the `decoded` property on the error.
- * @expose
+ * @export
  */
 Message.decode64 = function(str) {
     return Message.decode(str, "base64");
@@ -643,7 +643,7 @@ Message.decode64 = function(str) {
  * @return {!ProtoBuf.Builder.Message} Decoded message
  * @throws {Error} If the message cannot be decoded or if required fields are missing. The later still
  *  returns the decoded message with missing fields in the `decoded` property on the error.
- * @expose
+ * @export
  */
 Message.decodeHex = function(str) {
     return Message.decode(str, "hex");
@@ -657,7 +657,7 @@ Message.decodeHex = function(str) {
  * @return {!ProtoBuf.Builder.Message} Decoded message
  * @throws {Error} If the message cannot be decoded or if required fields are
  * missing.
- * @expose
+ * @export
  */
 Message.decodeJSON = function(str) {
     return new Message(JSON.parse(str));
@@ -670,7 +670,7 @@ Message.decodeJSON = function(str) {
  * @name ProtoBuf.Builder.Message#toString
  * @function
  * @return {string} String representation as of ".Fully.Qualified.MessageName"
- * @expose
+ * @export
  */
 MessagePrototype.toString = function() {
     return T.toString();
@@ -682,7 +682,7 @@ MessagePrototype.toString = function() {
  * Message options.
  * @name ProtoBuf.Builder.Message.$options
  * @type {Object.<string,*>}
- * @expose
+ * @export
  */
 var $optionsS; // cc needs this
 
@@ -690,7 +690,7 @@ var $optionsS; // cc needs this
  * Message options.
  * @name ProtoBuf.Builder.Message#$options
  * @type {Object.<string,*>}
- * @expose
+ * @export
  */
 var $options;
 
@@ -698,7 +698,7 @@ var $options;
  * Reflection type.
  * @name ProtoBuf.Builder.Message.$type
  * @type {!ProtoBuf.Reflect.Message}
- * @expose
+ * @export
  */
 var $typeS;
 
@@ -706,7 +706,7 @@ var $typeS;
  * Reflection type.
  * @name ProtoBuf.Builder.Message#$type
  * @type {!ProtoBuf.Reflect.Message}
- * @expose
+ * @export
  */
 var $type;
 

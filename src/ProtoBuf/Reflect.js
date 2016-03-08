@@ -1,6 +1,6 @@
 /**
  * @alias ProtoBuf.Reflect
- * @expose
+ * @export
  */
 ProtoBuf.Reflect = (function(ProtoBuf) {
     "use strict";
@@ -16,7 +16,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.T
-     * @expose
+     * @export
      */
     Reflect.T = T;
 
@@ -24,7 +24,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Namespace
-     * @expose
+     * @export
      */
     Reflect.Namespace = Namespace;
 
@@ -32,7 +32,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Element
-     * @expose
+     * @export
      */
     Reflect.Element = Element;
     
@@ -40,7 +40,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Message
-     * @expose
+     * @export
      */
     Reflect.Message = Message;
     
@@ -48,7 +48,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Message.Field
-     * @expose
+     * @export
      */
     Reflect.Message.Field = Field;
 
@@ -56,7 +56,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Message.ExtensionField
-     * @expose
+     * @export
      */
     Reflect.Message.ExtensionField = ExtensionField;
 
@@ -64,7 +64,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Message.OneOf
-     * @expose
+     * @export
      */
     Reflect.Message.OneOf = OneOf;
 
@@ -72,7 +72,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Enum
-     * @expose
+     * @export
      */
     Reflect.Enum = Enum;
     
@@ -80,7 +80,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Enum.Value
-     * @expose
+     * @export
      */
     Reflect.Enum.Value = Value;
 
@@ -88,7 +88,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Extension
-     * @expose
+     * @export
      */
     Reflect.Extension = Extension;
 
@@ -96,7 +96,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Service
-     * @expose
+     * @export
      */
     Reflect.Service = Service;
 
@@ -104,7 +104,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Service.Method
-     * @expose
+     * @export
      */
     Reflect.Service.Method = Method;
     
@@ -112,7 +112,7 @@ ProtoBuf.Reflect = (function(ProtoBuf) {
 
     /**
      * @alias ProtoBuf.Reflect.Service.RPCMethod
-     * @expose
+     * @export
      */
     Reflect.Service.RPCMethod = RPCMethod;
 

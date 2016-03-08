@@ -99,7 +99,7 @@ function mkLong(value, unsigned) {
  * @param {*} value Value to check
  * @return {*} Verified, maybe adjusted, value
  * @throws {Error} If the value cannot be verified for this element slot
- * @expose
+ * @export
  */
 ElementPrototype.verifyValue = function(value) {
     var self = this,
@@ -227,7 +227,7 @@ ElementPrototype.verifyValue = function(value) {
  * @param {*} value Field value
  * @returns {number} Byte length
  * @throws {Error} If the value cannot be calculated
- * @expose
+ * @export
  */
 ElementPrototype.calculateLength = function(id, value) {
     if (value === null) return 0; // Nothing to encode
@@ -283,7 +283,7 @@ ElementPrototype.calculateLength = function(id, value) {
  * @param {ByteBuffer} buffer ByteBuffer to encode to
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If the value cannot be encoded
- * @expose
+ * @export
  */
 ElementPrototype.encodeValue = function(id, value, buffer) {
     if (value === null) return buffer; // Nothing to encode
@@ -407,7 +407,7 @@ ElementPrototype.encodeValue = function(id, value, buffer) {
  * @param {number} id The field number
  * @return {*} Decoded value
  * @throws {Error} If the field cannot be decoded
- * @expose
+ * @export
  */
 ElementPrototype.decode = function(buffer, wireType, id) {
     if (wireType != this.type.wireType)

@@ -17,7 +17,7 @@ var Service = function(rpcImpl) {
      * Service implementation.
      * @name ProtoBuf.Builder.Service#rpcImpl
      * @type {!function(string, ProtoBuf.Builder.Message, function(Error, ProtoBuf.Builder.Message=))}
-     * @expose
+     * @export
      */
     this.rpcImpl = rpcImpl || function(name, msg, callback) {
         // This is what a user has to implement: A function receiving the method name, the actual message to
@@ -109,7 +109,7 @@ for (var i=0; i<rpc.length; i++) {
  * Service options.
  * @name ProtoBuf.Builder.Service.$options
  * @type {Object.<string,*>}
- * @expose
+ * @export
  */
 var $optionsS; // cc needs this
 
@@ -117,7 +117,7 @@ var $optionsS; // cc needs this
  * Service options.
  * @name ProtoBuf.Builder.Service#$options
  * @type {Object.<string,*>}
- * @expose
+ * @export
  */
 var $options;
 
@@ -125,7 +125,7 @@ var $options;
  * Reflection type.
  * @name ProtoBuf.Builder.Service.$type
  * @type {!ProtoBuf.Reflect.Service}
- * @expose
+ * @export
  */
 var $typeS;
 
@@ -133,7 +133,7 @@ var $typeS;
  * Reflection type.
  * @name ProtoBuf.Builder.Service#$type
  * @type {!ProtoBuf.Reflect.Service}
- * @expose
+ * @export
  */
 var $type;
 
