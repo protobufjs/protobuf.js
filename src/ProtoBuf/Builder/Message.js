@@ -172,7 +172,7 @@ MessagePrototype.get = function(key, noAssert) {
     }
 
     var val = this[fieldName];
-    if (!val) {
+    if (val === null) {
         if (field.type === ProtoBuf.TYPES["message"])
             val = this[field.name] = new (field.resolvedType.clazz)();
         else
