@@ -159,14 +159,26 @@ MessagePrototype.$set = MessagePrototype.set;
  * @expose
  */
 MessagePrototype.get = function(key, noAssert) {
+    var fieldName;
     if (noAssert)
-        return this[key];
-    var field = T._fieldsByName[key];
-    if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field))
-        throw Error(this+"#"+key+" is not a field: undefined");
-    if (!(field instanceof ProtoBuf.Reflect.Message.Field))
-        throw Error(this+"#"+key+" is not a field: "+field.toString(true));
-    return this[field.name];
+        fieldName = key;
+    else {
+        var field = T._fieldsByName[key];
+        if (!field || !(field instanceof ProtoBuf.Reflect.Message.Field))
+            throw Error(this+"#"+key+" is not a field: undefined");
+        if (!(field instanceof ProtoBuf.Reflect.Message.Field))
+            throw Error(this+"#"+key+" is not a field: "+field.toString(true));
+        fieldName = field.name;
+    }
+
+    var val = this[fieldName];
+    if (!val) {
+        if (field.type === ProtoBuf.TYPES["message"])
+            val = this[field.name] = new (field.resolvedType.clazz)();
+        else
+            val = T.getChild(field.name).type.defaultValue;
+    }
+    return val;
 };
 
 /**
@@ -210,7 +222,7 @@ for (var i=0; i<fields.length; i++) {
              * @inner
              */
             var setter = function(value, noAssert) {
-                this[field.name] = noAssert ? value : field.verifyValue(value);
+                this.set(field.name, value, noAssert);
                 return this;
             };
 
@@ -220,8 +232,18 @@ for (var i=0; i<fields.length; i++) {
              * @returns {*}
              * @inner
              */
-            var getter = function() {
-                return this[field.name];
+            var getter = function(noAssert) {
+                return this.get(field.name, noAssert);
+            };
+
+            /**
+             * The current field's has value function.
+             * @function
+             * @returns {*}
+             * @inner
+             */
+            var hasBeenSet = function() {
+                return this[field.name] !== null && this[field.name] !== T.getChild(field.name).type.defaultValue;
             };
 
             if (T.getChild("set"+Name) === null)
@@ -273,6 +295,29 @@ for (var i=0; i<fields.length; i++) {
                  * @abstract
                  */
                 MessagePrototype["get_"+name] = getter;
+
+
+            if (T.getChild("has"+Name) === null)
+                /**
+                 * Gets whether or not a field has been set. This method is present for each field, but only if there is no name conflict with
+                 *  another field.
+                 * @name ProtoBuf.Builder.Message#has[SomeField]
+                 * @function
+                 * @return {bool} False if the value === null or the fields default value
+                 * @abstract
+                 */
+                MessagePrototype["has"+Name] = hasBeenSet;
+
+            if (T.getChild("has_"+name) === null)
+                /**
+                 * Gets whether or not a field has been set. This method is present for each field, but only if there is no name conflict with
+                 *  another field.
+                 * @name ProtoBuf.Builder.Message#has_[some_field]
+                 * @function
+                 * @return {bool} False if the value === null or the fields default value
+                 * @abstract
+                 */
+                MessagePrototype["has_"+name] = hasBeenSet;
 
         })(field);
 }
