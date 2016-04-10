@@ -1,0 +1,9 @@
+package TestProtobuf;
+
+option java_package = "com.why.game.protobuf";
+option java_outer_classname = "TestProtobuf";
+
+message TestProto{
+	optional int32 id = 1;
+	optional string name = 2;
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>protobufjs-ajax-example</title>
+    <script type="text/javascript" src="./long.js"></script>
+    <script type="text/javascript" src="./bytebuffer.js"></script>
+    <script type="text/javascript" src="./protoBuf.js"></script>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof dcodeIO === 'undefined' || !dcodeIO.ProtoBuf) {
+            throw(new Error("ProtoBuf.js is not present. Please see www/index.html for manual setup instructions."));
+        }
+        $(function(){
+            console.log('jquery start...');
+            $id = $('#id');
+            $name = $('#name');
+
+            var ProtoBuf = dcodeIO.ProtoBuf,
+                    TestProtobuf = ProtoBuf.loadProtoFile('./TestProtobuf.proto').build('TestProtobuf'),
+                    TestProto = TestProtobuf.TestProto;
+
+            $('#sendForm').submit(function () {
+                var xhr = createXMLHttpRequest();
+                xhr.open('POST', 'http://localhost:3000/proto');
+                xhr.setRequestHeader('Content-Type','application/x-protobuf');
+                xhr.setRequestHeader('Accept','application/x-protobuf');
+                if (xhr.overrideMimeType){
+                    xhr.overrideMimeType('text/plain; charset=x-user-defined');
+                }
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var data = xhr.responseText;
+                        console.log(data);
+                        var protobufResp = TestProto.decode(str2bytes(data));
+                        var protobuf2JsonResp = JSON.stringify(protobufResp);
+                        console.log(protobuf2JsonResp);
+                        $('#response').text(protobuf2JsonResp).css("color","red");
+                    }
+                };
+                xhr.send(new TestProto(postData()).toBuffer());
+
+                return false;
+            });
+
+        });
+
+        function createXMLHttpRequest(){
+            if(window.ActiveXObject){ //IE only
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            }else if(window.XMLHttpRequest){ //others
+                return new XMLHttpRequest();
+            }
+        }
+
+        function postData(){
+            var postData = {};
+            if($id.val() != ''){
+                var idVal = $id.val();
+                postData.id = parseInt(idVal);
+                if(isNaN(postData.id)){
+                    alert('id=[ '+idVal+' ]! input id must int!');
+                    $id.val('');
+                    $id.focus();
+                    return false;
+                }
+            }
+            if($name.val() != ''){
+                postData.name = $name.val();
+            }
+            return postData;
+        }
+
+        function str2bytes(str){
+            var bytes = [];
+            for (var i = 0, len = str.length; i < len; ++i) {
+                var c = str.charCodeAt(i);
+                var byte = c & 0xff;
+                bytes.push(byte);
+            }
+            return bytes;
+        }
+    </script>
+</head>
+<body>
+    <h3>Send</h3>
+    <form id="sendForm">
+        <table>
+            <tr>
+                <td>int32 id: </td>
+                <td><input type="text" id="id" value="10014"/></td>
+            </tr>
+            <tr>
+                <td>string name: </td>
+                <td><input type="text" id="name" value="testProtoName测试987"/></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" id="sendButton" value="submit"/></td>
+            </tr>
+        </table>
+    </form>
+    <h3>Response</h3>
+    <div id="response"></div>
+</body>
+</html>
