@@ -38,7 +38,12 @@
                         $('#response').text(protobuf2JsonResp).css("color","red");
                     }
                 };
-                xhr.send(new TestProto(postData()).toBuffer());
+                
+                var data = postData();
+                if(!data){
+                	return false;
+                }
+                xhr.send(new TestProto(data).toBuffer());
 
                 return false;
             });
