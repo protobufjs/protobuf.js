@@ -110,9 +110,12 @@ MessagePrototype.$add = MessagePrototype.add;
 MessagePrototype.set = function(keyOrObj, value, noAssert) {
     if (keyOrObj && typeof keyOrObj === 'object') {
         noAssert = value;
-        for (var ikey in keyOrObj)
-            if (keyOrObj.hasOwnProperty(ikey) && typeof (value = keyOrObj[ikey]) !== 'undefined')
+        var keys = Object.keys(keyOrObj);
+        for (var i = 0, l = keys.length; i < l; i++) {
+            var ikey = keys[i];
+            if (typeof (value = keyOrObj[ikey]) !== 'undefined')
                 this.$set(ikey, value, noAssert);
+        }
         return this;
     }
     var field = T._fieldsByName[keyOrObj];
@@ -518,14 +521,15 @@ function cloneRaw(obj, binaryAsBase64, longsAsStrings, resolvedType) {
     }
     // Everything else is a non-null object
     var type = obj.$type,
-        field = undefined;
-    for (var i in obj)
-        if (obj.hasOwnProperty(i)) {
-            if (type && (field = type.getChild(i)))
-                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings, field.resolvedType);
-            else
-                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings);
-        }
+        field = undefined,
+        keys = Object.keys(obj);
+    for (var i = 0, l = keys.length; i < l; i++) {
+        var key = keys[i];
+        if (type && (field = type.getChild(key)))
+            clone[key] = cloneRaw(obj[key], binaryAsBase64, longsAsStrings, field.resolvedType);
+        else
+            clone[key] = cloneRaw(obj[key], binaryAsBase64, longsAsStrings);
+    }
     return clone;
 }
 
