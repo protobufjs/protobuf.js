@@ -124,5 +124,5 @@ util.groupExtensions = function(ns) {
  * @returns {boolean}
  */
 util.isDescriptor = function(name) {
-    return /^google\/protobuf\//.test(name);
+    return /^google\/protobuf\/descriptor/.test(name);
 };
