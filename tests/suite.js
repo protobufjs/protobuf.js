@@ -396,7 +396,7 @@
             try {
                 var builder = ProtoBuf.loadProto("message Image { required bytes data = 1; }"),
                     Image = builder.build("Image"),
-                    data = fs.readFileSync(__dirname+"/../ProtoBuf.png"),
+                    data = fs.readFileSync(__dirname+"/../protobuf.png"),
                     image = new Image({ data: data }),
                     bb = image.encode(),
                     imageDec = Image.decode(bb),
