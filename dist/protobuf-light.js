@@ -801,9 +801,11 @@
          * converted to string form if so.
          * @param {string} syntax Syntax level of defining message type, e.g.,
          * proto2 or proto3.
+         * @param {string} name Name of the field containing this element (for error
+         * messages)
          * @constructor
          */
-        var Element = function(type, resolvedType, isMapKey, syntax) {
+        var Element = function(type, resolvedType, isMapKey, syntax, name) {
 
             /**
              * Element type, as a string (e.g., int32).
@@ -828,6 +830,12 @@
              * @type {string}
              */
             this.syntax = syntax;
+
+            /**
+             * Name of the field containing this element (for error messages)
+             * @type {string}
+             */
+            this.name = name;
 
             if (isMapKey && ProtoBuf.MAP_KEY_TYPES.indexOf(type) < 0)
                 throw Error("Invalid map key type: " + type.name);
@@ -877,6 +885,10 @@
             if (typeof value === 'number')
                 return ProtoBuf.Long.fromNumber(value, unsigned || false);
             throw Error("not convertible to Long");
+        }
+
+        ElementPrototype.toString = function() {
+            return (this.name || '') + (this.isMapKey ? 'map' : 'value') + ' element';
         }
 
         /**
@@ -2503,9 +2515,9 @@
          * @expose
          */
         FieldPrototype.build = function() {
-            this.element = new Element(this.type, this.resolvedType, false, this.syntax);
+            this.element = new Element(this.type, this.resolvedType, false, this.syntax, this.name);
             if (this.map)
-                this.keyElement = new Element(this.keyType, undefined, true, this.syntax);
+                this.keyElement = new Element(this.keyType, undefined, true, this.syntax, this.name);
 
             // In proto3, fields do not have field presence, and every field is set to
             // its type's default value ("", 0, 0.0, or false).
