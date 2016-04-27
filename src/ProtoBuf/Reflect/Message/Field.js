@@ -141,9 +141,9 @@ var FieldPrototype = Field.prototype = Object.create(T.prototype);
  * @expose
  */
 FieldPrototype.build = function() {
-    this.element = new Element(this.type, this.resolvedType, false, this.syntax);
+    this.element = new Element(this.type, this.resolvedType, false, this.syntax, this.name);
     if (this.map)
-        this.keyElement = new Element(this.keyType, undefined, true, this.syntax);
+        this.keyElement = new Element(this.keyType, undefined, true, this.syntax, this.name);
 
     // In proto3, fields do not have field presence, and every field is set to
     // its type's default value ("", 0, 0.0, or false).

@@ -674,6 +674,18 @@
             test.done();
         },
 
+        // Test error messages
+        "errorMessage": function(test) {
+            test.throws(function() {
+                var builder = ProtoBuf.loadJsonFile(__dirname+"/complex.json");
+                var Game = builder.build("Game");
+                var car = new Game.Cars.Car();
+                car.speed = "hello";
+                car.encode();
+            }, /Illegal value for speed/);
+            test.done();
+        },
+
         // Builder reused to add definitions from multiple sources
         "multiBuilder": function(test) {
             try {

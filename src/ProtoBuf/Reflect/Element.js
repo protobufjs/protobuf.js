@@ -15,9 +15,11 @@
  * converted to string form if so.
  * @param {string} syntax Syntax level of defining message type, e.g.,
  * proto2 or proto3.
+ * @param {string} name Name of the field containing this element (for error
+ * messages)
  * @constructor
  */
-var Element = function(type, resolvedType, isMapKey, syntax) {
+var Element = function(type, resolvedType, isMapKey, syntax, name) {
 
     /**
      * Element type, as a string (e.g., int32).
@@ -42,6 +44,12 @@ var Element = function(type, resolvedType, isMapKey, syntax) {
      * @type {string}
      */
     this.syntax = syntax;
+
+    /**
+     * Name of the field containing this element (for error messages)
+     * @type {string}
+     */
+    this.name = name;
 
     if (isMapKey && ProtoBuf.MAP_KEY_TYPES.indexOf(type) < 0)
         throw Error("Invalid map key type: " + type.name);
@@ -91,6 +99,10 @@ function mkLong(value, unsigned) {
     if (typeof value === 'number')
         return ProtoBuf.Long.fromNumber(value, unsigned || false);
     throw Error("not convertible to Long");
+}
+
+ElementPrototype.toString = function() {
+    return (this.name || '') + (this.isMapKey ? 'map' : 'value') + ' element';
 }
 
 /**
