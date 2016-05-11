@@ -83,7 +83,7 @@ ProtoBuf.Util = (function() {
             if (callback) {
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState != 4) return;
-                    if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string'))
+                    if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText.length > 0))
                         callback(xhr.responseText);
                     else
                         callback(null);
@@ -93,7 +93,7 @@ ProtoBuf.Util = (function() {
                 xhr.send(null);
             } else {
                 xhr.send(null);
-                if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string'))
+                if (/* remote */ xhr.status == 200 || /* local */ (xhr.status == 0 && typeof xhr.responseText === 'string' && xhr.responseText.length > 0))
                     return xhr.responseText;
                 return null;
             }
