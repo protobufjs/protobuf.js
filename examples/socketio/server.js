@@ -43,7 +43,7 @@ var server = http.createServer(function(req, res) {
         if (/\.js$/.test(file)) {
             type = 'text/javascript';
         }
-    } else if(req.url.lastIndexOf('.js') >= 0){
+    } else if(req.url.lastIndexOf('.js') != -1){
         file = req.url.substring(1);
         type = 'text/javascript';
     }
