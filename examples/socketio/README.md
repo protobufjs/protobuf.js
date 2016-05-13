@@ -1,5 +1,5 @@
 # ProtoBuf.js SocketIO example
-This example shows how to use HTTP Ajax to transfer protocol buffers
+This example shows how to use SocketIO(be similar to WebSocket) to transfer protocol buffers
 
 ## Instructions
 1. Set up dependencies: `npm install`
