@@ -27,7 +27,7 @@
         var text = document.getElementById("text");
 
         // Connect to our SocketIO server: node server.js
-        var socket = io.connect('localhost:3000');
+        var socket = io.connect('http://localhost:3000');
         console.log(socket);
 
         function send() {
