@@ -1,0 +1,17 @@
+{
+  "name" : "protobufjs-ajax-example",
+  "version" : "0.0.1",
+  "dependencies" : {
+    "mime" : "~1.2.7",
+    "protobufjs": "~5.0.1",
+    "socket.io" : "~1.4.5",
+    "open": "0.0.3"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "run": "node server.js"
+  },
+  "private": true
+}
