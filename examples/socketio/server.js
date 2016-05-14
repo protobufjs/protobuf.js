@@ -82,7 +82,7 @@ io.set('log level', 1);
 io.sockets.on('connection', function(socket){
     console.log(socket.id+' connecting...');
     socket.on('disconnect', function() {
-        console.log('WebSocket disconnected');
+        console.log('SocketIO disconnected');
     });
     socket.on('message', function(data) {
         try {
