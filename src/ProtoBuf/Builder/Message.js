@@ -576,10 +576,11 @@ Message.decode = function(buffer, length, enc) {
         length = -1;
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-    buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw
+    else if (!ByteBuffer.isByteBuffer(buffer))
+        buffer = ByteBuffer.wrap(buffer); // May throw
     var le = buffer.littleEndian;
     try {
-        var msg = T.decode(buffer.LE());
+        var msg = T.decode(buffer.LE(), length);
         buffer.LE(le);
         return msg;
     } catch (e) {
@@ -602,7 +603,8 @@ Message.decode = function(buffer, length, enc) {
 Message.decodeDelimited = function(buffer, enc) {
     if (typeof buffer === 'string')
         buffer = ByteBuffer.wrap(buffer, enc ? enc : "base64");
-    buffer = ByteBuffer.isByteBuffer(buffer) ? buffer : ByteBuffer.wrap(buffer); // May throw
+    else if (!ByteBuffer.isByteBuffer(buffer))
+        buffer = ByteBuffer.wrap(buffer); // May throw
     if (buffer.remaining() < 1)
         return null;
     var off = buffer.offset,

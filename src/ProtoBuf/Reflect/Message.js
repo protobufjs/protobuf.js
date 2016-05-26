@@ -211,7 +211,8 @@ function skipTillGroupEnd(expectedId, buf) {
  * @expose
  */
 MessagePrototype.decode = function(buffer, length, expectedGroupEndId) {
-    length = typeof length === 'number' ? length : -1;
+    if (typeof length !== 'number')
+        length = -1;
     var start = buffer.offset,
         msg = new (this.clazz)(),
         tag, wireType, id, field;

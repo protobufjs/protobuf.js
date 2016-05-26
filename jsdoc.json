@@ -3,7 +3,7 @@
         "allowUnknownTags": true
     },
     "source": {
-        "include": ["dist/ProtoBuf.js"]
+        "include": ["dist/protobuf.js"]
     },
     "opts": {
         "destination": "docs"
