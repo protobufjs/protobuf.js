@@ -349,7 +349,7 @@ ProtoBuf.Reflect.Message.prototype.calculate = function(message) {};
 /**
  * @param {!ProtoBuf.Builder.Message} message
  * @param {!ByteBuffer} buffer
- * @param {bool} noVerify
+ * @param {boolean} noVerify
  * @return {!ByteBuffer}
  * @throws {Error}
  */
