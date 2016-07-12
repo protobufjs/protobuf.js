@@ -30,7 +30,7 @@
   "dependencies": {
     "ascli": "~1",
     "bytebuffer": "~5",
-    "glob": "^5.0.10",
+    "glob": "^7.0.5",
     "yargs": "^3.10.0"
   },
   "devDependencies": {
