@@ -1934,14 +1934,15 @@
                  * @param {*} obj Object to clone
                  * @param {boolean} binaryAsBase64 Whether to include binary data as base64 strings or as a buffer otherwise
                  * @param {boolean} longsAsStrings Whether to encode longs as strings
+                 * @param {boolean} enumAsNumber Whether to include enum value as a number as opposed to String
                  * @param {!ProtoBuf.Reflect.T=} resolvedType The resolved field type if a field
                  * @returns {*} Cloned object
                  * @inner
                  */
-                function cloneRaw(obj, binaryAsBase64, longsAsStrings, resolvedType) {
+                function cloneRaw(obj, binaryAsBase64, longsAsStrings, enumAsNumber, resolvedType) {
                     if (obj === null || typeof obj !== 'object') {
                         // Convert enum values to their respective names
-                        if (resolvedType && resolvedType instanceof ProtoBuf.Reflect.Enum) {
+                        if (!enumAsNumber && resolvedType && resolvedType instanceof ProtoBuf.Reflect.Enum) {
                             var name = ProtoBuf.Reflect.Enum.getName(resolvedType.object, obj);
                             if (name !== null)
                                 return name;
@@ -1960,7 +1961,7 @@
                     if (Array.isArray(obj)) {
                         clone = [];
                         obj.forEach(function(v, k) {
-                            clone[k] = cloneRaw(v, binaryAsBase64, longsAsStrings, resolvedType);
+                            clone[k] = cloneRaw(v, binaryAsBase64, longsAsStrings, enumAsNumber, resolvedType);
                         });
                         return clone;
                     }
@@ -1969,7 +1970,7 @@
                     if (obj instanceof ProtoBuf.Map) {
                         var it = obj.entries();
                         for (var e = it.next(); !e.done; e = it.next())
-                            clone[obj.keyElem.valueToString(e.value[0])] = cloneRaw(e.value[1], binaryAsBase64, longsAsStrings, obj.valueElem.resolvedType);
+                            clone[obj.keyElem.valueToString(e.value[0])] = cloneRaw(e.value[1], binaryAsBase64, longsAsStrings, enumAsNumber, obj.valueElem.resolvedType);
                         return clone;
                     }
                     // Everything else is a non-null object
@@ -1978,9 +1979,9 @@
                     for (var i in obj)
                         if (obj.hasOwnProperty(i)) {
                             if (type && (field = type.getChild(i)))
-                                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings, field.resolvedType);
+                                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings, enumAsNumber, field.resolvedType);
                             else
-                                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings);
+                                clone[i] = cloneRaw(obj[i], binaryAsBase64, longsAsStrings, enumAsNumber);
                         }
                     return clone;
                 }
@@ -1988,27 +1989,29 @@
                 /**
                  * Returns the message's raw payload.
                  * @param {boolean=} binaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `false`
-                 * @param {boolean} longsAsStrings Whether to encode longs as strings
+                 * @param {boolean=} longsAsStrings Whether to encode longs as strings, defaults to `false`
+                 * @param {boolean=} enumAsNumber Whether to include enum value as a number as opposed to String, defaults to `false`
                  * @returns {Object.<string,*>} Raw payload
                  * @expose
                  */
-                MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings) {
-                    return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, this.$type);
+                MessagePrototype.toRaw = function(binaryAsBase64, longsAsStrings, enumAsNumber) {
+                    return cloneRaw(this, !!binaryAsBase64, !!longsAsStrings, !!enumAsNumber, this.$type);
                 };
 
                 /**
                  * Encodes a message to JSON.
+                 * @param {boolean=} binaryAsBase64 Whether to include binary data as base64 strings instead of Buffers, defaults to `true`
+                 * @param {boolean=} longsAsStrings Whether to encode longs as strings, defaults to `true`
+                 * @param {boolean=} enumAsNumber Whether to include enum value as a number as opposed to String, defaults to `false`
                  * @returns {string} JSON string
                  * @expose
                  */
-                MessagePrototype.encodeJSON = function() {
-                    return JSON.stringify(
-                        cloneRaw(this,
-                             /* binary-as-base64 */ true,
-                             /* longs-as-strings */ true,
-                             this.$type
-                        )
-                    );
+                MessagePrototype.encodeJSON = function(binaryAsBase64, longsAsStrings, enumAsNumber) {
+                    if (typeof binaryAsBase64 == 'undefined')
+                      binaryAsBase64 = true;
+                    if (typeof longsAsStrings == 'undefined')
+                      longsAsStrings = true;
+                    return JSON.stringify(this.toRaw(binaryAsBase64, longsAsStrings, enumAsNumber));
                 };
 
                 /**

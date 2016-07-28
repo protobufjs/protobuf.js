@@ -2152,6 +2152,41 @@
             var testMsg2 = Test.decodeJSON(testMsg.encodeJSON());
             test.strictEqual(testMsg2.encodeJSON(), testMsg.encodeJSON());
 
+            var jsonObj2 = JSON.parse(testMsg.encodeJSON(
+              /* binaryAsBase64 */ true,
+              /* longsAsStrings */ true,
+              /* enumAsNumber   */ true
+            ));
+            test.deepEqual(jsonObj2,
+                {
+                    optional_int32: 1,
+                    optional_int64: "12345678901234",
+                    optional_string: "hello",
+                    optional_bytes: "AP+A",  // base64
+                    optional_bool: true,
+                    optional_enum: 1,
+                    repeated_int32: [1],
+                    repeated_int64: ["12345678901234"],
+                    repeated_string: ["hello"],
+                    repeated_bytes: ["AP+A"],  // base64
+                    repeated_bool: [true],
+                    repeated_enum: [1],
+                    map_string_int32: { "a": 1, "b": 2 },
+                    map_string_int64: { "c": "12345678901234", "d": "98765432109876" },
+                    map_string_string: { "e": "asdf", "f": "jkl;" },
+                    map_string_enum: { "g": 1, "h": 2 },
+                    map_int32_string: { "9": "a", "10": "b" },
+                    map_int64_string: { "12345678901234": "a", "98765432109876": "b" },
+                    map_bool_string: { "false": "a", "true": "b" },
+                });
+
+            var testMsg3 = Test.decodeJSON(testMsg.encodeJSON(
+              /* binaryAsBase64 */ true,
+              /* longsAsStrings */ true,
+              /* enumAsNumber   */ true
+            ));
+            test.strictEqual(testMsg3.encodeJSON(), testMsg.encodeJSON());
+
             test.done();
         },
 
