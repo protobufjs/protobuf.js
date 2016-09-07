@@ -245,7 +245,9 @@ function buildService(svc) {
     svc.getChildren(ProtoBuf.Reflect.Service.RPCMethod).forEach(function(mtd) {
         rpc[mtd.name] = {
             "request": svc.qn(mtd.resolvedRequestType),
+            "request_stream": mtd.requestStream,
             "response": svc.qn(mtd.resolvedResponseType),
+            "response_stream": mtd.responseStream,
             "options": buildOptions(mtd.options)
         };
     });
