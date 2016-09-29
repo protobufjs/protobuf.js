@@ -4703,18 +4703,28 @@
                         var importFilename = json['imports'][i];
                         if (importFilename === "google/protobuf/descriptor.proto")
                             continue; // Not needed and therefore not used
-                        importFilename = importRoot + delim + importFilename;
-                        if (this.files[importFilename] === true)
-                            continue; // Already imported
-                        if (/\.proto$/i.test(importFilename) && !ProtoBuf.DotProto)       // If this is a light build
-                            importFilename = importFilename.replace(/\.proto$/, ".json"); // always load the JSON file
-                        var contents = ProtoBuf.Util.fetch(importFilename);
-                        if (contents === null)
-                            throw Error("failed to import '"+importFilename+"' in '"+filename+"': file not found");
-                        if (/\.json$/i.test(importFilename)) // Always possible
-                            this["import"](JSON.parse(contents+""), importFilename); // May throw
-                        else
-                            this["import"](ProtoBuf.DotProto.Parser.parse(contents), importFilename); // May throw
+                        var tmpImportRoot = importRoot;
+                        var tmpImportPathIndex = 0;
+                        while (true) {
+                            var tmpImportFilename = tmpImportRoot + delim + importFilename;
+                            if (this.files[tmpImportFilename] === true)
+                                break; // Already imported
+                            if (/\.proto$/i.test(tmpImportFilename) && !ProtoBuf.DotProto)       // If this is a light build
+                                tmpImportFilename = tmpImportFilename.replace(/\.proto$/, ".json"); // always load the JSON file
+                            var contents = ProtoBuf.Util.fetch(tmpImportFilename);
+                            if (contents === null) {
+                                if (this.options.includePath && this.options.includePath.length > tmpImportPathIndex) {
+                                    tmpImportRoot = this.options.includePath[tmpImportPathIndex++];
+                                    continue;
+                                }
+                                throw Error("failed to import '"+(importRoot + delim + importFilename)+"' in '"+filename+"': file not found");
+                            }
+                            if (/\.json$/i.test(tmpImportFilename)) // Always possible
+                                this["import"](JSON.parse(contents+""), tmpImportFilename); // May throw
+                            else
+                                this["import"](ProtoBuf.DotProto.Parser.parse(contents), tmpImportFilename); // May throw
+                            break;
+                        }
                     } else // Import structure
                         if (!filename)
                             this["import"](json['imports'][i]);
