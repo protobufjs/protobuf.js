@@ -63,6 +63,8 @@ function buildNamespace(ns, out) {
         "enums"    : enums    = [],
         "services" : services = []
     });
+    if (!(ns instanceof ProtoBuf.Reflect.Message))
+        out['isNamespace'] = true;
     util.extend(out["options"], buildOptions(ns.options));
     ns.getChildren(ProtoBuf.Reflect.Enum).forEach(function(enm) {
         enums.push(buildEnum(enm));

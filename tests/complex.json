@@ -103,5 +103,6 @@
                 }
             ]
         }
-    ]
+    ],
+    "isNamespace": true
 }

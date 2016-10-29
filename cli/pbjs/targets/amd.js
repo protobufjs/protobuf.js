@@ -30,7 +30,7 @@ var ProtoBuf = require("../../../index.js"),
 var amd = module.exports = function(builder, options) {
     options = options || {};
     return [
-        "define([", JSON.stringify(options.dependency || "ProtoBuf"), "]", options.min ? "," : ", ",
+        "define([", JSON.stringify(options.dependency || "protobuf"), "]", options.min ? "," : ", ",
         "function(ProtoBuf)", options.min ? "{" : " {\n    ",
         "return ProtoBuf",
         util.indent(js.build(builder, options), options.min ? "" : "    "), options.min ? "" : "\n",

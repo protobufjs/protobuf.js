@@ -175,7 +175,7 @@ pbjs.main = function(argv) {
             },
             dependency: {
                 alias: "d",
-                describe: "Library dependency to use when generating classes.\nDefaults to 'protobufjs' for CommonJS, 'ProtoBuf' for\nAMD modules and 'dcodeIO.ProtoBuf' for classes."
+                describe: "Library dependency to use when generating classes.\nDefaults to 'protobufjs' for CommonJS, 'protobuf' for\nAMD modules and 'dcodeIO.ProtoBuf' for classes."
             }
         })
         .alias("help", "h")
