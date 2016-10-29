@@ -3889,6 +3889,16 @@
                     this.ptr.keyType = ProtoBuf.TYPES[this.ptr.keyType];
                 }
 
+                // If it's a repeated and packable field then proto3 mandates it should be packed by
+                // default
+                if (
+                  this.ptr.syntax === 'proto3' &&
+                  this.ptr.repeated && this.ptr.options.packed === undefined &&
+                  ProtoBuf.PACKABLE_WIRE_TYPES.indexOf(this.ptr.type.wireType) !== -1
+                ) {
+                  this.ptr.options.packed = true;
+                }
+
             } else if (this.ptr instanceof ProtoBuf.Reflect.Service.Method) {
 
                 if (this.ptr instanceof ProtoBuf.Reflect.Service.RPCMethod) {
