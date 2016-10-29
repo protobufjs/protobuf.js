@@ -6,7 +6,7 @@
     "license": "Apache-2.0",
     "homepage": "http://dcode.io/",
     "dependencies": {
-        "bytebuffer": "~3"
+        "bytebuffer": "~5"
     },
     "keywords": ["net", "buffer", "protobuf", "serialization", "bytebuffer", "websocket", "webrtc"],
     "ignore": [
