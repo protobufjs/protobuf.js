@@ -94,6 +94,7 @@ MessagePrototype.build = function(rebuild) {
     this._fields = [];
     this._fieldsById = {};
     this._fieldsByName = {};
+    this._oneofsByName = {};
     for (var i=0, k=this.children.length, child; i<k; i++) {
         child = this.children[i];
         if (child instanceof Enum || child instanceof Message || child instanceof Service) {
@@ -105,6 +106,9 @@ MessagePrototype.build = function(rebuild) {
             this._fields.push(child),
             this._fieldsById[child.id] = child,
             this._fieldsByName[child.name] = child;
+        else if (child instanceof Message.OneOf) {
+            this._oneofsByName[child.name] = child;
+        }
         else if (!(child instanceof Message.OneOf) && !(child instanceof Extension)) // Not built
             throw Error("Illegal reflect child of "+this.toString(true)+": "+this.children[i].toString(true));
     }

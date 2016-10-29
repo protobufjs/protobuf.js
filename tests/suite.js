@@ -263,6 +263,36 @@
             test.deepEqual(t2, t3);
             test.done();
         },
+        
+        "constructorWithOneofs": function(test) {
+            try {
+                var builder = ProtoBuf.loadProtoFile(__dirname+"/oneof.proto"),
+                    MyOneOf = builder.build("MyOneOf"),
+                    TOneOf = builder.lookup(".MyOneOf");
+                test.ok(TOneOf.getChild("my_oneof"));
+                
+                var myOneOf = new MyOneOf();
+                test.strictEqual(myOneOf.my_oneof, null);
+                myOneOf.set("id", 1);
+                test.strictEqual(myOneOf.my_oneof, "id");
+                myOneOf.set("name", "me");
+                test.strictEqual(myOneOf.my_oneof, "name");
+                test.strictEqual(myOneOf.id, null);
+                
+                var copy = new MyOneOf(myOneOf); // this line is what was failing
+                // Error: .MyOneOf#my_oneof is not a field: undefined
+                
+                test.deepEqual(myOneOf, copy);
+                
+                // Test same things are there
+                test.strictEqual(copy.my_oneof, "name");
+                test.strictEqual(copy.name, "me");
+                test.strictEqual(copy.id, null);
+            } catch (e) {
+                fail(e);
+            }
+            test.done();
+        },
 
         "numberFormats": function(test) {
             try {
