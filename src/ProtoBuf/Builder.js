@@ -82,10 +82,24 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
         // Messages require a string name
         if (typeof def["name"] !== 'string')
             return false;
+        // Messages cannot have the isNamespace key
+        if (typeof def["isNamespace"] === 'boolean' && def["isNamespace"])
+          return false;
         // Messages do not contain values (enum) or rpc methods (service)
         if (typeof def["values"] !== 'undefined' || typeof def["rpc"] !== 'undefined')
             return false;
         return true;
+    };
+
+    /**
+     * Tests if a definition most likely describes a namespace.
+     * @param {!Object} def
+     * @returns {boolean}
+     * @expose
+     */
+    Builder.isNamespace = function(def) {
+        // Namespaces have a 'namespace' key set.
+        return typeof def["isNamespace"] === 'boolean' && def["isNamespacisNamespacee"];
     };
 
     /**
@@ -201,19 +215,26 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
 
             while (defs.length > 0) {
                 var def = defs.shift(); // Namespaces always contain an array of messages, enums and services
+                var isMessage = Builder.isMessage(def);
+                var isNamespace = Builder.isNamespace(def);
 
-                if (Builder.isMessage(def)) {
-                    var obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"], def["syntax"]);
+                if (isMessage || isNamespace) {
+                    var obj;
+                    if (isMessage) {
+                      obj = new Reflect.Message(this, this.ptr, def["name"], def["options"], def["isGroup"], def["syntax"]);
+                    } else {
+                      obj = new Reflect.Namespace(this, this.ptr, def["name"], def["options"], def["syntax"]);
+                    }
 
                     // Create OneOfs
                     var oneofs = {};
-                    if (def["oneofs"])
+                    if (isMessage && def["oneofs"])
                         Object.keys(def["oneofs"]).forEach(function(name) {
                             obj.addChild(oneofs[name] = new Reflect.Message.OneOf(this, obj, name));
                         }, this);
 
                     // Create fields
-                    if (def["fields"])
+                    if (isMessage && def["fields"])
                         def["fields"].forEach(function(fld) {
                             if (obj.getChild(fld["id"]|0) !== null)
                                 throw Error("duplicate or invalid field id in "+obj.name+": "+fld['id']);
