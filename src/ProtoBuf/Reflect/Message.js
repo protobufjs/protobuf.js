@@ -135,7 +135,7 @@ MessagePrototype.encode = function(message, buffer, noVerify) {
             if (fieldMissing === null)
                 fieldMissing = field;
         } else
-            field.encode(noVerify ? val : field.verifyValue(val), buffer, message);
+            field.encode(noVerify ? val : field.verifyValue(val), buffer, message, noVerify);
     }
     if (fieldMissing !== null) {
         var err = Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);

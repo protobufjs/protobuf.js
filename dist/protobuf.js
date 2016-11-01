@@ -1990,11 +1990,12 @@
          * @param {number} id Field number
          * @param {*} value Field value
          * @param {ByteBuffer} buffer ByteBuffer to encode to
+         * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
          * @return {ByteBuffer} The ByteBuffer for chaining
          * @throws {Error} If the value cannot be encoded
          * @expose
          */
-        ElementPrototype.encodeValue = function(id, value, buffer) {
+        ElementPrototype.encodeValue = function(id, value, buffer, noVerify) {
             if (value === null) return buffer; // Nothing to encode
             // Tag has already been written
 
@@ -2091,14 +2092,14 @@
                 // Embedded message
                 case ProtoBuf.TYPES["message"]:
                     var bb = new ByteBuffer().LE();
-                    this.resolvedType.encode(value, bb);
+                    this.resolvedType.encode(value, bb, noVerify);
                     buffer.writeVarint32(bb.offset);
                     buffer.append(bb.flip());
                     break;
 
                 // Legacy group
                 case ProtoBuf.TYPES["group"]:
-                    this.resolvedType.encode(value, buffer);
+                    this.resolvedType.encode(value, buffer, noVerify);
                     buffer.writeVarint32((id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
                     break;
 
@@ -3136,7 +3137,7 @@
                     if (fieldMissing === null)
                         fieldMissing = field;
                 } else
-                    field.encode(noVerify ? val : field.verifyValue(val), buffer, message);
+                    field.encode(noVerify ? val : field.verifyValue(val), buffer, message, noVerify);
             }
             if (fieldMissing !== null) {
                 var err = Error("Missing at least one required field for "+this.toString(true)+": "+fieldMissing);
@@ -3554,11 +3555,14 @@
          * @param {*} value Verified field value
          * @param {ByteBuffer} buffer ByteBuffer to encode to
          * @param {!ProtoBuf.Builder.Message} message Runtime message
+         * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
          * @return {ByteBuffer} The ByteBuffer for chaining
          * @throws {Error} If the field cannot be encoded
          * @expose
          */
-        FieldPrototype.encode = function(value, buffer, message) {
+        FieldPrototype.encode = function(value, buffer, message, noVerify) {
+            if (!noVerify)
+                value = this.verifyValue(value);
             if (this.type === null || typeof this.type !== 'object')
                 throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
             if (value === null || (this.repeated && value.length == 0))
@@ -3576,7 +3580,7 @@
                         buffer.ensureCapacity(buffer.offset += 1); // We do not know the length yet, so let's assume a varint of length 1
                         var start = buffer.offset; // Remember where the contents begin
                         for (i=0; i<value.length; i++)
-                            this.element.encodeValue(this.id, value[i], buffer);
+                            this.element.encodeValue(this.id, value[i], buffer, noVerify);
                         var len = buffer.offset-start,
                             varintLen = ByteBuffer.calculateVarint32(len);
                         if (varintLen > 1) { // We need to move the contents
@@ -3591,7 +3595,7 @@
                         // message has zero or more key-value pairs with the same tag number"
                         for (i=0; i<value.length; i++)
                             buffer.writeVarint32((this.id << 3) | this.type.wireType),
-                            this.element.encodeValue(this.id, value[i], buffer);
+                            this.element.encodeValue(this.id, value[i], buffer, noVerify);
                     }
                 } else if (this.map) {
                     // Write out each map entry as a submessage.
@@ -3609,14 +3613,14 @@
 
                         // Write out the key and val.
                         buffer.writeVarint32((1 << 3) | this.keyType.wireType);
-                        this.keyElement.encodeValue(1, key, buffer);
+                        this.keyElement.encodeValue(1, key, buffer, noVerify);
                         buffer.writeVarint32((2 << 3) | this.type.wireType);
-                        this.element.encodeValue(2, val, buffer);
+                        this.element.encodeValue(2, val, buffer, noVerify);
                     }, this);
                 } else {
                     if (this.hasWirePresence(value, message)) {
                         buffer.writeVarint32((this.id << 3) | this.type.wireType);
-                        this.element.encodeValue(this.id, value, buffer);
+                        this.element.encodeValue(this.id, value, buffer, noVerify);
                     }
                 }
             } catch (e) {

@@ -292,11 +292,12 @@ ElementPrototype.calculateLength = function(id, value) {
  * @param {number} id Field number
  * @param {*} value Field value
  * @param {ByteBuffer} buffer ByteBuffer to encode to
+ * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If the value cannot be encoded
  * @expose
  */
-ElementPrototype.encodeValue = function(id, value, buffer) {
+ElementPrototype.encodeValue = function(id, value, buffer, noVerify) {
     if (value === null) return buffer; // Nothing to encode
     // Tag has already been written
 
@@ -393,14 +394,14 @@ ElementPrototype.encodeValue = function(id, value, buffer) {
         // Embedded message
         case ProtoBuf.TYPES["message"]:
             var bb = new ByteBuffer().LE();
-            this.resolvedType.encode(value, bb);
+            this.resolvedType.encode(value, bb, noVerify);
             buffer.writeVarint32(bb.offset);
             buffer.append(bb.flip());
             break;
 
         // Legacy group
         case ProtoBuf.TYPES["group"]:
-            this.resolvedType.encode(value, buffer);
+            this.resolvedType.encode(value, buffer, noVerify);
             buffer.writeVarint32((id << 3) | ProtoBuf.WIRE_TYPES.ENDGROUP);
             break;
 

@@ -259,11 +259,14 @@ FieldPrototype.hasWirePresence = function(value, message) {
  * @param {*} value Verified field value
  * @param {ByteBuffer} buffer ByteBuffer to encode to
  * @param {!ProtoBuf.Builder.Message} message Runtime message
+ * @param {boolean=} noVerify Whether to not verify field values, defaults to `false`
  * @return {ByteBuffer} The ByteBuffer for chaining
  * @throws {Error} If the field cannot be encoded
  * @expose
  */
-FieldPrototype.encode = function(value, buffer, message) {
+FieldPrototype.encode = function(value, buffer, message, noVerify) {
+    if (!noVerify)
+        value = this.verifyValue(value);
     if (this.type === null || typeof this.type !== 'object')
         throw Error("[INTERNAL] Unresolved type in "+this.toString(true)+": "+this.type);
     if (value === null || (this.repeated && value.length == 0))
@@ -281,7 +284,7 @@ FieldPrototype.encode = function(value, buffer, message) {
                 buffer.ensureCapacity(buffer.offset += 1); // We do not know the length yet, so let's assume a varint of length 1
                 var start = buffer.offset; // Remember where the contents begin
                 for (i=0; i<value.length; i++)
-                    this.element.encodeValue(this.id, value[i], buffer);
+                    this.element.encodeValue(this.id, value[i], buffer, noVerify);
                 var len = buffer.offset-start,
                     varintLen = ByteBuffer.calculateVarint32(len);
                 if (varintLen > 1) { // We need to move the contents
@@ -296,7 +299,7 @@ FieldPrototype.encode = function(value, buffer, message) {
                 // message has zero or more key-value pairs with the same tag number"
                 for (i=0; i<value.length; i++)
                     buffer.writeVarint32((this.id << 3) | this.type.wireType),
-                    this.element.encodeValue(this.id, value[i], buffer);
+                    this.element.encodeValue(this.id, value[i], buffer, noVerify);
             }
         } else if (this.map) {
             // Write out each map entry as a submessage.
@@ -314,14 +317,14 @@ FieldPrototype.encode = function(value, buffer, message) {
 
                 // Write out the key and val.
                 buffer.writeVarint32((1 << 3) | this.keyType.wireType);
-                this.keyElement.encodeValue(1, key, buffer);
+                this.keyElement.encodeValue(1, key, buffer, noVerify);
                 buffer.writeVarint32((2 << 3) | this.type.wireType);
-                this.element.encodeValue(2, val, buffer);
+                this.element.encodeValue(2, val, buffer, noVerify);
             }, this);
         } else {
             if (this.hasWirePresence(value, message)) {
                 buffer.writeVarint32((this.id << 3) | this.type.wireType);
-                this.element.encodeValue(this.id, value, buffer);
+                this.element.encodeValue(this.id, value, buffer, noVerify);
             }
         }
     } catch (e) {
