@@ -107,13 +107,13 @@ The library exports the `protobuf` namespace with the following members:
 
 ### Parser
 
-* **load(filename: `string|Array`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise`**<br />
+* **load(filename: `string|Array`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise`** [[source](./src/index.js)]<br />
   Loads one or multiple .proto files into the specified root or creates a new one when omitted.
 
-* **tokenize(source: `string`): `Object`**<br />
+* **tokenize(source: `string`): `Object`** [[source](./src/tokenize.js)]<br />
   Tokenizes the given .proto source and returns an object with useful utility functions.
 
-* **parse(source: `string`): `Object`**<br />
+* **parse(source: `string`): `Object`** [[source](./src/parse.js)]<br />
   Parses the given .proto source and returns an object with the parsed contents.
   
   * **package: `string|undefined`**<br />
@@ -136,52 +136,52 @@ The library exports the `protobuf` namespace with the following members:
 
 ### Serialization
 
-* **Writer**<br />
+* **Writer** [[source](./src/writer.js)]<br />
   Wire format writer.
 
-* **BufferWriter** _extends **Writer**_<br />
+* **BufferWriter** _extends **Writer**_ [[source](./src/writer.js)]<br />
   Wire format writer, node version.
 
-* **Reader**<br />
+* **Reader** [[source](./src/reader.js)]<br />
   Wire format reader.
 
-* **BufferReader** _extends **Reader**_<br />
+* **BufferReader** _extends **Reader**_ [[source](./src/reader.js)]<br />
   Wire format reader, node version.
 
 ### Reflection
 
-* **ReflectionObject**<br />
+* **ReflectionObject** [[source](./src/object.js)]<br />
   Base class of all reflection objects.
 
-* **Namespace** _extends **ReflectionObject**_<br />
+* **Namespace** _extends **ReflectionObject**_ [[source](./src/namespace.js)]<br />
   Base class of all reflection objects containing nested objects.
 
-* **Root** _extends **Namespace**_<br />
+* **Root** _extends **Namespace**_ [[source](./src/root.js)]<br />
   Root namespace.
 
-* **Type** _extends **Namespace**_<br />
+* **Type** _extends **Namespace**_ [[source](./src/type.js)]<br />
   Reflected message type.
 
-* **Field** _extends **ReflectionObject**_<br />
+* **Field** _extends **ReflectionObject**_ [[source](./src/field.js)]<br />
   Reflected message field.
 
-* **Enum** _extends **ReflectionObject**_<br />
+* **Enum** _extends **ReflectionObject**_ [[source](./src/enum.js)]<br />
   Reflected enum.
 
-* **Service** _extends **Namespace**_<br />
+* **Service** _extends **Namespace**_ [[source](./src/service.js)]<br />
   Reflected service.
 
-* **Method** _extends **ReflectionObject**_<br />
+* **Method** _extends **ReflectionObject**_ [[source](./src/method.js)]<br />
   Reflected service method.
 
 ### Runtime
 
-* **Prototype**<br />
+* **Prototype** [[source](./src/prototype.js)]<br />
   Runtime message prototype ready to be extended by custom classes or generated code.
 
 ### Utility
 
-* **util: `Object`**<br />
+* **util: `Object`** [[source](./src/util.js)]<br />
   Utility functions.
 
 For now, you can find documentation on these objects in the respective source files within
