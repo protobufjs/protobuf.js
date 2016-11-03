@@ -38,6 +38,7 @@ protobuf.Namespace = require("./namespace");
 protobuf.Root = require("./root");
 protobuf.Type = require("./type");
 protobuf.Field = require("./field");
+protobuf.MapField = require("./mapfield");
 protobuf.Enum = require("./enum");
 protobuf.Service = require("./service");
 protobuf.Method = require("./method");

@@ -165,6 +165,9 @@ The library exports a flat `protobuf` namespace with the following members, orde
 * **Field** _extends **ReflectionObject**_ [[source](./src/field.js)]<br />
   Reflected message field.
 
+* **MapField** _extends **Field**_ [[source](./src/mapfield.js)]<br />
+  Reflected message map field.
+
 * **Enum** _extends **ReflectionObject**_ [[source](./src/enum.js)]<br />
   Reflected enum.
 

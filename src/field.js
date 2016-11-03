@@ -25,15 +25,16 @@ function Field(name, id, type, rule, extend, options) {
     } else if (util.isObject(extend)) {
         options = extend;
         extend = undefined;
-    }
-    
+    }   
     ReflectionObject.call(this, name, options);
 
     /**
      * Field rule, if any.
      * @type {string|undefined}
      */
-    this.rule = rule && rule !== 'optional' ? rule : undefined;
+    this.rule = rule && (rule = rule.toLowerCase()) !== 'optional' ? rule : undefined;
+    if (rule === "map")
+        throw TypeError("illegal rule " + rule + ": use MapField instead");
 
     /**
      * Field type.
