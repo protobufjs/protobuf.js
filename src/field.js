@@ -24,36 +24,40 @@ function Field(name, id, type, rule, extend, options) {
     } else if (util.isObject(extend)) {
         options = extend;
         extend = undefined;
-    }   
+    }
     ReflectionObject.call(this, name, options);
+    if (!util.isInteger(id))
+        throw util._TypeError("id", "integer");
+    if (!util.isString(type))
+        throw util._TypeError("type");
+    if (extend !== undefined && !util.isString(extend))
+        throw util._TypeError("extend");
+    if (rule === "map")
+        throw util._TypeError("rule", "non-map (use MapField instead)");
 
     /**
      * Field rule, if any.
      * @type {string|undefined}
      */
-    this.rule = rule && (rule = rule.toLowerCase()) !== 'optional' ? rule : undefined;
-    if (rule === "map")
-        throw TypeError("illegal rule " + rule + ": use MapField instead");
+    this.rule = rule && (rule = rule.toLowerCase()) !== 'optional' ? rule : undefined; // exposed
 
     /**
      * Field type.
      * @type {string}
      */
-    this.type = type;
+    this.type = type; // exposed
 
     /**
      * Unique field id.
      * @type {number}
      */
-     this.id = id;
+     this.id = id; // exposed, marker
 
     /**
      * Extended type if different from parent.
      * @type {string|undefined}
      */
-    this.extend = undefined;
-
-    // Reflection only properties
+    this.extend = undefined; // exposed
 
     /**
      * Whether this field is required.
@@ -80,13 +84,6 @@ function Field(name, id, type, rule, extend, options) {
     this.map = false;
 
     /**
-     * Internally remembers whether this field is packed.
-     * @type {boolean}
-     * @private
-     */
-    this._packed = undefined;
-
-    /**
      * Message this field belongs to.
      * @type {?Type}
      */
@@ -96,7 +93,7 @@ function Field(name, id, type, rule, extend, options) {
      * OneOf this field belongs to, if any,
      * @type {?OneOf}
      */
-    this.oneof = null;
+    this.partOf = null;
 
     /**
      * The field's default value. Only relevant when working with proto2.
@@ -106,15 +103,22 @@ function Field(name, id, type, rule, extend, options) {
 
     /**
      * Resolved type if not a basic type.
-     * @type {Type|Enum}
+     * @type {?(Type|Enum)}
      */
     this.resolvedType = null;
 
     /**
      * Resolved extended type if any.
-     * @type {ReflectionObject}
+     * @type {?ReflectionObject}
      */
     this.resolvedExtend = null;
+
+    /**
+     * Internally remembers whether this field is packed.
+     * @type {?boolean}
+     * @private
+     */
+    this._packed = null;
 }
 
 var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "extend" ]);
@@ -129,7 +133,7 @@ Object.defineProperties(FieldPrototype, {
      */
     packed: {
         get: function() {
-            if (this._packed === undefined)
+            if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
         }
@@ -142,7 +146,7 @@ Object.defineProperties(FieldPrototype, {
  */
 FieldPrototype.setOption = function setOption(name, value, ifNotSet) {
     if (name === "packed")
-        this._packed = undefined;
+        this._packed = null;
     return ReflectionObject.prototype.setOption.call(this, name, value, ifNotSet);
 };
 
@@ -160,6 +164,7 @@ Field.testJSON = function testJSON(json) {
  * @param {string} name Field name
  * @param {!Object} json JSON object
  * @returns {!Field} Created field
+ * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
     return new Field(name, json.id, json.type, json.role, json.extend, json.options);
@@ -251,6 +256,7 @@ FieldPrototype.encode = function encode(value, writer) {
  * @param {!Reader} reader Reader to decode from
  * @param {number} receivedWireType Wire type received
  * @returns {*} Field value
+ * @throws {Error} If the wire format is invalid
  */
 FieldPrototype.decode = function decode(reader, receivedWireType) {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
@@ -261,7 +267,7 @@ FieldPrototype.decode = function decode(reader, receivedWireType) {
         while (reader.pos < limit)
             values.push(reader[type]());
         if (reader.pos > limit)
-            throw Error("illegal wire format");
+            throw Error("invalid wire format");
         return values;
     }
 

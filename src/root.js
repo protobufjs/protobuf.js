@@ -12,29 +12,39 @@ module.exports = Root;
  * Root namespace.
  * @extends Namespace
  * @constructor
- * @param {!Object.<string,*>} [options] Root options
+ * @param {!Object.<string,*>} [contextOptions] Context options
+ * @param {!Object.<string,*>} [options] Namespace options
  */
-function Root(options) {
-    Namespace.call(this, "");
+function Root(contextOptions, options) {
+    Namespace.call(this, "", options);
 
-    options = options || {};
+    if (!contextOptions)
+        contextOptions = {};
 
     /**
-     * Already loaded files by name.
+     * Already loaded file names.
      * @type {!Array.<string>}
      * @private
      */
     this._loaded = []; // use addLoaded/isLoaded instead
 
     /**
-     * Deferred extension fields that have been added to their parent but not
-     *  yet to their extended type.
+     * Deferred extension fields that have not yet been added to their extended type and are still
+     * unresolved.
      * @type {!Array.<!Field>}
      * @private
      */
     this._extends = [];
 
-    if (!options.noGoogleTypes)
+    /**
+     * Deferred extension fields that have been resolved but not yet been added to their extended
+     * type.
+     * @type {!Object.<string,!Array<!Field>>}
+     * @private
+     */
+    this._resolvedExtends = {};
+
+    if (!contextOptions.noGoogleTypes)
         importGoogleTypes(this, false);
 }
 
@@ -328,10 +338,27 @@ RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-
     else if (util.isString(filename))
         fetch(filename, true, false);
     else
-        throw TypeError("filename must be a string or an array of strings");
+        throw util._TypeError("filename", "string or array");
 
     if (!queued)
         finish(null);
+};
+
+/**
+ * Resolves any deferred extended fields that have not yet been added to their extended type.
+ * @returns {!Root} this
+ */
+RootPrototype.resolveExtends = function resolveExtends() {
+    while (this._extends.length) {
+        var field = this._extends.shift(),
+            extendedType = field.parent.lookup(field.extend);
+        if (extendedType && extendedType.root === this) {
+            var fullName = extendedType.fullName;
+            field.extend = fullName;
+            (this._resolvedExtends[fullName] || (this._resolvedExtends[fullName] = [])).push(field);
+        }
+    }
+    return this;
 };
 
 /**
@@ -362,24 +389,21 @@ RootPrototype.handleRemove = function handleRemove(object, parent) { // eslint-d
 };
 
 /**
- * Callede when any object in this root or its sub-namespaces is being resolved.
+ * Called when any object in this root or its sub-namespaces is being resolved.
  * @param {!ReflectionObject} object Object being resolved
  * @returns {undefined}
  */
 RootPrototype.handleResolve = function handleResolve(object) { // eslint-disable-line no-unused-vars
-    /* if (object instanceof Type) {
-        // Find out if there are any deferred extension fields that belong to this type
-        for (var i = 0, k = this._extends.length; i < k;) {
-            var field = this._extends[i];
-            var extendedType = field.parent.lookup(field.extend);
-            if (extendedType === object) {
-                this._extends.splice(i, 1);
-                object.add(field);
-            } else
-                ++i;
+    if (object instanceof Type) {
+        this.resolveExtends();
+        var fullName = object.fullName,
+            resolved = this._resolvedExtends[fullName];
+        if (resolved) {
+            while (resolved.length)
+                object.add(resolved.shift());
+            delete this._resolvedExtends[fullName];
         }
-    } */
-    // TODO
+    }
 };
 
 /**

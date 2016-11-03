@@ -10,8 +10,13 @@ module.exports = Prototype;
 function Prototype(properties) {
     if (properties)
         Object.keys(properties).forEach(function(key) {
-            this[key] = properties[key];
+            if (this.constructor.$type.fields[key] || this.constructor.$type.oneofs && this.constructor.$type.oneofs[key])
+                this[key] = properties[key];
         }, this);
+
+    // NOTE: Extending Prototype leaves optimization up to you. This method is here as a simple
+    // way to set only properties that actually reference a field, so that instances have a fixed
+    // set a fields and hopefully do not resort back to a hashmap.
 }
 
 /**

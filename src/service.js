@@ -1,5 +1,6 @@
 var Namespace = require("./namespace"),
-    Method    = require("./method");
+    Method    = require("./method"),
+    util      = require("./util");
 
 module.exports = Service;
 
@@ -9,6 +10,7 @@ module.exports = Service;
  * @constructor
  * @param {string} name Service name
  * @param {!Object.<string,*>} [options] Service options
+ * @throws {TypeError} If arguments are invalid
  */
 function Service(name, options) {
     Namespace.call(this, name, options);
@@ -17,7 +19,7 @@ function Service(name, options) {
      * Service methods.
      * @type {!Object.<string,!Method>}
      */
-    this.methods = {};
+    this.methods = {}; // exposed
 }
 
 var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
@@ -36,6 +38,7 @@ Service.testJSON = function testJSON(json) {
  * @param {string} name Service name
  * @param {!Object} json JSON object
  * @returns {!Service} Created service
+ * @throws {TypeError} If arguments are invalid
  */
 Service.fromJSON = function fromJSON(name, json) {
     return new Service(name, json.options);
@@ -50,7 +53,7 @@ Service.fromJSON = function fromJSON(name, json) {
  */
 ServicePrototype.add = function add(method) {
     if (!(method instanceof Method))
-        throw TypeError("method must be a Method");
+        throw util._TypeError("method", "Method");
     if (this.methods[method.name])
         throw Error("duplicate name '" + method.name + "' in " + this);
     this.methods[method.name] = method;
@@ -67,9 +70,9 @@ ServicePrototype.add = function add(method) {
  */
 ServicePrototype.remove = function remove(method) {
     if (!(method instanceof Method))
-        throw TypeError("method must be a Method");
+        throw util._TypeError("method", "Method");
     if (this.methods[method.name] !== method)
-        throw Error("not a member of " + this);
+        throw Error(method + " is not a member of " + this);
     delete this.methods[method.name];
     method.service = null;
     return this;

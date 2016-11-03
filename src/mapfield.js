@@ -1,6 +1,7 @@
 var Field = require("./field"),
     Enum  = require("./enum"),
-    types = require("./types");
+    types = require("./types"),
+    util  = require("./util");
 
 module.exports = MapField;
 
@@ -16,14 +17,16 @@ module.exports = MapField;
  */
 function MapField(name, id, type, keyType, options) {
     Field.call(this, name, undefined, type, options);
-
+    if (!util.isString(keyType))
+        throw util._TypeError("keyType");
+    
     // Is it worth to improve serialization order here?
 
     /**
      * Key type.
      * @type {string}
      */
-    this.keyType = keyType;
+    this.keyType = keyType; // exposed, marker
 
     /**
      * Resolved key type if not a basic type.
@@ -51,6 +54,7 @@ MapField.testJSON = function testJSON(json) {
  * @param {string} name Field name
  * @param {!Object} json JSON object
  * @returns {!MapField} Created map field
+ * @throws {TypeError} If arguments are invalid
  */
 MapField.fromJSON = function fromJSON(name, json) {
     return new MapField(name, json.id, json.type, json.keyType, json.options);

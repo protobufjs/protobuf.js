@@ -20,39 +20,29 @@ module.exports = Type;
 function Type(name, options) {
     Namespace.call(this, name, options);
 
-    // Exposed properties
-
     /**
      * Message fields.
      * @type {!Object.<string,!Field>}
      */
-    this.fields = {}; // Marker key, always serialized
+    this.fields = {};  // exposed
 
     /**
      * Oneofs declared within this namespace, if any.
      * @type {!Object.<string,!Array.<string>>|undefined}
      */
-    this.oneofs = undefined;
+    this.oneofs = undefined; // exposed
 
     /**
      * Extension ranges, if any.
      * @type {!Array.<!Array<number>>|undefined}
      */
-    this.extensions = undefined;
+    this.extensions = undefined; // exposed
 
     /**
      * Reserved ranges, if any.
      * @type {!Array.<!Array<number>|number>|undefined}
      */
-    this.reserved = undefined;
-
-    // Reflection only properties
-
-    /**
-     * Message wire type.
-     * @type {number}
-     */
-    this.wireType = 2;
+    this.reserved = undefined; // exposed
 
     /**
      * Cached fields by id.
@@ -123,7 +113,7 @@ Type.fromJSON = function fromJSON(name, json) {
                     type.add(clazz.fromJSON(nestedName, nested));
                     return;
                 }
-            throw TypeError("invalid nested object in " + type + ": " + nestedName);
+            throw Error("invalid nested object in " + type + ": " + nestedName);
         });
     return type;
 };
@@ -193,6 +183,15 @@ TypePrototype.remove = function remove(object) {
 };
 
 /**
+ * Resolves any deferred extension fields that might belong to this type.
+ * @returns {!Type} this
+ */
+TypePrototype.resolveExtends = function resolveExtends() {
+    this.root.handleResolve(this);
+    return this;
+};
+
+/**
  * Creates a new message of this type using the specified properties.
  * @param {!Object} [properties] Properties to set
  * @param {function(new:Prototype)} [constructor] Optional constructor to use (should extend {@link Prototype})
@@ -209,9 +208,10 @@ TypePrototype.create = function create(properties, constructor) {
         properties = {};
     var prototype = new Prototype();
     var message = Object.create(prototype);
+    this.resolveExtends();
     this.each(function(field, name) {
         var value = properties[name] || field.defaultValue;
-        if (!field.repeated)
+        if (!field.resolve().repeated)
             prototype[name] = field.defaultValue;
         if (field.required || value !== field.defaultValue || util.isObject(value))
             message[name] = value; // note that objects are mutable and thus must be on the instance
@@ -228,9 +228,10 @@ TypePrototype.create = function create(properties, constructor) {
 TypePrototype.encode = function encode(message, writer) {
     if (!writer)
         writer = Writer();
+    this.resolveExtends();
     this.each(function(field, name) {
         var value = message[name];
-        if (field.required || value !== field.defaultValue)
+        if (field.resolve().required || value !== field.defaultValue)
             field.encode(value, writer);
     }, this, this.fields);
     return writer;
@@ -262,6 +263,7 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
         length = constructor;
         constructor = undefined;
     }
+    this.resolveExtends();
     if (!(readerOrBuffer instanceof Reader))
         readerOrBuffer = Reader(/* of type */ readerOrBuffer);
     var limit = length === undefined ? readerOrBuffer.len : readerOrBuffer.pos + length,

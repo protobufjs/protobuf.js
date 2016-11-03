@@ -1,4 +1,5 @@
-var ReflectionObject = require("./object");
+var ReflectionObject = require("./object"),
+    util = require("./util");
 
 module.exports = Enum;
 
@@ -17,7 +18,7 @@ function Enum(name, values, options) {
      * Enum values by name.
      * @type {!Object.<string,number>}
      */
-    this.values = values || {};
+    this.values = values || {}; // exposed, marker
 
     /**
      * Cached values by id.
@@ -66,6 +67,7 @@ Enum.testJSON = function testJSON(json) {
  * @param {string} name Enum name
  * @param {!Object.<string,*>} json JSON object
  * @returns {!Enum} Created enum
+ * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
     return new Enum(name, json.values, json.options);
@@ -77,25 +79,25 @@ Enum.fromJSON = function fromJSON(name, json) {
  * @param {number} id Value id
  * @returns {!Enum} this
  */
-/* EnumPrototype.add = function(name, id) {
+EnumPrototype.add = function(name, id) {
     if (!util.isString(name))
-        throw TypeError("name must be a string");
+        throw util._TypeError("name");
     if (!util.isInteger(id) || id < 0)
-        throw TypeError("id must be a positive integer");
+        throw util._TypeError("id", "integer");
     this.values[name] = id;
     this._valuesById = null;
     return this;
-}; */
+};
 
 /**
  * Removes a value from this enum
  * @param {string} name Value name
  * @returns {!Enum} this
  */
-/* EnumPrototype.remove = function(name) {
+EnumPrototype.remove = function(name) {
     if (!util.isString(name))
-        throw TypeError("name must be a string");
+        throw util._TypeError("name");
     delete this.values[name];
     this._valuesById = null;
     return this;
-}; */
+};

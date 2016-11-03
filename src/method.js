@@ -23,42 +23,44 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         options = responseStream;
         responseStream = undefined;
     }
+    if (!util.isString(type))    
+        throw util._TypeError("type");
+    if (!util.isString(requestType))
+        throw util._TypeError("requestType");
+    if (!util.isString(responseType))
+        throw util._TypeError("responseType");
     
     ReflectionObject.call(this, name, options);
-
-    // Exposed properties
 
     /**
      * Method type.
      * @type {string}
      */
-    this.type = type || "rpc";
+    this.type = type || "rpc"; // exposed
 
     /**
      * Request type.
      * @type {string}
      */
-    this.requestType = requestType;
+    this.requestType = requestType; // exposed, marker
 
     /**
      * Whether requests are streamed or not.
      * @type {boolean|undefined}
      */
-    this.requestStream = requestStream ? true : undefined;
+    this.requestStream = requestStream ? true : undefined; // exposed
 
     /**
      * Response type.
      * @type {string}
      */
-    this.responseType = responseType;
+    this.responseType = responseType; // exposed
 
     /**
      * Whether responses are streamed or not.
      * @type {boolean|undefined}
      */
-    this.responseStream = responseStream ? true : undefined;
-
-    // Reflection-only properties
+    this.responseStream = responseStream ? true : undefined; // exposed
 
     /**
      * Service this method belongs to.
@@ -83,6 +85,7 @@ Method.testJSON = function testJSON(json) {
  * @param {string} name Method name
  * @param {!Object} json JSON object
  * @returns {!Method} Created method
+ * @throws {TypeError} If arguments are invalid
  */
 Method.fromJSON = function fromJSON(name, json) {
     return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);

@@ -21,6 +21,7 @@ function Namespace(name, options) {
      * @name Namespace#nested
      * @type {!Object.<string,!ReflectionObject>|undefined}
      */
+    this.nested = undefined; // exposed
 }
 
 var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
@@ -41,20 +42,14 @@ Object.defineProperties(NamespacePrototype, {
 
 });
 
-/**
- * Tests if the specified JSON object describes a namespace.
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes a namespace and not a type
- */
-Namespace.testJSON = function testJSON(json) {
-    return Boolean(json && json.nested && !json.fields);
-};
+// NOTE: There is no JSON test for namespace. Namespaces are the fallback.
 
 /**
  * Constructs a namespace from JSON.
  * @param {string} name Namespace name
  * @param {!Object} json JSON object
  * @returns {!Namespace} Created namespace
+ * @throws {TypeError} If arguments are invalid
  */
 Namespace.fromJSON = function fromJSON(name, json) {
     var ns = new Namespace(name, json.options);
@@ -71,7 +66,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
                     ns.add(clazz.fromJSON(nestedName, nested));
                     return;
                 }
-            throw TypeError("invalid nested object in " + ns + ": " + nestedName);
+            throw Error("invalid nested object in " + ns + ": " + nestedName);
         });
     }
     return ns;
@@ -124,7 +119,7 @@ NamespacePrototype.get = function get(name) {
  */
 NamespacePrototype.add = function add(object) {
     if (!(object instanceof ReflectionObject))
-        throw TypeError("object must be a ReflectionObject");
+        throw util._TypeError("object", "ReflectionObject");
     var prev = this.get(object.name);
     if (prev) {
         if (!Type)
@@ -149,7 +144,7 @@ NamespacePrototype.add = function add(object) {
  */
 NamespacePrototype.remove = function remove(object) {
     if (!(object instanceof ReflectionObject))
-        throw TypeError("object must be a ReflectionObject");
+        throw util._TypeError("object", "ReflectionObject");
     if (object.parent !== this)
         throw Error(object + " is not a member of " + this);
     delete this.nested[object.name];

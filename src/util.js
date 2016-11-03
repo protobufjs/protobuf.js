@@ -96,6 +96,17 @@ util.isBoolean = function isBoolean(value) {
 };
 
 /**
+ * Creates a type error.
+ * @param {string} name Argument name
+ * @param {string} [typeName=string] Expected argument type name
+ * @returns {!TypeError} Created type error
+ * @private
+ */
+util._TypeError = function(name, typeName) {
+    return new TypeError(name + " must be a " + (typeName || "string"));
+};
+
+/**
  * Returns a promise from a node-style function.
  * @memberof util
  * @param {function(Error, ...*)} fn Function to call

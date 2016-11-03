@@ -1,3 +1,4 @@
+var util = require("./util");
 var Root;
 
 module.exports = ReflectionObject;
@@ -10,18 +11,27 @@ module.exports = ReflectionObject;
  * @abstract
  */
 function ReflectionObject(name, options) {
+    if (!util.isString(name))
+        throw util._TypeError("name");
+    if (options && !util.isObject(options))
+        throw util._TypeError("options", "object");
 
     /**
      * Properties exposed to JSON.
-     * @type {!Object.<string,*>|undefined}
+     * @type {?Object.<string,*>}
      */
-    this.properties = undefined;
+    this.properties = null;
+
+    // NOTE: Properties are null if not present to ensure proper workings of hidden class
+    // optimizations within the reflection object. The properties object itself, however, will most
+    // likely resort to a hashmap, which is ok. All properties marked as "// exposed" are stored
+    // within properties and can take any value.
 
     /**
      * Options.
      * @type {!Object|undefined}
      */
-    this.options = options;
+    this.options = options; // exposed
 
     /**
      * Unique name within its namespace.
@@ -43,10 +53,17 @@ function ReflectionObject(name, options) {
 
     /**
      * Internally stores whether this object is visible.
-     * @type {boolean|undefined}
+     * @type {?boolean}
      * @private
      */
-    this._visible = undefined;
+    this._visible = null;
+
+    /**
+     * Internally stores this object's full name.
+     * @type {?string}
+     * @private
+     */
+    this._fullName = null;
 }
 
 var ReflectionObjectPrototype = ReflectionObject.prototype;
@@ -97,7 +114,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
         get: function() {
             var ptr = this;
             do {
-                if (ptr._visible !== undefined)
+                if (ptr._visible !== null)
                     return ptr._visible;
             } while ((ptr = ptr.parent) !== null);
             return true; // visible by default
@@ -136,12 +153,13 @@ function exposeJSON(prototype, propertyNames) {
     propertyNames.forEach(function(name) {
         descriptors[name] = {
             get: function() {
-                return this.properties && this.properties[name];
+                if (!this.properties)
+                    return undefined;
+                return this.properties[name];
             },
             set: function(value) {
                 (this.properties || (this.properties = {}))[name] = value;
-            },
-            configurable: true
+            }
         };
     });
     Object.defineProperties(prototype, descriptors);
@@ -159,7 +177,7 @@ ReflectionObject.exposeJSON = exposeJSON;
 ReflectionObjectPrototype.toJSON = function toJSON() {
     if (!this.visible)
         return undefined;
-    return this.properties;
+    return this.properties || undefined;
 };
 
 /**
@@ -213,12 +231,23 @@ ReflectionObjectPrototype.resolve = function resolve() {
 
 /**
  * Changes this object's visibility when exporting definitions.
- * @param {boolean|undefined} visible `true` for public, `false` for private, `undefined` to inherit from parent
+ * @param {?boolean} visible `true` for public, `false` for private, `null` to inherit from parent
  * @returns {!ReflectionObject} this
  */
 ReflectionObjectPrototype.visibility = function visibility(visible) {
     this._visible = visible;
     return this;
+};
+
+/**
+ * Gets an option value.
+ * @param {string} name Option name
+ * @returns {*} Option value or `undefined` if not set
+ */
+ReflectionObjectPrototype.getOption = function getOption(name) {
+    if (!this.options)
+        return undefined;
+    return this.options[name];
 };
 
 /**
@@ -229,9 +258,8 @@ ReflectionObjectPrototype.visibility = function visibility(visible) {
  * @returns {!ReflectionObject} this
  */
 ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) {
-    if (ifNotSet && (!this.options || this.options[name] !== undefined))
-        return this;
-    (this.options = this.options || {})[name] = value;
+    if (!ifNotSet || !this.options || this.options[name] === undefined)
+        (this.options || (this.options = {}))[name] = value;
     return this;
 };
 
@@ -246,17 +274,6 @@ ReflectionObjectPrototype.setOptions = function setOptions(options) {
             this.setOption(name, options[name]);
         }, this);
     return this;
-};
-
-/**
- * Gets an option value.
- * @param {string} name Option name
- * @returns {*} Option value or `undefined` if not set
- */
-ReflectionObjectPrototype.getOption = function getOption(name) {
-    if (!this.options)
-        return undefined;
-    return this.options[name];
 };
 
 /**
