@@ -5,11 +5,6 @@ var util    = require("./util"),
 
 module.exports = Reader;
 
-/**
- * @param {!Reader} reader
- * @param {number} [writerLength]
- * @inner
- */
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
 }
@@ -17,7 +12,7 @@ function indexOutOfRange(reader, writeLength) {
 /**
  * Reader using typed arrays.
  * @constructor
- * @param {!Uint8Array} buffer
+ * @param {!Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
     if (!(this instanceof Reader)) {
@@ -28,7 +23,7 @@ function Reader(buffer) {
 
     /**
      * Read buffer.
-     * @type {Uint8Array}
+     * @type {?Uint8Array}
      */
     this.buf = buffer || null;
 
@@ -49,7 +44,7 @@ var ReaderPrototype = Reader.prototype;
 
 /**
  * Reads a tag.
- * @returns {!{id: number, wireType: number}}
+ * @returns {!{id: number, wireType: number}} Field id and wire type
  */
 ReaderPrototype.tag = function read_tag() {
     if (this.pos >= this.len)
@@ -63,7 +58,7 @@ ReaderPrototype.tag = function read_tag() {
 
 /**
  * Reads a varint as a signed 32 bit value.
- * @returns {number}
+ * @returns {number} Value read
  */
 ReaderPrototype.int32 = function read_int32() {
     var value = 0,
@@ -82,7 +77,7 @@ ReaderPrototype.int32 = function read_int32() {
 
 /**
  * Reads a varint as an unsigned 32 bit value.
- * @returns {number}
+ * @returns {number} Value read
  */
 ReaderPrototype.uint32 = function read_uint32() {
     return this.int32() >>> 0;
@@ -90,7 +85,7 @@ ReaderPrototype.uint32 = function read_uint32() {
 
 /**
  * Reads a zig-zag encoded varint as a signed 32 bit value.
- * @returns {number}
+ * @returns {number} Value read
  */
 ReaderPrototype.sint32 = function read_sint32() {
     var value = this.int32();
@@ -99,7 +94,7 @@ ReaderPrototype.sint32 = function read_sint32() {
 
 /**
  * Reads a varint as a signed 64 bit value.
- * @returns {number|!{ low: number, high: number, unsigned: false }|!Long}
+ * @returns {number|!{ low: number, high: number, unsigned: false }|!Long} Value read
  */
 ReaderPrototype.int64 = function read_int64() {
     return long_._read(this, indexOutOfRange)
@@ -108,7 +103,7 @@ ReaderPrototype.int64 = function read_int64() {
 
 /**
  * Reads a varint as an unsigned 64 bit value.
- * @returns {number|!{ low: number, high: number, unsigned: true }|!Long}
+ * @returns {number|!{ low: number, high: number, unsigned: true }|!Long} Value read
  */
 ReaderPrototype.uint64 = function read_uint64() {
     return long_._read(this, indexOutOfRange)
@@ -117,7 +112,7 @@ ReaderPrototype.uint64 = function read_uint64() {
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @returns {number|!{ low: number, high: number, unsigned: false }|!Long}
+ * @returns {number|!{ low: number, high: number, unsigned: false }|!Long} Value read
  */
 ReaderPrototype.sint64 = function read_sint64() {
     return long_._read(this, indexOutOfRange)
@@ -127,7 +122,7 @@ ReaderPrototype.sint64 = function read_sint64() {
 
 /**
  * Reads a varint as a boolean.
- * @returns {number}
+ * @returns {boolean} Value read
  */
 ReaderPrototype.bool = function read_bool() {
     if (this.pos >= this.length)
@@ -140,7 +135,7 @@ ReaderPrototype.bool = function read_bool() {
 
 /**
  * Reads fixed 32 bits as a number.
- * @returns {number}
+ * @returns {number} Value read
  */
 ReaderPrototype.fixed32 = function read_fixed32() {
     if (this.pos + 4 > this.len)
@@ -154,7 +149,7 @@ ReaderPrototype.fixed32 = function read_fixed32() {
 
 /**
  * Reads zig-zag encoded fixed 32 bits as a number.
- * @returns {number}
+ * @returns {number} Value read
  */
 ReaderPrototype.sfixed32 = function read_sfixed32() {
     var value = this.fixed32();
@@ -163,7 +158,7 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 
 /**
  * Reads fixed 64 bits as a Long.
- * @returns {number|!{ low: number, high: number, unsigned: true }|!Long}
+ * @returns {number|!{ low: number, high: number, unsigned: true }|!Long} Value read
  */
 ReaderPrototype.fixed64 = function read_fixed64() {
     if (this.pos + 8 > this.len)
@@ -174,7 +169,7 @@ ReaderPrototype.fixed64 = function read_fixed64() {
 
 /**
  * Reads zig-zag encoded 64 bits as a Long.
- * @returns {number|!{ low: numbeer, high: number, unsigned: false }|!Long}
+ * @returns {number|!{ low: numbeer, high: number, unsigned: false }|!Long} Value read
  */
 ReaderPrototype.sfixed64 = function read_sfixed64() {
     if (this.pos + 8 > this.len)
@@ -186,7 +181,7 @@ ReaderPrototype.sfixed64 = function read_sfixed64() {
 
 /**
  * Reads a float (32 bit) as a number.
- * @returns {number}
+ * @returns {number} Value read
  */
 ReaderPrototype.float = function read_float() {
     if (this.pos + 4 > this.len)
@@ -196,7 +191,7 @@ ReaderPrototype.float = function read_float() {
 
 /**
  * Reads a double (64 bit float) as a number.
- * @returns {number}
+ * @returns {number} Value read
  */
 ReaderPrototype.double = function read_double() {
     if (this.pos + 8 > this.len)
@@ -206,8 +201,8 @@ ReaderPrototype.double = function read_double() {
 
 /**
  * Reads a sequence of bytes.
- * @param {number} [length]
- * @returns {!Uint8Array}
+ * @param {number} [length] Optional number of bytes to read, if known beforehand
+ * @returns {!Uint8Array} Value read
  */
 ReaderPrototype.bytes = function read_bytes(length) {
     if (length === undefined)
@@ -224,8 +219,8 @@ ReaderPrototype.bytes = function read_bytes(length) {
 
 /**
  * Reads a string.
- * @param {number} [length]
- * @returns {string}
+ * @param {number} [length] Optional number of bytes to read, if known beforehand
+ * @returns {string} Value read
  */
 ReaderPrototype.string = function read_string(length) {
     return string_._decode(this.bytes(length));
@@ -252,8 +247,7 @@ ReaderPrototype.skip = function skip(length) {
 
 /**
  * Resets this instance and frees all resources.
- * Optionally accepts a new buffer for a new sequence of read operations.
- * @param {!Uint8Array=} buffer
+ * @param {!Uint8Array} [buffer] Optionally a new buffer for a new sequence of read operations
  * @returns {!Reader} this
  */
 ReaderPrototype.reset = function reset(buffer) {
@@ -271,8 +265,8 @@ ReaderPrototype.reset = function reset(buffer) {
 /**
  * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
  * Optionally accepts a new buffer for a new sequence of read operations.
- * @param {!Uint8Array=} buffer
- * @returns {!Uint8Array}
+ * @param {!Uint8Array} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @returns {!Uint8Array} Finished buffer
  */
 ReaderPrototype.finish = function finish(buffer) {
     var remain = this.pos
@@ -287,8 +281,9 @@ ReaderPrototype.finish = function finish(buffer) {
 /**
  * Reader using node buffers.
  * @memberof Reader
+ * @extends Reader
  * @constructor
- * @param {!Buffer} buffer
+ * @param {!Buffer} buffer Buffer to read from
  */
 function BufferReader(buffer) {
     Reader.call(this, buffer);
@@ -301,7 +296,7 @@ Reader.BufferReader = BufferReader;
 
 /**
  * Reads a float (32 bit) as a number using node buffers.
- * @returns {number}
+ * @returns {number} Value read
  */
 BufferReaderPrototype.float = function read_float_buffer() {
     if (this.pos + 4 > this.len)
@@ -313,7 +308,7 @@ BufferReaderPrototype.float = function read_float_buffer() {
 
 /**
  * Reads a double (64 bit float) as a number using node buffers.
- * @returns {number}
+ * @returns {number} Value read
  */
 BufferReaderPrototype.double = function read_double_buffer() {
     if (this.pos + 8 > this.len)
@@ -326,8 +321,8 @@ BufferReaderPrototype.double = function read_double_buffer() {
 /**
  * Finishes the current sequence of read operations using node buffers, frees all resources and returns the remaining buffer.
  * Optionally accepts a new buffer for a new sequence of read operations using node buffers.
- * @param {!Buffer=} buffer
- * @returns {!Buffer}
+ * @param {!Buffer} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @returns {!Buffer} Finished buffer
  */
 BufferReaderPrototype.finish = function finish_buffer(buffer) {
     var remain = this.pos ? this.buf.slice(this.pos) : this.buf;

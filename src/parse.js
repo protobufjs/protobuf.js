@@ -27,6 +27,7 @@ function lower(token) {
  * @param {string} source Source contents
  * @param {!Root} [root] Root to populate
  * @param {boolean} [visible=true] Whether types from this file are visible when exporting definitions
+ * @returns {!Object} Parsed source
  */
 function parse(source, root, visible) {
     if (util.isBoolean(root)) {

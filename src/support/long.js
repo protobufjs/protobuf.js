@@ -34,8 +34,8 @@ exports._hi = 0;
 
 /**
  * Reads a varint from the specified reader and stores its low and high bits.
- * @param {!Reader} reader
- * @param {!function(!Reader, number=)} indexOutOfRange
+ * @param {!Reader} reader Reader to read from
+ * @param {!function(!Reader, number=)} indexOutOfRange Error message function
  * @returns {!Object} this
  */
 exports._read = function long_read(reader, indexOutOfRange) {
@@ -77,7 +77,7 @@ exports._read = function long_read(reader, indexOutOfRange) {
 
 /**
  * Reads fixed 64 bits from the specified reader and stores the low and high bits.
- * @param {!Reader} reader
+ * @param {!Reader} reader Reader to read from
  * @returns {!Object} this
  */
 exports._readFixed = function long_readFixed(reader) {
@@ -96,9 +96,9 @@ exports._readFixed = function long_readFixed(reader) {
 
 /**
  * Writes the low and high bits to the specified writer, as a varint.
- * @param {!Writer} writer
- * @param {!function(!Writer, number)} expand
- * @returns {!Writer}
+ * @param {!Writer} writer Writer to write to
+ * @param {!function(!Writer, number)} expand Expand function
+ * @returns {!Writer} writer
  * @private
  */
 exports._write = function long_write(writer, expand) {
@@ -127,8 +127,8 @@ exports._write = function long_write(writer, expand) {
 
 /**
  * Writes the low and high bits to the specified writer, as fixed 64 bits.
- * @param {!Writer} writer
- * @returns {!Writer}
+ * @param {!Writer} writer Writer to write to
+ * @returns {!Writer} writer
  * @private
  */
 exports._writeFixed = function long_writeFixed(writer) {
@@ -147,8 +147,8 @@ exports._writeFixed = function long_writeFixed(writer) {
 
 /**
  * Gets the low and high bits as a JavaScript number, long-like object or actual Long.
- * @param {boolean} unsigned
- * @returns {number|!{ low: number, high: number, unsigned: boolean }|!Long}
+ * @param {boolean} unsigned Whether unsigned or not
+ * @returns {number|!{ low: number, high: number, unsigned: boolean }|!Long} Value read
  */
 exports._get = function long_get(unsigned) {
     if (util.Long)
@@ -170,7 +170,7 @@ exports._get = function long_get(unsigned) {
 
 /**
  * Sets the low and high bits from a number or long-like object.
- * @param {number|!{ low: number, high: number }|!Long} value
+ * @param {number|!{ low: number, high: number }|!Long} value Value to set
  * @returns {!Object} this
  * @private
  */

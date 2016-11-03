@@ -1,5 +1,3 @@
-var Long = require("long");
-
 /**
  * Basic type wire types.
  * @type {!Object.<string,number>}
@@ -35,13 +33,13 @@ exports.defaults = {
     int32    : 0,
     uint32   : 0,
     sint32   : 0,
-    int64    : Long.ZERO,
-    uint64   : Long.UZERO,
-    sint64   : Long.ZERO,
+    int64    : 0,
+    uint64   : 0,
+    sint64   : 0,
     fixed32  : 0,
     sfixed32 : 0,
-    fixed64  : Long.ZERO,
-    sfixed64 : Long.ZERO,
+    fixed64  : 0,
+    sfixed64 : 0,
     bool     : false,
     string   : "",
     bytes    : null

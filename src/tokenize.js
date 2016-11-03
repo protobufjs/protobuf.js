@@ -6,6 +6,11 @@ var delimRe        = /[\s{}=;:[],'"\(\)<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
+/**
+ * Tokenizes a .proto source file.
+ * @param {string} source Source contents
+ * @returns {!Object} Tokenizer handle
+ */
 function tokenize(source) {
     source = source.toString();
     

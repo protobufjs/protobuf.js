@@ -9,8 +9,9 @@ module.exports = Namespace;
 /**
  * Base class of all reflection objects containing nested objects.
  * @extends ReflectionObjects
- * @param {string} name
- * @param {!Object.<string,*>=} options
+ * @constructor
+ * @param {string} name Namespace name
+ * @param {!Object.<string,*>} [options] Namespace options
  */
 function Namespace(name, options) {
     ReflectionObject.call(this, name, options);
@@ -42,8 +43,8 @@ Object.defineProperties(NamespacePrototype, {
 
 /**
  * Tests if the specified JSON object describes a namespace.
- * @param {!Object} json
- * @returns {boolean}
+ * @param {*} json JSON object
+ * @returns {boolean} `true` if the object describes a namespace and not a type
  */
 Namespace.testJSON = function testJSON(json) {
     return Boolean(json && json.nested && !json.fields);
@@ -51,9 +52,9 @@ Namespace.testJSON = function testJSON(json) {
 
 /**
  * Constructs a namespace from JSON.
- * @param {string} name
- * @param {!Object} json
- * @returns {!Namespace}
+ * @param {string} name Namespace name
+ * @param {!Object} json JSON object
+ * @returns {!Namespace} Created namespace
  */
 Namespace.fromJSON = function fromJSON(name, json) {
     var ns = new Namespace(name, json.options);
@@ -82,7 +83,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
  *  and their names. Can return something different than `undefined` to break the iteration.
  * @param {!Object} [ctx] Optional iterator function context
  * @param {!Object} [object] Alternative object to iterate over
- * @returns {*} First value returned, otherwise this
+ * @returns {*|!Namespace} First value returned, otherwise this
  */
 NamespacePrototype.each = function each(fn, ctx, object) {
     if (!object)
@@ -98,7 +99,8 @@ NamespacePrototype.each = function each(fn, ctx, object) {
 
 /**
  * Tests if the specified name (already) exists in this namespace.
- * @returns {boolean}
+ * @param {string} name Nested object name
+ * @returns {boolean} `true` if the name exists
  */
 NamespacePrototype.exists = function exists(name) {
     return Boolean(this.nested && this.nested[name]);
@@ -106,7 +108,8 @@ NamespacePrototype.exists = function exists(name) {
 
 /**
  * Gets the nested object of the specified name.
- * @returns {?ReflectionObject}
+ * @param {string} name Nested object name
+ * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
  */
 NamespacePrototype.get = function get(name) {
     if (!this.nested)
@@ -116,7 +119,7 @@ NamespacePrototype.get = function get(name) {
 
 /**
  * Adds a nested object to this namespace.
- * @param {!ReflectionObject} object
+ * @param {!ReflectionObject} object Nested object to add
  * @returns {!Namespace} this
  */
 NamespacePrototype.add = function add(object) {
@@ -141,7 +144,7 @@ NamespacePrototype.add = function add(object) {
 
 /**
  * Removes a nested object from this namespace.
- * @param {!ReflectionObject} object
+ * @param {!ReflectionObject} object Nested object to remove
  * @returns {!Namespace} this
  */
 NamespacePrototype.remove = function remove(object) {
@@ -197,9 +200,9 @@ NamespacePrototype.resolve = function resolve() {
 
 /**
  * Looks up the reflection object specified by path, relative to this namespace.
- * @param {string|!Array.<string>} path
+ * @param {string|!Array.<string>} path Path to look up
  * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
- * @returns {?ReflectionObject}
+ * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */
 NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     if (util.isString(path)) {

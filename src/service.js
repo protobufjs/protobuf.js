@@ -6,8 +6,9 @@ module.exports = Service;
 /**
  * Reflected service.
  * @extends Namespace
- * @param {string} name
- * @param {!Object.<string,*>} [options]
+ * @constructor
+ * @param {string} name Service name
+ * @param {!Object.<string,*>} [options] Service options
  */
 function Service(name, options) {
     Namespace.call(this, name, options);
@@ -23,8 +24,8 @@ var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
 
 /**
  * Tests if the specified JSON object describes a service.
- * @param {!Object} json
- * @returns {boolean}
+ * @param {!Object} json JSON object to test
+ * @returns {boolean} `true` if the object describes a service
  */
 Service.testJSON = function testJSON(json) {
     return Boolean(json && json.methods);
@@ -32,8 +33,9 @@ Service.testJSON = function testJSON(json) {
 
 /**
  * Constructs a service from JSON.
- * @param {!Object} json
- * @returns {!Service}
+ * @param {string} name Service name
+ * @param {!Object} json JSON object
+ * @returns {!Service} Created service
  */
 Service.fromJSON = function fromJSON(name, json) {
     return new Service(name, json.options);
@@ -41,8 +43,10 @@ Service.fromJSON = function fromJSON(name, json) {
 
 /**
  * Adds a method to this service.
- * @param {!Method} method
+ * @param {!Method} method Method to add
  * @returns {!Service} this
+ * @throws {TypeError} If arguments are invalid
+ * @throws {Error} If there are duplicate names
  */
 ServicePrototype.add = function add(method) {
     if (!(method instanceof Method))
@@ -56,8 +60,10 @@ ServicePrototype.add = function add(method) {
 
 /**
  * Removes a method from this service.
- * @param {!Method} method
+ * @param {!Method} method Method to remove
  * @returns {!Service} this
+ * @throws {TypeError} If arguments are invalid
+ * @throws {Error} If the method is not a member of this service
  */
 ServicePrototype.remove = function remove(method) {
     if (!(method instanceof Method))

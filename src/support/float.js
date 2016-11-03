@@ -5,10 +5,10 @@ var i8  = new Uint8Array(8),
 
 /**
  * Writes a float to the specified writer.
- * @param {!Writer} writer
- * @param {number} value
- * @param {number} size
- * @returns {!Writer}
+ * @param {!Writer} writer Writer to write to
+ * @param {number} value Value to write
+ * @param {number} size Size in bytes
+ * @returns {!Writer} writer
  * @private
  */
 exports._write = function float_write(writer, value, size) {
@@ -25,9 +25,9 @@ exports._write = function float_write(writer, value, size) {
 
 /**
  * Reads a float from the specified reader.
- * @param {!Reader} reader
- * @param {number} size
- * @returns {number}
+ * @param {!Reader} reader Reader to read from
+ * @param {number} size Size in bytes
+ * @returns {number} Value read
  * @private
  */
 exports._read = function float_read(reader, size) {

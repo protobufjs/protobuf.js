@@ -29,8 +29,8 @@ util.Long = Long || null;
 /**
  * Tests if the specified value is a string.
  * @memberof util
- * @param {*} value
- * @returns {boolean}
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a string
  */
 function isString(value) {
     return typeof value === 'string' || value instanceof String;
@@ -40,8 +40,8 @@ util.isString = isString;
 
 /**
  * Tests if the specified value is an non-null object.
- * @param {*} value
- * @returns {boolean}
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a non-null object
  */
 util.isObject = function isObject(value) {
     return Boolean(value && typeof value === 'object');
@@ -50,15 +50,15 @@ util.isObject = function isObject(value) {
 /**
  * Tests if the specified value is an array.
  * @function
- * @param {*} value
- * @returns {boolean}
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is an array
  */
 util.isArray = Array.isArray;
 
 /**
  * Tests if the specified value is a function.
- * @param {*} value
- * @returns {boolean}
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a function
  */
 util.isFunction = function isFunction(value) {
     return typeof value === 'function';
@@ -66,8 +66,8 @@ util.isFunction = function isFunction(value) {
 
 /**
  * Tests if the specified value is a number.
- * @param {*} value
- * @returns {boolean}
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a number
  */
 util.isNumber = function isNumber(value) {
     return typeof value === 'number';
@@ -75,8 +75,8 @@ util.isNumber = function isNumber(value) {
 
 /**
  * Tests if the specified value is a boolean.
- * @param {*} value
- * @returns {boolean}
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a boolean
  */
 util.isBoolean = function isBoolean(value) {
     return typeof value === 'boolean';
@@ -85,8 +85,8 @@ util.isBoolean = function isBoolean(value) {
 /**
  * Returns a promise from a node-style function.
  * @memberof util
- * @param {function(Error, ...)} fn Function to call
- * @returns {!Promise}
+ * @param {function(Error, ...*)} fn Function to call
+ * @returns {!Promise} Promisified function
  */
 function asPromise(fn/*, varargs */) {
     return new Promise(function(resolve, reject) {
@@ -105,7 +105,7 @@ util.asPromise = asPromise;
  * Fetches the contents of a file.
  * @memberof util
  * @param {string} path File path or url
- * @param {function(?Error, string=)=} callback
+ * @param {function(?Error, string=)} [callback] Node-style callback
  * @returns {!Promise|undefined} Promise if callback has been omitted 
  */
 function fetch(path, callback) { // eslint-disable-line consistent-return
@@ -137,8 +137,8 @@ util.fetch = fetch;
 /**
  * Tests if the specified path is absolute.
  * @memberof util
- * @param {string} path
- * @returns {boolean}
+ * @param {string} path Path to test
+ * @returns {boolean} `true` if path is absolute
  */
 function isAbsolutePath(path) {
     return /^(?:\/|[a-zA-Z0-9]+:)/.test(path);
@@ -149,8 +149,8 @@ util.isAbsolutePath = isAbsolutePath;
 /**
  * Normalizes the specified path.
  * @memberof util
- * @param {string} path
- * @returns {string}
+ * @param {string} path Path to normalize
+ * @returns {string} Normalized path
  */
 function normalizePath(path) {
     path = path.replace(/\\/g, '/')
@@ -181,6 +181,7 @@ util.normalizePath = normalizePath;
  * Resolves the specified include path against the specified origin path.
  * @param {string} originPath Path that was used to fetch the origin file
  * @param {string} importPath Import path specified in the origin file
+ * @param {boolean} [alreadyNormalized] `true` if both paths are already known to be normalized
  * @returns {string} Path to the imported file
  */
 util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalized) {

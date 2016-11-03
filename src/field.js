@@ -9,12 +9,14 @@ module.exports = Field;
 
 /**
  * Reflected message field.
+ * @extends ReflectionObject
+ * @constructor
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
  * @param {string} type Type of the underlying value
  * @param {string} [rule=optional] Field rule
  * @param {string} [extend] Extended type if different from parent
- * @param {!Object.<string,*>} [options] Options
+ * @param {!Object.<string,*>} [options] Field options
  */
 function Field(name, id, type, rule, extend, options) {
     if (util.isObject(rule)) {
@@ -154,8 +156,8 @@ Object.defineProperties(FieldPrototype, {
 
 /**
  * Tests if the specified JSON object describes a field.
- * @param {!Object} json
- * @returns {boolean}
+ * @param {*} json Any JSON object to test
+ * @returns {boolean} `true` if the object describes a field
  */
 Field.testJSON = function testJSON(json) {
     return Boolean(json && json.id !== undefined);
@@ -163,8 +165,9 @@ Field.testJSON = function testJSON(json) {
 
 /**
  * Constructs a field from JSON.
- * @param {!Object} json
- * @returns {!Field}
+ * @param {string} name Field name
+ * @param {!Object} json JSON object
+ * @returns {!Field} Created field
  */
 Field.fromJSON = function fromJSON(name, json) {
     return new Field(name, json.id, json.type, json.role, json.extend, json.options);
@@ -221,8 +224,8 @@ FieldPrototype.resolve = function resolve() {
 
 /**
  * Tests whether the specified value is present on the wire.
- * @param {*} value
- * @returns {boolean}
+ * @param {*} value Field value
+ * @returns {boolean} `true` if present
  */
 FieldPrototype.present = function present(value) {
     if (this.required)
@@ -238,13 +241,12 @@ FieldPrototype.present = function present(value) {
 
 /**
  * Encodes the specified field value. Assumes that the field is present.
- * @param {*} value
- * @param {!Writer} writer
- * @returns {!Writer}
- * @see {@link Field#present}
+ * @param {*} value Field value
+ * @param {!Writer} writer Writer to encode to
+ * @returns {!Writer} writer
  */
 FieldPrototype.encode = function encode(value, writer) {
-    var type = this.resolvedType instanceof Enum ? "uint32" : this.type;
+    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
     if (this.repeated) {
         if (!util.isArray(value))
             value = [ value ];
@@ -278,7 +280,7 @@ FieldPrototype.encode = function encode(value, writer) {
 FieldPrototype.decode = function decode(reader, receivedWireType) {
     this.resolve();
     // At this point we know that the id matches
-    var type = this.resolvedType instanceof Enum ? "uint32" : this.type;
+    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
     if (this.repeated && this.packed && types.packable[type] && receivedWireType === 2) {
         var limit = reader.uint32() + reader.pos,
             values = [];

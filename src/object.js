@@ -4,8 +4,10 @@ module.exports = ReflectionObject;
 
 /**
  * Base class of all reflection objects.
- * @param {string} name
- * @param {!Object=} options
+ * @constructor
+ * @param {string} name Object name
+ * @param {!Object.<string,*>} [options] Object options
+ * @abstract
  */
 function ReflectionObject(name, options) {
 
@@ -109,15 +111,14 @@ Object.defineProperties(ReflectionObjectPrototype, {
 
 /**
  * Extends this class and optionally exposes the specified properties to JSON.
- * @param {!Function} child Child class
- * @param {!Function} [parent=ReflectionObject] Parent class
+ * @param {!Function} constructor Extending constructor
  * @param {!Array.<string>} [exposePropertyNames] Properties to expose to JSON
  * @returns {!Object} Prototype
  */
-ReflectionObject.extend = function extend(child, exposePropertyNames) {
-    var proto = child.prototype = Object.create(this.prototype);
-    proto.constructor = child;
-    child.extend = extend;
+ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
+    var proto = constructor.prototype = Object.create(this.prototype);
+    proto.constructor = constructor;
+    constructor.extend = extend;
     if (exposePropertyNames)
         exposeJSON(proto, exposePropertyNames);
     return proto;
@@ -126,8 +127,9 @@ ReflectionObject.extend = function extend(child, exposePropertyNames) {
 /**
  * Exposes the specified properties to JSON.
  * @memberof ReflectionObject
- * @param {!Object} prototype
- * @param {!Array.<string>} propertyNames
+ * @param {!Object} prototype Prototype to expose the properties upon
+ * @param {!Array.<string>} propertyNames Property names to expose
+ * @returns {!Object} prototype
  */
 function exposeJSON(prototype, propertyNames) {
     var descriptors = {};
@@ -143,6 +145,7 @@ function exposeJSON(prototype, propertyNames) {
         };
     });
     Object.defineProperties(prototype, descriptors);
+    return prototype;
 }
 
 ReflectionObject.exposeJSON = exposeJSON;
@@ -150,7 +153,7 @@ ReflectionObject.exposeJSON = exposeJSON;
 /**
  * Converts this reflection object to its JSON representation.
  * Returns only properties that have explicitly been exposed.
- * @returns {!Object}
+ * @returns {!Object} JSON object
  * @see {@link ReflectionObject.exposeJSON}
  */
 ReflectionObjectPrototype.toJSON = function toJSON() {
@@ -162,6 +165,7 @@ ReflectionObjectPrototype.toJSON = function toJSON() {
 /**
  * Called when this object is added to a parent.
  * @param {!ReflectionObject} parent Parent added to
+ * @returns {undefined}
  */
 ReflectionObjectPrototype.onAdd = function onAdd(parent) {
     if (this.parent !== parent && this.parent)
@@ -178,6 +182,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
 /**
  * Called when this object is removed from a parent.
  * @param {!ReflectionObject} parent Parent removed from
+ * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     this.parent = null;
@@ -220,7 +225,7 @@ ReflectionObjectPrototype.visibility = function visibility(visible) {
  * Sets an option.
  * @param {string} name Option name
  * @param {*} value Option value
- * @param {boolean=} ifNotSet Sets the option only if it hasn't been set, yet
+ * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
  * @returns {!ReflectionObject} this
  */
 ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) {
@@ -232,7 +237,7 @@ ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) 
 
 /**
  * Sets multiple options.
- * @param {!Object.<string,*>} options
+ * @param {!Object.<string,*>} options Options to set
  * @returns {!ReflectionObject} this
  */
 ReflectionObjectPrototype.setOptions = function setOptions(options) {
@@ -256,7 +261,7 @@ ReflectionObjectPrototype.getOption = function getOption(name) {
 
 /**
  * Converts this instance to its string representation.
- * @returns {string}
+ * @returns {string} Constructor name plus full name
  */
 ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.fullName;

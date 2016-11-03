@@ -13,8 +13,9 @@ module.exports = Type;
 /**
  * Reflected message type.
  * @extends Namespace
- * @param {string} name
- * @param {!Object.<string,*>=} options
+ * @constructor
+ * @param {string} name Message name
+ * @param {!Object.<string,*>} [options] Message options
  */
 function Type(name, options) {
     Namespace.call(this, name, options);
@@ -87,8 +88,8 @@ Object.defineProperties(TypePrototype, {
 
 /**
  * Tests if the specified JSON object describes a message type.
- * @param {!Object} json
- * @returns {boolean}
+ * @param {*} json JSON object to test
+ * @returns {boolean} `true` if the object describes a message type
  */
 Type.testJSON = function testJSON(json) {
     return Boolean(json && json.fields);
@@ -98,8 +99,9 @@ var nestedTypes = [ Enum, Type, Service ];
 
 /**
  * Creates a type from JSON.
- * @param {!Object} json
- * @returns {!Type}
+ * @param {string} name Message name
+ * @param {!Object} json JSON object
+ * @returns {!Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json) {
     var type = new Type(name, json.options);
@@ -193,8 +195,8 @@ TypePrototype.remove = function remove(object) {
 /**
  * Creates a new message of this type using the specified properties.
  * @param {!Object} [properties] Properties to set
- * @param {function(new:Message)} [constructor=Message] Optional constructor to use (should extend {@link Message})
- * @returns {!Message} Message instance
+ * @param {function(new:Prototype)} [constructor] Optional constructor to use (should extend {@link Prototype})
+ * @returns {!Prototype} Message instance
  */
 TypePrototype.create = function create(properties, constructor) {
     if (util.isFunction(properties)) {
@@ -219,9 +221,9 @@ TypePrototype.create = function create(properties, constructor) {
 
 /**
  * Encodes a message of this type.
- * @param {!Message|!Object} message Message instance or plain object
+ * @param {!Prototype|!Object} message Message instance or plain object
  * @param {!Writer} [writer] Writer to encode to
- * @returns {!Writer}
+ * @returns {!Writer} writer
  */
 TypePrototype.encode = function encode(message, writer) {
     if (!writer)
@@ -236,9 +238,9 @@ TypePrototype.encode = function encode(message, writer) {
 
 /**
  * Encodes a message of this type, preceeded by its byte length as a varint.
- * @param {!Message|!Object} message Message instance or plain object
+ * @param {!Prototype|!Object} message Message instance or plain object
  * @param {!Writer} [writer] Writer to encode to
- * @returns {!Writer}
+ * @returns {!Writer} writer
  */
 TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
     if (writer)
@@ -250,9 +252,9 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 
 /**
  * Decodes a runtime message of this message's type.
- * @param {!Reader} reader Reader to decode from
- * @param {function(new:Message)} [constructor=Message] Optional constructor of the created message, see {@link Type#create}
- * @param {number} [length] Length of the message if known beforehand
+ * @param {!Reader|!Uint8Array|!Buffer} readerOrBuffer Reader or buffer to decode from
+ * @param {function(new:Prototype)} [constructor] Optional constructor of the created message, see {@link Type#create}
+ * @param {number} [length] Length of the message, if known beforehand
  * @returns {!Message} Decoded message
  */
 TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
@@ -305,8 +307,8 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
 /**
  * Decodes a message of this type,
  * which is preceeded by its byte length as a varint.
- * @param {!Reader|!Uint8Array|!Buffer} reader Reader or buffer to decode from
- * @param {!function(new:Message)} [constructor=Message] Optional constructor of the created message, see {@link Type#create}
+ * @param {!Reader|!Uint8Array|!Buffer} readerOrBuffer Reader or buffer to decode from
+ * @param {function(new:Prototype)} [constructor] Optional constructor of the created message, see {@link Type#create}
  * @returns {!Message} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constructor) {

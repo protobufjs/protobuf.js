@@ -5,9 +5,10 @@ module.exports = Enum;
 /**
  * Reflected enum.
  * @extends ReflectionObject
+ * @constructor
  * @param {string} name Unique name within its namespace
- * @param {!Object.<string,number>=} values
- * @param {!Object.<string,*>=} options
+ * @param {!Object.<string,number>} [values] Enum values an an object, by name
+ * @param {!Object.<string,*>} [options] Enum options
  */
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
@@ -53,8 +54,8 @@ Object.defineProperties(EnumPrototype, {
 
 /**
  * Tests if the specified JSON object describes an enum.
- * @param {!Object} json
- * @returns {boolean}
+ * @param {*} json JSON object to test
+ * @returns {boolean} `true` if the object describes an enum
  */
 Enum.testJSON = function testJSON(json) {
     return Boolean(json && json.values);
@@ -62,9 +63,9 @@ Enum.testJSON = function testJSON(json) {
 
 /**
  * Creates an enum from JSON.
- * @param {string} name
- * @param {!Object.<string,*>} json
- * @returns {!Enum}
+ * @param {string} name Enum name
+ * @param {!Object.<string,*>} json JSON object
+ * @returns {!Enum} Created enum
  */
 Enum.fromJSON = function fromJSON(name, json) {
     return new Enum(name, json.values, json.options);
@@ -72,8 +73,8 @@ Enum.fromJSON = function fromJSON(name, json) {
 
 /**
  * Tests whether the specified value is present on the wire.
- * @param {*} value
- * @returns {boolean}
+ * @param {number} value Enum value, as a number 
+ * @returns {boolean} `true` if present
  */
 EnumPrototype.present = function present(value) {
     return value > 0;

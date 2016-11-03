@@ -65,8 +65,8 @@ var WriterPrototype = Writer.prototype;
 
 /**
  * Allocates a chunk of memory.
- * @param {number} size
- * @returns {!Uint8Array}
+ * @param {number} size Buffer size
+ * @returns {!Uint8Array} Allocated buffer
  */
 Writer.alloc = function alloc(size) {
     return new Uint8Array(size);
@@ -74,8 +74,9 @@ Writer.alloc = function alloc(size) {
 
 /**
  * Allocates more memory on the specified writer.
- * @param {!Writer} writer
- * @param {number} writeLength
+ * @param {!Writer} writer Writer to expand
+ * @param {number} writeLength Write length requested
+ * @returns {undefined}
  * @inner
  */
 function expand(writer, writeLength) {
@@ -90,8 +91,8 @@ function expand(writer, writeLength) {
 
 /**
  * Writes a tag.
- * @param {number} id
- * @param {number} wireType
+ * @param {number} id Field id
+ * @param {number} wireType Wire type
  * @returns {!Writer} this
  */
 WriterPrototype.tag = function write_tag(id, wireType) {
@@ -103,7 +104,7 @@ WriterPrototype.tag = function write_tag(id, wireType) {
 
 /**
  * Writes an unsigned 32 bit value as a varint.
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.uint32 = function write_uint32(value) {
@@ -126,14 +127,14 @@ WriterPrototype.uint32 = function write_uint32(value) {
 /**
  * Writes a signed 32 bit value as a varint.
  * @function
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.int32 = WriterPrototype.uint32;
 
 /**
  * Writes a 32 bit value as a varint, zig-zag encoded.
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.sint32 = function write_sint32(value) {
@@ -142,7 +143,7 @@ WriterPrototype.sint32 = function write_sint32(value) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {number|!Long} value
+ * @param {number|!{ low: number, high: number }|!Long} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.uint64 = function write_uint64(value) {
@@ -153,14 +154,14 @@ WriterPrototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {number|!Long} value
+ * @param {number|!{ low: number, high: number }|!Long} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.int64 = WriterPrototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {number} value
+ * @param {number|!{ low: number, high: number }|!Long} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.sint64 = function sint64(value) {
@@ -171,7 +172,7 @@ WriterPrototype.sint64 = function sint64(value) {
 
 /**
  * Writes a boolish value as a varint.
- * @param {boolean} value
+ * @param {boolean} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.bool = function write_bool(value) {
@@ -183,7 +184,7 @@ WriterPrototype.bool = function write_bool(value) {
 
 /**
  * Writes a 32 bit value as fixed 32 bits.
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.fixed32 = function write_fixed32(value) {
@@ -199,7 +200,7 @@ WriterPrototype.fixed32 = function write_fixed32(value) {
 
 /**
  * Writes a 32 bit value as fixed 32 bits, zig-zag encoded.
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.sfixed32 = function write_sfixed32(value) {
@@ -208,7 +209,7 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits.
- * @param {number|!{ low: number, high: number }|!Long} value
+ * @param {number|!{ low: number, high: number }|!Long} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
@@ -220,7 +221,7 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
- * @param {number|!{ low: number, high: number }|!Long} value
+ * @param {number|!{ low: number, high: number }|!Long} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
@@ -233,7 +234,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 
 /**
  * Writes a float (32 bit).
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.float = function write_float(value) {
@@ -244,7 +245,7 @@ WriterPrototype.float = function write_float(value) {
 
 /**
  * Writes a double (64 bit float).
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.double = function write_double(value) {
@@ -255,7 +256,7 @@ WriterPrototype.double = function write_double(value) {
 
 /**
  * Writes a sequence of bytes.
- * @param {!Uint8Array} value
+ * @param {!Uint8Array} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.bytes = function write_bytes(value) {
@@ -270,7 +271,7 @@ WriterPrototype.bytes = function write_bytes(value) {
 
 /**
  * Writes a string.
- * @param {string} value
+ * @param {string} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.string = function write_string(value) {
@@ -306,7 +307,7 @@ WriterPrototype.fork = function fork() {
 /**
  * Resets this instance to the last state. If there is no last state, all references
  * to previous buffers will be cleared.
- * @param {boolean} [clearForkedStates] Clears all previously forked states
+ * @param {boolean} [clearForkedStates] `true` to clears all previously forked states
  * @returns {!Writer} this
  */
 WriterPrototype.reset = function reset(clearForkedStates) {
@@ -321,7 +322,7 @@ WriterPrototype.reset = function reset(clearForkedStates) {
 
 /**
  * Finishes the current sequence of write operations and frees all resources.
- * @returns {!Uint8Array}
+ * @returns {!Uint8Array} Finished buffer
  */
 WriterPrototype.finish = function finish() {
     var bufs = this.bufs,
@@ -353,12 +354,11 @@ WriterPrototype.finish = function finish() {
 /**
  * Writer using node buffers.
  * @memberof Writer
- * @constructor
  * @extends Writer
- * @param {!Object=} options
+ * @constructor
  */
-function BufferWriter(options) {
-    Writer.call(this, options);
+function BufferWriter() {
+    Writer.call(this);
 
     /**
      * Current buffer.
@@ -375,8 +375,8 @@ Writer.BufferWriter = BufferWriter;
 
 /**
  * Allocates a chunk of memory using node buffers.
- * @param {number} size
- * @returns {!Buffer}
+ * @param {number} size Buffer size
+ * @returns {!Buffer} Allocated buffer
  * @override
  */
 BufferWriter.alloc = function alloc_buffer(size) {
@@ -385,7 +385,7 @@ BufferWriter.alloc = function alloc_buffer(size) {
 
 /**
  * Writes a float (32 bit) using node buffers.
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!BufferWriter} this
  * @override
  */
@@ -399,7 +399,7 @@ BufferWriterPrototype.float = function write_float_buffer(value) {
 
 /**
  * Writes a double (64 bit float) using node buffers.
- * @param {number} value
+ * @param {number} value Value to write
  * @returns {!BufferWriter} this
  * @override
  */
@@ -413,7 +413,7 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 
 /**
  * Writes a sequence of bytes using node buffers.
- * @param {!Buffer} value
+ * @param {!Buffer} value Value to write
  * @returns {!BufferWriter} this
  * @override
  */
@@ -429,7 +429,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 
 /**
  * Writes a string using node buffers.
- * @param {string} value
+ * @param {string} value Value to write
  * @returns {!BufferWriter} this
  * @override
  */
@@ -445,7 +445,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 
 /**
  * Finishes the current sequence of write operations using node buffers and frees all resources.
- * @returns {!Buffer}
+ * @returns {!Buffer} Finished buffer
  * @override
  */
 BufferWriterPrototype.finish = function finish_buffer() {

@@ -25,7 +25,7 @@
         "no-prototype-builtins": 1,
         "no-template-curly-in-string": 1,
         "no-unsafe-negation": 1,
-        "valid-jsdoc": 0,                   // TODO: Turn this on
+        "valid-jsdoc": 1,                   // ouch.
 
         // Best practices
         "accessor-pairs": 1,

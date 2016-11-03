@@ -6,13 +6,14 @@ module.exports = Method;
 /**
  * Reflected service method.
  * @extends ReflectionObject
- * @param {string} name
+ * @constructor
+ * @param {string} name Method name
  * @param {string} type Usually "rpc"
- * @param {string} requestType
- * @param {string} responseType
- * @param {boolean} [requestStream]
- * @param {boolean} [responseStream]
- * @param {!Object.<string,*>=} [options]
+ * @param {string} requestType Request message type
+ * @param {string} responseType Response message type
+ * @param {boolean} [requestStream] Whether the request is streamed
+ * @param {boolean} [responseStream] Whether the response is streamed
+ * @param {!Object.<string,*>} [options] Method options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
     if (util.isObject(requestStream)) {
@@ -70,8 +71,8 @@ ReflectionObject.extend(Method, [ "type", "requestType", "requestStream", "respo
 
 /**
  * Tests if the specified JSON object describes a service method.
- * @param {!Object} json
- * @returns {boolean}
+ * @param {!Object} json JSON object
+ * @returns {boolean} `true` if the object describes a map field
  */
 Method.testJSON = function testJSON(json) {
     return Boolean(json && json.requestType !== undefined);
@@ -79,8 +80,9 @@ Method.testJSON = function testJSON(json) {
 
 /**
  * Constructs a service method from JSON.
- * @param {!Object} json
- * @returns {!Method}
+ * @param {string} name Method name
+ * @param {!Object} json JSON object
+ * @returns {!Method} Created method
  */
 Method.fromJSON = function fromJSON(name, json) {
     return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);

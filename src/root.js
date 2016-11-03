@@ -11,7 +11,8 @@ module.exports = Root;
 /**
  * Root namespace.
  * @extends Namespace
- * @param {!Object.<string,*>} [options]
+ * @constructor
+ * @param {!Object.<string,*>} [options] Root options
  */
 function Root(options) {
     Namespace.call(this, "");
@@ -41,8 +42,8 @@ var RootPrototype = Namespace.extend(Root);
 
 /**
  * Checks if a specific file has already been loaded.
- * @param {string} filename
- * @returns {boolean}
+ * @param {string} filename File name to test
+ * @returns {boolean} `true` if already loaded
  */
 RootPrototype.isLoaded = function isLoaded(filename) {
     filename = util.normalizePath(filename);
@@ -54,7 +55,7 @@ RootPrototype.isLoaded = function isLoaded(filename) {
 
 /**
  * Lets the root know of a loaded file, i.e. when added programmatically.
- * @param {string} filename
+ * @param {string} filename File name to add
  * @returns {boolean} `false` if this file has already been loaded before
  */
 RootPrototype.addLoaded = function addLoaded(filename) {
@@ -70,6 +71,7 @@ RootPrototype.addLoaded = function addLoaded(filename) {
  * @memberof Root
  * @param {!Root} root The root to import to
  * @param {boolean} [visible] Whether visible when exporting definitions. Defaults to inherit from parent.
+ * @returns {undefined}
  */
 function importGoogleTypes(root, visible) {
 
@@ -253,10 +255,10 @@ Root.importGoogleTypes = importGoogleTypes;
 
 /**
  * Loads one or multiple .proto files into a common root namespace.
- * @param {string|!Array.<string>} filename One or multiple files to load
- * @param {!function(Error, ?Root)=} callback Callback function
- * @param {!Object=} ctx Optional callback context
- * @returns {!Promise} If callback has been omitted
+ * @param {string|!Array.<string>} filename Names of one or multiple files to load
+ * @param {!function(Error, ?Root)} [callback] Node-style callback function
+ * @param {!Object} [ctx] Optional callback context
+ * @returns {!Promise|undefined} A promise if callback has been omitted, otherwise `undefined`
  * @throws {TypeError} If arguments are invalid
  */
 RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-line consistent-return
@@ -326,7 +328,7 @@ RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-
     else if (util.isString(filename))
         fetch(filename, true, false);
     else
-        throw TypeError("filename must be a string");
+        throw TypeError("filename must be a string or an array of strings");
 
     if (!queued)
         finish(null);
@@ -334,8 +336,9 @@ RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-
 
 /**
  * Called when any object is added to this root or its sub-namespaces.
- * @param {!ReflectionObject} object
- * @param {!Namespace} parent
+ * @param {!ReflectionObject} object Object added
+ * @param {!Namespace} parent Parent added to
+ * @returns {undefined}
  */
 RootPrototype.handleAdd = function handleAdd(object, parent) { // eslint-disable-line no-unused-vars
     if (object instanceof Field && object.extend !== undefined) {
@@ -346,8 +349,9 @@ RootPrototype.handleAdd = function handleAdd(object, parent) { // eslint-disable
 
 /**
  * Called when any object is removed from this root or its sub-namespaces.
- * @param {!ReflectionObject} object
- * @param {!Namespace} parent
+ * @param {!ReflectionObject} object Object removed
+ * @param {!Namespace} parent Parent removed from
+ * @returns {undefined}
  */
 RootPrototype.handleRemove = function handleRemove(object, parent) { // eslint-disable-line no-unused-vars
     if (object instanceof Field && object.extend !== undefined) {
@@ -359,7 +363,8 @@ RootPrototype.handleRemove = function handleRemove(object, parent) { // eslint-d
 
 /**
  * Callede when any object in this root or its sub-namespaces is being resolved.
- * @param {!ReflectionObject} object 
+ * @param {!ReflectionObject} object Object being resolved
+ * @returns {undefined}
  */
 RootPrototype.handleResolve = function handleResolve(object) { // eslint-disable-line no-unused-vars
     /* if (object instanceof Type) {

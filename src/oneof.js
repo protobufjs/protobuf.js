@@ -5,12 +5,13 @@ module.exports = OneOf;
 
 /**
  * Reflected OneOf.
- * @constructor
  * @extends Namespace
- * @param {string} name
+ * @constructor
+ * @param {string} name Oneof name
+ * @param {!Object} [options] Oneof options
  */
-function OneOf(name) {
-    ReflectionObject.call(this, name);
+function OneOf(name, options) {
+    ReflectionObject.call(this, name, options);
 
     /**
      * Field names that belong to this oneof and have been added to the oneof's parent.
@@ -31,7 +32,7 @@ var OneOfPrototype = ReflectionObject.extend(OneOf, [ "oneof" ]);
 /**
  * Adds a field to this oneof.
  * @override
- * @param {!Field} field
+ * @param {!Field} field Field to add
  * @returns {!OneOf} this
  */
 OneOfPrototype.add = function add(field) {
@@ -51,7 +52,7 @@ OneOfPrototype.add = function add(field) {
 /**
  * Removes a field from this oneof.
  * @override
- * @param {!Field} field
+ * @param {!Field} field Field to remove
  * @returns {!OneOf} this
  */
 OneOfPrototype.remove = function remove(field) {
