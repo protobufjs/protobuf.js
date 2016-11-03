@@ -139,7 +139,7 @@ The library exports the `protobuf` namespace with the following members:
 * **Writer**<br />
   Wire format writer.
 
-* **BufferWriter** *extends **Writer***<br />
+* **BufferWriter** _extends **Writer**_<br />
   Wire format writer, node version.
 
 * **Reader**<br />
