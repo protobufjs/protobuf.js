@@ -1,7 +1,8 @@
 var util    = require("./util"),
     long_   = require("./support/long"),
     string_ = require("./support/string"),
-    float_  = require("./support/float");
+    float_  = require("./support/float"),
+    array_  = require("./support/array");
 
 module.exports = Reader;
 
@@ -12,7 +13,7 @@ function indexOutOfRange(reader, writeLength) {
 /**
  * Reader using typed arrays.
  * @constructor
- * @param {!Uint8Array} buffer Buffer to read from
+ * @param {!Array} buffer Buffer to read from
  */
 function Reader(buffer) {
     if (!(this instanceof Reader)) {
@@ -23,7 +24,7 @@ function Reader(buffer) {
 
     /**
      * Read buffer.
-     * @type {?Uint8Array}
+     * @type {?Array}
      */
     this.buf = buffer || null;
 
@@ -38,16 +39,11 @@ function Reader(buffer) {
      * @type {number}
      */
     this.len = buffer ? buffer.length : 0;
-
-    /**
-     * Supported slice method. Falls back to subarray if slice is not supported.
-     * @type {?function(number, number):Uint8Array}
-     * @private
-     */
-    this._slice = buffer.slice || buffer.subarray;
 }
 
 var ReaderPrototype = Reader.prototype;
+
+ReaderPrototype._slice = array_._slice;
 
 /**
  * Reads a tag.
@@ -209,7 +205,7 @@ ReaderPrototype.double = function read_double() {
 /**
  * Reads a sequence of bytes.
  * @param {number} [length] Optional number of bytes to read, if known beforehand
- * @returns {!Uint8Array} Value read
+ * @returns {!Array} Value read
  */
 ReaderPrototype.bytes = function read_bytes(length) {
     if (length === undefined)
@@ -252,14 +248,13 @@ ReaderPrototype.skip = function skip(length) {
 
 /**
  * Resets this instance and frees all resources.
- * @param {!Uint8Array} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @param {!Array} [buffer] Optionally a new buffer for a new sequence of read operations
  * @returns {!Reader} this
  */
 ReaderPrototype.reset = function reset(buffer) {
     if (buffer) {
         this.buf = buffer;
         this.len = buffer.length;
-        this._slice = buffer.slice || buffer.subarray;
     } else {
         this.buf = null;
         this.len = 0;
@@ -271,8 +266,8 @@ ReaderPrototype.reset = function reset(buffer) {
 /**
  * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
  * Optionally accepts a new buffer for a new sequence of read operations.
- * @param {!Uint8Array} [buffer] Optionally a new buffer for a new sequence of read operations
- * @returns {!Uint8Array} Finished buffer
+ * @param {!Array} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @returns {!Array} Finished buffer
  */
 ReaderPrototype.finish = function finish(buffer) {
     var remain = this.pos
@@ -280,6 +275,15 @@ ReaderPrototype.finish = function finish(buffer) {
         : this.buf;
     this.reset(buffer);
     return remain;
+};
+
+// One time function to initialize BufferReader with the now-known buffer
+// implementation's slice method
+var initBufferReader = function() {
+    if (util.Buffer) {
+        BufferReaderPrototype._slice = util.Buffer.prototype.slice;
+        initBufferReader = undefined;
+    }
 };
 
 /**
@@ -290,6 +294,8 @@ ReaderPrototype.finish = function finish(buffer) {
  * @param {!Buffer} buffer Buffer to read from
  */
 function BufferReader(buffer) {
+    if (initBufferReader)
+        initBufferReader();
     Reader.call(this, buffer);
 }
 

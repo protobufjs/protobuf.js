@@ -1,11 +1,12 @@
 var util    = require("./util"),
     long_   = require("./support/long"),
     string_ = require("./support/string"),
-    float_  = require("./support/float");
+    float_  = require("./support/float"),
+    array_  = require("./support/array");
 
 module.exports = Writer;
 
-var emptyBuffer = new Uint8Array(0);
+var emptyBuffer = new array_._Array(0);
 
 /**
  * Default buffer size.
@@ -26,7 +27,7 @@ function Writer() {
 
     /**
      * Current buffer.
-     * @type {?Uint8Array}
+     * @type {?Array}
      */
     this.buf = null;
 
@@ -44,35 +45,29 @@ function Writer() {
 
     /**
      * Completed buffers.
-     * @type {!Array.<!Uint8Array>}
+     * @type {!Array.<!Array>}
      */
     this.bufs = [];
 
     /**
      * Forked states stack.
-     * @type {!Array.<!Array.<!Uint8Array>>}
+     * @type {!Array.<!Array.<!Array>>}
      * @private
      */
     this._stack = [];
-
-    /**
-     * Supported slice method. Falls back to subarray if slice is not supported.
-     * @type {?function(number, number):Uint8Array}
-     * @private
-     */
-    this._slice = null;
 }
 
 var WriterPrototype = Writer.prototype;
 
 /**
  * Allocates a chunk of memory.
+ * @function
  * @param {number} size Buffer size
- * @returns {!Uint8Array} Allocated buffer
+ * @returns {!Array} Allocated buffer
  */
-Writer.alloc = function alloc(size) {
-    return size ? new Uint8Array(size) : emptyBuffer;
-};
+Writer.alloc = array_._alloc;
+
+WriterPrototype._slice = array_._slice;
 
 /**
  * Allocates more memory on the specified writer.
@@ -88,7 +83,6 @@ function expand(writer, writeLength) {
         writer.bufs.push(writer._slice.call(buf, 0, pos));
     writer.buf = writer.constructor.alloc(writer.len = Math.max(writeLength, Writer.BUFFER_SIZE));
     writer.pos = 0;
-    writer._slice = writer.buf.slice || writer.buf.subarray;
 }
 
 /**
@@ -100,7 +94,7 @@ function expand(writer, writeLength) {
 WriterPrototype.tag = function write_tag(id, wireType) {
     if (this.pos + 1 > this.len)
         expand(this, 1);
-    this.buf[this.pos++] = id << 3 | wireType & 7;
+    this.buf[this.pos++] = (id << 3 | wireType & 7) & 255;
     return this;
 };
 
@@ -119,7 +113,7 @@ WriterPrototype.uint32 = function write_uint32(value) {
     if (this.pos + len > this.len)
         expand(this, len);
     while (value > 127) {
-        this.buf[this.pos++] = value | 128;
+        this.buf[this.pos++] = value & 127 | 128;
         value >>>= 7;
     }
     this.buf[this.pos++] = value;
@@ -193,10 +187,10 @@ WriterPrototype.fixed32 = function write_fixed32(value) {
     if (this.pos + 4 > this.len)
         expand(this, 4);
     value >>>= 0;
-    this.buf[this.pos++] = value;
-    this.buf[this.pos++] = value >>> 8;
-    this.buf[this.pos++] = value >>> 16;
-    this.buf[this.pos++] = value >>> 24;
+    this.buf[this.pos++] = value        & 255;
+    this.buf[this.pos++] = value >>> 8  & 255;
+    this.buf[this.pos++] = value >>> 16 & 255;
+    this.buf[this.pos++] = value >>> 24 & 255;
     return this;
 };
 
@@ -267,7 +261,7 @@ WriterPrototype.bytes = function write_bytes(value) {
     if (len) {
         if (this.pos + len > this.len)
             expand(this, len);
-        this.buf.set(value, this.pos);
+        array_._set.call(this.buf, value, this.pos);
         this.pos += len;
     }
     return this;
@@ -327,7 +321,7 @@ WriterPrototype.reset = function reset(clearForkedStates) {
 /**
  * Finishes the current sequence of write operations and frees all resources.
  * @param {boolean} [clearForkedStates] `true` to clear all previously forked states
- * @returns {!Uint8Array} Finished buffer
+ * @returns {!Array} Finished buffer
  */
 WriterPrototype.finish = function finish(clearForkedStates) {
     var bufs = this.bufs,
@@ -349,11 +343,20 @@ WriterPrototype.finish = function finish(clearForkedStates) {
         sub;
     i = 0;
     while (i < k) {
-        concat.set(sub = bufs[i++], pos);
+        array_._set.call(concat, sub = bufs[i++], pos);
         pos += sub.length;
     }
-    concat.set(buf, pos);
+    array_._set.call(concat, buf, pos);
     return concat;
+};
+
+// One time function to initialize BufferWriter with the now-known buffer
+// implementation's slice method
+var initBufferWriter = function() {
+    if (util.Buffer) {
+        BufferWriterPrototype._slice = util.Buffer.prototype.slice;
+        initBufferWriter = undefined;
+    }
 };
 
 /**
@@ -363,6 +366,8 @@ WriterPrototype.finish = function finish(clearForkedStates) {
  * @constructor
  */
 function BufferWriter() {
+    if (initBufferWriter)
+        initBufferWriter();
     Writer.call(this);
 
     /**

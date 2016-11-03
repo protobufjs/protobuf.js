@@ -229,11 +229,11 @@ $> npm run build
 
 Compatibility
 -------------
-* This library requires an ES5-capable browser with typed array support. If you indend to support
-  older browsers, you'll need a polyfill with working array access operators.
+* This library requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest. If typed arrays are not
+  supported, it uses plain arrays instead.
 
 * If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer)
-  for example and assign its constructor to `protobuf.util.Buffer`.
+  for example and assign its constructor, or that of any compatible library, to `protobuf.util.Buffer`.
 
 * If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install
   [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with buffers, you

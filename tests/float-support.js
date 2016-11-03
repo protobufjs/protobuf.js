@@ -16,7 +16,7 @@ tap.test("float support", function(test) {
          [        -0, "00000080" ],
          [  Infinity, "0000807F" ],
          [ -Infinity, "000080FF" ],
-         [       NaN, "0000C07F" ],
+         [       NaN, "0100807F" ],
 
          [         0, "0000000000000000" ],
          [         2, "0000000000000040" ],
@@ -24,7 +24,7 @@ tap.test("float support", function(test) {
          [        -0, "0000000000000080" ],
          [  Infinity, "000000000000F07F" ],
          [ -Infinity, "000000000000F0FF" ],
-         [       NaN, "000000000000F87F" ]
+         [       NaN, "010000000000F07F" ]
     ];
 
     values.forEach(function(val) {

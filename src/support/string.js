@@ -21,14 +21,14 @@ exports._encode = function string_encode_utf8(str) {
         } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < l && ((c2 = str.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
             c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
             ++i;
-            out[p++] = c1 >> 18 | 240;
-            out[p++] = c1 >> 12 & 63 | 128;
-            out[p++] = c1 >> 6 & 63 | 128;
-            out[p++] = c1 & 63 | 128;
+            out[p++] =  c1 >> 18      | 240;
+            out[p++] =  c1 >> 12 & 63 | 128;
+            out[p++] =  c1 >> 6  & 63 | 128;
+            out[p++] =  c1       & 63 | 128;
         } else {
-            out[p++] = c1 >> 12 | 224;
-            out[p++] = c1 >> 6 & 63 | 128;
-            out[p++] = c1 & 63 | 128;
+            out[p++] = c1 >> 12      | 224;
+            out[p++] = c1 >> 6  & 63 | 128;
+            out[p++] = c1       & 63 | 128;
         }
     }
     return out.slice(0, p);
@@ -36,7 +36,7 @@ exports._encode = function string_encode_utf8(str) {
 
 /**
  * Decodes a string from UTF8 bytes.
- * @param {!Uint8Array} bytes Bytes to decode
+ * @param {!Array} bytes Bytes to decode
  * @returns {string} Decoded string
  * @private
  */

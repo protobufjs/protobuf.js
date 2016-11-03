@@ -28,6 +28,7 @@
     "gulp-if": "^2.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
+    "ieee754": "^1.1.8",
     "jaguarjs-jsdoc": "^1.0.1",
     "jsdoc": "^3.4.2",
     "tap": "^8.0.0",

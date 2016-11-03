@@ -253,7 +253,7 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 
 /**
  * Decodes a runtime message of this message's type.
- * @param {!Reader|!Uint8Array|!Buffer} readerOrBuffer Reader or buffer to decode from
+ * @param {!Reader|!Array|!Buffer} readerOrBuffer Reader or buffer to decode from
  * @param {function(new:Prototype)} [constructor] Optional constructor of the created message, see {@link Type#create}
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {!Message} Decoded message
@@ -309,7 +309,7 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
 /**
  * Decodes a message of this type,
  * which is preceeded by its byte length as a varint.
- * @param {!Reader|!Uint8Array|!Buffer} readerOrBuffer Reader or buffer to decode from
+ * @param {!Reader|!Array|!Buffer} readerOrBuffer Reader or buffer to decode from
  * @param {function(new:Prototype)} [constructor] Optional constructor of the created message, see {@link Type#create}
  * @returns {!Message} Decoded message
  */

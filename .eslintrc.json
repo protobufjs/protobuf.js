@@ -5,8 +5,6 @@
     },
     "globals": {
         "Uint8Array": true,
-        "Float32Array": true,
-        "Float64Array": true,
         "XMLHttpRequest": true,
         "Promise": true
     },

@@ -116,7 +116,7 @@ exports._write = function long_write(writer, expand) {
     if (writer.pos + len > writer.len)
         expand(writer, len);
     while (this._hi || this._lo > 127) {
-        writer.buf[writer.pos++] = this._lo | 0x80;
+        writer.buf[writer.pos++] = this._lo & 127 | 0x80;
         this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
         this._hi >>>= 7;
     }
@@ -131,14 +131,14 @@ exports._write = function long_write(writer, expand) {
  * @private
  */
 exports._writeFixed = function long_writeFixed(writer) {
-    writer.buf[writer.pos++] = this._lo;
-    writer.buf[writer.pos++] = this._lo >>> 8;
-    writer.buf[writer.pos++] = this._lo >>> 16;
-    writer.buf[writer.pos++] = this._lo >>> 24;
-    writer.buf[writer.pos++] = this._hi;
-    writer.buf[writer.pos++] = this._hi >>> 8;
-    writer.buf[writer.pos++] = this._hi >>> 16;
-    writer.buf[writer.pos++] = this._hi >>> 24;
+    writer.buf[writer.pos++] = this._lo        & 255;
+    writer.buf[writer.pos++] = this._lo >>> 8  & 255;
+    writer.buf[writer.pos++] = this._lo >>> 16 & 255;
+    writer.buf[writer.pos++] = this._lo >>> 24      ;
+    writer.buf[writer.pos++] = this._hi        & 255;
+    writer.buf[writer.pos++] = this._hi >>> 8  & 255;
+    writer.buf[writer.pos++] = this._hi >>> 16 & 255;
+    writer.buf[writer.pos++] = this._hi >>> 24      ;
     return writer;
 };
 

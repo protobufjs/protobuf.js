@@ -19,7 +19,7 @@ function OneOf(name, fieldNames, options) {
     }
     ReflectionObject.call(this, name, options);
     if (fieldNames && !util.isArray(fieldNames))
-        throw util._TypeError("fieldNames", "array");
+        throw util._TypeError("fieldNames", "Array");
 
     /**
      * Field names that belong to this oneof.
