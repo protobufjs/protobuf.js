@@ -48,3 +48,4 @@ protobuf.Prototype = require("./prototype");
 
 // Utility
 protobuf.util = util;
+protobuf.types = require("./types");

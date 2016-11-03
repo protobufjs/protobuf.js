@@ -1,3 +1,6 @@
+// NOTE: These types are structured in a way that makes looking up wire types and similar fast,
+// but not necessarily comfortable. Do not modify them unless you know exactly what you are doing.
+
 /**
  * Basic type wire types.
  * @type {!Object.<string,number>}

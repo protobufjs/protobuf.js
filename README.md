@@ -187,10 +187,25 @@ The library exports a flat `protobuf` namespace with the following members, orde
 * **util: `Object`** [[source](./src/util.js)]<br />
   Utility functions.
 
+* **types: `Object`** [[source](./src/types.js)]<br />
+  Common protobuf types.
+
 For now, you can find documentation on these objects in the respective source files within
 `src/`.
 
 To build production and development versions for the browser, run `npm install --dev` once,
 then `gulp` and see the files created in `dist/`.
+
+Compatibility
+-------------
+* This library requires an ES5-capable browser with typed array support. If you indend to support
+  older browsers, you'll need a polyfill with working array access operators.
+
+* If you want to use the node buffer API in your browser, you can use [feross/buffer](https://github.com/feross/buffer)
+  for example and assign its constructor to `protobuf.util.Buffer`.
+
+* If you need extensive support to work with 64 bit values (uint64, int64 etc.), you can
+  install [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with
+  buffers, you can assign its constructor, or that of any compatible library, to `protobuf.util.Long`.
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)

@@ -19,6 +19,8 @@ var license = [
     " */"
 ].join('\n') + '\n';
 
+module.exports = bundle;
+
 function bundle(compress) {
     var bundler = browserify({
         entries: __dirname + '/../src/index.js',
@@ -45,5 +47,3 @@ function bundle(compress) {
     .pipe(sourcemaps.write('.', { sourceRoot: '' }))
     .pipe(vinylfs.dest(__dirname + '/../dist'));
 }
-
-module.exports = bundle;
