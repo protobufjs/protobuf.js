@@ -7,7 +7,7 @@ var delimRe        = /[\s{}=;:[],'"\(\)<>]/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
 /**
- * Tokenizes a .proto source file.
+ * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @returns {!Object} Tokenizer handle
  */

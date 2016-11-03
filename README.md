@@ -59,7 +59,7 @@ protobuf.load("awesome.proto")
     });
 ``` 
 
-### Using reflection instead
+### Using reflection only
 
 ```js
 ...
@@ -201,7 +201,7 @@ Compatibility
 * This library requires an ES5-capable browser with typed array support. If you indend to support
   older browsers, you'll need a polyfill with working array access operators.
 
-* If you want to use the node buffer API in your browser, you can use [feross/buffer](https://github.com/feross/buffer)
+* If you want to use the node's buffer API in your browser, you can use [feross/buffer](https://github.com/feross/buffer)
   for example and assign its constructor to `protobuf.util.Buffer`.
 
 * If you need extensive support to work with 64 bit values (uint64, int64 etc.), you can

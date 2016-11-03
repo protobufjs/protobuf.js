@@ -41,6 +41,17 @@ tap.test("google.protobuf.Any class", function(test) {
             test.end();
         });
 
+
+        test.test("should decode", function(test) {
+
+            msg = Any.decode(buf);
+            test.ok(msg instanceof Any, "an object that extends the custom class");
+            test.deepEqual(msg, any, "an equal message");
+
+            test.end();
+        });
+
+
         test.test("should encodeDelimited", function(test) {
 
             buf = Any.encodeDelimited(any);
@@ -52,6 +63,15 @@ tap.test("google.protobuf.Any class", function(test) {
             test.equal(buf[12]   , 2 << 3 | 2, "a tag with id 2, wire type 2");
             test.equal(buf[13]   , 0         , "a field length of 0");
             test.equal(buf.length, 14        , "14 bytes in total");
+
+            test.end();
+        });
+
+        test.test("should decodeDelimited", function(test) {
+
+            msg = Any.decodeDelimited(buf);
+            test.ok(msg instanceof Any, "an object that extends the custom class");
+            test.deepEqual(msg, any, "an equal message");
 
             test.end();
         });
