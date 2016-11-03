@@ -3,4 +3,3 @@ node_js:
   - 0.12
   - 4
   - 6
-sudo: false

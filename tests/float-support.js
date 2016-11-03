@@ -4,6 +4,9 @@ var float_ = require("../src/support/float"),
     Writer = require("../src/writer"),
     Reader = require("../src/reader");
 
+if (!Buffer.from)
+    Buffer.from = function(a, b) { return new Buffer(a, b); }
+
 tap.test("float support", function(test) {
     var values = [
          [         0, "00000000" ],

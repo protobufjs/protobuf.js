@@ -13,7 +13,7 @@ tap.test("google.protobuf.Any class", function(test) {
     var valueBuffer;
     var any = new Any({
         type_url: "some.type",
-        value: valueBuffer = Buffer.alloc(0)
+        value: valueBuffer = Buffer.alloc ? Buffer.alloc(0) : new Buffer(0)
     });
 
     test.test("instances", function(test) {

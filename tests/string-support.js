@@ -4,6 +4,9 @@ var tap = require("tap"),
 var util    = require("../src/util"),
     string_ = require("../src/support/string");
 
+if (!Buffer.from)
+    Buffer.from = function(a, b) { return new Buffer(a, b); }
+
 tap.test("string support", function(test) {
     var testdata = fs.readFileSync(__dirname + '/data/string-support.txt', "utf8");
     var buf = Buffer.from(testdata, "utf8");
