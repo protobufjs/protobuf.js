@@ -71,6 +71,7 @@ tap.test("google.protobuf.Any type", function(test) {
 
         test.test("should decodeDelimited", function(test) {
 
+            any.value = new Uint8Array(0); // in node 0.12 buffers aren't typed arrays
             msg = Any.decodeDelimited(buf);
             test.deepEqual(msg, any, "an equal message");
 

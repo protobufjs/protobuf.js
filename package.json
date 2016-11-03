@@ -9,7 +9,7 @@
     "url": "https://github.com/dcodeIO/protobuf.js.git"
   },
   "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
-  "main": "src/index.js",
+  "main": "src/index",
   "scripts": {
     "test": "tap tests/*.js",
     "lint": "eslint src",

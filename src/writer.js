@@ -256,7 +256,7 @@ WriterPrototype.double = function write_double(value) {
 
 /**
  * Writes a sequence of bytes.
- * @param {!Uint8Array} value Value to write
+ * @param {!Array} value Value to write
  * @returns {!Writer} this
  */
 WriterPrototype.bytes = function write_bytes(value) {

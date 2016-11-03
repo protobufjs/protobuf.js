@@ -513,11 +513,11 @@ function parse(source, root, visible) {
         }
     }
     return {
-        package: pkg,
-        imports: imports,
-        publicImports: publicImports,
-        weakImports: weakImports,
-        syntax: syntax,
-        root: root
+        package       : pkg,
+        imports       : imports,
+        publicImports : publicImports,
+        weakImports   : weakImports,
+        syntax        : syntax,
+        root          : root
     };
 }

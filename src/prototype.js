@@ -2,9 +2,8 @@ module.exports = Prototype;
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
- * 
  * @constructor
- * @param {!Object} [properties] Properties to set on the instance when extended.
+ * @param {!Object} [properties] Properties to set on the instance. Only relevant when extended.
  * @abstract
  * @see {@link Type#create}
  */

@@ -8,7 +8,7 @@ var protobuf = module.exports = {};
  * @param {!Root} [root] Root namespace, defaults to create a new one if omitted.
  * @param {!function(Error, !Root=)} [callback] Callback function
  * @param {!Object} [ctx] Optional callback context
- * @returns {!Promise} If callback has been omitted
+ * @returns {!Promise|!Object} A promise if callback has been omitted, otherwise this
  * @throws {TypeError} If arguments are invalid
  */
 protobuf.load = function load(filename, root, callback, ctx) {
@@ -19,7 +19,7 @@ protobuf.load = function load(filename, root, callback, ctx) {
     }
     if (!root)
         root = new protobuf.Root();
-    return root.load(filename, callback, ctx);
+    return root.load(filename, callback, ctx) || this;
 };
 
 // Parser

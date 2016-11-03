@@ -41,7 +41,6 @@ tap.test("google.protobuf.Any class", function(test) {
             test.end();
         });
 
-
         test.test("should decode", function(test) {
 
             msg = Any.decode(buf);
@@ -50,7 +49,6 @@ tap.test("google.protobuf.Any class", function(test) {
 
             test.end();
         });
-
 
         test.test("should encodeDelimited", function(test) {
 

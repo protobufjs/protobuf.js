@@ -201,11 +201,12 @@ Compatibility
 * This library requires an ES5-capable browser with typed array support. If you indend to support
   older browsers, you'll need a polyfill with working array access operators.
 
-* If you want to use the node's buffer API in your browser, you can use [feross/buffer](https://github.com/feross/buffer)
+* If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer)
   for example and assign its constructor to `protobuf.util.Buffer`.
 
-* If you need extensive support to work with 64 bit values (uint64, int64 etc.), you can
+* If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can
   install [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with
   buffers, you can assign its constructor, or that of any compatible library, to `protobuf.util.Long`.
+  All 64 bit numbers will then be returned as a `Long` instance.
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
