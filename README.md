@@ -145,7 +145,7 @@ The library exports the `protobuf` namespace with the following members:
 * **Reader**<br />
   Wire format reader.
 
-* **BufferReader** *extends **Reader***<br />
+* **BufferReader** _extends **Reader**_<br />
   Wire format reader, node version.
 
 ### Reflection
@@ -153,25 +153,25 @@ The library exports the `protobuf` namespace with the following members:
 * **ReflectionObject**<br />
   Base class of all reflection objects.
 
-* **Namespace** *extends **ReflectionObject***<br />
+* **Namespace** _extends **ReflectionObject**_<br />
   Base class of all reflection objects containing nested objects.
 
-* **Root** *extends **Namespace***<br />
+* **Root** _extends **Namespace**_<br />
   Root namespace.
 
-* **Type** *extends **Namespace***<br />
+* **Type** _extends **Namespace**_<br />
   Reflected message type.
 
-* **Field** *extends **ReflectionObject***<br />
+* **Field** _extends **ReflectionObject**_<br />
   Reflected message field.
 
-* **Enum** *extends **ReflectionObject***<br />
+* **Enum** _extends **ReflectionObject**_<br />
   Reflected enum.
 
-* **Service** *extends **Namespace***<br />
+* **Service** _extends **Namespace**_<br />
   Reflected service.
 
-* **Method** *extends **ReflectionObject***<br />
+* **Method** _extends **ReflectionObject**_<br />
   Reflected service method.
 
 ### Runtime
