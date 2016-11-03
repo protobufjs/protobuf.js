@@ -30,6 +30,9 @@ function MapField(name, id, type, keyType, options) {
      * @type {?ReflectionObject}
      */
     this.resolvedKeyType = null;
+
+    // Overrides Field#map
+    this.map = true;
 }
 
 var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);

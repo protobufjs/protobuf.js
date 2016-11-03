@@ -32,7 +32,6 @@ function bundle(compress) {
     .exclude("process")
     .exclude("_process") // what is it...
     .exclude("fs")
-    .on("log", gutil.log)
     .bundle()
     .pipe(source(compress ? 'protobuf.min.js' : 'protobuf.js'))
     .pipe(buffer())
@@ -45,5 +44,7 @@ function bundle(compress) {
                 version: pkg.version
             }))
     .pipe(sourcemaps.write('.', { sourceRoot: '' }))
-    .pipe(vinylfs.dest(__dirname + '/../dist'));
+    .pipe(vinylfs.dest(__dirname + '/../dist'))
+    .on("log", gutil.log)
+    .on("error", gutil.log);
 }

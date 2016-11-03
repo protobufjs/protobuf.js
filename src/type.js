@@ -108,8 +108,8 @@ Type.fromJSON = function fromJSON(name, json) {
     type.extensions = json.extensions;
     type.reserved = json.reserved;
     if (json.fields)
-        Object.keys(json.fields).forEach(function(fieldNamee) {
-            type.add(Field.fromJSON(fieldNamee, json.fields[fieldNamee]));
+        Object.keys(json.fields).forEach(function(fieldName) {
+            type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
         });
     if (json.oneofs)
         Object.keys(json.oneofs).forEach(function(oneOfName) {

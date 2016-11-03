@@ -7,7 +7,7 @@ module.exports = Enum;
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Unique name within its namespace
- * @param {!Object.<string,number>} [values] Enum values an an object, by name
+ * @param {!Object.<string,number>} [values] Enum values as an object, by name
  * @param {!Object.<string,*>} [options] Enum options
  */
 function Enum(name, values, options) {
@@ -72,10 +72,30 @@ Enum.fromJSON = function fromJSON(name, json) {
 };
 
 /**
- * Tests whether the specified value is present on the wire.
- * @param {number} value Enum value, as a number 
- * @returns {boolean} `true` if present
+ * Adds a value to this enum.
+ * @param {string} name Value name
+ * @param {number} id Value id
+ * @returns {!Enum} this
  */
-EnumPrototype.present = function present(value) {
-    return value > 0;
-};
+/* EnumPrototype.add = function(name, id) {
+    if (!util.isString(name))
+        throw TypeError("name must be a string");
+    if (!util.isInteger(id) || id < 0)
+        throw TypeError("id must be a positive integer");
+    this.values[name] = id;
+    this._valuesById = null;
+    return this;
+}; */
+
+/**
+ * Removes a value from this enum
+ * @param {string} name Value name
+ * @returns {!Enum} this
+ */
+/* EnumPrototype.remove = function(name) {
+    if (!util.isString(name))
+        throw TypeError("name must be a string");
+    delete this.values[name];
+    this._valuesById = null;
+    return this;
+}; */

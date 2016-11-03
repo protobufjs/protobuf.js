@@ -115,7 +115,8 @@
         "no-sync": 1,
 
         // Stylistic Issues
-        "semi": 1                           // maybe next time
+        "semi": 1,                          // maybe next time
+        "no-extra-semi": 1
 
         // ECMAScript 6                     // maybe next time
     }

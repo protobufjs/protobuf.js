@@ -5,6 +5,8 @@ var util    = require("./util"),
 
 module.exports = Writer;
 
+var emptyBuffer = new Uint8Array(0);
+
 /**
  * Default buffer size.
  * @type {number}
@@ -69,7 +71,7 @@ var WriterPrototype = Writer.prototype;
  * @returns {!Uint8Array} Allocated buffer
  */
 Writer.alloc = function alloc(size) {
-    return new Uint8Array(size);
+    return size ? new Uint8Array(size) : emptyBuffer;
 };
 
 /**
@@ -262,10 +264,12 @@ WriterPrototype.double = function write_double(value) {
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length;
     this.uint32(len);
-    if (this.pos + len > this.len)
-        expand(this, len);
-    this.buf.set(value, this.pos);
-    this.pos += len;
+    if (len) {
+        if (this.pos + len > this.len)
+            expand(this, len);
+        this.buf.set(value, this.pos);
+        this.pos += len;
+    }
     return this;
 };
 
@@ -307,7 +311,7 @@ WriterPrototype.fork = function fork() {
 /**
  * Resets this instance to the last state. If there is no last state, all references
  * to previous buffers will be cleared.
- * @param {boolean} [clearForkedStates] `true` to clears all previously forked states
+ * @param {boolean} [clearForkedStates] `true` to clear all previously forked states
  * @returns {!Writer} this
  */
 WriterPrototype.reset = function reset(clearForkedStates) {
@@ -322,16 +326,17 @@ WriterPrototype.reset = function reset(clearForkedStates) {
 
 /**
  * Finishes the current sequence of write operations and frees all resources.
+ * @param {boolean} [clearForkedStates] `true` to clear all previously forked states
  * @returns {!Uint8Array} Finished buffer
  */
-WriterPrototype.finish = function finish() {
+WriterPrototype.finish = function finish(clearForkedStates) {
     var bufs = this.bufs,
         buf = this.buf,
         pos = this.pos,
         len = this.len;
-    this.reset();
+    this.reset(clearForkedStates);
     if (buf && pos < len)
-        buf = this._slice.call(buf, 0, pos);
+        buf = pos ? this._slice.call(buf, 0, pos) : emptyBuffer;
     if (!bufs.length)
         return buf;
     len = pos;
@@ -445,14 +450,15 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 
 /**
  * Finishes the current sequence of write operations using node buffers and frees all resources.
+ * @param {boolean} [clearForkedStates] `true` to clear all previously forked states
  * @returns {!Buffer} Finished buffer
  * @override
  */
-BufferWriterPrototype.finish = function finish_buffer() {
+BufferWriterPrototype.finish = function finish_buffer(clearForkedStates) {
     var bufs = this.bufs,
         buf = this.buf,
         pos = this.pos;
-    this.reset();
+    this.reset(clearForkedStates);
     if (!bufs.length)
         return buf.slice(0, pos);
     if (pos)

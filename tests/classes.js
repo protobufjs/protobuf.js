@@ -44,7 +44,7 @@ tap.test("google.protobuf.Any class", function(test) {
         test.test("should decode", function(test) {
 
             msg = Any.decode(buf);
-            test.ok(msg instanceof Any, "an object that extends the custom class");
+            test.ok(msg instanceof Any, "to an object that extends the custom class");
             test.deepEqual(msg, any, "an equal message");
 
             test.end();
@@ -68,7 +68,7 @@ tap.test("google.protobuf.Any class", function(test) {
         test.test("should decodeDelimited", function(test) {
 
             msg = Any.decodeDelimited(buf);
-            test.ok(msg instanceof Any, "an object that extends the custom class");
+            test.ok(msg instanceof Any, "to an object that extends the custom class");
             test.deepEqual(msg, any, "an equal message");
 
             test.end();

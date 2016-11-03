@@ -71,21 +71,21 @@ exports.mapKeyWireTypes = {
 };
 
 /**
- * Allowed types for packed repeated fields.
- * @type {!Object.<string,boolean>}
+ * Allowed types for packed repeated fields with their associated wire type.
+ * @type {!Object.<string,number>}
  */
-exports.packable = {
+exports.packableWireTypes = {
 
-    int32    : true,
-    uint32   : true,
-    sint32   : true,
-    int64    : true,
-    uint64   : true,
-    sint64   : true,
-    fixed32  : true,
-    sfixed32 : true,
-    fixed64  : true,
-    sfixed64 : true,
-    bool     : true
+    int32    : 0,
+    uint32   : 0,
+    sint32   : 0,
+    int64    : 0,
+    uint64   : 0,
+    sint64   : 0,
+    fixed32  : 5,
+    sfixed32 : 5,
+    fixed64  : 1,
+    sfixed64 : 1,
+    bool     : 0
 
 };

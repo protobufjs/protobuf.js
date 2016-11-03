@@ -38,6 +38,13 @@ function Reader(buffer) {
      * @type {number}
      */
     this.len = buffer ? buffer.length : 0;
+
+    /**
+     * Supported slice method. Falls back to subarray if slice is not supported.
+     * @type {?function(number, number):Uint8Array}
+     * @private
+     */
+    this._slice = buffer.slice || buffer.subarray;
 }
 
 var ReaderPrototype = Reader.prototype;
@@ -212,9 +219,7 @@ ReaderPrototype.bytes = function read_bytes(length) {
     if (end > this.len)
         throw RangeError(indexOutOfRange(this, length));
     this.pos += length;
-    return this.buf.slice
-        ? this.buf.slice(start, end)
-        : this.buf.subarray(start, end);
+    return this._slice.call(this.buf, start, end);
 };
 
 /**
@@ -254,6 +259,7 @@ ReaderPrototype.reset = function reset(buffer) {
     if (buffer) {
         this.buf = buffer;
         this.len = buffer.length;
+        this._slice = buffer.slice || buffer.subarray;
     } else {
         this.buf = null;
         this.len = 0;
@@ -270,9 +276,7 @@ ReaderPrototype.reset = function reset(buffer) {
  */
 ReaderPrototype.finish = function finish(buffer) {
     var remain = this.pos
-        ? this.buf.slice
-            ? this.buf.slice(this.pos)
-            : this.buf.subarray(this.pos)
+        ? this._slice.call(this.buf, this.pos)
         : this.buf;
     this.reset(buffer);
     return remain;

@@ -7,8 +7,10 @@
  * @private
  */
 exports._encode = function string_encode_utf8(str) {
-    var l = str.length, p = 0;
-    var out = new Array(l << 2);
+    var l = str.length;
+    if (!l)
+        return [];
+    var out = new Array(l << 2), p = 0;
     for (var i = 0; i < l; i++) {
         var c1 = str.charCodeAt(i), c2;
         if (c1 < 128) {
@@ -39,8 +41,10 @@ exports._encode = function string_encode_utf8(str) {
  * @private
  */
 exports._decode = function string_decode_utf8(bytes) {
-    var l = bytes.length, p = 0, c = 0;
-    var out = new Array(l);
+    var l = bytes.length;
+    if (!l)
+        return "";
+    var out = new Array(l), p = 0, c = 0;
     while (p < l) {
         var c1 = bytes[p++];
         if (c1 < 128)

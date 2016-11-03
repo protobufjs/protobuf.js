@@ -2,8 +2,7 @@ var ReflectionObject = require("./object"),
     types     = require("./types"),
     Enum      = require("./enum"),
     util      = require("./util");
-var Type,
-    MapField;
+var Type;
 
 module.exports = Field;
 
@@ -57,6 +56,37 @@ function Field(name, id, type, rule, extend, options) {
     // Reflection only properties
 
     /**
+     * Whether this field is required.
+     * @type {boolean}
+     */
+    this.required = rule === "required";
+
+    /**
+     * Whether this field is optional.
+     * @type {boolean}
+     */
+    this.optional = !this.required;
+
+    /**
+     * Whether this field is repeated.
+     * @type {boolean}
+     */
+    this.repeated = rule === "repeated";
+
+    /**
+     * Whether this field is a map or not.
+     * @type {boolean}
+     */
+    this.map = false;
+
+    /**
+     * Internally remembers whether this field is packed.
+     * @type {boolean}
+     * @private
+     */
+    this._packed = undefined;
+
+    /**
      * Message this field belongs to.
      * @type {?Type}
      */
@@ -92,42 +122,6 @@ var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "ext
 Object.defineProperties(FieldPrototype, {
 
     /**
-     * Determines whether this field is required. Only relevant when working with proto2.
-     * @name Field#required
-     * @type {boolean}
-     * @readonly
-     */
-    required: {
-        get: function() {
-            return this.rule === "required";
-        }
-    },
-
-    /**
-     * Determines whether this field is optional. Only relevant wwhen working with proto2.
-     * @name Field#optional
-     * @type {boolean}
-     * @readonly
-     */
-    optional: {
-        get: function() {
-            return !this.rule || this.rule === "optional";
-        }
-    },
-
-    /**
-     * Determines whether this field is repeated.
-     * @name Field#repeated
-     * @type {boolean}
-     * @readonly
-     */
-    repeated: {
-        get: function() {
-            return this.rule === "repeated";
-        }
-    },
-
-    /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
      * @name Field#packed
      * @type {boolean}
@@ -135,25 +129,22 @@ Object.defineProperties(FieldPrototype, {
      */
     packed: {
         get: function() {
-            return this.getOption("packed") !== false;
-        }
-    },
-
-    /**
-     * Determines whether this field is a map.
-     * @name Field#map
-     * @type {boolean}
-     * @readonly
-     */
-    map: {
-        get: function() {
-            if (!MapField)
-                MapField = require("./mapfield");
-            return this instanceof MapField;
+            if (this._packed === undefined)
+                this._packed = this.getOption("packed") !== false;
+            return this._packed;
         }
     }
 
 });
+
+/**
+ * @override
+ */
+FieldPrototype.setOption = function setOption(name, value, ifNotSet) {
+    if (name === "packed")
+        this._packed = undefined;
+    return ReflectionObject.prototype.setOption.call(this, name, value, ifNotSet);
+};
 
 /**
  * Tests if the specified JSON object describes a field.
@@ -224,23 +215,6 @@ FieldPrototype.resolve = function resolve() {
 };
 
 /**
- * Tests whether the specified value is present on the wire.
- * @param {*} value Field value
- * @returns {boolean} `true` if present
- */
-FieldPrototype.present = function present(value) {
-    if (this.required)
-        return true;
-    if (this.repeated)
-        return Boolean(value && value.length);
-    if (this.resolve().resolvedExtend)
-        return false;
-    if (this.resolvedType)
-        return Boolean(this.resolvedType.present(value));
-    return value != this.defaultValue; // eslint-disable-line eqeqeq
-};
-
-/**
  * Encodes the specified field value. Assumes that the field is present.
  * @param {*} value Field value
  * @param {!Writer} writer Writer to encode to
@@ -253,12 +227,12 @@ FieldPrototype.encode = function encode(value, writer) {
             value = [ value ];
         else if (!value.length)
             return writer;
-        if (this.packed && types.packable[type]) {
+        if (this.packed && types.packableWireTypes[type] !== undefined) {
             value.forEach(writer[type], writer.fork());
             var buf = writer.finish();
             if (buf.length)
                 writer.tag(this.id, 2).bytes(buf);
-        } else if (this.resolvedType)
+        } else
             value.forEach(function(val) {
                 this.resolvedType.encodeDelimited(val, writer.tag(this.id, 2));
             }, this);
@@ -279,21 +253,25 @@ FieldPrototype.encode = function encode(value, writer) {
  * @returns {*} Field value
  */
 FieldPrototype.decode = function decode(reader, receivedWireType) {
-    this.resolve();
-    // At this point we know that the id matches
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
-    if (this.repeated && this.packed && types.packable[type] && receivedWireType === 2) {
+
+    if (this.repeated && this.packed && types.packableWireTypes[type] === receivedWireType) {
         var limit = reader.uint32() + reader.pos,
             values = [];
         while (reader.pos < limit)
             values.push(reader[type]());
+        if (reader.pos > limit)
+            throw Error("illegal wire format");
         return values;
     }
-    // message type handles multiple values of repeated fields
-    var basicWireType = types.wireTypes[type];
-    if (receivedWireType === basicWireType)
-        return reader[type]();
-    else if (this.resolvedType && receivedWireType === 2)
-        return this.resolvedType.decode(reader);
-    throw Error("illegal wire type for " + this + " (received " + receivedWireType + ", expected " + (basicWireType !== undefined ? basicWireType : 2) + ")");
+
+    return receivedWireType === types.wireTypes[type]
+        ? reader[type]()
+        : this.resolvedType.decodeDelimited(reader); // assumes wire type 2, throws if invalid
+    
+    // NOTE: This is tuned to be fast with as few assertions as possible.
+    // Also note that there is no clean way to distinguish whether a field
+    // is packed on the wire or not if its type encodes with wire type 2.
+    // The official implementation obviously uses some sort of binary iterator
+    // class to distinguish there.
 };

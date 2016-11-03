@@ -1,15 +1,15 @@
 // This module provides minimal support for 64 bit values. It's just enough to read and write
 // JavaScript numbers and Long-like objects without sacrificing performance. Note that always
-// converting hence and forth with strings would yield terrible performance.
+// converting hence and forth between longs and strings would yield terrible performance.
 
-// For values less than or equal Number.MAX_SAFE_INTEGER respectively greater than or equal
-// Number.MIN_SAFE_INTEGER, JavaScript numbers are returned. Larger values are returned as an
+// For values less than or equal Number.MAX_SAFE_INTEGER and greater than or equal
+// Number.MIN_SAFE_INTEGER, JavaScript numbers are returned. Unsafe values are returned as an
 // object with a low and high property corresponding to their respective low and high 32 bits.
 
-// If your application does not deal with numbers larger than Number.MAX_SAFE_INTEGER, then
-// this implementation is fine for you. If you need to properly work with larger numbers, then
-// you don't need to craft this by yourself but should install long.js alongside protobuf.js,
-// which will make this module reliably return proper Long instances for all 64 bit numbers.
+// If your application does not deal with unsafe integers, then this implementation is fine for
+// you. If you need to properly work with larger numbers, then you don't need to craft this by
+// yourself but should install long.js alongside protobuf.js, which will make this module
+// reliably return proper Long instances for all 64 bit numbers.
 
 var util = require("../util");
 

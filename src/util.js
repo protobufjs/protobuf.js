@@ -66,11 +66,24 @@ util.isFunction = function isFunction(value) {
 
 /**
  * Tests if the specified value is a number.
+ * @memberof util
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is a number
  */
-util.isNumber = function isNumber(value) {
+function isNumber(value) {
     return typeof value === 'number';
+}
+
+util.isNumber = isNumber;
+
+/**
+ * Tests if the specified value is an integer.
+ * @function
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is an integer
+ */
+util.isInteger = Number.isInteger || function isInteger(value) {
+    return isNumber(value) && isFinite(value) && Math.floor(value) === value;
 };
 
 /**
