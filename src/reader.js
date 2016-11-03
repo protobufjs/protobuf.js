@@ -319,6 +319,15 @@ BufferReaderPrototype.double = function read_double_buffer() {
 };
 
 /**
+ * Reads a string.
+ * @param {number} [length] Optional number of bytes to read, if known beforehand
+ * @returns {string} Value read
+ */
+BufferReaderPrototype.string = function read_string_buffer(length) {
+    return this.bytes(length).toString("utf8");
+};
+
+/**
  * Finishes the current sequence of read operations using node buffers, frees all resources and returns the remaining buffer.
  * Optionally accepts a new buffer for a new sequence of read operations using node buffers.
  * @param {!Buffer} [buffer] Optionally a new buffer for a new sequence of read operations
