@@ -11,9 +11,10 @@
   "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
   "main": "src/index",
   "scripts": {
-    "test": "tap tests/*.js",
+    "build": "gulp",
+    "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md",
     "lint": "eslint src",
-    "build": "gulp"
+    "test": "tap tests/*.js"
   },
   "optionalDependencies": {
     "long": "^3.2.0"
@@ -27,6 +28,8 @@
     "gulp-if": "^2.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
+    "jaguarjs-jsdoc": "^1.0.1",
+    "jsdoc": "^3.4.2",
     "tap": "^8.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",

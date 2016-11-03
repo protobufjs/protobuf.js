@@ -25,7 +25,7 @@ tap.test("long support", function(test) {
         values.forEach(function(val) {
             util.Long = TLong;
             var num = val[0];
-            if (TLong && typeof num === 'number')
+            if (TLong && util.isNumber(num))
                 num = TLong.fromNumber(num);
             long_._set(num);
             test.ok(isEqual({ low: long_._lo, high: long_._hi }, val[1]), "should set the correct low and high bits for " + toString(val[0]));

@@ -2,5 +2,6 @@ npm-debug.log
 v8.log
 node_modules/
 dist/
+docs/
 node
 node.*
