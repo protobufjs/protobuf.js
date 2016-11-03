@@ -6,8 +6,6 @@ var util    = require("./util"),
 
 module.exports = Writer;
 
-var emptyBuffer = new array_._Array(0);
-
 /**
  * Default buffer size.
  * @type {number}
@@ -330,7 +328,7 @@ WriterPrototype.finish = function finish(clearForkedStates) {
         len = this.len;
     this.reset(clearForkedStates);
     if (buf && pos < len)
-        buf = pos ? this._slice.call(buf, 0, pos) : emptyBuffer;
+        buf = this._slice.call(buf, 0, pos);
     if (!bufs.length)
         return buf;
     len = pos;
