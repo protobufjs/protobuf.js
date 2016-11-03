@@ -103,7 +103,7 @@ var message = AwesomeMessage.decode(buffer);
 
 Structure
 ---------
-The library exports the `protobuf` namespace with the following members:
+The library exports a flat `protobuf` namespace with the following members, ordered by category:
 
 ### Parser
 
