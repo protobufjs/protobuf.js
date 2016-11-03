@@ -13,6 +13,10 @@ codebase. If you are looking for the current stable version, see the [master bra
 Examples
 --------
 
+```
+$> npm install protobufjs
+```
+
 ### Using .proto files
 
 ```protobuf
@@ -190,11 +194,38 @@ The library exports a flat `protobuf` namespace with the following members, orde
 * **types: `Object`** [[source](./src/types.js)]<br />
   Common protobuf types.
 
-For now, you can find documentation on these objects in the respective source files within
-`src/`.
+Documentation
+-------------
 
-To build production and development versions for the browser, run `npm install --dev` once,
-then `gulp` and see the files created in `dist/`.
+You can find documentation on these objects within the respective source files or alternatively build
+the documentation by first installing the development dependencies (if you haven't already) through
+running
+
+```
+$> npm install --dev
+```
+
+and then building the documentation to `docs/` through running
+
+```
+$> npm run docs
+```
+
+Building
+--------
+
+To build production and development versions with their respective source maps for the browser, first
+install the development dependencies (if you haven't already) through running
+
+```
+$> npm install --dev
+```
+
+and then build the development and production versions to `dist/` through running
+
+```
+$> npm run build
+```
 
 Compatibility
 -------------
