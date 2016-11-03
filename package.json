@@ -1,0 +1,40 @@
+{
+  "name": "protobufjs",
+  "version": "6.0.0-dev",
+  "description": "protocol buffers for javascript.",
+  "author": "Daniel Wirtz",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dcodeIO/protobuf.js.git"
+  },
+  "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "tap tests/*.js",
+    "lint": "eslint src",
+    "build": "gulp"
+  },
+  "optionalDependencies": {
+    "long": "^3.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "eslint": "^3.9.0",
+    "gulp": "^3.9.1",
+    "gulp-gzip": "^1.4.0",
+    "gulp-header": "^1.8.8",
+    "gulp-if": "^2.0.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
+    "tap": "^8.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-fs": "^2.4.4",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "browser": {
+    "process": false,
+    "buffer": false,
+    "fs": false
+  }
+}
