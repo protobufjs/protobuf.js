@@ -114,11 +114,10 @@ MapFieldPrototype.decode = function decode(reader) {
     
     if (length) {
 
-        var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType;
-        var keyWireType = types.mapKeyWireTypes[keyType];
-
-        var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type;
-        var valueWireType = types.wireTypes[valueType];
+        var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
+            keyWireType = types.mapKeyWireTypes[keyType];
+        var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
+            valueWireType = types.wireTypes[valueType];
 
         var limit  = reader.pos + length,
             keys   = [],
@@ -134,7 +133,7 @@ MapFieldPrototype.decode = function decode(reader) {
                 else
                     values.push(this.resolvedType.decodeDelimited(reader)); // throws if invalid
             } else
-                throw Error("illegal wire format for " + this + ": received id " + tag.id + ", expected [1,2]");
+                throw Error("illegal wire format for " + this);
         }
         if (reader.pos > limit)
             throw Error("illegal wire format for " + this);
@@ -144,5 +143,6 @@ MapFieldPrototype.decode = function decode(reader) {
             map[keys[i]] = values[i];
         // TODO: Long-likes cannot be keys
     }
-    return map;    
+
+    return map;
 };

@@ -17,7 +17,7 @@
     "build": "gulp",
     "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md",
     "lint": "eslint src",
-    "test": "tap -b tests/*.js"
+    "test": "tap -b -R spec tests/*.js"
   },
   "optionalDependencies": {
     "ieee754": "^1.1.8",

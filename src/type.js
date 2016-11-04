@@ -50,6 +50,20 @@ function Type(name, options) {
      * @private
      */
     this._fieldsById = null;
+
+    /**
+     * Cached field names.
+     * @type {?Array.<string>}
+     * @private
+     */
+    this._fieldNames = null;
+
+    /**
+     * Cached prototype.
+     * @type {?Prototype}
+     * @private
+     */
+    this._prototype = null;
 }
 
 var TypePrototype = Namespace.extend(Type, [ "fields", "oneofs", "extensions", "reserved" ]);
@@ -67,16 +81,28 @@ Object.defineProperties(TypePrototype, {
         get: function() {
             if (!this._fieldsById) {
                 this._fieldsById = {};
-                /* eslint-disable no-invalid-this */
-                this.each(function(field) {
-                    var id = field.id;
+                var names = this.fieldNames;
+                for (var i = 0, k = names.length; i < k; ++i) {
+                    var field = this.fields[names[i]],
+                        id = field.id;
                     if (this._fieldsById[id])
                         throw Error("duplicate id " + id + " in " + this);
                     this._fieldsById[id] = field;
-                }, this, this.fields);
-                /* eslint-enable no-invalid-this */
+                }
             }
             return this._fieldsById;
+        }
+    },
+
+    /**
+     * Message field names for iteration.
+     * @name Type#fieldNames
+     * @type {!Array.<string>}
+     * @readonly
+     */
+    fieldNames: {
+        get: function() {
+            return this._fieldNames || (this._fieldNames = Object.keys(this.fields));
         }
     }
 });
@@ -157,7 +183,7 @@ TypePrototype.add = function add(object) {
         if (object.parent)
             object.parent.remove(object);
         this.fields[object.name] = object;
-        this._fieldsById = null;
+        this._fieldsById = this._fieldNames = null;
         object.message = this;
         object.onAdd(this);
         return this;
@@ -180,7 +206,7 @@ TypePrototype.remove = function remove(object) {
         if (this.fields[object.name] !== object)
             throw Error("not a member of " + this);
         delete this.fields[object.name];
-        this._fieldsById = null;
+        this._fieldsById = this._fieldNames = null;
         object.message = null;
         return this;
     }
@@ -207,24 +233,39 @@ TypePrototype.create = function create(properties, constructor) {
         constructor = properties;
         properties = undefined;
     }
+
+    // If there is a dedicated constructor, take the fast route
     if (constructor)
         return new constructor(properties);
+    
+    // Otherwise set everything up for automagic creation
     if (!properties)
         properties = {};
-    var prototype = new Prototype();
-    var message = Object.create(prototype);
-    this.resolveExtends();
-    this.each(function(field, name) {
-        field.resolve();
-        var value = properties[name] || field.defaultValue;
-        if (field.repeated || field.map || util.isObject(value))
-            message[name] = value;     // not on the prototype because arrays and objects are mutable
-        else {
-            prototype[name] = field.defaultValue;
-            if (field.required || value !== field.defaultValue)
-                message[name] = value;
+    var fieldNames = this.resolveExtends().fieldNames,
+        prototype  = this._prototype;
+
+    // When creating an instance for the first time, prepare the prototype once
+    if (!prototype) {
+        prototype = new Prototype();
+        for (var i = 0, k = fieldNames.length; i < k; ++i) {
+            var name  = fieldNames[i],
+                field = this.fields[name].resolve(),
+                value = field.defaultValue;
+            if (!util.isObject(value)) // note that objects are immutable and thus cannot be on the prototype
+                prototype[name] = value;
         }
-    }, this, this.fields);
+        this._prototype = prototype;
+    }
+
+    // Create a new message instance and populate it
+    var message = Object.create(prototype);
+    for (var i = 0, k = fieldNames.length; i < k; ++i) {
+        var name  = fieldNames[i],
+            field = this.fields[name].resolve(),
+            value = properties[name] || field.defaultValue;
+        if (field.required || field.repeated || field.map || value !== field.defaultValue || util.isObject(value))
+            message[name] = value;
+    }
     return message;
 };
 
@@ -238,11 +279,14 @@ TypePrototype.encode = function encode(message, writer) {
     if (!writer)
         writer = Writer();
     this.resolveExtends();
-    this.each(function(field, name) {
-        var value = message[name];
-        if (field.resolve().required || value !== field.defaultValue)
+    var fieldNames = this.fieldNames;
+    for (var i = 0, k = fieldNames.length; i < k; ++i) {
+        var name  = fieldNames[i],
+            field = this.fields[name],
+            value = message[name];
+        if (field.resolve().required || value != field.defaultValue) // eslint-disable-line eqeqeq
             field.encode(value, writer);
-    }, this, this.fields);
+    }
     return writer;
 };
 
@@ -268,24 +312,25 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @returns {!Message} Decoded message
  */
 TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
-    if (util.isNumber(constructor)) {
+    if (typeof constructor === 'number') {
         length = constructor;
         constructor = undefined;
     }
     this.resolveExtends();
-    if (!(readerOrBuffer instanceof Reader))
-        readerOrBuffer = Reader(/* of type */ readerOrBuffer);
-    var limit = length === undefined ? readerOrBuffer.len : readerOrBuffer.pos + length,
-        message = this.create({}, constructor);
-    var fieldsById = this.fieldsById;
-    while (readerOrBuffer.pos < limit) {
-        var tag = readerOrBuffer.tag(),
+
+    var reader     = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer),
+        limit      = length === undefined ? reader.len : reader.pos + length,
+        message    = this.create({}, constructor),
+        fieldsById = this.fieldsById;
+
+    while (reader.pos < limit) {
+        var tag   = reader.tag(),
             field = fieldsById[tag.id];
         if (field) {
-            var name = field.name,
-                value = field.decode(readerOrBuffer, tag.wireType);
+            var name  = field.name,
+                value = field.decode(reader, tag.wireType);
             if (field.repeated) {
-                var array = message[name] = message[name] || [];
+                var array = message[name] || (message[name] = []);
                 if (util.isArray(value))
                     Array.prototype.push.apply(array, value);
                 else
@@ -295,24 +340,24 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
         } else {
             switch (tag.wireType) {
                 case 0:
-                    readerOrBuffer.skip();
+                    reader.skip();
                     break;
                 case 1:
-                    readerOrBuffer.skip(8);
+                    reader.skip(8);
                     break;
                 case 2:
-                    readerOrBuffer.skip(readerOrBuffer.uint32());
+                    reader.skip(reader.uint32());
                     break;
                 case 5:
-                    readerOrBuffer.skip(4);
+                    reader.skip(4);
                     break;
                 default:
                     throw Error("unsupported wire type of unknown field #" + tag.id + " in " + this + ": " + tag.wireType);
             }
         }
     }
-    if (readerOrBuffer.pos !== limit)
-        throw Error("invalid wire format: index " + readerOrBuffer.pos + " != " + limit);
+    if (reader.pos !== limit)
+        throw Error("invalid wire format: index " + reader.pos + " != " + limit);
     return message;
 };
 

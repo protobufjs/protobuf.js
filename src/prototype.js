@@ -3,7 +3,7 @@ module.exports = Prototype;
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
  * @constructor
- * @param {!Object} [properties] Properties to set on the instance. Only relevant when extended.
+ * @param {!Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
  * @abstract
  * @see {@link Type#create}
  */
@@ -22,41 +22,42 @@ function Prototype(properties) {
 }
 
 /**
- * Makes the specified constructor extend this prototype.
+ * Makes the specified constructor extend the runtime message prototype.
  * @param {function(new:Message)} constructor Constructor to extend
- * @param {!type} type Message type
+ * @param {!Type} type Reflected message type
  * @param {!Object.<string,*>} [options] Additional options
  * @returns {!Object} Prototype
  */
 Prototype.extend = function extend(constructor, type, options) {
-    options = options || {};
+    if (!options)
+        options = {};
 
     if (!options.noStatics) {
             
-        // Underlying reflected type for reference
+        // Underlying reflected message type for reference
         constructor.$type = type;
 
-        // Create a new message
+        // Creates a new message
         constructor.create = function(properties) {
             return this.$type.create(properties, constructor);
         };
 
-        // Encode to a buffer directly
+        // Encodes to a buffer
         constructor.encode = function encode(message) {
             return this.$type.encode(message).finish();
         };
 
-        // Encode to a buffer directly, length delimited
+        // Encodes to a buffer, length delimited
         constructor.encodeDelimited = function encodeDelimited(message) {
             return this.$type.encodeDelimited(message).finish();
         };
 
-        // Decode from a buffer
+        // Decodes from a buffer
         constructor.decode = function decode(buffer) {
             return this.$type.decode(buffer, constructor);
         };
 
-        // Decode from a buffer, length delimited
+        // Decodes from a buffer, length delimited
         constructor.decodeDelimited = function decodeDelimited(buffer) {
             return this.$type.decodeDelimited(buffer, constructor);
         };

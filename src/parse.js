@@ -242,10 +242,10 @@ function parse(source, root, visible) {
                         parseOneOf(type, tokenLower);
                         break;
                     case "extensions":
-                        (type.extensions = type.extensions || []).push(readRange(type, tokenLower));
+                        (type.extensions || (type.extensions = [])).push(readRange(type, tokenLower));
                         break;
                     case "reserved":
-                        (type.reserved = type.reserved || []).push(readRange(type, tokenLower));
+                        (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
                         break;
                     default:
                         if (!isProto3 || !typeRefRe.test(token))
