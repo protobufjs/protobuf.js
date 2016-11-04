@@ -16,7 +16,9 @@ function Prototype(properties) {
 
     // NOTE: Extending Prototype leaves optimization up to you. This method is here as a simple
     // way to set only properties that actually reference a field, so that instances have a fixed
-    // set a fields and hopefully do not resort back to a hashmap.
+    // set of fields and hopefully do not resort to become a hashmap. If you need your classes to
+    // copy any properties for example, you can do that by implementing initialization yourself,
+    // not calling this method from your constructor at all.
 }
 
 /**
