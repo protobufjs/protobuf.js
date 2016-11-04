@@ -1,4 +1,5 @@
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var isTypedArray = typeof Uint8Array !== 'undefined';
+var ArrayImpl = isTypedArray ? Uint8Array : Array;
 
 // Array implementation used
 exports._Array = ArrayImpl;
@@ -18,3 +19,6 @@ exports._set = ArrayImpl.prototype.set || function set_array(array, offset) {
     for (var i = 0, k = array.length; i < k; ++i)
         this[offset + i] = array[i];
 };
+
+// Empty buffer (null if mutable)
+exports._empty = isTypedArray ? new Uint8Array(0) : null;

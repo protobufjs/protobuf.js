@@ -67,9 +67,14 @@ Object.defineProperties(TypePrototype, {
         get: function() {
             if (!this._fieldsById) {
                 this._fieldsById = {};
+                /* eslint-disable no-invalid-this */
                 this.each(function(field) {
-                    this._fieldsById[field.id] = field; // eslint-disable-line no-invalid-this
+                    var id = field.id;
+                    if (this._fieldsById[id])
+                        throw Error("duplicate id " + id + " in " + this);
+                    this._fieldsById[id] = field;
                 }, this, this.fields);
+                /* eslint-enable no-invalid-this */
             }
             return this._fieldsById;
         }
@@ -268,9 +273,10 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
         readerOrBuffer = Reader(/* of type */ readerOrBuffer);
     var limit = length === undefined ? readerOrBuffer.len : readerOrBuffer.pos + length,
         message = this.create({}, constructor);
+    var fieldsById = this.fieldsById;
     while (readerOrBuffer.pos < limit) {
         var tag = readerOrBuffer.tag(),
-            field = this.fieldsById[tag.id];
+            field = fieldsById[tag.id];
         if (field) {
             var name = field.name,
                 value = field.decode(readerOrBuffer, tag.wireType);
@@ -297,12 +303,12 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
                     readerOrBuffer.skip(4);
                     break;
                 default:
-                    throw Error("unsupported wire type of unknown field #" + tag.id + ": " + tag.wireType);
+                    throw Error("unsupported wire type of unknown field #" + tag.id + " in " + this + ": " + tag.wireType);
             }
         }
     }
     if (readerOrBuffer.pos !== limit)
-        throw Error("illegal wire format: index " + readerOrBuffer.pos + " != " + limit);
+        throw Error("invalid wire format: index " + readerOrBuffer.pos + " != " + limit);
     return message;
 };
 

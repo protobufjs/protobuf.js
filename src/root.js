@@ -401,6 +401,8 @@ RootPrototype.handleResolve = function handleResolve(object) { // eslint-disable
         if (resolved) {
             while (resolved.length)
                 object.add(resolved.shift());
+            // FIXME: Actually, the field should either have multiple parents now, or have a sister-field
+            // that is used to represent it within its extended message. Hmm...
             delete this._resolvedExtends[fullName];
         }
     }

@@ -44,6 +44,8 @@ Object.defineProperties(EnumPrototype, {
                 this._valuesById = {};
                 Object.keys(this.values).forEach(function(name) {
                     var id = this.values[name];
+                    if (this._valuesById[id])
+                        throw Error("duplicate id " + id + " in " + this);
                     this._valuesById[id] = name;
                 }, this);
             }
@@ -83,7 +85,7 @@ EnumPrototype.add = function(name, id) {
     if (!util.isString(name))
         throw util._TypeError("name");
     if (!util.isInteger(id) || id < 0)
-        throw util._TypeError("id", "integer");
+        throw util._TypeError("id", "non-negative integer");
     this.values[name] = id;
     this._valuesById = null;
     return this;

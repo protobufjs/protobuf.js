@@ -34,7 +34,7 @@ function Writer() {
      * @type {number}
      */
     this.pos = 0;
-    
+
     /**
      * Current buffer length.
      * @type {number}
@@ -75,10 +75,8 @@ WriterPrototype._slice = array_._slice;
  * @inner
  */
 function expand(writer, writeLength) {
-    var pos = writer.pos,
-        buf = writer.buf;
-    if (pos)
-        writer.bufs.push(writer._slice.call(buf, 0, pos));
+    if (writer.pos)
+        writer.bufs.push(writer._slice.call(writer.buf, 0, writer.pos));
     writer.buf = writer.constructor.alloc(writer.len = Math.max(writeLength, Writer.BUFFER_SIZE));
     writer.pos = 0;
 }
@@ -103,17 +101,14 @@ WriterPrototype.tag = function write_tag(id, wireType) {
  */
 WriterPrototype.uint32 = function write_uint32(value) {
     value >>>= 0;
-    var len = value < 128 ? 1
-            : value < 16384 ? 2
-            : value < 2097152 ? 3
-            : value < 268435456 ? 4
-            : 5;
-    if (this.pos + len > this.len)
-        expand(this, len);
     while (value > 127) {
+        if (this.pos >= this.len)
+            expand(this, 1);
         this.buf[this.pos++] = value & 127 | 128;
         value >>>= 7;
     }
+    if (this.pos >= this.len)
+        expand(this, 1);
     this.buf[this.pos++] = value;
     return this;
 };
@@ -170,7 +165,7 @@ WriterPrototype.sint64 = function sint64(value) {
  * @returns {!Writer} this
  */
 WriterPrototype.bool = function write_bool(value) {
-    if (this.pos + 1 > this.len)
+    if (this.pos >= this.len)
         expand(this, 1);
     this.buf[this.pos++] = value ? 1 : 0;
     return this;
@@ -184,11 +179,10 @@ WriterPrototype.bool = function write_bool(value) {
 WriterPrototype.fixed32 = function write_fixed32(value) {
     if (this.pos + 4 > this.len)
         expand(this, 4);
-    value >>>= 0;
-    this.buf[this.pos++] = value        & 255;
-    this.buf[this.pos++] = value >>> 8  & 255;
-    this.buf[this.pos++] = value >>> 16 & 255;
-    this.buf[this.pos++] = value >>> 24 & 255;
+    this.buf[this.pos++] = (value >>>= 0) & 255;
+    this.buf[this.pos++] =  value >>> 8   & 255;
+    this.buf[this.pos++] =  value >>> 16  & 255;
+    this.buf[this.pos++] =  value >>> 24  & 255;
     return this;
 };
 
@@ -323,14 +317,17 @@ WriterPrototype.reset = function reset(clearForkedStates) {
  */
 WriterPrototype.finish = function finish(clearForkedStates) {
     var bufs = this.bufs,
-        buf = this.buf,
-        pos = this.pos,
-        len = this.len;
+        buf  = this.buf,
+        pos  = this.pos,
+        len  = this.len;
     this.reset(clearForkedStates);
-    if (buf && pos < len)
-        buf = this._slice.call(buf, 0, pos);
-    if (!bufs.length)
-        return buf;
+    if (buf) {
+        if (pos < len)
+            buf = this._slice.call(buf, 0, pos);
+        if (!bufs.length)
+            return buf;
+    } else
+        return array_._empty || [];
     len = pos;
     pos = 0;
     var i = 0,
@@ -353,9 +350,13 @@ WriterPrototype.finish = function finish(clearForkedStates) {
 var initBufferWriter = function() {
     if (util.Buffer) {
         BufferWriterPrototype._slice = util.Buffer.prototype.slice;
+        BufferWriter.alloc = util.Buffer.alloc || function(size) { return new util.Buffer(size); };
         initBufferWriter = undefined;
+        emptyBuffer = BufferWriter.alloc(0);
     }
 };
+
+var emptyBuffer = null;
 
 /**
  * Writer using node buffers.
@@ -367,13 +368,6 @@ function BufferWriter() {
     if (initBufferWriter)
         initBufferWriter();
     Writer.call(this);
-
-    /**
-     * Current buffer.
-     * @name BufferWriter#buffer
-     * @type {?Buffer}
-     * @override
-     */
 }
 
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
@@ -383,12 +377,16 @@ Writer.BufferWriter = BufferWriter;
 
 /**
  * Allocates a chunk of memory using node buffers.
+ * @name BufferWriter.alloc
  * @param {number} size Buffer size
  * @returns {!Buffer} Allocated buffer
  * @override
  */
 BufferWriter.alloc = function alloc_buffer(size) {
-    return util.Buffer.alloc ? util.Buffer.alloc(size) : new util.Buffer(size);
+    // This becomes overridden by initBufferWriter but it's here in case that alloc is used earlier
+    return util.Buffer.alloc
+        ? util.Buffer.alloc(size)
+        : new util.Buffer(size);
 };
 
 /**
@@ -428,10 +426,12 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     var len = value.length;
     this.uint32(len);
-    if (this.pos + len > this.len)
-        expand(this, len);
-    value.copy(this.buf, this.pos);
-    this.pos += len;
+    if (len) {
+        if (this.pos + len > this.len)
+            expand(this, len);
+        value.copy(this.buf, this.pos);
+        this.pos += len;
+    }
     return this;
 };
 
@@ -444,10 +444,12 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = util.Buffer.byteLength(value);
     this.uint32(len);
-    if (this.pos + len > this.len)
-        expand(this, len);
-    this.buf.write(value, this.pos);
-    this.pos += len;
+    if (len) {
+        if (this.pos + len > this.len)
+            expand(this, len);
+        this.buf.write(value, this.pos);
+        this.pos += len;
+    }
     return this;
 };
 
@@ -459,12 +461,15 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
  */
 BufferWriterPrototype.finish = function finish_buffer(clearForkedStates) {
     var bufs = this.bufs,
-        buf = this.buf,
-        pos = this.pos;
+        buf  = this.buf,
+        pos  = this.pos;
     this.reset(clearForkedStates);
-    if (!bufs.length)
-        return buf.slice(0, pos);
-    if (pos)
-        bufs.push(buf.slice(0, pos));
-    return util.Buffer.concat(bufs);
+    if (buf) {
+        if (!bufs.length)
+            return buf.slice(0, pos);
+        if (pos)
+            bufs.push(buf.slice(0, pos));
+        return util.Buffer.concat(bufs);
+    }
+    return emptyBuffer;
 };

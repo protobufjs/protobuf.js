@@ -24,9 +24,9 @@ function Reader(buffer) {
 
     /**
      * Read buffer.
-     * @type {?Array}
+     * @type {!Array}
      */
-    this.buf = buffer || null;
+    this.buf = buffer;
 
     /**
      * Read buffer position.
@@ -38,7 +38,7 @@ function Reader(buffer) {
      * Read buffer length.
      * @type {number}
      */
-    this.len = buffer ? buffer.length : 0;
+    this.len = buffer.length;
 }
 
 var ReaderPrototype = Reader.prototype;
@@ -128,12 +128,7 @@ ReaderPrototype.sint64 = function read_sint64() {
  * @returns {boolean} Value read
  */
 ReaderPrototype.bool = function read_bool() {
-    if (this.pos >= this.length)
-        throw RangeError(indexOutOfRange(this));
-    var octet = this.buf[this.pos];
-    return octet === 0 ? false
-         : octet === 1 ? true
-         : this.int32() !== 0;
+    return this.int32() !== 0;
 };
 
 /**
@@ -209,9 +204,9 @@ ReaderPrototype.double = function read_double() {
  */
 ReaderPrototype.bytes = function read_bytes(length) {
     if (length === undefined)
-        length = this.uint32();
+        length = this.int32() >>> 0;
     var start = this.pos,
-        end = this.pos + length;
+        end   = this.pos + length;
     if (end > this.len)
         throw RangeError(indexOutOfRange(this, length));
     this.pos += length;
@@ -256,7 +251,7 @@ ReaderPrototype.reset = function reset(buffer) {
         this.buf = buffer;
         this.len = buffer.length;
     } else {
-        this.buf = null;
+        this.buf = null; // makes it throw
         this.len = 0;
     }
     this.pos = 0;
@@ -334,7 +329,14 @@ BufferReaderPrototype.double = function read_double_buffer() {
  * @returns {string} Value read
  */
 BufferReaderPrototype.string = function read_string_buffer(length) {
-    return this.bytes(length).toString("utf8");
+    if (length === undefined)
+        length = this.int32() >>> 0;
+    var start = this.pos,
+        end   = this.pos + length;
+    if (end > this.len)
+        throw RangeError(indexOutOfRange(this, length));
+    this.pos += length;
+    return this.buf.toString("utf8", start, end);
 };
 
 /**
