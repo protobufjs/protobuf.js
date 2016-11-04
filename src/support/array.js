@@ -1,18 +1,45 @@
+// This module provides unified access to Uint8Array methods. If Uint8Array isn't supported, it
+// falls back to plain arrays.
+
 var isTypedArray = typeof Uint8Array !== 'undefined';
+
 var ArrayImpl = isTypedArray ? Uint8Array : Array;
 
-// Array implementation used
+/**
+ * Supported array implementation
+ * @type {function(new:Array})}
+ * @private
+ */
 exports._Array = ArrayImpl;
 
-// Common allocation function
+/**
+ * Allocates a new array.
+ * @param {number} size Array size
+ * @returns {!Array} Allocated array
+ * @private
+ */
 exports._alloc = function(size) {
     return new ArrayImpl(size);
 };
 
-// Polyfill for Uint8Array.prototype.slice
+/**
+ * Slices an array with slice, if supported, otherwise falls back to subarray.
+ * @function
+ * @param {number} start Start offset
+ * @param {number} [end] End offset
+ * @returns {!Array}
+ * @private
+ */
 exports._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
-// Polyfill for Uint8Array.prototype.set
+/**
+ * Sets the contents of another array on this array. Polyfilled for plain arrays.
+ * @function
+ * @param {!Array} array Array to set
+ * @param {number} offset Offset to begin setting at
+ * @returns {undefined}
+ * @private
+ */
 exports._set = ArrayImpl.prototype.set || function set_array(array, offset) {
     if (offset + array.length > this.length)
         throw RangeError("offset would store beyond the end of the array");
@@ -20,5 +47,9 @@ exports._set = ArrayImpl.prototype.set || function set_array(array, offset) {
         this[offset + i] = array[i];
 };
 
-// Empty buffer (null if mutable)
+/**
+ * Empty array instance, if immutable, otherwise null.
+ * @type {?Array}
+ * @private
+ */
 exports._empty = isTypedArray ? new Uint8Array(0) : null;

@@ -19,7 +19,7 @@ function Service(name, options) {
      * Service methods.
      * @type {!Object.<string,!Method>}
      */
-    this.methods = {}; // exposed
+    this.methods = {}; // exposed, marker
 }
 
 var ServicePrototype = Namespace.extend(Service, [ "methods" ]);

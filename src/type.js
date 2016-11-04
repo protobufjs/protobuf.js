@@ -24,7 +24,7 @@ function Type(name, options) {
      * Message fields.
      * @type {!Object.<string,!Field>}
      */
-    this.fields = {};  // exposed
+    this.fields = {};  // exposed, marker
 
     /**
      * Oneofs declared within this namespace, if any.
@@ -110,6 +110,28 @@ Object.defineProperties(TypePrototype, {
             for (var i = 0; i < length; ++i)
                 this._fieldsArray[i] = this.fields[names[i]];
             return this._fieldsArray;
+        }
+    },
+
+    /**
+     * Runtime message prototype of this message.
+     * @name Type#prototype
+     * @type {!Prototype}
+     * @readonly
+     */
+    prototype: {
+        get: function() {
+            if (this._prototype)
+                return this._prototype;
+            var fieldsArray = this.resolveExtends().fieldsArray,
+                fieldsCount = fieldsArray.length;
+            var prototype = new Prototype();
+            for (i = 0; i < fieldsCount; ++i) {
+                var field = fieldsArray[i].resolve();
+                if (!util.isObject(field.defaultValue)) // objects are immutable and thus cannot be on the prototype
+                    prototype[field.name] = field.defaultValue;
+            }
+            return this._prototype = prototype;
         }
     }
 });
@@ -254,27 +276,15 @@ TypePrototype.create = function create(properties, constructor) {
     if (constructor)
         return new constructor(properties);
     
-    // Otherwise set everything up for automagic creation
+    // Otherwise create a new message instance and populate it
     if (!properties)
         properties  = {};
     var fieldsArray = this.resolveExtends().fieldsArray,
-        fieldsCount = fieldsArray.length,
-        i, field;
-
-    // When creating an instance for the first time, prepare the prototype
-    if (!this._prototype) {
-        var prototype = new Prototype();
-        for (i = 0; i < fieldsCount; ++i)
-            if (!util.isObject((field = fieldsArray[i].resolve()).defaultValue)) // note that objects are immutable and thus cannot be on the prototype
-                prototype[field.name] = field.defaultValue;
-        this._prototype = prototype;
-    }
-
-    // Create a new message instance and populate it
-    var message = Object.create(this._prototype);
-    for (i = 0; i < fieldsCount; ++i) {
-        field = fieldsArray[i].resolve();
-        var value = properties[field.name] || field.defaultValue;
+        fieldsCount = fieldsArray.length;
+    var message = Object.create(this.prototype);
+    for (var i = 0; i < fieldsCount; ++i) {
+        var field = fieldsArray[i].resolve(),
+            value = properties[field.name] || field.defaultValue;
         if (field.required || field.repeated || field.map || value !== field.defaultValue || util.isObject(value))
             message[field.name] = value;
     }

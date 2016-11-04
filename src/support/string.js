@@ -1,3 +1,7 @@
+// This module provides support for encoding and decoding of utf8 strings to and from bytes within
+// browsers. It intentionally uses arrays for intermediate storage in case typed arrays are not
+// supported (we'd have to also polyfill Uint32Array and Uint16Array otherwise).
+
 // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
 
 /**
