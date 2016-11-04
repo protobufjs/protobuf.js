@@ -215,11 +215,15 @@ TypePrototype.create = function create(properties, constructor) {
     var message = Object.create(prototype);
     this.resolveExtends();
     this.each(function(field, name) {
+        field.resolve();
         var value = properties[name] || field.defaultValue;
-        if (!field.resolve().repeated)
+        if (field.repeated || field.map || util.isObject(value))
+            message[name] = value;     // not on the prototype because arrays and objects are mutable
+        else {
             prototype[name] = field.defaultValue;
-        if (field.required || value !== field.defaultValue || util.isObject(value))
-            message[name] = value; // note that objects are mutable and thus must be on the instance
+            if (field.required || value !== field.defaultValue)
+                message[name] = value;
+        }
     }, this, this.fields);
     return message;
 };

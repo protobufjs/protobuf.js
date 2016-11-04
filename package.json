@@ -10,9 +10,12 @@
   },
   "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
   "main": "src/index",
+  "bin": {
+    "pbjs": "bin/pbjs"
+  },
   "scripts": {
     "build": "gulp",
-    "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md",
+    "docs": "jsdoc -c scripts/jsdoc.conf.json -b -R README.md",
     "lint": "eslint src",
     "test": "tap tests/*.js"
   },

@@ -209,7 +209,9 @@ FieldPrototype.resolve = function resolve() {
 
     // when everything is resolved determine the default value
     var optionDefault;
-    if (this.repeated)
+    if (this.map)
+        this.defaultValue = {};
+    else if (this.repeated)
         this.defaultValue = [];
     else if (this.options && (optionDefault = this.options.default) !== undefined)
         this.defaultValue = optionDefault;

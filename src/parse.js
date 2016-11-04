@@ -291,7 +291,7 @@ function parse(source, root, visible) {
         var name = next();
         skip("=");
         var id = parseId(next());
-        parent.add(parseInlineOptions(new MapField(name, id, keyType, valueType)));
+        parent.add(parseInlineOptions(new MapField(name, id, valueType, keyType)));
     }
 
     function parseOneOf(parent, token) {

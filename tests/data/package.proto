@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+message Package {
+    string name = 1;
+    string version = 2;
+    string description = 3;
+    string author = 4;
+    string license = 5;
+
+    message Repository {
+        string type = 1;
+        string url = 2;
+    }
+
+    Repository repository = 6;
+    string bugs = 7;
+    string main = 8;
+    map<string, string> bin = 9;
+    map<string, string> scripts = 10;
+    map<string, string> dependencies = 11;
+    map<string, string> optionalDependencies = 12;
+    map<string, string> devDependencies = 13;
+    map<string, bool>   browser = 14;
+}

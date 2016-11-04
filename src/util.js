@@ -103,7 +103,7 @@ util.isBoolean = function isBoolean(value) {
  * @private
  */
 util._TypeError = function(name, typeName) {
-    return new TypeError(name + " must be of type " + (typeName || "string"));
+    return TypeError(name + " must be of type " + (typeName || "string"));
 };
 
 /**

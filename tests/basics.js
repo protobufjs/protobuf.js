@@ -29,10 +29,10 @@ tap.test("google.protobuf.Any type", function(test) {
         test.test("should encode", function(test) {
             
             writer = Any.encode(any, new protobuf.BufferWriter());
-            test.ok(writer instanceof protobuf.BufferWriter, "using a BufferWriter");
+            test.type(writer, protobuf.BufferWriter, "using a BufferWriter");
             buf = writer.finish();
 
-            test.ok(Buffer.isBuffer(buf), "to a Buffer");
+            test.type(buf, Buffer, "to a Buffer");
 
             test.equal(buf[0]    , 1 << 3 | 2, "a tag with id 1, wire type 2");
             test.equal(buf[1]    , 9         , "a field length of 9");
