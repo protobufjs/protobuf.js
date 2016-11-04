@@ -116,6 +116,7 @@ MapFieldPrototype.decode = function decode(reader) {
 
         var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
             keyWireType = types.mapKeyWireTypes[keyType];
+
         var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
             valueWireType = types.wireTypes[valueType];
 

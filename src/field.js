@@ -269,7 +269,7 @@ FieldPrototype.decode = function decode(reader, receivedWireType) {
         while (reader.pos < limit)
             values.push(reader[type]());
         if (reader.pos > limit)
-            throw Error("invalid wire format");
+            throw Error("invalid wire format for " + this);
         return values;
     }
 

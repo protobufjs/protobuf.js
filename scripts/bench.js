@@ -7,13 +7,17 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
 
     try {
 
-        // Hotspots:
-        // Type#decode, Type#create
+        // NOTE: This is currently testing string-heavy data, exactly where JSON excels.
+        // On my machine, protobuf is 6 times slower, which isn't bad considering that JSON
+        // is all native and heavily optimized.
+
+        // Our goal should be to reduce function calls and reflection iterations to a minimum.
+        // This is where code generation comes into play.
 
         var Package = root.lookup("Package");
-        var myPackage = Package.create(pkg);
-
-        var times = 10000;
+        var myPackage = Package.decode(Package.encode(Package.create(pkg)).finish());
+        
+        var times = 50000;
 
         function bench_protobuf() {
             var start = Date.now(),

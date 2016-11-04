@@ -348,12 +348,12 @@ WriterPrototype.finish = function finish(clearForkedStates) {
 // One time function to initialize BufferWriter with the now-known buffer
 // implementation's slice method
 var initBufferWriter = function() {
-    if (util.Buffer) {
-        BufferWriterPrototype._slice = util.Buffer.prototype.slice;
-        BufferWriter.alloc = util.Buffer.alloc || function(size) { return new util.Buffer(size); };
-        initBufferWriter = undefined;
-        emptyBuffer = BufferWriter.alloc(0);
-    }
+    if (!util.Buffer)
+        throw Error("Buffer is not supported");
+    BufferWriterPrototype._slice = util.Buffer.prototype.slice;
+    BufferWriter.alloc = util.Buffer.allocUnsafe || util.Buffer.alloc || function(size) { return new util.Buffer(size); };
+    initBufferWriter = undefined;
+    emptyBuffer = BufferWriter.alloc(0);
 };
 
 var emptyBuffer = null;
@@ -383,10 +383,9 @@ Writer.BufferWriter = BufferWriter;
  * @override
  */
 BufferWriter.alloc = function alloc_buffer(size) {
-    // This becomes overridden by initBufferWriter but it's here in case that alloc is used earlier
-    return util.Buffer.alloc
-        ? util.Buffer.alloc(size)
-        : new util.Buffer(size);
+    if (initBufferWriter)
+        initBufferWriter(); // overrides this method
+    return BufferWriter.alloc(size);
 };
 
 /**

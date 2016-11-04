@@ -52,11 +52,11 @@ function Type(name, options) {
     this._fieldsById = null;
 
     /**
-     * Cached field names.
-     * @type {?Array.<string>}
+     * Cached fields as an array.
+     * @type {!?Array.<!Field>}
      * @private
      */
-    this._fieldNames = null;
+    this._fieldsArray = null;
 
     /**
      * Cached prototype.
@@ -79,33 +79,51 @@ Object.defineProperties(TypePrototype, {
      */
     fieldsById: {
         get: function() {
-            if (!this._fieldsById) {
-                this._fieldsById = {};
-                var names = this.fieldNames;
-                for (var i = 0, k = names.length; i < k; ++i) {
-                    var field = this.fields[names[i]],
-                        id = field.id;
-                    if (this._fieldsById[id])
-                        throw Error("duplicate id " + id + " in " + this);
-                    this._fieldsById[id] = field;
-                }
+            if (this._fieldsById)
+                return this._fieldsById;
+            this._fieldsById = {};
+            var names = Object.keys(this.fields);
+            for (var i = 0, k = names.length; i < k; ++i) {
+                var field = this.fields[names[i]],
+                    id = field.id;
+                if (this._fieldsById[id])
+                    throw Error("duplicate id " + id + " in " + this);
+                this._fieldsById[id] = field;
             }
             return this._fieldsById;
         }
     },
 
     /**
-     * Message field names for iteration.
-     * @name Type#fieldNames
-     * @type {!Array.<string>}
+     * Message fields as an array for iteration.
+     * @name Type#fieldsArray
+     * @type {!Array.<!Field>}
      * @readonly
      */
-    fieldNames: {
+    fieldsArray: {
         get: function() {
-            return this._fieldNames || (this._fieldNames = Object.keys(this.fields));
+            if (this._fieldsArray)
+                return this._fieldsArray;
+            var names  = Object.keys(this.fields),
+                length = names.length;
+            this._fieldsArray = new Array(length);
+            for (var i = 0; i < length; ++i)
+                this._fieldsArray[i] = this.fields[names[i]];
+            return this._fieldsArray;
         }
     }
 });
+
+/**
+ * Clears the internal cache on a message type.
+ * @param {!Type} type Message type
+ * @returns {!Type} type
+ * @inner
+ */
+function clearCache(type) {
+    type._fieldsById = type._fieldsArray = type._prototype = null;
+    return type;
+}
 
 /**
  * Tests if the specified JSON object describes a message type.
@@ -182,8 +200,7 @@ TypePrototype.add = function add(object) {
     if (object instanceof Field) {
         if (object.parent)
             object.parent.remove(object);
-        this.fields[object.name] = object;
-        this._fieldsById = this._fieldNames = null;
+        clearCache(this).fields[object.name] = object;
         object.message = this;
         object.onAdd(this);
         return this;
@@ -205,8 +222,7 @@ TypePrototype.remove = function remove(object) {
     if (object instanceof Field) {
         if (this.fields[object.name] !== object)
             throw Error("not a member of " + this);
-        delete this.fields[object.name];
-        this._fieldsById = this._fieldNames = null;
+        delete clearCache(this).fields[object.name];
         object.message = null;
         return this;
     }
@@ -240,31 +256,27 @@ TypePrototype.create = function create(properties, constructor) {
     
     // Otherwise set everything up for automagic creation
     if (!properties)
-        properties = {};
-    var fieldNames = this.resolveExtends().fieldNames,
-        prototype  = this._prototype;
+        properties  = {};
+    var fieldsArray = this.resolveExtends().fieldsArray,
+        fieldsCount = fieldsArray.length,
+        i, field;
 
-    // When creating an instance for the first time, prepare the prototype once
-    if (!prototype) {
-        prototype = new Prototype();
-        for (var i = 0, k = fieldNames.length; i < k; ++i) {
-            var name  = fieldNames[i],
-                field = this.fields[name].resolve(),
-                value = field.defaultValue;
-            if (!util.isObject(value)) // note that objects are immutable and thus cannot be on the prototype
-                prototype[name] = value;
-        }
+    // When creating an instance for the first time, prepare the prototype
+    if (!this._prototype) {
+        var prototype = new Prototype();
+        for (i = 0; i < fieldsCount; ++i)
+            if (!util.isObject((field = fieldsArray[i].resolve()).defaultValue)) // note that objects are immutable and thus cannot be on the prototype
+                prototype[field.name] = field.defaultValue;
         this._prototype = prototype;
     }
 
     // Create a new message instance and populate it
-    var message = Object.create(prototype);
-    for (var i = 0, k = fieldNames.length; i < k; ++i) {
-        var name  = fieldNames[i],
-            field = this.fields[name].resolve(),
-            value = properties[name] || field.defaultValue;
+    var message = Object.create(this._prototype);
+    for (i = 0; i < fieldsCount; ++i) {
+        field = fieldsArray[i].resolve();
+        var value = properties[field.name] || field.defaultValue;
         if (field.required || field.repeated || field.map || value !== field.defaultValue || util.isObject(value))
-            message[name] = value;
+            message[field.name] = value;
     }
     return message;
 };
@@ -278,12 +290,11 @@ TypePrototype.create = function create(properties, constructor) {
 TypePrototype.encode = function encode(message, writer) {
     if (!writer)
         writer = Writer();
-    this.resolveExtends();
-    var fieldNames = this.fieldNames;
-    for (var i = 0, k = fieldNames.length; i < k; ++i) {
-        var name  = fieldNames[i],
-            field = this.fields[name],
-            value = message[name];
+    var fieldsArray = this.resolveExtends().fieldsArray,
+        fieldsCount = fieldsArray.length;
+    for (var i = 0; i < fieldsCount; ++i) {
+        var field = fieldsArray[i],
+            value = message[field.name];
         if (field.resolve().required || value != field.defaultValue) // eslint-disable-line eqeqeq
             field.encode(value, writer);
     }
