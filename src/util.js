@@ -220,27 +220,43 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
     return originPath.length ? normalizePath(originPath + '/' + importPath) : importPath;
 };
 
+// One time function to initialize long support
+var initLongSupport = function() {
+    long_ = require("./support/long");
+    util.toHash = toHash;
+    util.fromHash = fromHash;
+    initLongSupport = undefined;
+};
+
 /**
  * Converts a number or long-like object to an 8 characters long hash string.
+ * @memberof util
  * @param {number|!{ low: number, high: number }} value Value to convert
  * @returns {string} Hashed value
  */
-util.toHash = function(value) {
-    if (!long_)
-        long_ = require("./support/long");
-    return long_._set(value)
-                ._getHash();
+function toHash(value) {
+    return long_._set(value)._getHash();
+}
+
+util.toHash = function(value) { // becomes overridden by initLongSupport
+    if (initLongSupport)
+        initLongSupport();
+    return toHash(value);
 };
 
 /**
  * Converts an 8 characters long hash string to a number or long-like object.
+ * @memberof util
  * @param {string} hash Hashed value to convert
  * @param {boolean} [unsigned] Whether unsigned or not
  * @returns {number|!{ low: number, high: number, unsigned: boolean }} Original value
  */
-util.fromHash = function(hash, unsigned) {
-    if (!long_)
-        long_ = require("./support/long");
-    return long_._setHash(hash)
-                ._get(Boolean(unsigned));
+function fromHash(hash, unsigned) {
+    return long_._setHash(hash)._get(Boolean(unsigned));
+}
+
+util.fromHash = function(hash, unsigned) { // becomes overridden by initLongSupport
+    if (initLongSupport)
+        initLongSupport();
+    return fromHash(hash, unsigned);
 };

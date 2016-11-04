@@ -3,6 +3,12 @@ var Root;
 
 module.exports = ReflectionObject;
 
+// One time function to initialize cyclic dependencies
+var initCyclics = function() {
+    Root = require("./root");
+    initCyclics = false;
+};
+
 /**
  * Base class of all reflection objects.
  * @constructor
@@ -190,8 +196,8 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         this.parent.remove(this);
     this.parent = parent;
     this.resolved = false;
-    if (!Root)
-        Root = require("./root");
+    if (initCyclics)
+        initCyclics();
     var root = parent.root;
     if (root instanceof Root)
         root.handleAdd(this, parent);
@@ -205,8 +211,8 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     this.parent = null;
     this.resolved = false;
-    if (!Root)
-        Root = require("./root");
+    if (initCyclics)
+        initCyclics();
     var root = parent.root;
     if (root instanceof Root)
         root.handleRemove(this, parent);
@@ -219,8 +225,8 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (!Root)
-        Root = require("./root");
+    if (initCyclics)
+        initCyclics();
     var root = this.root;
     if (root instanceof Root) {
         root.handleResolve(this);

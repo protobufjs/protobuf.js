@@ -275,10 +275,10 @@ ReaderPrototype.finish = function finish(buffer) {
 // One time function to initialize BufferReader with the now-known buffer
 // implementation's slice method
 var initBufferReader = function() {
-    if (util.Buffer) {
-        BufferReaderPrototype._slice = util.Buffer.prototype.slice;
-        initBufferReader = undefined;
-    }
+    if (!util.Buffer)
+        throw Error("Buffer is not supported");
+    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
+    initBufferReader = false;
 };
 
 /**

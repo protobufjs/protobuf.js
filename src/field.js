@@ -6,6 +6,12 @@ var Type;
 
 module.exports = Field;
 
+// One time function to initialize cyclic dependencies
+var initCyclics = function() {
+    Type = require("./type");
+    initCyclics = false;
+};
+
 /**
  * Reflected message field.
  * @extends ReflectionObject
@@ -179,8 +185,8 @@ FieldPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
-    if (!Type)
-        Type = require("./type");
+    if (initCyclics)
+        initCyclics();
 
     var resolved;
 

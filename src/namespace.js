@@ -1,10 +1,17 @@
 var ReflectionObject = require("./object"),
     Enum    = require("./enum"),
     util    = require("./util");
-var Service,
-    Type;
+var Type,
+    Service;
 
 module.exports = Namespace;
+
+// One time function to initialize cyclic dependencies
+var initCyclics = function() {
+    Type = require("./typee");
+    Service = require("./service");
+    initCyclics = false;
+};
 
 /**
  * Base class of all reflection objects containing nested objects.
@@ -54,10 +61,8 @@ Object.defineProperties(NamespacePrototype, {
 Namespace.fromJSON = function fromJSON(name, json) {
     var ns = new Namespace(name, json.options);
     if (json.nested) {
-        if (!Type)
-            Type = require("./type");
-        if (!Service)
-            Service = require("./Service");
+        if (initCyclics)
+            initCyclics();
         var nestedTypes = [ Enum, Type, Service ];
         Object.keys(json.nested).forEach(function(nestedName) {
             var nested = json.nested[nestedName];
@@ -122,8 +127,8 @@ NamespacePrototype.add = function add(object) {
         throw util._TypeError("object", "ReflectionObject");
     var prev = this.get(object.name);
     if (prev) {
-        if (!Type)
-            Type = require("./type");
+        if (initCyclics)
+            initCyclics();
         if (prev instanceof Namespace && !(prev instanceof Type) && object instanceof Type) {
             prev.each(object.add, object); // move existing nested objects to the message type
             this.remove(prev);             // and remove the previous namespace
