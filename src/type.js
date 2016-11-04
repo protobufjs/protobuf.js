@@ -126,12 +126,13 @@ Object.defineProperties(TypePrototype, {
             var fieldsArray = this.resolveExtends().fieldsArray,
                 fieldsCount = fieldsArray.length;
             var prototype = new Prototype();
-            for (i = 0; i < fieldsCount; ++i) {
+            for (var i = 0; i < fieldsCount; ++i) {
                 var field = fieldsArray[i].resolve();
                 if (!util.isObject(field.defaultValue)) // objects are immutable and thus cannot be on the prototype
                     prototype[field.name] = field.defaultValue;
             }
-            return this._prototype = prototype;
+            this._prototype = prototype;
+            return prototype;
         }
     }
 });

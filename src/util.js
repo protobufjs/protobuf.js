@@ -1,6 +1,7 @@
 var fs     = require("fs"),
     buffer = require("buffer");
-var Long; try { Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
+var long_,
+    Long; try { Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Utility functions.
@@ -217,4 +218,29 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
         originPath = normalizePath(originPath);
     originPath = originPath.replace(/\/[^/]+$/, '');
     return originPath.length ? normalizePath(originPath + '/' + importPath) : importPath;
+};
+
+/**
+ * Converts a number or long-like object to an 8 characters long hash string.
+ * @param {number|!{ low: number, high: number }} value Value to convert
+ * @returns {string} Hashed value
+ */
+util.toHash = function(value) {
+    if (!long_)
+        long_ = require("./support/long");
+    return long_._set(value)
+                ._getHash();
+};
+
+/**
+ * Converts an 8 characters long hash string to a number or long-like object.
+ * @param {string} hash Hashed value to convert
+ * @param {boolean} [unsigned] Whether unsigned or not
+ * @returns {number|!{ low: number, high: number, unsigned: boolean }} Original value
+ */
+util.fromHash = function(hash, unsigned) {
+    if (!long_)
+        long_ = require("./support/long");
+    return long_._setHash(hash)
+                ._get(Boolean(unsigned));
 };

@@ -1,6 +1,6 @@
 // This module provides support for reading and writing floats and doubles to and from bytes
-// within browsers. It intentionally doesn't use typed arrays so that the library can fall
-// back to plain arrays if typed arrays are not supported.
+// within browsers. It intentionally doesn't use typed arrays (i.e. Float32Array) so that the
+// library can fall back to plain arrays if typed arrays are not supported.
 
 /*
 ieee754 is Copyright (c) 2008, Fair Oaks Labs, Inc.

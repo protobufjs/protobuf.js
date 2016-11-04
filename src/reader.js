@@ -11,7 +11,7 @@ function indexOutOfRange(reader, writeLength) {
 }
 
 /**
- * Reader using typed arrays.
+ * Wire format reader using arrays.
  * @constructor
  * @param {!Array} buffer Buffer to read from
  */
@@ -282,7 +282,7 @@ var initBufferReader = function() {
 };
 
 /**
- * Reader using node buffers.
+ * Wire format reader using node buffers.
  * @memberof Reader
  * @extends Reader
  * @constructor

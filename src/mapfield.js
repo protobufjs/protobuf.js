@@ -140,9 +140,8 @@ MapFieldPrototype.decode = function decode(reader) {
             throw Error("illegal wire format for " + this);
         if (keys.length !== values.length)
             throw Error("illegal wire format for " + this + ": key/value count mismatch");
-        for (var i = 0, k = keys.length; i < k; ++i)
-            map[keys[i]] = values[i];
-        // TODO: Long-likes cannot be keys
+        for (var i = 0, k = keys.length, key; i < k; ++i)
+            map[typeof (key = keys[i]) === 'object' ? util.toHash(key) : key] = values[i];
     }
 
     return map;

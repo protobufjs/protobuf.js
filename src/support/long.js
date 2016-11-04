@@ -36,6 +36,7 @@ exports._hi = 0;
  * @param {!Reader} reader Reader to read from
  * @param {!function(!Reader, number=)} indexOutOfRange Error message function
  * @returns {!Object} this
+ * @private
  */
 exports._read = function long_read(reader, indexOutOfRange) {
     var i, b;
@@ -78,6 +79,7 @@ exports._read = function long_read(reader, indexOutOfRange) {
  * Reads fixed 64 bits from the specified reader and stores the low and high bits.
  * @param {!Reader} reader Reader to read from
  * @returns {!Object} this
+ * @private
  */
 exports._readFixed = function long_readFixed(reader) {
     this._lo = (reader.buf[reader.pos++]
@@ -148,6 +150,7 @@ exports._writeFixed = function long_writeFixed(writer) {
  * Gets the low and high bits as a JavaScript number, long-like object or actual Long.
  * @param {boolean} unsigned Whether unsigned or not
  * @returns {number|!{ low: number, high: number, unsigned: boolean }|!Long} Value read
+ * @private
  */
 exports._get = function long_get(unsigned) {
     if (util.Long)
@@ -168,16 +171,33 @@ exports._get = function long_get(unsigned) {
 };
 
 /**
- * Sets the low and high bits from a number or long-like object.
- * @param {number|!{ low: number, high: number }|!Long} value Value to set
+ * Gets the low and high bits as an 8 characters long hash string.
+ * @returns {string} Hashed string
+ * @private
+ */
+exports._getHash = function long_getHash() {
+    return String.fromCharCode(
+        this._lo        & 255,
+        this._lo >>> 8  & 255,
+        this._lo >>> 16 & 255,
+        this._lo >>> 24 & 255,
+        this._hi        & 255,
+        this._hi >>> 8  & 255,
+        this._hi >>> 16 & 255,
+        this._hi >>> 24 & 255
+    );
+};
+
+/**
+ * Sets the low and high bits from a number, long-like object or hash string.
+ * @param {number|!{ low: number, high: number }|!Long|string} value Value to set
  * @returns {!Object} this
  * @private
  */
 exports._set = function long_set(value) {
-    var sign;
-    if (util.isNumber(value)) {
-        sign = value < 0;
-        value = Math.abs(value);
+    if (typeof value === 'number') {
+        var sign = value < 0;
+           value = Math.abs(value);
         this._lo = value >>> 0;
         this._hi = (value - this._lo) / 4294967296 >>> 0;
         if (sign) {
@@ -189,18 +209,43 @@ exports._set = function long_set(value) {
                     this._hi = 0;
             }
         }
-    } else {
+    } else if (typeof value === 'object') {
         this._lo = value.low  >>> 0;
         this._hi = value.high >>> 0;
-    }
+    } else
+        long_setHash(value);
     return exports;
 };
+
+var charCodeAt = String.prototype.charCodeAt;
+
+function long_setHash(hash) {
+    exports._lo = (charCodeAt.call(hash, 0)
+                |  charCodeAt.call(hash, 1) << 8
+                |  charCodeAt.call(hash, 2) << 16
+                |  charCodeAt.call(hash, 3) << 24) >>> 0;
+    exports._hi = (charCodeAt.call(hash, 4)
+                |  charCodeAt.call(hash, 5) << 8
+                |  charCodeAt.call(hash, 6) << 16
+                |  charCodeAt.call(hash, 7) << 24) >>> 0;
+    return exports;
+}
+
+/**
+ * Sets the low and high bits from a 8 characters long hash string.
+ * @function
+ * @param {string} Hashed value to set
+ * @returns {!Object} this
+ * @private
+ */
+exports._setHash = long_setHash;
 
 // Zig-zag encoding
 
 /**
  * Zig-zag encodes the low and high bits.
  * @returns {!Object} this
+ * @private
  */
 exports._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
     var mask = -(this._hi >>> 31);
@@ -212,6 +257,7 @@ exports._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
 /**
  * Zig-zag decodes the low and high bits.
  * @returns {!Object} this
+ * @private
  */
 exports._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)
     var mask = -(this._lo & 1);

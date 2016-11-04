@@ -12,6 +12,13 @@ function toString(a) {
     return Long.fromValue(a).toString();
 }
 
+function unhash(h) {
+    var bytes = new Array(8);
+    for (var i = 0; i < 8; ++i)
+        bytes[i] = h.charCodeAt(i);
+    return bytes;
+}
+
 tap.test("long support", function(test) {
     var values = [
         [ 0, { low: 0, high: 0 }],
@@ -33,7 +40,22 @@ tap.test("long support", function(test) {
             test.ok(isEqual(ret, num), "should get back the low and high bits as " + toString(val[0]));
         });
     });
+    
     util.Long = Long;
+
+    test.test("should hash", function(test) {
+
+        values.forEach(function(val) {
+            var hash = util.toHash(val[1]);
+            test.type(hash, "string", toString(val[1]) + " as a string");
+            test.equal(hash.length, 8, toString(val[1]) + " to a length of 8");
+            test.deepEqual(unhash(util.toHash(val[1])), Long.fromValue(val[1]).toBytesLE(), toString(val[1]) + " equal to its LE bytes representation");
+            test.deepEqual(util.fromHash(hash, false), { low: val[1].low, high: val[1].high, unsigned: false }, toString(val[1]) + " back to the original value as if signed");
+            test.deepEqual(util.fromHash(hash, true) , { low: val[1].low, high: val[1].high, unsigned: true }, toString(val[1]) + " back to the original value as if unsigned");
+        });
+
+        test.end();
+    });
 
     test.test("should zig-zag", function(test) {
 

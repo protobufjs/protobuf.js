@@ -13,7 +13,7 @@ module.exports = Writer;
 Writer.BUFFER_SIZE = 1024;
 
 /**
- * Writer using typed arrays.
+ * Wire format writer using arrays.
  * @constructor
  */
 function Writer() {
@@ -359,7 +359,7 @@ var initBufferWriter = function() {
 var emptyBuffer = null;
 
 /**
- * Writer using node buffers.
+ * Wire format writer using node buffers.
  * @memberof Writer
  * @extends Writer
  * @constructor
