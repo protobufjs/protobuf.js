@@ -29,20 +29,11 @@ function Root(contextOptions, options) {
     this._loaded = []; // use addLoaded/isLoaded instead
 
     /**
-     * Deferred extension fields that have not yet been added to their extended type and are still
-     * unresolved.
+     * Array of pending extension fields.
      * @type {!Array.<!Field>}
      * @private
      */
-    this._extends = [];
-
-    /**
-     * Deferred extension fields that have been resolved but not yet been added to their extended
-     * type.
-     * @type {!Object.<string,!Array<!Field>>}
-     * @private
-     */
-    this._resolvedExtends = {};
+    this.pendingExtensions = [];
 
     if (!contextOptions.noGoogleTypes)
         importGoogleTypes(this, false);
@@ -345,67 +336,67 @@ RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-
 };
 
 /**
- * Resolves any deferred extended fields that have not yet been added to their extended type.
- * @returns {!Root} this
+ * Handles a (pending) declaring extension field by creating a sister field to represent it
+ * within its extended type.
+ * @param {!Field} field Declaring extension field witin the declaring type
+ * @returns {boolean} `true` if successfully added to the extended type, `false` otherwise
+ * @inner
  */
-RootPrototype.resolveExtends = function resolveExtends() {
-    while (this._extends.length) {
-        var field = this._extends.shift(),
-            extendedType = field.parent.lookup(field.extend);
-        if (extendedType && extendedType.root === this) {
-            var fullName = extendedType.fullName;
-            field.extend = fullName;
-            (this._resolvedExtends[fullName] || (this._resolvedExtends[fullName] = [])).push(field);
-        }
+function handleExtension(field) {
+    var extendedType = field.parent.lookup(field.extend);
+    if (extendedType) {
+        var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
+        sisterField.declaringField = field;
+        field.extensionField = sisterField;
+        extendedType.add(sisterField);
+        return true;
     }
-    return this;
-};
+    return false;
+}
 
 /**
  * Called when any object is added to this root or its sub-namespaces.
  * @param {!ReflectionObject} object Object added
- * @param {!Namespace} parent Parent added to
  * @returns {undefined}
  */
-RootPrototype.handleAdd = function handleAdd(object, parent) { // eslint-disable-line no-unused-vars
-    if (object instanceof Field && object.extend !== undefined) {
-        // Remember this extension and inject it when handleResolve is called
-        this._extends.push(object);
+RootPrototype.handleAdd = function handleAdd(object) {
+    // Try to handle any pending extensions
+    var newPendingExtensions = this.pendingExtensions.slice();
+    this.pendingExtensions = []; // because the loop calls handleAdd
+    for (var i = 0; i < newPendingExtensions.length;) {
+        if (handleExtension(newPendingExtensions[i]))
+            newPendingExtensions.splice(i, 1);
+        else
+            ++i;
     }
+    this.pendingExtensions = newPendingExtensions;
+    // Handle new declaring extension fields without a sister field yet
+    if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.pendingExtensions.indexOf(object) < 0)
+        this.pendingExtensions.push(object);
+    else if (object instanceof Namespace)
+        object.each(this.handleAdd, this); // recurse into the namespace
 };
 
 /**
  * Called when any object is removed from this root or its sub-namespaces.
  * @param {!ReflectionObject} object Object removed
- * @param {!Namespace} parent Parent removed from
  * @returns {undefined}
  */
-RootPrototype.handleRemove = function handleRemove(object, parent) { // eslint-disable-line no-unused-vars
-    if (object instanceof Field && object.extend !== undefined) {
-        var index = this._extends.indexOf(object);
-        if (index > -1)
-            this._extends.splice(index, 1);
-    }
-};
-
-/**
- * Called when any object in this root or its sub-namespaces is being resolved.
- * @param {!ReflectionObject} object Object being resolved
- * @returns {undefined}
- */
-RootPrototype.handleResolve = function handleResolve(object) { // eslint-disable-line no-unused-vars
-    if (object instanceof Type) {
-        this.resolveExtends();
-        var fullName = object.fullName,
-            resolved = this._resolvedExtends[fullName];
-        if (resolved) {
-            while (resolved.length)
-                object.add(resolved.shift());
-            // FIXME: Actually, the field should either have multiple parents now, or have a sister-field
-            // that is used to represent it within its extended message. Hmm...
-            delete this._resolvedExtends[fullName];
+RootPrototype.handleRemove = function handleRemove(object) {
+    if (object instanceof Field) {
+        // If a pending declaring extension field, cancel the extension
+        if (object.extend !== undefined && !object.extensionField) {
+            var index = this.pendingExtensions.indexOf(object);
+            if (index > -1)
+                this.pendingExtensions.splice(index, 1);
         }
-    }
+        // If a declaring extension field with a sister field, remove its sister field
+        if (object.extensionField) {
+            object.extensionField.parent.remove(object.extensionField);
+            object.extensionField = null;
+        }
+    } else if (object instanceof Namespace)
+        object.each(this.handleRemove, this); // recurse into the namespace
 };
 
 /**

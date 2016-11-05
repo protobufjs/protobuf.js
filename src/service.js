@@ -45,6 +45,16 @@ Service.fromJSON = function fromJSON(name, json) {
 };
 
 /**
+ * @override
+ */
+ServicePrototype.resolveAll = function resolve() {
+    this.each(function(method) {
+        method.resolve();
+    }, this, this.methods);
+    return Namespace.prototype.resolve.call(this);
+};
+
+/**
  * Adds a method to this service.
  * @param {!Method} method Method to add
  * @returns {!Service} this

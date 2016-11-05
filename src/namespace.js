@@ -3,13 +3,17 @@ var ReflectionObject = require("./object"),
     util    = require("./util");
 var Type,
     Service;
+var nestedTypes,
+    nestedError;
 
 module.exports = Namespace;
 
 // One time function to initialize cyclic dependencies
 var initCyclics = function() {
-    Type = require("./typee");
+    Type = require("./type");
     Service = require("./service");
+    nestedTypes = [ Enum, Type, Service, Namespace ];
+    nestedError = nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
     initCyclics = false;
 };
 
@@ -49,7 +53,21 @@ Object.defineProperties(NamespacePrototype, {
 
 });
 
-// NOTE: There is no JSON test for namespace. Namespaces are the fallback.
+/**
+ * Tests if the specified JSON object describes not another reflection object.
+ * @param {*} json JSON object
+ * @returns {boolean} `true` if the object describes not another reflection object
+ */
+Namespace.testJSON = function testJSON(json) {
+    return Boolean(json
+        && !json.fields                   // Type
+        && !json.values                   // Enum
+        && json.id === undefined          // Field, MapField
+        && !json.oneof                    // OneOf
+        && !json.methods                  // Service
+        && json.requestType === undefined // Method
+    );
+};
 
 /**
  * Constructs a namespace from JSON.
@@ -63,7 +81,6 @@ Namespace.fromJSON = function fromJSON(name, json) {
     if (json.nested) {
         if (initCyclics)
             initCyclics();
-        var nestedTypes = [ Enum, Type, Service ];
         Object.keys(json.nested).forEach(function(nestedName) {
             var nested = json.nested[nestedName];
             for (var i = 0, k = nestedTypes.length, clazz; i < k; ++i)
@@ -71,7 +88,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
                     ns.add(clazz.fromJSON(nestedName, nested));
                     return;
                 }
-            throw Error("invalid nested object in " + ns + ": " + nestedName);
+            throw util._TypeError("nested", nestedError);
         });
     }
     return ns;
@@ -98,13 +115,23 @@ NamespacePrototype.each = function each(fn, ctx, object) {
 };
 
 /**
- * Tests if the specified name (already) exists in this namespace.
- * @param {string} name Nested object name
- * @returns {boolean} `true` if the name exists
+ * Recursively traverses over all nested objects within this namespace.
+ * @memberof NamespacePrototype
+ * @param {function(!ReflectionObject):*} fn Visitor function called with each nested object
+ * @param {!Object} [ctx] Optional visitor function context
+ * @returns {!Namespace} this
  */
-NamespacePrototype.exists = function exists(name) {
-    return Boolean(this.nested && this.nested[name]);
-};
+function traverse(fn, ctx) {
+    /* eslint-disable no-invalid-this */
+    return this.each(function(nested) {
+        fn.call(ctx || this, nested);
+        if (nested.nested)
+            traverse.call(nested, fn, ctx);
+    }, this);
+    /* eslint-enable no-invalid-this */
+}
+
+NamespacePrototype.traverse = traverse;
 
 /**
  * Gets the nested object of the specified name.
@@ -112,9 +139,7 @@ NamespacePrototype.exists = function exists(name) {
  * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
  */
 NamespacePrototype.get = function get(name) {
-    if (!this.nested)
-        return null;
-    return this.nested[name] || null;
+    return this.nested && this.nested[name] || null;
 };
 
 /**
@@ -123,20 +148,24 @@ NamespacePrototype.get = function get(name) {
  * @returns {!Namespace} this
  */
 NamespacePrototype.add = function add(object) {
-    if (!(object instanceof ReflectionObject))
-        throw util._TypeError("object", "ReflectionObject");
-    var prev = this.get(object.name);
-    if (prev) {
-        if (initCyclics)
-            initCyclics();
-        if (prev instanceof Namespace && !(prev instanceof Type) && object instanceof Type) {
-            prev.each(object.add, object); // move existing nested objects to the message type
-            this.remove(prev);             // and remove the previous namespace
-        } else
-            throw Error("duplicate name '" + object.name + "' in " + this);
-    }
+    if (initCyclics)
+        initCyclics();
+    if (!object || nestedTypes.indexOf(object.constructor) < 0)
+        throw util._TypeError("object", nestedError);
     if (!this.nested)
         this.nested = {};
+    else {
+        var prev = this.get(object.name);
+        if (prev) {
+            if (initCyclics)
+                initCyclics();
+            if (prev instanceof Namespace && !(prev instanceof Type) && object instanceof Type) {
+                prev.each(object.add, object); // move existing nested objects to the message type
+                this.remove(prev);             // and remove the previous namespace
+            } else
+                throw Error("duplicate name '" + object.name + "' in " + this);
+        }
+    }
     this.nested[object.name] = object;
     object.onAdd(this);
     return this;
@@ -148,6 +177,8 @@ NamespacePrototype.add = function add(object) {
  * @returns {!Namespace} this
  */
 NamespacePrototype.remove = function remove(object) {
+    if (initCyclics)
+        initCyclics();
     if (!(object instanceof ReflectionObject))
         throw util._TypeError("object", "ReflectionObject");
     if (object.parent !== this)
@@ -186,12 +217,11 @@ NamespacePrototype.define = function define(path, visible) {
 };
 
 /**
- * @override
+ * Resolves this namespace's and all its nested objects' type references. Useful to validate a
+ * reflection tree.
+ * @returns {!Namespace} this
  */
-NamespacePrototype.resolve = function resolve() {
-    // NOTE: Namespaces aren't resolved internally - this is here as utility.
-    if (this.resolved)
-        return this;
+NamespacePrototype.resolveAll = function resolve() {
     this.each(function(nested) {
         nested.resolve();
     }, this);

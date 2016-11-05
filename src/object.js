@@ -23,19 +23,19 @@ function ReflectionObject(name, options) {
         throw util._TypeError("options", "object");
 
     /**
-     * Properties exposed to JSON.
+     * JSON-exportable properties.
      * @type {?Object.<string,*>}
      */
     this.properties = null;
 
-    // NOTE: Properties are null if not present to ensure proper workings of hidden class
-    // optimizations within the reflection object. The properties object itself, however, will most
-    // likely resort to a hashmap, which is ok. All properties marked as "// exposed" are stored
-    // within properties and can take any value.
+    // NOTE: The properties object contains the JSON-exportable descriptor of this object. The
+    // properties object itself will most likely not benefit from hidden class optimizations, which
+    // is ok, because it actually is a hash map, while the rest of the class is not. All properties
+    // marked as "exposed" below and within other reflection objects are stored within properties.
 
     /**
      * Options.
-     * @type {!Object|undefined}
+     * @type {!Object.<string,*>|undefined}
      */
     this.options = options; // exposed
 
@@ -47,7 +47,7 @@ function ReflectionObject(name, options) {
 
     /**
      * Parent namespace.
-     * @type {!Namespace}
+     * @type {?Namespace}
      */
     this.parent = null;
 
@@ -63,13 +63,6 @@ function ReflectionObject(name, options) {
      * @private
      */
     this._visible = null;
-
-    /**
-     * Internally stores this object's full name.
-     * @type {?string}
-     * @private
-     */
-    this._fullName = null;
 }
 
 var ReflectionObjectPrototype = ReflectionObject.prototype;
@@ -112,9 +105,10 @@ Object.defineProperties(ReflectionObjectPrototype, {
     },
 
     /**
-     * Whether this object visible when exporting definitions.
+     * Whether this object is visible when exporting definitions. Possible values are `true` to
+     * be visible, `false` to be not and `null` (setter only) to inherit from parent.
      * @name ReflectionObject#visible
-     * @type {boolean}
+     * @type {?boolean}
      */
     visible: {
         get: function() {
@@ -126,6 +120,8 @@ Object.defineProperties(ReflectionObjectPrototype, {
             return true; // visible by default
         },
         set: function(value) {
+            if (value !== null && !util.isBoolean(value))
+                throw util._TypeError("value", "?boolean");
             this._visible = value;
         }
     }
@@ -200,7 +196,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         initCyclics();
     var root = parent.root;
     if (root instanceof Root)
-        root.handleAdd(this, parent);
+        root.handleAdd(this);
 };
 
 /**
@@ -209,17 +205,17 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
-    this.parent = null;
-    this.resolved = false;
     if (initCyclics)
         initCyclics();
     var root = parent.root;
     if (root instanceof Root)
-        root.handleRemove(this, parent);
+        root.handleRemove(this);
+    this.parent = null;
+    this.resolved = false;
 };
 
 /**
- * Resolves this object and all it's required dependencies.
+ * Resolves this objects type references.
  * @returns {!ReflectionObject} this
  */
 ReflectionObjectPrototype.resolve = function resolve() {
@@ -228,10 +224,8 @@ ReflectionObjectPrototype.resolve = function resolve() {
     if (initCyclics)
         initCyclics();
     var root = this.root;
-    if (root instanceof Root) {
-        root.handleResolve(this);
+    if (root instanceof Root)
         this.resolved = true; // only if part of a root
-    }
     return this;
 };
 
@@ -239,9 +233,10 @@ ReflectionObjectPrototype.resolve = function resolve() {
  * Changes this object's visibility when exporting definitions.
  * @param {?boolean} visible `true` for public, `false` for private, `null` to inherit from parent
  * @returns {!ReflectionObject} this
+ * @throws {TypeError} If arguments are invalid
  */
 ReflectionObjectPrototype.visibility = function visibility(visible) {
-    this._visible = visible;
+    this.visible = visible;
     return this;
 };
 

@@ -225,7 +225,7 @@ var initLongSupport = function() {
     long_ = require("./support/long");
     util.toHash = toHash;
     util.fromHash = fromHash;
-    initLongSupport = undefined;
+    initLongSupport = false;
 };
 
 /**

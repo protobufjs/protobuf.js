@@ -123,7 +123,7 @@ Object.defineProperties(TypePrototype, {
         get: function() {
             if (this._prototype)
                 return this._prototype;
-            var fieldsArray = this.resolveExtends().fieldsArray,
+            var fieldsArray = this.fieldsArray,
                 fieldsCount = fieldsArray.length;
             var prototype = new Prototype();
             for (var i = 0; i < fieldsCount; ++i) {
@@ -193,10 +193,7 @@ Type.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
-TypePrototype.resolve = function resolve() {
-    // NOTE: Types aren't resolved internally - this is here as utility.
-    if (this.resolved)
-        return this;
+TypePrototype.resolveAll = function resolve() {
     this.each(function(field) {
         field.resolve();
     }, this, this.fields);
@@ -204,28 +201,40 @@ TypePrototype.resolve = function resolve() {
         this.each(function(oneof) {
             oneof.resolve();
         }, this, this.oneofs);
-    return Namespace.prototype.resolve.call(this);
+    return NamespacePrototype.resolve.call(this);
 };
 
 /**
- * @override 
+ * @override
  */
-TypePrototype.exists = function exists(name) {
-    return Boolean(this.fields && this.fields[name] || this.nested && this.nested[name] || this.oneofs && this.oneofs[name]);
+TypePrototype.get = function get(name) {
+    return NamespacePrototype.get.call(this, name) || this.fields && this.fields[name] || this.oneofs && this.oneofs[name] || null;
 };
 
 /**
  * @override
  */
 TypePrototype.add = function add(object) {
-    if (this.exists(object.name))
+    if (this.get(object.name))
         throw Error("duplicate name '" + object.name + '" in ' + this);
     if (object instanceof Field) {
-        if (object.parent)
-            object.parent.remove(object);
-        clearCache(this).fields[object.name] = object;
-        object.message = this;
-        object.onAdd(this);
+        // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
+        // The root object takes care of adding distinct sister-fields to the respective extended
+        // type instead.
+        if (object.extend === undefined) {
+            if (object.parent)
+                object.parent.remove(object);
+            clearCache(this).fields[object.name] = object;
+            object.message = this;
+            object.onAdd(this);
+        } else {
+            if (!this.nested)
+                this.nested = {};
+            else if (this.get(object.name))
+                throw Error("duplicate name '" + object.name + "' in " + this);
+            this.nested[object.name] = object;
+            object.onAdd(this);
+        }
         return this;
     }
     if (object instanceof OneOf) {
@@ -242,7 +251,8 @@ TypePrototype.add = function add(object) {
  * @override
  */
 TypePrototype.remove = function remove(object) {
-    if (object instanceof Field) {
+    if (object instanceof Field && object.extend === undefined) {
+        // See Type#add for the reason why extension fields are excluded here.
         if (this.fields[object.name] !== object)
             throw Error("not a member of " + this);
         delete clearCache(this).fields[object.name];
@@ -250,15 +260,6 @@ TypePrototype.remove = function remove(object) {
         return this;
     }
     return NamespacePrototype.remove.call(this, object);
-};
-
-/**
- * Resolves any deferred extension fields that might belong to this type.
- * @returns {!Type} this
- */
-TypePrototype.resolveExtends = function resolveExtends() {
-    this.root.handleResolve(this);
-    return this;
 };
 
 /**
@@ -280,7 +281,7 @@ TypePrototype.create = function create(properties, constructor) {
     // Otherwise create a new message instance and populate it
     if (!properties)
         properties  = {};
-    var fieldsArray = this.resolveExtends().fieldsArray,
+    var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
     var message = Object.create(this.prototype);
     for (var i = 0; i < fieldsCount; ++i) {
@@ -301,7 +302,7 @@ TypePrototype.create = function create(properties, constructor) {
 TypePrototype.encode = function encode(message, writer) {
     if (!writer)
         writer = Writer();
-    var fieldsArray = this.resolveExtends().fieldsArray,
+    var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i],
@@ -338,7 +339,6 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
         length = constructor;
         constructor = undefined;
     }
-    this.resolveExtends();
 
     var reader     = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer),
         limit      = length === undefined ? reader.len : reader.pos + length,

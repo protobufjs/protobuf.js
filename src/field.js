@@ -63,7 +63,7 @@ function Field(name, id, type, rule, extend, options) {
      * Extended type if different from parent.
      * @type {string|undefined}
      */
-    this.extend = undefined; // exposed
+    this.extend = extend; // exposed
 
     /**
      * Whether this field is required.
@@ -114,10 +114,16 @@ function Field(name, id, type, rule, extend, options) {
     this.resolvedType = null;
 
     /**
-     * Resolved extended type if any.
-     * @type {?ReflectionObject}
+     * Sisted-field within the extended type if an extension field.
+     * @type {?Field}
      */
-    this.resolvedExtend = null;
+    this.extensionField = null;
+
+    /**
+     * Sisted-field within the declaring type if an extended field.
+     * @type {?Field}
+     */
+    this.declaringField = null;
 
     /**
      * Internally remembers whether this field is packed.
@@ -188,21 +194,11 @@ FieldPrototype.resolve = function resolve() {
     if (initCyclics)
         initCyclics();
 
-    var resolved;
-
-    // extended type
-    if (this.extend !== undefined) {
-        resolved = this.parent.lookup(this.extend);
-        if (!resolved || !(resolved instanceof Type))
-            throw Error("unresolvable extend type: " + this.extend);
-        this.resolvedExtend = resolved;
-    }
-
     var typeDefault = types.defaults[this.type];
 
     // if not a basic type, resolve it
     if (typeDefault === undefined) {
-        resolved = this.parent.lookup(this.type);
+        var resolved = this.parent.lookup(this.type);
         if (resolved instanceof Type) {
             this.resolvedType = resolved;
             typeDefault = null;
