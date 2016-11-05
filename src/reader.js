@@ -41,6 +41,9 @@ function Reader(buffer) {
     this.len = buffer.length;
 }
 
+/**
+ * @alias Reader.prototype
+ */
 var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = array_._slice;

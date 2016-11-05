@@ -28,6 +28,9 @@ function Enum(name, values, options) {
     this._valuesById = null;
 }
 
+/**
+ * @alias Enum.prototype
+ */
 var EnumPrototype = ReflectionObject.extend(Enum, [ "values" ]);
 
 Object.defineProperties(EnumPrototype, {

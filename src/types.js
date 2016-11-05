@@ -1,6 +1,10 @@
 // NOTE: These types are structured in a way that makes looking up wire types and similar fast,
 // but not necessarily comfortable. Do not modify them unless you know exactly what you are doing.
 
+/**
+ * Common type constants.
+ * @namespace
+ */
 var types = module.exports = {};
 
 /**

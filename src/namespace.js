@@ -35,6 +35,9 @@ function Namespace(name, options) {
     this.nested = undefined; // exposed
 }
 
+/**
+ * @alias Namespace.prototype
+ */
 var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
 
 Object.defineProperties(NamespacePrototype, {

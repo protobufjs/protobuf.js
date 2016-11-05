@@ -66,7 +66,14 @@ function Type(name, options) {
     this._prototype = null;
 }
 
+/**
+ * @alias Type.prototype
+ */
 var TypePrototype = Namespace.extend(Type, [ "fields", "oneofs", "extensions", "reserved" ]);
+
+/**
+ * @alias Namespace.prototype
+ */
 var NamespacePrototype = Namespace.prototype;
 
 Object.defineProperties(TypePrototype, {

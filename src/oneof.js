@@ -35,6 +35,9 @@ function OneOf(name, fieldNames, options) {
     this._fields = [];
 }
 
+/**
+ * @alias OneOf.prototype
+ */
 var OneOfPrototype = ReflectionObject.extend(OneOf, [ "oneof" ]);
 
 /**

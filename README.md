@@ -193,7 +193,7 @@ The library exports a flat `protobuf` namespace with the following members, orde
   Utility functions.
 
 * **types: `Object`** [[source](./src/types.js)]<br />
-  Common protobuf types.
+  Common type constants.
 
 Documentation
 -------------

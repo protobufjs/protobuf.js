@@ -38,6 +38,9 @@ function MapField(name, id, type, keyType, options) {
     this.map = true;
 }
 
+/**
+ * @alias MapField.prototype
+ */
 var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);
 
 /**

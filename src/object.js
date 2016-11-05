@@ -65,6 +65,9 @@ function ReflectionObject(name, options) {
     this._visible = null;
 }
 
+/**
+ * @alias ReflectionObject.prototype
+ */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
 exposeJSON(ReflectionObjectPrototype, [ "options" ]);

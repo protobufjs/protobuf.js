@@ -55,6 +55,9 @@ function Writer() {
     this._stack = [];
 }
 
+/**
+ * @alias Writer.prototype
+ */
 var WriterPrototype = Writer.prototype;
 
 /**

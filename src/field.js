@@ -133,6 +133,9 @@ function Field(name, id, type, rule, extend, options) {
     this._packed = null;
 }
 
+/**
+ * @alias Field.prototype
+ */
 var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "extend" ]);
 
 Object.defineProperties(FieldPrototype, {

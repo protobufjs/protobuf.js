@@ -39,6 +39,9 @@ function Root(contextOptions, options) {
         importGoogleTypes(this, false);
 }
 
+/**
+ * @alias Root.prototype
+ */
 var RootPrototype = Namespace.extend(Root);
 
 /**

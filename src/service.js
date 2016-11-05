@@ -22,6 +22,9 @@ function Service(name, options) {
     this.methods = {}; // exposed, marker
 }
 
+/**
+ * @alias Service.prototype
+ */
 var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
 
 /**
