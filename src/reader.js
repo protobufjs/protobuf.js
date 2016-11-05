@@ -323,7 +323,7 @@ var initBufferReader = function() {
  * @memberof protobuf
  * @extends protobuf.Reader
  * @constructor
- * @param {number[]} buffer Buffer to read from
+ * @param {Buffer} buffer Buffer to read from
  */
 function BufferReader(buffer) {
     if (initBufferReader)
@@ -383,8 +383,8 @@ BufferReaderPrototype.string = function read_string_buffer(length) {
 /**
  * Finishes the current sequence of read operations using node buffers, frees all resources and returns the remaining buffer.
  * Optionally accepts a new buffer for a new sequence of read operations using node buffers.
- * @param {number[]} [buffer] Optionally a new buffer for a new sequence of read operations
- * @returns {number[]} Finished buffer
+ * @param {Buffer} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @returns {Buffer} Finished buffer
  */
 BufferReaderPrototype.finish = function finish_buffer(buffer) {
     var remain = this.pos ? this.buf.slice(this.pos) : this.buf;

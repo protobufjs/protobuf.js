@@ -21,4 +21,5 @@ message Package {
     map<string, string> optionalDependencies = 12;
     map<string, string> devDependencies = 13;
     map<string, bool>   browser = 14;
+    string types = 15;
 }

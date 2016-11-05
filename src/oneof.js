@@ -78,7 +78,6 @@ function addFieldsToParent(oneof) {
 
 /**
  * Adds a field to this oneof.
- * @override
  * @param {Field} field Field to add
  * @returns {OneOf} this
  */
@@ -95,7 +94,6 @@ OneOfPrototype.add = function add(field) {
 
 /**
  * Removes a field from this oneof.
- * @override
  * @param {Field} field Field to remove
  * @returns {OneOf} this
  */

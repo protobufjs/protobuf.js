@@ -387,8 +387,7 @@ Writer.BufferWriter = BufferWriter;
 /**
  * Allocates a chunk of memory using node buffers.
  * @param {number} size Buffer size
- * @returns {number[]} Allocated buffer
- * @override
+ * @returns {Buffer} Allocated buffer
  */
 BufferWriter.alloc = function alloc_buffer(size) {
     if (initBufferWriter)
@@ -400,7 +399,6 @@ BufferWriter.alloc = function alloc_buffer(size) {
  * Writes a float (32 bit) using node buffers.
  * @param {number} value Value to write
  * @returns {BufferWriter} this
- * @override
  */
 BufferWriterPrototype.float = function write_float_buffer(value) {
     if (this.pos + 4 > this.len)
@@ -414,7 +412,6 @@ BufferWriterPrototype.float = function write_float_buffer(value) {
  * Writes a double (64 bit float) using node buffers.
  * @param {number} value Value to write
  * @returns {BufferWriter} this
- * @override
  */
 BufferWriterPrototype.double = function write_double_buffer(value) {
     if (this.pos + 8 > this.len)
@@ -426,9 +423,8 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 
 /**
  * Writes a sequence of bytes using node buffers.
- * @param {number[]} value Value to write
+ * @param {Buffer} value Value to write
  * @returns {BufferWriter} this
- * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     var len = value.length;
@@ -446,7 +442,6 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
  * Writes a string using node buffers.
  * @param {string} value Value to write
  * @returns {BufferWriter} this
- * @override
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = util.Buffer.byteLength(value);
@@ -463,8 +458,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 /**
  * Finishes the current sequence of write operations using node buffers and frees all resources.
  * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
- * @returns {number[]} Finished buffer
- * @override
+ * @returns {Buffer} Finished buffer
  */
 BufferWriterPrototype.finish = function finish_buffer(clearForkedStates) {
     var bufs = this.bufs,

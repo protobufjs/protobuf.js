@@ -881,7 +881,7 @@ declare module protobuf {
     * @memberof protobuf
     * @extends protobuf.Reader
     * @constructor
-    * @param {number[]} buffer Buffer to read from
+    * @param {Buffer} buffer Buffer to read from
     */
    class BufferReader extends protobuf.Reader {
        /**
@@ -889,9 +889,9 @@ declare module protobuf {
         * @memberof protobuf
         * @extends protobuf.Reader
         * @constructor
-        * @param {number[]} buffer Buffer to read from
+        * @param {Buffer} buffer Buffer to read from
         */
-       constructor(buffer: number[]);
+       constructor(buffer: Buffer);
 
    }
 
