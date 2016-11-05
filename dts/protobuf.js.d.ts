@@ -242,7 +242,7 @@ declare module protobuf {
     * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise this
     * @throws {TypeError} If arguments are invalid
     */
-   function load(filename: (string|string[]), root?: Root, callback?: (() => any), ctx?: Object): (Promise.<Root>|Object);
+   function load(filename: (string|string[]), root?: Root, callback?: (() => any), ctx?: Object): (Promise<Root>|Object);
 
    /**
     * Reflected message map field.
@@ -544,7 +544,7 @@ declare module protobuf {
        /**
         * Extends this class and optionally exposes the specified properties to JSON.
         * @param {Function} constructor Extending constructor
-        * @param {Array.<string>} [exposePropertyNames] Properties to expose to JSON
+        * @param {string[]} [exposePropertyNames] Properties to expose to JSON
         * @returns {Object} Prototype
         */
        static extend(constructor: (() => any), exposePropertyNames?: string[]): Object;
@@ -639,13 +639,13 @@ declare module protobuf {
 
        /**
         * Field names that belong to this oneof.
-        * @type {Array.<string>}
+        * @type {string[]}
         */
        oneof: string[];
 
        /**
         * Fields that belong to this oneof and are possibly not yet added to its parent.
-        * @type {Array.<Field>}
+        * @type {Field[]}
         * @private
         */
        private _fields: Field[];
@@ -950,7 +950,7 @@ declare module protobuf {
         * @returns {Promise<Root>|undefined} A promise if callback has been omitted, otherwise `undefined`
         * @throws {TypeError} If arguments are invalid
         */
-       load(filename: (string|string[]), callback?: (() => any), ctx?: Object): (Promise.<Root>|undefined);
+       load(filename: (string|string[]), callback?: (() => any), ctx?: Object): (Promise<Root>|undefined);
 
        /**
         * Called when any object is added to this root or its sub-namespaces.
@@ -1040,13 +1040,13 @@ declare module protobuf {
         * Extension ranges, if any.
         * @type {number[][]}
         */
-       extensions: Array.<number[]>;
+       extensions: number[][];
 
        /**
         * Reserved ranges, if any.
         * @type {number[][]}
         */
-       reserved: Array.<number[]>;
+       reserved: number[][];
 
        /**
         * Cached fields by id.
@@ -1263,7 +1263,7 @@ declare module protobuf {
         * @param {function(Error, ...*)} fn Function to call
         * @returns {Promise<*>} Promisified function
         */
-       function asPromise(fn: (() => any)): Promise.<any>;
+       function asPromise(fn: (() => any)): Promise<any>;
 
        /**
         * Fetches the contents of a file.
@@ -1272,7 +1272,7 @@ declare module protobuf {
         * @param {function(?Error, string=)} [callback] Node-style callback
         * @returns {Promise<string>|undefined} Promise if callback has been omitted
         */
-       function fetch(path: string, callback?: (() => any)): (Promise.<string>|undefined);
+       function fetch(path: string, callback?: (() => any)): (Promise<string>|undefined);
 
        /**
         * Tests if the specified path is absolute.
@@ -1333,7 +1333,7 @@ declare module protobuf {
 
        /**
         * Current buffer.
-        * @type {?Array.<number>}
+        * @type {?number[]}
         */
        buf: number[];
 
@@ -1353,14 +1353,14 @@ declare module protobuf {
         * Completed buffers.
         * @type {number[][]}
         */
-       bufs: Array.<number[]>;
+       bufs: number[][];
 
        /**
         * Forked states stack.
         * @type {number[][][]}
         * @private
         */
-       private _stack: Array.<Array.<number[]>>;
+       private _stack: number[][][];
 
        /**
         * Allocates a chunk of memory.

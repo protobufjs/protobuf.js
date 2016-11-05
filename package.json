@@ -16,7 +16,7 @@
   "scripts": {
     "build": "gulp && npm run dts",
     "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md",
-    "dts": "jsdoc -c scripts/jsdoc.dts.conf.json",
+    "dts": "jsdoc -c scripts/jsdoc.dts.conf.json && node scripts/dts.js",
     "lint": "eslint src",
     "test": "tap -b tests/*.js"
   },
