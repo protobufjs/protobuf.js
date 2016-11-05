@@ -34,7 +34,7 @@
     "gulp-if": "^2.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
-    "jaguarjs-jsdoc": "^1.0.1",
+    "jaguarjs-jsdoc": "dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^3.4.2",
     "long": "^3.2.0",
     "minimist": "^1.2.0",

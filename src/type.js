@@ -53,7 +53,7 @@ function Type(name, options) {
 
     /**
      * Cached fields as an array.
-     * @type {!?Array.<!Field>}
+     * @type {?Array.<!Field>}
      * @private
      */
     this._fieldsArray = null;

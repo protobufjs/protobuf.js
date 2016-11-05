@@ -16,13 +16,15 @@ var util = module.exports = {};
 util.isNode = Boolean(typeof process !== 'undefined' && process.versions);
 
 /**
- * Optional buffer class to use.
+ * Optional buffer class to use. If you assign any compatible buffer implementation to this
+ * property, the library will use it.
  * @type {?function(new:Buffer)}
  */
 util.Buffer = buffer && buffer.Buffer || null;
 
 /**
- * Optional Long class to use.
+ * Optional Long class to use. If you assign any compatible long implementation to this property,
+ * the library will use it.
  * @type {?function(new:Long)}
  */
 util.Long = Long || null;
@@ -40,7 +42,7 @@ function isString(value) {
 util.isString = isString;
 
 /**
- * Tests if the specified value is an non-null object.
+ * Tests if the specified value is a non-null object.
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is a non-null object
  */
@@ -248,7 +250,7 @@ util.toHash = function(value) { // becomes overridden by initLongSupport
  * Converts an 8 characters long hash string to a number or long-like object.
  * @memberof util
  * @param {string} hash Hashed value to convert
- * @param {boolean} [unsigned] Whether unsigned or not
+ * @param {boolean} [unsigned=false] Whether unsigned or not
  * @returns {number|!{ low: number, high: number, unsigned: boolean }} Original value
  */
 function fromHash(hash, unsigned) {
