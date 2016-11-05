@@ -13,10 +13,11 @@
   "bin": {
     "pbjs": "bin/pbjs"
   },
+  "types": "types/protobuf.js.d.ts",
   "scripts": {
-    "build": "gulp && npm run dts",
+    "build": "gulp",
     "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md",
-    "dts": "jsdoc -c scripts/jsdoc.dts.conf.json && node scripts/dts.js",
+    "types": "jsdoc -c scripts/jsdoc.types.conf.json && node scripts/types-postprocess.js",
     "lint": "eslint src",
     "test": "tap -b tests/*.js"
   },

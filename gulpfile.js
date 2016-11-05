@@ -10,7 +10,7 @@ gulp.task("bundle-development", bundle.bind(this, true ));
 gulp.task("bundle-production" , bundle.bind(this, false));
 
 gulp.task("gzip-production", [ "bundle-production" ], function() {
-    gulp.src('./dist/protobuf.min.js')
+    return gulp.src('./dist/protobuf.min.js')
         .pipe(gzip({ gzipOptions: { level: 9 } }))
         .pipe(gulp.dest('./dist'));
 });

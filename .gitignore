@@ -3,4 +3,4 @@ npm-debug.*
 node_modules/
 dist/
 docs/
-dts/types.d.ts
+types/types.d.ts

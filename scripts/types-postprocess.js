@@ -1,6 +1,6 @@
 var fs = require("fs"),
     path = require("path");
-var dir = path.join(__dirname, "..", "dts");
+var dir = path.join(__dirname, "..", "types");
 
 var dts = fs.readFileSync(path.join(dir, "types.d.ts"), "utf8");
 
