@@ -12,6 +12,7 @@ function indexOutOfRange(reader, writeLength) {
 
 /**
  * Wire format reader using arrays.
+ * @memberof protobuf
  * @constructor
  * @param {number[]} buffer Buffer to read from
  */
@@ -42,7 +43,7 @@ function Reader(buffer) {
 }
 
 /**
- * @alias Reader.prototype
+ * @alias protobuf.Reader.prototype
  */
 var ReaderPrototype = Reader.prototype;
 
@@ -100,7 +101,7 @@ ReaderPrototype.sint32 = function read_sint32() {
 
 /**
  * Reads a varint as a signed 64 bit value.
- * @returns {number|!{ low: number, high: number, unsigned: false }|!Long} Value read
+ * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
  */
 ReaderPrototype.int64 = function read_int64() {
     return long_._read(this, indexOutOfRange)
@@ -109,7 +110,7 @@ ReaderPrototype.int64 = function read_int64() {
 
 /**
  * Reads a varint as an unsigned 64 bit value.
- * @returns {number|!{ low: number, high: number, unsigned: true }|!Long} Value read
+ * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
  */
 ReaderPrototype.uint64 = function read_uint64() {
     return long_._read(this, indexOutOfRange)
@@ -118,7 +119,7 @@ ReaderPrototype.uint64 = function read_uint64() {
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @returns {number|!{ low: number, high: number, unsigned: false }|!Long} Value read
+ * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
  */
 ReaderPrototype.sint64 = function read_sint64() {
     return long_._read(this, indexOutOfRange)
@@ -159,7 +160,7 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 
 /**
  * Reads fixed 64 bits as a Long.
- * @returns {number|!{ low: number, high: number, unsigned: true }|!Long} Value read
+ * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
  */
 ReaderPrototype.fixed64 = function read_fixed64() {
     if (this.pos + 8 > this.len)
@@ -170,7 +171,7 @@ ReaderPrototype.fixed64 = function read_fixed64() {
 
 /**
  * Reads zig-zag encoded 64 bits as a Long.
- * @returns {number|!{ low: numbeer, high: number, unsigned: false }|!Long} Value read
+ * @returns {number|{ low: numbeer, high: number, unsigned: false }|Long} Value read
  */
 ReaderPrototype.sfixed64 = function read_sfixed64() {
     if (this.pos + 8 > this.len)
@@ -319,7 +320,8 @@ var initBufferReader = function() {
 
 /**
  * Wire format reader using node buffers.
- * @extends Reader
+ * @memberof protobuf
+ * @extends protobuf.Reader
  * @constructor
  * @param {number[]} buffer Buffer to read from
  */
@@ -329,7 +331,11 @@ function BufferReader(buffer) {
     Reader.call(this, buffer);
 }
 
+/**
+ * @alias protobuf.BufferReader.prototype
+ */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
+
 BufferReaderPrototype.constructor = BufferReader;
 
 Reader.BufferReader = BufferReader;

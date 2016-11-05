@@ -6,7 +6,8 @@ module.exports = Service;
 
 /**
  * Reflected service.
- * @extends Namespace
+ * @memberof protobuf
+ * @extends protobuf.Namespace
  * @constructor
  * @param {string} name Service name
  * @param {Object.<string,*>} [options] Service options
@@ -23,7 +24,7 @@ function Service(name, options) {
 }
 
 /**
- * @alias Service.prototype
+ * @alias protobuf.Service.prototype
  */
 var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
 

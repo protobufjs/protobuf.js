@@ -12,7 +12,8 @@ module.exports = Type;
 
 /**
  * Reflected message type.
- * @extends Namespace
+ * @memberof protobuf
+ * @extends protobuf.Namespace
  * @constructor
  * @param {string} name Message name
  * @param {Object.<string,*>} [options] Message options
@@ -67,12 +68,12 @@ function Type(name, options) {
 }
 
 /**
- * @alias Type.prototype
+ * @alias protobuf.Type.prototype
  */
 var TypePrototype = Namespace.extend(Type, [ "fields", "oneofs", "extensions", "reserved" ]);
 
 /**
- * @alias Namespace.prototype
+ * @alias protobuf.Namespace.prototype
  */
 var NamespacePrototype = Namespace.prototype;
 
@@ -80,7 +81,7 @@ Object.defineProperties(TypePrototype, {
 
     /**
      * Message fields by id.
-     * @name Type#fieldsById
+     * @name protobuf.Type#fieldsById
      * @type {Object.<number,Field>}
      * @readonly
      */
@@ -103,7 +104,7 @@ Object.defineProperties(TypePrototype, {
 
     /**
      * Message fields as an array for iteration.
-     * @name Type#fieldsArray
+     * @name protobuf.Type#fieldsArray
      * @type {Field[]}
      * @readonly
      */
@@ -122,7 +123,7 @@ Object.defineProperties(TypePrototype, {
 
     /**
      * Runtime message prototype of this message.
-     * @name Type#prototype
+     * @name protobuf.Type#prototype
      * @type {Prototype}
      * @readonly
      */
@@ -149,7 +150,7 @@ Object.defineProperties(TypePrototype, {
  * @param {Type} type Message type
  * @returns {Type} type
  * @inner
- * @private
+ * @ignore
  */
 function clearCache(type) {
     type._fieldsById = type._fieldsArray = type._prototype = null;

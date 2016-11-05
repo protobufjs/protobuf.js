@@ -14,6 +14,7 @@ Writer.BUFFER_SIZE = 1024;
 
 /**
  * Wire format writer using arrays.
+ * @memberof protobuf
  * @constructor
  */
 function Writer() {
@@ -56,7 +57,7 @@ function Writer() {
 }
 
 /**
- * @alias Writer.prototype
+ * @alias protobuf.Writer.prototype
  */
 var WriterPrototype = Writer.prototype;
 
@@ -76,7 +77,7 @@ WriterPrototype._slice = array_._slice;
  * @param {number} writeLength Write length requested
  * @returns {undefined}
  * @inner
- * @private
+ * @ignore
  */
 function expand(writer, writeLength) {
     if (writer.pos)
@@ -301,7 +302,7 @@ WriterPrototype.fork = function fork() {
 /**
  * Resets this instance to the last state. If there is no last state, all references
  * to previous buffers will be cleared.
- * @param {boolean} [clearForkedStates] `true` to clear all previously forked states
+ * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
  * @returns {Writer} this
  */
 WriterPrototype.reset = function reset(clearForkedStates) {
@@ -316,7 +317,7 @@ WriterPrototype.reset = function reset(clearForkedStates) {
 
 /**
  * Finishes the current sequence of write operations and frees all resources.
- * @param {boolean} [clearForkedStates] `true` to clear all previously forked states
+ * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
  * @returns {number[]} Finished buffer
  */
 WriterPrototype.finish = function finish(clearForkedStates) {
@@ -364,7 +365,8 @@ var emptyBuffer = null;
 
 /**
  * Wire format writer using node buffers.
- * @extends Writer
+ * @memberof protobuf
+ * @extends protobuf.Writer
  * @constructor
  */
 function BufferWriter() {
@@ -373,14 +375,17 @@ function BufferWriter() {
     Writer.call(this);
 }
 
+/**
+ * @alias protobuf.BufferWriter.prototype
+ */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
+
 BufferWriterPrototype.constructor = BufferWriter;
 
 Writer.BufferWriter = BufferWriter;
 
 /**
  * Allocates a chunk of memory using node buffers.
- * @name BufferWriter.alloc
  * @param {number} size Buffer size
  * @returns {number[]} Allocated buffer
  * @override
@@ -457,7 +462,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 
 /**
  * Finishes the current sequence of write operations using node buffers and frees all resources.
- * @param {boolean} [clearForkedStates] `true` to clear all previously forked states
+ * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
  * @returns {number[]} Finished buffer
  * @override
  */

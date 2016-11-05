@@ -19,7 +19,8 @@ var initCyclics = function() {
 
 /**
  * Base class of all reflection objects containing nested objects.
- * @extends ReflectionObject
+ * @memberof protobuf
+ * @extends protobuf.ReflectionObject
  * @constructor
  * @param {string} name Namespace name
  * @param {Object.<string,*>} [options] Namespace options
@@ -29,14 +30,13 @@ function Namespace(name, options) {
 
     /**
      * Nested reflection objects by name.
-     * @name Namespace#nested
      * @type {Object.<string,ReflectionObject>|undefined}
      */
     this.nested = undefined; // exposed
 }
 
 /**
- * @alias Namespace.prototype
+ * @alias protobuf.Namespace.prototype
  */
 var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
 
@@ -44,7 +44,7 @@ Object.defineProperties(NamespacePrototype, {
 
     /**
      * Determines whether this namespace is empty.
-     * @name Namespace#empty
+     * @name protobuf.Namespace#empty
      * @type {boolean}
      * @readonly
      */

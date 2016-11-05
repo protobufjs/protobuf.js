@@ -5,7 +5,8 @@ module.exports = Method;
 
 /**
  * Reflected service method.
- * @extends ReflectionObject
+ * @memberof protobuf
+ * @extends protobuf.ReflectionObject
  * @constructor
  * @param {string} name Method name
  * @param {string} type Usually "rpc"

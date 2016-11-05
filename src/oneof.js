@@ -6,7 +6,8 @@ module.exports = OneOf;
 
 /**
  * Reflected OneOf.
- * @extends ReflectionObject
+ * @memberof protobuf
+ * @extends protobuf.ReflectionObject
  * @constructor
  * @param {string} name Oneof name
  * @param {string[]} [fieldNames] Field names
@@ -36,7 +37,7 @@ function OneOf(name, fieldNames, options) {
 }
 
 /**
- * @alias OneOf.prototype
+ * @alias protobuf.OneOf.prototype
  */
 var OneOfPrototype = ReflectionObject.extend(OneOf, [ "oneof" ]);
 
@@ -65,7 +66,7 @@ OneOf.fromJSON = function fromJSON(name, json) {
  * @param {OneOf} oneof The oneof
  * @returns {undefined}
  * @inner
- * @private
+ * @ignore
  */
 function addFieldsToParent(oneof) {
     if (oneof.parent)

@@ -10,7 +10,8 @@ module.exports = Root;
 
 /**
  * Root namespace.
- * @extends Namespace
+ * @memberof protobuf
+ * @extends protobuf.Namespace
  * @constructor
  * @param {Object.<string,*>} [contextOptions] Context options
  * @param {Object.<string,*>} [options] Namespace options
@@ -40,7 +41,7 @@ function Root(contextOptions, options) {
 }
 
 /**
- * @alias Root.prototype
+ * @alias protobuf.Root.prototype
  */
 var RootPrototype = Namespace.extend(Root);
 
@@ -345,7 +346,7 @@ RootPrototype.load = function load(filename, callback, ctx) {
  * @param {Field} field Declaring extension field witin the declaring type
  * @returns {boolean} `true` if successfully added to the extended type, `false` otherwise
  * @inner
- * @private
+ * @ignore
  */
 function handleExtension(field) {
     var extendedType = field.parent.lookup(field.extend);

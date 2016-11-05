@@ -11,6 +11,7 @@ var initCyclics = function() {
 
 /**
  * Base class of all reflection objects.
+ * @memberof protobuf
  * @constructor
  * @param {string} name Object name
  * @param {Object.<string,*>} [options] Object options
@@ -66,7 +67,7 @@ function ReflectionObject(name, options) {
 }
 
 /**
- * @alias ReflectionObject.prototype
+ * @alias protobuf.ReflectionObject.prototype
  */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
@@ -76,7 +77,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
 
     /**
      * Reference to the root namespace.
-     * @name ReflectionObject#root
+     * @name protobuf.ReflectionObject#root
      * @type {Root}
      * @readonly
      */
@@ -91,7 +92,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
 
     /**
      * Full name including leading dot.
-     * @name ReflectionObject#fullName
+     * @name protobuf.ReflectionObject#fullName
      * @type {string}
      * @readonly
      */
@@ -110,7 +111,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
     /**
      * Whether this object is visible when exporting definitions. Possible values are `true` to
      * be visible, `false` to be not and `null` (setter only) to inherit from parent.
-     * @name ReflectionObject#visible
+     * @name protobuf.ReflectionObject#visible
      * @type {?boolean}
      */
     visible: {

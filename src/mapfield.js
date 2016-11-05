@@ -7,7 +7,8 @@ module.exports = MapField;
 
 /**
  * Reflected message map field.
- * @extends Field
+ * @memberof protobuf
+ * @extends protobuf.Field
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
@@ -39,7 +40,7 @@ function MapField(name, id, type, keyType, options) {
 }
 
 /**
- * @alias MapField.prototype
+ * @alias protobuf.MapField.prototype
  */
 var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);
 

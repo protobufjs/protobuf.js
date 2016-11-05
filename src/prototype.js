@@ -2,6 +2,7 @@ module.exports = Prototype;
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
+ * @memberof protobuf
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
  * @abstract

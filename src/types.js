@@ -4,6 +4,7 @@
 /**
  * Common type constants.
  * @namespace
+ * @memberof protobuf
  */
 var types = module.exports = {};
 
