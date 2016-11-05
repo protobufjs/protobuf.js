@@ -115,25 +115,6 @@ NamespacePrototype.each = function each(fn, ctx, object) {
 };
 
 /**
- * Recursively traverses over all nested objects within this namespace.
- * @memberof NamespacePrototype
- * @param {function(!ReflectionObject):*} fn Visitor function called with each nested object
- * @param {!Object} [ctx] Optional visitor function context
- * @returns {!Namespace} this
- */
-function traverse(fn, ctx) {
-    /* eslint-disable no-invalid-this */
-    return this.each(function(nested) {
-        fn.call(ctx || this, nested);
-        if (nested.nested)
-            traverse.call(nested, fn, ctx);
-    }, this);
-    /* eslint-enable no-invalid-this */
-}
-
-NamespacePrototype.traverse = traverse;
-
-/**
  * Gets the nested object of the specified name.
  * @param {string} name Nested object name
  * @returns {?ReflectionObject} The reflection object or `null` if it doesn't exist
@@ -245,7 +226,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     // Start at root if path is absolute
     if (path[0] === "")
         return this.root.lookup(path.slice(1));
-    // Test if the first part matches any nested object and traverse
+    // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.nested && this.nested[path[0]];
     if (found && (path.length === 1 || found.lookup && (found = found.lookup(path.slice(1), true))))
         return found;

@@ -32,8 +32,8 @@ function Field(name, id, type, rule, extend, options) {
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
-    if (!util.isInteger(id))
-        throw util._TypeError("id", "integer");
+    if (!util.isInteger(id) || id < 0)
+        throw util._TypeError("id", "non-negative integer");
     if (!util.isString(type))
         throw util._TypeError("type");
     if (extend !== undefined && !util.isString(extend))
@@ -63,7 +63,7 @@ function Field(name, id, type, rule, extend, options) {
      * Extended type if different from parent.
      * @type {string|undefined}
      */
-    this.extend = extend; // exposed
+    this.extend = extend || undefined; // exposed
 
     /**
      * Whether this field is required.
@@ -114,13 +114,13 @@ function Field(name, id, type, rule, extend, options) {
     this.resolvedType = null;
 
     /**
-     * Sisted-field within the extended type if an extension field.
+     * Sister-field within the extended type if a declaring extension field.
      * @type {?Field}
      */
     this.extensionField = null;
 
     /**
-     * Sisted-field within the declaring type if an extended field.
+     * Sister-field within the declaring type if an extended field.
      * @type {?Field}
      */
     this.declaringField = null;
