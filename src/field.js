@@ -21,7 +21,7 @@ var initCyclics = function() {
  * @param {string} type Type of the underlying value
  * @param {string} [rule=optional] Field rule
  * @param {string} [extend] Extended type if different from parent
- * @param {!Object.<string,*>} [options] Field options
+ * @param {Object.<string,*>} [options] Field options
  */
 function Field(name, id, type, rule, extend, options) {
     if (util.isObject(rule)) {
@@ -177,8 +177,8 @@ Field.testJSON = function testJSON(json) {
 /**
  * Constructs a field from JSON.
  * @param {string} name Field name
- * @param {!Object} json JSON object
- * @returns {!Field} Created field
+ * @param {Object} json JSON object
+ * @returns {Field} Created field
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
@@ -187,7 +187,7 @@ Field.fromJSON = function fromJSON(name, json) {
 
 /**
  * Resolves this field's type references.
- * @returns {!Field} this
+ * @returns {Field} this
  * @throws {Error} If any reference cannot be resolved
  */
 FieldPrototype.resolve = function resolve() {
@@ -229,8 +229,8 @@ FieldPrototype.resolve = function resolve() {
 /**
  * Encodes the specified field value. Assumes that the field is present.
  * @param {*} value Field value
- * @param {!Writer} writer Writer to encode to
- * @returns {!Writer} writer
+ * @param {Writer} writer Writer to encode to
+ * @returns {Writer} writer
  */
 FieldPrototype.encode = function encode(value, writer) {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
@@ -260,7 +260,7 @@ FieldPrototype.encode = function encode(value, writer) {
 
 /**
  * Decodes a field value.
- * @param {!Reader} reader Reader to decode from
+ * @param {Reader} reader Reader to decode from
  * @param {number} receivedWireType Wire type received
  * @returns {*} Field value
  * @throws {Error} If the wire format is invalid

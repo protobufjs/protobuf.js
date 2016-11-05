@@ -33,9 +33,9 @@ exports._hi = 0;
 
 /**
  * Reads a varint from the specified reader and stores its low and high bits.
- * @param {!Reader} reader Reader to read from
- * @param {!function(!Reader, number=)} indexOutOfRange Error message function
- * @returns {!Object} this
+ * @param {Reader} reader Reader to read from
+ * @param {function(Reader, number=)} indexOutOfRange Error message function
+ * @returns {Object} this
  * @private
  */
 exports._read = function long_read(reader, indexOutOfRange) {
@@ -77,8 +77,8 @@ exports._read = function long_read(reader, indexOutOfRange) {
 
 /**
  * Reads fixed 64 bits from the specified reader and stores the low and high bits.
- * @param {!Reader} reader Reader to read from
- * @returns {!Object} this
+ * @param {Reader} reader Reader to read from
+ * @returns {Object} this
  * @private
  */
 exports._readFixed = function long_readFixed(reader) {
@@ -97,9 +97,9 @@ exports._readFixed = function long_readFixed(reader) {
 
 /**
  * Writes the low and high bits to the specified writer, as a varint.
- * @param {!Writer} writer Writer to write to
- * @param {!function(!Writer, number)} expand Expand function
- * @returns {!Writer} writer
+ * @param {Writer} writer Writer to write to
+ * @param {function(Writer, number)} expand Expand function
+ * @returns {Writer} writer
  * @private
  */
 exports._write = function long_write(writer, expand) {
@@ -128,8 +128,8 @@ exports._write = function long_write(writer, expand) {
 
 /**
  * Writes the low and high bits to the specified writer, as fixed 64 bits.
- * @param {!Writer} writer Writer to write to
- * @returns {!Writer} writer
+ * @param {Writer} writer Writer to write to
+ * @returns {Writer} writer
  * @private
  */
 exports._writeFixed = function long_writeFixed(writer) {
@@ -190,8 +190,8 @@ exports._getHash = function long_getHash() {
 
 /**
  * Sets the low and high bits from a number, long-like object or hash string.
- * @param {number|!{ low: number, high: number }|!Long|string} value Value to set
- * @returns {!Object} this
+ * @param {number|{ low: number, high: number }|Long|string} value Value to set
+ * @returns {Object} this
  * @private
  */
 exports._set = function long_set(value) {
@@ -235,7 +235,7 @@ function long_setHash(hash) {
  * Sets the low and high bits from a 8 characters long hash string.
  * @function
  * @param {string} Hashed value to set
- * @returns {!Object} this
+ * @returns {Object} this
  * @private
  */
 exports._setHash = long_setHash;
@@ -244,7 +244,7 @@ exports._setHash = long_setHash;
 
 /**
  * Zig-zag encodes the low and high bits.
- * @returns {!Object} this
+ * @returns {Object} this
  * @private
  */
 exports._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
@@ -256,7 +256,7 @@ exports._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
 
 /**
  * Zig-zag decodes the low and high bits.
- * @returns {!Object} this
+ * @returns {Object} this
  * @private
  */
 exports._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)

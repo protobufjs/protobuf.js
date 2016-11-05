@@ -7,7 +7,7 @@ var ArrayImpl = isTypedArray ? Uint8Array : Array;
 
 /**
  * Supported array implementation
- * @type {function(new:Array})}
+ * @type {Function}
  * @private
  */
 exports._Array = ArrayImpl;
@@ -15,7 +15,7 @@ exports._Array = ArrayImpl;
 /**
  * Allocates a new array.
  * @param {number} size Array size
- * @returns {!Array} Allocated array
+ * @returns {number[]} Allocated array
  * @private
  */
 exports._alloc = function(size) {
@@ -27,7 +27,7 @@ exports._alloc = function(size) {
  * @function
  * @param {number} start Start offset
  * @param {number} [end] End offset
- * @returns {!Array}
+ * @returns {number[]}
  * @private
  */
 exports._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
@@ -35,7 +35,7 @@ exports._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 /**
  * Sets the contents of another array on this array. Polyfilled for plain arrays.
  * @function
- * @param {!Array} array Array to set
+ * @param {number[]} array Array to set
  * @param {number} offset Offset to begin setting at
  * @returns {undefined}
  * @private
@@ -49,7 +49,7 @@ exports._set = ArrayImpl.prototype.set || function set_array(array, offset) {
 
 /**
  * Empty array instance, if immutable, otherwise null.
- * @type {?Array}
+ * @type {?number[]}
  * @private
  */
 exports._empty = isTypedArray ? new Uint8Array(0) : null;

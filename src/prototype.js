@@ -3,7 +3,7 @@ module.exports = Prototype;
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
  * @constructor
- * @param {!Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
+ * @param {Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
  * @abstract
  * @see {@link Type#create}
  */
@@ -24,9 +24,9 @@ function Prototype(properties) {
 /**
  * Makes the specified constructor extend the runtime message prototype.
  * @param {function(new:Message)} constructor Constructor to extend
- * @param {!Type} type Reflected message type
- * @param {!Object.<string,*>} [options] Additional options
- * @returns {!Object} Prototype
+ * @param {Type} type Reflected message type
+ * @param {Object.<string,*>} [options] Additional options
+ * @returns {Object} Prototype
  */
 Prototype.extend = function extend(constructor, type, options) {
     if (!options)
@@ -73,7 +73,7 @@ Prototype.extend = function extend(constructor, type, options) {
         type.each(function(field, name) {
             if (field.repeated)
                 return;
-            prototype[name] = field.defaultValue; // eslint-disable-line no-invalid-this
+            prototype[name] = field.defaultValue;
         }, type, type.fields);
 
     return prototype;

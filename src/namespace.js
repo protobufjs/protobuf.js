@@ -19,10 +19,10 @@ var initCyclics = function() {
 
 /**
  * Base class of all reflection objects containing nested objects.
- * @extends ReflectionObjects
+ * @extends ReflectionObject
  * @constructor
  * @param {string} name Namespace name
- * @param {!Object.<string,*>} [options] Namespace options
+ * @param {Object.<string,*>} [options] Namespace options
  */
 function Namespace(name, options) {
     ReflectionObject.call(this, name, options);
@@ -30,7 +30,7 @@ function Namespace(name, options) {
     /**
      * Nested reflection objects by name.
      * @name Namespace#nested
-     * @type {!Object.<string,!ReflectionObject>|undefined}
+     * @type {Object.<string,ReflectionObject>|undefined}
      */
     this.nested = undefined; // exposed
 }
@@ -75,8 +75,8 @@ Namespace.testJSON = function testJSON(json) {
 /**
  * Constructs a namespace from JSON.
  * @param {string} name Namespace name
- * @param {!Object} json JSON object
- * @returns {!Namespace} Created namespace
+ * @param {Object} json JSON object
+ * @returns {Namespace} Created namespace
  * @throws {TypeError} If arguments are invalid
  */
 Namespace.fromJSON = function fromJSON(name, json) {
@@ -99,10 +99,10 @@ Namespace.fromJSON = function fromJSON(name, json) {
 
 /**
  * Iterates over all nested objects.
- * @param {function(!ReflectionObject, string):*} fn Iterator function called with nested objects
+ * @param {function(this:Namespace, !ReflectionObject, string):*} fn Iterator function called with nested objects
  *  and their names. Can return something different than `undefined` to break the iteration.
- * @param {!Object} [ctx] Optional iterator function context
- * @param {!Object} [object] Alternative object to iterate over
+ * @param {Object} [ctx] Optional iterator function context
+ * @param {Object} [object] Alternative object to iterate over
  * @returns {*|!Namespace} First value returned, otherwise this
  */
 NamespacePrototype.each = function each(fn, ctx, object) {
@@ -128,8 +128,8 @@ NamespacePrototype.get = function get(name) {
 
 /**
  * Adds a nested object to this namespace.
- * @param {!ReflectionObject} object Nested object to add
- * @returns {!Namespace} this
+ * @param {ReflectionObject} object Nested object to add
+ * @returns {Namespace} this
  */
 NamespacePrototype.add = function add(object) {
     if (initCyclics)
@@ -157,8 +157,8 @@ NamespacePrototype.add = function add(object) {
 
 /**
  * Removes a nested object from this namespace.
- * @param {!ReflectionObject} object Nested object to remove
- * @returns {!Namespace} this
+ * @param {ReflectionObject} object Nested object to remove
+ * @returns {Namespace} this
  */
 NamespacePrototype.remove = function remove(object) {
     if (initCyclics)
@@ -176,13 +176,15 @@ NamespacePrototype.remove = function remove(object) {
 
 /**
  * Defines additial namespaces within this one if not yet existing.
- * @param {string|!Array.<string>} path Path to create
- * @param {boolean|undefined} [visible] Whether visible when exporting definitions. Defaults to inherit from parent.
- * @returns {!Namespace} Pointer to the last namespace created
+ * @param {string|string[]} path Path to create
+ * @param {?boolean} [visible] Whether visible when exporting definitions. Defaults to inherit from parent.
+ * @returns {Namespace} Pointer to the last namespace created
  */
 NamespacePrototype.define = function define(path, visible) {
     if (util.isString(path))
         path = path.split('.');
+    if (visible === undefined)
+        visible = null;
     var ptr = this;
     while (path.length > 0) {
         var part = path.shift();
@@ -203,7 +205,7 @@ NamespacePrototype.define = function define(path, visible) {
 /**
  * Resolves this namespace's and all its nested objects' type references. Useful to validate a
  * reflection tree.
- * @returns {!Namespace} this
+ * @returns {Namespace} this
  */
 NamespacePrototype.resolveAll = function resolve() {
     this.each(function(nested) {
@@ -214,7 +216,7 @@ NamespacePrototype.resolveAll = function resolve() {
 
 /**
  * Looks up the reflection object specified by path, relative to this namespace.
- * @param {string|!Array.<string>} path Path to look up
+ * @param {string|string[]} path Path to look up
  * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */

@@ -8,15 +8,15 @@ module.exports = Enum;
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Unique name within its namespace
- * @param {!Object.<string,number>} [values] Enum values as an object, by name
- * @param {!Object.<string,*>} [options] Enum options
+ * @param {Object.<string,number>} [values] Enum values as an object, by name
+ * @param {Object.<string,*>} [options] Enum options
  */
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
 
     /**
      * Enum values by name.
-     * @type {!Object.<string,number>}
+     * @type {Object.<string,number>}
      */
     this.values = values || {}; // exposed, marker
 
@@ -38,7 +38,7 @@ Object.defineProperties(EnumPrototype, {
     /**
      * Enum values by id.
      * @name Enum#valuesById
-     * @type {!Object.<number,string>}
+     * @type {Object.<number,string>}
      * @readonly
      */
     valuesById: {
@@ -70,8 +70,8 @@ Enum.testJSON = function testJSON(json) {
 /**
  * Creates an enum from JSON.
  * @param {string} name Enum name
- * @param {!Object.<string,*>} json JSON object
- * @returns {!Enum} Created enum
+ * @param {Object.<string,*>} json JSON object
+ * @returns {Enum} Created enum
  * @throws {TypeError} If arguments are invalid
  */
 Enum.fromJSON = function fromJSON(name, json) {
@@ -82,7 +82,7 @@ Enum.fromJSON = function fromJSON(name, json) {
  * Adds a value to this enum.
  * @param {string} name Value name
  * @param {number} id Value id
- * @returns {!Enum} this
+ * @returns {Enum} this
  */
 EnumPrototype.add = function(name, id) {
     if (!util.isString(name))
@@ -97,7 +97,7 @@ EnumPrototype.add = function(name, id) {
 /**
  * Removes a value from this enum
  * @param {string} name Value name
- * @returns {!Enum} this
+ * @returns {Enum} this
  */
 EnumPrototype.remove = function(name) {
     if (!util.isString(name))

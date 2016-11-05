@@ -36,10 +36,10 @@ var ieee754 = require("ieee754");
 
 /**
  * Writes a float to the specified writer.
- * @param {!Writer} writer Writer to write to
+ * @param {Writer} writer Writer to write to
  * @param {number} value Value to write
  * @param {number} size Size in bytes
- * @returns {!Writer} writer
+ * @returns {Writer} writer
  * @private
  */
 exports._write = function float_write(writer, value, size) {
@@ -50,7 +50,7 @@ exports._write = function float_write(writer, value, size) {
 
 /**
  * Reads a float from the specified reader.
- * @param {!Reader} reader Reader to read from
+ * @param {Reader} reader Reader to read from
  * @param {number} size Size in bytes
  * @returns {number} Value read
  * @private

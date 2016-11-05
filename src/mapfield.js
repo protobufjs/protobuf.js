@@ -11,9 +11,9 @@ module.exports = MapField;
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
-   @param {string} type Type of values
- * @param {string} keyType Type of keys
- * @param {!Object.<string,*>} [options] Field options
+ * @param {string} type Value type
+ * @param {string} keyType Key type
+ * @param {Object.<string,*>} [options] Field options
  */
 function MapField(name, id, type, keyType, options) {
     Field.call(this, name, id, type, options);
@@ -45,7 +45,7 @@ var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);
 
 /**
  * Tests if the specified JSON object describes a map field.
- * @param {!Object} json JSON object to test
+ * @param {Object} json JSON object to test
  * @returns {boolean} `true` if the object describes a field
  */
 MapField.testJSON = function testJSON(json) {
@@ -55,8 +55,8 @@ MapField.testJSON = function testJSON(json) {
 /**
  * Constructs a map field from JSON.
  * @param {string} name Field name
- * @param {!Object} json JSON object
- * @returns {!MapField} Created map field
+ * @param {Object} json JSON object
+ * @returns {MapField} Created map field
  * @throws {TypeError} If arguments are invalid
  */
 MapField.fromJSON = function fromJSON(name, json) {

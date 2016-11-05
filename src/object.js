@@ -13,7 +13,7 @@ var initCyclics = function() {
  * Base class of all reflection objects.
  * @constructor
  * @param {string} name Object name
- * @param {!Object.<string,*>} [options] Object options
+ * @param {Object.<string,*>} [options] Object options
  * @abstract
  */
 function ReflectionObject(name, options) {
@@ -35,7 +35,7 @@ function ReflectionObject(name, options) {
 
     /**
      * Options.
-     * @type {!Object.<string,*>|undefined}
+     * @type {Object.<string,*>|undefined}
      */
     this.options = options; // exposed
 
@@ -77,7 +77,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
     /**
      * Reference to the root namespace.
      * @name ReflectionObject#root
-     * @type {!Root}
+     * @type {Root}
      * @readonly
      */
     root: {
@@ -133,9 +133,9 @@ Object.defineProperties(ReflectionObjectPrototype, {
 
 /**
  * Extends this class and optionally exposes the specified properties to JSON.
- * @param {!Function} constructor Extending constructor
- * @param {!Array.<string>} [exposePropertyNames] Properties to expose to JSON
- * @returns {!Object} Prototype
+ * @param {Function} constructor Extending constructor
+ * @param {Array.<string>} [exposePropertyNames] Properties to expose to JSON
+ * @returns {Object} Prototype
  */
 ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
     var proto = constructor.prototype = Object.create(this.prototype);
@@ -149,9 +149,9 @@ ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
 /**
  * Exposes the specified properties to JSON.
  * @memberof ReflectionObject
- * @param {!Object} prototype Prototype to expose the properties upon
- * @param {!Array.<string>} propertyNames Property names to expose
- * @returns {!Object} prototype
+ * @param {Object} prototype Prototype to expose the properties upon
+ * @param {Array.<string>} propertyNames Property names to expose
+ * @returns {Object} prototype
  */
 function exposeJSON(prototype, propertyNames) {
     var descriptors = {};
@@ -176,7 +176,7 @@ ReflectionObject.exposeJSON = exposeJSON;
 /**
  * Converts this reflection object to its JSON representation.
  * Returns only properties that have explicitly been exposed.
- * @returns {!Object} JSON object
+ * @returns {Object} JSON object
  * @see {@link ReflectionObject.exposeJSON}
  */
 ReflectionObjectPrototype.toJSON = function toJSON() {
@@ -187,7 +187,7 @@ ReflectionObjectPrototype.toJSON = function toJSON() {
 
 /**
  * Called when this object is added to a parent.
- * @param {!ReflectionObject} parent Parent added to
+ * @param {ReflectionObject} parent Parent added to
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onAdd = function onAdd(parent) {
@@ -204,7 +204,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
 
 /**
  * Called when this object is removed from a parent.
- * @param {!ReflectionObject} parent Parent removed from
+ * @param {ReflectionObject} parent Parent removed from
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
@@ -219,7 +219,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 
 /**
  * Resolves this objects type references.
- * @returns {!ReflectionObject} this
+ * @returns {ReflectionObject} this
  */
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
@@ -235,7 +235,7 @@ ReflectionObjectPrototype.resolve = function resolve() {
 /**
  * Changes this object's visibility when exporting definitions.
  * @param {?boolean} visible `true` for public, `false` for private, `null` to inherit from parent
- * @returns {!ReflectionObject} this
+ * @returns {ReflectionObject} this
  * @throws {TypeError} If arguments are invalid
  */
 ReflectionObjectPrototype.visibility = function visibility(visible) {
@@ -259,7 +259,7 @@ ReflectionObjectPrototype.getOption = function getOption(name) {
  * @param {string} name Option name
  * @param {*} value Option value
  * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
- * @returns {!ReflectionObject} this
+ * @returns {ReflectionObject} this
  */
 ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) {
     if (!ifNotSet || !this.options || this.options[name] === undefined)
@@ -269,8 +269,8 @@ ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) 
 
 /**
  * Sets multiple options.
- * @param {!Object.<string,*>} options Options to set
- * @returns {!ReflectionObject} this
+ * @param {Object.<string,*>} options Options to set
+ * @returns {ReflectionObject} this
  */
 ReflectionObjectPrototype.setOptions = function setOptions(options) {
     if (options)

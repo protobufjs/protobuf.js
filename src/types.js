@@ -9,7 +9,7 @@ var types = module.exports = {};
 
 /**
  * Basic type wire types.
- * @type {!Object.<string,number>}
+ * @type {Object.<string,number>}
  */
 types.wireTypes = {
 
@@ -33,7 +33,7 @@ types.wireTypes = {
 
 /**
  * Basic type defaults.
- * @type {!Object.<string,*>}
+ * @type {Object.<string,*>}
  */
 types.defaults = {
 
@@ -57,7 +57,7 @@ types.defaults = {
 
 /**
  * Allowed types for map keys with their associated wire type.
- * @type {!Object.<string,number>}
+ * @type {Object.<string,number>}
  */
 types.mapKeyWireTypes = {
 
@@ -78,7 +78,7 @@ types.mapKeyWireTypes = {
 
 /**
  * Allowed types for packed repeated fields with their associated wire type.
- * @type {!Object.<string,number>}
+ * @type {Object.<string,number>}
  */
 types.packableWireTypes = {
 

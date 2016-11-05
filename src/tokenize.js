@@ -9,7 +9,7 @@ var delimRe        = /[\s{}=;:\[\],'"\(\)<>]/g, // eslint-disable-line no-useles
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
- * @returns {!Object} Tokenizer handle
+ * @returns {Object} Tokenizer handle
  */
 function tokenize(source) {
     source = source.toString();

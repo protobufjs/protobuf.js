@@ -25,9 +25,9 @@ function lower(token) {
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
  * @param {string} source Source contents
- * @param {!Root} [root] Root to populate
+ * @param {Root} [root] Root to populate
  * @param {boolean} [visible=true] Whether types from this file are visible when exporting definitions
- * @returns {!Object} Parsed contents
+ * @returns {Object} Parsed contents
  */
 function parse(source, root, visible) {
     if (util.isBoolean(root)) {

@@ -13,7 +13,7 @@ function indexOutOfRange(reader, writeLength) {
 /**
  * Wire format reader using arrays.
  * @constructor
- * @param {!Array} buffer Buffer to read from
+ * @param {number[]} buffer Buffer to read from
  */
 function Reader(buffer) {
     if (!(this instanceof Reader)) {
@@ -24,7 +24,7 @@ function Reader(buffer) {
 
     /**
      * Read buffer.
-     * @type {!Array}
+     * @type {number[]}
      */
     this.buf = buffer;
 
@@ -50,7 +50,7 @@ ReaderPrototype._slice = array_._slice;
 
 /**
  * Reads a tag.
- * @returns {!{id: number, wireType: number}} Field id and wire type
+ * @returns {{id: number, wireType: number}} Field id and wire type
  */
 ReaderPrototype.tag = function read_tag() {
     if (this.pos >= this.len)
@@ -203,7 +203,7 @@ ReaderPrototype.double = function read_double() {
 /**
  * Reads a sequence of bytes.
  * @param {number} [length] Optional number of bytes to read, if known beforehand
- * @returns {!Array} Value read
+ * @returns {number[]} Value read
  */
 ReaderPrototype.bytes = function read_bytes(length) {
     if (length === undefined)
@@ -228,7 +228,7 @@ ReaderPrototype.string = function read_string(length) {
 /**
  * Skips some bytes.
  * @param {number} [length] Length if known, otherwise a varint is assumed
- * @returns {!Reader} this
+ * @returns {Reader} this
  */
 ReaderPrototype.skip = function skip(length) {
     if (length === undefined) {
@@ -247,7 +247,7 @@ ReaderPrototype.skip = function skip(length) {
 /**
  * Skips the next element of the specified wire type.
  * @param {number} wireType Wire type received
- * @returns {!Reader}this
+ * @returns {Reader}this
  */
 ReaderPrototype.skipType = function(wireType) {
     switch (wireType) {
@@ -279,8 +279,8 @@ ReaderPrototype.skipType = function(wireType) {
 
 /**
  * Resets this instance and frees all resources.
- * @param {!Array} [buffer] Optionally a new buffer for a new sequence of read operations
- * @returns {!Reader} this
+ * @param {number[]} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @returns {Reader} this
  */
 ReaderPrototype.reset = function reset(buffer) {
     if (buffer) {
@@ -297,8 +297,8 @@ ReaderPrototype.reset = function reset(buffer) {
 /**
  * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
  * Optionally accepts a new buffer for a new sequence of read operations.
- * @param {!Array} [buffer] Optionally a new buffer for a new sequence of read operations
- * @returns {!Array} Finished buffer
+ * @param {number[]} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @returns {number[]} Finished buffer
  */
 ReaderPrototype.finish = function finish(buffer) {
     var remain = this.pos
@@ -319,10 +319,9 @@ var initBufferReader = function() {
 
 /**
  * Wire format reader using node buffers.
- * @memberof Reader
  * @extends Reader
  * @constructor
- * @param {!Buffer} buffer Buffer to read from
+ * @param {number[]} buffer Buffer to read from
  */
 function BufferReader(buffer) {
     if (initBufferReader)
@@ -378,8 +377,8 @@ BufferReaderPrototype.string = function read_string_buffer(length) {
 /**
  * Finishes the current sequence of read operations using node buffers, frees all resources and returns the remaining buffer.
  * Optionally accepts a new buffer for a new sequence of read operations using node buffers.
- * @param {!Buffer} [buffer] Optionally a new buffer for a new sequence of read operations
- * @returns {!Buffer} Finished buffer
+ * @param {number[]} [buffer] Optionally a new buffer for a new sequence of read operations
+ * @returns {number[]} Finished buffer
  */
 BufferReaderPrototype.finish = function finish_buffer(buffer) {
     var remain = this.pos ? this.buf.slice(this.pos) : this.buf;

@@ -7,7 +7,7 @@
 /**
  * Encodes a string to UTF8 bytes.
  * @param {string} str String to encode
- * @returns {!Array.<number>} Array of encoded bytes
+ * @returns {number[]} Array of encoded bytes
  * @private
  */
 exports._encode = function string_encode_utf8(str) {
@@ -40,7 +40,7 @@ exports._encode = function string_encode_utf8(str) {
 
 /**
  * Decodes a string from UTF8 bytes.
- * @param {!Array} bytes Bytes to decode
+ * @param {number[]} bytes Bytes to decode
  * @returns {string} Decoded string
  * @private
  */

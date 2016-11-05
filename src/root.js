@@ -12,8 +12,8 @@ module.exports = Root;
  * Root namespace.
  * @extends Namespace
  * @constructor
- * @param {!Object.<string,*>} [contextOptions] Context options
- * @param {!Object.<string,*>} [options] Namespace options
+ * @param {Object.<string,*>} [contextOptions] Context options
+ * @param {Object.<string,*>} [options] Namespace options
  */
 function Root(contextOptions, options) {
     Namespace.call(this, "", options);
@@ -23,14 +23,14 @@ function Root(contextOptions, options) {
 
     /**
      * Already loaded file names.
-     * @type {!Array.<string>}
+     * @type {string[]}
      * @private
      */
     this._loaded = []; // use addLoaded/isLoaded instead
 
     /**
      * Array of pending extension fields.
-     * @type {!Array.<!Field>}
+     * @type {Field[]}
      * @private
      */
     this.pendingExtensions = [];
@@ -73,8 +73,8 @@ RootPrototype.addLoaded = function addLoaded(filename) {
 /**
  * Imports common google types to the specified root.
  * @memberof Root
- * @param {!Root} root The root to import to
- * @param {boolean} [visible] Whether visible when exporting definitions. Defaults to inherit from parent.
+ * @param {Root} root The root to import to
+ * @param {?boolean} [visible] Whether visible when exporting definitions. Defaults to inherit from parent.
  * @returns {undefined}
  */
 function importGoogleTypes(root, visible) {
@@ -259,13 +259,13 @@ Root.importGoogleTypes = importGoogleTypes;
 
 /**
  * Loads one or multiple .proto files into a common root namespace.
- * @param {string|!Array.<string>} filename Names of one or multiple files to load
- * @param {!function(Error, ?Root)} [callback] Node-style callback function
- * @param {!Object} [ctx] Optional callback context
- * @returns {!Promise|undefined} A promise if callback has been omitted, otherwise `undefined`
+ * @param {string|string[]} filename Names of one or multiple files to load
+ * @param {function(Error, ?Root)} [callback] Node-style callback function
+ * @param {Object} [ctx] Optional callback context
+ * @returns {Promise<Root>|undefined} A promise if callback has been omitted, otherwise `undefined`
  * @throws {TypeError} If arguments are invalid
  */
-RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-line consistent-return
+RootPrototype.load = function load(filename, callback, ctx) {
     var self = this;
     if (!callback)
         return util.asPromise(load, filename);
@@ -336,14 +336,16 @@ RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-
 
     if (!queued)
         finish(null);
+    return undefined;
 };
 
 /**
  * Handles a (pending) declaring extension field by creating a sister field to represent it
  * within its extended type.
- * @param {!Field} field Declaring extension field witin the declaring type
+ * @param {Field} field Declaring extension field witin the declaring type
  * @returns {boolean} `true` if successfully added to the extended type, `false` otherwise
  * @inner
+ * @private
  */
 function handleExtension(field) {
     var extendedType = field.parent.lookup(field.extend);
@@ -359,7 +361,7 @@ function handleExtension(field) {
 
 /**
  * Called when any object is added to this root or its sub-namespaces.
- * @param {!ReflectionObject} object Object added
+ * @param {ReflectionObject} object Object added
  * @returns {undefined}
  */
 RootPrototype.handleAdd = function handleAdd(object) {
@@ -382,7 +384,7 @@ RootPrototype.handleAdd = function handleAdd(object) {
 
 /**
  * Called when any object is removed from this root or its sub-namespaces.
- * @param {!ReflectionObject} object Object removed
+ * @param {ReflectionObject} object Object removed
  * @returns {undefined}
  */
 RootPrototype.handleRemove = function handleRemove(object) {

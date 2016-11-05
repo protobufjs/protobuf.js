@@ -13,7 +13,7 @@ module.exports = Method;
  * @param {string} responseType Response message type
  * @param {boolean} [requestStream] Whether the request is streamed
  * @param {boolean} [responseStream] Whether the response is streamed
- * @param {!Object.<string,*>} [options] Method options
+ * @param {Object.<string,*>} [options] Method options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
     if (util.isObject(requestStream)) {
@@ -73,7 +73,7 @@ ReflectionObject.extend(Method, [ "type", "requestType", "requestStream", "respo
 
 /**
  * Tests if the specified JSON object describes a service method.
- * @param {!Object} json JSON object
+ * @param {Object} json JSON object
  * @returns {boolean} `true` if the object describes a map field
  */
 Method.testJSON = function testJSON(json) {
@@ -83,8 +83,8 @@ Method.testJSON = function testJSON(json) {
 /**
  * Constructs a service method from JSON.
  * @param {string} name Method name
- * @param {!Object} json JSON object
- * @returns {!Method} Created method
+ * @param {Object} json JSON object
+ * @returns {Method} Created method
  * @throws {TypeError} If arguments are invalid
  */
 Method.fromJSON = function fromJSON(name, json) {

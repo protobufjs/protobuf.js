@@ -6,11 +6,11 @@ module.exports = OneOf;
 
 /**
  * Reflected OneOf.
- * @extends Namespace
+ * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
- * @param {!Array.<string>} [fieldNames] Field names
- * @param {!Object} [options] Oneof options
+ * @param {string[]} [fieldNames] Field names
+ * @param {Object} [options] Oneof options
  */
 function OneOf(name, fieldNames, options) {
     if (!util.isArray(fieldNames)) {
@@ -23,13 +23,13 @@ function OneOf(name, fieldNames, options) {
 
     /**
      * Field names that belong to this oneof.
-     * @type {!Array.<string>}
+     * @type {Array.<string>}
      */
     this.oneof = fieldNames || []; // exposed, marker
 
     /**
      * Fields that belong to this oneof and are possibly not yet added to its parent.
-     * @type {!Array.<!Field>}
+     * @type {Array.<Field>}
      * @private
      */
     this._fields = [];
@@ -42,7 +42,7 @@ var OneOfPrototype = ReflectionObject.extend(OneOf, [ "oneof" ]);
 
 /**
  * Tests if the specified JSON object describes a oneof.
- * @param {!Object} json JSON object
+ * @param {*} json JSON object
  * @returns {boolean} `true` if the object describes a oneof
  */
 OneOf.testJSON = function testJSON(json) {
@@ -52,8 +52,8 @@ OneOf.testJSON = function testJSON(json) {
 /**
  * Constructs a oneof from JSON.
  * @param {string} name Oneof name
- * @param {!Object} json JSON object
- * @returns {!MapField} Created oneof
+ * @param {Object} json JSON object
+ * @returns {MapField} Created oneof
  * @throws {TypeError} If arguments are invalid
  */
 OneOf.fromJSON = function fromJSON(name, json) {
@@ -62,9 +62,10 @@ OneOf.fromJSON = function fromJSON(name, json) {
 
 /**
  * Adds the fields of the specified oneof to the parent if not already done so.
- * @param {!OneOf} oneof The oneof
+ * @param {OneOf} oneof The oneof
  * @returns {undefined}
  * @inner
+ * @private
  */
 function addFieldsToParent(oneof) {
     if (oneof.parent)
@@ -77,8 +78,8 @@ function addFieldsToParent(oneof) {
 /**
  * Adds a field to this oneof.
  * @override
- * @param {!Field} field Field to add
- * @returns {!OneOf} this
+ * @param {Field} field Field to add
+ * @returns {OneOf} this
  */
 OneOfPrototype.add = function add(field) {
     if (!(field instanceof Field))
@@ -94,8 +95,8 @@ OneOfPrototype.add = function add(field) {
 /**
  * Removes a field from this oneof.
  * @override
- * @param {!Field} field Field to remove
- * @returns {!OneOf} this
+ * @param {Field} field Field to remove
+ * @returns {OneOf} this
  */
 OneOfPrototype.remove = function remove(field) {
     if (!(field instanceof Field))

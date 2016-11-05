@@ -102,7 +102,7 @@ util.isBoolean = function isBoolean(value) {
  * Creates a type error.
  * @param {string} name Argument name
  * @param {string} [description=a string] Expected argument descripotion
- * @returns {!TypeError} Created type error
+ * @returns {TypeError} Created type error
  * @private
  */
 util._TypeError = function(name, description) {
@@ -113,7 +113,7 @@ util._TypeError = function(name, description) {
  * Returns a promise from a node-style function.
  * @memberof util
  * @param {function(Error, ...*)} fn Function to call
- * @returns {!Promise} Promisified function
+ * @returns {Promise<*>} Promisified function
  */
 function asPromise(fn/*, varargs */) {
     return new Promise(function(resolve, reject) {
@@ -133,9 +133,9 @@ util.asPromise = asPromise;
  * @memberof util
  * @param {string} path File path or url
  * @param {function(?Error, string=)} [callback] Node-style callback
- * @returns {!Promise|undefined} Promise if callback has been omitted 
+ * @returns {Promise<string>|undefined} Promise if callback has been omitted 
  */
-function fetch(path, callback) { // eslint-disable-line consistent-return
+function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, path);
     if (fs && fs.readFile) {
@@ -143,7 +143,7 @@ function fetch(path, callback) { // eslint-disable-line consistent-return
             if (data) data = data.toString();
             callback(err, data);
         });
-        return; // eslint-disable-line consistent-return
+        return undefined;
     }
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
@@ -157,6 +157,7 @@ function fetch(path, callback) { // eslint-disable-line consistent-return
         return callback(Error("request failed"));
     };
     xhr.open("GET", path, true);
+    return undefined;
 }
 
 util.fetch = fetch;
