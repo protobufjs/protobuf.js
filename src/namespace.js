@@ -13,7 +13,7 @@ var initCyclics = function() {
     Type = require("./type");
     Service = require("./service");
     nestedTypes = [ Enum, Type, Service, Namespace ];
-    nestedError = nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
+    nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
     initCyclics = false;
 };
 
@@ -161,7 +161,7 @@ NamespacePrototype.remove = function remove(object) {
     if (initCyclics)
         initCyclics();
     if (!(object instanceof ReflectionObject))
-        throw util._TypeError("object", "ReflectionObject");
+        throw util._TypeError("object", "a ReflectionObject");
     if (object.parent !== this)
         throw Error(object + " is not a member of " + this);
     delete this.nested[object.name];

@@ -87,11 +87,11 @@ MapFieldPrototype.encode = function encode(value, writer) {
     if (!(value && (keys = Object.keys(value)).length))
         return writer;
 
-    var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType;
-    var keyWireType = types.mapKeyWireTypes[keyType];
+    var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
+        keyWireType = types.mapKeyWireTypes[keyType];
 
-    var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type;
-    var valueWireType = types.wireTypes[valueType];
+    var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
+        valueWireType = types.wireTypes[valueType];
 
     writer.tag(this.id, 2).fork();
     for (var i = 0, k = keys.length; i < k; ++i) {

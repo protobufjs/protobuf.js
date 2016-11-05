@@ -1,11 +1,13 @@
 // NOTE: These types are structured in a way that makes looking up wire types and similar fast,
 // but not necessarily comfortable. Do not modify them unless you know exactly what you are doing.
 
+var types = module.exports = {};
+
 /**
  * Basic type wire types.
  * @type {!Object.<string,number>}
  */
-exports.wireTypes = {
+types.wireTypes = {
 
     double   : 1,
     float    : 5,
@@ -29,7 +31,7 @@ exports.wireTypes = {
  * Basic type defaults.
  * @type {!Object.<string,*>}
  */
-exports.defaults = {
+types.defaults = {
 
     double   : 0,
     float    : 0,
@@ -53,7 +55,7 @@ exports.defaults = {
  * Allowed types for map keys with their associated wire type.
  * @type {!Object.<string,number>}
  */
-exports.mapKeyWireTypes = {
+types.mapKeyWireTypes = {
 
     int32    : 0,
     uint32   : 0,
@@ -74,7 +76,7 @@ exports.mapKeyWireTypes = {
  * Allowed types for packed repeated fields with their associated wire type.
  * @type {!Object.<string,number>}
  */
-exports.packableWireTypes = {
+types.packableWireTypes = {
 
     int32    : 0,
     uint32   : 0,

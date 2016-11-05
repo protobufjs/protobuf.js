@@ -45,6 +45,7 @@
   },
   "browser": {
     "process": false,
+    "_process": false,
     "buffer": false,
     "fs": false
   }

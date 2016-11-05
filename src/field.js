@@ -33,19 +33,19 @@ function Field(name, id, type, rule, extend, options) {
     }
     ReflectionObject.call(this, name, options);
     if (!util.isInteger(id) || id < 0)
-        throw util._TypeError("id", "non-negative integer");
+        throw util._TypeError("id", "a non-negative integer");
     if (!util.isString(type))
         throw util._TypeError("type");
     if (extend !== undefined && !util.isString(extend))
         throw util._TypeError("extend");
-    if (rule === "map")
-        throw util._TypeError("rule", "non-map (use MapField instead)");
+    if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
+        throw util._TypeError("rule", "a valid rule string");
 
     /**
      * Field rule, if any.
      * @type {string|undefined}
      */
-    this.rule = rule && (rule = rule.toLowerCase()) !== 'optional' ? rule : undefined; // exposed
+    this.rule = rule && rule !== 'optional' ? rule : undefined; // exposed
 
     /**
      * Field type.

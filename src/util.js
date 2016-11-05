@@ -101,12 +101,12 @@ util.isBoolean = function isBoolean(value) {
 /**
  * Creates a type error.
  * @param {string} name Argument name
- * @param {string} [typeName=string] Expected argument type name
+ * @param {string} [description=a string] Expected argument descripotion
  * @returns {!TypeError} Created type error
  * @private
  */
-util._TypeError = function(name, typeName) {
-    return TypeError(name + " must be of type " + (typeName || "string"));
+util._TypeError = function(name, description) {
+    return TypeError(name + " must be " + (description || "a string"));
 };
 
 /**

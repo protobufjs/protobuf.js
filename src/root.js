@@ -329,7 +329,7 @@ RootPrototype.load = function load(filename, callback, ctx) { // eslint-disable-
     else if (util.isString(filename))
         fetch(filename, true, false);
     else
-        throw util._TypeError("filename", "string or array");
+        throw util._TypeError("filename", "a string or array");
 
     if (!queued)
         finish(null);

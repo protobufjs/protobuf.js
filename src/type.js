@@ -359,24 +359,8 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
                     array.push(value);
             } else
                 message[name] = value;
-        } else {
-            switch (tag.wireType) {
-                case 0:
-                    reader.skip();
-                    break;
-                case 1:
-                    reader.skip(8);
-                    break;
-                case 2:
-                    reader.skip(reader.uint32());
-                    break;
-                case 5:
-                    reader.skip(4);
-                    break;
-                default:
-                    throw Error("unsupported wire type of unknown field #" + tag.id + " in " + this + ": " + tag.wireType);
-            }
-        }
+        } else
+            reader.skipType(tag.wireType);
     }
     if (reader.pos !== limit)
         throw Error("invalid wire format: index " + reader.pos + " != " + limit);

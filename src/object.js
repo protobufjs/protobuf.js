@@ -20,7 +20,7 @@ function ReflectionObject(name, options) {
     if (!util.isString(name))
         throw util._TypeError("name");
     if (options && !util.isObject(options))
-        throw util._TypeError("options", "object");
+        throw util._TypeError("options", "an object");
 
     /**
      * JSON-exportable properties.
@@ -121,7 +121,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
         },
         set: function(value) {
             if (value !== null && !util.isBoolean(value))
-                throw util._TypeError("value", "?boolean");
+                throw util._TypeError("value", "a boolean or null");
             this._visible = value;
         }
     }

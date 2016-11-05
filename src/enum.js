@@ -85,7 +85,7 @@ EnumPrototype.add = function(name, id) {
     if (!util.isString(name))
         throw util._TypeError("name");
     if (!util.isInteger(id) || id < 0)
-        throw util._TypeError("id", "non-negative integer");
+        throw util._TypeError("id", "a non-negative integer");
     this.values[name] = id;
     this._valuesById = null;
     return this;

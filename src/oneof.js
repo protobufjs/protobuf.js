@@ -19,7 +19,7 @@ function OneOf(name, fieldNames, options) {
     }
     ReflectionObject.call(this, name, options);
     if (fieldNames && !util.isArray(fieldNames))
-        throw util._TypeError("fieldNames", "Array");
+        throw util._TypeError("fieldNames", "an Array");
 
     /**
      * Field names that belong to this oneof.
@@ -79,7 +79,7 @@ function addFieldsToParent(oneof) {
  */
 OneOfPrototype.add = function add(field) {
     if (!(field instanceof Field))
-        throw util._TypeError("field", "Field");
+        throw util._TypeError("field", "a Field");
     if (field.parent)
         field.parent.remove(field);
     this._fields.push(field);
@@ -96,7 +96,7 @@ OneOfPrototype.add = function add(field) {
  */
 OneOfPrototype.remove = function remove(field) {
     if (!(field instanceof Field))
-        throw util._TypeError("field", "Field");
+        throw util._TypeError("field", "a Field");
     var index = this._fields.indexOf(field);
     if (index < 0)
         throw Error(field + " is not a member of " + this);

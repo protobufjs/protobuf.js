@@ -13,7 +13,8 @@ var source     = require('vinyl-source-stream');
 var pkg = require(__dirname + '/../package.json');
 var license = [
     "/*!",
-    " * protobuf.js v${version} - compiled ${date}",
+    " * protobuf.js v${version} (c) 2016 Daniel Wirtz",
+    " * Compiled ${date}",
     " * Licensed under the Apache License, Version 2.0",
     " * see: https://github.com/dcodeIO/protobuf.js for details",
     " */"

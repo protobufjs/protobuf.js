@@ -242,6 +242,39 @@ ReaderPrototype.skip = function skip(length) {
 };
 
 /**
+ * Skips the next element of the specified wire type.
+ * @param {number} wireType Wire type received
+ * @returns {!Reader}this
+ */
+ReaderPrototype.skipType = function(wireType) {
+    switch (wireType) {
+        case 0:
+            this.skip();
+            break;
+        case 1:
+            this.skip(8);
+            break;
+        case 2:
+            this.skip(this.uint32());
+            break;
+        case 3:
+            do { // eslint-disable-line no-constant-condition
+                var tag = this.tag();
+                if (tag.wireType === 4)
+                    break;
+                this.skipType(tag.wireType);
+            } while (true);
+            break;
+        case 5:
+            this.skip(4);
+            break;
+        default:
+            throw Error("invalid wire type: " + wireType);
+    }
+    return this;
+};
+
+/**
  * Resets this instance and frees all resources.
  * @param {!Array} [buffer] Optionally a new buffer for a new sequence of read operations
  * @returns {!Reader} this

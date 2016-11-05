@@ -63,7 +63,7 @@ ServicePrototype.resolveAll = function resolve() {
  */
 ServicePrototype.add = function add(method) {
     if (!(method instanceof Method))
-        throw util._TypeError("method", "Method");
+        throw util._TypeError("method", "a Method");
     if (this.methods[method.name])
         throw Error("duplicate name '" + method.name + "' in " + this);
     this.methods[method.name] = method;
@@ -80,7 +80,7 @@ ServicePrototype.add = function add(method) {
  */
 ServicePrototype.remove = function remove(method) {
     if (!(method instanceof Method))
-        throw util._TypeError("method", "Method");
+        throw util._TypeError("method", "a Method");
     if (this.methods[method.name] !== method)
         throw Error(method + " is not a member of " + this);
     delete this.methods[method.name];

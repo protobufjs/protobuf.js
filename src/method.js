@@ -23,7 +23,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         options = responseStream;
         responseStream = undefined;
     }
-    if (!util.isString(type))    
+    if (!util.isString(type))
         throw util._TypeError("type");
     if (!util.isString(requestType))
         throw util._TypeError("requestType");
