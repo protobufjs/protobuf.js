@@ -131,6 +131,8 @@
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
+                <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
+            
                 <li data-name="util.toHash"><a href="util.html#.toHash">toHash</a></li>
             
             </ul>
@@ -770,7 +772,11 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
+            
                 <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
+            
+                <li data-name="Prototype#$values"><a href="Prototype.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -781,6 +787,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
+            
+                <li data-name="Prototype.init"><a href="Prototype.html#.init">init</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1109,6 +1117,8 @@
             
                 <li data-name="Type#oneofs"><a href="Type.html#oneofs">oneofs</a></li>
             
+                <li data-name="Type#oneofsArray"><a href="Type.html#oneofsArray">oneofsArray</a></li>
+            
                 <li data-name="Type#options"><a href="Type.html#options">options</a></li>
             
                 <li data-name="Type#parent"><a href="Type.html#parent">parent</a></li>
@@ -1270,7 +1280,9 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var Namespace = require("./namespace"),
+            <pre class="prettyprint source linenums"><code>module.exports = Type; 
+
+var Namespace = require("./namespace"),
     Enum      = require("./enum"),
     OneOf     = require("./oneof"),
     Field     = require("./field"),
@@ -1279,8 +1291,6 @@
     util      = require("./util"),
     Reader    = require("./reader"),
     Writer    = require("./writer");
-
-module.exports = Type;
 
 /**
  * Reflected message type.
@@ -1329,6 +1339,13 @@ function Type(name, options) {
      * @private
      */
     this._fieldsArray = null;
+
+    /**
+     * Cached oneofs as an array.
+     * @type {?OneOf[]}
+     * @private
+     */
+    this._oneofsArray = null;
 
     /**
      * Cached prototype.
@@ -1381,45 +1398,38 @@ Object.defineProperties(TypePrototype, {
     },
 
     /**
-     * Message fields as an array for iteration.
+     * Fields of this message as an array for iteration.
      * @name Type#fieldsArray
      * @type {Field[]}
      * @readonly
      */
     fieldsArray: {
         get: function() {
-            if (this._fieldsArray)
-                return this._fieldsArray;
-            var names  = Object.keys(this.fields),
-                length = names.length;
-            this._fieldsArray = new Array(length);
-            for (var i = 0; i &lt; length; ++i)
-                this._fieldsArray[i] = this.fields[names[i]];
-            return this._fieldsArray;
+            return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
         }
     },
 
     /**
-     * Runtime message prototype of this message.
+     * Oneofs of this message as an array for iteration.
+     * @name Type#oneofsArray
+     * @type {OneOf[]}
+     * @readonly
+     */
+    oneofsArray: {
+        get: function() {
+            return this._oneofsArray || (this._oneofsArray = util.toArray(this.oneofs));
+        }
+    },
+
+    /**
+     * Runtime prototype of this message.
      * @name Type#prototype
      * @type {Prototype}
      * @readonly
      */
     prototype: {
         get: function() {
-            if (this._prototype)
-                return this._prototype;
-            var fieldsArray = this.fieldsArray,
-                fieldsCount = fieldsArray.length;
-            var prototype = new Prototype();
-            prototype.$type = this;
-            for (var i = 0; i &lt; fieldsCount; ++i) {
-                var field = fieldsArray[i].resolve();
-                if (!util.isObject(field.defaultValue)) // objects are immutable and thus cannot be on the prototype
-                    prototype[field.name] = field.defaultValue;
-            }
-            this._prototype = prototype;
-            return prototype;
+            return this._prototype || (this._prototype = Prototype.init(new Prototype(), this));
         }
     }
 });
@@ -1432,7 +1442,7 @@ Object.defineProperties(TypePrototype, {
  * @ignore
  */
 function clearCache(type) {
-    type._fieldsById = type._fieldsArray = type._prototype = null;
+    type._fieldsById = type._fieldsArray = type._oneofsArray = type._prototype = null;
     return type;
 }
 
@@ -1574,28 +1584,18 @@ TypePrototype.create = function create(properties, constructor) {
     if (util.isFunction(properties)) {
         constructor = properties;
         properties = undefined;
-    }
-    if (constructor === undefined &amp;&amp; this._constructor)
-        constructor = this._constructor;
+    } else if (properties /* already */ instanceof Prototype)
+        return properties;
 
-    // If there is a dedicated constructor specified or registered, take the fast route
-    if (constructor)
+    if (constructor /* specified */ || (constructor /* registered */ = this._constructor))
         return new constructor(properties);
     
-    // Otherwise create a new message instance and populate it
-    if (!properties)
-        properties  = {};
-    var fieldsArray = this.fieldsArray,
-        fieldsCount = fieldsArray.length;
     var message = Object.create(this.prototype);
-    for (var i = 0; i &lt; fieldsCount; ++i) {
-        var field = fieldsArray[i].resolve(),
-            value = properties[field.name] || field.defaultValue;
-        if (field.required || field.repeated || field.map || value !== field.defaultValue || util.isObject(value)) {
-            if (field.resolvedType instanceof Type)
-                value = field.resolvedType.create(value);
-            message[field.name] = value;
-        }
+    if (properties) {
+        Object.keys(properties).forEach(function(key) {
+            if (this.fields[key])
+                message[key] = properties[key];
+        }, this);
     }
     return message;
 };
@@ -1697,7 +1697,7 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constru
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Nov 06 2016 06:19:38 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 00:26:19 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

@@ -1,3 +1,5 @@
+module.exports = Root;
+
 var Namespace = require("./namespace"),
     Type      = require("./type"),
     Field     = require("./field"),
@@ -5,8 +7,6 @@ var Namespace = require("./namespace"),
     Enum      = require("./enum"),
     parse     = require("./parse"),
     util      = require("./util");
-
-module.exports = Root;
 
 /**
  * Root namespace.

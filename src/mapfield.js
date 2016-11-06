@@ -1,9 +1,9 @@
+module.exports = MapField;
+
 var Field = require("./field"),
     Enum  = require("./enum"),
     types = require("./types"),
     util  = require("./util");
-
-module.exports = MapField;
 
 /**
  * Reflected message map field.

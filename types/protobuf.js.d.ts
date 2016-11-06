@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Sun, 06 Nov 2016 04:49:24 UTC
+ * Generated Sun, 06 Nov 2016 23:26:09 UTC
  */
 declare module protobuf {
 
@@ -533,9 +533,11 @@ declare module protobuf {
    
       /**
        * Extends this class and optionally exposes the specified properties to JSON.
+       * @memberof ReflectionObject
        * @param {Function} constructor Extending constructor
        * @param {string[]} [exposePropertyNames] Properties to expose to JSON
        * @returns {Object} Prototype
+       * @this ReflectionObject
        */
       static extend(constructor: (() => any), exposePropertyNames?: string[]): Object;
    
@@ -545,6 +547,7 @@ declare module protobuf {
        * @param {Object} prototype Prototype to expose the properties upon
        * @param {string[]} propertyNames Property names to expose
        * @returns {Object} prototype
+       * @this ReflectionObject
        */
       static exposeJSON(prototype: Object, propertyNames: string[]): Object;
    
@@ -708,11 +711,34 @@ declare module protobuf {
       static extend(constructor: (() => any), type: Type, options?: { [k: string]: any }): Object;
    
       /**
+       * Initializes the specified prototype with the required references and getters/setters for the
+       * reflected type's fields.
+       * @param {Prototype} prototype Prototype to initialize
+       * @param {Type} type Reflected message type
+       * @returns {Prototype} prototype
+       */
+      static init(prototype: Prototype, type: Type): Prototype;
+   
+      /**
        * Reflected type.
        * @name Prototype#$type
        * @type {Type}
        */
       $type: Type;
+   
+      /**
+       * Field values.
+       * @name Prototype#$values
+       * @type {Object.<string,*>}
+       */
+      $values: { [k: string]: any };
+   
+      /**
+       * Field names of the respective fields set for each oneof.
+       * @name Prototype#$oneofs
+       * @type {Object.<string,string>}
+       */
+      $oneofs: { [k: string]: string };
    
    }
    
@@ -1067,6 +1093,13 @@ declare module protobuf {
       private _fieldsArray: Field[];
    
       /**
+       * Cached oneofs as an array.
+       * @type {?OneOf[]}
+       * @private
+       */
+      private _oneofsArray: OneOf[];
+   
+      /**
        * Cached prototype.
        * @type {?Prototype}
        * @private
@@ -1089,7 +1122,7 @@ declare module protobuf {
       fieldsById: { [k: number]: Field };
    
       /**
-       * Message fields as an array for iteration.
+       * Fields of this message as an array for iteration.
        * @name Type#fieldsArray
        * @type {Field[]}
        * @readonly
@@ -1097,7 +1130,15 @@ declare module protobuf {
       fieldsArray: Field[];
    
       /**
-       * Runtime message prototype of this message.
+       * Oneofs of this message as an array for iteration.
+       * @name Type#oneofsArray
+       * @type {OneOf[]}
+       * @readonly
+       */
+      oneofsArray: OneOf[];
+   
+      /**
+       * Runtime prototype of this message.
        * @name Type#prototype
        * @type {Prototype}
        * @readonly
@@ -1266,6 +1307,13 @@ declare module protobuf {
       function isBoolean(value: any): boolean;
    
       /**
+       * Converts an object's values to an array.
+       * @param {Object.<string,*>} object Object to convert
+       * @returns {*[]} Converted array
+       */
+      function toArray(object: { [k: string]: any }): any[];
+   
+      /**
        * Creates a type error.
        * @param {string} name Argument name
        * @param {string} [description=a string] Expected argument descripotion
@@ -1318,7 +1366,6 @@ declare module protobuf {
    
       /**
        * Converts a number or long-like object to an 8 characters long hash string.
-       * @memberof util
        * @param {number|{ low: number, high: number }} value Value to convert
        * @returns {string} Hashed value
        */
@@ -1326,7 +1373,6 @@ declare module protobuf {
    
       /**
        * Converts an 8 characters long hash string to a number or long-like object.
-       * @memberof util
        * @param {string} hash Hashed value to convert
        * @param {boolean} [unsigned=false] Whether unsigned or not
        * @returns {number|{ low: number, high: number, unsigned: boolean }} Original value

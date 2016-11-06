@@ -131,6 +131,8 @@
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
+                <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
+            
                 <li data-name="util.toHash"><a href="util.html#.toHash">toHash</a></li>
             
             </ul>
@@ -770,7 +772,11 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
+            
                 <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
+            
+                <li data-name="Prototype#$values"><a href="Prototype.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -781,6 +787,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
+            
+                <li data-name="Prototype.init"><a href="Prototype.html#.init">init</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1109,6 +1117,8 @@
             
                 <li data-name="Type#oneofs"><a href="Type.html#oneofs">oneofs</a></li>
             
+                <li data-name="Type#oneofsArray"><a href="Type.html#oneofsArray">oneofsArray</a></li>
+            
                 <li data-name="Type#options"><a href="Type.html#options">options</a></li>
             
                 <li data-name="Type#parent"><a href="Type.html#parent">parent</a></li>
@@ -1292,7 +1302,7 @@
     
         
         <div class="tag-source">
-            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line19">line 19</a>
+            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line13">line 13</a>
         </div>
         
     </div>
@@ -1431,6 +1441,51 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="$oneofs">$oneofs<span class="type-signature type object.<string, string>">Object.&lt;string, string></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Field names of the respective fields set for each oneof.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="$type">$type<span class="type-signature type type"><a href="Type.html">Type</a></span> </h4>
     </div>
     
@@ -1440,6 +1495,51 @@
     
     <div class="description">
         <p>Reflected type.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="$values">$values<span class="type-signature type object.<string, *>">Object.&lt;string, *></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Field values.</p>
     </div>
     
     
@@ -1489,7 +1589,7 @@
     
         
         <div class="tag-source">
-            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line42">line 42</a>
+            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line36">line 36</a>
         </div>
         
     </div>
@@ -1782,6 +1882,174 @@
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".init">
+            
+            <span class="type-signature static">static</span>Prototype.init<span class="signature">(prototype, type)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line94">line 94</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Initializes the specified prototype with the required references and getters/setters for the<br>reflected type's fields.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>prototype</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Prototype.html">Prototype</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Prototype to initialize</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Type.html">Type</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Reflected message type</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Prototype.html">Prototype</a>
+                        
+                    
+            </td>
+            <td class="description last">prototype</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
         </dl>
     
     
@@ -1799,7 +2067,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Nov 06 2016 06:19:38 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 00:26:19 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

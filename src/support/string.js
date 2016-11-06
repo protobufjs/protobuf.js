@@ -4,13 +4,15 @@
 
 // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
 
+var string_ = module.exports = {};
+
 /**
  * Encodes a string to UTF8 bytes.
  * @param {string} str String to encode
  * @returns {number[]} Array of encoded bytes
  * @private
  */
-exports._encode = function string_encode_utf8(str) {
+string_._encode = function string_encode_utf8(str) {
     var l = str.length;
     if (!l)
         return [];
@@ -44,7 +46,7 @@ exports._encode = function string_encode_utf8(str) {
  * @returns {string} Decoded string
  * @private
  */
-exports._decode = function string_decode_utf8(bytes) {
+string_._decode = function string_decode_utf8(bytes) {
     var l = bytes.length;
     if (!l)
         return "";

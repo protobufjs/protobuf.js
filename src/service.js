@@ -1,8 +1,8 @@
+module.exports = Service;
+
 var Namespace = require("./namespace"),
     Method    = require("./method"),
     util      = require("./util");
-
-module.exports = Service;
 
 /**
  * Reflected service.

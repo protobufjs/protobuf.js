@@ -1,8 +1,8 @@
+module.exports = OneOf;
+
 var ReflectionObject = require("./object"),
     Field = require("./field"),
     util  = require("./util");
-
-module.exports = OneOf;
 
 /**
  * Reflected OneOf.

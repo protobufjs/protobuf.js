@@ -1,13 +1,7 @@
-var util = require("./util");
-var Type;
-
 module.exports = Prototype;
 
-// One time function to initialize cyclic dependencies
-var initCyclics = function() {
+var util = require("./util"),
     Type = require("./type");
-    initCyclics = false;
-};
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
@@ -42,8 +36,6 @@ function Prototype(properties) {
 Prototype.extend = function extend(constructor, type, options) {
     if (!util.isFunction(constructor))
         throw util._TypeError("constructor", "a function");
-    if (initCyclics)
-        initCyclics();
     if (!(type instanceof Type))
         throw util._TypeError("type", "a Type");
     if (!options)
@@ -100,8 +92,6 @@ Prototype.extend = function extend(constructor, type, options) {
  * @returns {Prototype} prototype
  */
 Prototype.init = function init(prototype, type) {
-    if (initCyclics)
-        initCyclics();
 
     var defaultValues = {};
     
@@ -147,7 +137,7 @@ Prototype.init = function init(prototype, type) {
                 return this.$values[field.name];
             },
             set: function(value) {
-                if (field.partOf) {
+                if (field.partOf) { // Handle oneof side effects
                     var fieldNameSet = this.$oneofs[field.partOf.name];
                     if (value === undefined || value === null) {
                         if (fieldNameSet === field.name)
@@ -159,12 +149,12 @@ Prototype.init = function init(prototype, type) {
                         this.$values[field.name] = value;
                         this.$oneofs[field.partOf.name] = field.name;
                     }
-                } else {
+                } else // Just set the value and reset to the default when unset
                     this.$values[field.name] = value === undefined || value === null
                         ? field.defaultValue
                         : value;
-                }
-            }
+            },
+            enumerable: true
         };
     });
 

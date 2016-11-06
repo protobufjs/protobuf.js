@@ -2,6 +2,9 @@
 // within browsers. It intentionally doesn't use typed arrays (i.e. Float32Array) so that the
 // library can fall back to plain arrays if typed arrays are not supported.
 
+var float_ = module.exports = {};
+
+var ieee754 = require("ieee754");
 /*
 ieee754 is Copyright (c) 2008, Fair Oaks Labs, Inc.
 All rights reserved.
@@ -32,7 +35,6 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
-var ieee754 = require("ieee754");
 
 /**
  * Writes a float to the specified writer.
@@ -42,7 +44,7 @@ var ieee754 = require("ieee754");
  * @returns {Writer} writer
  * @private
  */
-exports._write = function float_write(writer, value, size) {
+float_._write = function float_write(writer, value, size) {
     ieee754.write(writer.buf, value, writer.pos, true, size === 4 ? 23 : 52, size);
     writer.pos += size;
     return writer;
@@ -55,7 +57,7 @@ exports._write = function float_write(writer, value, size) {
  * @returns {number} Value read
  * @private
  */
-exports._read = function float_read(reader, size) {
+float_._read = function float_read(reader, size) {
     var value = ieee754.read(reader.buf, reader.pos, true, size === 4 ? 23 : 52, size);
     reader.pos += size;
     return value;

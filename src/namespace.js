@@ -1,21 +1,19 @@
-var ReflectionObject = require("./object"),
-    Enum    = require("./enum"),
-    util    = require("./util");
-var Type,
-    Service;
-var nestedTypes,
-    nestedError;
-
 module.exports = Namespace;
 
-// One time function to initialize cyclic dependencies
-var initCyclics = function() {
-    Type = require("./type");
-    Service = require("./service");
-    nestedTypes = [ Enum, Type, Service, Namespace ];
+var ReflectionObject = require("./object");
+
+/**
+ * @alias Namespace.prototype
+ */
+var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
+
+var Enum    = require("./enum"),
+    Type    = require("./type"),
+    Service = require("./service"),
+    util    = require("./util");
+
+var nestedTypes = [ Enum, Type, Service, Namespace ],
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
-    initCyclics = false;
-};
 
 /**
  * Base class of all reflection objects containing nested objects.
@@ -33,11 +31,6 @@ function Namespace(name, options) {
      */
     this.nested = undefined; // exposed
 }
-
-/**
- * @alias Namespace.prototype
- */
-var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
 
 Object.defineProperties(NamespacePrototype, {
 
@@ -81,8 +74,6 @@ Namespace.testJSON = function testJSON(json) {
 Namespace.fromJSON = function fromJSON(name, json) {
     var ns = new Namespace(name, json.options);
     if (json.nested) {
-        if (initCyclics)
-            initCyclics();
         Object.keys(json.nested).forEach(function(nestedName) {
             var nested = json.nested[nestedName];
             for (var i = 0, k = nestedTypes.length, clazz; i < k; ++i)
@@ -131,8 +122,6 @@ NamespacePrototype.get = function get(name) {
  * @returns {Namespace} this
  */
 NamespacePrototype.add = function add(object) {
-    if (initCyclics)
-        initCyclics();
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw util._TypeError("object", nestedError);
     if (!this.nested)
@@ -140,8 +129,6 @@ NamespacePrototype.add = function add(object) {
     else {
         var prev = this.get(object.name);
         if (prev) {
-            if (initCyclics)
-                initCyclics();
             if (prev instanceof Namespace && !(prev instanceof Type) && object instanceof Type) {
                 prev.each(object.add, object); // move existing nested objects to the message type
                 this.remove(prev);             // and remove the previous namespace
@@ -160,8 +147,6 @@ NamespacePrototype.add = function add(object) {
  * @returns {Namespace} this
  */
 NamespacePrototype.remove = function remove(object) {
-    if (initCyclics)
-        initCyclics();
     if (!(object instanceof ReflectionObject))
         throw util._TypeError("object", "a ReflectionObject");
     if (object.parent !== this)

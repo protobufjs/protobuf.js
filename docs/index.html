@@ -131,6 +131,8 @@
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
+                <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
+            
                 <li data-name="util.toHash"><a href="util.html#.toHash">toHash</a></li>
             
             </ul>
@@ -770,7 +772,11 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
+            
                 <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
+            
+                <li data-name="Prototype#$values"><a href="Prototype.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -781,6 +787,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
+            
+                <li data-name="Prototype.init"><a href="Prototype.html#.init">init</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1109,6 +1117,8 @@
             
                 <li data-name="Type#oneofs"><a href="Type.html#oneofs">oneofs</a></li>
             
+                <li data-name="Type#oneofsArray"><a href="Type.html#oneofsArray">oneofsArray</a></li>
+            
                 <li data-name="Type#options"><a href="Type.html#options">options</a></li>
             
                 <li data-name="Type#parent"><a href="Type.html#parent">parent</a></li>
@@ -1288,7 +1298,7 @@
         <article class="readme"><h1>protobuf.js</h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use<br>in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently<br>encodes plain objects and custom classes and works out of the box with .proto files.</p>
 <p><strong>This is the development branch of protobuf.js 6.</strong> Are you looking for the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5">current stable branch</a>?</p>
-<h2>Examples</h2><pre class="prettyprint source"><code>$> npm install protobufjs</code></pre><h3>Using .proto files</h3><pre class="prettyprint source lang-protobuf"><code>// awesome.proto
+<h2>Examples</h2><pre class="prettyprint source"><code>$> npm install dcodeIO/protobuf.js</code></pre><h3>Using .proto files</h3><pre class="prettyprint source lang-protobuf"><code>// awesome.proto
 package awesomepackage;
 syntax = &quot;proto3&quot;;
 
@@ -1412,16 +1422,19 @@ var message = AwesomeMessage.decode(buffer);
 <li><p><strong>types: <code>Object</code></strong> [<a href="./src/types.js">source</a>]<br /><br>Common type constants.</p>
 </li>
 </ul>
-<h2>Documentation</h2><p>You can find documentation on these objects within the respective source files or alternatively build<br>the documentation by first installing the development dependencies (if you haven't already) through<br>running</p>
+<h2>Documentation</h2><ul>
+<li>See: <a target="_blank" href="http://dcode.io/protobuf.js/">API Documentation</a></li>
+</ul>
+<p>To build the documentation yourself, first install the development dependencies (if you haven't<br>already) through running</p>
 <pre class="prettyprint source"><code>$> npm install --dev</code></pre><p>and then building the documentation to <code>docs/</code> through running</p>
-<pre class="prettyprint source"><code>$> npm run docs</code></pre><h2>Building</h2><p>To build production and development versions with their respective source maps for the browser, first<br>install the development dependencies (if you haven't already) through running</p>
+<pre class="prettyprint source"><code>$> npm run docs</code></pre><h2>Building</h2><p>To build production and development versions with their respective source maps for the browser,<br>first install the development dependencies (if you haven't already) through running</p>
 <pre class="prettyprint source"><code>$> npm install --dev</code></pre><p>and then build the development and production versions to <code>dist/</code> through running</p>
 <pre class="prettyprint source"><code>$> npm run build</code></pre><h2>Compatibility</h2><ul>
-<li><p>This library requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest. If typed arrays are not<br>supported, it uses plain arrays instead.</p>
+<li><p>This library requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest.<br>If typed arrays are not supported, it uses plain arrays instead.</p>
 </li>
 <li><p>If you'd like to use node's buffer API in the browser, you can use <a target="_blank" href="https://github.com/feross/buffer">feross/buffer</a><br>for example and assign its constructor, or that of any compatible library, to <code>protobuf.util.Buffer</code>.</p>
 </li>
-<li><p>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install<br><a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. Just as with buffers, you<br>can assign its constructor, or that of any compatible library, to <code>protobuf.util.Long</code>. All 64<br>bit numbers will then be returned as a <code>Long</code> instance. That's not a requirement, though (<a href="./src/support/long.js">see</a>).</p>
+<li><p>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install<br><a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. Just as with buffers, you<br>can assign its constructor to <code>protobuf.util.Long</code>. All 64 bit numbers will then be returned as a<br><code>Long</code> instance. That's not a requirement, though (<a href="./src/support/long.js">see</a>).</p>
 </li>
 </ul>
 <p><strong>License:</strong> <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, Version 2.0</a></p></article>
@@ -1435,7 +1448,7 @@ var message = AwesomeMessage.decode(buffer);
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Nov 06 2016 06:19:38 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 00:26:19 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

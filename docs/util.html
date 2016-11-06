@@ -131,6 +131,8 @@
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
+                <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
+            
                 <li data-name="util.toHash"><a href="util.html#.toHash">toHash</a></li>
             
             </ul>
@@ -770,7 +772,11 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
+            
                 <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
+            
+                <li data-name="Prototype#$values"><a href="Prototype.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -781,6 +787,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
+            
+                <li data-name="Prototype.init"><a href="Prototype.html#.init">init</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1108,6 +1116,8 @@
                 <li data-name="Type#nested"><a href="Type.html#nested">nested</a></li>
             
                 <li data-name="Type#oneofs"><a href="Type.html#oneofs">oneofs</a></li>
+            
+                <li data-name="Type#oneofsArray"><a href="Type.html#oneofsArray">oneofsArray</a></li>
             
                 <li data-name="Type#options"><a href="Type.html#options">options</a></li>
             
@@ -1481,7 +1491,7 @@
     
         
         <div class="tag-source">
-            <a href="util.js.html">util.js</a>, <a href="util.js.html#line118">line 118</a>
+            <a href="util.js.html">util.js</a>, <a href="util.js.html#line134">line 134</a>
         </div>
         
     </div>
@@ -1626,7 +1636,7 @@
     
         
         <div class="tag-source">
-            <a href="util.js.html">util.js</a>, <a href="util.js.html#line138">line 138</a>
+            <a href="util.js.html">util.js</a>, <a href="util.js.html#line154">line 154</a>
         </div>
         
     </div>
@@ -2004,7 +2014,7 @@
     
         
         <div class="tag-source">
-            <a href="util.js.html">util.js</a>, <a href="util.js.html#line171">line 171</a>
+            <a href="util.js.html">util.js</a>, <a href="util.js.html#line187">line 187</a>
         </div>
         
     </div>
@@ -3164,7 +3174,7 @@
     
         
         <div class="tag-source">
-            <a href="util.js.html">util.js</a>, <a href="util.js.html#line183">line 183</a>
+            <a href="util.js.html">util.js</a>, <a href="util.js.html#line199">line 199</a>
         </div>
         
     </div>
@@ -3309,7 +3319,7 @@
     
         
         <div class="tag-source">
-            <a href="util.js.html">util.js</a>, <a href="util.js.html#line215">line 215</a>
+            <a href="util.js.html">util.js</a>, <a href="util.js.html#line231">line 231</a>
         </div>
         
     </div>
@@ -3510,6 +3520,151 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".toArray">
+            
+            <span class="type-signature static">static</span>util.toArray<span class="signature">(object)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;*>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="util.js.html">util.js</a>, <a href="util.js.html#line106">line 106</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Converts an object's values to an array.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Object to convert</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Array.&lt;*>
+                        
+                    
+            </td>
+            <td class="description last">Converted array</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".toHash">
             
             <span class="type-signature static">static</span>util.toHash<span class="signature">(value)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
@@ -3517,7 +3672,7 @@
     
         
         <div class="tag-source">
-            <a href="util.js.html">util.js</a>, <a href="util.js.html#line240">line 240</a>
+            <a href="util.js.html">util.js</a>, <a href="util.js.html#line247">line 247</a>
         </div>
         
     </div>
@@ -3671,7 +3826,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Nov 06 2016 06:19:38 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 00:26:19 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

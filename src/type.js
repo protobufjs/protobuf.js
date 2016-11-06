@@ -1,3 +1,5 @@
+module.exports = Type; 
+
 var Namespace = require("./namespace"),
     Enum      = require("./enum"),
     OneOf     = require("./oneof"),
@@ -7,8 +9,6 @@ var Namespace = require("./namespace"),
     util      = require("./util"),
     Reader    = require("./reader"),
     Writer    = require("./writer");
-
-module.exports = Type;
 
 /**
  * Reflected message type.

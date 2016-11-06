@@ -131,6 +131,8 @@
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
+                <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
+            
                 <li data-name="util.toHash"><a href="util.html#.toHash">toHash</a></li>
             
             </ul>
@@ -770,7 +772,11 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
+            
                 <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
+            
+                <li data-name="Prototype#$values"><a href="Prototype.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -781,6 +787,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
+            
+                <li data-name="Prototype.init"><a href="Prototype.html#.init">init</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1109,6 +1117,8 @@
             
                 <li data-name="Type#oneofs"><a href="Type.html#oneofs">oneofs</a></li>
             
+                <li data-name="Type#oneofsArray"><a href="Type.html#oneofsArray">oneofsArray</a></li>
+            
                 <li data-name="Type#options"><a href="Type.html#options">options</a></li>
             
                 <li data-name="Type#parent"><a href="Type.html#parent">parent</a></li>
@@ -1270,16 +1280,10 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var util = require("./util");
-var Type;
+            <pre class="prettyprint source linenums"><code>module.exports = Prototype;
 
-module.exports = Prototype;
-
-// One time function to initialize cyclic dependencies
-var initCyclics = function() {
+var util = require("./util"),
     Type = require("./type");
-    initCyclics = false;
-};
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
@@ -1291,7 +1295,7 @@ var initCyclics = function() {
 function Prototype(properties) {
     if (properties)
         Object.keys(properties).forEach(function(key) {
-            if (this.constructor.$type.fields[key] || this.constructor.$type.oneofs &amp;&amp; this.constructor.$type.oneofs[key])
+            if (this.constructor.$type.fields[key])
                 this[key] = properties[key];
         }, this);
 
@@ -1314,17 +1318,15 @@ function Prototype(properties) {
 Prototype.extend = function extend(constructor, type, options) {
     if (!util.isFunction(constructor))
         throw util._TypeError("constructor", "a function");
-    if (initCyclics)
-        initCyclics();
     if (!(type instanceof Type))
         throw util._TypeError("type", "a Type");
     if (!options)
         options = {};
 
+    // Underlying reflected message type for reference
+    constructor.$type = type;
+
     if (!options.noStatics) {
-            
-        // Underlying reflected message type for reference
-        constructor.$type = type;
 
         // Creates a new message
         constructor.create = function(properties) {
@@ -1353,29 +1355,103 @@ Prototype.extend = function extend(constructor, type, options) {
 
     }
 
-    // Properly extend Message
-    var prototype = constructor.prototype = new Prototype();
+    var prototype = Prototype.init(new Prototype(), type);
+    constructor.prototype = prototype;
     prototype.constructor = constructor;
-
-    /**
-     * Reflected type.
-     * @name Prototype#$type
-     * @type {Type}
-     */
-    prototype.$type = type;
-
-    // Initialize default values on prototype
-    if (type.fields)
-        type.each(function(field, name) {
-            if (field.repeated)
-                return;
-            prototype[name] = field.defaultValue;
-        }, type, type.fields);
 
     // Register the now-known constructor for this type
     if (!options.noRegister)
         type.register(constructor);
 
+    return prototype;
+};
+
+/**
+ * Initializes the specified prototype with the required references and getters/setters for the
+ * reflected type's fields.
+ * @param {Prototype} prototype Prototype to initialize
+ * @param {Type} type Reflected message type
+ * @returns {Prototype} prototype
+ */
+Prototype.init = function init(prototype, type) {
+
+    var defaultValues = {};
+    
+    var defineProperties = {
+
+        /**
+         * Reflected type.
+         * @name Prototype#$type
+         * @type {Type}
+         */
+        $type: {
+            value: type,
+            enumerable: false
+        },
+
+        /**
+         * Field values.
+         * @name Prototype#$values
+         * @type {Object.&lt;string,*>}
+         */
+        $values: {
+            value: defaultValues,
+            enumerable: false
+        },
+
+        /**
+         * Field names of the respective fields set for each oneof.
+         * @name Prototype#$oneofs
+         * @type {Object.&lt;string,string>}
+         */
+        $oneofs: {
+            value: {},
+            enumerable: false
+        }
+    };
+
+    // Initialize default values and define each field with a getter and a setter
+    type.fieldsArray.forEach(function(field) {
+        field.resolve();
+        defaultValues[field.name] = field.defaultValue;
+        defineProperties[field.name] = {
+            get: function() {
+                return this.$values[field.name];
+            },
+            set: function(value) {
+                if (field.partOf) { // Handle oneof side effects
+                    var fieldNameSet = this.$oneofs[field.partOf.name];
+                    if (value === undefined || value === null) {
+                        if (fieldNameSet === field.name)
+                            this.$oneofs[field.partOf.name] = undefined;
+                        this.$values[field.name] = field.defaultValue;
+                    } else {
+                        if (fieldNameSet !== undefined)
+                            this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
+                        this.$values[field.name] = value;
+                        this.$oneofs[field.partOf.name] = field.name;
+                    }
+                } else // Just set the value and reset to the default when unset
+                    this.$values[field.name] = value === undefined || value === null
+                        ? field.defaultValue
+                        : value;
+            },
+            enumerable: true
+        };
+    });
+
+    // Define each oneof with a non-enumerable getter returning the name of the currently set field
+    type.oneofsArray.forEach(function(oneof) {
+        oneof.resolve();
+        defineProperties[oneof.name] = {
+            get: function() {
+                return this.$oneofs[oneof.name];
+            },
+            enumerable: false
+        };
+    });
+
+    Object.defineProperties(prototype, defineProperties);
     return prototype;
 };
 </code></pre>
@@ -1390,7 +1466,7 @@ Prototype.extend = function extend(constructor, type, options) {
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Nov 06 2016 06:19:38 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 00:26:19 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

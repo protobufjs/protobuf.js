@@ -1,16 +1,17 @@
 // This module provides unified access to Uint8Array methods. If Uint8Array isn't supported, it
 // falls back to plain arrays.
 
-var isTypedArray = typeof Uint8Array !== 'undefined';
+var array_ = module.exports = {};
 
-var ArrayImpl = isTypedArray ? Uint8Array : Array;
+var isTypedArray = typeof Uint8Array !== 'undefined',
+    ArrayImpl = isTypedArray ? Uint8Array : Array;
 
 /**
  * Supported array implementation
  * @type {Function}
  * @private
  */
-exports._Array = ArrayImpl;
+array_._Array = ArrayImpl;
 
 /**
  * Allocates a new array.
@@ -18,7 +19,7 @@ exports._Array = ArrayImpl;
  * @returns {number[]} Allocated array
  * @private
  */
-exports._alloc = function(size) {
+array_._alloc = function(size) {
     return new ArrayImpl(size);
 };
 
@@ -30,7 +31,7 @@ exports._alloc = function(size) {
  * @returns {number[]}
  * @private
  */
-exports._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
+array_._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
  * Sets the contents of another array on this array. Polyfilled for plain arrays.
@@ -40,7 +41,7 @@ exports._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
  * @returns {undefined}
  * @private
  */
-exports._set = ArrayImpl.prototype.set || function set_array(array, offset) {
+array_._set = ArrayImpl.prototype.set || function set_array(array, offset) {
     if (offset + array.length > this.length)
         throw RangeError("offset would store beyond the end of the array");
     for (var i = 0, k = array.length; i < k; ++i)
@@ -52,4 +53,4 @@ exports._set = ArrayImpl.prototype.set || function set_array(array, offset) {
  * @type {?number[]}
  * @private
  */
-exports._empty = isTypedArray ? new Uint8Array(0) : null;
+array_._empty = isTypedArray ? new Uint8Array(0) : null;

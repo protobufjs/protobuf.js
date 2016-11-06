@@ -11,6 +11,8 @@
 // yourself but should install long.js alongside protobuf.js, which will make this module
 // reliably return proper Long instances for all 64 bit numbers.
 
+var long_ = module.exports = exports = {};
+
 var util = require("../util");
 
 /**
@@ -18,14 +20,14 @@ var util = require("../util");
  * @type {number}
  * @private
  */
-exports._lo = 0;
+long_._lo = 0;
 
 /**
  * Temporary high bits of a 64 bit value.
  * @type {number}
  * @private
  */
-exports._hi = 0;
+long_._hi = 0;
 
 // ref: https://github.com/google/protobuf/blob/master/js/binary/encoder.js
 
@@ -38,7 +40,7 @@ exports._hi = 0;
  * @returns {Object} this
  * @private
  */
-exports._read = function long_read(reader, indexOutOfRange) {
+long_._read = function long_read(reader, indexOutOfRange) {
     var i, b;
     for (i = this._lo = this._hi = 0; i < 4; ++i) {
         if (reader.pos >= reader.len)
@@ -48,7 +50,7 @@ exports._read = function long_read(reader, indexOutOfRange) {
         if (b < 128) {
             this._lo >>>= 0;
             this._hi = 0;
-            return exports;
+            return long_;
         }
     }
     if (reader.pos >= reader.len)
@@ -59,7 +61,7 @@ exports._read = function long_read(reader, indexOutOfRange) {
     if (b < 128) {
         this._lo >>>= 0;
         this._hi >>>= 0;
-        return exports;
+        return long_;
     }
     for (i = 0; i < 5; ++i) {
         if (reader.pos >= reader.len)
@@ -69,7 +71,7 @@ exports._read = function long_read(reader, indexOutOfRange) {
         if (b < 128) {
             this._lo >>>= 0;
             this._hi >>>= 0;
-            return exports;
+            return long_;
         }
     }
     throw Error("illegal varint encoding");
@@ -81,7 +83,7 @@ exports._read = function long_read(reader, indexOutOfRange) {
  * @returns {Object} this
  * @private
  */
-exports._readFixed = function long_readFixed(reader) {
+long_._readFixed = function long_readFixed(reader) {
     this._lo = (reader.buf[reader.pos++]
               | reader.buf[reader.pos++] << 8
               | reader.buf[reader.pos++] << 16
@@ -90,7 +92,7 @@ exports._readFixed = function long_readFixed(reader) {
               | reader.buf[reader.pos++] << 8
               | reader.buf[reader.pos++] << 16
               | reader.buf[reader.pos++] << 24) >>> 0;
-    return exports;
+    return long_;
 };
 
 // Writing
@@ -102,7 +104,7 @@ exports._readFixed = function long_readFixed(reader) {
  * @returns {Writer} writer
  * @private
  */
-exports._write = function long_write(writer, expand) {
+long_._write = function long_write(writer, expand) {
     var len = this._hi ?
               this._hi < 8 ? 5
             : this._hi < 1024 ? 6
@@ -132,7 +134,7 @@ exports._write = function long_write(writer, expand) {
  * @returns {Writer} writer
  * @private
  */
-exports._writeFixed = function long_writeFixed(writer) {
+long_._writeFixed = function long_writeFixed(writer) {
     writer.buf[writer.pos++] = this._lo        & 255;
     writer.buf[writer.pos++] = this._lo >>> 8  & 255;
     writer.buf[writer.pos++] = this._lo >>> 16 & 255;
@@ -152,7 +154,7 @@ exports._writeFixed = function long_writeFixed(writer) {
  * @returns {number|!{ low: number, high: number, unsigned: boolean }|!Long} Value read
  * @private
  */
-exports._get = function long_get(unsigned) {
+long_._get = function long_get(unsigned) {
     if (util.Long)
         return util.Long.fromBits(this._lo, this._hi, unsigned);
     var neg = this._hi > 2147483647,
@@ -175,7 +177,7 @@ exports._get = function long_get(unsigned) {
  * @returns {string} Hashed string
  * @private
  */
-exports._getHash = function long_getHash() {
+long_._getHash = function long_getHash() {
     return String.fromCharCode(
         this._lo        & 255,
         this._lo >>> 8  & 255,
@@ -194,7 +196,7 @@ exports._getHash = function long_getHash() {
  * @returns {Object} this
  * @private
  */
-exports._set = function long_set(value) {
+long_._set = function long_set(value) {
     if (typeof value === 'number') {
         var sign = value < 0;
            value = Math.abs(value);
@@ -214,21 +216,21 @@ exports._set = function long_set(value) {
         this._hi = value.high >>> 0;
     } else
         long_setHash(value);
-    return exports;
+    return long_;
 };
 
 var charCodeAt = String.prototype.charCodeAt;
 
 function long_setHash(hash) {
-    exports._lo = (charCodeAt.call(hash, 0)
+    long_._lo = (charCodeAt.call(hash, 0)
                 |  charCodeAt.call(hash, 1) << 8
                 |  charCodeAt.call(hash, 2) << 16
                 |  charCodeAt.call(hash, 3) << 24) >>> 0;
-    exports._hi = (charCodeAt.call(hash, 4)
+    long_._hi = (charCodeAt.call(hash, 4)
                 |  charCodeAt.call(hash, 5) << 8
                 |  charCodeAt.call(hash, 6) << 16
                 |  charCodeAt.call(hash, 7) << 24) >>> 0;
-    return exports;
+    return long_;
 }
 
 /**
@@ -238,7 +240,7 @@ function long_setHash(hash) {
  * @returns {Object} this
  * @private
  */
-exports._setHash = long_setHash;
+long_._setHash = long_setHash;
 
 // Zig-zag encoding
 
@@ -247,11 +249,11 @@ exports._setHash = long_setHash;
  * @returns {Object} this
  * @private
  */
-exports._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
+long_._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
     var mask = -(this._hi >>> 31);
     this._hi = ((this._hi << 1 | this._lo >>> 31) ^ mask) >>> 0;
     this._lo = ( this._lo << 1                    ^ mask) >>> 0;
-    return exports;
+    return long_;
 };
 
 /**
@@ -259,9 +261,9 @@ exports._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
  * @returns {Object} this
  * @private
  */
-exports._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)
+long_._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)
     var mask = -(this._lo & 1);
     this._lo = ((this._lo >>> 1 | (this._hi & 1) << 31) ^ mask) >>> 0;
     this._hi = ( this._hi >>> 1                         ^ mask) >>> 0;
-    return exports;
+    return long_;
 };

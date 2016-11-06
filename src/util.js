@@ -1,13 +1,13 @@
-var fs     = require("fs"),
-    buffer = require("buffer");
-var long_,
-    Long; try { Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
-
 /**
  * Utility functions.
  * @namespace
  */
 var util = module.exports = {};
+
+var fs     = require("fs"),
+    buffer = require("buffer"),
+    long_  = require("./support/long");
+var Long; try { Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Whether running under node.js or not.
@@ -239,43 +239,21 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
     return originPath.length ? normalizePath(originPath + '/' + importPath) : importPath;
 };
 
-// One time function to initialize long support
-var initLongSupport = function() {
-    long_ = require("./support/long");
-    util.toHash = toHash;
-    util.fromHash = fromHash;
-    initLongSupport = false;
-};
-
 /**
  * Converts a number or long-like object to an 8 characters long hash string.
- * @memberof util
  * @param {number|{ low: number, high: number }} value Value to convert
  * @returns {string} Hashed value
  */
-function toHash(value) {
+util.toHash = function toHash(value) {
     return long_._set(value)._getHash();
-}
-
-util.toHash = function(value) { // becomes overridden by initLongSupport
-    if (initLongSupport)
-        initLongSupport();
-    return toHash(value);
 };
 
 /**
  * Converts an 8 characters long hash string to a number or long-like object.
- * @memberof util
  * @param {string} hash Hashed value to convert
  * @param {boolean} [unsigned=false] Whether unsigned or not
  * @returns {number|{ low: number, high: number, unsigned: boolean }} Original value
  */
-function fromHash(hash, unsigned) {
+util.fromHash = function fromHash(hash, unsigned) {
     return long_._setHash(hash)._get(Boolean(unsigned));
-}
-
-util.fromHash = function(hash, unsigned) { // becomes overridden by initLongSupport
-    if (initLongSupport)
-        initLongSupport();
-    return fromHash(hash, unsigned);
 };

@@ -1,7 +1,7 @@
+module.exports = Enum;
+
 var ReflectionObject = require("./object"),
     util = require("./util");
-
-module.exports = Enum;
 
 /**
  * Reflected enum.

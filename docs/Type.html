@@ -131,6 +131,8 @@
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
+                <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
+            
                 <li data-name="util.toHash"><a href="util.html#.toHash">toHash</a></li>
             
             </ul>
@@ -770,7 +772,11 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
+            
                 <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
+            
+                <li data-name="Prototype#$values"><a href="Prototype.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -781,6 +787,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
+            
+                <li data-name="Prototype.init"><a href="Prototype.html#.init">init</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1108,6 +1116,8 @@
                 <li data-name="Type#nested"><a href="Type.html#nested">nested</a></li>
             
                 <li data-name="Type#oneofs"><a href="Type.html#oneofs">oneofs</a></li>
+            
+                <li data-name="Type#oneofsArray"><a href="Type.html#oneofsArray">oneofsArray</a></li>
             
                 <li data-name="Type#options"><a href="Type.html#options">options</a></li>
             
@@ -1601,7 +1611,7 @@
 <dd>
     
     <div class="description">
-        <p>Message fields as an array for iteration.</p>
+        <p>Fields of this message as an array for iteration.</p>
     </div>
     
     
@@ -1863,6 +1873,51 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="oneofsArray"><span class="type-signature ">readonly</span>oneofsArray<span class="type-signature type array.<oneof>">Array.&lt;<a href="OneOf.html">OneOf</a>></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Oneofs of this message as an array for iteration.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="options">options<span class="type-signature type object.<string, *>">Object.&lt;string, *></span> <span class="type-signature type undefined">undefined</span> </h4>
     </div>
     
@@ -2006,7 +2061,7 @@
 <dd>
     
     <div class="description">
-        <p>Runtime message prototype of this message.</p>
+        <p>Runtime prototype of this message.</p>
     </div>
     
     
@@ -2551,7 +2606,7 @@
     
         
         <div class="tag-source">
-            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line133">line 133</a>
+            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line124">line 124</a>
         </div>
         
     </div>
@@ -2880,7 +2935,7 @@
     
         
         <div class="tag-source">
-            <a href="type.js.html">type.js</a>, <a href="type.js.html#line372">line 372</a>
+            <a href="type.js.html">type.js</a>, <a href="type.js.html#line362">line 362</a>
         </div>
         
     </div>
@@ -3093,7 +3148,7 @@
     
         
         <div class="tag-source">
-            <a href="type.js.html">type.js</a>, <a href="type.js.html#line411">line 411</a>
+            <a href="type.js.html">type.js</a>, <a href="type.js.html#line401">line 401</a>
         </div>
         
     </div>
@@ -3278,7 +3333,7 @@
     
         
         <div class="tag-source">
-            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line182">line 182</a>
+            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line167">line 167</a>
         </div>
         
     </div>
@@ -3465,7 +3520,7 @@
     
         
         <div class="tag-source">
-            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line107">line 107</a>
+            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line98">line 98</a>
         </div>
         
     </div>
@@ -3678,7 +3733,7 @@
     
         
         <div class="tag-source">
-            <a href="type.js.html">type.js</a>, <a href="type.js.html#line337">line 337</a>
+            <a href="type.js.html">type.js</a>, <a href="type.js.html#line327">line 327</a>
         </div>
         
     </div>
@@ -3861,7 +3916,7 @@
     
         
         <div class="tag-source">
-            <a href="type.js.html">type.js</a>, <a href="type.js.html#line357">line 357</a>
+            <a href="type.js.html">type.js</a>, <a href="type.js.html#line347">line 347</a>
         </div>
         
     </div>
@@ -4046,7 +4101,7 @@
     
         
         <div class="tag-source">
-            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line124">line 124</a>
+            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line115">line 115</a>
         </div>
         
     </div>
@@ -4193,7 +4248,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line251">line 251</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line243">line 243</a>
         </div>
         
     </div>
@@ -4340,7 +4395,7 @@
     
         
         <div class="tag-source">
-            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line222">line 222</a>
+            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line207">line 207</a>
         </div>
         
     </div>
@@ -4525,7 +4580,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line193">line 193</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line191">line 191</a>
         </div>
         
     </div>
@@ -4672,7 +4727,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line210">line 210</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line206">line 206</a>
         </div>
         
     </div>
@@ -4971,7 +5026,7 @@
     
         
         <div class="tag-source">
-            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line162">line 162</a>
+            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line149">line 149</a>
         </div>
         
     </div>
@@ -5118,7 +5173,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line224">line 224</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line218">line 218</a>
         </div>
         
     </div>
@@ -5220,7 +5275,7 @@
     
         
         <div class="tag-source">
-            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line209">line 209</a>
+            <a href="namespace.js.html">namespace.js</a>, <a href="namespace.js.html#line194">line 194</a>
         </div>
         
     </div>
@@ -5322,7 +5377,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line264">line 264</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line256">line 256</a>
         </div>
         
     </div>
@@ -5532,7 +5587,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line275">line 275</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line267">line 267</a>
         </div>
         
     </div>
@@ -5679,7 +5734,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line182">line 182</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line180">line 180</a>
         </div>
         
     </div>
@@ -5788,7 +5843,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line287">line 287</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line279">line 279</a>
         </div>
         
     </div>
@@ -5890,7 +5945,7 @@
     
         
         <div class="tag-source">
-            <a href="object.js.html">object.js</a>, <a href="object.js.html#line241">line 241</a>
+            <a href="object.js.html">object.js</a>, <a href="object.js.html#line233">line 233</a>
         </div>
         
     </div>
@@ -6075,7 +6130,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Nov 06 2016 06:19:38 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 00:26:19 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

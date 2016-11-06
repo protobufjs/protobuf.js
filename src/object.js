@@ -1,13 +1,10 @@
-var util = require("./util");
-var Root;
-
 module.exports = ReflectionObject;
 
-// One time function to initialize cyclic dependencies
-var initCyclics = function() {
-    Root = require("./root");
-    initCyclics = false;
-};
+ReflectionObject.extend = extend;
+ReflectionObject.exposeJSON = exposeJSON;
+
+var Root = require("./root"),
+    util = require("./util");
 
 /**
  * Base class of all reflection objects.
@@ -133,18 +130,20 @@ Object.defineProperties(ReflectionObjectPrototype, {
 
 /**
  * Extends this class and optionally exposes the specified properties to JSON.
+ * @memberof ReflectionObject
  * @param {Function} constructor Extending constructor
  * @param {string[]} [exposePropertyNames] Properties to expose to JSON
  * @returns {Object} Prototype
+ * @this ReflectionObject
  */
-ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
+function extend(constructor, exposePropertyNames) {
     var proto = constructor.prototype = Object.create(this.prototype);
     proto.constructor = constructor;
     constructor.extend = extend;
     if (exposePropertyNames)
         exposeJSON(proto, exposePropertyNames);
     return proto;
-};
+}
 
 /**
  * Exposes the specified properties to JSON.
@@ -152,6 +151,7 @@ ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
  * @param {Object} prototype Prototype to expose the properties upon
  * @param {string[]} propertyNames Property names to expose
  * @returns {Object} prototype
+ * @this ReflectionObject
  */
 function exposeJSON(prototype, propertyNames) {
     var descriptors = {};
@@ -170,8 +170,6 @@ function exposeJSON(prototype, propertyNames) {
     Object.defineProperties(prototype, descriptors);
     return prototype;
 }
-
-ReflectionObject.exposeJSON = exposeJSON;
 
 /**
  * Converts this reflection object to its JSON representation.
@@ -195,8 +193,6 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         this.parent.remove(this);
     this.parent = parent;
     this.resolved = false;
-    if (initCyclics)
-        initCyclics();
     var root = parent.root;
     if (root instanceof Root)
         root._handleAdd(this);
@@ -208,8 +204,6 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
-    if (initCyclics)
-        initCyclics();
     var root = parent.root;
     if (root instanceof Root)
         root._handleRemove(this);
@@ -224,8 +218,6 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    if (initCyclics)
-        initCyclics();
     var root = this.root;
     if (root instanceof Root)
         this.resolved = true; // only if part of a root

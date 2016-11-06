@@ -1,7 +1,7 @@
+module.exports = Method;
+
 var ReflectionObject = require("./object"),
     util = require("./util");
-
-module.exports = Method;
 
 /**
  * Reflected service method.

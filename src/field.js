@@ -1,16 +1,10 @@
+module.exports = Field;
+
 var ReflectionObject = require("./object"),
+    Type      = require("./type"),
     types     = require("./types"),
     Enum      = require("./enum"),
     util      = require("./util");
-var Type;
-
-module.exports = Field;
-
-// One time function to initialize cyclic dependencies
-var initCyclics = function() {
-    Type = require("./type");
-    initCyclics = false;
-};
 
 /**
  * Reflected message field.
@@ -193,9 +187,6 @@ Field.fromJSON = function fromJSON(name, json) {
 FieldPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-
-    if (initCyclics)
-        initCyclics();
 
     var typeDefault = types.defaults[this.type];
 
