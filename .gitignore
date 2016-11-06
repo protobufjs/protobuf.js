@@ -2,5 +2,4 @@
 npm-debug.*
 node_modules/
 dist/
-docs/
 types/types.d.ts

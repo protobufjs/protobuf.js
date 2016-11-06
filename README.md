@@ -7,6 +7,8 @@ in communications protocols, data storage, and more, originally designed at Goog
 **protobuf.js** is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently
 encodes plain objects and custom classes and works out of the box with .proto files.
 
+**This is the development branch of protobuf.js 6.** Are you looking for the [current stable branch](https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5)?
+
 Examples
 --------
 
