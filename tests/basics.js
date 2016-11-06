@@ -17,7 +17,7 @@ tap.test("google.protobuf.Any type", function(test) {
     test.test("instances", function(test) {
 
         test.ok(any instanceof protobuf.Prototype, "should extend Prototype");
-        test.deepEqual(any, {
+        test.deepEqual(any.$values, {
             type_url: "some.type",
             value: valueBuffer
         }, "should be populated with the contents we provided");

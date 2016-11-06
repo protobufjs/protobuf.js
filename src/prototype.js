@@ -81,28 +81,94 @@ Prototype.extend = function extend(constructor, type, options) {
 
     }
 
-    // Properly extend Message
-    var prototype = constructor.prototype = new Prototype();
+    var prototype = Prototype.init(new Prototype(), type);
+    constructor.prototype = prototype;
     prototype.constructor = constructor;
-
-    /**
-     * Reflected type.
-     * @name Prototype#$type
-     * @type {Type}
-     */
-    prototype.$type = type;
-
-    // Initialize default values on prototype
-    if (type.fields)
-        type.each(function(field, name) {
-            if (field.repeated)
-                return;
-            prototype[name] = field.defaultValue;
-        }, type, type.fields);
 
     // Register the now-known constructor for this type
     if (!options.noRegister)
         type.register(constructor);
 
+    return prototype;
+};
+
+/**
+ * Initializes the specified prototype with the required references and getters/setters for the
+ * reflected type's fields.
+ * @param {Prototype} prototype Prototype to initialize
+ * @param {Type} type Reflected message type
+ * @returns {Prototype} prototype
+ */
+Prototype.init = function init(prototype, type) {
+    if (initCyclics)
+        initCyclics();
+    
+    var defineProperties = {
+
+        /**
+         * Reflected type.
+         * @name Prototype#$type
+         * @type {Type}
+         */
+        $type: {
+            value: type,
+            enumerable: false
+        },
+
+        /**
+         * Field values.
+         * @name Prototype#$values
+         * @type {Object.<string,*>}
+         */
+        $values: {
+            value: {},
+            enumerable: false
+        },
+
+        /**
+         * Field names of the respective fields set for each oneof.
+         * @name Prototype#$oneofs
+         * @type {Object.<string,string>}
+         */
+        $oneofs: {
+            value: {},
+            enumerable: false
+        }
+    };
+
+    // Define each field with a getter and a setter
+    type.fieldsArray.forEach(function(field) {
+        defineProperties[field.name] = {
+            get: function() {
+                var value = this.$values[field.name];
+                if (value !== undefined)
+                    return value;
+                // Note that objects are mutable and are explicitly set on the instance instead
+                return util.isObject(field.defaultValue) ? undefined : field.defaultValue;           
+            },
+            set: function(value) {
+                if (field.resolvedType instanceof Type)
+                    value = field.resolvedType.create(value);
+                var oneofCurrentlySet;
+                if (field.partOf && (oneofCurrentlySet = this.$oneofs[field.partOf.name]) !== undefined) {
+                    this.$values[oneofCurrentlySet] = undefined;
+                    this.$oneofs[field.partOf.name] = field.name;
+                }
+                this.$values[field.name] = value;
+            }
+        };
+    });
+
+    // Define each oneof with a non-enumerable getter returning the name of the currently set field
+    type.oneofsArray.forEach(function(oneof) {
+        defineProperties[oneof.name] = {
+            get: function() {
+                return this.$oneofs[oneof.name];
+            },
+            enumerable: false
+        };
+    });
+
+    Object.defineProperties(prototype, defineProperties);
     return prototype;
 };

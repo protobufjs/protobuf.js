@@ -59,6 +59,13 @@ function Type(name, options) {
     this._fieldsArray = null;
 
     /**
+     * Cached oneofs as an array.
+     * @type {?OneOf[]}
+     * @private
+     */
+    this._oneofsArray = null;
+
+    /**
      * Cached prototype.
      * @type {?Prototype}
      * @private
@@ -109,45 +116,38 @@ Object.defineProperties(TypePrototype, {
     },
 
     /**
-     * Message fields as an array for iteration.
+     * Fields of this message as an array for iteration.
      * @name Type#fieldsArray
      * @type {Field[]}
      * @readonly
      */
     fieldsArray: {
         get: function() {
-            if (this._fieldsArray)
-                return this._fieldsArray;
-            var names  = Object.keys(this.fields),
-                length = names.length;
-            this._fieldsArray = new Array(length);
-            for (var i = 0; i < length; ++i)
-                this._fieldsArray[i] = this.fields[names[i]];
-            return this._fieldsArray;
+            return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
         }
     },
 
     /**
-     * Runtime message prototype of this message.
+     * Oneofs of this message as an array for iteration.
+     * @name Type#oneofsArray
+     * @type {OneOf[]}
+     * @readonly
+     */
+    oneofsArray: {
+        get: function() {
+            return this._oneofsArray || (this._oneofsArray = util.toArray(this.oneofs));
+        }
+    },
+
+    /**
+     * Runtime prototype of this message.
      * @name Type#prototype
      * @type {Prototype}
      * @readonly
      */
     prototype: {
         get: function() {
-            if (this._prototype)
-                return this._prototype;
-            var fieldsArray = this.fieldsArray,
-                fieldsCount = fieldsArray.length;
-            var prototype = new Prototype();
-            prototype.$type = this;
-            for (var i = 0; i < fieldsCount; ++i) {
-                var field = fieldsArray[i].resolve();
-                if (!util.isObject(field.defaultValue)) // objects are immutable and thus cannot be on the prototype
-                    prototype[field.name] = field.defaultValue;
-            }
-            this._prototype = prototype;
-            return prototype;
+            return this._prototype || (this._prototype = Prototype.init(new Prototype(), this));
         }
     }
 });
@@ -160,7 +160,7 @@ Object.defineProperties(TypePrototype, {
  * @ignore
  */
 function clearCache(type) {
-    type._fieldsById = type._fieldsArray = type._prototype = null;
+    type._fieldsById = type._fieldsArray = type._oneofsArray = type._prototype = null;
     return type;
 }
 
@@ -299,6 +299,10 @@ TypePrototype.register = function register(constructor) {
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, constructor) {
+    // If it is already a message instance, return it
+    if (properties instanceof Prototype)
+        return properties;
+        
     if (util.isFunction(properties)) {
         constructor = properties;
         properties = undefined;
@@ -310,7 +314,7 @@ TypePrototype.create = function create(properties, constructor) {
     if (constructor)
         return new constructor(properties);
     
-    // Otherwise create a new message instance and populate it
+    // Otherwise create a new message instance from the internal prototype and populate it
     if (!properties)
         properties  = {};
     var fieldsArray = this.fieldsArray,

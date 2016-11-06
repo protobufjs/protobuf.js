@@ -99,6 +99,22 @@ util.isBoolean = function isBoolean(value) {
 };
 
 /**
+ * Converts an object's values to an array.
+ * @param {Object.<string,*>} object Object to convert
+ * @returns {Array.<*>} Converted array
+ */
+util.toArray = function toArray(object) {
+    if (!object)
+        return [];
+    var names = Object.keys(object),
+        length = names.length;
+    var array = new Array(length);
+    for (var i = 0; i < length; ++i)
+        array[i] = object[names[i]];
+    return array;
+};
+
+/**
  * Creates a type error.
  * @param {string} name Argument name
  * @param {string} [description=a string] Expected argument descripotion

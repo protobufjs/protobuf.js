@@ -19,8 +19,8 @@ function load(filename, root, callback, ctx) {
     }
     if (!root)
         root = new protobuf.Root();
-    return root.load(filename, callback, ctx) || this;
-};
+    return root.load(filename, callback, ctx) || protobuf;
+}
 
 protobuf.load = load;
 
