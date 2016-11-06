@@ -65,6 +65,13 @@ function Type(name, options) {
      * @private
      */
     this._prototype = null;
+
+    /**
+     * Registered constructor.
+     * @type {?Function}
+     * @private
+     */
+    this._constructor = null;
 }
 
 /**
@@ -272,9 +279,23 @@ TypePrototype.remove = function remove(object) {
 };
 
 /**
+ * Registers the specified constructor with this type.
+ * @param {?Function} constructor Constructor to use for message instances or `null` to unregister
+ *  the current constructor
+ * @returns {Type} this
+ */
+TypePrototype.register = function register(constructor) {
+    if (constructor !== null && !util.isFunction(constructor))
+        throw util._TypeError("constructor", "a function or null");
+    this._constructor = constructor;
+    return this;
+};
+
+/**
  * Creates a new message of this type using the specified properties.
  * @param {Object} [properties] Properties to set
- * @param {Function} [constructor] Optional constructor to use (should extend {@link Prototype})
+ * @param {?Function} [constructor] Optional constructor to use or null to use the internal
+ *  prototype. If a constructor, it should extend {@link protobuf.Prototype}).
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, constructor) {
@@ -282,8 +303,10 @@ TypePrototype.create = function create(properties, constructor) {
         constructor = properties;
         properties = undefined;
     }
+    if (constructor === undefined && this._constructor)
+        constructor = this._constructor;
 
-    // If there is a dedicated constructor, take the fast route
+    // If there is a dedicated constructor specified or registered, take the fast route
     if (constructor)
         return new constructor(properties);
     

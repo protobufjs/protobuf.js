@@ -668,7 +668,6 @@ declare module protobuf {
 
        /**
         * Adds a field to this oneof.
-        * @override
         * @param {Field} field Field to add
         * @returns {OneOf} this
         */
@@ -676,7 +675,6 @@ declare module protobuf {
 
        /**
         * Removes a field from this oneof.
-        * @override
         * @param {Field} field Field to remove
         * @returns {OneOf} this
         */
@@ -1070,6 +1068,13 @@ declare module protobuf {
        private _prototype: Prototype;
 
        /**
+        * Registered constructor.
+        * @type {?Function}
+        * @private
+        */
+       private _constructor: (() => any);
+
+       /**
         * Message fields by id.
         * @name protobuf.Type#fieldsById
         * @type {Object.<number,Field>}
@@ -1094,9 +1099,18 @@ declare module protobuf {
        prototype: Prototype;
 
        /**
+        * Registers the specified constructor with this type.
+        * @param {?Function} constructor Constructor to use for message instances or `null` to unregister
+        *  the current constructor
+        * @returns {Type} this
+        */
+       register(constructor?: (() => any)): Type;
+
+       /**
         * Creates a new message of this type using the specified properties.
         * @param {Object} [properties] Properties to set
-        * @param {Function} [constructor] Optional constructor to use (should extend {@link Prototype})
+        * @param {?Function} [constructor] Optional constructor to use or null to use the internal
+        *  prototype. If a constructor, it should extend {@link protobuf.Prototype}).
         * @returns {Prototype} Message instance
         */
        create(properties?: Object, constructor?: (() => any)): Prototype;

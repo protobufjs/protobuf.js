@@ -356,7 +356,7 @@ var initBufferWriter = function() {
     if (!util.Buffer)
         throw Error("Buffer is not supported");
     BufferWriterPrototype._slice = util.Buffer.prototype.slice;
-    BufferWriter.alloc = util.Buffer.allocUnsafe || util.Buffer.alloc || function(size) { return new util.Buffer(size); };
+    BufferWriter.alloc = util.Buffer.allocUnsafe || function(size) { return new util.Buffer(size); };
     emptyBuffer = BufferWriter.alloc(0);
     initBufferWriter = false;
 };

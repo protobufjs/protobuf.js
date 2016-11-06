@@ -1,4 +1,13 @@
+var util = require("./util");
+var Type;
+
 module.exports = Prototype;
+
+// One time function to initialize cyclic dependencies
+var initCyclics = function() {
+    Type = require("./type");
+    initCyclics = false;
+};
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
@@ -30,6 +39,12 @@ function Prototype(properties) {
  * @returns {Object} Prototype
  */
 Prototype.extend = function extend(constructor, type, options) {
+    if (!util.isFunction(constructor))
+        throw util._TypeError("constructor", "a function");
+    if (initCyclics)
+        initCyclics();
+    if (!(type instanceof Type))
+        throw util._TypeError("type", "a Type");
     if (!options)
         options = {};
 
@@ -76,6 +91,10 @@ Prototype.extend = function extend(constructor, type, options) {
                 return;
             prototype[name] = field.defaultValue;
         }, type, type.fields);
+
+    // Register the now-known constructor for this type
+    if (!options.noRegister)
+        type.register(constructor);
 
     return prototype;
 };
