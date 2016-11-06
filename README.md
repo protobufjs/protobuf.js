@@ -13,7 +13,7 @@ Examples
 --------
 
 ```
-$> npm install protobufjs
+$> npm install dcodeIO/protobuf.js
 ```
 
 ### Using .proto files
