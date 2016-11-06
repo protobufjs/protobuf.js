@@ -149,21 +149,20 @@ Prototype.init = function init(prototype, type) {
             set: function(value) {
                 if (field.partOf) {
                     var fieldNameSet = this.$oneofs[field.partOf.name];
-                    if (value !== undefined && value !== null) {
+                    if (value === undefined || value === null) {
+                        if (fieldNameSet === field.name)
+                            this.$oneofs[field.partOf.name] = undefined;
+                        this.$values[field.name] = field.defaultValue;
+                    } else {
                         if (fieldNameSet !== undefined)
                             this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
                         this.$values[field.name] = value;
                         this.$oneofs[field.partOf.name] = field.name;
-                    } else {
-                        if (fieldNameSet === field.name)
-                            this.$oneofs[field.partOf.name] = undefined;
-                        this.$values[field.name] = field.defaultValue;
                     }
                 } else {
-                    if (value !== undefined && value !== null)
-                        this.$values[field.name] = value;
-                    else
-                        this.$values[field.name] = field.defaultValue;
+                    this.$values[field.name] = value === undefined || value === null
+                        ? field.defaultValue
+                        : value;
                 }
             }
         };
