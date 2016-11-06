@@ -10,8 +10,7 @@ module.exports = Root;
 
 /**
  * Root namespace.
- * @memberof protobuf
- * @extends protobuf.Namespace
+ * @extends Namespace
  * @constructor
  * @param {Object.<string,*>} [contextOptions] Context options
  * @param {Object.<string,*>} [options] Namespace options
@@ -42,7 +41,7 @@ function Root(contextOptions, options) {
 }
 
 /**
- * @alias protobuf.Root.prototype
+ * @alias Root.prototype
  */
 var RootPrototype = Namespace.extend(Root);
 
@@ -262,7 +261,7 @@ Root.importGoogleTypes = importGoogleTypes;
 /**
  * Loads one or multiple .proto files into a common root namespace.
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {function(Error, ?Root)} [callback] Node-style callback function
+ * @param {function(?Error, Root=)} [callback] Node-style callback function
  * @param {Object} [ctx] Optional callback context
  * @returns {Promise<Root>|undefined} A promise if callback has been omitted, otherwise `undefined`
  * @throws {TypeError} If arguments are invalid

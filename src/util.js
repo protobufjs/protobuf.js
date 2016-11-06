@@ -6,7 +6,6 @@ var long_,
 /**
  * Utility functions.
  * @namespace
- * @memberof protobuf
  */
 var util = module.exports = {};
 
@@ -32,7 +31,7 @@ util.Long = Long || null;
 
 /**
  * Tests if the specified value is a string.
- * @memberof protobuf.util
+ * @memberof util
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is a string
  */
@@ -70,7 +69,7 @@ util.isFunction = function isFunction(value) {
 
 /**
  * Tests if the specified value is a number.
- * @memberof protobuf.util
+ * @memberof util
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is a number
  */
@@ -112,7 +111,7 @@ util._TypeError = function(name, description) {
 
 /**
  * Returns a promise from a node-style function.
- * @memberof protobuf.util
+ * @memberof util
  * @param {function(Error, ...*)} fn Function to call
  * @returns {Promise<*>} Promisified function
  */
@@ -131,7 +130,7 @@ util.asPromise = asPromise;
 
 /**
  * Fetches the contents of a file.
- * @memberof protobuf.util
+ * @memberof util
  * @param {string} path File path or url
  * @param {function(?Error, string=)} [callback] Node-style callback
  * @returns {Promise<string>|undefined} Promise if callback has been omitted 
@@ -165,7 +164,7 @@ util.fetch = fetch;
 
 /**
  * Tests if the specified path is absolute.
- * @memberof protobuf.util
+ * @memberof util
  * @param {string} path Path to test
  * @returns {boolean} `true` if path is absolute
  */
@@ -177,7 +176,7 @@ util.isAbsolutePath = isAbsolutePath;
 
 /**
  * Normalizes the specified path.
- * @memberof protobuf.util
+ * @memberof util
  * @param {string} path Path to normalize
  * @returns {string} Normalized path
  */
@@ -234,8 +233,8 @@ var initLongSupport = function() {
 
 /**
  * Converts a number or long-like object to an 8 characters long hash string.
- * @memberof protobuf.util
- * @param {number|!{ low: number, high: number }} value Value to convert
+ * @memberof util
+ * @param {number|{ low: number, high: number }} value Value to convert
  * @returns {string} Hashed value
  */
 function toHash(value) {
@@ -250,10 +249,10 @@ util.toHash = function(value) { // becomes overridden by initLongSupport
 
 /**
  * Converts an 8 characters long hash string to a number or long-like object.
- * @memberof protobuf.util
+ * @memberof util
  * @param {string} hash Hashed value to convert
  * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {number|!{ low: number, high: number, unsigned: boolean }} Original value
+ * @returns {number|{ low: number, high: number, unsigned: boolean }} Original value
  */
 function fromHash(hash, unsigned) {
     return long_._setHash(hash)._get(Boolean(unsigned));

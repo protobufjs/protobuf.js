@@ -12,8 +12,7 @@ module.exports = Type;
 
 /**
  * Reflected message type.
- * @memberof protobuf
- * @extends protobuf.Namespace
+ * @extends Namespace
  * @constructor
  * @param {string} name Message name
  * @param {Object.<string,*>} [options] Message options
@@ -75,12 +74,12 @@ function Type(name, options) {
 }
 
 /**
- * @alias protobuf.Type.prototype
+ * @alias Type.prototype
  */
 var TypePrototype = Namespace.extend(Type, [ "fields", "oneofs", "extensions", "reserved" ]);
 
 /**
- * @alias protobuf.Namespace.prototype
+ * @alias Namespace.prototype
  */
 var NamespacePrototype = Namespace.prototype;
 
@@ -88,7 +87,7 @@ Object.defineProperties(TypePrototype, {
 
     /**
      * Message fields by id.
-     * @name protobuf.Type#fieldsById
+     * @name Type#fieldsById
      * @type {Object.<number,Field>}
      * @readonly
      */
@@ -111,7 +110,7 @@ Object.defineProperties(TypePrototype, {
 
     /**
      * Message fields as an array for iteration.
-     * @name protobuf.Type#fieldsArray
+     * @name Type#fieldsArray
      * @type {Field[]}
      * @readonly
      */
@@ -130,7 +129,7 @@ Object.defineProperties(TypePrototype, {
 
     /**
      * Runtime message prototype of this message.
-     * @name protobuf.Type#prototype
+     * @name Type#prototype
      * @type {Prototype}
      * @readonly
      */
@@ -296,7 +295,7 @@ TypePrototype.register = function register(constructor) {
  * Creates a new message of this type using the specified properties.
  * @param {Object} [properties] Properties to set
  * @param {?Function} [constructor] Optional constructor to use or null to use the internal
- *  prototype. If a constructor, it should extend {@link protobuf.Prototype}.
+ *  prototype. If a constructor, it should extend {@link Prototype}.
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, constructor) {
@@ -366,9 +365,9 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 /**
  * Decodes a message of this type.
  * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
- * @param {Function} [constructor] Optional constructor of the created message, see {@link protobuf.Type#create}
+ * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
  * @param {number} [length] Length of the message, if known beforehand
- * @returns {Object} Decoded message
+ * @returns {Prototype} Decoded message
  */
 TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
     if (typeof constructor === 'number') {
@@ -406,8 +405,8 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
 /**
  * Decodes a message of this m type preceeded by its byte length as a varint.
  * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
- * @param {Function} [constructor] Optional constructor of the created message, see {@link protobuf.Type#create}
- * @returns {Object} Decoded message
+ * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
+ * @returns {Prototype} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constructor) {
     if (!(readerOrBuffer instanceof Reader))

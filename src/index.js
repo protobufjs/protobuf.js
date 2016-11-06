@@ -1,21 +1,17 @@
 var util = require("./util");
 
-/**
- * Protobuf namespace.
- * @namespace
- */
 var protobuf = module.exports = {};
 
 /**
  * Loads one or multiple .proto files into a common root namespace.
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
- * @param {function(Error, Root=)} [callback] Callback function
+ * @param {function(?Error, Root=)} [callback] Callback function
  * @param {Object} [ctx] Optional callback context
- * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise this
+ * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise the protobuf namespace
  * @throws {TypeError} If arguments are invalid
  */
-protobuf.load = function load(filename, root, callback, ctx) {
+function load(filename, root, callback, ctx) {
     if (util.isFunction(root)) {
         ctx = callback;
         callback = root;
@@ -26,7 +22,10 @@ protobuf.load = function load(filename, root, callback, ctx) {
     return root.load(filename, callback, ctx) || this;
 };
 
+protobuf.load = load;
+
 // Parser
+
 protobuf.tokenize         = require("./tokenize");
 protobuf.parse            = require("./parse");
 

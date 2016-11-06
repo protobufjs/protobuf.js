@@ -12,7 +12,6 @@ function indexOutOfRange(reader, writeLength) {
 
 /**
  * Wire format reader using arrays.
- * @memberof protobuf
  * @constructor
  * @param {number[]} buffer Buffer to read from
  */
@@ -43,7 +42,7 @@ function Reader(buffer) {
 }
 
 /**
- * @alias protobuf.Reader.prototype
+ * @alias Reader.prototype
  */
 var ReaderPrototype = Reader.prototype;
 
@@ -171,7 +170,7 @@ ReaderPrototype.fixed64 = function read_fixed64() {
 
 /**
  * Reads zig-zag encoded 64 bits as a Long.
- * @returns {number|{ low: numbeer, high: number, unsigned: false }|Long} Value read
+ * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
  */
 ReaderPrototype.sfixed64 = function read_sfixed64() {
     if (this.pos + 8 > this.len)
@@ -248,7 +247,7 @@ ReaderPrototype.skip = function skip(length) {
 /**
  * Skips the next element of the specified wire type.
  * @param {number} wireType Wire type received
- * @returns {Reader}this
+ * @returns {Reader} this
  */
 ReaderPrototype.skipType = function(wireType) {
     switch (wireType) {
@@ -320,8 +319,7 @@ var initBufferReader = function() {
 
 /**
  * Wire format reader using node buffers.
- * @memberof protobuf
- * @extends protobuf.Reader
+ * @extends Reader
  * @constructor
  * @param {Buffer} buffer Buffer to read from
  */
@@ -332,7 +330,7 @@ function BufferReader(buffer) {
 }
 
 /**
- * @alias protobuf.BufferReader.prototype
+ * @alias BufferReader.prototype
  */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 

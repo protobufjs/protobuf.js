@@ -20,7 +20,7 @@ tap.test("package.json", function(test) {
                 test.type(myPackage, protobuf.Prototype, "should extend Prototype");
                 test.equal(myPackage.$type, Package, "should reference Package as its reflected type");
                 test.type(myPackage.repository, protobuf.Prototype, "submessages should also extend Prototype");
-                test.equal(myPackage.repository.$type, Repository, "repository field should reference Repository as its reflected type");
+                test.equal(myPackage.repository.$type, Repository, "repository submessage should reference Repository as its reflected type");
                 test.deepEqual(myPackage, pkg, "should have equal contents");
 
                 test.end();
@@ -35,7 +35,7 @@ tap.test("package.json", function(test) {
                 test.type(decoded, protobuf.Prototype, "should extend Prototype");
                 test.equal(decoded.$type, Package, "should reference Package as its reflected type");
                 test.type(decoded.repository, protobuf.Prototype, "submessages should also extend Prototype");
-                test.equal(decoded.repository.$type, Repository, "repository field should reference Repository as its reflected type");
+                test.equal(decoded.repository.$type, Repository, "repository submessage should reference Repository as its reflected type");
                 test.deepEqual(decoded, pkg, "should have equal contents");
 
                 test.end();

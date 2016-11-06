@@ -11,11 +11,10 @@ var initCyclics = function() {
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
- * @memberof protobuf
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
  * @abstract
- * @see {@link protobuf.Type#create}
+ * @see {@link Type#create}
  */
 function Prototype(properties) {
     if (properties)
@@ -88,7 +87,7 @@ Prototype.extend = function extend(constructor, type, options) {
 
     /**
      * Reflected type.
-     * @name protobuf.Prototype#$type
+     * @name Prototype#$type
      * @type {Type}
      */
     prototype.$type = type;

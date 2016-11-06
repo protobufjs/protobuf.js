@@ -19,8 +19,7 @@ var initCyclics = function() {
 
 /**
  * Base class of all reflection objects containing nested objects.
- * @memberof protobuf
- * @extends protobuf.ReflectionObject
+ * @extends ReflectionObject
  * @constructor
  * @param {string} name Namespace name
  * @param {Object.<string,*>} [options] Namespace options
@@ -36,7 +35,7 @@ function Namespace(name, options) {
 }
 
 /**
- * @alias protobuf.Namespace.prototype
+ * @alias Namespace.prototype
  */
 var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
 
@@ -44,7 +43,7 @@ Object.defineProperties(NamespacePrototype, {
 
     /**
      * Determines whether this namespace is empty.
-     * @name protobuf.Namespace#empty
+     * @name Namespace#empty
      * @type {boolean}
      * @readonly
      */
@@ -99,11 +98,11 @@ Namespace.fromJSON = function fromJSON(name, json) {
 
 /**
  * Iterates over all nested objects.
- * @param {function(this:Namespace, !ReflectionObject, string):*} fn Iterator function called with nested objects
+ * @param {function(this:Namespace, ReflectionObject, string):*} fn Iterator function called with nested objects
  *  and their names. Can return something different than `undefined` to break the iteration.
  * @param {Object} [ctx] Optional iterator function context
  * @param {Object} [object] Alternative object to iterate over
- * @returns {*|!Namespace} First value returned, otherwise this
+ * @returns {*|Namespace} First value returned, otherwise this
  */
 NamespacePrototype.each = function each(fn, ctx, object) {
     if (!object)

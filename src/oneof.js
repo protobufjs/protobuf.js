@@ -6,8 +6,7 @@ module.exports = OneOf;
 
 /**
  * Reflected OneOf.
- * @memberof protobuf
- * @extends protobuf.ReflectionObject
+ * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
  * @param {string[]} [fieldNames] Field names
@@ -37,7 +36,7 @@ function OneOf(name, fieldNames, options) {
 }
 
 /**
- * @alias protobuf.OneOf.prototype
+ * @alias OneOf.prototype
  */
 var OneOfPrototype = ReflectionObject.extend(OneOf, [ "oneof" ]);
 

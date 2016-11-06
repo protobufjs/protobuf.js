@@ -14,8 +14,7 @@ var initCyclics = function() {
 
 /**
  * Reflected message field.
- * @memberof protobuf
- * @extends protobuf.ReflectionObject
+ * @extends ReflectionObject
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
@@ -135,7 +134,7 @@ function Field(name, id, type, rule, extend, options) {
 }
 
 /**
- * @alias protobuf.Field.prototype
+ * @alias Field.prototype
  */
 var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "extend" ]);
 
@@ -143,7 +142,7 @@ Object.defineProperties(FieldPrototype, {
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
-     * @name protobuf.Field#packed
+     * @name Field#packed
      * @type {boolean}
      * @readonly
      */

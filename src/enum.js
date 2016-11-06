@@ -5,8 +5,7 @@ module.exports = Enum;
 
 /**
  * Reflected enum.
- * @memberof protobuf
- * @extends protobuf.ReflectionObject
+ * @extends ReflectionObject
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {Object.<string,number>} [values] Enum values as an object, by name
@@ -30,7 +29,7 @@ function Enum(name, values, options) {
 }
 
 /**
- * @alias protobuf.Enum.prototype
+ * @alias Enum.prototype
  */
 var EnumPrototype = ReflectionObject.extend(Enum, [ "values" ]);
 
@@ -38,7 +37,7 @@ Object.defineProperties(EnumPrototype, {
 
     /**
      * Enum values by id.
-     * @name protobuf.Enum#valuesById
+     * @name Enum#valuesById
      * @type {Object.<number,string>}
      * @readonly
      */

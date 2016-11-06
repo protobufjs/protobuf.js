@@ -11,7 +11,6 @@ var initCyclics = function() {
 
 /**
  * Base class of all reflection objects.
- * @memberof protobuf
  * @constructor
  * @param {string} name Object name
  * @param {Object.<string,*>} [options] Object options
@@ -67,7 +66,7 @@ function ReflectionObject(name, options) {
 }
 
 /**
- * @alias protobuf.ReflectionObject.prototype
+ * @alias ReflectionObject.prototype
  */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
@@ -77,7 +76,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
 
     /**
      * Reference to the root namespace.
-     * @name protobuf.ReflectionObject#root
+     * @name ReflectionObject#root
      * @type {Root}
      * @readonly
      */
@@ -92,7 +91,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
 
     /**
      * Full name including leading dot.
-     * @name protobuf.ReflectionObject#fullName
+     * @name ReflectionObject#fullName
      * @type {string}
      * @readonly
      */
@@ -111,7 +110,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
     /**
      * Whether this object is visible when exporting definitions. Possible values are `true` to
      * be visible, `false` to be not and `null` (setter only) to inherit from parent.
-     * @name protobuf.ReflectionObject#visible
+     * @name ReflectionObject#visible
      * @type {?boolean}
      */
     visible: {
@@ -135,7 +134,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
 /**
  * Extends this class and optionally exposes the specified properties to JSON.
  * @param {Function} constructor Extending constructor
- * @param {Array.<string>} [exposePropertyNames] Properties to expose to JSON
+ * @param {string[]} [exposePropertyNames] Properties to expose to JSON
  * @returns {Object} Prototype
  */
 ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
@@ -149,9 +148,9 @@ ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
 
 /**
  * Exposes the specified properties to JSON.
- * @memberof protobuf.ReflectionObject
+ * @memberof ReflectionObject
  * @param {Object} prototype Prototype to expose the properties upon
- * @param {Array.<string>} propertyNames Property names to expose
+ * @param {string[]} propertyNames Property names to expose
  * @returns {Object} prototype
  */
 function exposeJSON(prototype, propertyNames) {
@@ -178,7 +177,7 @@ ReflectionObject.exposeJSON = exposeJSON;
  * Converts this reflection object to its JSON representation.
  * Returns only properties that have explicitly been exposed.
  * @returns {Object} JSON object
- * @see {@link protobuf.ReflectionObject.exposeJSON}
+ * @see {@link ReflectionObject.exposeJSON}
  */
 ReflectionObjectPrototype.toJSON = function toJSON() {
     if (!this.visible)

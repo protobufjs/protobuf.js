@@ -14,7 +14,6 @@ Writer.BUFFER_SIZE = 1024;
 
 /**
  * Wire format writer using arrays.
- * @memberof protobuf
  * @constructor
  */
 function Writer() {
@@ -26,7 +25,7 @@ function Writer() {
 
     /**
      * Current buffer.
-     * @type {?Array.<number>}
+     * @type {?number[]}
      */
     this.buf = null;
 
@@ -57,7 +56,7 @@ function Writer() {
 }
 
 /**
- * @alias protobuf.Writer.prototype
+ * @alias Writer.prototype
  */
 var WriterPrototype = Writer.prototype;
 
@@ -137,7 +136,7 @@ WriterPrototype.sint32 = function write_sint32(value) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {number|!{ low: number, high: number }|!Long} value Value to write
+ * @param {number|{ low: number, high: number }|Long} value Value to write
  * @returns {Writer} this
  */
 WriterPrototype.uint64 = function write_uint64(value) {
@@ -148,14 +147,14 @@ WriterPrototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {number|!{ low: number, high: number }|!Long} value Value to write
+ * @param {number|{ low: number, high: number }|Long} value Value to write
  * @returns {Writer} this
  */
 WriterPrototype.int64 = WriterPrototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {number|!{ low: number, high: number }|!Long} value Value to write
+ * @param {number|{ low: number, high: number }|Long} value Value to write
  * @returns {Writer} this
  */
 WriterPrototype.sint64 = function sint64(value) {
@@ -202,7 +201,7 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits.
- * @param {number|!{ low: number, high: number }|!Long} value Value to write
+ * @param {number|{ low: number, high: number }|Long} value Value to write
  * @returns {Writer} this
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
@@ -214,7 +213,7 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
- * @param {number|!{ low: number, high: number }|!Long} value Value to write
+ * @param {number|{ low: number, high: number }|Long} value Value to write
  * @returns {Writer} this
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
@@ -275,7 +274,7 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack and reusing the remaining buffer
- * for a new set of write operations. A call to {@link protobuf.Writer#reset} or {@link protobuf.Writer#finish}
+ * for a new set of write operations. A call to {@link Writer#reset} or {@link Writer#finish}
  * resets the writer to the previous state.
  * @returns {Writer} this
  */
@@ -365,8 +364,7 @@ var emptyBuffer = null;
 
 /**
  * Wire format writer using node buffers.
- * @memberof protobuf
- * @extends protobuf.Writer
+ * @extends Writer
  * @constructor
  */
 function BufferWriter() {
@@ -376,7 +374,7 @@ function BufferWriter() {
 }
 
 /**
- * @alias protobuf.BufferWriter.prototype
+ * @alias BufferWriter.prototype
  */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 
