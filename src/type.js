@@ -299,35 +299,21 @@ TypePrototype.register = function register(constructor) {
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, constructor) {
-    // If it is already a message instance, return it
-    if (properties instanceof Prototype)
-        return properties;
-        
     if (util.isFunction(properties)) {
         constructor = properties;
         properties = undefined;
-    }
-    if (constructor === undefined && this._constructor)
-        constructor = this._constructor;
+    } else if (properties /* already */ instanceof Prototype)
+        return properties;
 
-    // If there is a dedicated constructor specified or registered, take the fast route
-    if (constructor)
+    if (constructor /* specified */ || (constructor /* registered */ = this._constructor))
         return new constructor(properties);
     
-    // Otherwise create a new message instance from the internal prototype and populate it
-    if (!properties)
-        properties  = {};
-    var fieldsArray = this.fieldsArray,
-        fieldsCount = fieldsArray.length;
     var message = Object.create(this.prototype);
-    for (var i = 0; i < fieldsCount; ++i) {
-        var field = fieldsArray[i].resolve(),
-            value = properties[field.name] || field.defaultValue;
-        if (field.required || field.repeated || field.map || value !== field.defaultValue || util.isObject(value)) {
-            if (field.resolvedType instanceof Type)
-                value = field.resolvedType.create(value);
-            message[field.name] = value;
-        }
+    if (properties) {
+        Object.keys(properties).forEach(function(key) {
+            if (this.fields[key])
+                message[key] = properties[key];
+        }, this);
     }
     return message;
 };

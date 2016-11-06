@@ -19,7 +19,7 @@ var initCyclics = function() {
 function Prototype(properties) {
     if (properties)
         Object.keys(properties).forEach(function(key) {
-            if (this.constructor.$type.fields[key] || this.constructor.$type.oneofs && this.constructor.$type.oneofs[key])
+            if (this.constructor.$type.fields[key])
                 this[key] = properties[key];
         }, this);
 
@@ -49,10 +49,10 @@ Prototype.extend = function extend(constructor, type, options) {
     if (!options)
         options = {};
 
+    // Underlying reflected message type for reference
+    constructor.$type = type;
+
     if (!options.noStatics) {
-            
-        // Underlying reflected message type for reference
-        constructor.$type = type;
 
         // Creates a new message
         constructor.create = function(properties) {
@@ -102,6 +102,8 @@ Prototype.extend = function extend(constructor, type, options) {
 Prototype.init = function init(prototype, type) {
     if (initCyclics)
         initCyclics();
+
+    var defaultValues = {};
     
     var defineProperties = {
 
@@ -121,7 +123,7 @@ Prototype.init = function init(prototype, type) {
          * @type {Object.<string,*>}
          */
         $values: {
-            value: {},
+            value: defaultValues,
             enumerable: false
         },
 
@@ -136,31 +138,40 @@ Prototype.init = function init(prototype, type) {
         }
     };
 
-    // Define each field with a getter and a setter
+    // Initialize default values and define each field with a getter and a setter
     type.fieldsArray.forEach(function(field) {
+        field.resolve();
+        defaultValues[field.name] = field.defaultValue;
         defineProperties[field.name] = {
             get: function() {
-                var value = this.$values[field.name];
-                if (value !== undefined)
-                    return value;
-                // Note that objects are mutable and are explicitly set on the instance instead
-                return util.isObject(field.defaultValue) ? undefined : field.defaultValue;           
+                return this.$values[field.name];
             },
             set: function(value) {
-                if (field.resolvedType instanceof Type)
-                    value = field.resolvedType.create(value);
-                var oneofCurrentlySet;
-                if (field.partOf && (oneofCurrentlySet = this.$oneofs[field.partOf.name]) !== undefined) {
-                    this.$values[oneofCurrentlySet] = undefined;
-                    this.$oneofs[field.partOf.name] = field.name;
+                if (field.partOf) {
+                    var fieldNameSet = this.$oneofs[field.partOf.name];
+                    if (value !== undefined && value !== null) {
+                        if (fieldNameSet !== undefined)
+                            this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
+                        this.$values[field.name] = value;
+                        this.$oneofs[field.partOf.name] = field.name;
+                    } else {
+                        if (fieldNameSet === field.name)
+                            this.$oneofs[field.partOf.name] = undefined;
+                        this.$values[field.name] = field.defaultValue;
+                    }
+                } else {
+                    if (value !== undefined && value !== null)
+                        this.$values[field.name] = value;
+                    else
+                        this.$values[field.name] = field.defaultValue;
                 }
-                this.$values[field.name] = value;
             }
         };
     });
 
     // Define each oneof with a non-enumerable getter returning the name of the currently set field
     type.oneofsArray.forEach(function(oneof) {
+        oneof.resolve();
         defineProperties[oneof.name] = {
             get: function() {
                 return this.$oneofs[oneof.name];
