@@ -15,6 +15,7 @@ module.exports = Root;
  * @constructor
  * @param {Object.<string,*>} [contextOptions] Context options
  * @param {Object.<string,*>} [options] Namespace options
+ * @param {boolean} [contextOptions.noGoogleTypes=false] Skips loading of common google types
  */
 function Root(contextOptions, options) {
     Namespace.call(this, "", options);
@@ -364,8 +365,9 @@ function handleExtension(field) {
  * Called when any object is added to this root or its sub-namespaces.
  * @param {ReflectionObject} object Object added
  * @returns {undefined}
+ * @private
  */
-RootPrototype.handleAdd = function handleAdd(object) {
+RootPrototype._handleAdd = function handleAdd(object) {
     // Try to handle any pending extensions
     var newPendingExtensions = this.pendingExtensions.slice();
     this.pendingExtensions = []; // because the loop calls handleAdd
@@ -380,15 +382,16 @@ RootPrototype.handleAdd = function handleAdd(object) {
     if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.pendingExtensions.indexOf(object) < 0)
         this.pendingExtensions.push(object);
     else if (object instanceof Namespace)
-        object.each(this.handleAdd, this); // recurse into the namespace
+        object.each(this._handleAdd, this); // recurse into the namespace
 };
 
 /**
  * Called when any object is removed from this root or its sub-namespaces.
  * @param {ReflectionObject} object Object removed
  * @returns {undefined}
+ * @private
  */
-RootPrototype.handleRemove = function handleRemove(object) {
+RootPrototype._handleRemove = function handleRemove(object) {
     if (object instanceof Field) {
         // If a pending declaring extension field, cancel the extension
         if (object.extend !== undefined && !object.extensionField) {
@@ -402,7 +405,7 @@ RootPrototype.handleRemove = function handleRemove(object) {
             object.extensionField = null;
         }
     } else if (object instanceof Namespace)
-        object.each(this.handleRemove, this); // recurse into the namespace
+        object.each(this._handleRemove, this); // recurse into the namespace
 };
 
 /**

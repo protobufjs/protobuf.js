@@ -15,7 +15,7 @@ var initCyclics = function() {
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
  * @abstract
- * @see {@link Type#create}
+ * @see {@link protobuf.Type#create}
  */
 function Prototype(properties) {
     if (properties)
@@ -36,6 +36,8 @@ function Prototype(properties) {
  * @param {function(new:Message)} constructor Constructor to extend
  * @param {Type} type Reflected message type
  * @param {Object.<string,*>} [options] Additional options
+ * @param {boolean} [options.noStatics=false] Skips adding the default static methods on the constructor
+ * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
  * @returns {Object} Prototype
  */
 Prototype.extend = function extend(constructor, type, options) {
@@ -83,6 +85,13 @@ Prototype.extend = function extend(constructor, type, options) {
     // Properly extend Message
     var prototype = constructor.prototype = new Prototype();
     prototype.constructor = constructor;
+
+    /**
+     * Reflected type.
+     * @name protobuf.Prototype#$type
+     * @type {Type}
+     */
+    prototype.$type = type;
 
     // Initialize default values on prototype
     if (type.fields)

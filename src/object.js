@@ -149,7 +149,7 @@ ReflectionObject.extend = function extend(constructor, exposePropertyNames) {
 
 /**
  * Exposes the specified properties to JSON.
- * @memberof ReflectionObject
+ * @memberof protobuf.ReflectionObject
  * @param {Object} prototype Prototype to expose the properties upon
  * @param {Array.<string>} propertyNames Property names to expose
  * @returns {Object} prototype
@@ -178,7 +178,7 @@ ReflectionObject.exposeJSON = exposeJSON;
  * Converts this reflection object to its JSON representation.
  * Returns only properties that have explicitly been exposed.
  * @returns {Object} JSON object
- * @see {@link ReflectionObject.exposeJSON}
+ * @see {@link protobuf.ReflectionObject.exposeJSON}
  */
 ReflectionObjectPrototype.toJSON = function toJSON() {
     if (!this.visible)
@@ -200,7 +200,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         initCyclics();
     var root = parent.root;
     if (root instanceof Root)
-        root.handleAdd(this);
+        root._handleAdd(this);
 };
 
 /**
@@ -213,7 +213,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
         initCyclics();
     var root = parent.root;
     if (root instanceof Root)
-        root.handleRemove(this);
+        root._handleRemove(this);
     this.parent = null;
     this.resolved = false;
 };

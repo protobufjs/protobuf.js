@@ -11,16 +11,35 @@ tap.test("package.json", function(test) {
         try {
             
             var Package = root.lookup("Package");
+            var Repository = root.lookup("Package.Repository");
             var myPackage = Package.create(pkg);
-
             pkg.dependencies = {}; // create initializes with {}
-            test.deepEqual(myPackage, pkg, "should have equal contents as a created message");
 
-            var writer = Package.encode(myPackage);
-            test.type(writer, protobuf.BufferWriter, "should use BufferWriter to encode");
-            var buf = writer.finish();
-            var decoded = Package.decode(buf);
-            test.deepEqual(decoded, pkg, "should still have equal contents when encoded and decoded again");
+            test.test("runtime message", function(test) {
+
+                test.type(myPackage, protobuf.Prototype, "should extend Prototype");
+                test.equal(myPackage.$type, Package, "should reference Package as its reflected type");
+                test.type(myPackage.repository, protobuf.Prototype, "submessages should also extend Prototype");
+                test.equal(myPackage.repository.$type, Repository, "repository field should reference Repository as its reflected type");
+                test.deepEqual(myPackage, pkg, "should have equal contents");
+
+                test.end();
+            });
+
+            test.test("decoded message", function(test) {
+
+                var writer = Package.encode(myPackage);
+                var buf = writer.finish();
+                var decoded = Package.decode(buf);
+
+                test.type(decoded, protobuf.Prototype, "should extend Prototype");
+                test.equal(decoded.$type, Package, "should reference Package as its reflected type");
+                test.type(decoded.repository, protobuf.Prototype, "submessages should also extend Prototype");
+                test.equal(decoded.repository.$type, Repository, "repository field should reference Repository as its reflected type");
+                test.deepEqual(decoded, pkg, "should have equal contents");
+
+                test.end();
+            });
 
         } catch (e) {
             test.threw(e);

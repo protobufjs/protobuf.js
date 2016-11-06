@@ -275,7 +275,7 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack and reusing the remaining buffer
- * for a new set of write operations. A call to {@link Writer#reset} or {@link Writer#finish}
+ * for a new set of write operations. A call to {@link protobuf.Writer#reset} or {@link protobuf.Writer#finish}
  * resets the writer to the previous state.
  * @returns {Writer} this
  */

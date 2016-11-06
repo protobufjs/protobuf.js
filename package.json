@@ -19,7 +19,7 @@
     "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md",
     "types": "jsdoc -c scripts/jsdoc.types.conf.json && node scripts/types-postprocess.js",
     "lint": "eslint src",
-    "test": "tap -b tests/*.js"
+    "test": "tap -b -R spec tests/*.js"
   },
   "optionalDependencies": {
     "ieee754": "^1.1.8",

@@ -141,6 +141,7 @@ Object.defineProperties(TypePrototype, {
             var fieldsArray = this.fieldsArray,
                 fieldsCount = fieldsArray.length;
             var prototype = new Prototype();
+            prototype.$type = this;
             for (var i = 0; i < fieldsCount; ++i) {
                 var field = fieldsArray[i].resolve();
                 if (!util.isObject(field.defaultValue)) // objects are immutable and thus cannot be on the prototype
@@ -295,7 +296,7 @@ TypePrototype.register = function register(constructor) {
  * Creates a new message of this type using the specified properties.
  * @param {Object} [properties] Properties to set
  * @param {?Function} [constructor] Optional constructor to use or null to use the internal
- *  prototype. If a constructor, it should extend {@link protobuf.Prototype}).
+ *  prototype. If a constructor, it should extend {@link protobuf.Prototype}.
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, constructor) {
@@ -319,8 +320,11 @@ TypePrototype.create = function create(properties, constructor) {
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve(),
             value = properties[field.name] || field.defaultValue;
-        if (field.required || field.repeated || field.map || value !== field.defaultValue || util.isObject(value))
+        if (field.required || field.repeated || field.map || value !== field.defaultValue || util.isObject(value)) {
+            if (field.resolvedType instanceof Type)
+                value = field.resolvedType.create(value);
             message[field.name] = value;
+        }
     }
     return message;
 };
@@ -346,8 +350,8 @@ TypePrototype.encode = function encode(message, writer) {
 };
 
 /**
- * Encodes a message of this type, preceeded by its byte length as a varint.
- * @param {Object} message Message instance or plain object
+ * Encodes a message of this type preceeded by its byte length as a varint.
+ * @param {Prototype|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -360,9 +364,9 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 };
 
 /**
- * Decodes a runtime message of this message's type.
+ * Decodes a message of this type.
  * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
- * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
+ * @param {Function} [constructor] Optional constructor of the created message, see {@link protobuf.Type#create}
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Object} Decoded message
  */
@@ -400,10 +404,9 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
 };
 
 /**
- * Decodes a message of this type,
- * which is preceeded by its byte length as a varint.
+ * Decodes a message of this m type preceeded by its byte length as a varint.
  * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
- * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
+ * @param {Function} [constructor] Optional constructor of the created message, see {@link protobuf.Type#create}
  * @returns {Object} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constructor) {

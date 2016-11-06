@@ -227,7 +227,7 @@ ReaderPrototype.string = function read_string(length) {
 };
 
 /**
- * Skips some bytes.
+ * Skips the specified number of bytes if provided, otherwise skips a varint.
  * @param {number} [length] Length if known, otherwise a varint is assumed
  * @returns {Reader} this
  */
