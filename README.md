@@ -197,9 +197,10 @@ The library exports a flat `protobuf` namespace with the following members, orde
 Documentation
 -------------
 
-You can find documentation on these objects within the respective source files or alternatively build
-the documentation by first installing the development dependencies (if you haven't already) through
-running
+* See: [API Documentation](http://dcode.io/protobuf.js/)
+
+To build the documentation yourself, first install the development dependencies (if you haven't
+already) through running
 
 ```
 $> npm install --dev
@@ -214,8 +215,8 @@ $> npm run docs
 Building
 --------
 
-To build production and development versions with their respective source maps for the browser, first
-install the development dependencies (if you haven't already) through running
+To build production and development versions with their respective source maps for the browser,
+first install the development dependencies (if you haven't already) through running
 
 ```
 $> npm install --dev
@@ -229,15 +230,15 @@ $> npm run build
 
 Compatibility
 -------------
-* This library requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest. If typed arrays are not
-  supported, it uses plain arrays instead.
+* This library requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest.
+  If typed arrays are not supported, it uses plain arrays instead.
 
 * If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer)
   for example and assign its constructor, or that of any compatible library, to `protobuf.util.Buffer`.
 
 * If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install
   [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with buffers, you
-  can assign its constructor, or that of any compatible library, to `protobuf.util.Long`. All 64
-  bit numbers will then be returned as a `Long` instance. That's not a requirement, though ([see](./src/support/long.js)).
+  can assign its constructor to `protobuf.util.Long`. All 64 bit numbers will then be returned as a
+  `Long` instance. That's not a requirement, though ([see](./src/support/long.js)).
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
