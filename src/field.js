@@ -191,7 +191,7 @@ Field.fromJSON = function fromJSON(name, json) {
 
 /**
  * Resolves this field's type references.
- * @returns {Field} this
+ * @returns {Field} `this`
  * @throws {Error} If any reference cannot be resolved
  */
 FieldPrototype.resolve = function resolve() {

@@ -80,7 +80,7 @@ Enum.fromJSON = function fromJSON(name, json) {
  * Adds a value to this enum.
  * @param {string} name Value name
  * @param {number} id Value id
- * @returns {Enum} this
+ * @returns {Enum} `this`
  */
 EnumPrototype.add = function(name, id) {
     if (!util.isString(name))
@@ -95,7 +95,7 @@ EnumPrototype.add = function(name, id) {
 /**
  * Removes a value from this enum
  * @param {string} name Value name
- * @returns {Enum} this
+ * @returns {Enum} `this`
  */
 EnumPrototype.remove = function(name) {
     if (!util.isString(name))

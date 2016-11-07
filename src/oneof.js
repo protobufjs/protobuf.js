@@ -76,7 +76,7 @@ function addFieldsToParent(oneof) {
 /**
  * Adds a field to this oneof.
  * @param {Field} field Field to add
- * @returns {OneOf} this
+ * @returns {OneOf} `this`
  */
 OneOfPrototype.add = function add(field) {
     if (!(field instanceof Field))
@@ -92,7 +92,7 @@ OneOfPrototype.add = function add(field) {
 /**
  * Removes a field from this oneof.
  * @param {Field} field Field to remove
- * @returns {OneOf} this
+ * @returns {OneOf} `this`
  */
 OneOfPrototype.remove = function remove(field) {
     if (!(field instanceof Field))

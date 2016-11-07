@@ -228,7 +228,7 @@ ReaderPrototype.string = function read_string(length) {
 /**
  * Skips the specified number of bytes if provided, otherwise skips a varint.
  * @param {number} [length] Length if known, otherwise a varint is assumed
- * @returns {Reader} this
+ * @returns {Reader} `this`
  */
 ReaderPrototype.skip = function skip(length) {
     if (length === undefined) {
@@ -247,7 +247,7 @@ ReaderPrototype.skip = function skip(length) {
 /**
  * Skips the next element of the specified wire type.
  * @param {number} wireType Wire type received
- * @returns {Reader} this
+ * @returns {Reader} `this`
  */
 ReaderPrototype.skipType = function(wireType) {
     switch (wireType) {
@@ -280,7 +280,7 @@ ReaderPrototype.skipType = function(wireType) {
 /**
  * Resets this instance and frees all resources.
  * @param {number[]} [buffer] Optionally a new buffer for a new sequence of read operations
- * @returns {Reader} this
+ * @returns {Reader} `this`
  */
 ReaderPrototype.reset = function reset(buffer) {
     if (buffer) {

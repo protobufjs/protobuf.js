@@ -75,7 +75,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
 /**
  * Adds nested elements to this namespace from JSON.
  * @param {Object.<string,*>} json Nested JSON
- * @returns {Namespace} this
+ * @returns {Namespace} `this`
  */
 NamespacePrototype.addJSON = function addJSON(json) {
     if (json) {
@@ -99,7 +99,7 @@ NamespacePrototype.addJSON = function addJSON(json) {
  *  and their names. Can return something different than `undefined` to break the iteration.
  * @param {Object} [ctx] Optional iterator function context
  * @param {Object} [object] Alternative object to iterate over
- * @returns {*|Namespace} First value returned, otherwise this
+ * @returns {*|Namespace} First value returned, otherwise `this`
  */
 NamespacePrototype.each = function each(fn, ctx, object) {
     if (!object)
@@ -125,7 +125,7 @@ NamespacePrototype.get = function get(name) {
 /**
  * Adds a nested object to this namespace.
  * @param {ReflectionObject} object Nested object to add
- * @returns {Namespace} this
+ * @returns {Namespace} `this`
  */
 NamespacePrototype.add = function add(object) {
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
@@ -150,7 +150,7 @@ NamespacePrototype.add = function add(object) {
 /**
  * Removes a nested object from this namespace.
  * @param {ReflectionObject} object Nested object to remove
- * @returns {Namespace} this
+ * @returns {Namespace} `this`
  */
 NamespacePrototype.remove = function remove(object) {
     if (!(object instanceof ReflectionObject))
@@ -167,9 +167,9 @@ NamespacePrototype.remove = function remove(object) {
 /**
  * Defines additial namespaces within this one if not yet existing.
  * @param {string|string[]} path Path to create
- * @param {*} [json] Optional types to create from JSON
+ * @param {*} [json] Optional nested types to create from JSON
  * @param {?boolean} [visible=null] Whether visible when exporting definitions. Defaults to inherit from parent.
- * @returns {Namespace} Pointer to the last namespace created
+ * @returns {Namespace} Pointer to the last namespace created or `this` if path is empty
  */
 NamespacePrototype.define = function define(path, json, visible) {
     if (util.isString(path))
@@ -208,7 +208,7 @@ NamespacePrototype.define = function define(path, json, visible) {
 /**
  * Resolves this namespace's and all its nested objects' type references. Useful to validate a
  * reflection tree.
- * @returns {Namespace} this
+ * @returns {Namespace} `this`
  */
 NamespacePrototype.resolveAll = function resolve() {
     this.each(function(nested) {

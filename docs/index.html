@@ -709,6 +709,8 @@
             
                 <li data-name="Namespace#add"><a href="Namespace.html#add">add</a></li>
             
+                <li data-name="Namespace#addJSON"><a href="Namespace.html#addJSON">addJSON</a></li>
+            
                 <li data-name="Namespace#define"><a href="Namespace.html#define">define</a></li>
             
                 <li data-name="Namespace#each"><a href="Namespace.html#each">each</a></li>
@@ -1016,6 +1018,8 @@
             
                 <li data-name="Root#add"><a href="Root.html#add">add</a></li>
             
+                <li data-name="Root#addJSON"><a href="Root.html#addJSON">addJSON</a></li>
+            
                 <li data-name="Root#addLoaded"><a href="Root.html#addLoaded">addLoaded</a></li>
             
                 <li data-name="Root#define"><a href="Root.html#define">define</a></li>
@@ -1102,6 +1106,8 @@
                 <li data-name="Service.testJSON"><a href="Service.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Service#add"><a href="Service.html#add">add</a></li>
+            
+                <li data-name="Service#addJSON"><a href="Service.html#addJSON">addJSON</a></li>
             
                 <li data-name="Service#define"><a href="Service.html#define">define</a></li>
             
@@ -1197,6 +1203,8 @@
                 <li data-name="Type.testJSON"><a href="Type.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Type#add"><a href="Type.html#add">add</a></li>
+            
+                <li data-name="Type#addJSON"><a href="Type.html#addJSON">addJSON</a></li>
             
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
@@ -1411,11 +1419,11 @@ var buffer = AwesomeMessage.encode({ awesomefield: &quot;AwesomeString&quot; });
 var message = AwesomeMessage.decode(buffer);
 // ... do something with message</code></pre><h2>Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
 <h3>Parser</h3><ul>
-<li><p><strong>load(filename: <code>string|Array</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise</code></strong> [<a href="./src/index.js">source</a>]<br /><br>Loads one or multiple .proto files into the specified root or creates a new one when omitted.</p>
+<li><p><strong>load(filename: <code>string|Array</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto files into the specified root or creates a new one when omitted.</p>
 </li>
-<li><p><strong>tokenize(source: <code>string</code>): <code>Object</code></strong> [<a href="./src/tokenize.js">source</a>]<br /><br>Tokenizes the given .proto source and returns an object with useful utility functions.</p>
+<li><p><strong>tokenize(source: <code>string</code>): <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/tokenize.js">source</a>]<br /><br>Tokenizes the given .proto source and returns an object with useful utility functions.</p>
 </li>
-<li><p><strong>parse(source: <code>string</code>): <code>Object</code></strong> [<a href="./src/parse.js">source</a>]<br /><br>Parses the given .proto source and returns an object with the parsed contents.</p>
+<li><p><strong>parse(source: <code>string</code>): <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">source</a>]<br /><br>Parses the given .proto source and returns an object with the parsed contents.</p>
 <ul>
 <li><p><strong>package: <code>string|undefined</code></strong><br /><br>The package name, if declared.</p>
 </li>
@@ -1433,45 +1441,45 @@ var message = AwesomeMessage.decode(buffer);
 </li>
 </ul>
 <h3>Serialization</h3><ul>
-<li><p><strong>Writer</strong> [<a href="./src/writer.js">source</a>]<br /><br>Wire format writer.</p>
+<li><p><strong>Writer</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js">source</a>]<br /><br>Wire format writer.</p>
 </li>
-<li><p><strong>BufferWriter</strong> <em>extends <strong>Writer</strong></em> [<a href="./src/writer.js">source</a>]<br /><br>Wire format writer, node version.</p>
+<li><p><strong>BufferWriter</strong> <em>extends <strong>Writer</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js">source</a>]<br /><br>Wire format writer, node version.</p>
 </li>
-<li><p><strong>Reader</strong> [<a href="./src/reader.js">source</a>]<br /><br>Wire format reader.</p>
+<li><p><strong>Reader</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">source</a>]<br /><br>Wire format reader.</p>
 </li>
-<li><p><strong>BufferReader</strong> <em>extends <strong>Reader</strong></em> [<a href="./src/reader.js">source</a>]<br /><br>Wire format reader, node version.</p>
+<li><p><strong>BufferReader</strong> <em>extends <strong>Reader</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">source</a>]<br /><br>Wire format reader, node version.</p>
 </li>
 </ul>
 <h3>Reflection</h3><ul>
-<li><p><strong>ReflectionObject</strong> [<a href="./src/object.js">source</a>]<br /><br>Base class of all reflection objects.</p>
+<li><p><strong>ReflectionObject</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">source</a>]<br /><br>Base class of all reflection objects.</p>
 </li>
-<li><p><strong>Namespace</strong> <em>extends <strong>ReflectionObject</strong></em> [<a href="./src/namespace.js">source</a>]<br /><br>Base class of all reflection objects containing nested objects.</p>
+<li><p><strong>Namespace</strong> <em>extends <strong>ReflectionObject</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">source</a>]<br /><br>Base class of all reflection objects containing nested objects.</p>
 </li>
-<li><p><strong>Root</strong> <em>extends <strong>Namespace</strong></em> [<a href="./src/root.js">source</a>]<br /><br>Root namespace.</p>
+<li><p><strong>Root</strong> <em>extends <strong>Namespace</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">source</a>]<br /><br>Root namespace.</p>
 </li>
-<li><p><strong>Type</strong> <em>extends <strong>Namespace</strong></em> [<a href="./src/type.js">source</a>]<br /><br>Reflected message type.</p>
+<li><p><strong>Type</strong> <em>extends <strong>Namespace</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">source</a>]<br /><br>Reflected message type.</p>
 </li>
-<li><p><strong>Field</strong> <em>extends <strong>ReflectionObject</strong></em> [<a href="./src/field.js">source</a>]<br /><br>Reflected message field.</p>
+<li><p><strong>Field</strong> <em>extends <strong>ReflectionObject</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">source</a>]<br /><br>Reflected message field.</p>
 </li>
-<li><p><strong>MapField</strong> <em>extends <strong>Field</strong></em> [<a href="./src/mapfield.js">source</a>]<br /><br>Reflected message map field.</p>
+<li><p><strong>MapField</strong> <em>extends <strong>Field</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js">source</a>]<br /><br>Reflected message map field.</p>
 </li>
-<li><p><strong>Enum</strong> <em>extends <strong>ReflectionObject</strong></em> [<a href="./src/enum.js">source</a>]<br /><br>Reflected enum.</p>
+<li><p><strong>Enum</strong> <em>extends <strong>ReflectionObject</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/enum.js">source</a>]<br /><br>Reflected enum.</p>
 </li>
-<li><p><strong>Service</strong> <em>extends <strong>Namespace</strong></em> [<a href="./src/service.js">source</a>]<br /><br>Reflected service.</p>
+<li><p><strong>Service</strong> <em>extends <strong>Namespace</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">source</a>]<br /><br>Reflected service.</p>
 </li>
-<li><p><strong>Method</strong> <em>extends <strong>ReflectionObject</strong></em> [<a href="./src/method.js">source</a>]<br /><br>Reflected service method.</p>
+<li><p><strong>Method</strong> <em>extends <strong>ReflectionObject</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js">source</a>]<br /><br>Reflected service method.</p>
 </li>
 </ul>
 <h3>Runtime</h3><ul>
-<li><p><strong>inherits(clazz: <code>Function</code>, type: <code>Type</code>, [options: <code>Object.&lt;string,*&gt;</code>]): <code>Prototype</code></strong> [<a href="./src/inherits.js">source</a>]<br /><br>Inherits a custom class from the message prototype of the specified message type.</p>
+<li><p><strong>inherits(clazz: <code>Function</code>, type: <code>Type</code>, [options: <code>Object.&lt;string,*&gt;</code>]): <code>Prototype</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/inherits.js">source</a>]<br /><br>Inherits a custom class from the message prototype of the specified message type.</p>
 </li>
-<li><p><strong>Prototype</strong> [<a href="./src/prototype.js">source</a>]<br /><br>Runtime message prototype ready to be extended by custom classes or generated code.</p>
+<li><p><strong>Prototype</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/prototype.js">source</a>]<br /><br>Runtime message prototype ready to be extended by custom classes or generated code.</p>
 </li>
 </ul>
 <h3>Utility</h3><ul>
-<li><p><strong>util: <code>Object</code></strong> [<a href="./src/util.js">source</a>]<br /><br>Utility functions.</p>
+<li><p><strong>util: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">source</a>]<br /><br>Utility functions.</p>
 </li>
-<li><p><strong>types: <code>Object</code></strong> [<a href="./src/types.js">source</a>]<br /><br>Common type constants.</p>
+<li><p><strong>types: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js">source</a>]<br /><br>Common type constants.</p>
 </li>
 </ul>
 <h2>Documentation</h2><ul>
@@ -1486,7 +1494,7 @@ var message = AwesomeMessage.decode(buffer);
 </li>
 <li><p>If you'd like to use node's buffer API in the browser, you can use <a target="_blank" href="https://github.com/feross/buffer">feross/buffer</a><br>for example and assign its constructor, or that of any compatible library, to <code>protobuf.util.Buffer</code>.</p>
 </li>
-<li><p>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install<br><a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. Just as with buffers, you<br>can assign its constructor to <code>protobuf.util.Long</code>. All 64 bit numbers will then be returned as a<br><code>Long</code> instance. That's not a requirement, though (<a href="./src/support/long.js">see</a>).</p>
+<li><p>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install<br><a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. Just as with buffers, you<br>can assign its constructor to <code>protobuf.util.Long</code>. All 64 bit numbers will then be returned as a<br><code>Long</code> instance. That's not a requirement, though (<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/support/long.js">see</a>).</p>
 </li>
 </ul>
 <p><strong>License:</strong> <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, Version 2.0</a></p></article>

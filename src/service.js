@@ -58,7 +58,7 @@ ServicePrototype.resolveAll = function resolve() {
 /**
  * Adds a method to this service.
  * @param {Method} method Method to add
- * @returns {Service} this
+ * @returns {Service} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there are duplicate names
  */
@@ -75,7 +75,7 @@ ServicePrototype.add = function add(method) {
 /**
  * Removes a method from this service.
  * @param {Method} method Method to remove
- * @returns {Service} this
+ * @returns {Service} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If the method is not a member of this service
  */

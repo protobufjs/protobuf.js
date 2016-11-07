@@ -212,7 +212,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 
 /**
  * Resolves this objects type references.
- * @returns {ReflectionObject} this
+ * @returns {ReflectionObject} `this`
  */
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
@@ -226,7 +226,7 @@ ReflectionObjectPrototype.resolve = function resolve() {
 /**
  * Changes this object's visibility when exporting definitions.
  * @param {?boolean} visible `true` for public, `false` for private, `null` to inherit from parent
- * @returns {ReflectionObject} this
+ * @returns {ReflectionObject} `this`
  * @throws {TypeError} If arguments are invalid
  */
 ReflectionObjectPrototype.visibility = function visibility(visible) {
@@ -250,7 +250,7 @@ ReflectionObjectPrototype.getOption = function getOption(name) {
  * @param {string} name Option name
  * @param {*} value Option value
  * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
- * @returns {ReflectionObject} this
+ * @returns {ReflectionObject} `this`
  */
 ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) {
     if (!ifNotSet || !this.options || this.options[name] === undefined)
@@ -261,7 +261,7 @@ ReflectionObjectPrototype.setOption = function setOption(name, value, ifNotSet) 
 /**
  * Sets multiple options.
  * @param {Object.<string,*>} options Options to set
- * @returns {ReflectionObject} this
+ * @returns {ReflectionObject} `this`
  */
 ReflectionObjectPrototype.setOptions = function setOptions(options) {
     if (options)

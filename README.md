@@ -111,13 +111,13 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 ### Parser
 
-* **load(filename: `string|Array`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise`** [[source](./src/index.js)]<br />
+* **load(filename: `string|Array`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
   Loads one or multiple .proto files into the specified root or creates a new one when omitted.
 
-* **tokenize(source: `string`): `Object`** [[source](./src/tokenize.js)]<br />
+* **tokenize(source: `string`): `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/tokenize.js)]<br />
   Tokenizes the given .proto source and returns an object with useful utility functions.
 
-* **parse(source: `string`): `Object`** [[source](./src/parse.js)]<br />
+* **parse(source: `string`): `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js)]<br />
   Parses the given .proto source and returns an object with the parsed contents.
   
   * **package: `string|undefined`**<br />
@@ -140,61 +140,61 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 ### Serialization
 
-* **Writer** [[source](./src/writer.js)]<br />
+* **Writer** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js)]<br />
   Wire format writer.
 
-* **BufferWriter** _extends **Writer**_ [[source](./src/writer.js)]<br />
+* **BufferWriter** _extends **Writer**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js)]<br />
   Wire format writer, node version.
 
-* **Reader** [[source](./src/reader.js)]<br />
+* **Reader** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
   Wire format reader.
 
-* **BufferReader** _extends **Reader**_ [[source](./src/reader.js)]<br />
+* **BufferReader** _extends **Reader**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
   Wire format reader, node version.
 
 ### Reflection
 
-* **ReflectionObject** [[source](./src/object.js)]<br />
+* **ReflectionObject** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js)]<br />
   Base class of all reflection objects.
 
-* **Namespace** _extends **ReflectionObject**_ [[source](./src/namespace.js)]<br />
+* **Namespace** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js)]<br />
   Base class of all reflection objects containing nested objects.
 
-* **Root** _extends **Namespace**_ [[source](./src/root.js)]<br />
+* **Root** _extends **Namespace**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js)]<br />
   Root namespace.
 
-* **Type** _extends **Namespace**_ [[source](./src/type.js)]<br />
+* **Type** _extends **Namespace**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js)]<br />
   Reflected message type.
 
-* **Field** _extends **ReflectionObject**_ [[source](./src/field.js)]<br />
+* **Field** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js)]<br />
   Reflected message field.
 
-* **MapField** _extends **Field**_ [[source](./src/mapfield.js)]<br />
+* **MapField** _extends **Field**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js)]<br />
   Reflected message map field.
 
-* **Enum** _extends **ReflectionObject**_ [[source](./src/enum.js)]<br />
+* **Enum** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/enum.js)]<br />
   Reflected enum.
 
-* **Service** _extends **Namespace**_ [[source](./src/service.js)]<br />
+* **Service** _extends **Namespace**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js)]<br />
   Reflected service.
 
-* **Method** _extends **ReflectionObject**_ [[source](./src/method.js)]<br />
+* **Method** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js)]<br />
   Reflected service method.
 
 ### Runtime
 
-* **inherits(clazz: `Function`, type: `Type`, [options: `Object.<string,*>`]): `Prototype`** [[source](./src/inherits.js)]<br />
+* **inherits(clazz: `Function`, type: `Type`, [options: `Object.<string,*>`]): `Prototype`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/inherits.js)]<br />
   Inherits a custom class from the message prototype of the specified message type.
 
-* **Prototype** [[source](./src/prototype.js)]<br />
+* **Prototype** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/prototype.js)]<br />
   Runtime message prototype ready to be extended by custom classes or generated code.
 
 ### Utility
 
-* **util: `Object`** [[source](./src/util.js)]<br />
+* **util: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
   Utility functions.
 
-* **types: `Object`** [[source](./src/types.js)]<br />
+* **types: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js)]<br />
   Common type constants.
 
 Documentation
@@ -242,6 +242,6 @@ Compatibility
 * If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install
   [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with buffers, you
   can assign its constructor to `protobuf.util.Long`. All 64 bit numbers will then be returned as a
-  `Long` instance. That's not a requirement, though ([see](./src/support/long.js)).
+  `Long` instance. That's not a requirement, though ([see](https://github.com/dcodeIO/protobuf.js/blob/master/src/support/long.js)).
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)

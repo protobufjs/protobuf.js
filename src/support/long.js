@@ -37,7 +37,7 @@ long_._hi = 0;
  * Reads a varint from the specified reader and stores its low and high bits.
  * @param {Reader} reader Reader to read from
  * @param {function(Reader, number=)} indexOutOfRange Error message function
- * @returns {Object} this
+ * @returns {Object} `this`
  * @private
  */
 long_._read = function long_read(reader, indexOutOfRange) {
@@ -80,7 +80,7 @@ long_._read = function long_read(reader, indexOutOfRange) {
 /**
  * Reads fixed 64 bits from the specified reader and stores the low and high bits.
  * @param {Reader} reader Reader to read from
- * @returns {Object} this
+ * @returns {Object} `this`
  * @private
  */
 long_._readFixed = function long_readFixed(reader) {
@@ -191,7 +191,7 @@ long_._getHash = function long_getHash() {
 /**
  * Sets the low and high bits from a number, long-like object or hash string.
  * @param {number|{ low: number, high: number }|Long|string} value Value to set
- * @returns {Object} this
+ * @returns {Object} `this`
  * @private
  */
 long_._set = function long_set(value) {
@@ -235,7 +235,7 @@ function long_setHash(hash) {
  * Sets the low and high bits from a 8 characters long hash string.
  * @function
  * @param {string} Hashed value to set
- * @returns {Object} this
+ * @returns {Object} `this`
  * @private
  */
 long_._setHash = long_setHash;
@@ -244,7 +244,7 @@ long_._setHash = long_setHash;
 
 /**
  * Zig-zag encodes the low and high bits.
- * @returns {Object} this
+ * @returns {Object} `this`
  * @private
  */
 long_._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
@@ -256,7 +256,7 @@ long_._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
 
 /**
  * Zig-zag decodes the low and high bits.
- * @returns {Object} this
+ * @returns {Object} `this`
  * @private
  */
 long_._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)

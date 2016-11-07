@@ -278,7 +278,7 @@ TypePrototype.remove = function remove(object) {
  * Registers the specified constructor with this type.
  * @param {?Function} constructor Constructor to use for message instances or `null` to unregister
  *  the current constructor
- * @returns {Type} this
+ * @returns {Type} `this`
  */
 TypePrototype.register = function register(constructor) {
     if (constructor !== null && typeof constructor !== 'function')
