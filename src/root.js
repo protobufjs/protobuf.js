@@ -22,18 +22,23 @@ function Root(contextOptions, options) {
         contextOptions = {};
 
     /**
+     * References to common google types.
+     * @type {Object.<string, Type|Enum>}
+     */
+    this.common = {};
+
+    /**
+     * Array of yet unprocessed and thus pending extension fields.
+     * @type {Field[]}
+     */
+    this.pendingExtensions = [];
+
+    /**
      * Already loaded file names.
      * @type {string[]}
      * @private
      */
     this._loaded = []; // use addLoaded/isLoaded instead
-
-    /**
-     * Array of pending extension fields.
-     * @type {Field[]}
-     * @private
-     */
-    this.pendingExtensions = [];
 
     if (!contextOptions.noGoogleTypes)
         importGoogleTypes(this, false);
@@ -243,12 +248,13 @@ function importGoogleTypes(root, visible) {
         ]
     };
 
-    var google_protobuf = root.define([ "google", "protobuf" ], visible);
+    var googleNamespace = root.define([ "google", "protobuf" ], visible);
     Object.keys(types).forEach(function(protoName) {
         if (!root.addLoaded("google/protobuf/" + protoName + ".proto"))
             return;
         types[protoName].forEach(function(type) {
-            google_protobuf.add(type);
+            googleNamespace.add(type);
+            root.common[type.name] = type;
         });
     });
 }

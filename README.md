@@ -9,6 +9,23 @@ encodes plain objects and custom classes and works out of the box with .proto fi
 
 **This is the development branch of protobuf.js 6.** Are you looking for the [current stable branch](https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5)?
 
+Contents
+--------
+* [Examples](#examples)<br />
+  A few examples to get you started.
+
+* [Module Structure](#module-structure)<br />
+  A brief introduction to the structure of the exported module.
+
+* [Documentation](#documentation)<br />
+  A list of available documentation resources.
+
+* [Building](#building)<br />
+  How to build the library and its components yourself.
+
+* [Compatibility](#compatibility)<br />
+  A few notes on compatibility with browsers and optional libraries.
+
 Examples
 --------
 
@@ -105,8 +122,8 @@ var message = AwesomeMessage.decode(buffer);
 // ... do something with message
 ```
 
-Structure
----------
+Module Structure
+----------------
 The library exports a flat `protobuf` namespace with the following members, ordered by category:
 
 ### Parser
@@ -200,40 +217,38 @@ The library exports a flat `protobuf` namespace with the following members, orde
 Documentation
 -------------
 
-* See: [API Documentation](http://dcode.io/protobuf.js/)
-
-To build the documentation yourself, first install the development dependencies (if you haven't
-already) through running
-
-```
-$> npm install --dev
-```
-
-and then building the documentation to `docs/` through running
-
-```
-$> npm run docs
-```
+* [API Documentation](http://dcode.io/protobuf.js/)
 
 Building
 --------
 
-To build production and development versions with their respective source maps for the browser,
-first install the development dependencies (if you haven't already) through running
+To build the library or its components yourself, first install the development dependencies:
 
 ```
 $> npm install --dev
 ```
 
-and then build the development and production versions to `dist/` through running
+Building the development and production versions with their respective source maps to `dist/`:
 
 ```
 $> npm run build
 ```
 
+Building the documentation to `docs/`:
+
+```
+$> npm run docs
+```
+
+Building the TypeScript definition to `types/`:
+
+```
+$> npm run types
+```
+
 Compatibility
 -------------
-* This library requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest.
+* protobuf.js requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest.
   If typed arrays are not supported, it uses plain arrays instead.
 
 * If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer)
