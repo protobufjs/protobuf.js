@@ -18,7 +18,7 @@ var Type  = require("./type"),
  */
 function Prototype(properties, options) {
     if (properties) {
-        var fieldsOnly = options && options.fieldsOnly,
+        var fieldsOnly = Boolean(options && options.fieldsOnly),
             fields = this.constructor.$type.fields,
             keys = Object.keys(properties);
         for (var i = 0, k = keys.length, key; i < k; ++i)
@@ -34,9 +34,11 @@ function Prototype(properties, options) {
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
  * @param {Function} [options.long] Long conversion type.
- *  Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+ * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+ *  Defaults to the internal number/long-like representation.
  * @param {Function} [options.enum] Enum value conversion type.
  *  Only valid value is `String`.
+ *  Defaults to the values' numeric ids.
  * @returns {*} Converted value
  */
 function jsonConvert(field, value, options) {
@@ -164,8 +166,7 @@ Prototype.initialize = function init(prototype, type) {
          * @readonly
          */
         $type: {
-            value: type,
-            enumerable: false
+            value: type
         },
 
         /**
@@ -174,8 +175,18 @@ Prototype.initialize = function init(prototype, type) {
          * @type {Object.<string,*>}
          */
         $values: {
-            value: defaultValues,
-            enumerable: false
+            value: defaultValues
+        },
+
+        /**
+         * Field names present on the message. Useful as an alternative for Object.keys.
+         * @name ProtoBuf#$keys
+         * @type {string[]}
+         */
+        $keys: {
+            get: function() {
+                return Object.keys(this.$values);
+            }
         },
 
         /**
@@ -184,8 +195,7 @@ Prototype.initialize = function init(prototype, type) {
          * @type {Object.<string,string|undefined>}
          */
         $oneofs: {
-            value: {},
-            enumerable: false
+            value: {}
         }
     };
 
@@ -225,8 +235,7 @@ Prototype.initialize = function init(prototype, type) {
         defineProperties[oneof.name] = {
             get: function() {
                 return this.$oneofs[oneof.name];
-            },
-            enumerable: false
+            }
         };
     });
 

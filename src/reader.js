@@ -1,6 +1,5 @@
 module.exports = Reader;
 
-/** @alias BufferReader */
 Reader.BufferReader = BufferReader;
 
 var util    = require("./util"),

@@ -1,6 +1,5 @@
 module.exports = Writer;
 
-/** @alias BufferWriter */
 Writer.BufferWriter = BufferWriter;
 
 var util    = require("./util"),
@@ -17,6 +16,7 @@ Writer.BUFFER_SIZE = 1024;
 
 /**
  * Wire format writer using arrays.
+ * @exports Writer
  * @constructor
  */
 function Writer() {
@@ -106,12 +106,12 @@ WriterPrototype.tag = function write_tag(id, wireType) {
  */
 WriterPrototype.uint32 = function write_uint32(value) {
     value >>>= 0;
-    if (this.len - this.pos > 4) { // fast route
+    if (this.len - this.pos > 4) // fast route
         while (value > 127) {
             this.buf[this.pos++] = value & 127 | 128;
             value >>>= 7;
         }
-    } else {
+    else {
         while (value > 127) {
             if (this.pos >= this.len)
                 expand(this, 1);
@@ -372,6 +372,7 @@ var emptyBuffer = null;
 
 /**
  * Wire format writer using node buffers.
+ * @exports BufferWriter
  * @extends Writer
  * @constructor
  */

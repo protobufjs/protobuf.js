@@ -40,5 +40,22 @@ function inspect(object, indent) {
     return sb.join("\n");
 }
 
-var root = new Root();
-console.log(inspect(root.lookup("google.protobuf")));
+var root = new Root(),
+    gp = root.lookup("google.protobuf");
+// console.log(inspect(gp));
+var Any = gp.lookup("Any"),
+    any = Any.create();
+
+// Works (includes prototype chain)
+var keys = [];
+for (var i in any) keys.push(i);
+console.log(keys);
+
+// Doesn't work (own enumerables only)
+console.log(Object.keys(any));
+
+// What you'd actually have to do:
+console.log(Object.keys(any.$values));
+
+// What you can do instead:
+console.log(any.$keys);

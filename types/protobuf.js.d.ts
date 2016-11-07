@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Mon, 07 Nov 2016 02:44:17 UTC
+ * Generated Mon, 07 Nov 2016 03:27:43 UTC
  */
 declare module protobuf {
 
@@ -718,9 +718,11 @@ declare module protobuf {
        * @param {*} value Field value
        * @param {Object.<string,*>} [options] Conversion options
        * @param {Function} [options.long] Long conversion type.
-       *  Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+       * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+       *  Defaults to the internal number/long-like representation.
        * @param {Function} [options.enum] Enum value conversion type.
        *  Only valid value is `String`.
+       *  Defaults to the values' numeric ids.
        * @returns {*} Converted value
        */
       static jsonConvert(field: Field, value: any, options?: { [k: string]: any }): any;
@@ -780,9 +782,6 @@ declare module protobuf {
       $oneofs: { [k: string]: (string|undefined) };
    
    }
-   
-   /** @alias BufferReader */
-   var BufferReader: any;
    
    /**
     * Wire format reader using arrays.
@@ -941,6 +940,23 @@ declare module protobuf {
        * @returns {number[]} Finished buffer
        */
       finish(buffer?: number[]): number[];
+   
+   }
+   
+   /**
+    * Wire format reader using node buffers.
+    * @extends Reader
+    * @constructor
+    * @param {Buffer} buffer Buffer to read from
+    */
+   class BufferReader extends Reader {
+      /**
+       * Wire format reader using node buffers.
+       * @extends Reader
+       * @constructor
+       * @param {Buffer} buffer Buffer to read from
+       */
+      constructor(buffer: Buffer);
    
    }
    
@@ -1390,16 +1406,15 @@ declare module protobuf {
    
    }
    
-   /** @alias BufferWriter */
-   var BufferWriter: any;
-   
    /**
     * Wire format writer using arrays.
+    * @exports Writer
     * @constructor
     */
    class Writer {
       /**
        * Wire format writer using arrays.
+       * @exports Writer
        * @constructor
        */
       constructor();
@@ -1586,6 +1601,23 @@ declare module protobuf {
        * @returns {number[]} Finished buffer
        */
       finish(clearForkedStates?: boolean): number[];
+   
+   }
+   
+   /**
+    * Wire format writer using node buffers.
+    * @exports BufferWriter
+    * @extends Writer
+    * @constructor
+    */
+   class BufferWriter extends Writer {
+      /**
+       * Wire format writer using node buffers.
+       * @exports BufferWriter
+       * @extends Writer
+       * @constructor
+       */
+      constructor();
    
    }
    

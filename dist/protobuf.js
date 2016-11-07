@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Mon, 07 Nov 2016 02:44:18 UTC
+ * Compiled Mon, 07 Nov 2016 03:09:37 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1993,7 +1993,7 @@ var Type  = require("./type"),
  */
 function Prototype(properties, options) {
     if (properties) {
-        var fieldsOnly = options && options.fieldsOnly,
+        var fieldsOnly = Boolean(options && options.fieldsOnly),
             fields = this.constructor.$type.fields,
             keys = Object.keys(properties);
         for (var i = 0, k = keys.length, key; i < k; ++i)
@@ -2009,9 +2009,10 @@ function Prototype(properties, options) {
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
  * @param {Function} [options.long] Long conversion type.
- *  Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+ *  Valid values are `String` (requires a long library) and `Number` (throws without a long library
+ *  if unsafe). Defaults to the internal number/long-like representation.
  * @param {Function} [options.enum] Enum value conversion type.
- *  Only valid value is `String`.
+ *  Only valid value is `String`. Defaults to the numeric ids.
  * @returns {*} Converted value
  */
 function jsonConvert(field, value, options) {
@@ -2212,7 +2213,6 @@ Prototype.initialize = function init(prototype, type) {
 },{"./enum":2,"./type":20,"./types":21,"./util":22}],12:[function(require,module,exports){
 module.exports = Reader;
 
-/** @alias BufferReader */
 Reader.BufferReader = BufferReader;
 
 var util    = require("./util"),
@@ -3337,22 +3337,22 @@ long_._readFixed = function long_readFixed(reader) {
  * @private
  */
 long_._write = function long_write(writer, expand) {
-    var len = this._hi
-            ? this._hi < 8 ? 5
-            : this._hi < 1024 ? 6
-            : this._hi < 131072 ? 7
-            : this._hi < 16777216 ? 8
-            : this._hi < 2147483648 ? 9 : 10
-            : this._lo < 128 ? 1
-            : this._lo < 16384 ? 2
-            : this._lo < 2097152 ? 3
-            : this._lo < 268435456 ? 4 : 5;
-    if (writer.pos + len > writer.len)
-        expand(writer, len);
-    while (this._hi || this._lo > 127) {
-        writer.buf[writer.pos++] = this._lo & 127 | 128;
-        this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
-        this._hi >>>= 7;
+    if (writer.len - writer.pos > 9) // fast route
+        while (this._hi || this._lo > 127) {
+            writer.buf[writer.pos++] = this._lo & 127 | 128;
+            this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
+            this._hi >>>= 7;
+        }
+    else {
+        while (this._hi || this._lo > 127) {
+            if (writer.pos >= writer.len)
+                expand(writer, 1);
+            writer.buf[writer.pos++] = this._lo & 127 | 128;
+            this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
+            this._hi >>>= 7;
+        }
+        if (writer.pos >= writer.len)
+            expand(writer, 1);
     }
     writer.buf[writer.pos++] = this._lo;
     return writer;
@@ -4457,7 +4457,6 @@ util.fromHash = function fromHash(hash, unsigned) {
 },{"./support/long":17,"_process":undefined,"buffer":"buffer","fs":undefined,"long":"long"}],23:[function(require,module,exports){
 module.exports = Writer;
 
-/** @alias BufferWriter */
 Writer.BufferWriter = BufferWriter;
 
 var util    = require("./util"),
@@ -4474,6 +4473,7 @@ Writer.BUFFER_SIZE = 1024;
 
 /**
  * Wire format writer using arrays.
+ * @exports Writer
  * @constructor
  */
 function Writer() {
@@ -4563,12 +4563,12 @@ WriterPrototype.tag = function write_tag(id, wireType) {
  */
 WriterPrototype.uint32 = function write_uint32(value) {
     value >>>= 0;
-    if (this.len - this.pos > 4) { // fast route
+    if (this.len - this.pos > 4) // fast route
         while (value > 127) {
             this.buf[this.pos++] = value & 127 | 128;
             value >>>= 7;
         }
-    } else {
+    else {
         while (value > 127) {
             if (this.pos >= this.len)
                 expand(this, 1);
@@ -4829,6 +4829,7 @@ var emptyBuffer = null;
 
 /**
  * Wire format writer using node buffers.
+ * @exports BufferWriter
  * @extends Writer
  * @constructor
  */

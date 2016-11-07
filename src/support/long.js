@@ -105,22 +105,22 @@ long_._readFixed = function long_readFixed(reader) {
  * @private
  */
 long_._write = function long_write(writer, expand) {
-    var len = this._hi
-            ? this._hi < 8 ? 5
-            : this._hi < 1024 ? 6
-            : this._hi < 131072 ? 7
-            : this._hi < 16777216 ? 8
-            : this._hi < 2147483648 ? 9 : 10
-            : this._lo < 128 ? 1
-            : this._lo < 16384 ? 2
-            : this._lo < 2097152 ? 3
-            : this._lo < 268435456 ? 4 : 5;
-    if (writer.pos + len > writer.len)
-        expand(writer, len);
-    while (this._hi || this._lo > 127) {
-        writer.buf[writer.pos++] = this._lo & 127 | 128;
-        this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
-        this._hi >>>= 7;
+    if (writer.len - writer.pos > 9) // fast route
+        while (this._hi || this._lo > 127) {
+            writer.buf[writer.pos++] = this._lo & 127 | 128;
+            this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
+            this._hi >>>= 7;
+        }
+    else {
+        while (this._hi || this._lo > 127) {
+            if (writer.pos >= writer.len)
+                expand(writer, 1);
+            writer.buf[writer.pos++] = this._lo & 127 | 128;
+            this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
+            this._hi >>>= 7;
+        }
+        if (writer.pos >= writer.len)
+            expand(writer, 1);
     }
     writer.buf[writer.pos++] = this._lo;
     return writer;
