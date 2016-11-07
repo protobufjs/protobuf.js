@@ -1,7 +1,10 @@
 module.exports = Service;
 
-var Namespace = require("./namespace"),
-    Method    = require("./method"),
+var Namespace = require("./namespace");
+/** @alias Service.prototype */
+var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
+
+var Method    = require("./method"),
     util      = require("./util");
 
 /**
@@ -21,11 +24,6 @@ function Service(name, options) {
      */
     this.methods = {}; // exposed, marker
 }
-
-/**
- * @alias Service.prototype
- */
-var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
 
 /**
  * Tests if the specified JSON object describes a service.

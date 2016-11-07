@@ -1,5 +1,3 @@
-var util = require("./util");
-
 var protobuf = module.exports = {};
 
 /**
@@ -12,12 +10,11 @@ var protobuf = module.exports = {};
  * @throws {TypeError} If arguments are invalid
  */
 function load(filename, root, callback, ctx) {
-    if (util.isFunction(root)) {
+    if (typeof root === 'function') {
         ctx = callback;
         callback = root;
-        root = undefined;
-    }
-    if (!root)
+        root = new protobuf.Root();
+    } else if (!root)
         root = new protobuf.Root();
     return root.load(filename, callback, ctx) || protobuf;
 }
@@ -50,5 +47,5 @@ protobuf.Method           = require("./method");
 protobuf.Prototype        = require("./prototype");
 
 // Utility
-protobuf.util             = util;
+protobuf.util             = require("./util");
 protobuf.types            = require("./types");

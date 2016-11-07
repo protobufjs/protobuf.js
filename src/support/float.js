@@ -2,7 +2,7 @@
 // within browsers. It intentionally doesn't use typed arrays (i.e. Float32Array) so that the
 // library can fall back to plain arrays if typed arrays are not supported.
 
-var float_ = module.exports = {};
+var float_ = exports;
 
 var ieee754 = require("ieee754");
 /*

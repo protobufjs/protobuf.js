@@ -32,6 +32,20 @@ types.wireTypes = {
 };
 
 /**
+ * Basic long type wire types.
+ * @type {Object.<string,number>}
+ */
+types.longWireTypes = {
+
+    int64    : 0,
+    uint64   : 0,
+    sint64   : 0,
+    fixed64  : 1,
+    sfixed64 : 1
+
+};
+
+/**
  * Basic type defaults.
  * @type {Object.<string,*>}
  */

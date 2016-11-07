@@ -1,10 +1,13 @@
+module.exports = Reader;
+
+/** @alias BufferReader */
+Reader.BufferReader = BufferReader;
+
 var util    = require("./util"),
     long_   = require("./support/long"),
     string_ = require("./support/string"),
     float_  = require("./support/float"),
     array_  = require("./support/array");
-
-module.exports = Reader;
 
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
@@ -41,9 +44,7 @@ function Reader(buffer) {
     this.len = buffer.length;
 }
 
-/**
- * @alias Reader.prototype
- */
+/** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = array_._slice;
@@ -329,9 +330,7 @@ function BufferReader(buffer) {
     Reader.call(this, buffer);
 }
 
-/**
- * @alias BufferReader.prototype
- */
+/** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 
 BufferReaderPrototype.constructor = BufferReader;

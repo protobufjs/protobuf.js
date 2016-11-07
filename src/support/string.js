@@ -4,7 +4,7 @@
 
 // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
 
-var string_ = module.exports = {};
+var string_ = exports;
 
 /**
  * Encodes a string to UTF8 bytes.

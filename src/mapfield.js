@@ -1,7 +1,10 @@
 module.exports = MapField;
 
-var Field = require("./field"),
-    Enum  = require("./enum"),
+var Field = require("./field");
+/** @alias MapField.prototype */
+var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);
+
+var Enum  = require("./enum"),
     types = require("./types"),
     util  = require("./util");
 
@@ -37,11 +40,6 @@ function MapField(name, id, type, keyType, options) {
     // Overrides Field#map
     this.map = true;
 }
-
-/**
- * @alias MapField.prototype
- */
-var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);
 
 /**
  * Tests if the specified JSON object describes a map field.

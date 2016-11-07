@@ -1,7 +1,12 @@
 module.exports = Type; 
 
-var Namespace = require("./namespace"),
-    Enum      = require("./enum"),
+var Namespace = require("./namespace");
+/** @alias Namespace.prototype */
+var NamespacePrototype = Namespace.prototype;
+/** @alias Type.prototype */
+var TypePrototype = Namespace.extend(Type, [ "fields", "oneofs", "extensions", "reserved" ]);
+
+var Enum      = require("./enum"),
     OneOf     = require("./oneof"),
     Field     = require("./field"),
     Service   = require("./service"),
@@ -79,16 +84,6 @@ function Type(name, options) {
      */
     this._constructor = null;
 }
-
-/**
- * @alias Type.prototype
- */
-var TypePrototype = Namespace.extend(Type, [ "fields", "oneofs", "extensions", "reserved" ]);
-
-/**
- * @alias Namespace.prototype
- */
-var NamespacePrototype = Namespace.prototype;
 
 Object.defineProperties(TypePrototype, {
 
@@ -285,7 +280,7 @@ TypePrototype.remove = function remove(object) {
  * @returns {Type} this
  */
 TypePrototype.register = function register(constructor) {
-    if (constructor !== null && !util.isFunction(constructor))
+    if (constructor !== null && typeof constructor !== 'function')
         throw util._TypeError("constructor", "a function or null");
     this._constructor = constructor;
     return this;
@@ -299,7 +294,7 @@ TypePrototype.register = function register(constructor) {
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, constructor) {
-    if (util.isFunction(properties)) {
+    if (typeof properties === 'function') {
         constructor = properties;
         properties = undefined;
     } else if (properties /* already */ instanceof Prototype)

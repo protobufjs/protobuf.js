@@ -1,9 +1,12 @@
 module.exports = Field;
 
-var ReflectionObject = require("./object"),
-    Type      = require("./type"),
-    types     = require("./types"),
+var ReflectionObject = require("./object");
+/** @alias Field.prototype */
+var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "extend" ]);
+
+var Type      = require("./type"),
     Enum      = require("./enum"),
+    types     = require("./types"),
     util      = require("./util");
 
 /**
@@ -127,11 +130,6 @@ function Field(name, id, type, rule, extend, options) {
     this._packed = null;
 }
 
-/**
- * @alias Field.prototype
- */
-var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "extend" ]);
-
 Object.defineProperties(FieldPrototype, {
 
     /**
@@ -145,6 +143,18 @@ Object.defineProperties(FieldPrototype, {
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
+        }
+    },
+
+    /**
+     * Determines whether this field's type is a long type (64 bit).
+     * @name Field#long
+     * @type {boolean}
+     * @readonly
+     */
+    long : {
+        get: function() {
+            return types.longWireTypes[this.type] !== undefined;
         }
     }
 

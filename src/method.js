@@ -1,7 +1,9 @@
 module.exports = Method;
 
-var ReflectionObject = require("./object"),
-    util = require("./util");
+var ReflectionObject = require("./object");
+ReflectionObject.extend(Method, [ "type", "requestType", "requestStream", "responseType", "responseStream" ]);
+
+var util = require("./util");
 
 /**
  * Reflected service method.
@@ -68,8 +70,6 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
      */
     this.service = null;
 }
-
-ReflectionObject.extend(Method, [ "type", "requestType", "requestStream", "responseType", "responseStream" ]);
 
 /**
  * Tests if the specified JSON object describes a service method.

@@ -1,7 +1,7 @@
 // This module provides unified access to Uint8Array methods. If Uint8Array isn't supported, it
 // falls back to plain arrays.
 
-var array_ = module.exports = {};
+var array_ = exports;
 
 var isTypedArray = typeof Uint8Array !== 'undefined',
     ArrayImpl = isTypedArray ? Uint8Array : Array;

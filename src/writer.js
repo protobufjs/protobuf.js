@@ -1,10 +1,13 @@
+module.exports = Writer;
+
+/** @alias BufferWriter */
+Writer.BufferWriter = BufferWriter;
+
 var util    = require("./util"),
     long_   = require("./support/long"),
     string_ = require("./support/string"),
     float_  = require("./support/float"),
     array_  = require("./support/array");
-
-module.exports = Writer;
 
 /**
  * Default buffer size.
@@ -55,9 +58,7 @@ function Writer() {
     this._stack = [];
 }
 
-/**
- * @alias Writer.prototype
- */
+/** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
 
 /**
@@ -380,14 +381,10 @@ function BufferWriter() {
     Writer.call(this);
 }
 
-/**
- * @alias BufferWriter.prototype
- */
+/** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 
 BufferWriterPrototype.constructor = BufferWriter;
-
-Writer.BufferWriter = BufferWriter;
 
 /**
  * Allocates a chunk of memory using node buffers.

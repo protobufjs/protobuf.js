@@ -5,7 +5,6 @@ var Namespace = require("./namespace"),
     Field     = require("./field"),
     OneOf     = require("./oneof"),
     Enum      = require("./enum"),
-    parse     = require("./parse"),
     util      = require("./util");
 
 /**
@@ -40,9 +39,7 @@ function Root(contextOptions, options) {
         importGoogleTypes(this, false);
 }
 
-/**
- * @alias Root.prototype
- */
+/** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
 
 /**
@@ -270,8 +267,6 @@ RootPrototype.load = function load(filename, callback, ctx) {
     var self = this;
     if (!callback)
         return util.asPromise(load, filename);
-    if (!util.isFunction(parse))
-        parse = require("./parse");
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
@@ -285,7 +280,7 @@ RootPrototype.load = function load(filename, callback, ctx) {
     // Processes a single file
     function process(origin, source, visible) {
         try {
-            var parsed = parse(source, self, visible);
+            var parsed = require("./parse")(source, self, visible);
             if (parsed.publicImports)
                 parsed.publicImports.forEach(function(file) {
                     fetch(util.resolvePath(origin, file), visible, false);

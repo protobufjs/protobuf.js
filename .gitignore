@@ -1,5 +1,4 @@
 *.log
 npm-debug.*
 node_modules/
-dist/
 types/types.d.ts

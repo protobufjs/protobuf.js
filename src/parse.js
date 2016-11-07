@@ -1,4 +1,4 @@
-/* eslint-disable default-case, callback-return */
+module.exports = parse;
 
 var tokenize = require("./tokenize"),
     Root     = require("./root"),
@@ -9,10 +9,7 @@ var tokenize = require("./tokenize"),
     Enum     = require("./enum"),
     Service  = require("./service"),
     Method   = require("./method"),
-    types    = require("./types"),
-    util     = require("./util");
-
-module.exports = parse;
+    types    = require("./types");
 
 var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
@@ -30,7 +27,8 @@ function lower(token) {
  * @returns {Object} Parsed contents
  */
 function parse(source, root, visible) {
-    if (util.isBoolean(root)) {
+    /* eslint-disable default-case, callback-return */
+    if (typeof root === 'boolean') {
         visible = root;
         root = undefined;
     }

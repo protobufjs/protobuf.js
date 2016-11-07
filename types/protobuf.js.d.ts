@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Sun, 06 Nov 2016 23:26:09 UTC
+ * Generated Mon, 07 Nov 2016 02:44:17 UTC
  */
 declare module protobuf {
 
@@ -194,6 +194,14 @@ declare module protobuf {
        * @readonly
        */
       packed: boolean;
+   
+      /**
+       * Determines whether this field's type is a long type (64 bit).
+       * @name Field#long
+       * @type {boolean}
+       * @readonly
+       */
+      long: boolean;
    
       /**
        * Tests if the specified JSON object describes a field.
@@ -692,13 +700,40 @@ declare module protobuf {
    function parse(source: string, root?: Root, visible?: boolean): Object;
    
    /**
-    * Runtime message prototype ready to be extended by custom classes or generated code.
+    * Runtime message prototype ready to be extended by custom classes or generated code. Calling the
+    * prototype constructor from within your own classes is optional, but you can do so if you just
+    * want to initialize your instance's properties.
     * @constructor
-    * @param {Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
+    * @param {Object.<string,*>} [properties] Properties to set
+    * @param {Object.<string,*>} [options] Initialization options
+    * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
     * @abstract
     * @see {@link Type#create}
     */
    abstract class Prototype {
+      /**
+       * Converts a field value to JSON using the specified options.
+       * @memberof Prototype
+       * @param {Field} field Reflected field
+       * @param {*} value Field value
+       * @param {Object.<string,*>} [options] Conversion options
+       * @param {Function} [options.long] Long conversion type.
+       *  Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+       * @param {Function} [options.enum] Enum value conversion type.
+       *  Only valid value is `String`.
+       * @returns {*} Converted value
+       */
+      static jsonConvert(field: Field, value: any, options?: { [k: string]: any }): any;
+   
+      /**
+       * Converts a runtime message to a JSON object.
+       * @param {Object.<string,*>} [options] Conversion options
+       * @returns {Object.<string,*>} JSON object
+       * @this Prototype
+       * @virtual
+       */
+      static toJSON(options?: { [k: string]: any }): { [k: string]: any };
+   
       /**
        * Makes the specified constructor extend the runtime message prototype.
        * @param {function(new:Message)} constructor Constructor to extend
@@ -711,23 +746,27 @@ declare module protobuf {
       static extend(constructor: (() => any), type: Type, options?: { [k: string]: any }): Object;
    
       /**
-       * Initializes the specified prototype with the required references and getters/setters for the
-       * reflected type's fields.
+       * Initializes the specified prototype with getters and setters corresponding to the reflected
+       * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
        * @param {Prototype} prototype Prototype to initialize
        * @param {Type} type Reflected message type
        * @returns {Prototype} prototype
+       * @see {@link Prototype#$type}
+       * @see {@link Prototype#$valuees}
+       * @see {@link Prototype#$oneofs}
        */
-      static init(prototype: Prototype, type: Type): Prototype;
+      static initialize(prototype: Prototype, type: Type): Prototype;
    
       /**
-       * Reflected type.
+       * Reference to the reflected type.
        * @name Prototype#$type
        * @type {Type}
+       * @readonly
        */
       $type: Type;
    
       /**
-       * Field values.
+       * Field values present on the message.
        * @name Prototype#$values
        * @type {Object.<string,*>}
        */
@@ -736,11 +775,14 @@ declare module protobuf {
       /**
        * Field names of the respective fields set for each oneof.
        * @name Prototype#$oneofs
-       * @type {Object.<string,string>}
+       * @type {Object.<string,string|undefined>}
        */
-      $oneofs: { [k: string]: string };
+      $oneofs: { [k: string]: (string|undefined) };
    
    }
+   
+   /** @alias BufferReader */
+   var BufferReader: any;
    
    /**
     * Wire format reader using arrays.
@@ -899,23 +941,6 @@ declare module protobuf {
        * @returns {number[]} Finished buffer
        */
       finish(buffer?: number[]): number[];
-   
-   }
-   
-   /**
-    * Wire format reader using node buffers.
-    * @extends Reader
-    * @constructor
-    * @param {Buffer} buffer Buffer to read from
-    */
-   class BufferReader extends Reader {
-      /**
-       * Wire format reader using node buffers.
-       * @extends Reader
-       * @constructor
-       * @param {Buffer} buffer Buffer to read from
-       */
-      constructor(buffer: Buffer);
    
    }
    
@@ -1209,6 +1234,12 @@ declare module protobuf {
       var wireTypes: { [k: string]: number };
    
       /**
+       * Basic long type wire types.
+       * @type {Object.<string,number>}
+       */
+      var longWireTypes: { [k: string]: number };
+   
+      /**
        * Basic type defaults.
        * @type {Object.<string,*>}
        */
@@ -1277,34 +1308,12 @@ declare module protobuf {
       function isArray(value: any): boolean;
    
       /**
-       * Tests if the specified value is a function.
-       * @param {*} value Value to test
-       * @returns {boolean} `true` if the value is a function
-       */
-      function isFunction(value: any): boolean;
-   
-      /**
-       * Tests if the specified value is a number.
-       * @memberof util
-       * @param {*} value Value to test
-       * @returns {boolean} `true` if the value is a number
-       */
-      function isNumber(value: any): boolean;
-   
-      /**
        * Tests if the specified value is an integer.
        * @function
        * @param {*} value Value to test
        * @returns {boolean} `true` if the value is an integer
        */
       function isInteger(value: any): boolean;
-   
-      /**
-       * Tests if the specified value is a boolean.
-       * @param {*} value Value to test
-       * @returns {boolean} `true` if the value is a boolean
-       */
-      function isBoolean(value: any): boolean;
    
       /**
        * Converts an object's values to an array.
@@ -1380,6 +1389,9 @@ declare module protobuf {
       function fromHash(hash: string, unsigned?: boolean): (number|Object);
    
    }
+   
+   /** @alias BufferWriter */
+   var BufferWriter: any;
    
    /**
     * Wire format writer using arrays.
@@ -1574,21 +1586,6 @@ declare module protobuf {
        * @returns {number[]} Finished buffer
        */
       finish(clearForkedStates?: boolean): number[];
-   
-   }
-   
-   /**
-    * Wire format writer using node buffers.
-    * @extends Writer
-    * @constructor
-    */
-   class BufferWriter extends Writer {
-      /**
-       * Wire format writer using node buffers.
-       * @extends Writer
-       * @constructor
-       */
-      constructor();
    
    }
    

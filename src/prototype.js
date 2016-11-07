@@ -1,7 +1,9 @@
 module.exports = Prototype;
 
-var util = require("./util"),
-    Type = require("./type");
+var Type  = require("./type"),
+    Enum  = require("./enum"),
+    types = require("./types"),
+    util  = require("./util");
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code. Calling the
@@ -26,6 +28,60 @@ function Prototype(properties, options) {
 }
 
 /**
+ * Converts a field value to JSON using the specified options.
+ * @memberof Prototype
+ * @param {Field} field Reflected field
+ * @param {*} value Field value
+ * @param {Object.<string,*>} [options] Conversion options
+ * @param {Function} [options.long] Long conversion type.
+ *  Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+ * @param {Function} [options.enum] Enum value conversion type.
+ *  Only valid value is `String`.
+ * @returns {*} Converted value
+ */
+function jsonConvert(field, value, options) {
+    if (!field)
+        return undefined;
+    if (field.repeated) {
+        if (!value)
+            return [];
+        return value.map(function(val) {
+            return jsonConvert(field, val, options);
+        });
+    }
+    if (options)
+        if (field.resolvedType instanceof Enum && options.enum === String)
+            return field.resolvedType.valuesById[value];
+        else if (types.longWireTypes[field.type] !== undefined && options.long)
+            return options.long === Number
+                ? typeof value === 'number'
+                ? value
+                : util.Long.fromValue(value).toNumber()
+                : util.Long.fromValue(value, field.type.charAt(0) === 'u').toString();
+    return value;
+}
+
+Prototype.jsonConvert = jsonConvert;
+
+/**
+ * Converts a runtime message to a JSON object.
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Object.<string,*>} JSON object
+ * @this Prototype
+ * @virtual
+ */
+Prototype.toJSON = function toJSON(options) {
+    var values = this.$values;
+    if (!options)
+        return values;
+    var json = {},
+        keys = Object.keys(values);
+    for (var i = 0, k = keys.length, key; i < k; ++i)
+        json[key = keys[i]] = jsonConvert(this.constructor.$type.fields[key], values[key], options);
+    return json;
+};
+
+/**
  * Makes the specified constructor extend the runtime message prototype.
  * @param {function(new:Message)} constructor Constructor to extend
  * @param {Type} type Reflected message type
@@ -35,7 +91,7 @@ function Prototype(properties, options) {
  * @returns {Object} Prototype
  */
 Prototype.extend = function extend(constructor, type, options) {
-    if (!util.isFunction(constructor))
+    if (typeof constructor !== 'function')
         throw util._TypeError("constructor", "a function");
     if (!(type instanceof Type))
         throw util._TypeError("type", "a Type");

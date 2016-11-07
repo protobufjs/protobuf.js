@@ -1,7 +1,6 @@
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
-ReflectionObject.exposeJSON = exposeJSON;
 
 var Root = require("./root"),
     util = require("./util");
@@ -62,9 +61,7 @@ function ReflectionObject(name, options) {
     this._visible = null;
 }
 
-/**
- * @alias ReflectionObject.prototype
- */
+/** @alias ReflectionObject.prototype */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
 exposeJSON(ReflectionObjectPrototype, [ "options" ]);
@@ -120,7 +117,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
             return true; // visible by default
         },
         set: function(value) {
-            if (value !== null && !util.isBoolean(value))
+            if (value !== null && typeof value !== 'boolean')
                 throw util._TypeError("value", "a boolean or null");
             this._visible = value;
         }
@@ -170,6 +167,8 @@ function exposeJSON(prototype, propertyNames) {
     Object.defineProperties(prototype, descriptors);
     return prototype;
 }
+
+ReflectionObject.exposeJSON = exposeJSON;
 
 /**
  * Converts this reflection object to its JSON representation.

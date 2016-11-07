@@ -1,7 +1,10 @@
 module.exports = OneOf;
 
-var ReflectionObject = require("./object"),
-    Field = require("./field"),
+var ReflectionObject = require("./object");
+/** @alias OneOf.prototype */
+var OneOfPrototype = ReflectionObject.extend(OneOf, [ "oneof" ]);
+
+var Field = require("./field"),
     util  = require("./util");
 
 /**
@@ -34,11 +37,6 @@ function OneOf(name, fieldNames, options) {
      */
     this._fields = [];
 }
-
-/**
- * @alias OneOf.prototype
- */
-var OneOfPrototype = ReflectionObject.extend(OneOf, [ "oneof" ]);
 
 /**
  * Tests if the specified JSON object describes a oneof.

@@ -1,7 +1,10 @@
 module.exports = Enum;
 
-var ReflectionObject = require("./object"),
-    util = require("./util");
+var ReflectionObject = require("./object");
+/** @alias Enum.prototype */
+var EnumPrototype = ReflectionObject.extend(Enum, [ "values" ]);
+
+var util = require("./util");
 
 /**
  * Reflected enum.
@@ -27,11 +30,6 @@ function Enum(name, values, options) {
      */
     this._valuesById = null;
 }
-
-/**
- * @alias Enum.prototype
- */
-var EnumPrototype = ReflectionObject.extend(Enum, [ "values" ]);
 
 Object.defineProperties(EnumPrototype, {
 

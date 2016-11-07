@@ -1,10 +1,7 @@
 module.exports = Namespace;
 
 var ReflectionObject = require("./object");
-
-/**
- * @alias Namespace.prototype
- */
+/** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
 
 var Enum    = require("./enum"),

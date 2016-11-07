@@ -59,43 +59,13 @@ util.isObject = function isObject(value) {
 util.isArray = Array.isArray;
 
 /**
- * Tests if the specified value is a function.
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is a function
- */
-util.isFunction = function isFunction(value) {
-    return typeof value === 'function';
-};
-
-/**
- * Tests if the specified value is a number.
- * @memberof util
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is a number
- */
-function isNumber(value) {
-    return typeof value === 'number';
-}
-
-util.isNumber = isNumber;
-
-/**
  * Tests if the specified value is an integer.
  * @function
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is an integer
  */
 util.isInteger = Number.isInteger || function isInteger(value) {
-    return isNumber(value) && isFinite(value) && Math.floor(value) === value;
-};
-
-/**
- * Tests if the specified value is a boolean.
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is a boolean
- */
-util.isBoolean = function isBoolean(value) {
-    return typeof value === 'boolean';
+    return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 };
 
 /**
