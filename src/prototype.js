@@ -12,6 +12,8 @@ module.exports = Prototype;
  * @param {Object.<string,*>} [options] Initialization options
  * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
  * @abstract
+ * @see {@link inherits}
+ * @see {@link Class}
  */
 function Prototype(properties, options) {
     if (properties) {

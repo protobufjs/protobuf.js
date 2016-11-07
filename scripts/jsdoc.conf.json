@@ -19,7 +19,7 @@
         "cleverLinks"   : false,
         "monospaceLinks": false,
         "default"       : {
-            "outputSourceFiles" : true
+            "outputSourceFiles" : false
         },
         "applicationName": "protobuf.js",
         "disqus": "",

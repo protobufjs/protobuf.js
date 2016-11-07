@@ -142,7 +142,7 @@ Object.defineProperties(TypePrototype, {
      */
     prototype: {
         get: function() {
-            return this._prototype || (this._prototype = protobuf.init(new Prototype(), this));
+            return this._prototype || (this._prototype = protobuf.initialize(new Prototype(), this));
         }
     }
 });

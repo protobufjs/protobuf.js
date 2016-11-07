@@ -24,15 +24,15 @@ function load(filename, root, callback, ctx) {
 protobuf.load = load;
 
 /**
- * Extends a custom class from the internal message prototype.
- * @param {Function} clazz Extending class
- * @param {Type} type Reflected message type
+ * Makes a custom class inherit from the message prototype of the specified message type.
+ * @param {Function} clazz Inheriting class
+ * @param {Type} type Inherited message type
  * @param {Object.<string,*>} [options] Extension options
  * @param {boolean} [options.noStatics=false] Skips adding the default static methods on top of the constructor
  * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
  * @returns {Prototype} Created prototype
  */
-function extend(clazz, type, options) {
+function inherits(clazz, type, options) {
     if (typeof clazz !== 'function')
         throw util._TypeError("clazz", "a function");
     if (!(type instanceof protobuf.Type))
@@ -47,7 +47,7 @@ function extend(clazz, type, options) {
      * @extends Prototype
      * @constructor
      * @param {Object.<string,*>} [properties] Properties to set on the message
-     * @see {@link extend}
+     * @see {@link inherits}
      * @see {@link Prototype}
      */
     var defineProperties = {
@@ -56,6 +56,7 @@ function extend(clazz, type, options) {
          * Reference to the reflected type.
          * @name Class.$type
          * @type {Type}
+         * @readonly
          */
         $type: {
             value: type
@@ -65,6 +66,7 @@ function extend(clazz, type, options) {
          * Field names present on the message. Useful as an alternative to `Object.keys`.
          * @name Class.$keys
          * @type {string[]}
+         * @readonly
          */
         $keys: {
             value: Object.keys(type.fields)
@@ -140,7 +142,7 @@ function extend(clazz, type, options) {
     return prototype;
 }
 
-protobuf.extend = extend;
+protobuf.inherits = inherits;
 
 /**
  * Initializes the specified prototype with getters and setters corresponding to the reflected
@@ -148,11 +150,8 @@ protobuf.extend = extend;
  * @param {Prototype} prototype Prototype to initialize
  * @param {Type} type Reflected message type
  * @returns {Prototype} The specified prototype
- * @see {@link Prototype#$type}
- * @see {@link Prototype#$values}
- * @see {@link Prototype#$oneofs}
  */
-function init(prototype, type) {
+function initialize(prototype, type) {
 
     var defaultValues = {};
     
@@ -170,8 +169,9 @@ function init(prototype, type) {
 
         /**
          * Field names present on the message. Useful as an alternative to `Object.keys`.
-         * @name Class.$keys
+         * @name Prototype#$keys
          * @type {string[]}
+         * @readonly
          */
         $keys: {
             value: Object.keys(type.fields)
@@ -181,6 +181,7 @@ function init(prototype, type) {
          * Field values present on the message.
          * @name Prototype#$values
          * @type {Object.<string,*>}
+         * @readonly
          */
         $values: {
             value: defaultValues
@@ -190,6 +191,7 @@ function init(prototype, type) {
          * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
          * @name Prototype#$oneofs
          * @type {Object.<string,string|undefined>}
+         * @readonly
          */
         $oneofs: {
             value: {}
@@ -243,7 +245,7 @@ function init(prototype, type) {
     return prototype;
 }
 
-protobuf.init = init;
+protobuf.initialize = initialize;
 
 // Parser
 

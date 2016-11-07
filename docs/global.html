@@ -26,7 +26,7 @@
     
     
     <script>
-    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":true},"applicationName":"protobuf.js","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"","description":"","keyword":""},"linenums":true};
+    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":false},"applicationName":"protobuf.js","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"","description":"","keyword":""},"linenums":true};
     </script>
     
 
@@ -290,9 +290,9 @@
             
                 <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
             
-                <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
-            
                 <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
+            
+                <li data-name="Class#$keys"><a href="Class.html#$keys">$keys</a></li>
             
                 <li data-name="Class#$oneofs"><a href="Class.html#$oneofs">$oneofs</a></li>
             
@@ -820,6 +820,8 @@
             <ul class="members itemMembers">
             
             <span class="subtitle">Members</span>
+            
+                <li data-name="Prototype#$keys"><a href="Prototype.html#$keys">$keys</a></li>
             
                 <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
             
@@ -1390,14 +1392,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="extend">
+        <h4 class="name" id="inherits">
             
-            extend<span class="signature">(clazz, type, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
+            inherits<span class="signature">(clazz, type, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line35">line 35</a>
+            index.js, line 35
         </div>
         
     </div>
@@ -1408,7 +1410,7 @@
     
     
     <div class="description">
-        <p>Extends a custom class from the internal message prototype.</p>
+        <p>Makes a custom class inherit from the message prototype of the specified message type.</p>
     </div>
     
 
@@ -1460,7 +1462,7 @@
                         
                     
                 
-                <p>Extending class</p></td>
+                <p>Inheriting class</p></td>
         </tr>
 	
 	
@@ -1488,7 +1490,7 @@
                         
                     
                 
-                <p>Reflected message type</p></td>
+                <p>Inherited message type</p></td>
         </tr>
 	
 	
@@ -1694,14 +1696,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="init">
+        <h4 class="name" id="initialize">
             
-            init<span class="signature">(prototype, type)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
+            initialize<span class="signature">(prototype, type)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line155">line 155</a>
+            index.js, line 154
         </div>
         
     </div>
@@ -1811,17 +1813,6 @@
     
     
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="Prototype.html#$type">Prototype#$type</a></li>
-        
-            <li><a href="Prototype.html#$values">Prototype#$values</a></li>
-        
-            <li><a href="Prototype.html#$oneofs">Prototype#$oneofs</a></li>
-        </ul>
-    </dd>
-    
     
     
 </dl>
@@ -1880,7 +1871,7 @@
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line14">line 14</a>
+            index.js, line 14
         </div>
         
     </div>
@@ -2153,7 +2144,7 @@
     
         
         <div class="tag-source">
-            <a href="parse.js.html">parse.js</a>, <a href="parse.js.html#line29">line 29</a>
+            parse.js, line 29
         </div>
         
     </div>
@@ -2379,7 +2370,7 @@
     
         
         <div class="tag-source">
-            <a href="tokenize.js.html">tokenize.js</a>, <a href="tokenize.js.html#line14">line 14</a>
+            tokenize.js, line 14
         </div>
         
     </div>
@@ -2528,10 +2519,6 @@
 
 
         
-
-        <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 07:02:15 GMT+0100 (Mitteleuropäische Zeit)
-        </footer>
     </div>
 </div>
 <script>prettyPrint();</script>

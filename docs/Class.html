@@ -26,7 +26,7 @@
     
     
     <script>
-    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":true},"applicationName":"protobuf.js","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"","description":"","keyword":""},"linenums":true};
+    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":false},"applicationName":"protobuf.js","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"","description":"","keyword":""},"linenums":true};
     </script>
     
 
@@ -290,9 +290,9 @@
             
                 <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
             
-                <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
-            
                 <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
+            
+                <li data-name="Class#$keys"><a href="Class.html#$keys">$keys</a></li>
             
                 <li data-name="Class#$oneofs"><a href="Class.html#$oneofs">$oneofs</a></li>
             
@@ -820,6 +820,8 @@
             <ul class="members itemMembers">
             
             <span class="subtitle">Members</span>
+            
+                <li data-name="Prototype#$keys"><a href="Prototype.html#$keys">$keys</a></li>
             
                 <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
             
@@ -1349,7 +1351,7 @@
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line43">line 43</a>
+            index.js, line 43
         </div>
         
     </div>
@@ -1446,7 +1448,7 @@
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="global.html#extend">extend</a></li>
+            <li><a href="global.html#inherits">inherits</a></li>
         
             <li><a href="Prototype.html">Prototype</a></li>
         </ul>
@@ -1496,7 +1498,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".$keys"><span class="type-signature static">static</span>Class.$keys<span class="type-signature type array.<string>">Array.&lt;string></span> </h4>
+        <h4 class="name" id=".$keys"><span class="type-signature static">static,readonly</span>Class.$keys<span class="type-signature type array.<string>">Array.&lt;string></span> </h4>
     </div>
     
     
@@ -1541,52 +1543,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".$keys"><span class="type-signature static">static</span>Class.$keys<span class="type-signature type array.<string>">Array.&lt;string></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Field names present on the message. Useful as an alternative to <code>Object.keys</code>.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".$type"><span class="type-signature static">static</span>Class.$type<span class="type-signature type type"><a href="Type.html">Type</a></span> </h4>
+        <h4 class="name" id=".$type"><span class="type-signature static">static,readonly</span>Class.$type<span class="type-signature type type"><a href="Type.html">Type</a></span> </h4>
     </div>
     
     
@@ -1631,7 +1588,52 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="$oneofs">$oneofs<span class="type-signature type object.<string, (string|undefined)>">Object.&lt;string, (string|undefined)></span> </h4>
+        <h4 class="name" id="$keys"><span class="type-signature ">readonly</span>$keys<span class="type-signature type array.<string>">Array.&lt;string></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Field names present on the message. Useful as an alternative to <code>Object.keys</code>.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="$oneofs"><span class="type-signature ">readonly</span>$oneofs<span class="type-signature type object.<string, (string|undefined)>">Object.&lt;string, (string|undefined)></span> </h4>
     </div>
     
     
@@ -1721,7 +1723,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="$values">$values<span class="type-signature type object.<string, *>">Object.&lt;string, *></span> </h4>
+        <h4 class="name" id="$values"><span class="type-signature ">readonly</span>$values<span class="type-signature type object.<string, *>">Object.&lt;string, *></span> </h4>
     </div>
     
     
@@ -1779,7 +1781,7 @@
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line103">line 103</a>
+            index.js, line 105
         </div>
         
     </div>
@@ -1924,7 +1926,7 @@
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line116">line 116</a>
+            index.js, line 118
         </div>
         
     </div>
@@ -2069,7 +2071,7 @@
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line77">line 77</a>
+            index.js, line 79
         </div>
         
     </div>
@@ -2217,7 +2219,7 @@
     
         
         <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line90">line 90</a>
+            index.js, line 92
         </div>
         
     </div>
@@ -2369,10 +2371,6 @@
 
 
         
-
-        <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 07:02:15 GMT+0100 (Mitteleuropäische Zeit)
-        </footer>
     </div>
 </div>
 <script>prettyPrint();</script>

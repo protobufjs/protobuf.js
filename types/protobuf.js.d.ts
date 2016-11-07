@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Mon, 07 Nov 2016 06:02:21 UTC
+ * Generated Mon, 07 Nov 2016 06:16:41 UTC
  */
 declare module protobuf {
 
@@ -264,15 +264,15 @@ declare module protobuf {
    function load(filename: (string|string[]), root?: Root, callback?: (() => any), ctx?: Object): (Promise<Root>|Object);
    
    /**
-    * Extends a custom class from the internal message prototype.
-    * @param {Function} clazz Extending class
-    * @param {Type} type Reflected message type
+    * Makes a custom class inherit from the message prototype of the specified message type.
+    * @param {Function} clazz Inheriting class
+    * @param {Type} type Inherited message type
     * @param {Object.<string,*>} [options] Extension options
     * @param {boolean} [options.noStatics=false] Skips adding the default static methods on top of the constructor
     * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
     * @returns {Prototype} Created prototype
     */
-   function extend(clazz: (() => any), type: Type, options?: { [k: string]: any }): Prototype;
+   function inherits(clazz: (() => any), type: Type, options?: { [k: string]: any }): Prototype;
    
    /**
     * This is not an actual type but stands as a reference for any constructor of a custom message class
@@ -281,7 +281,7 @@ declare module protobuf {
     * @extends Prototype
     * @constructor
     * @param {Object.<string,*>} [properties] Properties to set on the message
-    * @see {@link extend}
+    * @see {@link inherits}
     * @see {@link Prototype}
     */
    class Class extends Prototype {
@@ -292,17 +292,10 @@ declare module protobuf {
        * @extends Prototype
        * @constructor
        * @param {Object.<string,*>} [properties] Properties to set on the message
-       * @see {@link extend}
+       * @see {@link inherits}
        * @see {@link Prototype}
        */
       constructor(properties?: { [k: string]: any });
-   
-      /**
-       * Field names present on the message. Useful as an alternative to `Object.keys`.
-       * @name Class.$keys
-       * @type {string[]}
-       */
-      static $keys: string[];
    
       /**
        * Encodes a message of this type to a buffer.
@@ -348,11 +341,8 @@ declare module protobuf {
     * @param {Prototype} prototype Prototype to initialize
     * @param {Type} type Reflected message type
     * @returns {Prototype} The specified prototype
-    * @see {@link Prototype#$type}
-    * @see {@link Prototype#$values}
-    * @see {@link Prototype#$oneofs}
     */
-   function init(prototype: Prototype, type: Type): Prototype;
+   function initialize(prototype: Prototype, type: Type): Prototype;
    
    /**
     * Reflected message map field.
@@ -816,6 +806,8 @@ declare module protobuf {
     * @param {Object.<string,*>} [options] Initialization options
     * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
     * @abstract
+    * @see {@link inherits}
+    * @see {@link Class}
     */
    abstract class Prototype {
       /**
@@ -827,9 +819,18 @@ declare module protobuf {
       $type: Type;
    
       /**
+       * Field names present on the message. Useful as an alternative to `Object.keys`.
+       * @name Prototype#$keys
+       * @type {string[]}
+       * @readonly
+       */
+      $keys: string[];
+   
+      /**
        * Field values present on the message.
        * @name Prototype#$values
        * @type {Object.<string,*>}
+       * @readonly
        */
       $values: { [k: string]: any };
    
@@ -837,6 +838,7 @@ declare module protobuf {
        * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
        * @name Prototype#$oneofs
        * @type {Object.<string,string|undefined>}
+       * @readonly
        */
       $oneofs: { [k: string]: (string|undefined) };
    
