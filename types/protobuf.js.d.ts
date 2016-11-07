@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Mon, 07 Nov 2016 06:16:41 UTC
+ * Generated Mon, 07 Nov 2016 16:18:04 UTC
  */
 declare module protobuf {
 
@@ -264,7 +264,7 @@ declare module protobuf {
    function load(filename: (string|string[]), root?: Root, callback?: (() => any), ctx?: Object): (Promise<Root>|Object);
    
    /**
-    * Makes a custom class inherit from the message prototype of the specified message type.
+    * Inherits a custom class from the message prototype of the specified message type.
     * @param {Function} clazz Inheriting class
     * @param {Type} type Inherited message type
     * @param {Object.<string,*>} [options] Extension options
@@ -282,7 +282,6 @@ declare module protobuf {
     * @constructor
     * @param {Object.<string,*>} [properties] Properties to set on the message
     * @see {@link inherits}
-    * @see {@link Prototype}
     */
    class Class extends Prototype {
       /**
@@ -293,7 +292,6 @@ declare module protobuf {
        * @constructor
        * @param {Object.<string,*>} [properties] Properties to set on the message
        * @see {@link inherits}
-       * @see {@link Prototype}
        */
       constructor(properties?: { [k: string]: any });
    
@@ -334,15 +332,6 @@ declare module protobuf {
       static decodeDelimited(buffer: number[]): Prototype;
    
    }
-   
-   /**
-    * Initializes the specified prototype with getters and setters corresponding to the reflected
-    * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
-    * @param {Prototype} prototype Prototype to initialize
-    * @param {Type} type Reflected message type
-    * @returns {Prototype} The specified prototype
-    */
-   function initialize(prototype: Prototype, type: Type): Prototype;
    
    /**
     * Reflected message map field.

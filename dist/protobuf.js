@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Mon, 07 Nov 2016 06:22:07 UTC
+ * Compiled Mon, 07 Nov 2016 16:17:55 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -198,7 +198,7 @@ EnumPrototype.remove = function(name) {
     return this;
 };
 
-},{"./object":8,"./util":22}],3:[function(require,module,exports){
+},{"./object":9,"./util":23}],3:[function(require,module,exports){
 module.exports = Field;
 
 var ReflectionObject = require("./object");
@@ -527,7 +527,7 @@ FieldPrototype.jsonConvert = function(value, options) {
     return value;
 };
 
-},{"./enum":2,"./object":8,"./type":20,"./types":21,"./util":22}],4:[function(require,module,exports){
+},{"./enum":2,"./object":9,"./type":21,"./types":22,"./util":23}],4:[function(require,module,exports){
 var protobuf = exports;
 
 var util = require("./util");
@@ -553,8 +553,44 @@ function load(filename, root, callback, ctx) {
 
 protobuf.load = load;
 
+// Parser
+protobuf.tokenize         = require("./tokenize");
+protobuf.parse            = require("./parse");
+
+// Serialization
+protobuf.Writer           = require("./writer");
+protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
+protobuf.Reader           = require("./reader");
+protobuf.BufferReader     = protobuf.Reader.BufferReader;
+
+// Reflection
+protobuf.ReflectionObject = require("./object");
+protobuf.Namespace        = require("./namespace");
+protobuf.Root             = require("./root");
+protobuf.Type             = require("./type");
+protobuf.Field            = require("./field");
+protobuf.MapField         = require("./mapfield");
+protobuf.Enum             = require("./enum");
+protobuf.Service          = require("./service");
+protobuf.Method           = require("./method");
+
+// Runtime
+protobuf.Prototype        = require("./prototype");
+protobuf.inherits         = require("./inherits");
+
+// Utility
+protobuf.types            = require("./types");
+protobuf.util             = util;
+
+},{"./enum":2,"./field":3,"./inherits":5,"./mapfield":6,"./method":7,"./namespace":8,"./object":9,"./parse":11,"./prototype":12,"./reader":13,"./root":14,"./service":15,"./tokenize":20,"./type":21,"./types":22,"./util":23,"./writer":24}],5:[function(require,module,exports){
+module.exports = inherits;
+
+var Prototype = require("./prototype"),
+    Type      = require("./type"),
+    util      = require("./util");
+
 /**
- * Makes a custom class inherit from the message prototype of the specified message type.
+ * Inherits a custom class from the message prototype of the specified message type.
  * @param {Function} clazz Inheriting class
  * @param {Type} type Inherited message type
  * @param {Object.<string,*>} [options] Extension options
@@ -565,7 +601,7 @@ protobuf.load = load;
 function inherits(clazz, type, options) {
     if (typeof clazz !== 'function')
         throw util._TypeError("clazz", "a function");
-    if (!(type instanceof protobuf.Type))
+    if (!(type instanceof Type))
         throw util._TypeError("type", "a Type");
     if (!options)
         options = {};
@@ -578,9 +614,9 @@ function inherits(clazz, type, options) {
      * @constructor
      * @param {Object.<string,*>} [properties] Properties to set on the message
      * @see {@link inherits}
-     * @see {@link Prototype}
      */
-    var defineProperties = {
+
+    var classProperties = {
         
         /**
          * Reference to the reflected type.
@@ -604,7 +640,7 @@ function inherits(clazz, type, options) {
     };
 
     if (!options.noStatics)
-        protobuf.util.merge(defineProperties, {
+        util.merge(classProperties, {
 
             /**
              * Encodes a message of this type to a buffer.
@@ -660,9 +696,8 @@ function inherits(clazz, type, options) {
 
         }, true);
 
-    Object.defineProperties(clazz, defineProperties);
-
-    var prototype = init(new protobuf.Prototype(), type);
+    Object.defineProperties(clazz, classProperties);
+    var prototype = inherits.defineProperties(new Prototype(), type);
     clazz.prototype = prototype;
     prototype.constructor = clazz;
 
@@ -672,20 +707,19 @@ function inherits(clazz, type, options) {
     return prototype;
 }
 
-protobuf.inherits = inherits;
-
 /**
- * Initializes the specified prototype with getters and setters corresponding to the reflected
- * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
- * @param {Prototype} prototype Prototype to initialize
+ * Defines getters and setters corresponding to the reflected type's fields and oneofs on the
+ * specified prototype. Stores field values within {@link Prototype#$values}.
+ * @memberof inherits
+ * @param {Prototype} prototype Prototype to define properties upon
  * @param {Type} type Reflected message type
  * @returns {Prototype} The specified prototype
  */
-function initialize(prototype, type) {
+inherits.defineProperties = function defineProperties(prototype, type) {
 
     var defaultValues = {};
     
-    var defineProperties = {
+    var prototypeProperties = {
 
         /**
          * Reference to the reflected type.
@@ -734,7 +768,7 @@ function initialize(prototype, type) {
 
         defaultValues[field.name] = field.defaultValue;
         
-        defineProperties[field.name] = {
+        prototypeProperties[field.name] = {
             get: function() {
                 return this.$values[field.name];
             },
@@ -764,49 +798,18 @@ function initialize(prototype, type) {
     type.oneofsArray.forEach(function(oneof) {
         oneof.resolve();
         
-        defineProperties[oneof.name] = {
+        prototypeProperties[oneof.name] = {
             get: function() {
                 return this.$oneofs[oneof.name];
             }
         };
     });
 
-    Object.defineProperties(prototype, defineProperties);
+    Object.defineProperties(prototype, prototypeProperties);
     return prototype;
-}
+};
 
-protobuf.initialize = initialize;
-
-// Parser
-
-protobuf.tokenize         = require("./tokenize");
-protobuf.parse            = require("./parse");
-
-// Serialization
-protobuf.Writer           = require("./writer");
-protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
-protobuf.Reader           = require("./reader");
-protobuf.BufferReader     = protobuf.Reader.BufferReader;
-
-// Reflection
-protobuf.ReflectionObject = require("./object");
-protobuf.Namespace        = require("./namespace");
-protobuf.Root             = require("./root");
-protobuf.Type             = require("./type");
-protobuf.Field            = require("./field");
-protobuf.MapField         = require("./mapfield");
-protobuf.Enum             = require("./enum");
-protobuf.Service          = require("./service");
-protobuf.Method           = require("./method");
-
-// Runtime
-protobuf.Prototype        = require("./prototype");
-
-// Utility
-protobuf.types            = require("./types");
-protobuf.util             = util;
-
-},{"./enum":2,"./field":3,"./mapfield":5,"./method":6,"./namespace":7,"./object":8,"./parse":10,"./prototype":11,"./reader":12,"./root":13,"./service":14,"./tokenize":19,"./type":20,"./types":21,"./util":22,"./writer":23}],5:[function(require,module,exports){
+},{"./prototype":12,"./type":21,"./util":23}],6:[function(require,module,exports){
 module.exports = MapField;
 
 var Field = require("./field");
@@ -957,7 +960,7 @@ MapFieldPrototype.decode = function decode(reader) {
     return map;
 };
 
-},{"./enum":2,"./field":3,"./types":21,"./util":22}],6:[function(require,module,exports){
+},{"./enum":2,"./field":3,"./types":22,"./util":23}],7:[function(require,module,exports){
 module.exports = Method;
 
 var ReflectionObject = require("./object");
@@ -1051,7 +1054,7 @@ Method.fromJSON = function fromJSON(name, json) {
     return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);
 };
 
-},{"./object":8,"./util":22}],7:[function(require,module,exports){
+},{"./object":9,"./util":23}],8:[function(require,module,exports){
 module.exports = Namespace;
 
 var ReflectionObject = require("./object");
@@ -1295,7 +1298,7 @@ NamespacePrototype.toJSON = function toJSON() {
     return hasVisibleMembers ? { nested: visibleMembers } : undefined;
 };
 
-},{"./enum":2,"./object":8,"./service":14,"./type":20,"./util":22}],8:[function(require,module,exports){
+},{"./enum":2,"./object":9,"./service":15,"./type":21,"./util":23}],9:[function(require,module,exports){
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
@@ -1577,7 +1580,7 @@ ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.fullName;
 };
 
-},{"./root":13,"./util":22}],9:[function(require,module,exports){
+},{"./root":14,"./util":23}],10:[function(require,module,exports){
 module.exports = OneOf;
 
 var ReflectionObject = require("./object");
@@ -1709,7 +1712,7 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"./field":3,"./object":8,"./util":22}],10:[function(require,module,exports){
+},{"./field":3,"./object":9,"./util":23}],11:[function(require,module,exports){
 module.exports = parse;
 
 var tokenize = require("./tokenize"),
@@ -2232,7 +2235,7 @@ function parse(source, root, visible) {
     };
 }
 
-},{"./enum":2,"./field":3,"./mapfield":5,"./method":6,"./oneof":9,"./root":13,"./service":14,"./tokenize":19,"./type":20,"./types":21}],11:[function(require,module,exports){
+},{"./enum":2,"./field":3,"./mapfield":6,"./method":7,"./oneof":10,"./root":14,"./service":15,"./tokenize":20,"./type":21,"./types":22}],12:[function(require,module,exports){
 module.exports = Prototype;
 
 /**
@@ -2281,7 +2284,7 @@ Prototype.toJSON = function toJSON(options) {
     return json;
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
@@ -2672,7 +2675,7 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
     return remain;
 };
 
-},{"./support/array":15,"./support/float":16,"./support/long":17,"./support/string":18,"./util":22}],13:[function(require,module,exports){
+},{"./support/array":16,"./support/float":17,"./support/long":18,"./support/string":19,"./util":23}],14:[function(require,module,exports){
 module.exports = Root;
 
 var Namespace = require("./namespace"),
@@ -3084,7 +3087,7 @@ RootPrototype.toString = function toString() {
     return this.constructor.name;
 };
 
-},{"./enum":2,"./field":3,"./namespace":7,"./oneof":9,"./parse":10,"./type":20,"./util":22}],14:[function(require,module,exports){
+},{"./enum":2,"./field":3,"./namespace":8,"./oneof":10,"./parse":11,"./type":21,"./util":23}],15:[function(require,module,exports){
 module.exports = Service;
 
 var Namespace = require("./namespace");
@@ -3176,7 +3179,7 @@ ServicePrototype.remove = function remove(method) {
     return this;
 };
 
-},{"./method":6,"./namespace":7,"./util":22}],15:[function(require,module,exports){
+},{"./method":7,"./namespace":8,"./util":23}],16:[function(require,module,exports){
 // This module provides unified access to Uint8Array methods. If Uint8Array isn't supported, it
 // falls back to plain arrays.
 
@@ -3234,7 +3237,7 @@ array_._set = ArrayImpl.prototype.set || function set_array(array, offset) {
  */
 array_._empty = isTypedArray ? new Uint8Array(0) : null;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 // This module provides support for reading and writing floats and doubles to and from bytes
 // within browsers. It intentionally doesn't use typed arrays (i.e. Float32Array) so that the
 // library can fall back to plain arrays if typed arrays are not supported.
@@ -3300,7 +3303,7 @@ float_._read = function float_read(reader, size) {
     return value;
 };
 
-},{"ieee754":1}],17:[function(require,module,exports){
+},{"ieee754":1}],18:[function(require,module,exports){
 // This module provides minimal support for 64 bit values. It's just enough to read and write
 // JavaScript numbers and Long-like objects without sacrificing performance. Note that always
 // converting hence and forth between longs and strings would yield terrible performance.
@@ -3569,7 +3572,7 @@ long_._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)
     return long_;
 };
 
-},{"../util":22}],18:[function(require,module,exports){
+},{"../util":23}],19:[function(require,module,exports){
 // This module provides support for encoding and decoding of utf8 strings to and from bytes within
 // browsers. It intentionally uses arrays for intermediate storage in case typed arrays are not
 // supported (we'd have to also polyfill Uint32Array and Uint16Array otherwise).
@@ -3639,7 +3642,7 @@ string_._decode = function string_decode_utf8(bytes) {
     return String.fromCharCode.apply(String, out.slice(0, c));
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /* eslint-disable default-case, callback-return */
 
 module.exports = tokenize;
@@ -3772,7 +3775,7 @@ function tokenize(source) {
         omit: omit
     };
 }
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = Type; 
 
 var Namespace = require("./namespace");
@@ -3786,6 +3789,7 @@ var Enum      = require("./enum"),
     Field     = require("./field"),
     Service   = require("./service"),
     Prototype = require("./prototype"),
+    inherits  = require("./inherits"),
     util      = require("./util"),
     Reader    = require("./reader"),
     Writer    = require("./writer");
@@ -3917,7 +3921,7 @@ Object.defineProperties(TypePrototype, {
      */
     prototype: {
         get: function() {
-            return this._prototype || (this._prototype = protobuf.initialize(new Prototype(), this));
+            return this._prototype || (this._prototype = inherits.defineProperties(new Prototype(), this));
         }
     }
 });
@@ -4178,9 +4182,7 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constru
     return this.decode(readerOrBuffer.bytes(), constructor);
 };
 
-var protobuf = require("./index");
-
-},{"./enum":2,"./field":3,"./index":4,"./namespace":7,"./oneof":9,"./prototype":11,"./reader":12,"./service":14,"./util":22,"./writer":23}],21:[function(require,module,exports){
+},{"./enum":2,"./field":3,"./inherits":5,"./namespace":8,"./oneof":10,"./prototype":12,"./reader":13,"./service":15,"./util":23,"./writer":24}],22:[function(require,module,exports){
 // NOTE: These types are structured in a way that makes looking up wire types and similar fast,
 // but not necessarily comfortable. Do not modify them unless you know exactly what you are doing.
 
@@ -4293,7 +4295,7 @@ types.packableWireTypes = {
 
 };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (process){
 /**
  * Utility functions.
@@ -4544,7 +4546,7 @@ util.merge = function merge(dst, src, ifNotSet) {
 
 }).call(this,require('_process'))
 
-},{"./support/long":17,"_process":undefined,"buffer":"buffer","fs":undefined,"long":"long"}],23:[function(require,module,exports){
+},{"./support/long":18,"_process":undefined,"buffer":"buffer","fs":undefined,"long":"long"}],24:[function(require,module,exports){
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
@@ -5025,7 +5027,7 @@ BufferWriterPrototype.finish = function finish_buffer(clearForkedStates) {
     return emptyBuffer;
 };
 
-},{"./support/array":15,"./support/float":16,"./support/long":17,"./support/string":18,"./util":22}]},{},[4])
+},{"./support/array":16,"./support/float":17,"./support/long":18,"./support/string":19,"./util":23}]},{},[4])
 
 
 //# sourceMappingURL=protobuf.js.map

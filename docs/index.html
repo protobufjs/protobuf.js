@@ -1395,7 +1395,7 @@ var Prototype = protobuf.Prototype;
 function AwesomeMessage(properties) {
     Prototype.call(this, properties);
 }
-Prototype.extend(AwesomeMessage, root.lookup(&quot;awesomepackage.AwesomeMessage&quot;) /* or use reflection */);
+protobuf.inherits(AwesomeMessage, root.lookup(&quot;awesomepackage.AwesomeMessage&quot;) /* or use reflection */);
 
 var message = new AwesomeMessage({ awesomefield: &quot;AwesomeString&quot; });
 
@@ -1463,7 +1463,10 @@ var message = AwesomeMessage.decode(buffer);
 </li>
 </ul>
 <h3>Runtime</h3><ul>
-<li><strong>Prototype</strong> [<a href="./src/prototype.js">source</a>]<br /><br>Runtime message prototype ready to be extended by custom classes or generated code.</li>
+<li><p><strong>inherits(clazz: <code>Function</code>, type: <code>Type</code>, [options: <code>Object.&lt;string,*&gt;</code>]): <code>Prototype</code></strong> [<a href="./src/inherits.js">source</a>]<br /><br>Inherits a custom class from the message prototype of the specified message type.</p>
+</li>
+<li><p><strong>Prototype</strong> [<a href="./src/prototype.js">source</a>]<br /><br>Runtime message prototype ready to be extended by custom classes or generated code.</p>
+</li>
 </ul>
 <h3>Utility</h3><ul>
 <li><p><strong>util: <code>Object</code></strong> [<a href="./src/util.js">source</a>]<br /><br>Utility functions.</p>

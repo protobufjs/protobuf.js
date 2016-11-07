@@ -39,7 +39,7 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
         function PackageClass(properties) {
             protobuf.Prototype.call(this, properties);
         }
-        protobuf.Prototype.extend(PackageClass, Package);
+        protobuf.inherits(PackageClass, Package);
         var myPackage = new PackageClass(pkg);
 
         function bench_protobuf_class() {

@@ -11,6 +11,7 @@ var Enum      = require("./enum"),
     Field     = require("./field"),
     Service   = require("./service"),
     Prototype = require("./prototype"),
+    inherits  = require("./inherits"),
     util      = require("./util"),
     Reader    = require("./reader"),
     Writer    = require("./writer");
@@ -142,7 +143,7 @@ Object.defineProperties(TypePrototype, {
      */
     prototype: {
         get: function() {
-            return this._prototype || (this._prototype = protobuf.initialize(new Prototype(), this));
+            return this._prototype || (this._prototype = inherits.defineProperties(new Prototype(), this));
         }
     }
 });
@@ -402,5 +403,3 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constru
         readerOrBuffer = Reader(/* of type */ readerOrBuffer);
     return this.decode(readerOrBuffer.bytes(), constructor);
 };
-
-var protobuf = require("./index");

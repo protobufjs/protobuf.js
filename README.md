@@ -88,7 +88,7 @@ var Prototype = protobuf.Prototype;
 function AwesomeMessage(properties) {
     Prototype.call(this, properties);
 }
-Prototype.extend(AwesomeMessage, root.lookup("awesomepackage.AwesomeMessage") /* or use reflection */);
+protobuf.inherits(AwesomeMessage, root.lookup("awesomepackage.AwesomeMessage") /* or use reflection */);
 
 var message = new AwesomeMessage({ awesomefield: "AwesomeString" });
 
@@ -182,6 +182,9 @@ The library exports a flat `protobuf` namespace with the following members, orde
   Reflected service method.
 
 ### Runtime
+
+* **inherits(clazz: `Function`, type: `Type`, [options: `Object.<string,*>`]): `Prototype`** [[source](./src/inherits.js)]<br />
+  Inherits a custom class from the message prototype of the specified message type.
 
 * **Prototype** [[source](./src/prototype.js)]<br />
   Runtime message prototype ready to be extended by custom classes or generated code.
