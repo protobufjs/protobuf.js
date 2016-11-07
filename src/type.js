@@ -147,7 +147,7 @@ Object.defineProperties(TypePrototype, {
      */
     prototype: {
         get: function() {
-            return this._prototype || (this._prototype = Prototype.init(new Prototype(), this));
+            return this._prototype || (this._prototype = Prototype.initialize(new Prototype(), this));
         }
     }
 });
@@ -309,12 +309,14 @@ TypePrototype.create = function create(properties, constructor) {
         return new constructor(properties);
     
     var message = Object.create(this.prototype);
-    if (properties) {
+    if (properties)
         Object.keys(properties).forEach(function(key) {
-            if (this.fields[key])
+            var field = this.fields[key];
+            if (field)
+                message.$values[key] = properties[key];
+            else
                 message[key] = properties[key];
         }, this);
-    }
     return message;
 };
 
@@ -329,10 +331,11 @@ TypePrototype.encode = function encode(message, writer) {
         writer = Writer();
     var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
+    var values = message.$values || message; // throws if not an object
     for (var i = 0; i < fieldsCount; ++i) {
-        var field = fieldsArray[i],
-            value = message[field.name];
-        if (field.resolve().required || value != field.defaultValue) // eslint-disable-line eqeqeq
+        var field = fieldsArray[i].resolve(),
+            value = values[field.name];
+        if (field.required || value != field.defaultValue) // eslint-disable-line eqeqeq
             field.encode(value, writer);
     }
     return writer;
@@ -368,6 +371,7 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
     var reader     = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer),
         limit      = length === undefined ? reader.len : reader.pos + length,
         message    = this.create({}, constructor),
+        values     = message.$values,
         fieldsById = this.fieldsById;
 
     while (reader.pos < limit) {
@@ -377,13 +381,13 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
             var name  = field.name,
                 value = field.decode(reader, tag.wireType);
             if (field.repeated) {
-                var array = message[name] || (message[name] = []);
+                var array = values[name] || (values[name] = []);
                 if (util.isArray(value))
                     Array.prototype.push.apply(array, value);
                 else
                     array.push(value);
             } else
-                message[name] = value;
+                values[name] = value;
         } else
             reader.skipType(tag.wireType);
     }

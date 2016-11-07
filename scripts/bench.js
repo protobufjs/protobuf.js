@@ -1,11 +1,13 @@
-var protobuf = require(".."),
-    nativeStringify = JSON.stringify;
-var JSON3 = require("./lib/json3");
-
-if (JSON3.stringify === nativeStringify)
-    throw Error("something went wrong");
+var protobuf = require(__dirname + "/../src/index"),
+    pkg = require(__dirname + "/../package.json");
+var JSONPoly = require("./lib/jsonpoly");
+    JSON3 = require("./lib/json3");
 
 var pkg = require(__dirname + "/../package.json");
+
+var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 10000;
+console.log("usage: bench.js [iterations=10000] [protobufOnly]\n");
+console.log("encoding/decoding " + times + " iterations ...\n");
 
 protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
     if (err)
@@ -13,32 +15,45 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
 
     try {
 
-        // NOTE: This is currently testing string-heavy data, exactly where JSON excels.
-        // On my machine, protobuf is 6 times slower, which isn't bad considering that JSON
-        // is all native and heavily optimized. Compared with JSON3, protobuf is slightly faster.
-
-        // Our goal should be to reduce function calls and reflection iterations to a minimum.
-        // This is where code generation comes into play.
+        // Compared to native JSON, protobuf.js is 5-6 times slower on my machine.
+        // Compared to polyfilled JSON, protobuf.js is 2-3 times slower on my machine.
 
         var Package = root.lookup("Package");
-        var myPackage = Package.decode(Package.encode(Package.create(pkg)).finish());
         
-        var times = 50000;
+        function summarize(name, start, length) {
+            var time = Date.now() - start;
+            console.log(pad(name, 15, 1) + " : " + pad(time + "ms", 10) + "   " + pad(length + " bytes", 15));
+        }
 
-        console.log("running " + times + " iterations ...");
-
-        function bench_protobuf() {
+        function bench_protobuf_object() {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = Package.encode(myPackage).finish();
+                var buf = Package.encode(pkg).finish();
                 Package.decode(buf);
                 len += buf.length;
             }
-            console.log("protobuf encode/decode: " + (Date.now() - start) + "ms (" + len + " bytes)");
+            summarize("PBJS " + "object", start, len);
         }
 
-        function bench_json_native() {
+        function PackageClass(properties) {
+            protobuf.Prototype.call(this, properties);
+        }
+        protobuf.Prototype.extend(PackageClass, Package);
+        var myPackage = new PackageClass(pkg);
+
+        function bench_protobuf_class() {
+            var start = Date.now(),
+                len = 0;
+            for (var i = 0; i < times; ++i) {
+                var buf = PackageClass.encode(myPackage);
+                Package.decode(buf);
+                len += buf.length;
+            }
+            summarize("PBJS " + "class", start, len);
+        }
+
+        function bench_json(name, JSON) {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
@@ -46,26 +61,34 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
                 JSON.parse(buf.toString("utf8"));
                 len += buf.length;
             }
-            console.log("JSON [native] stringify/parse: " + (Date.now() - start) + "ms (" + len + " bytes)");
+            summarize("JSON " + name, start, len);
         }
 
-        function bench_json3() {
-            var start = Date.now(),
-                len = 0;
-            for (var i = 0; i < times; ++i) {
-                var buf = Buffer.from(JSON3.stringify(pkg), "utf8");
-                JSON3.parse(buf.toString("utf8"));
-                len += buf.length;
-            }
-            console.log("JSON3 stringify/parse: " + (Date.now() - start) + "ms (" + len + " bytes)");
+        bench_protobuf_object();
+        bench_protobuf_class();
+        if (process.argv.length < 4) {
+            bench_json("native", JSON);
+            bench_json("poly", JSONPoly);
+            bench_json("3", JSON3);
         }
 
-        bench_protobuf();
-        bench_json_native();
-        bench_json3();
+        console.log("\n--- warmed up ---");
+        bench_protobuf_object();
+        bench_protobuf_class();
+        if (process.argv.length < 4) {
+            bench_json("native", JSON);
+            bench_json("poly", JSONPoly);
+            bench_json("3", JSON3);
+        }
 
     } catch (e) {
         console.error(e);
     }        
 
 });
+
+function pad(str, len, l) {
+    while (str.length < len)
+        str = l ? str + " " : " " + str;
+    return str;
+}

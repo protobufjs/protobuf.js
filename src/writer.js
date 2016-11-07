@@ -105,14 +105,21 @@ WriterPrototype.tag = function write_tag(id, wireType) {
  */
 WriterPrototype.uint32 = function write_uint32(value) {
     value >>>= 0;
-    while (value > 127) {
+    if (this.len - this.pos > 4) { // fast route
+        while (value > 127) {
+            this.buf[this.pos++] = value & 127 | 128;
+            value >>>= 7;
+        }
+    } else {
+        while (value > 127) {
+            if (this.pos >= this.len)
+                expand(this, 1);
+            this.buf[this.pos++] = value & 127 | 128;
+            value >>>= 7;
+        }
         if (this.pos >= this.len)
             expand(this, 1);
-        this.buf[this.pos++] = value & 127 | 128;
-        value >>>= 7;
     }
-    if (this.pos >= this.len)
-        expand(this, 1);
     this.buf[this.pos++] = value;
     return this;
 };
@@ -279,7 +286,7 @@ WriterPrototype.string = function write_string(value) {
  * @returns {Writer} this
  */
 WriterPrototype.fork = function fork() {
-    if (this.buf && this.pos) {
+    if (this.pos) {
         var remain = this.buf;
         if (this.pos < this.len) {
             this.bufs.push(this._slice.call(remain, 0, this.pos));
@@ -430,7 +437,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     if (len) {
         if (this.pos + len > this.len)
             expand(this, len);
-        value.copy(this.buf, this.pos);
+        value.copy(this.buf, this.pos, 0, len);
         this.pos += len;
     }
     return this;
@@ -447,7 +454,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     if (len) {
         if (this.pos + len > this.len)
             expand(this, len);
-        this.buf.write(value, this.pos);
+        this.buf.write(value, this.pos, len, "utf8");
         this.pos += len;
     }
     return this;

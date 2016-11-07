@@ -4,24 +4,25 @@ var util = require("./util"),
     Type = require("./type");
 
 /**
- * Runtime message prototype ready to be extended by custom classes or generated code.
+ * Runtime message prototype ready to be extended by custom classes or generated code. Calling the
+ * prototype constructor from within your own classes is optional, but you can do so if you just
+ * want to initialize your instance's properties.
  * @constructor
- * @param {Object.<string,*>} [properties] Properties to set on the instance. Only relevant when extended.
+ * @param {Object.<string,*>} [properties] Properties to set
+ * @param {Object.<string,*>} [options] Initialization options
+ * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
  * @abstract
  * @see {@link Type#create}
  */
-function Prototype(properties) {
-    if (properties)
-        Object.keys(properties).forEach(function(key) {
-            if (this.constructor.$type.fields[key])
-                this[key] = properties[key];
-        }, this);
-
-    // NOTE: Extending Prototype leaves optimization up to you. This method is here as a simple
-    // way to set only properties that actually reference a field, so that instances have a fixed
-    // set of fields and hopefully do not resort to become a hashmap. If you need your classes to
-    // copy any properties for example, you can do that by implementing initialization yourself,
-    // not calling this method from your constructor at all.
+function Prototype(properties, options) {
+    if (properties) {
+        var fieldsOnly = options && options.fieldsOnly,
+            fields = this.constructor.$type.fields,
+            keys = Object.keys(properties);
+        for (var i = 0, k = keys.length, key; i < k; ++i)
+            if (!fieldsOnly || fields[key])
+                this[key = keys[i]] = properties[key];
+    }
 }
 
 /**
@@ -73,7 +74,7 @@ Prototype.extend = function extend(constructor, type, options) {
 
     }
 
-    var prototype = Prototype.init(new Prototype(), type);
+    var prototype = Prototype.initialize(new Prototype(), type);
     constructor.prototype = prototype;
     prototype.constructor = constructor;
 
@@ -85,22 +86,26 @@ Prototype.extend = function extend(constructor, type, options) {
 };
 
 /**
- * Initializes the specified prototype with the required references and getters/setters for the
- * reflected type's fields.
+ * Initializes the specified prototype with getters and setters corresponding to the reflected
+ * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
  * @param {Prototype} prototype Prototype to initialize
  * @param {Type} type Reflected message type
  * @returns {Prototype} prototype
+ * @see {@link Prototype#$type}
+ * @see {@link Prototype#$valuees}
+ * @see {@link Prototype#$oneofs}
  */
-Prototype.init = function init(prototype, type) {
+Prototype.initialize = function init(prototype, type) {
 
     var defaultValues = {};
     
     var defineProperties = {
 
         /**
-         * Reflected type.
+         * Reference to the reflected type.
          * @name Prototype#$type
          * @type {Type}
+         * @readonly
          */
         $type: {
             value: type,
@@ -108,7 +113,7 @@ Prototype.init = function init(prototype, type) {
         },
 
         /**
-         * Field values.
+         * Field values present on the message.
          * @name Prototype#$values
          * @type {Object.<string,*>}
          */
@@ -120,7 +125,7 @@ Prototype.init = function init(prototype, type) {
         /**
          * Field names of the respective fields set for each oneof.
          * @name Prototype#$oneofs
-         * @type {Object.<string,string>}
+         * @type {Object.<string,string|undefined>}
          */
         $oneofs: {
             value: {},

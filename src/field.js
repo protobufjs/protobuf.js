@@ -224,21 +224,23 @@ FieldPrototype.resolve = function resolve() {
  * @returns {Writer} writer
  */
 FieldPrototype.encode = function encode(value, writer) {
-    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
+    var type = this.resolvedType instanceof Enum ? "uint32" : this.type;
     if (this.repeated) {
         if (!util.isArray(value))
             value = [ value ];
         else if (!value.length)
             return writer;
+        var i = 0, k = value.length;
         if (this.packed && types.packableWireTypes[type] !== undefined) {
-            value.forEach(writer[type], writer.fork());
+            writer.fork();
+            while (i < k)
+                writer[type](value[i++]);
             var buf = writer.finish();
             if (buf.length)
                 writer.tag(this.id, 2).bytes(buf);
         } else
-            value.forEach(function(val) {
-                this.resolvedType.encodeDelimited(val, writer.tag(this.id, 2));
-            }, this);
+            while (i < k)
+                this.resolvedType.encodeDelimited(value[i++], writer.tag(this.id, 2));
     } else {
         var wireType = types.wireTypes[type];
         if (wireType !== undefined)
