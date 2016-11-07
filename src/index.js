@@ -3,7 +3,7 @@ var protobuf = exports;
 var util = require("./util");
 
 /**
- * Loads one or multiple .proto files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @param {function(?Error, Root=)} [callback] Callback function

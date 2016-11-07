@@ -69,19 +69,28 @@ Namespace.testJSON = function testJSON(json) {
  * @throws {TypeError} If arguments are invalid
  */
 Namespace.fromJSON = function fromJSON(name, json) {
-    var ns = new Namespace(name, json.options);
-    if (json.nested) {
-        Object.keys(json.nested).forEach(function(nestedName) {
-            var nested = json.nested[nestedName];
-            for (var i = 0, k = nestedTypes.length, clazz; i < k; ++i)
-                if ((clazz = nestedTypes[i]).testJSON(nested)) {
-                    ns.add(clazz.fromJSON(nestedName, nested));
-                    return;
+    return new Namespace(name, json.options).addJSON(json.nested);
+};
+
+/**
+ * Adds nested elements to this namespace from JSON.
+ * @param {Object.<string,*>} json Nested JSON
+ * @returns {Namespace} this
+ */
+NamespacePrototype.addJSON = function addJSON(json) {
+    if (json) {
+        var keys = Object.keys(json);
+        for (var i = 0, k = keys.length, key; i < k; ++i) {
+            var nested = json[key = keys[i]];
+            for (var j = 0, l = nestedTypes.length, ReflObj; j < l; ++j)
+                if ((ReflObj = nestedTypes[j]).testJSON(nested)) {
+                    this.add(ReflObj.fromJSON(key, nested));
+                    break;
                 }
-            throw util._TypeError("nested", nestedError);
-        });
+            throw util._TypeError("json." + key, "JSON for " + nestedError);
+        }
     }
-    return ns;
+    return this;
 };
 
 /**
@@ -158,28 +167,41 @@ NamespacePrototype.remove = function remove(object) {
 /**
  * Defines additial namespaces within this one if not yet existing.
  * @param {string|string[]} path Path to create
- * @param {?boolean} [visible] Whether visible when exporting definitions. Defaults to inherit from parent.
+ * @param {*} [json] Optional types to create from JSON
+ * @param {?boolean} [visible=null] Whether visible when exporting definitions. Defaults to inherit from parent.
  * @returns {Namespace} Pointer to the last namespace created
  */
-NamespacePrototype.define = function define(path, visible) {
+NamespacePrototype.define = function define(path, json, visible) {
     if (util.isString(path))
         path = path.split('.');
+    else if (!util.isArray(path)) {
+        visible = json;
+        json = path;
+        path = undefined;
+    }
+    if (typeof json === 'boolean') {
+        visible = json;
+        json = undefined;
+    }
     if (visible === undefined)
         visible = null;
     var ptr = this;
-    while (path.length > 0) {
-        var part = path.shift();
-        if (ptr.nested && ptr.nested[part]) {
-            ptr = ptr.nested[part];
-            if (!(ptr instanceof Namespace))
-                throw Error("path conflicts with non-namespace objects");
-            if (visible) // make visible when new namespaces are
-                ptr.visible = true;
-        } else {
-            ptr.add(ptr = new Namespace(part));
-            ptr.visible = visible;
+    if (path)
+        while (path.length > 0) {
+            var part = path.shift();
+            if (ptr.nested && ptr.nested[part]) {
+                ptr = ptr.nested[part];
+                if (!(ptr instanceof Namespace))
+                    throw Error("path conflicts with non-namespace objects");
+                if (visible) // make visible when new namespaces are
+                    ptr.visible = true;
+            } else {
+                ptr.add(ptr = new Namespace(part));
+                ptr.visible = visible;
+            }
         }
-    }
+    if (json)
+        ptr.addJSON(json);
     return ptr;
 };
 

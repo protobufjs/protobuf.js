@@ -256,7 +256,7 @@ function importGoogleTypes(root, visible) {
 Root.importGoogleTypes = importGoogleTypes;
 
 /**
- * Loads one or multiple .proto files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into this root namespace.
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {function(?Error, Root=)} [callback] Node-style callback function
  * @param {Object} [ctx] Optional callback context
@@ -280,19 +280,24 @@ RootPrototype.load = function load(filename, callback, ctx) {
     // Processes a single file
     function process(origin, source, visible) {
         try {
-            var parsed = require("./parse")(source, self, visible);
-            if (parsed.publicImports)
-                parsed.publicImports.forEach(function(file) {
-                    fetch(util.resolvePath(origin, file), visible, false);
-                });
-            if (parsed.imports)
-                parsed.imports.forEach(function(file) {
-                    fetch(util.resolvePath(origin, file), false, false);
-                });
-            if (parsed.weakImports)
-                parsed.weakImports.forEach(function(file) {
-                    fetch(util.resolvePath(origin, file), false, true);
-                });
+            if (source.charAt(0) === "{") {
+                var json = JSON.parse(source);
+                self.setOptions(json.options).addJSON(json.nested);
+            } else {
+                var parsed = require("./parse")(source, self, visible);
+                if (parsed.publicImports)
+                    parsed.publicImports.forEach(function(file) {
+                        fetch(util.resolvePath(origin, file), visible, false);
+                    });
+                if (parsed.imports)
+                    parsed.imports.forEach(function(file) {
+                        fetch(util.resolvePath(origin, file), false, false);
+                    });
+                if (parsed.weakImports)
+                    parsed.weakImports.forEach(function(file) {
+                        fetch(util.resolvePath(origin, file), false, true);
+                    });
+            }
             if (!queued)
                 finish(null, self);
         } catch (err) {

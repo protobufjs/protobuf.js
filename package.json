@@ -20,7 +20,8 @@
     "types": "jsdoc -c scripts/jsdoc.types.conf.json && node scripts/types-postprocess.js",
     "lint": "eslint src",
     "test": "tap -b tests/*.js",
-    "all": "npm run test && npm run build && npm run docs && npm run types && npm run lint"
+    "bench": "node scripts/bench",
+    "all": "npm run test && npm run build && npm run docs && npm run types && npm run lint && npm run bench"
   },
   "optionalDependencies": {
     "ieee754": "^1.1.8",

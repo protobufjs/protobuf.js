@@ -1,12 +1,13 @@
 var protobuf = require(__dirname + "/../src/index"),
-    pkg = require(__dirname + "/../package.json");
+    path     = require("path"),
+    pkg      = require(__dirname + "/../package.json");
 var JSONPoly = require("./lib/jsonpoly");
-    JSON3 = require("./lib/json3");
+    JSON3    = require("./lib/json3");
 
 var pkg = require(__dirname + "/../package.json");
 
 var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 10000;
-console.log("usage: bench.js [iterations=10000] [protobufOnly]\n");
+console.log("usage: " + path.basename(process.argv[1]) + " [iterations=10000] [protobufOnly]\n");
 console.log("encoding/decoding " + times + " iterations ...\n");
 
 protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {

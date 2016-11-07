@@ -74,7 +74,7 @@ function inherits(clazz, type, options) {
              * Encodes a message of this type preceeded by its length as a varint to a buffer.
              * @name Class.encodeDelimited
              * @function
-             * @param {Prototype|Object} message Message to encodee
+             * @param {Prototype|Object} message Message to encode
              * @returns {number[]} Encoded message
              */
             encodeDelimited: {
@@ -205,7 +205,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
                         ? field.defaultValue
                         : value;
             },
-            enumerable: true
+            enumerable: true // makes properties iterable with for-in loops
         };
     });
 

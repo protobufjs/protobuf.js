@@ -124,13 +124,8 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, path);
-    if (fs && fs.readFile) {
-        fs.readFile(path, "utf8", function(err, data) {
-            if (data) data = data.toString();
-            callback(err, data);
-        });
-        return undefined;
-    }
+    if (fs && fs.readFile)
+        return fs.readFile(path, "utf8", callback);
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
         if (xhr.status !== 0 && xhr.status !== 200)
@@ -185,8 +180,7 @@ function normalizePath(path) {
         } else if (part === '.')
             parts.splice(i, 1);
         else
-            ++i;
-    return prefix + parts.join('/');
+            ++i;    return prefix + parts.join('/');
 }
 
 util.normalizePath = normalizePath;
@@ -232,7 +226,7 @@ util.fromHash = function fromHash(hash, unsigned) {
  * Merges the properties of the source object into the destination object.
  * @param {Object} dst Destination object
  * @param {Object} src Source object
- * @param {boolean} [ifNotSet=falsee] Merges only if the key is not already set
+ * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
  * @returns {Object} Destination object
  */
 util.merge = function merge(dst, src, ifNotSet) {
