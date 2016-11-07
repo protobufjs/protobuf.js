@@ -112,9 +112,9 @@ function tokenize(source) {
             throw Error("illegal token '" + actual + "' ('" + expected + "' expected, line " + line + ")");
     }
 
-    function omit(expected) {
+    function omit(optional) {
         var actual = peek();
-        if (actual === expected) {
+        if (actual === optional) {
             next();
             return true;
         }

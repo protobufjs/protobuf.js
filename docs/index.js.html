@@ -123,6 +123,8 @@
             
                 <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
             
+                <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
+            
                 <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
@@ -277,6 +279,49 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Class">
+            <span class="title">
+                <a href="Class.html">Class</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
+            
+                <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
+            
+                <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
+            
+                <li data-name="Class#$oneofs"><a href="Class.html#$oneofs">$oneofs</a></li>
+            
+                <li data-name="Class#$type"><a href="Class.html#$type">$type</a></li>
+            
+                <li data-name="Class#$values"><a href="Class.html#$values">$values</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Class.decode"><a href="Class.html#.decode">decode</a></li>
+            
+                <li data-name="Class.decodeDelimited"><a href="Class.html#.decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Class.encode"><a href="Class.html#.encode">encode</a></li>
+            
+                <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Enum">
             <span class="title">
                 <a href="Enum.html">Enum</a>
@@ -421,6 +466,8 @@
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
             
+                <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
+            
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
                 <li data-name="Field#onRemove"><a href="Field.html#onRemove">onRemove</a></li>
@@ -521,6 +568,8 @@
                 <li data-name="MapField#encode"><a href="MapField.html#encode">encode</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
+            
+                <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
             
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
@@ -785,12 +834,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
-            
-                <li data-name="Prototype.initialize"><a href="Prototype.html#.initialize">initialize</a></li>
-            
-                <li data-name="Prototype.jsonConvert"><a href="Prototype.html#.jsonConvert">jsonConvert</a></li>
             
                 <li data-name="Prototype.toJSON"><a href="Prototype.html#.toJSON">toJSON</a></li>
             
@@ -1284,7 +1327,9 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>var protobuf = module.exports = {};
+            <pre class="prettyprint source linenums"><code>var protobuf = exports;
+
+var util = require("./util");
 
 /**
  * Loads one or multiple .proto files into a common root namespace.
@@ -1306,6 +1351,228 @@ function load(filename, root, callback, ctx) {
 }
 
 protobuf.load = load;
+
+/**
+ * Extends a custom class from the internal message prototype.
+ * @param {Function} clazz Extending class
+ * @param {Type} type Reflected message type
+ * @param {Object.&lt;string,*>} [options] Extension options
+ * @param {boolean} [options.noStatics=false] Skips adding the default static methods on top of the constructor
+ * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
+ * @returns {Prototype} Created prototype
+ */
+function extend(clazz, type, options) {
+    if (typeof clazz !== 'function')
+        throw util._TypeError("clazz", "a function");
+    if (!(type instanceof protobuf.Type))
+        throw util._TypeError("type", "a Type");
+    if (!options)
+        options = {};
+
+    /**
+     * This is not an actual type but stands as a reference for any constructor of a custom message class
+     * that you pass to the library.
+     * @name Class
+     * @extends Prototype
+     * @constructor
+     * @param {Object.&lt;string,*>} [properties] Properties to set on the message
+     * @see {@link extend}
+     * @see {@link Prototype}
+     */
+    var defineProperties = {
+        
+        /**
+         * Reference to the reflected type.
+         * @name Class.$type
+         * @type {Type}
+         */
+        $type: {
+            value: type
+        },
+
+        /**
+         * Field names present on the message. Useful as an alternative to `Object.keys`.
+         * @name Class.$keys
+         * @type {string[]}
+         */
+        $keys: {
+            value: Object.keys(type.fields)
+        }
+    };
+
+    if (!options.noStatics)
+        protobuf.util.merge(defineProperties, {
+
+            /**
+             * Encodes a message of this type to a buffer.
+             * @name Class.encode
+             * @function
+             * @param {Prototype|Object} message Message to encode
+             * @returns {number[]} Encoded message
+             */
+            encode: {
+                value: function encode(message) {
+                    return this.$type.encode(message).finish();
+                }
+            },
+
+            /**
+             * Encodes a message of this type preceeded by its length as a varint to a buffer.
+             * @name Class.encodeDelimited
+             * @function
+             * @param {Prototype|Object} message Message to encodee
+             * @returns {number[]} Encoded message
+             */
+            encodeDelimited: {
+                value: function encodeDelimited(message) {
+                    return this.$type.encodeDelimited(message).finish();
+                }
+            },
+
+            /**
+             * Decodes a message of this type from a buffer.
+             * @name Class.decode
+             * @function
+             * @param {number[]} buffer Buffer to decode
+             * @returns {Prototype} Decoded message
+             */
+            decode: {
+                value: function decode(buffer) {
+                    return this.$type.decode(buffer, clazz);
+                }
+            },
+
+            /**
+             * Decodes a message of this type preceeded by its length as a varint from a buffer.
+             * @name Class.decodeDelimited
+             * @function
+             * @param {number[]} buffer Buffer to decode
+             * @returns {Prototype} Decoded message
+             */
+            decodeDelimited: {
+                value: function decodeDelimited(buffer) {
+                    return this.$type.decodeDelimited(buffer, clazz);
+                }
+            }
+
+        }, true);
+
+    Object.defineProperties(clazz, defineProperties);
+
+    var prototype = init(new protobuf.Prototype(), type);
+    clazz.prototype = prototype;
+    prototype.constructor = clazz;
+
+    if (!options.noRegister)
+        type.register(clazz);
+
+    return prototype;
+}
+
+protobuf.extend = extend;
+
+/**
+ * Initializes the specified prototype with getters and setters corresponding to the reflected
+ * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
+ * @param {Prototype} prototype Prototype to initialize
+ * @param {Type} type Reflected message type
+ * @returns {Prototype} The specified prototype
+ * @see {@link Prototype#$type}
+ * @see {@link Prototype#$values}
+ * @see {@link Prototype#$oneofs}
+ */
+function init(prototype, type) {
+
+    var defaultValues = {};
+    
+    var defineProperties = {
+
+        /**
+         * Reference to the reflected type.
+         * @name Prototype#$type
+         * @type {Type}
+         * @readonly
+         */
+        $type: {
+            value: type
+        },
+
+        /**
+         * Field names present on the message. Useful as an alternative to `Object.keys`.
+         * @name Class.$keys
+         * @type {string[]}
+         */
+        $keys: {
+            value: Object.keys(type.fields)
+        },
+
+        /**
+         * Field values present on the message.
+         * @name Prototype#$values
+         * @type {Object.&lt;string,*>}
+         */
+        $values: {
+            value: defaultValues
+        },
+
+        /**
+         * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
+         * @name Prototype#$oneofs
+         * @type {Object.&lt;string,string|undefined>}
+         */
+        $oneofs: {
+            value: {}
+        }
+    };
+
+    // Initialize default values and define each field with a getter and a setter
+    type.fieldsArray.forEach(function(field) {
+        field.resolve();
+
+        defaultValues[field.name] = field.defaultValue;
+        
+        defineProperties[field.name] = {
+            get: function() {
+                return this.$values[field.name];
+            },
+            set: function(value) {
+                if (field.partOf) { // Handle oneof side effects
+                    var fieldNameSet = this.$oneofs[field.partOf.name];
+                    if (value === undefined || value === null) {
+                        if (fieldNameSet === field.name)
+                            this.$oneofs[field.partOf.name] = undefined;
+                        this.$values[field.name] = field.defaultValue;
+                    } else {
+                        if (fieldNameSet !== undefined)
+                            this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
+                        this.$values[field.name] = value;
+                        this.$oneofs[field.partOf.name] = field.name;
+                    }
+                } else // Just set the value and reset to the default when unset
+                    this.$values[field.name] = value === undefined || value === null
+                        ? field.defaultValue
+                        : value;
+            },
+            enumerable: true
+        };
+    });
+
+    // Define each oneof with a non-enumerable getter returning the name of the currently set field
+    type.oneofsArray.forEach(function(oneof) {
+        oneof.resolve();
+        
+        defineProperties[oneof.name] = {
+            get: function() {
+                return this.$oneofs[oneof.name];
+            }
+        };
+    });
+
+    Object.defineProperties(prototype, defineProperties);
+    return prototype;
+}
+
+protobuf.init = init;
 
 // Parser
 
@@ -1333,8 +1600,8 @@ protobuf.Method           = require("./method");
 protobuf.Prototype        = require("./prototype");
 
 // Utility
-protobuf.util             = require("./util");
 protobuf.types            = require("./types");
+protobuf.util             = util;
 </code></pre>
         </article>
     </section>
@@ -1347,7 +1614,7 @@ protobuf.types            = require("./types");
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 04:00:13 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 07:02:15 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

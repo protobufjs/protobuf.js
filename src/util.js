@@ -227,3 +227,20 @@ util.toHash = function toHash(value) {
 util.fromHash = function fromHash(hash, unsigned) {
     return long_._setHash(hash)._get(Boolean(unsigned));
 };
+
+/**
+ * Merges the properties of the source object into the destination object.
+ * @param {Object} dst Destination object
+ * @param {Object} src Source object
+ * @param {boolean} [ifNotSet=falsee] Merges only if the key is not already set
+ * @returns {Object} Destination object
+ */
+util.merge = function merge(dst, src, ifNotSet) {
+    if (src) {
+        var keys = Object.keys(src);
+        for (var i = 0, k = keys.length, key; i < k; ++i)
+            if (!dst[key = keys[i]] || !ifNotSet)
+                dst[key] = src[key];
+    }
+    return dst;
+};

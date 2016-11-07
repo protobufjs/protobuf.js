@@ -54,7 +54,7 @@ function Field(name, id, type, rule, extend, options) {
      * Unique field id.
      * @type {number}
      */
-     this.id = id; // exposed, marker
+    this.id = id; // exposed, marker
 
     /**
      * Extended type if different from parent.
@@ -290,4 +290,38 @@ FieldPrototype.decode = function decode(reader, receivedWireType) {
     // is packed on the wire or not if its type encodes with wire type 2.
     // The official implementation obviously uses some sort of binary iterator
     // class to distinguish there.
+};
+
+/**
+ * Converts a field value to JSON using the specified options.
+ * @param {*} value Field value
+ * @param {Object.<string,*>} [options] Conversion options
+ * @param {Function} [options.long] Long conversion type.
+ * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+ *  Defaults to the internal number/long-like representation.
+ * @param {Function} [options.enum] Enum value conversion type.
+ *  Only valid value is `String`.
+ *  Defaults to the values' numeric ids.
+ * @returns {*} Converted value
+ */
+FieldPrototype.jsonConvert = function(value, options) {
+    if (this.repeated) {
+        if (!value)
+            return [];
+        var self = this;
+        return value.map(function(val) {
+            return self.jsonConvert(val, options);
+        });
+    }
+    if (options) {
+        if (this.resolvedType instanceof Enum && options.enum === String)
+            return this.resolvedType.valuesById[value];
+        else if (types.longWireTypes[this.type] !== undefined && options.long)
+            return options.long === Number
+                ? typeof value === 'number'
+                ? value
+                : util.Long.fromValue(value).toNumber()
+                : util.Long.fromValue(value, this.type.charAt(0) === 'u').toString();
+    }
+    return value;
 };

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Mon, 07 Nov 2016 03:09:37 UTC
+ * Compiled Mon, 07 Nov 2016 06:01:15 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -255,7 +255,7 @@ function Field(name, id, type, rule, extend, options) {
      * Unique field id.
      * @type {number}
      */
-     this.id = id; // exposed, marker
+    this.id = id; // exposed, marker
 
     /**
      * Extended type if different from parent.
@@ -493,8 +493,44 @@ FieldPrototype.decode = function decode(reader, receivedWireType) {
     // class to distinguish there.
 };
 
+/**
+ * Converts a field value to JSON using the specified options.
+ * @param {*} value Field value
+ * @param {Object.<string,*>} [options] Conversion options
+ * @param {Function} [options.long] Long conversion type.
+ * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+ *  Defaults to the internal number/long-like representation.
+ * @param {Function} [options.enum] Enum value conversion type.
+ *  Only valid value is `String`.
+ *  Defaults to the values' numeric ids.
+ * @returns {*} Converted value
+ */
+FieldPrototype.jsonConvert = function(value, options) {
+    if (this.repeated) {
+        if (!value)
+            return [];
+        var self = this;
+        return value.map(function(val) {
+            return self.jsonConvert(val, options);
+        });
+    }
+    if (options) {
+        if (this.resolvedType instanceof Enum && options.enum === String)
+            return this.resolvedType.valuesById[value];
+        else if (types.longWireTypes[this.type] !== undefined && options.long)
+            return options.long === Number
+                ? typeof value === 'number'
+                ? value
+                : util.Long.fromValue(value).toNumber()
+                : util.Long.fromValue(value, this.type.charAt(0) === 'u').toString();
+    }
+    return value;
+};
+
 },{"./enum":2,"./object":8,"./type":20,"./types":21,"./util":22}],4:[function(require,module,exports){
-var protobuf = module.exports = {};
+var protobuf = exports;
+
+var util = require("./util");
 
 /**
  * Loads one or multiple .proto files into a common root namespace.
@@ -516,6 +552,228 @@ function load(filename, root, callback, ctx) {
 }
 
 protobuf.load = load;
+
+/**
+ * Extends a custom class from the internal message prototype.
+ * @param {Function} clazz Extending class
+ * @param {Type} type Reflected message type
+ * @param {Object.<string,*>} [options] Extension options
+ * @param {boolean} [options.noStatics=false] Skips adding the default static methods on top of the constructor
+ * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
+ * @returns {Prototype} Created prototype
+ */
+function extend(clazz, type, options) {
+    if (typeof clazz !== 'function')
+        throw util._TypeError("clazz", "a function");
+    if (!(type instanceof protobuf.Type))
+        throw util._TypeError("type", "a Type");
+    if (!options)
+        options = {};
+
+    /**
+     * This is not an actual type but stands as a reference for any constructor of a custom message class
+     * that you pass to the library.
+     * @name Class
+     * @extends Prototype
+     * @constructor
+     * @param {Object.<string,*>} [properties] Properties to set on the message
+     * @see {@link extend}
+     * @see {@link Prototype}
+     */
+    var defineProperties = {
+        
+        /**
+         * Reference to the reflected type.
+         * @name Class.$type
+         * @type {Type}
+         */
+        $type: {
+            value: type
+        },
+
+        /**
+         * Field names present on the message. Useful as an alternative to Object.keys.
+         * @name Class.$keys
+         * @type {string[]}
+         */
+        $keys: {
+            value: Object.keys(type.fields)
+        }
+    };
+
+    if (!options.noStatics)
+        protobuf.util.merge(defineProperties, {
+
+            /**
+             * Encodes a message of this type to a buffer.
+             * @name Class.encode
+             * @function
+             * @param {Prototype|Object} message Message to encode
+             * @returns {number[]} Encoded message
+             */
+            encode: {
+                value: function encode(message) {
+                    return this.$type.encode(message).finish();
+                }
+            },
+
+            /**
+             * Encodes a message of this type preceeded by its length as a varint to a buffer.
+             * @name Class.encodeDelimited
+             * @function
+             * @param {Prototype|Object} message Message to encodee
+             * @returns {number[]} Encoded message
+             */
+            encodeDelimited: {
+                value: function encodeDelimited(message) {
+                    return this.$type.encodeDelimited(message).finish();
+                }
+            },
+
+            /**
+             * Decodes a message of this type from a buffer.
+             * @name Class.decode
+             * @function
+             * @param {number[]} buffer Buffer to decode
+             * @returns {Prototype} Decoded message
+             */
+            decode: {
+                value: function decode(buffer) {
+                    return this.$type.decode(buffer, clazz);
+                }
+            },
+
+            /**
+             * Decodes a message of this type preceeded by its length as a varint from a buffer.
+             * @name Class.decodeDelimited
+             * @function
+             * @param {number[]} buffer Buffer to decode
+             * @returns {Prototype} Decoded message
+             */
+            decodeDelimited: {
+                value: function decodeDelimited(buffer) {
+                    return this.$type.decodeDelimited(buffer, clazz);
+                }
+            }
+
+        }, true);
+
+    Object.defineProperties(clazz, defineProperties);
+
+    var prototype = init(new protobuf.Prototype(), type);
+    clazz.prototype = prototype;
+    prototype.constructor = clazz;
+
+    if (!options.noRegister)
+        type.register(clazz);
+
+    return prototype;
+}
+
+protobuf.extend = extend;
+
+/**
+ * Initializes the specified prototype with getters and setters corresponding to the reflected
+ * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
+ * @param {Prototype} prototype Prototype to initialize
+ * @param {Type} type Reflected message type
+ * @returns {Prototype} The specified prototype
+ * @see {@link Prototype#$type}
+ * @see {@link Prototype#$values}
+ * @see {@link Prototype#$oneofs}
+ */
+function init(prototype, type) {
+
+    var defaultValues = {};
+    
+    var defineProperties = {
+
+        /**
+         * Reference to the reflected type.
+         * @name Prototype#$type
+         * @type {Type}
+         * @readonly
+         */
+        $type: {
+            value: type
+        },
+
+        /**
+         * Field names present on the message. Useful as an alternative to Object.keys.
+         * @name Class.$keys
+         * @type {string[]}
+         */
+        $keys: {
+            value: Object.keys(type.fields)
+        },
+
+        /**
+         * Field values present on the message.
+         * @name Prototype#$values
+         * @type {Object.<string,*>}
+         */
+        $values: {
+            value: defaultValues
+        },
+
+        /**
+         * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
+         * @name Prototype#$oneofs
+         * @type {Object.<string,string|undefined>}
+         */
+        $oneofs: {
+            value: {}
+        }
+    };
+
+    // Initialize default values and define each field with a getter and a setter
+    type.fieldsArray.forEach(function(field) {
+        field.resolve();
+
+        defaultValues[field.name] = field.defaultValue;
+        
+        defineProperties[field.name] = {
+            get: function() {
+                return this.$values[field.name];
+            },
+            set: function(value) {
+                if (field.partOf) { // Handle oneof side effects
+                    var fieldNameSet = this.$oneofs[field.partOf.name];
+                    if (value === undefined || value === null) {
+                        if (fieldNameSet === field.name)
+                            this.$oneofs[field.partOf.name] = undefined;
+                        this.$values[field.name] = field.defaultValue;
+                    } else {
+                        if (fieldNameSet !== undefined)
+                            this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
+                        this.$values[field.name] = value;
+                        this.$oneofs[field.partOf.name] = field.name;
+                    }
+                } else // Just set the value and reset to the default when unset
+                    this.$values[field.name] = value === undefined || value === null
+                        ? field.defaultValue
+                        : value;
+            },
+            enumerable: true
+        };
+    });
+
+    // Define each oneof with a non-enumerable getter returning the name of the currently set field
+    type.oneofsArray.forEach(function(oneof) {
+        oneof.resolve();
+        
+        defineProperties[oneof.name] = {
+            get: function() {
+                return this.$oneofs[oneof.name];
+            }
+        };
+    });
+
+    Object.defineProperties(prototype, defineProperties);
+    return prototype;
+}
+
+protobuf.init = init;
 
 // Parser
 
@@ -543,8 +801,8 @@ protobuf.Method           = require("./method");
 protobuf.Prototype        = require("./prototype");
 
 // Utility
-protobuf.util             = require("./util");
 protobuf.types            = require("./types");
+protobuf.util             = util;
 
 },{"./enum":2,"./field":3,"./mapfield":5,"./method":6,"./namespace":7,"./object":8,"./parse":10,"./prototype":11,"./reader":12,"./root":13,"./service":14,"./tokenize":19,"./type":20,"./types":21,"./util":22,"./writer":23}],5:[function(require,module,exports){
 module.exports = MapField;
@@ -1975,21 +2233,18 @@ function parse(source, root, visible) {
 },{"./enum":2,"./field":3,"./mapfield":5,"./method":6,"./oneof":9,"./root":13,"./service":14,"./tokenize":19,"./type":20,"./types":21}],11:[function(require,module,exports){
 module.exports = Prototype;
 
-var Type  = require("./type"),
-    Enum  = require("./enum"),
-    types = require("./types"),
-    util  = require("./util");
-
 /**
- * Runtime message prototype ready to be extended by custom classes or generated code. Calling the
- * prototype constructor from within your own classes is optional, but you can do so if you just
- * want to initialize your instance's properties.
+ * Runtime message prototype ready to be extended by custom classes or generated code.
+ * 
+ * Calling the prototype constructor from within your own classes is optional but you can do so if
+ * all you want is to initialize your instance's properties in conformance with the reflected type's
+ * fields.
+ * 
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
  * @param {Object.<string,*>} [options] Initialization options
  * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
  * @abstract
- * @see {@link Type#create}
  */
 function Prototype(properties, options) {
     if (properties) {
@@ -2003,47 +2258,9 @@ function Prototype(properties, options) {
 }
 
 /**
- * Converts a field value to JSON using the specified options.
- * @memberof Prototype
- * @param {Field} field Reflected field
- * @param {*} value Field value
- * @param {Object.<string,*>} [options] Conversion options
- * @param {Function} [options.long] Long conversion type.
- *  Valid values are `String` (requires a long library) and `Number` (throws without a long library
- *  if unsafe). Defaults to the internal number/long-like representation.
- * @param {Function} [options.enum] Enum value conversion type.
- *  Only valid value is `String`. Defaults to the numeric ids.
- * @returns {*} Converted value
- */
-function jsonConvert(field, value, options) {
-    if (!field)
-        return undefined;
-    if (field.repeated) {
-        if (!value)
-            return [];
-        return value.map(function(val) {
-            return jsonConvert(field, val, options);
-        });
-    }
-    if (options)
-        if (field.resolvedType instanceof Enum && options.enum === String)
-            return field.resolvedType.valuesById[value];
-        else if (types.longWireTypes[field.type] !== undefined && options.long)
-            return options.long === Number
-                ? typeof value === 'number'
-                ? value
-                : util.Long.fromValue(value).toNumber()
-                : util.Long.fromValue(value, field.type.charAt(0) === 'u').toString();
-    return value;
-}
-
-Prototype.jsonConvert = jsonConvert;
-
-/**
  * Converts a runtime message to a JSON object.
  * @param {Object.<string,*>} [options] Conversion options
  * @returns {Object.<string,*>} JSON object
- * @this Prototype
  * @virtual
  */
 Prototype.toJSON = function toJSON(options) {
@@ -2052,165 +2269,15 @@ Prototype.toJSON = function toJSON(options) {
         return values;
     var json = {},
         keys = Object.keys(values);
-    for (var i = 0, k = keys.length, key; i < k; ++i)
-        json[key = keys[i]] = jsonConvert(this.constructor.$type.fields[key], values[key], options);
+    for (var i = 0, k = keys.length, key; i < k; ++i) {
+        var field = this.constructor.$type.fields[key = keys[i]];
+        if (field)
+            json[key] = field.jsonConvert(values[key], options);
+    }
     return json;
 };
 
-/**
- * Makes the specified constructor extend the runtime message prototype.
- * @param {function(new:Message)} constructor Constructor to extend
- * @param {Type} type Reflected message type
- * @param {Object.<string,*>} [options] Additional options
- * @param {boolean} [options.noStatics=false] Skips adding the default static methods on the constructor
- * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
- * @returns {Object} Prototype
- */
-Prototype.extend = function extend(constructor, type, options) {
-    if (typeof constructor !== 'function')
-        throw util._TypeError("constructor", "a function");
-    if (!(type instanceof Type))
-        throw util._TypeError("type", "a Type");
-    if (!options)
-        options = {};
-
-    // Underlying reflected message type for reference
-    constructor.$type = type;
-
-    if (!options.noStatics) {
-
-        // Creates a new message
-        constructor.create = function(properties) {
-            return this.$type.create(properties, constructor);
-        };
-
-        // Encodes to a buffer
-        constructor.encode = function encode(message) {
-            return this.$type.encode(message).finish();
-        };
-
-        // Encodes to a buffer, length delimited
-        constructor.encodeDelimited = function encodeDelimited(message) {
-            return this.$type.encodeDelimited(message).finish();
-        };
-
-        // Decodes from a buffer
-        constructor.decode = function decode(buffer) {
-            return this.$type.decode(buffer, constructor);
-        };
-
-        // Decodes from a buffer, length delimited
-        constructor.decodeDelimited = function decodeDelimited(buffer) {
-            return this.$type.decodeDelimited(buffer, constructor);
-        };
-
-    }
-
-    var prototype = Prototype.initialize(new Prototype(), type);
-    constructor.prototype = prototype;
-    prototype.constructor = constructor;
-
-    // Register the now-known constructor for this type
-    if (!options.noRegister)
-        type.register(constructor);
-
-    return prototype;
-};
-
-/**
- * Initializes the specified prototype with getters and setters corresponding to the reflected
- * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
- * @param {Prototype} prototype Prototype to initialize
- * @param {Type} type Reflected message type
- * @returns {Prototype} prototype
- * @see {@link Prototype#$type}
- * @see {@link Prototype#$valuees}
- * @see {@link Prototype#$oneofs}
- */
-Prototype.initialize = function init(prototype, type) {
-
-    var defaultValues = {};
-    
-    var defineProperties = {
-
-        /**
-         * Reference to the reflected type.
-         * @name Prototype#$type
-         * @type {Type}
-         * @readonly
-         */
-        $type: {
-            value: type,
-            enumerable: false
-        },
-
-        /**
-         * Field values present on the message.
-         * @name Prototype#$values
-         * @type {Object.<string,*>}
-         */
-        $values: {
-            value: defaultValues,
-            enumerable: false
-        },
-
-        /**
-         * Field names of the respective fields set for each oneof.
-         * @name Prototype#$oneofs
-         * @type {Object.<string,string|undefined>}
-         */
-        $oneofs: {
-            value: {},
-            enumerable: false
-        }
-    };
-
-    // Initialize default values and define each field with a getter and a setter
-    type.fieldsArray.forEach(function(field) {
-        field.resolve();
-        defaultValues[field.name] = field.defaultValue;
-        defineProperties[field.name] = {
-            get: function() {
-                return this.$values[field.name];
-            },
-            set: function(value) {
-                if (field.partOf) { // Handle oneof side effects
-                    var fieldNameSet = this.$oneofs[field.partOf.name];
-                    if (value === undefined || value === null) {
-                        if (fieldNameSet === field.name)
-                            this.$oneofs[field.partOf.name] = undefined;
-                        this.$values[field.name] = field.defaultValue;
-                    } else {
-                        if (fieldNameSet !== undefined)
-                            this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
-                        this.$values[field.name] = value;
-                        this.$oneofs[field.partOf.name] = field.name;
-                    }
-                } else // Just set the value and reset to the default when unset
-                    this.$values[field.name] = value === undefined || value === null
-                        ? field.defaultValue
-                        : value;
-            },
-            enumerable: true
-        };
-    });
-
-    // Define each oneof with a non-enumerable getter returning the name of the currently set field
-    type.oneofsArray.forEach(function(oneof) {
-        oneof.resolve();
-        defineProperties[oneof.name] = {
-            get: function() {
-                return this.$oneofs[oneof.name];
-            },
-            enumerable: false
-        };
-    });
-
-    Object.defineProperties(prototype, defineProperties);
-    return prototype;
-};
-
-},{"./enum":2,"./type":20,"./types":21,"./util":22}],12:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
@@ -3683,9 +3750,9 @@ function tokenize(source) {
             throw Error("illegal token '" + actual + "' ('" + expected + "' expected, line " + line + ")");
     }
 
-    function omit(expected) {
+    function omit(optional) {
         var actual = peek();
-        if (actual === expected) {
+        if (actual === optional) {
             next();
             return true;
         }
@@ -3846,7 +3913,7 @@ Object.defineProperties(TypePrototype, {
      */
     prototype: {
         get: function() {
-            return this._prototype || (this._prototype = Prototype.initialize(new Prototype(), this));
+            return this._prototype || (this._prototype = protobuf.init(new Prototype(), this));
         }
     }
 });
@@ -4107,7 +4174,9 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constru
     return this.decode(readerOrBuffer.bytes(), constructor);
 };
 
-},{"./enum":2,"./field":3,"./namespace":7,"./oneof":9,"./prototype":11,"./reader":12,"./service":14,"./util":22,"./writer":23}],21:[function(require,module,exports){
+var protobuf = require("./index");
+
+},{"./enum":2,"./field":3,"./index":4,"./namespace":7,"./oneof":9,"./prototype":11,"./reader":12,"./service":14,"./util":22,"./writer":23}],21:[function(require,module,exports){
 // NOTE: These types are structured in a way that makes looking up wire types and similar fast,
 // but not necessarily comfortable. Do not modify them unless you know exactly what you are doing.
 
@@ -4450,6 +4519,23 @@ util.toHash = function toHash(value) {
  */
 util.fromHash = function fromHash(hash, unsigned) {
     return long_._setHash(hash)._get(Boolean(unsigned));
+};
+
+/**
+ * Merges the properties of the source object into the destination object.
+ * @param {Object} dst Destination object
+ * @param {Object} src Source object
+ * @param {boolean} [ifNotSet=falsee] Merges only if the key is not already set
+ * @returns {Object} Destination object
+ */
+util.merge = function merge(dst, src, ifNotSet) {
+    if (src) {
+        var keys = Object.keys(src);
+        for (var i = 0, k = keys.length, key; i < k; ++i)
+            if (!dst[key = keys[i]] || !ifNotSet)
+                dst[key] = src[key];
+    }
+    return dst;
 };
 
 }).call(this,require('_process'))

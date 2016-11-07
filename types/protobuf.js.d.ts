@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Mon, 07 Nov 2016 03:27:43 UTC
+ * Generated Mon, 07 Nov 2016 06:02:21 UTC
  */
 declare module protobuf {
 
@@ -236,6 +236,20 @@ declare module protobuf {
        */
       decode(reader: Reader, receivedWireType: number): any;
    
+      /**
+       * Converts a field value to JSON using the specified options.
+       * @param {*} value Field value
+       * @param {Object.<string,*>} [options] Conversion options
+       * @param {Function} [options.long] Long conversion type.
+       * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
+       *  Defaults to the internal number/long-like representation.
+       * @param {Function} [options.enum] Enum value conversion type.
+       *  Only valid value is `String`.
+       *  Defaults to the values' numeric ids.
+       * @returns {*} Converted value
+       */
+      jsonConvert(value: any, options?: { [k: string]: any }): any;
+   
    }
    
    /**
@@ -248,6 +262,97 @@ declare module protobuf {
     * @throws {TypeError} If arguments are invalid
     */
    function load(filename: (string|string[]), root?: Root, callback?: (() => any), ctx?: Object): (Promise<Root>|Object);
+   
+   /**
+    * Extends a custom class from the internal message prototype.
+    * @param {Function} clazz Extending class
+    * @param {Type} type Reflected message type
+    * @param {Object.<string,*>} [options] Extension options
+    * @param {boolean} [options.noStatics=false] Skips adding the default static methods on top of the constructor
+    * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
+    * @returns {Prototype} Created prototype
+    */
+   function extend(clazz: (() => any), type: Type, options?: { [k: string]: any }): Prototype;
+   
+   /**
+    * This is not an actual type but stands as a reference for any constructor of a custom message class
+    * that you pass to the library.
+    * @name Class
+    * @extends Prototype
+    * @constructor
+    * @param {Object.<string,*>} [properties] Properties to set on the message
+    * @see {@link extend}
+    * @see {@link Prototype}
+    */
+   class Class extends Prototype {
+      /**
+       * This is not an actual type but stands as a reference for any constructor of a custom message class
+       * that you pass to the library.
+       * @name Class
+       * @extends Prototype
+       * @constructor
+       * @param {Object.<string,*>} [properties] Properties to set on the message
+       * @see {@link extend}
+       * @see {@link Prototype}
+       */
+      constructor(properties?: { [k: string]: any });
+   
+      /**
+       * Field names present on the message. Useful as an alternative to `Object.keys`.
+       * @name Class.$keys
+       * @type {string[]}
+       */
+      static $keys: string[];
+   
+      /**
+       * Encodes a message of this type to a buffer.
+       * @name Class.encode
+       * @function
+       * @param {Prototype|Object} message Message to encode
+       * @returns {number[]} Encoded message
+       */
+      static encode(message: (Prototype|Object)): number[];
+   
+      /**
+       * Encodes a message of this type preceeded by its length as a varint to a buffer.
+       * @name Class.encodeDelimited
+       * @function
+       * @param {Prototype|Object} message Message to encodee
+       * @returns {number[]} Encoded message
+       */
+      static encodeDelimited(message: (Prototype|Object)): number[];
+   
+      /**
+       * Decodes a message of this type from a buffer.
+       * @name Class.decode
+       * @function
+       * @param {number[]} buffer Buffer to decode
+       * @returns {Prototype} Decoded message
+       */
+      static decode(buffer: number[]): Prototype;
+   
+      /**
+       * Decodes a message of this type preceeded by its length as a varint from a buffer.
+       * @name Class.decodeDelimited
+       * @function
+       * @param {number[]} buffer Buffer to decode
+       * @returns {Prototype} Decoded message
+       */
+      static decodeDelimited(buffer: number[]): Prototype;
+   
+   }
+   
+   /**
+    * Initializes the specified prototype with getters and setters corresponding to the reflected
+    * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
+    * @param {Prototype} prototype Prototype to initialize
+    * @param {Type} type Reflected message type
+    * @returns {Prototype} The specified prototype
+    * @see {@link Prototype#$type}
+    * @see {@link Prototype#$values}
+    * @see {@link Prototype#$oneofs}
+    */
+   function init(prototype: Prototype, type: Type): Prototype;
    
    /**
     * Reflected message map field.
@@ -700,65 +805,19 @@ declare module protobuf {
    function parse(source: string, root?: Root, visible?: boolean): Object;
    
    /**
-    * Runtime message prototype ready to be extended by custom classes or generated code. Calling the
-    * prototype constructor from within your own classes is optional, but you can do so if you just
-    * want to initialize your instance's properties.
+    * Runtime message prototype ready to be extended by custom classes or generated code.
+    *
+    * Calling the prototype constructor from within your own classes is optional but you can do so if
+    * all you want is to initialize your instance's properties in conformance with the reflected type's
+    * fields.
+    *
     * @constructor
     * @param {Object.<string,*>} [properties] Properties to set
     * @param {Object.<string,*>} [options] Initialization options
     * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
     * @abstract
-    * @see {@link Type#create}
     */
    abstract class Prototype {
-      /**
-       * Converts a field value to JSON using the specified options.
-       * @memberof Prototype
-       * @param {Field} field Reflected field
-       * @param {*} value Field value
-       * @param {Object.<string,*>} [options] Conversion options
-       * @param {Function} [options.long] Long conversion type.
-       * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
-       *  Defaults to the internal number/long-like representation.
-       * @param {Function} [options.enum] Enum value conversion type.
-       *  Only valid value is `String`.
-       *  Defaults to the values' numeric ids.
-       * @returns {*} Converted value
-       */
-      static jsonConvert(field: Field, value: any, options?: { [k: string]: any }): any;
-   
-      /**
-       * Converts a runtime message to a JSON object.
-       * @param {Object.<string,*>} [options] Conversion options
-       * @returns {Object.<string,*>} JSON object
-       * @this Prototype
-       * @virtual
-       */
-      static toJSON(options?: { [k: string]: any }): { [k: string]: any };
-   
-      /**
-       * Makes the specified constructor extend the runtime message prototype.
-       * @param {function(new:Message)} constructor Constructor to extend
-       * @param {Type} type Reflected message type
-       * @param {Object.<string,*>} [options] Additional options
-       * @param {boolean} [options.noStatics=false] Skips adding the default static methods on the constructor
-       * @param {boolean} [options.noRegister=false] Skips registering the constructor with the reflected type
-       * @returns {Object} Prototype
-       */
-      static extend(constructor: (() => any), type: Type, options?: { [k: string]: any }): Object;
-   
-      /**
-       * Initializes the specified prototype with getters and setters corresponding to the reflected
-       * type's fields and oneofs. Stores field values within {@link Prototype#$values}.
-       * @param {Prototype} prototype Prototype to initialize
-       * @param {Type} type Reflected message type
-       * @returns {Prototype} prototype
-       * @see {@link Prototype#$type}
-       * @see {@link Prototype#$valuees}
-       * @see {@link Prototype#$oneofs}
-       */
-      static initialize(prototype: Prototype, type: Type): Prototype;
-   
       /**
        * Reference to the reflected type.
        * @name Prototype#$type
@@ -775,11 +834,19 @@ declare module protobuf {
       $values: { [k: string]: any };
    
       /**
-       * Field names of the respective fields set for each oneof.
+       * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
        * @name Prototype#$oneofs
        * @type {Object.<string,string|undefined>}
        */
       $oneofs: { [k: string]: (string|undefined) };
+   
+      /**
+       * Converts a runtime message to a JSON object.
+       * @param {Object.<string,*>} [options] Conversion options
+       * @returns {Object.<string,*>} JSON object
+       * @virtual
+       */
+      static toJSON(options?: { [k: string]: any }): { [k: string]: any };
    
    }
    
@@ -1403,6 +1470,15 @@ declare module protobuf {
        * @returns {number|{ low: number, high: number, unsigned: boolean }} Original value
        */
       function fromHash(hash: string, unsigned?: boolean): (number|Object);
+   
+      /**
+       * Merges the properties of the source object into the destination object.
+       * @param {Object} dst Destination object
+       * @param {Object} src Source object
+       * @param {boolean} [ifNotSet=falsee] Merges only if the key is not already set
+       * @returns {Object} Destination object
+       */
+      function merge(dst: Object, src: Object, ifNotSet?: boolean): Object;
    
    }
    

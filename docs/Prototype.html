@@ -123,6 +123,8 @@
             
                 <li data-name="util.isString"><a href="util.html#.isString">isString</a></li>
             
+                <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
+            
                 <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
             
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
@@ -277,6 +279,49 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Class">
+            <span class="title">
+                <a href="Class.html">Class</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
+            
+                <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
+            
+                <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
+            
+                <li data-name="Class#$oneofs"><a href="Class.html#$oneofs">$oneofs</a></li>
+            
+                <li data-name="Class#$type"><a href="Class.html#$type">$type</a></li>
+            
+                <li data-name="Class#$values"><a href="Class.html#$values">$values</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Class.decode"><a href="Class.html#.decode">decode</a></li>
+            
+                <li data-name="Class.decodeDelimited"><a href="Class.html#.decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Class.encode"><a href="Class.html#.encode">encode</a></li>
+            
+                <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Enum">
             <span class="title">
                 <a href="Enum.html">Enum</a>
@@ -421,6 +466,8 @@
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
             
+                <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
+            
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
                 <li data-name="Field#onRemove"><a href="Field.html#onRemove">onRemove</a></li>
@@ -521,6 +568,8 @@
                 <li data-name="MapField#encode"><a href="MapField.html#encode">encode</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
+            
+                <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
             
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
@@ -785,12 +834,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="Prototype.extend"><a href="Prototype.html#.extend">extend</a></li>
-            
-                <li data-name="Prototype.initialize"><a href="Prototype.html#.initialize">initialize</a></li>
-            
-                <li data-name="Prototype.jsonConvert"><a href="Prototype.html#.jsonConvert">jsonConvert</a></li>
             
                 <li data-name="Prototype.toJSON"><a href="Prototype.html#.toJSON">toJSON</a></li>
             
@@ -1306,7 +1349,7 @@
     
         
         <div class="tag-source">
-            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line19">line 19</a>
+            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line16">line 16</a>
         </div>
         
     </div>
@@ -1317,7 +1360,8 @@
     
     
     <div class="description">
-        <p>Runtime message prototype ready to be extended by custom classes or generated code. Calling the<br>prototype constructor from within your own classes is optional, but you can do so if you just<br>want to initialize your instance's properties.</p>
+        <p>Runtime message prototype ready to be extended by custom classes or generated code.</p>
+<p>Calling the prototype constructor from within your own classes is optional but you can do so if<br>all you want is to initialize your instance's properties in conformance with the reflected type's<br>fields.</p>
     </div>
     
 
@@ -1490,13 +1534,6 @@
     
     
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="Type.html#create">Type#create</a></li>
-        </ul>
-    </dd>
-    
     
     
 </dl>
@@ -1543,7 +1580,7 @@
 <dd>
     
     <div class="description">
-        <p>Field names of the respective fields set for each oneof.</p>
+        <p>Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, <code>undefined</code>.</p>
     </div>
     
     
@@ -1676,779 +1713,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".extend">
-            
-            <span class="type-signature static">static</span>Prototype.extend<span class="signature">(constructor, type, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line93">line 93</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Makes the specified constructor extend the runtime message prototype.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>constructor</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Constructor to extend</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Reflected message type</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Additional options</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>noStatics</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Skips adding the default static methods on the constructor</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>noRegister</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Skips registering the constructor with the reflected type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        Object
-                        
-                    
-            </td>
-            <td class="description last">Prototype</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".initialize">
-            
-            <span class="type-signature static">static</span>Prototype.initialize<span class="signature">(prototype, type)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line154">line 154</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Initializes the specified prototype with getters and setters corresponding to the reflected<br>type's fields and oneofs. Stores field values within <a href="Prototype.html#$values">Prototype#$values</a>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>prototype</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Prototype.html">Prototype</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Prototype to initialize</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Reflected message type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="Prototype.html#$type">Prototype#$type</a></li>
-        
-            <li>Prototype#$valuees</li>
-        
-            <li><a href="Prototype.html#$oneofs">Prototype#$oneofs</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Prototype.html">Prototype</a>
-                        
-                    
-            </td>
-            <td class="description last">prototype</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".jsonConvert">
-            
-            <span class="type-signature static">static</span>Prototype.jsonConvert<span class="signature">(field, value, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line42">line 42</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Converts a field value to JSON using the specified options.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>field</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Field.html">Field</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Reflected field</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Field value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>long</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Long conversion type.<br> Valid values are <code>String</code> (requires a long library) and <code>Number</code> (throws without a long library if unsafe).</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>enum</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Enum value conversion type.<br> Only valid value is <code>String</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        *
-                        
-                    
-            </td>
-            <td class="description last">Converted value</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id=".toJSON">
             
             <span class="type-signature ">abstract,static</span>Prototype.toJSON<span class="signature">(<span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object.&lt;string, *>}</span>
@@ -2456,7 +1720,7 @@
     
         
         <div class="tag-source">
-            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line73">line 73</a>
+            <a href="prototype.js.html">prototype.js</a>, <a href="prototype.js.html#line33">line 33</a>
         </div>
         
     </div>
@@ -2473,9 +1737,6 @@
 
     
     
-    
-        <h5>This:</h5>
-        <ul><li><a href="Prototype.html">Prototype</a></li></ul>
     
     
     
@@ -2617,7 +1878,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 04:00:14 GMT+0100 (Mitteleuropäische Zeit)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Nov 07 2016 07:02:15 GMT+0100 (Mitteleuropäische Zeit)
         </footer>
     </div>
 </div>

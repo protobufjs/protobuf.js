@@ -8,7 +8,7 @@ tap.test("google.protobuf.Any class", function(test) {
     function Any(properties) {
         protobuf.Prototype.call(this, properties);
     }
-    protobuf.Prototype.extend(Any, root.lookup("google.protobuf.Any"));
+    protobuf.extend(Any, root.lookup("google.protobuf.Any"));
 
     var valueBuffer;
     var any = new Any({
