@@ -1,14 +1,16 @@
 var tap = require("tap");
 
-var protobuf = require("..");
+var protobuf  = require(".."),
+    Prototype = protobuf.Prototype,
+    inherits  = protobuf.inherits;
 
 tap.test("google.protobuf.Any class", function(test) {
     var root = new protobuf.Root();
 
     function Any(properties) {
-        protobuf.Prototype.call(this, properties);
+        Prototype.call(this, properties);
     }
-    protobuf.extend(Any, root.lookup("google.protobuf.Any"));
+    inherits(Any, root.lookup("google.protobuf.Any"));
 
     var valueBuffer;
     var any = new Any({

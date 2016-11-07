@@ -132,7 +132,7 @@ function inherits(clazz, type, options) {
 
     Object.defineProperties(clazz, defineProperties);
 
-    var prototype = init(new protobuf.Prototype(), type);
+    var prototype = initialize(new protobuf.Prototype(), type);
     clazz.prototype = prototype;
     prototype.constructor = clazz;
 
