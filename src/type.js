@@ -444,10 +444,14 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
  * @param {number} limit Maximum read offset
  * @returns {Prototype} Populated message instance
  */
-TypePrototype.decode_ = decode_internal;
+TypePrototype.decode_ = function decode_setup(reader, message, limit) {
+    this.decode_ = codegen.supported
+        ? decode_generate(this)
+        : decode_internal;
+    return this.decode_(reader, message, limit);
+};
 
 // Codegen reference and fallback if code generation is not supported.
-// NOTE: There is actually no generator for Type#decode_ as it seems to bring no benefit.
 function decode_internal(reader, message, limit) {
     /* eslint-disable no-invalid-this */
     var values     = message.$values,
@@ -471,6 +475,46 @@ function decode_internal(reader, message, limit) {
     return message;
     /* eslint-enable no-invalid-this */
 }
+
+/**
+ * Generates a decoder specific to the specified message type.
+ * @name Type.generateDecoder
+ * @param {Type} type Message type
+ * @returns {function} Decoder
+ */
+function decode_generate(type) {
+    var fieldsArray = type.fieldsArray,
+        fieldsCount = fieldsArray.length;
+    var gen = codegen("$fields", "reader", "message", "limit")
+    ('"use strict";')
+    ("while (reader.pos < limit) {")
+        ("var tag = reader.tag(), value;")
+        ("switch (tag.id) {");
+        for (var i = 0, field; i < fieldsCount; ++i) { gen
+            ("case %d:", (field = fieldsArray[i]).id)
+                ("value = $fields[%d].decode(reader, tag.wireType);", i);
+                if (field.repeated) gen
+                ("if (Array.isArray(value))")
+                    ("Array.prototype.push.apply(message.$values[%j], value);", field.name)
+                ("else")
+                    ("message.$values[%j].push(value);", field.name);
+                else gen
+                ("message.$values[%j] = value;", field.name);
+                gen
+                ("break;");
+        } gen
+            ("default:")
+                ("reader.skipType(tag.wireType);")
+                ("break;")
+        ("}")
+    ("}");
+    return gen
+    ("return message;")
+    .eof(type.fullName + "$decode")
+    .bind(type, fieldsArray);
+}
+
+Type.generateDecoder = decode_generate;
 
 /**
  * Decodes a message of this m type preceeded by its byte length as a varint.

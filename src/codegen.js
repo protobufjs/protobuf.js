@@ -15,7 +15,7 @@ function codegen(/* varargs */) {
     // Appends a formatted line to the generated source
     function gen(format/*, varargs */) {
         var params = Array.prototype.slice.call(arguments, 1),
-            index = 0;
+            index  = 0;
         var line = format.replace(/%([djs])/g, function($0, $1) {
             var param = params[index++];
             return $1 === "j"
@@ -32,7 +32,7 @@ function codegen(/* varargs */) {
             else if (/^[\}\]]/.test(line)) // block close (decrement and keep)
                 level = --indent;
         }
-        for (var i = 0; i < level; ++i)
+        for (index = 0; index < level; ++index)
             line = "    " + line;
         src.push(line);
         return gen;

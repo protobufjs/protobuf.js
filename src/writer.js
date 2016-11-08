@@ -319,62 +319,75 @@ WriterPrototype.string = function write_string(value) {
 };
 
 /**
+ * Writer state.
+ * @constructor
+ * @param {Writer} writer Writer to copy state from
+ * @ignore
+ */
+function State(writer) {
+    this.bufs = writer.bufs;
+    this.buf  = writer.buf;
+    this.pos  = writer.pos;
+    this.len  = writer.len;
+}
+
+/**
+ * Applies this state to the specified writer.
+ * @param {Writer} writer Writer to copy state to
+ * @returns {undefined}
+ * @ignore
+ */
+State.prototype.apply = function apply(writer) {
+    writer.bufs = this.bufs;
+    writer.buf  = this.buf;
+    writer.pos  = this.pos;
+    writer.len  = this.len;
+};
+
+/**
  * Forks this writer's state by pushing it to a stack and reusing the remaining buffer
  * for a new set of write operations. A call to {@link Writer#reset} or {@link Writer#finish}
  * resets the writer to the previous state.
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {
-    if (this.pos) {
-        var remain = this.buf;
-        if (this.pos < this.len) {
-            this.bufs.push(this._slice.call(remain, 0, this.pos));
-            remain = this._slice.call(remain, this.pos);
-            this.len = remain.length;
-        } else {
-            this.bufs.push(remain);
-            remain = null;
-            this.len = 0;
-        }
-        this._stack.push(this.bufs);
-        this.bufs = [];
-        this.buf = remain;
-        this.pos = 0;
-    }
-    return this;
-};
-
-/**
- * Resets this instance to the last state. If there is no last state, all references
- * to previous buffers will be cleared.
- * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
- * @returns {Writer} `this`
- */
-WriterPrototype.reset = function reset(clearForkedStates) {
-    if (this._stack.length)
-        this.bufs = clearForkedStates ? [] : this._stack.pop();
-    else
-        this.bufs = [];
+    this._stack.push(new State(this));
+    this.bufs = [];
     this.buf = null;
     this.pos = this.len = 0;
     return this;
 };
 
 /**
+ * Resets this instance to the last state. If there is no last state, all references
+ * to previous buffers will be cleared.
+ * @returns {Writer} `this`
+ */
+WriterPrototype.reset = function reset() {
+    if (this._stack.length)
+        this._stack.pop().apply(this);
+    else {
+        this.bufs = [];
+        this.buf = null;
+        this.pos = this.len = 0;
+    }
+    return this;
+};
+
+/**
  * Finishes the current sequence of write operations and frees all resources.
- * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
  * @returns {number[]} Finished buffer
  */
-WriterPrototype.finish = function finish(clearForkedStates) {
+WriterPrototype.finish = function finish() {
     var bufs = this.bufs,
         buf  = this.buf,
         pos  = this.pos,
         len  = this.len;
-    this.reset(clearForkedStates);
+    this.reset();
     if (buf) {
         if (pos < len)
             buf = this._slice.call(buf, 0, pos);
-        if (!bufs.length)
+        if (bufs.length === 0)
             return buf;
     } else
         return emptyArray;
@@ -503,19 +516,17 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 
 /**
  * Finishes the current sequence of write operations using node buffers and frees all resources.
- * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
  * @returns {Buffer} Finished buffer
  */
-BufferWriterPrototype.finish = function finish_buffer(clearForkedStates) {
+BufferWriterPrototype.finish = function finish_buffer() {
     var bufs = this.bufs,
         buf  = this.buf,
         pos  = this.pos;
-    this.reset(clearForkedStates);
+    this.reset();
     if (buf) {
-        if (!bufs.length)
+        if (bufs.length === 0)
             return buf.slice(0, pos);
-        if (pos)
-            bufs.push(buf.slice(0, pos));
+        bufs.push(buf.slice(0, pos));
         return Writer.Buffer.concat(bufs);
     }
     return emptyBuffer;

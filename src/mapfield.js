@@ -165,9 +165,7 @@ function decode_internal(reader) {
     if (length) {
 
         var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
-            keyWireType = types.mapKeyWireTypes[keyType];
-
-        var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
+            valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
             valueWireType = types.wireTypes[valueType];
 
         var limit  = reader.pos + length,
@@ -201,8 +199,7 @@ function decode_internal(reader) {
  */
 function decode_generate(field) {
     var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-        keyWireType = types.mapKeyWireTypes[keyType];
-    var valueType = field.resolvedType instanceof Enum ? "uint32" : field.type,
+        valueType = field.resolvedType instanceof Enum ? "uint32" : field.type,
         valueWireType = types.wireTypes[valueType];
     var gen = codegen("$type", "$hash", "reader")
     ('"use strict";')
@@ -211,11 +208,11 @@ function decode_generate(field) {
         ("var limit = reader.pos + length, keys = [], ki = 0, values = [], vi = 0;")
         ("while (reader.pos < limit) {")
             ("var tag = reader.tag();")
-            ("if (tag.id === 1)", keyWireType)
+            ("if (tag.id === 1)")
                 ("keys[ki++] = reader.%s();", keyType)
             ("else if (tag.id === 2)");
                 if (valueWireType !== undefined) gen
-                ("values[vi++] = reader.%s();", valueType)
+                ("values[vi++] = reader.%s();", valueType);
                 else gen
                 ("values[vi++] = $type.decodeDelimited_(reader);");
             gen
