@@ -284,7 +284,7 @@ FieldPrototype.generateDecoder = function() {
     if (wireType !== undefined) gen
         ("return w===%d", wireType)
             ("?r.%s()", type)
-            (":this.resolvedType.decodeDelimited_(r,this.resolvedType._constructor?new this.resolvedType._constructor():Object.create(this.resolvedType.prototype));")
+            (":this.resolvedType.decodeDelimited_(r,this.resolvedType._constructor?new this.resolvedType._constructor():Object.create(this.resolvedType.prototype));");
     else gen
         ("return this.resolvedType.decodeDelimited_(r,this.resolvedType._constructor?new this.resolvedType._constructor():Object.create(this.resolvedType.prototype));");
     return gen.eof();

@@ -18,7 +18,7 @@ function codegen(/* varargs */) {
         src.push(format.replace(/%([djs])/g, function($0, $1) {
             return $1 === "j"
                 ? JSON.stringify(val[idx++])
-                : "" + val[idx++];
+                : String(val[idx++]);
         }));
         return append;
     }

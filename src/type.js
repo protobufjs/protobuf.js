@@ -321,12 +321,12 @@ TypePrototype.create = function create(properties, constructor) {
 
 /**
  * Generates an encoder specific to this message type.
- * @returns {function(Prototype|Object, Writer): Writer}
+ * @returns {function((Prototype|Object),Writer):Writer} Encoder
  */
 TypePrototype.generateEncoder = function generateEncoder() {
-    var gen = codegen("W", "m", "w") // W: Writer, m: message, w: writer
+    var gen = codegen("W", "m", "w"); // W: Writer, m: message, w: writer
     gen
-    ("if(!w)w=W();var v=m.$values||m,f=this.fieldsArray;") // v: values, f: fieldsArray
+    ("if(!w)w=W();var v=m.$values||m,f=this.fieldsArray;"); // v: values, f: fieldsArray
     var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
     for (var i = 0; i < fieldsCount; ++i) {
@@ -380,7 +380,7 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
     } else if (!constructor)
         constructor = this._constructor;
     var reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer),
-        message = this._constructor ? new (this._constructor)() : Object.create(this.prototype);
+        message = this._constructor ? new this._constructor() : Object.create(this.prototype),
         limit   = length === undefined ? reader.len : reader.pos + length;
     return this.decode_(reader, message, limit);
 };
