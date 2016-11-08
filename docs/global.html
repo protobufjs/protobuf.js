@@ -93,10 +93,6 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
-            
-                <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
-            
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
             </ul>
@@ -234,6 +230,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="BufferWriter.alloc"><a href="BufferWriter.html#.alloc">alloc</a></li>
+            
+                <li data-name="BufferWriter.setup"><a href="BufferWriter.html#.setup">setup</a></li>
             
                 <li data-name="BufferWriter#bool"><a href="BufferWriter.html#bool">bool</a></li>
             
@@ -464,6 +462,10 @@
             
                 <li data-name="Field#encode"><a href="Field.html#encode">encode</a></li>
             
+                <li data-name="Field#generateDecoder"><a href="Field.html#generateDecoder">generateDecoder</a></li>
+            
+                <li data-name="Field#generateEncoder"><a href="Field.html#generateEncoder">generateEncoder</a></li>
+            
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
@@ -566,6 +568,10 @@
                 <li data-name="MapField#decode"><a href="MapField.html#decode">decode</a></li>
             
                 <li data-name="MapField#encode"><a href="MapField.html#encode">encode</a></li>
+            
+                <li data-name="MapField#generateDecoder"><a href="MapField.html#generateDecoder">generateDecoder</a></li>
+            
+                <li data-name="MapField#generateEncoder"><a href="MapField.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
@@ -856,6 +862,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Reader.Buffer"><a href="Reader.html#.Buffer">Buffer</a></li>
+            
                 <li data-name="Reader#buf"><a href="Reader.html#buf">buf</a></li>
             
                 <li data-name="Reader#len"><a href="Reader.html#len">len</a></li>
@@ -986,6 +994,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Root#common"><a href="Root.html#common">common</a></li>
+            
                 <li data-name="Root#empty"><a href="Root.html#empty">empty</a></li>
             
                 <li data-name="Root#fullName"><a href="Root.html#fullName">fullName</a></li>
@@ -997,6 +1007,8 @@
                 <li data-name="Root#options"><a href="Root.html#options">options</a></li>
             
                 <li data-name="Root#parent"><a href="Root.html#parent">parent</a></li>
+            
+                <li data-name="Root#pendingExtensions"><a href="Root.html#pendingExtensions">pendingExtensions</a></li>
             
                 <li data-name="Root#properties"><a href="Root.html#properties">properties</a></li>
             
@@ -1210,7 +1222,11 @@
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
             
+                <li data-name="Type#decode_"><a href="Type.html#decode_">decode_</a></li>
+            
                 <li data-name="Type#decodeDelimited"><a href="Type.html#decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Type#decodeDelimited_"><a href="Type.html#decodeDelimited_">decodeDelimited_</a></li>
             
                 <li data-name="Type#define"><a href="Type.html#define">define</a></li>
             
@@ -1219,6 +1235,8 @@
                 <li data-name="Type#encode"><a href="Type.html#encode">encode</a></li>
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Type#generateEncoder"><a href="Type.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
@@ -1263,6 +1281,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Writer.Buffer"><a href="Writer.html#.Buffer">Buffer</a></li>
+            
                 <li data-name="Writer.BUFFER_SIZE"><a href="Writer.html#.BUFFER_SIZE">BUFFER_SIZE</a></li>
             
                 <li data-name="Writer#buf"><a href="Writer.html#buf">buf</a></li>
@@ -1282,6 +1302,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Writer.alloc"><a href="Writer.html#.alloc">alloc</a></li>
+            
+                <li data-name="Writer.setup"><a href="Writer.html#.setup">setup</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -1397,6 +1419,158 @@
         <h3 class="subsection-title">Methods</h3>
         
         <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="codegen">
+            
+            codegen<span class="signature">(params)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="global.html#Appender">Appender</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js">codegen.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js#L12">line 12</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Programmatically generates a function.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                        <span class="repeatable">repeatable</span>
+                    
+                
+                <p>Parameter names</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="global.html#Appender">Appender</a>
+                        
+                    
+            </td>
+            <td class="description last">Appender</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
             
 <dt>
     <div class="nameContainer">
@@ -2347,6 +2521,77 @@
         </dl>
     
     
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+        
+        <dl>
+                
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="Appender">
+            
+            Appender<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js">codegen.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js#L3">line 3</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+            </dl>
     
     
     

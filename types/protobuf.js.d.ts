@@ -1,9 +1,21 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Mon, 07 Nov 2016 16:18:04 UTC
+ * Generated Tue, 08 Nov 2016 05:42:42 UTC
  */
 declare module protobuf {
 
+   /**
+    * @typedef {function(string, ...*): Appender} Appender
+    */
+   type Appender = () => void;
+   
+   /**
+    * Programmatically generates a function.
+    * @param {...string} params Parameter names
+    * @returns {Appender} Appender
+    */
+   function codegen(params: string): Appender;
+   
    /**
     * Reflected enum.
     * @extends ReflectionObject
@@ -64,14 +76,14 @@ declare module protobuf {
        * Adds a value to this enum.
        * @param {string} name Value name
        * @param {number} id Value id
-       * @returns {Enum} this
+       * @returns {Enum} `this`
        */
       add(name: string, id: number): Enum;
    
       /**
        * Removes a value from this enum
        * @param {string} name Value name
-       * @returns {Enum} this
+       * @returns {Enum} `this`
        */
       remove(name: string): Enum;
    
@@ -220,12 +232,24 @@ declare module protobuf {
       static fromJSON(name: string, json: Object): Field;
    
       /**
+       * Generates an encoder specific to this field.
+       * @returns {function(*, Writer): Writer} Encoder
+       */
+      generateEncoder(): (() => any);
+   
+      /**
        * Encodes the specified field value. Assumes that the field is present.
        * @param {*} value Field value
        * @param {Writer} writer Writer to encode to
        * @returns {Writer} writer
        */
       encode(value: any, writer: Writer): Writer;
+   
+      /**
+       * Generates a decoder specific to this field.
+       * @returns {function(Reader,number):*} Decoder
+       */
+      generateDecoder(): (() => any);
    
       /**
        * Decodes a field value.
@@ -253,7 +277,7 @@ declare module protobuf {
    }
    
    /**
-    * Loads one or multiple .proto files into a common root namespace.
+    * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
     * @param {string|string[]} filename One or multiple files to load
     * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
     * @param {function(?Error, Root=)} [callback] Callback function
@@ -308,7 +332,7 @@ declare module protobuf {
        * Encodes a message of this type preceeded by its length as a varint to a buffer.
        * @name Class.encodeDelimited
        * @function
-       * @param {Prototype|Object} message Message to encodee
+       * @param {Prototype|Object} message Message to encode
        * @returns {number[]} Encoded message
        */
       static encodeDelimited(message: (Prototype|Object)): number[];
@@ -499,12 +523,19 @@ declare module protobuf {
       static fromJSON(name: string, json: Object): Namespace;
    
       /**
+       * Adds nested elements to this namespace from JSON.
+       * @param {Object.<string,*>} json Nested JSON
+       * @returns {Namespace} `this`
+       */
+      addJSON(json: { [k: string]: any }): Namespace;
+   
+      /**
        * Iterates over all nested objects.
        * @param {function(this:Namespace, ReflectionObject, string):*} fn Iterator function called with nested objects
        *  and their names. Can return something different than `undefined` to break the iteration.
        * @param {Object} [ctx] Optional iterator function context
        * @param {Object} [object] Alternative object to iterate over
-       * @returns {*|Namespace} First value returned, otherwise this
+       * @returns {*|Namespace} First value returned, otherwise `this`
        */
       each(fn: (() => any), ctx?: Object, object?: Object): (any|Namespace);
    
@@ -518,29 +549,30 @@ declare module protobuf {
       /**
        * Adds a nested object to this namespace.
        * @param {ReflectionObject} object Nested object to add
-       * @returns {Namespace} this
+       * @returns {Namespace} `this`
        */
       add(object: ReflectionObject): Namespace;
    
       /**
        * Removes a nested object from this namespace.
        * @param {ReflectionObject} object Nested object to remove
-       * @returns {Namespace} this
+       * @returns {Namespace} `this`
        */
       remove(object: ReflectionObject): Namespace;
    
       /**
        * Defines additial namespaces within this one if not yet existing.
        * @param {string|string[]} path Path to create
-       * @param {?boolean} [visible] Whether visible when exporting definitions. Defaults to inherit from parent.
-       * @returns {Namespace} Pointer to the last namespace created
+       * @param {*} [json] Optional nested types to create from JSON
+       * @param {?boolean} [visible=null] Whether visible when exporting definitions. Defaults to inherit from parent.
+       * @returns {Namespace} Pointer to the last namespace created or `this` if path is empty
        */
-      define(path: (string|string[]), visible?: boolean): Namespace;
+      define(path: (string|string[]), json?: any, visible?: boolean): Namespace;
    
       /**
        * Resolves this namespace's and all its nested objects' type references. Useful to validate a
        * reflection tree.
-       * @returns {Namespace} this
+       * @returns {Namespace} `this`
        */
       resolveAll(): Namespace;
    
@@ -667,14 +699,14 @@ declare module protobuf {
    
       /**
        * Resolves this objects type references.
-       * @returns {ReflectionObject} this
+       * @returns {ReflectionObject} `this`
        */
       resolve(): ReflectionObject;
    
       /**
        * Changes this object's visibility when exporting definitions.
        * @param {?boolean} visible `true` for public, `false` for private, `null` to inherit from parent
-       * @returns {ReflectionObject} this
+       * @returns {ReflectionObject} `this`
        * @throws {TypeError} If arguments are invalid
        */
       visibility(visible?: boolean): ReflectionObject;
@@ -691,14 +723,14 @@ declare module protobuf {
        * @param {string} name Option name
        * @param {*} value Option value
        * @param {boolean} [ifNotSet] Sets the option only if it isn't currently set
-       * @returns {ReflectionObject} this
+       * @returns {ReflectionObject} `this`
        */
       setOption(name: string, value: any, ifNotSet?: boolean): ReflectionObject;
    
       /**
        * Sets multiple options.
        * @param {Object.<string,*>} options Options to set
-       * @returns {ReflectionObject} this
+       * @returns {ReflectionObject} `this`
        */
       setOptions(options: { [k: string]: any }): ReflectionObject;
    
@@ -761,14 +793,14 @@ declare module protobuf {
       /**
        * Adds a field to this oneof.
        * @param {Field} field Field to add
-       * @returns {OneOf} this
+       * @returns {OneOf} `this`
        */
       add(field: Field): OneOf;
    
       /**
        * Removes a field from this oneof.
        * @param {Field} field Field to remove
-       * @returns {OneOf} this
+       * @returns {OneOf} `this`
        */
       remove(field: Field): OneOf;
    
@@ -853,6 +885,12 @@ declare module protobuf {
        * @param {number[]} buffer Buffer to read from
        */
       constructor(buffer: number[]);
+   
+      /**
+       * Buffer implementation, if available.
+       * @type {?Function}
+       */
+      static Buffer: (() => any);
    
       /**
        * Read buffer.
@@ -973,21 +1011,21 @@ declare module protobuf {
       /**
        * Skips the specified number of bytes if provided, otherwise skips a varint.
        * @param {number} [length] Length if known, otherwise a varint is assumed
-       * @returns {Reader} this
+       * @returns {Reader} `this`
        */
       skip(length?: number): Reader;
    
       /**
        * Skips the next element of the specified wire type.
        * @param {number} wireType Wire type received
-       * @returns {Reader} this
+       * @returns {Reader} `this`
        */
       skipType(wireType: number): Reader;
    
       /**
        * Resets this instance and frees all resources.
        * @param {number[]} [buffer] Optionally a new buffer for a new sequence of read operations
-       * @returns {Reader} this
+       * @returns {Reader} `this`
        */
       reset(buffer?: number[]): Reader;
    
@@ -1038,18 +1076,23 @@ declare module protobuf {
       constructor(contextOptions?: { [k: string]: any }, options?: { [k: string]: any });
    
       /**
+       * References to common google types.
+       * @type {Object.<string, Type|Enum>}
+       */
+      common: { [k: string]: (Type|Enum) };
+   
+      /**
+       * Array of yet unprocessed and thus pending extension fields.
+       * @type {Field[]}
+       */
+      pendingExtensions: Field[];
+   
+      /**
        * Already loaded file names.
        * @type {string[]}
        * @private
        */
       private _loaded: string[];
-   
-      /**
-       * Array of pending extension fields.
-       * @type {Field[]}
-       * @private
-       */
-      private pendingExtensions: Field[];
    
       /**
        * Checks if a specific file has already been loaded.
@@ -1075,7 +1118,7 @@ declare module protobuf {
       static importGoogleTypes(root: Root, visible?: boolean): undefined;
    
       /**
-       * Loads one or multiple .proto files into a common root namespace.
+       * Loads one or multiple .proto or preprocessed .json files into this root namespace.
        * @param {string|string[]} filename Names of one or multiple files to load
        * @param {function(?Error, Root=)} [callback] Node-style callback function
        * @param {Object} [ctx] Optional callback context
@@ -1248,7 +1291,7 @@ declare module protobuf {
        * Registers the specified constructor with this type.
        * @param {?Function} constructor Constructor to use for message instances or `null` to unregister
        *  the current constructor
-       * @returns {Type} this
+       * @returns {Type} `this`
        */
       register(constructor?: (() => any)): Type;
    
@@ -1260,6 +1303,12 @@ declare module protobuf {
        * @returns {Prototype} Message instance
        */
       create(properties?: Object, constructor?: (() => any)): Prototype;
+   
+      /**
+       * Generates an encoder specific to this message type.
+       * @returns {function((Prototype|Object),Writer):Writer} Encoder
+       */
+      generateEncoder(): (() => any);
    
       /**
        * Encodes a message of this type.
@@ -1293,6 +1342,25 @@ declare module protobuf {
        * @returns {Prototype} Decoded message
        */
       decodeDelimited(readerOrBuffer: (Reader|number[]), constructor?: (() => any)): Prototype;
+   
+      /**
+       * Decodes a message of this type. This method differs from {@link Type#decode} in that it expects
+       * already type checked and known to be present arguments.
+       * @param {Reader} reader Reader to decode from
+       * @param {Prototype} message Message instance to populate
+       * @param {number} limit Maximum read offset
+       * @returns {Prototype} Populated message instance
+       */
+      decode_(reader: Reader, message: Prototype, limit: number): Prototype;
+   
+      /**
+       * Decodes a message of this type. This method differs from {@link Type#decodeDelimited} in that it
+       * expects already type checked and known to be present arguments.
+       * @param {Reader} reader Reader to decode from
+       * @param {Prototype} message Message instance to populate
+       * @returns {Prototype} Populated message instance
+       */
+      decodeDelimited_(reader: Reader, message: Prototype): Prototype;
    
    }
    
@@ -1338,19 +1406,6 @@ declare module protobuf {
     * @namespace
     */
    module util {
-      /**
-       * Whether running under node.js or not.
-       * @type {boolean}
-       */
-      var isNode: boolean;
-   
-      /**
-       * Optional buffer class to use. If you assign any compatible buffer implementation to this
-       * property, the library will use it.
-       * @type {?Function}
-       */
-      var Buffer: (() => any);
-   
       /**
        * Optional Long class to use. If you assign any compatible long implementation to this property,
        * the library will use it.
@@ -1466,7 +1521,7 @@ declare module protobuf {
        * Merges the properties of the source object into the destination object.
        * @param {Object} dst Destination object
        * @param {Object} src Source object
-       * @param {boolean} [ifNotSet=falsee] Merges only if the key is not already set
+       * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
        * @returns {Object} Destination object
        */
       function merge(dst: Object, src: Object, ifNotSet?: boolean): Object;
@@ -1485,6 +1540,12 @@ declare module protobuf {
        * @constructor
        */
       constructor();
+   
+      /**
+       * Buffer implementation, if available.
+       * @type {?Function}
+       */
+      static Buffer: (() => any);
    
       /**
        * Default buffer size.
@@ -1524,8 +1585,14 @@ declare module protobuf {
       private _stack: number[][][];
    
       /**
+       * Sets up the Writer class before first use. This is done automatically when the first buffer is
+       * allocated.
+       * @returns {Function} `Writer`
+       */
+      static setup(): (() => any);
+   
+      /**
        * Allocates a chunk of memory.
-       * @function
        * @param {number} size Buffer size
        * @returns {number[]} Allocated buffer
        */
@@ -1535,14 +1602,14 @@ declare module protobuf {
        * Writes a tag.
        * @param {number} id Field id
        * @param {number} wireType Wire type
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       tag(id: number, wireType: number): Writer;
    
       /**
        * Writes an unsigned 32 bit value as a varint.
        * @param {number} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       uint32(value: number): Writer;
    
@@ -1550,21 +1617,21 @@ declare module protobuf {
        * Writes a signed 32 bit value as a varint.
        * @function
        * @param {number} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       int32(value: number): Writer;
    
       /**
        * Writes a 32 bit value as a varint, zig-zag encoded.
        * @param {number} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       sint32(value: number): Writer;
    
       /**
        * Writes an unsigned 64 bit value as a varint.
        * @param {number|{ low: number, high: number }|Long} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       uint64(value: (number|Object|Long)): Writer;
    
@@ -1572,77 +1639,77 @@ declare module protobuf {
        * Writes a signed 64 bit value as a varint.
        * @function
        * @param {number|{ low: number, high: number }|Long} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       int64(value: (number|Object|Long)): Writer;
    
       /**
        * Writes a signed 64 bit value as a varint, zig-zag encoded.
        * @param {number|{ low: number, high: number }|Long} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       sint64(value: (number|Object|Long)): Writer;
    
       /**
        * Writes a boolish value as a varint.
        * @param {boolean} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       bool(value: boolean): Writer;
    
       /**
        * Writes a 32 bit value as fixed 32 bits.
        * @param {number} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       fixed32(value: number): Writer;
    
       /**
        * Writes a 32 bit value as fixed 32 bits, zig-zag encoded.
        * @param {number} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       sfixed32(value: number): Writer;
    
       /**
        * Writes a 64 bit value as fixed 64 bits.
        * @param {number|{ low: number, high: number }|Long} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       fixed64(value: (number|Object|Long)): Writer;
    
       /**
        * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
        * @param {number|{ low: number, high: number }|Long} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       sfixed64(value: (number|Object|Long)): Writer;
    
       /**
        * Writes a float (32 bit).
        * @param {number} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       float(value: number): Writer;
    
       /**
        * Writes a double (64 bit float).
        * @param {number} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       double(value: number): Writer;
    
       /**
        * Writes a sequence of bytes.
        * @param {number[]} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       bytes(value: number[]): Writer;
    
       /**
        * Writes a string.
        * @param {string} value Value to write
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       string(value: string): Writer;
    
@@ -1650,7 +1717,7 @@ declare module protobuf {
        * Forks this writer's state by pushing it to a stack and reusing the remaining buffer
        * for a new set of write operations. A call to {@link Writer#reset} or {@link Writer#finish}
        * resets the writer to the previous state.
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       fork(): Writer;
    
@@ -1658,7 +1725,7 @@ declare module protobuf {
        * Resets this instance to the last state. If there is no last state, all references
        * to previous buffers will be cleared.
        * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
-       * @returns {Writer} this
+       * @returns {Writer} `this`
        */
       reset(clearForkedStates?: boolean): Writer;
    

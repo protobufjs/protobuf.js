@@ -93,10 +93,6 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
-            
-                <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
-            
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
             </ul>
@@ -234,6 +230,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="BufferWriter.alloc"><a href="BufferWriter.html#.alloc">alloc</a></li>
+            
+                <li data-name="BufferWriter.setup"><a href="BufferWriter.html#.setup">setup</a></li>
             
                 <li data-name="BufferWriter#bool"><a href="BufferWriter.html#bool">bool</a></li>
             
@@ -464,6 +462,10 @@
             
                 <li data-name="Field#encode"><a href="Field.html#encode">encode</a></li>
             
+                <li data-name="Field#generateDecoder"><a href="Field.html#generateDecoder">generateDecoder</a></li>
+            
+                <li data-name="Field#generateEncoder"><a href="Field.html#generateEncoder">generateEncoder</a></li>
+            
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
@@ -566,6 +568,10 @@
                 <li data-name="MapField#decode"><a href="MapField.html#decode">decode</a></li>
             
                 <li data-name="MapField#encode"><a href="MapField.html#encode">encode</a></li>
+            
+                <li data-name="MapField#generateDecoder"><a href="MapField.html#generateDecoder">generateDecoder</a></li>
+            
+                <li data-name="MapField#generateEncoder"><a href="MapField.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
@@ -856,6 +862,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Reader.Buffer"><a href="Reader.html#.Buffer">Buffer</a></li>
+            
                 <li data-name="Reader#buf"><a href="Reader.html#buf">buf</a></li>
             
                 <li data-name="Reader#len"><a href="Reader.html#len">len</a></li>
@@ -986,6 +994,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Root#common"><a href="Root.html#common">common</a></li>
+            
                 <li data-name="Root#empty"><a href="Root.html#empty">empty</a></li>
             
                 <li data-name="Root#fullName"><a href="Root.html#fullName">fullName</a></li>
@@ -997,6 +1007,8 @@
                 <li data-name="Root#options"><a href="Root.html#options">options</a></li>
             
                 <li data-name="Root#parent"><a href="Root.html#parent">parent</a></li>
+            
+                <li data-name="Root#pendingExtensions"><a href="Root.html#pendingExtensions">pendingExtensions</a></li>
             
                 <li data-name="Root#properties"><a href="Root.html#properties">properties</a></li>
             
@@ -1210,7 +1222,11 @@
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
             
+                <li data-name="Type#decode_"><a href="Type.html#decode_">decode_</a></li>
+            
                 <li data-name="Type#decodeDelimited"><a href="Type.html#decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Type#decodeDelimited_"><a href="Type.html#decodeDelimited_">decodeDelimited_</a></li>
             
                 <li data-name="Type#define"><a href="Type.html#define">define</a></li>
             
@@ -1219,6 +1235,8 @@
                 <li data-name="Type#encode"><a href="Type.html#encode">encode</a></li>
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Type#generateEncoder"><a href="Type.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
@@ -1263,6 +1281,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Writer.Buffer"><a href="Writer.html#.Buffer">Buffer</a></li>
+            
                 <li data-name="Writer.BUFFER_SIZE"><a href="Writer.html#.BUFFER_SIZE">BUFFER_SIZE</a></li>
             
                 <li data-name="Writer#buf"><a href="Writer.html#buf">buf</a></li>
@@ -1282,6 +1302,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Writer.alloc"><a href="Writer.html#.alloc">alloc</a></li>
+            
+                <li data-name="Writer.setup"><a href="Writer.html#.setup">setup</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -1352,9 +1374,21 @@
 
 
     <section>
-        <article class="readme"><h1>protobuf.js</h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use<br>in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">see</a>).</p>
-<p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently<br>encodes plain objects and custom classes and works out of the box with .proto files.</p>
+        <article class="readme"><h1>protobuf.js</h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">see</a>).</p>
+<p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
 <p><strong>This is the development branch of protobuf.js 6.</strong> Are you looking for the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5">current stable branch</a>?</p>
+<h2>Contents</h2><ul>
+<li><p><a href="#examples">Examples</a><br /><br>A few examples to get you started.</p>
+</li>
+<li><p><a href="#module-structure">Module Structure</a><br /><br>A brief introduction to the structure of the exported module.</p>
+</li>
+<li><p><a href="#documentation">Documentation</a><br /><br>A list of available documentation resources.</p>
+</li>
+<li><p><a href="#building">Building</a><br /><br>How to build the library and its components yourself.</p>
+</li>
+<li><p><a href="#compatibility">Compatibility</a><br /><br>Notes on compatibility regarding browsers and optional libraries.</p>
+</li>
+</ul>
 <h2>Examples</h2><pre class="prettyprint source"><code>$> npm install dcodeIO/protobuf.js</code></pre><h3>Using .proto files</h3><pre class="prettyprint source lang-protobuf"><code>// awesome.proto
 package awesomepackage;
 syntax = &quot;proto3&quot;;
@@ -1417,7 +1451,7 @@ var buffer = AwesomeMessage.encode({ awesomefield: &quot;AwesomeString&quot; });
 
 // Decode a buffer
 var message = AwesomeMessage.decode(buffer);
-// ... do something with message</code></pre><h2>Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
+// ... do something with message</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
 <h3>Parser</h3><ul>
 <li><p><strong>load(filename: <code>string|Array</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto files into the specified root or creates a new one when omitted.</p>
 </li>
@@ -1483,18 +1517,21 @@ var message = AwesomeMessage.decode(buffer);
 </li>
 </ul>
 <h2>Documentation</h2><ul>
-<li>See: <a target="_blank" href="http://dcode.io/protobuf.js/">API Documentation</a></li>
+<li><p><a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">Google's Developer Guide</a></p>
+</li>
+<li><p><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a></p>
+</li>
 </ul>
-<p>To build the documentation yourself, first install the development dependencies (if you haven't<br>already) through running</p>
-<pre class="prettyprint source"><code>$> npm install --dev</code></pre><p>and then building the documentation to <code>docs/</code> through running</p>
-<pre class="prettyprint source"><code>$> npm run docs</code></pre><h2>Building</h2><p>To build production and development versions with their respective source maps for the browser,<br>first install the development dependencies (if you haven't already) through running</p>
-<pre class="prettyprint source"><code>$> npm install --dev</code></pre><p>and then build the development and production versions to <code>dist/</code> through running</p>
-<pre class="prettyprint source"><code>$> npm run build</code></pre><h2>Compatibility</h2><ul>
-<li><p>This library requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest.<br>If typed arrays are not supported, it uses plain arrays instead.</p>
+<h2>Building</h2><p>To build the library or its components yourself, first install the development dependencies:</p>
+<pre class="prettyprint source"><code>$> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
+<pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
+<pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
+<pre class="prettyprint source"><code>$> npm run types</code></pre><h2>Compatibility</h2><ul>
+<li><p>protobuf.js requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest. If typed arrays are not supported, it uses plain arrays instead.</p>
 </li>
-<li><p>If you'd like to use node's buffer API in the browser, you can use <a target="_blank" href="https://github.com/feross/buffer">feross/buffer</a><br>for example and assign its constructor, or that of any compatible library, to <code>protobuf.util.Buffer</code>.</p>
+<li><p>If you'd like to use node's buffer API in the browser, you can use <a target="_blank" href="https://github.com/feross/buffer">feross/buffer</a> for example and assign its constructor, or that of any compatible library, to <code>protobuf.util.Buffer</code>.</p>
 </li>
-<li><p>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install<br><a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. Just as with buffers, you<br>can assign its constructor to <code>protobuf.util.Long</code>. All 64 bit numbers will then be returned as a<br><code>Long</code> instance. That's not a requirement, though (<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/support/long.js">see</a>).</p>
+<li><p>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install <a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. Just as with buffers, you can assign its constructor to <code>protobuf.util.Long</code>. All 64 bit numbers will then be returned as a <code>Long</code> instance. That's not a requirement, though (<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/support/long.js">see</a>).</p>
 </li>
 </ul>
 <p><strong>License:</strong> <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, Version 2.0</a></p></article>

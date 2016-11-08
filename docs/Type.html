@@ -93,10 +93,6 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
-            
-                <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
-            
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
             </ul>
@@ -234,6 +230,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="BufferWriter.alloc"><a href="BufferWriter.html#.alloc">alloc</a></li>
+            
+                <li data-name="BufferWriter.setup"><a href="BufferWriter.html#.setup">setup</a></li>
             
                 <li data-name="BufferWriter#bool"><a href="BufferWriter.html#bool">bool</a></li>
             
@@ -464,6 +462,10 @@
             
                 <li data-name="Field#encode"><a href="Field.html#encode">encode</a></li>
             
+                <li data-name="Field#generateDecoder"><a href="Field.html#generateDecoder">generateDecoder</a></li>
+            
+                <li data-name="Field#generateEncoder"><a href="Field.html#generateEncoder">generateEncoder</a></li>
+            
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
@@ -566,6 +568,10 @@
                 <li data-name="MapField#decode"><a href="MapField.html#decode">decode</a></li>
             
                 <li data-name="MapField#encode"><a href="MapField.html#encode">encode</a></li>
+            
+                <li data-name="MapField#generateDecoder"><a href="MapField.html#generateDecoder">generateDecoder</a></li>
+            
+                <li data-name="MapField#generateEncoder"><a href="MapField.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
@@ -856,6 +862,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Reader.Buffer"><a href="Reader.html#.Buffer">Buffer</a></li>
+            
                 <li data-name="Reader#buf"><a href="Reader.html#buf">buf</a></li>
             
                 <li data-name="Reader#len"><a href="Reader.html#len">len</a></li>
@@ -986,6 +994,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Root#common"><a href="Root.html#common">common</a></li>
+            
                 <li data-name="Root#empty"><a href="Root.html#empty">empty</a></li>
             
                 <li data-name="Root#fullName"><a href="Root.html#fullName">fullName</a></li>
@@ -997,6 +1007,8 @@
                 <li data-name="Root#options"><a href="Root.html#options">options</a></li>
             
                 <li data-name="Root#parent"><a href="Root.html#parent">parent</a></li>
+            
+                <li data-name="Root#pendingExtensions"><a href="Root.html#pendingExtensions">pendingExtensions</a></li>
             
                 <li data-name="Root#properties"><a href="Root.html#properties">properties</a></li>
             
@@ -1210,7 +1222,11 @@
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
             
+                <li data-name="Type#decode_"><a href="Type.html#decode_">decode_</a></li>
+            
                 <li data-name="Type#decodeDelimited"><a href="Type.html#decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Type#decodeDelimited_"><a href="Type.html#decodeDelimited_">decodeDelimited_</a></li>
             
                 <li data-name="Type#define"><a href="Type.html#define">define</a></li>
             
@@ -1219,6 +1235,8 @@
                 <li data-name="Type#encode"><a href="Type.html#encode">encode</a></li>
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Type#generateEncoder"><a href="Type.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
@@ -1263,6 +1281,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Writer.Buffer"><a href="Writer.html#.Buffer">Buffer</a></li>
+            
                 <li data-name="Writer.BUFFER_SIZE"><a href="Writer.html#.BUFFER_SIZE">BUFFER_SIZE</a></li>
             
                 <li data-name="Writer#buf"><a href="Writer.html#buf">buf</a></li>
@@ -1282,6 +1302,8 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="Writer.alloc"><a href="Writer.html#.alloc">alloc</a></li>
+            
+                <li data-name="Writer.setup"><a href="Writer.html#.setup">setup</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -1359,7 +1381,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L26">line 26</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L27">line 27</a>
         </div>
         
     </div>
@@ -2348,7 +2370,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L180">line 180</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L181">line 181</a>
         </div>
         
     </div>
@@ -2516,7 +2538,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L168">line 168</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L169">line 169</a>
         </div>
         
     </div>
@@ -2955,7 +2977,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L297">line 297</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L298">line 298</a>
         </div>
         
     </div>
@@ -3139,7 +3161,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L361">line 361</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L376">line 376</a>
         </div>
         
     </div>
@@ -3345,6 +3367,197 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="decode_">
+            
+            decode_<span class="signature">(reader, message, limit)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L413">line 413</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Decodes a message of this type. This method differs from <a href="Type.html#decode">Type#decode</a> in that it expects<br>already type checked and known to be present arguments.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>reader</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Reader.html">Reader</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Reader to decode from</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Prototype.html">Prototype</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Message instance to populate</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Maximum read offset</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Prototype.html">Prototype</a>
+                        
+                    
+            </td>
+            <td class="description last">Populated message instance</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="decodeDelimited">
             
             decodeDelimited<span class="signature">(readerOrBuffer, <span class="optional">constructor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
@@ -3352,7 +3565,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L401">line 401</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L394">line 394</a>
         </div>
         
     </div>
@@ -3514,6 +3727,174 @@
                     
             </td>
             <td class="description last">Decoded message</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="decodeDelimited_">
+            
+            decodeDelimited_<span class="signature">(reader, message)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L444">line 444</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Decodes a message of this type. This method differs from <a href="Type.html#decodeDelimited">Type#decodeDelimited</a> in that it<br>expects already type checked and known to be present arguments.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>reader</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Reader.html">Reader</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Reader to decode from</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Prototype.html">Prototype</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Message instance to populate</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Prototype.html">Prototype</a>
+                        
+                    
+            </td>
+            <td class="description last">Populated message instance</td>
         </tr>
     
     </tbody>
@@ -3983,7 +4364,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L325">line 325</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L350">line 350</a>
         </div>
         
     </div>
@@ -4166,7 +4547,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L346">line 346</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L361">line 361</a>
         </div>
         
     </div>
@@ -4328,6 +4709,106 @@
                     
             </td>
             <td class="description last">writer</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="generateEncoder">
+            
+            generateEncoder<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{function}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L326">line 326</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Generates an encoder specific to this message type.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        function
+                        
+                    
+            </td>
+            <td class="description last">Encoder</td>
         </tr>
     
     </tbody>
@@ -5122,7 +5603,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L283">line 283</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L284">line 284</a>
         </div>
         
     </div>
