@@ -234,29 +234,25 @@ FieldPrototype.resolve = function resolve() {
  */
 FieldPrototype.generateEncoder = function() {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
-        gen  = codegen("value", "writer");
+        gen  = codegen("v", "w"); // v: value, w: writer
     if (this.repeated) { gen
-        ("var i = 0, k = value.length;");
-        if (this.packed && types.packableWireTypes[type] !== undefined) { gen
-            ("writer.fork();")
-            ("while (i < k)")
-                ("writer.%s(value[i++]);", type)
-            ("var buf = writer.finish();");
-            ("if (buf.length)")
-                ("writer.tag(%d, 2).bytes(buf);", this.id);
-        } else { gen
-            ("while (i < k)")
-                ("this.resolvedType.encodeDelimited(value[i++], writer.tag(%d, 2));", this.id);
-        }
+        ("var i=0,k=v.length;"); // i: index, k: length
+        if (this.packed && types.packableWireTypes[type] !== undefined) gen
+            ("w.fork();")
+            ("while(i<k)w.%s(v[i++]);", type)
+            ("var b=w.finish();") // b: buffer
+            ("if(b.length)w.tag(%d,2).bytes(b);", this.id);
+        else gen
+            ("while(i<k)this.resolvedType.encodeDelimited(v[i++],w.tag(%d,2));", this.id);
     } else {
         var wireType = types.wireTypes[type];
         if (wireType !== undefined) gen
-            ("writer.tag(%d, %d).%s(value);", this.id, wireType, type);
+            ("w.tag(%d,%d).%s(v);", this.id, wireType, type);
         else gen
-            ("this.resolvedType.encodeDelimited(value, writer.tag(%d, 2));", this.id);
+            ("this.resolvedType.encodeDelimited(v,w.tag(%d,2));", this.id);
     }
     return gen
-    ("return writer;")
+    ("return w;")
     .eof();
 };
 
@@ -277,21 +273,20 @@ FieldPrototype.encode = function encode(value, writer) {
  */
 FieldPrototype.generateDecoder = function() {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
-        gen  = codegen("reader", "receivedWireType");
+        gen  = codegen("r", "w"); // r: reader, w: receivedWireType
     if (this.repeated && this.packed && types.packableWireTypes[type] !== undefined) gen
-        ("if (receivedWireType === %d) {", types.packableWireTypes[type])
-            ("var limit = reader.uint32() + reader.pos, values = [];")
-            ("while (reader.pos < limit)")
-                ("values.push(reader.%s());", type)
-            ("return values;")
+        ("if(w===%d){", types.packableWireTypes[type])
+            ("var l=r.uint32()+r.pos,v=[];") // l: limit, v: values
+            ("while(r.pos<l)v.push(r.%s());", type)
+            ("return v;")
         ("}");
     var wireType = types.wireTypes[type];
     if (wireType !== undefined) gen
-        ("return receivedWireType === %d", wireType)
-            ("? reader.%s()", type)
-            (": this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor ? new this.resolvedType._constructor() : Object.create(this.resolvedType.prototype));")
+        ("return w===%d", wireType)
+            ("?r.%s()", type)
+            (":this.resolvedType.decodeDelimited_(r,this.resolvedType._constructor?new this.resolvedType._constructor():Object.create(this.resolvedType.prototype));")
     else gen
-        ("return this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor ? new this.resolvedType._constructor() : Object.create(this.resolvedType.prototype));");
+        ("return this.resolvedType.decodeDelimited_(r,this.resolvedType._constructor?new this.resolvedType._constructor():Object.create(this.resolvedType.prototype));");
     return gen.eof();
 };
 

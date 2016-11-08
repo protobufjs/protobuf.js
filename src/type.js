@@ -324,23 +324,20 @@ TypePrototype.create = function create(properties, constructor) {
  * @returns {function(Prototype|Object, Writer): Writer}
  */
 TypePrototype.generateEncoder = function generateEncoder() {
-    var gen = codegen("Writer", "message", "writer")
+    var gen = codegen("W", "m", "w") // W: Writer, m: message, w: writer
     gen
-    ("if (!writer)")
-        ("writer = Writer();")
-    ("var values = message.$values || message;");
+    ("if(!w)w=W();var v=m.$values||m,f=this.fieldsArray;") // v: values, f: fieldsArray
     var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
         if (field.required) gen
-            ("this.fieldsArray[%d].encode(values[%j], writer);", i, field.name);
+            ("f[%d].encode(v[%j],w);", i, field.name);
         else gen
-            ("if (values[%j] != %j)", field.name, field.defaultValue)
-                ("this.fieldsArray[%d].encode(values[%j], writer);", i, field.name);
+            ("if(v[%j]!=%j)f[%d].encode(v[%j],w);", field.name, field.defaultValue, i, field.name);
     }
     return gen
-    ("return writer;")
+    ("return w;")
     .eof().bind(this, Writer);
 };
 
@@ -367,22 +364,6 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
     else
         writer = Writer();
     return writer.bytes(this.encode(message, writer).finish());
-};
-
-TypePrototype.generateDecoder = function generateDecoder() {
-    var gen = codegen("readerOrBuffer", "constructor", "length");
-    gen
-    ("var reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);")
-    ("var limit   = length === undefined ? reader.len : reader.pos + length;")
-    ("var message = this.create({}, constructor);")
-    ("var values  = message.$values;");
-    ("while (reader.pos < limit) {")
-        ("var tag   = reader.tag(),")
-        ("var field = this.fieldsById[tag.id];")
-        ("if (field) {")
-            ("var name  = field.name;")
-            ("var value = field.decode(reader, tag.wireType);")
-            ("if (field.repeated) {")
 };
 
 /**
@@ -417,7 +398,9 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constru
 };
 
 // The following methods are used internally to shortcut a couple of unnecessary type checks.
-// Feel free to use them in your project if you can guarantee sanitized arguments.
+// Feel free to use them in your project if you can guarantee sanitized arguments. Note also that
+// generating a specialized decoder doesn't seem to make things faster as there are no other
+// shortcuts, i.e. different branches, to exploit.
 
 /**
  * Decodes a message of this type. This method differs from {@link Type#decode} in that it expects
