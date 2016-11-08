@@ -1,6 +1,9 @@
 var tap = require("tap");
 
-var protobuf = require("..");
+var protobuf = require(".."),
+    codegen  = require(__dirname + "/../src/codegen");
+
+codegen.verbose = true;
 
 tap.test("google.protobuf.Any type", function(test) {
     var root = new protobuf.Root(),
@@ -83,3 +86,5 @@ tap.test("google.protobuf.Any type", function(test) {
 
     test.end();
 });
+
+codegen.verbose = false;

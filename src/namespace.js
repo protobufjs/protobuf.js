@@ -6,10 +6,11 @@ var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
 
 var Enum    = require("./enum"),
     Type    = require("./type"),
+    Field   = require("./field"),
     Service = require("./service"),
     util    = require("./util");
 
-var nestedTypes = [ Enum, Type, Service, Namespace ],
+var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
 
 /**
@@ -142,6 +143,8 @@ NamespacePrototype.add = function add(object) {
                 throw Error("duplicate name '" + object.name + "' in " + this);
         }
     }
+    if (object instanceof Field && object.extend === undefined)
+        throw util._TypeError("object", "an extension field when not part of a type");
     this.nested[object.name] = object;
     object.onAdd(this);
     return this;

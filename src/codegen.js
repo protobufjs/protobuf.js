@@ -47,7 +47,7 @@ function codegen(/* varargs */) {
         return code;
     };
     append.eof = function eof(name) {
-        return new Function("return " + append.toString(name)).call(null);
+        return new Function("return " + append.toString(name) + ";").call(null);
     };
     return append;
 }

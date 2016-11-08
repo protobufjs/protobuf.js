@@ -268,27 +268,27 @@ FieldPrototype.encode = function encode(value, writer) {
  */
 FieldPrototype.generateEncoder = function() {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
-        gen  = codegen("v", "w");
+        gen  = codegen("value", "writer")('"use strict";');
     if (this.repeated) { gen
-        ("var i = 0, k = v.length;");
+        ("var i = 0, k = value.length;");
         if (this.packed && types.packableWireTypes[type] !== undefined) gen
-            ("w.fork();")
+            ("writer.fork();")
             ("while (i < k)")
-                ("w.%s(v[i++]);", type)
-            ("var b = w.finish();")
+                ("writer.%s(value[i++]);", type)
+            ("var b = writer.finish();")
             ("if (b.length)")
-                ("w.tag(%d, 2).bytes(b);", this.id);
+                ("writer.tag(%d, 2).bytes(b);", this.id);
         else gen
             ("while (i < k)")
-                ("this.resolvedType.encodeDelimited_(v[i++], w.tag(%d, 2));", this.id);
+                ("this.resolvedType.encodeDelimited_(value[i++], writer.tag(%d, 2));", this.id);
     } else {
         var wireType = types.wireTypes[type];
         if (wireType !== undefined) gen
-            ("w.tag(%d, %d).%s(v);", this.id, wireType, type);
+            ("writer.tag(%d, %d).%s(value);", this.id, wireType, type);
         else gen
-            ("this.resolvedType.encodeDelimited_(v, w.tag(%d, 2));", this.id);
+            ("this.resolvedType.encodeDelimited_(value, writer.tag(%d, 2));", this.id);
     }
-    return gen("return w;").eof(this.fullName + "$encode");
+    return gen("return writer;").eof(this.fullName + "$encode");
 };
 
 /**
@@ -325,7 +325,7 @@ FieldPrototype.decode = function decode(reader, receivedWireType) {
  */
 FieldPrototype.generateDecoder = function() {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
-        gen  = codegen("reader", "wireType");
+        gen  = codegen("reader", "wireType")('"use strict";');
     if (this.repeated && this.packed && types.packableWireTypes[type] !== undefined) gen
         ("if (wireType === %d) {", types.packableWireTypes[type])
             ("var limit = reader.uint32() + reader.pos, values = [], i = 0;")

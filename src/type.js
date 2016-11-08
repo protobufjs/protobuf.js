@@ -367,7 +367,7 @@ TypePrototype.encode_ = function encode_internal(message, writer) {
 TypePrototype.generateEncoder = function generateEncoder() {
     var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length,
-        gen = codegen("message", "writer")
+        gen = codegen("message", "writer")('"use strict";')
     ("var values = message.$values || message, fields = this.fieldsArray;");
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();

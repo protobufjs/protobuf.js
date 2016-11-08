@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Tue, 08 Nov 2016 05:42:55 UTC
+ * Compiled Tue, 08 Nov 2016 16:42:47 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -94,35 +94,69 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 module.exports = codegen;
 
 /**
- * @typedef {function(string, ...*): Appender} Appender
- */
-
-/**
- * Programmatically generates a function.
- * @param {...string} params Parameter names
- * @returns {Appender} Appender
+ * Programmatically generates a function. When done appending code, call `eof()` on the Appender
+ * to generate the actual function.
+ * @param {...string} params Function parameter names
+ * @returns {function} Appender function similar to `util.format` known from node
+ * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}
  */
 function codegen(/* varargs */) {
     var arg = Array.prototype.slice.call(arguments),
-        src = [];
+        src = [],
+        ws  = 1;
     function append(format/*, varargs */) {
         var val = Array.prototype.slice.call(arguments, 1),
             idx = 0;
-        src.push(format.replace(/%([djs])/g, function($0, $1) {
+        format = format.replace(/%([djs])/g, function($0, $1) {
             return $1 === "j"
                 ? JSON.stringify(val[idx++])
                 : String(val[idx++]);
-        }));
+        });
+        var ind = false,
+            blk  = false;
+        if (src.length > 0) {
+            if (/[\{\[]$/.test(src[src.length-1])) {
+                ind = blk = true;
+                ws++;
+            } else if (!/;$/.test(src[src.length-1])) {
+                ind = true;
+                ws++;
+            }
+        }
+        for (var i = 0; i < ws; ++i)
+            format = "    " + format;
+        if (ind) {
+            if (!blk || /[\}\]]$/.test(format))
+                ws--;
+        }
+        src.push(format);
         return append;
     }
     append.toString = function toString(name) {
-        return "function "+(name || "")+"("+arg.join(",")+") {\n" + src.join("\n") + "\n}";
+        name = name ? name.replace(/[^\w_$]/g, "_") : "";
+        var code = "function " + name + "(" + arg.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        if (codegen.verbose)
+            console.log("--- codegen ---\n" + code.replace(/^/mg, "> "));
+        return code;
     };
-    append.eof = function eof() {
-        return Function.apply(null, arg.concat(src.join("\n"))); // new Function(arg1, arg2, body)
+    append.eof = function eof(name) {
+        return new Function("return " + append.toString(name) + ";").call(null);
     };
     return append;
 }
+
+/**
+ * Whether code generation is supported by the environment.
+ * @type {boolean}
+ */
+codegen.supported = false;
+try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable no-empty
+
+/**
+ * When set to true, codegen will log generated code to console. Useful for debugging.
+ * @type {boolean}
+ */
+codegen.verbose = false;
 
 },{}],3:[function(require,module,exports){
 module.exports = Enum;
@@ -464,65 +498,66 @@ FieldPrototype.resolve = function resolve() {
 };
 
 /**
- * Generates an encoder specific to this field.
- * @returns {function(*, Writer): Writer} Encoder
- */
-FieldPrototype.generateEncoder = function() {
-    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
-        gen  = codegen("v", "w"); // v: value, w: writer
-    if (this.repeated) { gen
-        ("var i=0,k=v.length;"); // i: index, k: length
-        if (this.packed && types.packableWireTypes[type] !== undefined) gen
-            ("w.fork();")
-            ("while(i<k)w.%s(v[i++]);", type)
-            ("var b=w.finish();") // b: buffer
-            ("if(b.length)w.tag(%d,2).bytes(b);", this.id);
-        else gen
-            ("while(i<k)this.resolvedType.encodeDelimited(v[i++],w.tag(%d,2));", this.id);
-    } else {
-        var wireType = types.wireTypes[type];
-        if (wireType !== undefined) gen
-            ("w.tag(%d,%d).%s(v);", this.id, wireType, type);
-        else gen
-            ("this.resolvedType.encodeDelimited(v,w.tag(%d,2));", this.id);
-    }
-    return gen
-    ("return w;")
-    .eof();
-};
-
-/**
  * Encodes the specified field value. Assumes that the field is present.
  * @param {*} value Field value
  * @param {Writer} writer Writer to encode to
  * @returns {Writer} writer
  */
 FieldPrototype.encode = function encode(value, writer) {
-    this.encode = this.generateEncoder();
-    return this.encode(value, writer);
+    if (codegen.supported) {
+        this.encode = this.generateEncoder();
+        return this.encode(value, writer);
+    }
+    var type = this.resolvedType instanceof Enum ? "uint32" : this.type;
+    if (this.repeated) {
+        var i = 0, k = value.length;
+        if (this.packed && types.packableWireTypes[type] !== undefined) {
+            writer.fork();
+            while (i < k)
+                writer[type](value[i++]);
+            var buf = writer.finish();
+            if (buf.length)
+                writer.tag(this.id, 2).bytes(buf);
+        } else
+            while (i < k)
+                this.resolvedType.encodeDelimited_(value[i++], writer.tag(this.id, 2));
+    } else {
+        var wireType = types.wireTypes[type];
+        if (wireType !== undefined)
+            writer.tag(this.id, wireType)[type](value);
+        else
+            this.resolvedType.encodeDelimited_(value, writer.tag(this.id, 2));
+    }
+    return writer;
 };
 
 /**
- * Generates a decoder specific to this field.
- * @returns {function(Reader,number):*} Decoder
+ * Generates an encoder specific to this field.
+ * @returns {function(*, Writer): Writer} Encoder
  */
-FieldPrototype.generateDecoder = function() {
+FieldPrototype.generateEncoder = function() {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
-        gen  = codegen("r", "w"); // r: reader, w: receivedWireType
-    if (this.repeated && this.packed && types.packableWireTypes[type] !== undefined) gen
-        ("if(w===%d){", types.packableWireTypes[type])
-            ("var l=r.uint32()+r.pos,v=[];") // l: limit, v: values
-            ("while(r.pos<l)v.push(r.%s());", type)
-            ("return v;")
-        ("}");
-    var wireType = types.wireTypes[type];
-    if (wireType !== undefined) gen
-        ("return w===%d", wireType)
-            ("?r.%s()", type)
-            (":this.resolvedType.decodeDelimited_(r,this.resolvedType._constructor?new this.resolvedType._constructor():Object.create(this.resolvedType.prototype));");
-    else gen
-        ("return this.resolvedType.decodeDelimited_(r,this.resolvedType._constructor?new this.resolvedType._constructor():Object.create(this.resolvedType.prototype));");
-    return gen.eof();
+        gen  = codegen("value", "writer")('"use strict";');
+    if (this.repeated) { gen
+        ("var i = 0, k = value.length;");
+        if (this.packed && types.packableWireTypes[type] !== undefined) gen
+            ("writer.fork();")
+            ("while (i < k)")
+                ("writer.%s(value[i++]);", type)
+            ("var b = writer.finish();")
+            ("if (b.length)")
+                ("writer.tag(%d, 2).bytes(b);", this.id);
+        else gen
+            ("while (i < k)")
+                ("this.resolvedType.encodeDelimited_(value[i++], writer.tag(%d, 2));", this.id);
+    } else {
+        var wireType = types.wireTypes[type];
+        if (wireType !== undefined) gen
+            ("writer.tag(%d, %d).%s(value);", this.id, wireType, type);
+        else gen
+            ("this.resolvedType.encodeDelimited_(value, writer.tag(%d, 2));", this.id);
+    }
+    return gen("return writer;").eof(this.fullName + "$encode");
 };
 
 /**
@@ -533,8 +568,49 @@ FieldPrototype.generateDecoder = function() {
  * @throws {Error} If the wire format is invalid
  */
 FieldPrototype.decode = function decode(reader, receivedWireType) {
-    this.decode = this.generateDecoder();
-    return this.decode(reader, receivedWireType);
+    if (codegen.supported) {
+        this.decode = this.generateDecoder();
+        return this.decode(reader, receivedWireType);
+    }
+    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
+    if (this.repeated && this.packed && types.packableWireTypes[type] === receivedWireType) {
+        var limit = reader.uint32() + reader.pos,
+            values = [], i = 0;
+        while (reader.pos < limit)
+            values[i++] = reader[type]();
+        return values;
+    }
+    return receivedWireType === types.wireTypes[type]
+        ? reader[type]()
+        : this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor // assumes wire type 2, throws if invalid
+        ? new this.resolvedType._constructor()
+        : Object.create(this.resolvedType.prototype)
+    );
+};
+
+/**
+ * Generates a decoder specific to this field.
+ * @returns {function(Reader,number):*} Decoder
+ */
+FieldPrototype.generateDecoder = function() {
+    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
+        gen  = codegen("reader", "wireType")('"use strict";');
+    if (this.repeated && this.packed && types.packableWireTypes[type] !== undefined) gen
+        ("if (wireType === %d) {", types.packableWireTypes[type])
+            ("var limit = reader.uint32() + reader.pos, values = [], i = 0;")
+            ("while (reader.pos < limit)")
+                ("values[i++] = r.%s();", type)
+            ("return values;")
+        ("}");
+    var wireType = types.wireTypes[type];
+    if (wireType !== undefined) gen
+        ("if (wireType === %d)", wireType)
+            ("return reader.%s();", type)
+        ("else")
+            ("return this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor ? new this.resolvedType._constructor() : Object.create(this.resolvedType.prototype));");
+    else gen
+        ("return this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor ? new this.resolvedType._constructor() : Object.create(this.resolvedType.prototype));");
+    return gen.eof(this.fullName + "$decode");
 };
 
 /**
@@ -624,10 +700,9 @@ protobuf.inherits         = require("./inherits");
 
 // Utility
 protobuf.types            = require("./types");
-protobuf.codegen          = require("./codegen");
 protobuf.util             = util;
 
-},{"./codegen":2,"./enum":3,"./field":4,"./inherits":6,"./mapfield":7,"./method":8,"./namespace":9,"./object":10,"./parse":12,"./prototype":13,"./reader":14,"./root":15,"./service":16,"./tokenize":20,"./type":21,"./types":22,"./util":23,"./writer":24}],6:[function(require,module,exports){
+},{"./enum":3,"./field":4,"./inherits":6,"./mapfield":7,"./method":8,"./namespace":9,"./object":10,"./parse":12,"./prototype":13,"./reader":14,"./root":15,"./service":16,"./tokenize":20,"./type":21,"./types":22,"./util":23,"./writer":24}],6:[function(require,module,exports){
 module.exports = inherits;
 
 var Prototype = require("./prototype"),
@@ -1108,10 +1183,11 @@ var NamespacePrototype = ReflectionObject.extend(Namespace, [ "nested" ]);
 
 var Enum    = require("./enum"),
     Type    = require("./type"),
+    Field   = require("./field"),
     Service = require("./service"),
     util    = require("./util");
 
-var nestedTypes = [ Enum, Type, Service, Namespace ],
+var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
 
 /**
@@ -1244,6 +1320,8 @@ NamespacePrototype.add = function add(object) {
                 throw Error("duplicate name '" + object.name + "' in " + this);
         }
     }
+    if (object instanceof Field && object.extend === undefined)
+        throw util._TypeError("object", "an extension field when not part of a type");
     this.nested[object.name] = object;
     object.onAdd(this);
     return this;
@@ -1365,7 +1443,7 @@ NamespacePrototype.toJSON = function toJSON() {
     return hasVisibleMembers ? { nested: visibleMembers } : undefined;
 };
 
-},{"./enum":3,"./object":10,"./service":16,"./type":21,"./util":23}],10:[function(require,module,exports){
+},{"./enum":3,"./field":4,"./object":10,"./service":16,"./type":21,"./util":23}],10:[function(require,module,exports){
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
@@ -3892,6 +3970,13 @@ function Type(name, options) {
     this._constructor = null;
 }
 
+/**
+ * Whether to use code generation or not. Will be set to `false` automatically if code generation
+ * on any type or field failed.
+ * @type {boolean}
+ */
+Type.useCodegen = true;
+
 Object.defineProperties(TypePrototype, {
 
     /**
@@ -4125,36 +4210,57 @@ TypePrototype.create = function create(properties, constructor) {
 };
 
 /**
- * Generates an encoder specific to this message type.
- * @returns {function((Prototype|Object),Writer):Writer} Encoder
- */
-TypePrototype.generateEncoder = function generateEncoder() {
-    var gen = codegen("W", "m", "w"); // W: Writer, m: message, w: writer
-    gen
-    ("if(!w)w=W();var v=m.$values||m,f=this.fieldsArray;"); // v: values, f: fieldsArray
-    var fieldsArray = this.fieldsArray,
-        fieldsCount = fieldsArray.length;
-    for (var i = 0; i < fieldsCount; ++i) {
-        var field = fieldsArray[i].resolve();
-        if (field.required) gen
-            ("f[%d].encode(v[%j],w);", i, field.name);
-        else gen
-            ("if(v[%j]!=%j)f[%d].encode(v[%j],w);", field.name, field.defaultValue, i, field.name);
-    }
-    return gen
-    ("return w;")
-    .eof().bind(this, Writer);
-};
-
-/**
  * Encodes a message of this type.
  * @param {Prototype|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
 TypePrototype.encode = function encode(message, writer) {
-    this.encode = this.generateEncoder();
-    return this.encode(message, writer);
+    return this.encode_(message, writer || Writer());
+};
+
+/**
+ * Encodes a message of this type. This method differs from {@link Type#encode} in that it expects
+ * already type checked and known to be present arguments.
+ * @param {Prototype|Object} message Message instance or plain object
+ * @param {Writer} [writer] Writer to encode to
+ * @returns {Writer} writer
+ */
+TypePrototype.encode_ = function encode_internal(message, writer) {
+    if (codegen.supported) {
+        this.encode_ = this.generateEncoder();
+        return this.encode_(message, writer);
+    }
+    var fieldsArray = this.fieldsArray,
+        fieldsCount = fieldsArray.length;
+    var values = message.$values || message; // throws if not an object
+    for (var i = 0; i < fieldsCount; ++i) {
+        var field = fieldsArray[i].resolve(),
+            value = values[field.name];
+        if (field.required || value != field.defaultValue) // eslint-disable-line eqeqeq
+            field.encode(value, writer);
+    }
+    return writer;
+};
+
+/**
+ * Generates an encoder specific to this message type.
+ * @returns {function((Prototype|Object),Writer):Writer} Encoder
+ */
+TypePrototype.generateEncoder = function generateEncoder() {
+    var fieldsArray = this.fieldsArray,
+        fieldsCount = fieldsArray.length,
+        gen = codegen("message", "writer")('"use strict";')
+    ("var values = message.$values || message, fields = this.fieldsArray;");
+    for (var i = 0; i < fieldsCount; ++i) {
+        var field = fieldsArray[i].resolve();
+        if (field.required) gen
+            ("fields[%d].encode(values[%j], writer);", i, field.name);
+        else gen
+            ("if (values[%j] != %j)", field.name, field.defaultValue)
+                ("fields[%d].encode(values[%j], writer);", i, field.name);
+    }
+    return gen("return writer;").eof(this.fullName + "$encode");
 };
 
 /**
@@ -4164,11 +4270,18 @@ TypePrototype.encode = function encode(message, writer) {
  * @returns {Writer} writer
  */
 TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
-    if (writer)
-        writer.fork();
-    else
-        writer = Writer();
-    return writer.bytes(this.encode(message, writer).finish());
+    return this.encodeDelimited_(message, writer || Writer());
+};
+
+/**
+ * Encodes a message of this type preceeded by its byte length as a varint. This method differs
+ * from {@link Type#encodeDelimited} in that it expects already type checked and known to be present arguments.
+ * @param {Prototype|Object} message Message instance or plain object
+ * @param {Writer} writer Writer to encode to
+ * @returns {Writer} writer
+ */
+TypePrototype.encodeDelimited_ = function encodeDelimited_internal(message, writer) {
+    return writer.bytes(this.encode_(message, writer.fork()).finish());
 };
 
 /**
@@ -4191,23 +4304,6 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
 };
 
 /**
- * Decodes a message of this m type preceeded by its byte length as a varint.
- * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
- * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
- * @returns {Prototype} Decoded message
- */
-TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constructor) {
-    if (!(readerOrBuffer instanceof Reader))
-        readerOrBuffer = Reader(/* of type */ readerOrBuffer);
-    return this.decode(readerOrBuffer.bytes(), constructor);
-};
-
-// The following methods are used internally to shortcut a couple of unnecessary type checks.
-// Feel free to use them in your project if you can guarantee sanitized arguments. Note also that
-// generating a specialized decoder doesn't seem to make things faster as there are no other
-// shortcuts, i.e. different branches, to exploit.
-
-/**
  * Decodes a message of this type. This method differs from {@link Type#decode} in that it expects
  * already type checked and known to be present arguments.
  * @param {Reader} reader Reader to decode from
@@ -4221,7 +4317,7 @@ TypePrototype.decode_ = function decode_internal(reader, message, limit) {
     while (reader.pos < limit) {
         var tag   = reader.tag(),
             field = fieldsById[tag.id];
-        if (field) {
+        if (field /* known */) {
             var name  = field.name,
                 value = field.decode(reader, tag.wireType);
             if (field.repeated) {
@@ -4240,6 +4336,17 @@ TypePrototype.decode_ = function decode_internal(reader, message, limit) {
 };
 
 /**
+ * Decodes a message of this m type preceeded by its byte length as a varint.
+ * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+ * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
+ * @returns {Prototype} Decoded message
+ */
+TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constructor) {
+    var reader = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);
+    return this.decode(reader, constructor, reader.uint32());
+};
+
+/**
  * Decodes a message of this type. This method differs from {@link Type#decodeDelimited} in that it
  * expects already type checked and known to be present arguments.
  * @param {Reader} reader Reader to decode from
@@ -4247,8 +4354,7 @@ TypePrototype.decode_ = function decode_internal(reader, message, limit) {
  * @returns {Prototype} Populated message instance
  */
 TypePrototype.decodeDelimited_ = function decodeDelimited_internal(reader, message) {
-    var buf = reader.bytes();
-    return this.decode_(new reader.constructor(buf), message, buf.length);
+    return this.decode_(reader, message, reader.uint32() + reader.pos);
 };
 
 },{"./codegen":2,"./enum":3,"./field":4,"./inherits":6,"./namespace":9,"./oneof":11,"./prototype":13,"./reader":14,"./service":16,"./util":23,"./writer":24}],22:[function(require,module,exports){

@@ -46,16 +46,4 @@ var root = new Root(),
 var Any = gp.lookup("Any"),
     any = Any.create();
 
-// Works (includes prototype chain)
-var keys = [];
-for (var i in any) keys.push(i);
-console.log(keys);
-
-// Doesn't work (own enumerables only)
-console.log(Object.keys(any));
-
-// What you'd actually have to do:
-console.log(Object.keys(any.$values));
-
-// What you can do instead:
-console.log(any.$keys);
+gp.add(new Field("test", 10, "string", "optional", "Any"));
