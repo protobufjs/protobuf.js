@@ -1,12 +1,16 @@
 module.exports = Reader;
 
+/**
+ * Buffer implementation, if available.
+ * @type {?Function}
+ */
+Reader.Buffer = null;
+
 Reader.BufferReader = BufferReader;
 
-var util    = require("./util"),
-    long_   = require("./support/long"),
+var long_   = require("./support/long"),
     string_ = require("./support/string"),
-    float_  = require("./support/float"),
-    array_  = require("./support/array");
+    float_  = require("./support/float");
 
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
@@ -19,7 +23,7 @@ function indexOutOfRange(reader, writeLength) {
  */
 function Reader(buffer) {
     if (!(this instanceof Reader)) {
-        if (util.Buffer && (!buffer || util.Buffer.isBuffer(buffer)))
+        if (Reader.Buffer && (!buffer || Reader.Buffer.isBuffer(buffer)))
             return new BufferReader(buffer);
         return new Reader(buffer);
     }
@@ -46,7 +50,10 @@ function Reader(buffer) {
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-ReaderPrototype._slice = array_._slice;
+var ArrayImpl = typeof Uint8Array !== 'undefined'
+    ? Uint8Array
+    : Array;
+ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
  * Reads a tag.
@@ -311,9 +318,9 @@ ReaderPrototype.finish = function finish(buffer) {
 // One time function to initialize BufferReader with the now-known buffer
 // implementation's slice method
 var initBufferReader = function() {
-    if (!util.Buffer)
+    if (!Reader.Buffer)
         throw Error("Buffer is not supported");
-    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
+    BufferReaderPrototype._slice = Reader.Buffer.prototype.slice;
     initBufferReader = false;
 };
 

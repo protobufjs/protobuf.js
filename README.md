@@ -1,16 +1,15 @@
 protobuf.js
 ===========
 
-**Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use 
-in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
+**Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
 
-**protobuf.js** is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently
-encodes plain objects and custom classes and works out of the box with .proto files.
+**protobuf.js** is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.
 
 **This is the development branch of protobuf.js 6.** Are you looking for the [current stable branch](https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5)?
 
 Contents
 --------
+
 * [Examples](#examples)<br />
   A few examples to get you started.
 
@@ -24,7 +23,7 @@ Contents
   How to build the library and its components yourself.
 
 * [Compatibility](#compatibility)<br />
-  A few notes on compatibility with browsers and optional libraries.
+  Notes on compatibility regarding browsers and optional libraries.
 
 Examples
 --------
@@ -217,7 +216,9 @@ The library exports a flat `protobuf` namespace with the following members, orde
 Documentation
 -------------
 
-* [API Documentation](http://dcode.io/protobuf.js/)
+* [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
+
+* [protobuf.js API Documentation](http://dcode.io/protobuf.js/)
 
 Building
 --------
@@ -248,15 +249,10 @@ $> npm run types
 
 Compatibility
 -------------
-* protobuf.js requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest.
-  If typed arrays are not supported, it uses plain arrays instead.
+* protobuf.js requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest. If typed arrays are not supported, it uses plain arrays instead.
 
-* If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer)
-  for example and assign its constructor, or that of any compatible library, to `protobuf.util.Buffer`.
+* If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer) for example and assign its constructor, or that of any compatible library, to `protobuf.util.Buffer`.
 
-* If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install
-  [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with buffers, you
-  can assign its constructor to `protobuf.util.Long`. All 64 bit numbers will then be returned as a
-  `Long` instance. That's not a requirement, though ([see](https://github.com/dcodeIO/protobuf.js/blob/master/src/support/long.js)).
+* If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with buffers, you can assign its constructor to `protobuf.util.Long`. All 64 bit numbers will then be returned as a `Long` instance. That's not a requirement, though ([see](https://github.com/dcodeIO/protobuf.js/blob/master/src/support/long.js)).
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)

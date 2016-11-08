@@ -1,12 +1,16 @@
 module.exports = Writer;
 
+/**
+ * Buffer implementation, if available.
+ * @type {?Function}
+ */
+Writer.Buffer = null;
+
 Writer.BufferWriter = BufferWriter;
 
-var util    = require("./util"),
-    long_   = require("./support/long"),
+var long_   = require("./support/long"),
     string_ = require("./support/string"),
-    float_  = require("./support/float"),
-    array_  = require("./support/array");
+    float_  = require("./support/float");
 
 /**
  * Default buffer size.
@@ -21,7 +25,7 @@ Writer.BUFFER_SIZE = 1024;
  */
 function Writer() {
     if (!(this instanceof Writer)) {
-        if (util.Buffer)
+        if (Writer.Buffer)
             return new BufferWriter();
         return new Writer();
     }
@@ -61,15 +65,50 @@ function Writer() {
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
 
+var emptyArray = null;
+
+/**
+ * Sets up the Writer class before first use. This is done automatically when the first buffer is
+ * allocated.
+ * @returns {Function} `Writer`
+ */
+Writer.setup = function setup() {
+    var ArrayImpl = typeof Uint8Array !== 'undefined'
+        ? Uint8Array
+        : Array;
+
+    WriterPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
+
+    WriterPrototype._set = ArrayImpl.prototype.set || function set_array(array, offset) {
+        if (offset + array.length > this.length)
+            throw RangeError("offset would store beyond the end of the array");
+        for (var i = 0, k = array.length; i < k; ++i)
+            this[offset + i] = array[i];
+    };
+
+    function alloc_array(size) {
+        alloc_array.count++;
+        alloc_array.bytes += size;
+        return new ArrayImpl(size);
+    }
+    alloc_array.count = alloc_array.total = 0;
+    Writer.alloc = alloc_array;
+
+    emptyArray = Writer.alloc(0);
+    if (Object.freeze)
+        Object.freeze(emptyArray);
+
+    return Writer;
+};
+
 /**
  * Allocates a chunk of memory.
- * @function
  * @param {number} size Buffer size
  * @returns {number[]} Allocated buffer
  */
-Writer.alloc = array_._alloc;
-
-WriterPrototype._slice = array_._slice;
+Writer.alloc = function alloc_array_setup(size) {
+    return Writer.setup().alloc(size); // overrides this method
+};
 
 /**
  * Allocates more memory on the specified writer.
@@ -265,7 +304,7 @@ WriterPrototype.bytes = function write_bytes(value) {
     if (len) {
         if (this.pos + len > this.len)
             expand(this, len);
-        array_._set.call(this.buf, value, this.pos);
+        this._set.call(this.buf, value, this.pos);
         this.pos += len;
     }
     return this;
@@ -339,7 +378,7 @@ WriterPrototype.finish = function finish(clearForkedStates) {
         if (!bufs.length)
             return buf;
     } else
-        return array_._empty || [];
+        return emptyArray;
     len = pos;
     pos = 0;
     var i = 0,
@@ -350,25 +389,12 @@ WriterPrototype.finish = function finish(clearForkedStates) {
         sub;
     i = 0;
     while (i < k) {
-        array_._set.call(concat, sub = bufs[i++], pos);
+        this._set.call(concat, sub = bufs[i++], pos);
         pos += sub.length;
     }
-    array_._set.call(concat, buf, pos);
+    this._set.call(concat, buf, pos);
     return concat;
 };
-
-// One time function to initialize BufferWriter with the now-known buffer
-// implementation's slice method
-var initBufferWriter = function() {
-    if (!util.Buffer)
-        throw Error("Buffer is not supported");
-    BufferWriterPrototype._slice = util.Buffer.prototype.slice;
-    BufferWriter.alloc = util.Buffer.allocUnsafe || function(size) { return new util.Buffer(size); };
-    emptyBuffer = BufferWriter.alloc(0);
-    initBufferWriter = false;
-};
-
-var emptyBuffer = null;
 
 /**
  * Wire format writer using node buffers.
@@ -377,25 +403,43 @@ var emptyBuffer = null;
  * @constructor
  */
 function BufferWriter() {
-    if (initBufferWriter)
-        initBufferWriter();
     Writer.call(this);
 }
 
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
-
 BufferWriterPrototype.constructor = BufferWriter;
+
+var emptyBuffer = null;
+
+/**
+ * Sets up the BufferWriter class to use the available buffer implementation. This is done
+ * automatically when the first buffer is allocated. If the Buffer implementation is changed
+ * after the first buffer has been allocated, this method must be called again manually.
+ * @returns {Function} `BufferWriter`
+ */
+BufferWriter.setup = function setup_buffer() {
+    if (!Writer.Buffer)
+        throw Error("Buffer is not supported");
+
+    BufferWriterPrototype._slice = Writer.Buffer.prototype.slice;
+
+    BufferWriter.alloc = Writer.Buffer.allocUnsafe || Writer.Buffer.alloc || function alloc_buffer(size) { return new Writer.Buffer(size); };
+
+    emptyBuffer = BufferWriter.alloc(0);
+    if (Object.freeze)
+        Object.freeze(emptyBuffer);
+
+    return BufferWriter;
+};
 
 /**
  * Allocates a chunk of memory using node buffers.
  * @param {number} size Buffer size
  * @returns {Buffer} Allocated buffer
  */
-BufferWriter.alloc = function alloc_buffer(size) {
-    if (initBufferWriter)
-        initBufferWriter(); // overrides this method
-    return BufferWriter.alloc(size);
+BufferWriter.alloc = function alloc_buffer_setup(size) {
+    return BufferWriter.setup().alloc(size); // overrides this method
 };
 
 /**
@@ -447,7 +491,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
  * @returns {BufferWriter} `this`
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
-    var len = util.Buffer.byteLength(value);
+    var len = Writer.Buffer.byteLength(value);
     this.uint32(len);
     if (len) {
         if (this.pos + len > this.len)
@@ -473,7 +517,7 @@ BufferWriterPrototype.finish = function finish_buffer(clearForkedStates) {
             return buf.slice(0, pos);
         if (pos)
             bufs.push(buf.slice(0, pos));
-        return util.Buffer.concat(bufs);
+        return Writer.Buffer.concat(bufs);
     }
     return emptyBuffer;
 };

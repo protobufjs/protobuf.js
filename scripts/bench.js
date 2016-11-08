@@ -21,9 +21,14 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
 
         var Package = root.lookup("Package");
         
-        function summarize(name, start, length) {
+        function summarize(name, start, length, allocCount, allocBytes) {
             var time = Date.now() - start;
-            console.log(pad(name, 15, 1) + " : " + pad(time + "ms", 10) + "   " + pad(length + " bytes", 15));
+            var sb = [ pad(name, 15, 1), " : ", pad(time + "ms", 10), "   ", pad(length + " bytes", 15) ];
+            if (allocCount !== undefined)
+                sb.push("   ", pad(allocCount.toString(), 7));
+            if (allocBytes !== undefined)
+                sb.push("   ", pad(allocBytes.toString(), 9));
+            console.log(sb.join(''));
         }
 
         function bench_protobuf_object() {
@@ -34,7 +39,7 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
                 Package.decode(buf);
                 len += buf.length;
             }
-            summarize("PBJS " + "object", start, len);
+            summarize("PBJS " + "object", start, len, protobuf.BufferWriter.alloc.count, protobuf.BufferWriter.alloc.bytes);
         }
 
         function PackageClass(properties) {
@@ -51,7 +56,7 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
                 Package.decode(buf);
                 len += buf.length;
             }
-            summarize("PBJS " + "class", start, len);
+            summarize("PBJS " + "class", start, len, protobuf.BufferWriter.alloc.count, protobuf.BufferWriter.alloc.bytes);
         }
 
         function bench_json(name, JSON) {

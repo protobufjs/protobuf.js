@@ -4,30 +4,35 @@
  */
 var util = module.exports = {};
 
-var fs     = require("fs"),
-    buffer = require("buffer"),
+var Reader = require("./reader"),
+    Writer = require("./writer"),
     long_  = require("./support/long");
-var Long; try { Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
-
-/**
- * Whether running under node.js or not.
- * @type {boolean}
- */
-util.isNode = Boolean(typeof process !== 'undefined' && process.versions);
 
 /**
  * Optional buffer class to use. If you assign any compatible buffer implementation to this
  * property, the library will use it.
+ * @memberof util
  * @type {?Function}
  */
-util.Buffer = buffer && buffer.Buffer || null;
+Object.defineProperty(util, "Buffer", {
+    get: function() {
+        return Writer.Buffer;
+    },
+    set: function(value) {
+        Writer.Buffer = Reader.Buffer = value;
+    }
+});
+
+try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Optional Long class to use. If you assign any compatible long implementation to this property,
  * the library will use it.
  * @type {?Function}
  */
-util.Long = Long || null;
+util.Long = null;
+
+try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Tests if the specified value is a string.
@@ -124,6 +129,7 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, path);
+    var fs; try { fs = require("fs"); } catch (e) {} // eslint-disable-line no-empty
     if (fs && fs.readFile)
         return fs.readFile(path, "utf8", callback);
     var xhr = new XMLHttpRequest();
