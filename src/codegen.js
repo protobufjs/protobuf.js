@@ -8,48 +8,51 @@ module.exports = codegen;
  * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}
  */
 function codegen(/* varargs */) {
-    var arg = Array.prototype.slice.call(arguments),
-        src = [],
-        ws  = 1;
-    function append(format/*, varargs */) {
-        var val = Array.prototype.slice.call(arguments, 1),
-            idx = 0;
-        format = format.replace(/%([djs])/g, function($0, $1) {
+    var args   = Array.prototype.slice.call(arguments),
+        src    = [],
+        indent = 1;
+
+    // Appends a formatted line to the generated source
+    function gen(format/*, varargs */) {
+        var params = Array.prototype.slice.call(arguments, 1),
+            index = 0;
+        var line = format.replace(/%([djs])/g, function($0, $1) {
+            var param = params[index++];
             return $1 === "j"
-                ? JSON.stringify(val[idx++])
-                : String(val[idx++]);
+                ? JSON.stringify(param)
+                : String(param);
         });
-        var ind = false,
-            blk  = false;
-        if (src.length > 0) {
-            if (/[\{\[]$/.test(src[src.length-1])) {
-                ind = blk = true;
-                ws++;
-            } else if (!/;$/.test(src[src.length-1])) {
-                ind = true;
-                ws++;
-            }
+        var level = indent;
+        if (src.length) {
+            var prev = src[src.length - 1];
+            if (/[\{\[]$/.test(prev)) // block open (increment and keep)
+                level = ++indent;
+            else if (!/;$/.test(prev)) // no semi = single line (indent only once)
+                level = indent + 1;
+            else if (/^[\}\]]/.test(line)) // block close (decrement and keep)
+                level = --indent;
         }
-        for (var i = 0; i < ws; ++i)
-            format = "    " + format;
-        if (ind) {
-            if (!blk || /[\}\]]$/.test(format))
-                ws--;
-        }
-        src.push(format);
-        return append;
+        for (var i = 0; i < level; ++i)
+            line = "    " + line;
+        src.push(line);
+        return gen;
     }
-    append.toString = function toString(name) {
+
+    // Converts the so far generated source to a string
+    gen.toString = function toString(name) {
         name = name ? name.replace(/[^\w_$]/g, "_") : "";
-        var code = "function " + name + "(" + arg.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function " + name + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+    };
+
+    // Ends generation
+    gen.eof = function eof(name) {
+        var code = gen.toString(name);
         if (codegen.verbose)
-            console.log("--- codegen ---\n" + code.replace(/^/mg, "> "));
-        return code;
+            console.log("--- codegen ---\n" + code.replace(/^/mg, "> ")); // eslint-disable-line no-console
+        return new Function("return " + code + ";")(); // eslint-disable-line no-new-func
     };
-    append.eof = function eof(name) {
-        return new Function("return " + append.toString(name) + ";").call(null);
-    };
-    return append;
+
+    return gen;
 }
 
 /**
@@ -57,7 +60,7 @@ function codegen(/* varargs */) {
  * @type {boolean}
  */
 codegen.supported = false;
-try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable no-empty
+try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * When set to true, codegen will log generated code to console. Useful for debugging.

@@ -2,9 +2,8 @@ var protobuf = require(__dirname + "/../src/index"),
     path     = require("path"),
     pkg      = require(__dirname + "/../package.json");
 var JSONPoly = require("./lib/jsonpoly");
-    JSON3    = require("./lib/json3");
 
-var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 50000;
+var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 100000;
 console.log("usage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
 console.log("encoding/decoding " + times + " iterations ...\n");
 
@@ -80,7 +79,6 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
         if (process.argv.length < 4) {
             bench_json("native", JSON);
             bench_json("poly", JSONPoly);
-            bench_json("3", JSON3);
         }
 
         console.log("\n--- warmed up ---");
@@ -89,7 +87,6 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
         if (process.argv.length < 4) {
             bench_json("native", JSON);
             bench_json("poly", JSONPoly);
-            bench_json("3", JSON3);
         }
 
     } catch (e) {

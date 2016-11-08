@@ -4,9 +4,10 @@ var Field = require("./field");
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);
 
-var Enum  = require("./enum"),
-    types = require("./types"),
-    util  = require("./util");
+var Enum    = require("./enum"),
+    types   = require("./types"),
+    codegen = require("./codegen"),
+    util    = require("./util");
 
 /**
  * Reflected message map field.
@@ -83,33 +84,81 @@ MapFieldPrototype.resolve = function resolve() {
 /**
  * @override
  */
-MapFieldPrototype.encode = function encode(value, writer) {
+MapFieldPrototype.encode = function encode_setup(value, writer) {
+    this.encode = codegen.supported
+        ? encode_generate(this)
+        : encode_internal;
+    return this.encode(value, writer);
+};
+
+// Codegen reference and also fallback if code generation is not supported.
+function encode_internal(value, writer) {
+    /* eslint-disable no-invalid-this */
     var keys;
     if (!(value && (keys = Object.keys(value)).length))
         return writer;
-
     var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
         keyWireType = types.mapKeyWireTypes[keyType];
-
     var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
         valueWireType = types.wireTypes[valueType];
-
     writer.tag(this.id, 2).fork();
-    for (var i = 0, k = keys.length; i < k; ++i) {
-        var key = keys[i];
-        writer.tag(1, keyWireType)[keyType](key);
+    for (var i = 0, k = keys.length, key; i < k; ++i) {
+        writer.tag(1, keyWireType)[keyType](key = keys[i]);
         if (valueWireType === undefined)
-            this.resolvedType.encodeDelimited(value[key], writer);
+            this.resolvedType.encodeDelimited_(value[key], writer);
         else
             writer.tag(2, valueWireType)[valueType](value[key]);
     }
     return writer.bytes(writer.finish());
-};
+    /* eslint-enable no-invalid-this */
+}
+
+/**
+ * Generates an encoder specific to the specified map field.
+ * @name MapField.generateEncoder
+ * @param {MapField} field Map field
+ * @returns {function} Encoder
+ */
+function encode_generate(field) {
+    var gen = codegen("$type", "value", "writer")
+    ('"use strict";')
+    ("var keys;")
+    ("if (!value || (keys = Object.keys(value)).length === 0)")
+        ("return writer;");
+    var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
+        keyWireType = types.mapKeyWireTypes[keyType];
+    var valueType = field.resolvedType instanceof Enum ? "uint32" : field.type,
+        valueWireType = types.wireTypes[valueType];
+    gen
+    ("writer.tag(%d, 2).fork();", field.id)
+    ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
+        ("writer.tag(1, %d).%s(key = keys[i]);", keyWireType, keyType);
+        if (valueWireType === undefined) gen
+        ("$type.encodeDelimited_(value[key], writer);");
+        else gen
+        ("writer.tag(2, %d).%s(value[key]);", valueWireType, valueType);
+    return gen
+    ("}")
+    ("return writer.bytes(writer.finish());")
+    .eof(field.fullName + "$encode")
+    .bind(field, field.resolvedType);
+}
+
+MapField.generateEncoder = encode_generate;
 
 /**
  * @override
  */
-MapFieldPrototype.decode = function decode(reader) {
+MapFieldPrototype.decode = function decode_setup(reader) {    
+    this.decode = codegen.supported
+        ? decode_generate(this)
+        : decode_internal;
+    return this.decode(reader);
+};
+
+// Codegen reference and also fallback if code generation is not supported.
+function decode_internal(reader) {
+    /* eslint-disable no-invalid-this */
     var length = reader.uint32(),
         map = {};
     
@@ -122,28 +171,64 @@ MapFieldPrototype.decode = function decode(reader) {
             valueWireType = types.wireTypes[valueType];
 
         var limit  = reader.pos + length,
-            keys   = [],
-            values = [];
+            keys   = [], ki = 0,
+            values = [], vi = 0;
 
         while (reader.pos < limit) {
             var tag = reader.tag();
-            if (tag.id === 1 && tag.wireType === keyWireType)
-                keys.push(reader[keyType]());
+            if (tag.id === 1)
+                keys[ki++] = reader[keyType]();
             else if (tag.id === 2) {
-                if (tag.wireType === valueWireType)
-                    values.push(reader[valueType]());
+                if (valueWireType !== undefined)
+                    values[vi++] = reader[valueType]();
                 else
-                    values.push(this.resolvedType.decodeDelimited(reader)); // throws if invalid
+                    values[vi++] = this.resolvedType.decodeDelimited_(reader); // throws if invalid
             } else
-                throw Error("illegal wire format for " + this);
+                throw Error("illegal wire format");
         }
-        if (reader.pos > limit)
-            throw Error("illegal wire format for " + this);
-        if (keys.length !== values.length)
-            throw Error("illegal wire format for " + this + ": key/value count mismatch");
-        for (var i = 0, k = keys.length, key; i < k; ++i)
+        for (var i = 0, key; i < ki; ++i)
             map[typeof (key = keys[i]) === 'object' ? util.toHash(key) : key] = values[i];
     }
-
     return map;
-};
+    /* eslint-enable no-invalid-this */
+}
+
+/**
+ * Generates a decoder specific to the specified map field.
+ * @name MapField.generateDecoder
+ * @param {MapField} field Map field
+ * @returns {function} Decoder
+ */
+function decode_generate(field) {
+    var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
+        keyWireType = types.mapKeyWireTypes[keyType];
+    var valueType = field.resolvedType instanceof Enum ? "uint32" : field.type,
+        valueWireType = types.wireTypes[valueType];
+    var gen = codegen("$type", "$hash", "reader")
+    ('"use strict";')
+    ("var length = reader.uint32(), map = {};")
+    ("if (length) {")
+        ("var limit = reader.pos + length, keys = [], ki = 0, values = [], vi = 0;")
+        ("while (reader.pos < limit) {")
+            ("var tag = reader.tag();")
+            ("if (tag.id === 1)", keyWireType)
+                ("keys[ki++] = reader.%s();", keyType)
+            ("else if (tag.id === 2)");
+                if (valueWireType !== undefined) gen
+                ("values[vi++] = reader.%s();", valueType)
+                else gen
+                ("values[vi++] = $type.decodeDelimited_(reader);");
+            gen
+            ("else")
+                ("throw Error('illegal wire format');")
+        ("}")
+        ("for (var i = 0, key; i < ki; ++i)")
+            ("map[typeof (key = keys[i]) === 'object' ? $hash(key) : key] = values[i];")
+    ("}")
+    ("return map;");
+    return gen
+    .eof(field.fullName + "$decode")
+    .bind(field, field.resolvedType, util.toHash);
+}
+
+MapField.generateDecoder = decode_generate;

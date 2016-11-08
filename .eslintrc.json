@@ -75,7 +75,7 @@
         "no-unused-expressions": 1,
         "no-useless-call": 1,
         "no-useless-concat": 1,
-        "no-useless-escape": 1,
+        "no-useless-escape": 0,             // reports incorrectly for some regexes
         "no-useless-return": 1,
         "no-void": 1,
         "no-warning-comments": 1,

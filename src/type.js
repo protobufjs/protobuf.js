@@ -165,6 +165,7 @@ Object.defineProperties(TypePrototype, {
  */
 function clearCache(type) {
     type._fieldsById = type._fieldsArray = type._oneofsArray = type._prototype = null;
+    delete type.encode_;
     return type;
 }
 
@@ -343,11 +344,16 @@ TypePrototype.encode = function encode(message, writer) {
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
-TypePrototype.encode_ = function encode_internal(message, writer) {
-    if (codegen.supported) {
-        this.encode_ = this.generateEncoder();
-        return this.encode_(message, writer);
-    }
+TypePrototype.encode_ = function encode_setup(message, writer) {
+    this.encode_ = codegen.supported
+        ? encode_generate(this)
+        : encode_internal;
+    return this.encode_(message, writer);
+};
+
+// Codegen reference and also fallback if code generation is not supported
+function encode_internal(message, writer) {
+    /* eslint-disable no-invalid-this */
     var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
     var values = message.$values || message; // throws if not an object
@@ -358,27 +364,36 @@ TypePrototype.encode_ = function encode_internal(message, writer) {
             field.encode(value, writer);
     }
     return writer;
-};
+    /* eslint-enable no-invalid-this */
+}
 
 /**
- * Generates an encoder specific to this message type.
- * @returns {function((Prototype|Object),Writer):Writer} Encoder
+ * Generates an encoder specific to the specified message type.
+ * @name Type.generateEncoder
+ * @param {Type} type Message type
+ * @returns {function} Encoder
  */
-TypePrototype.generateEncoder = function generateEncoder() {
-    var fieldsArray = this.fieldsArray,
-        fieldsCount = fieldsArray.length,
-        gen = codegen("message", "writer")('"use strict";')
-    ("var values = message.$values || message, fields = this.fieldsArray;");
+function encode_generate(type) {
+    var fieldsArray = type.fieldsArray,
+        fieldsCount = fieldsArray.length;
+    var gen = codegen("$fields", "message", "writer")
+    ('"use strict";')
+    ("var values = message.$values || message;");
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
         if (field.required) gen
-            ("fields[%d].encode(values[%j], writer);", i, field.name);
+            ("$fields[%d].encode(values[%j], writer);", i, field.name);
         else gen
             ("if (values[%j] != %j)", field.name, field.defaultValue)
-                ("fields[%d].encode(values[%j], writer);", i, field.name);
+                ("$fields[%d].encode(values[%j], writer);", i, field.name);
     }
-    return gen("return writer;").eof(this.fullName + "$encode");
-};
+    return gen
+    ("return writer;")
+    .eof(type.fullName + "$encode")
+    .bind(type, fieldsArray);
+}
+
+Type.generateEncoder = encode_generate;
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint.
@@ -423,12 +438,18 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
 /**
  * Decodes a message of this type. This method differs from {@link Type#decode} in that it expects
  * already type checked and known to be present arguments.
+ * @function
  * @param {Reader} reader Reader to decode from
  * @param {Prototype} message Message instance to populate
  * @param {number} limit Maximum read offset
  * @returns {Prototype} Populated message instance
  */
-TypePrototype.decode_ = function decode_internal(reader, message, limit) {
+TypePrototype.decode_ = decode_internal;
+
+// Codegen reference and fallback if code generation is not supported.
+// NOTE: There is actually no generator for Type#decode_ as it seems to bring no benefit.
+function decode_internal(reader, message, limit) {
+    /* eslint-disable no-invalid-this */
     var values     = message.$values,
         fieldsById = this.fieldsById;
     while (reader.pos < limit) {
@@ -447,10 +468,9 @@ TypePrototype.decode_ = function decode_internal(reader, message, limit) {
         } else
             reader.skipType(tag.wireType);
     }
-    if (reader.pos !== limit)
-        throw Error("invalid wire format: index " + reader.pos + " != " + limit);
     return message;
-};
+    /* eslint-enable no-invalid-this */
+}
 
 /**
  * Decodes a message of this m type preceeded by its byte length as a varint.

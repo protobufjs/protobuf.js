@@ -2,8 +2,8 @@
 
 module.exports = tokenize;
 
-var delimRe        = /[\s{}=;:\[\],'"\(\)<>]/g, // eslint-disable-line no-useless-escape
-    stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g, //^ it says escaping [] is wrong
+var delimRe        = /[\s{}=;:\[\],'"\(\)<>]/g,
+    stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
 /**
