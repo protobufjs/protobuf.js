@@ -344,15 +344,9 @@ TypePrototype.encode = function encode(message, writer) {
  * @returns {Writer} writer
  */
 TypePrototype.encode_ = function encode_internal(message, writer) {
-    if (Type.useCodegen) {
-        try {
-            var encoder = this.generateEncoder(),
-                result  = encoder.call(this, message, writer);
-            this.encode_= encoder;
-            return result;
-        } catch (e) {
-            Type.useCodegen = false;
-        }
+    if (codegen.supported) {
+        this.encode_ = this.generateEncoder();
+        return this.encode_(message, writer);
     }
     var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
@@ -371,18 +365,19 @@ TypePrototype.encode_ = function encode_internal(message, writer) {
  * @returns {function((Prototype|Object),Writer):Writer} Encoder
  */
 TypePrototype.generateEncoder = function generateEncoder() {
-    var gen = codegen("Writer", "m", "w");
     var fieldsArray = this.fieldsArray,
-        fieldsCount = fieldsArray.length;
-    gen("var v=m.$values||m,f=this.fieldsArray;");
+        fieldsCount = fieldsArray.length,
+        gen = codegen("message", "writer")
+    ("var values = message.$values || message, fields = this.fieldsArray;");
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
         if (field.required) gen
-            ("f[%d].encode(v[%j],w);", i, field.name);
+            ("fields[%d].encode(values[%j], writer);", i, field.name);
         else gen
-            ("if(v[%j]!=%j)f[%d].encode(v[%j],w);", field.name, field.defaultValue, i, field.name);
+            ("if (values[%j] != %j)", field.name, field.defaultValue)
+                ("fields[%d].encode(values[%j], writer);", i, field.name);
     }
-    return gen("return w;").eof().bind(this, Writer);
+    return gen("return writer;").eof(this.fullName + "$encode");
 };
 
 /**

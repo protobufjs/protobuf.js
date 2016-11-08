@@ -26,8 +26,8 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
                 lol: 'lol'
             }
         };
-        
         var Test = root.lookup("Test");
+        Test.decode(Test.encode(testData).finish());
         
         function summarize(name, start, length) {
             var time = Date.now() - start;
