@@ -24,11 +24,10 @@ Writer.BUFFER_SIZE = 1024;
  * @constructor
  */
 function Writer() {
-    if (!(this instanceof Writer)) {
-        if (Writer.Buffer)
-            return new BufferWriter();
-        return new Writer();
-    }
+    if (!(this instanceof Writer))
+        return Writer.Buffer
+            ? new BufferWriter()
+            : new Writer();
 
     /**
      * Current buffer.
@@ -96,7 +95,7 @@ Writer.setup = function setup() {
 
     emptyArray = Writer.alloc(0);
     if (Object.freeze)
-        Object.freeze(emptyArray);
+        try { Object.freeze(emptyArray); } catch(e) {} // eslint-disable-line no-empty
 
     return Writer;
 };
@@ -428,7 +427,7 @@ BufferWriter.setup = function setup_buffer() {
 
     emptyBuffer = BufferWriter.alloc(0);
     if (Object.freeze)
-        Object.freeze(emptyBuffer);
+        try { Object.freeze(emptyBuffer); } catch (e) {} // eslint-disable-line no-empty
 
     return BufferWriter;
 };

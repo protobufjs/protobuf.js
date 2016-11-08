@@ -22,11 +22,10 @@ function indexOutOfRange(reader, writeLength) {
  * @param {number[]} buffer Buffer to read from
  */
 function Reader(buffer) {
-    if (!(this instanceof Reader)) {
-        if (Reader.Buffer && (!buffer || Reader.Buffer.isBuffer(buffer)))
-            return new BufferReader(buffer);
-        return new Reader(buffer);
-    }
+    if (!(this instanceof Reader))
+        return Reader.Buffer && (!buffer || Reader.Buffer.isBuffer(buffer))
+            ? new BufferReader(buffer)
+            : new Reader(buffer);
 
     /**
      * Read buffer.
