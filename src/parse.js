@@ -474,6 +474,7 @@ function parse(source, root, visible) {
                     default:
                         if (!isProto3 || !typeRefRe.test(token))
                             throw Error(illegal(token));
+                        push(token);
                         parseField(parent, "optional", reference);
                         break;
                 }

@@ -7,7 +7,8 @@ var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "ext
 var Type      = require("./type"),
     Enum      = require("./enum"),
     types     = require("./types"),
-    util      = require("./util");
+    util      = require("./util"),
+    codegen   = require("./codegen");
 
 /**
  * Reflected message field.
@@ -228,37 +229,70 @@ FieldPrototype.resolve = function resolve() {
 };
 
 /**
+ * Generates an encoder specific to this field.
+ * @returns {function(*, Writer): Writer} Encoder
+ */
+FieldPrototype.generateEncoder = function() {
+    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
+        gen  = codegen("value", "writer");
+    if (this.repeated) { gen
+        ("var i = 0, k = value.length;");
+        if (this.packed && types.packableWireTypes[type] !== undefined) { gen
+            ("writer.fork();")
+            ("while (i < k)")
+                ("writer.%s(value[i++]);", type)
+            ("var buf = writer.finish();");
+            ("if (buf.length)")
+                ("writer.tag(%d, 2).bytes(buf);", this.id);
+        } else { gen
+            ("while (i < k)")
+                ("this.resolvedType.encodeDelimited(value[i++], writer.tag(%d, 2));", this.id);
+        }
+    } else {
+        var wireType = types.wireTypes[type];
+        if (wireType !== undefined) gen
+            ("writer.tag(%d, %d).%s(value);", this.id, wireType, type);
+        else gen
+            ("this.resolvedType.encodeDelimited(value, writer.tag(%d, 2));", this.id);
+    }
+    return gen
+    ("return writer;")
+    .eof();
+};
+
+/**
  * Encodes the specified field value. Assumes that the field is present.
  * @param {*} value Field value
  * @param {Writer} writer Writer to encode to
  * @returns {Writer} writer
  */
 FieldPrototype.encode = function encode(value, writer) {
-    var type = this.resolvedType instanceof Enum ? "uint32" : this.type;
-    if (this.repeated) {
-        if (!util.isArray(value))
-            value = [ value ];
-        else if (!value.length)
-            return writer;
-        var i = 0, k = value.length;
-        if (this.packed && types.packableWireTypes[type] !== undefined) {
-            writer.fork();
-            while (i < k)
-                writer[type](value[i++]);
-            var buf = writer.finish();
-            if (buf.length)
-                writer.tag(this.id, 2).bytes(buf);
-        } else
-            while (i < k)
-                this.resolvedType.encodeDelimited(value[i++], writer.tag(this.id, 2));
-    } else {
-        var wireType = types.wireTypes[type];
-        if (wireType !== undefined)
-            writer.tag(this.id, wireType)[type](value);
-        else
-            this.resolvedType.encodeDelimited(value, writer.tag(this.id, 2));
-    }
-    return writer;
+    this.encode = this.generateEncoder();
+    return this.encode(value, writer);
+};
+
+/**
+ * Generates a decoder specific to this field.
+ * @returns {function(Reader,number):*} Decoder
+ */
+FieldPrototype.generateDecoder = function() {
+    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type,
+        gen  = codegen("reader", "receivedWireType");
+    if (this.repeated && this.packed && types.packableWireTypes[type] !== undefined) gen
+        ("if (receivedWireType === %d) {", types.packableWireTypes[type])
+            ("var limit = reader.uint32() + reader.pos, values = [];")
+            ("while (reader.pos < limit)")
+                ("values.push(reader.%s());", type)
+            ("return values;")
+        ("}");
+    var wireType = types.wireTypes[type];
+    if (wireType !== undefined) gen
+        ("return receivedWireType === %d", wireType)
+            ("? reader.%s()", type)
+            (": this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor ? new this.resolvedType._constructor() : Object.create(this.resolvedType.prototype));")
+    else gen
+        ("return this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor ? new this.resolvedType._constructor() : Object.create(this.resolvedType.prototype));");
+    return gen.eof();
 };
 
 /**
@@ -269,27 +303,8 @@ FieldPrototype.encode = function encode(value, writer) {
  * @throws {Error} If the wire format is invalid
  */
 FieldPrototype.decode = function decode(reader, receivedWireType) {
-    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
-
-    if (this.repeated && this.packed && types.packableWireTypes[type] === receivedWireType) {
-        var limit = reader.uint32() + reader.pos,
-            values = [];
-        while (reader.pos < limit)
-            values.push(reader[type]());
-        if (reader.pos > limit)
-            throw Error("invalid wire format for " + this);
-        return values;
-    }
-
-    return receivedWireType === types.wireTypes[type]
-        ? reader[type]()
-        : this.resolvedType.decodeDelimited(reader); // assumes wire type 2, throws if invalid
-    
-    // NOTE: This is tuned to be fast with as few assertions as possible.
-    // Also note that there is no clean way to distinguish whether a field
-    // is packed on the wire or not if its type encodes with wire type 2.
-    // The official implementation obviously uses some sort of binary iterator
-    // class to distinguish there.
+    this.decode = this.generateDecoder();
+    return this.decode(reader, receivedWireType);
 };
 
 /**

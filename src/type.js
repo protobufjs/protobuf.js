@@ -14,7 +14,8 @@ var Enum      = require("./enum"),
     inherits  = require("./inherits"),
     util      = require("./util"),
     Reader    = require("./reader"),
-    Writer    = require("./writer");
+    Writer    = require("./writer"),
+    codegen   = require("./codegen");
 
 /**
  * Reflected message type.
@@ -300,20 +301,47 @@ TypePrototype.create = function create(properties, constructor) {
         properties = undefined;
     } else if (properties /* already */ instanceof Prototype)
         return properties;
-
-    if (constructor /* specified */ || (constructor /* registered */ = this._constructor))
+    if (!constructor)
+        constructor = this._constructor;
+    if (constructor)
         return new constructor(properties);
-    
     var message = Object.create(this.prototype);
-    if (properties)
-        Object.keys(properties).forEach(function(key) {
-            var field = this.fields[key];
+    if (properties) {
+        var keys = Object.keys(properties);
+        for (var i = 0, k = keys.length, key; i < k; ++i) {
+            var field = this.fields[key = keys[i]];
             if (field)
                 message.$values[key] = properties[key];
             else
                 message[key] = properties[key];
-        }, this);
+        }
+    }
     return message;
+};
+
+/**
+ * Generates an encoder specific to this message type.
+ * @returns {function(Prototype|Object, Writer): Writer}
+ */
+TypePrototype.generateEncoder = function generateEncoder() {
+    var gen = codegen("Writer", "message", "writer")
+    gen
+    ("if (!writer)")
+        ("writer = Writer();")
+    ("var values = message.$values || message;");
+    var fieldsArray = this.fieldsArray,
+        fieldsCount = fieldsArray.length;
+    for (var i = 0; i < fieldsCount; ++i) {
+        var field = fieldsArray[i].resolve();
+        if (field.required) gen
+            ("this.fieldsArray[%d].encode(values[%j], writer);", i, field.name);
+        else gen
+            ("if (values[%j] != %j)", field.name, field.defaultValue)
+                ("this.fieldsArray[%d].encode(values[%j], writer);", i, field.name);
+    }
+    return gen
+    ("return writer;")
+    .eof().bind(this, Writer);
 };
 
 /**
@@ -323,18 +351,8 @@ TypePrototype.create = function create(properties, constructor) {
  * @returns {Writer} writer
  */
 TypePrototype.encode = function encode(message, writer) {
-    if (!writer)
-        writer = Writer();
-    var fieldsArray = this.fieldsArray,
-        fieldsCount = fieldsArray.length;
-    var values = message.$values || message; // throws if not an object
-    for (var i = 0; i < fieldsCount; ++i) {
-        var field = fieldsArray[i].resolve(),
-            value = values[field.name];
-        if (field.required || value != field.defaultValue) // eslint-disable-line eqeqeq
-            field.encode(value, writer);
-    }
-    return writer;
+    this.encode = this.generateEncoder();
+    return this.encode(message, writer);
 };
 
 /**
@@ -351,6 +369,22 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
     return writer.bytes(this.encode(message, writer).finish());
 };
 
+TypePrototype.generateDecoder = function generateDecoder() {
+    var gen = codegen("readerOrBuffer", "constructor", "length");
+    gen
+    ("var reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);")
+    ("var limit   = length === undefined ? reader.len : reader.pos + length;")
+    ("var message = this.create({}, constructor);")
+    ("var values  = message.$values;");
+    ("while (reader.pos < limit) {")
+        ("var tag   = reader.tag(),")
+        ("var field = this.fieldsById[tag.id];")
+        ("if (field) {")
+            ("var name  = field.name;")
+            ("var value = field.decode(reader, tag.wireType);")
+            ("if (field.repeated) {")
+};
+
 /**
  * Decodes a message of this type.
  * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
@@ -361,35 +395,13 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
     if (typeof constructor === 'number') {
         length = constructor;
-        constructor = undefined;
-    }
-
-    var reader     = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer),
-        limit      = length === undefined ? reader.len : reader.pos + length,
-        message    = this.create({}, constructor),
-        values     = message.$values,
-        fieldsById = this.fieldsById;
-
-    while (reader.pos < limit) {
-        var tag   = reader.tag(),
-            field = fieldsById[tag.id];
-        if (field) {
-            var name  = field.name,
-                value = field.decode(reader, tag.wireType);
-            if (field.repeated) {
-                var array = values[name] || (values[name] = []);
-                if (util.isArray(value))
-                    Array.prototype.push.apply(array, value);
-                else
-                    array.push(value);
-            } else
-                values[name] = value;
-        } else
-            reader.skipType(tag.wireType);
-    }
-    if (reader.pos !== limit)
-        throw Error("invalid wire format: index " + reader.pos + " != " + limit);
-    return message;
+        constructor = this._constructor;
+    } else if (!constructor)
+        constructor = this._constructor;
+    var reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer),
+        message = this._constructor ? new (this._constructor)() : Object.create(this.prototype);
+        limit   = length === undefined ? reader.len : reader.pos + length;
+    return this.decode_(reader, message, limit);
 };
 
 /**
@@ -402,4 +414,51 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constru
     if (!(readerOrBuffer instanceof Reader))
         readerOrBuffer = Reader(/* of type */ readerOrBuffer);
     return this.decode(readerOrBuffer.bytes(), constructor);
+};
+
+// The following methods are used internally to shortcut a couple of unnecessary type checks.
+// Feel free to use them in your project if you can guarantee sanitized arguments.
+
+/**
+ * Decodes a message of this type. This method differs from {@link Type#decode} in that it expects
+ * already type checked and known to be present arguments.
+ * @param {Reader} reader Reader to decode from
+ * @param {Prototype} message Message instance to populate
+ * @param {number} limit Maximum read offset
+ * @returns {Prototype} Populated message instance
+ */
+TypePrototype.decode_ = function decode_internal(reader, message, limit) {
+    var values     = message.$values,
+        fieldsById = this.fieldsById;
+    while (reader.pos < limit) {
+        var tag   = reader.tag(),
+            field = fieldsById[tag.id];
+        if (field) {
+            var name  = field.name,
+                value = field.decode(reader, tag.wireType);
+            if (field.repeated) {
+                if (Array.isArray(value))
+                    Array.prototype.push.apply(values[name], value);
+                else
+                    values[name].push(value);
+            } else
+                values[name] = value;
+        } else
+            reader.skipType(tag.wireType);
+    }
+    if (reader.pos !== limit)
+        throw Error("invalid wire format: index " + reader.pos + " != " + limit);
+    return message;
+};
+
+/**
+ * Decodes a message of this type. This method differs from {@link Type#decodeDelimited} in that it
+ * expects already type checked and known to be present arguments.
+ * @param {Reader} reader Reader to decode from
+ * @param {Prototype} message Message instance to populate
+ * @returns {Prototype} Populated message instance
+ */
+TypePrototype.decodeDelimited_ = function decodeDelimited_internal(reader, message) {
+    var buf = reader.bytes();
+    return this.decode_(new reader.constructor(buf), message, buf.length);
 };

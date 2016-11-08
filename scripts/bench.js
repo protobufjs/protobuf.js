@@ -4,30 +4,34 @@ var protobuf = require(__dirname + "/../src/index"),
 var JSONPoly = require("./lib/jsonpoly");
     JSON3    = require("./lib/json3");
 
-var pkg = require(__dirname + "/../package.json");
-
-var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 10000;
-console.log("usage: " + path.basename(process.argv[1]) + " [iterations=10000] [protobufOnly]\n");
+var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 50000;
+console.log("usage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
 console.log("encoding/decoding " + times + " iterations ...\n");
 
-protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
+protobuf.load(__dirname + "/bench.proto", function(err, root) {
     if (err)
         throw err;
 
     try {
-
-        // Compared to native JSON, protobuf.js is 5-6 times slower on my machine.
-        // Compared to polyfilled JSON, protobuf.js is 2-3 times slower on my machine.
-
-        var Package = root.lookup("Package");
+        var testData = {
+            foo: 'hello',
+            hello: 42,
+            payload: new Buffer('a'),
+            meh: {
+                b: {
+                    tmp: {
+                        baz: 1000
+                    }
+                },
+                lol: 'lol'
+            }
+        };
         
-        function summarize(name, start, length, allocCount, allocBytes) {
+        var Test = root.lookup("Test");
+        
+        function summarize(name, start, length) {
             var time = Date.now() - start;
             var sb = [ pad(name, 15, 1), " : ", pad(time + "ms", 10), "   ", pad(length + " bytes", 15) ];
-            if (allocCount !== undefined)
-                sb.push("   ", pad(allocCount.toString(), 7));
-            if (allocBytes !== undefined)
-                sb.push("   ", pad(allocBytes.toString(), 9));
             console.log(sb.join(''));
         }
 
@@ -35,35 +39,36 @@ protobuf.load(__dirname + "/../tests/data/package.proto", function(err, root) {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = Package.encode(pkg).finish();
-                Package.decode(buf);
+                var buf = Test.encode(testData).finish();
+                Test.decode(buf);
                 len += buf.length;
             }
-            summarize("PBJS " + "object", start, len, protobuf.BufferWriter.alloc.count, protobuf.BufferWriter.alloc.bytes);
+            summarize("PBJS " + "object", start, len);
         }
 
-        function PackageClass(properties) {
+        function TestClass(properties) {
             protobuf.Prototype.call(this, properties);
         }
-        protobuf.inherits(PackageClass, Package);
-        var myPackage = new PackageClass(pkg);
+        protobuf.inherits(TestClass, Test);
+
+        var instance = new TestClass(testData);
 
         function bench_protobuf_class() {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = PackageClass.encode(myPackage);
-                Package.decode(buf);
+                var buf = TestClass.encode(instance);
+                TestClass.decode(buf);
                 len += buf.length;
             }
-            summarize("PBJS " + "class", start, len, protobuf.BufferWriter.alloc.count, protobuf.BufferWriter.alloc.bytes);
+            summarize("PBJS " + "class", start, len);
         }
 
         function bench_json(name, JSON) {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = Buffer.from(JSON.stringify(pkg), "utf8");
+                var buf = Buffer.from(JSON.stringify(testData), "utf8");
                 JSON.parse(buf.toString("utf8"));
                 len += buf.length;
             }

@@ -50,4 +50,5 @@ protobuf.inherits         = require("./inherits");
 
 // Utility
 protobuf.types            = require("./types");
+protobuf.codegen          = require("./codegen");
 protobuf.util             = util;
