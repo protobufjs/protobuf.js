@@ -314,6 +314,58 @@
             
                 <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
             
+                <li data-name="Class#toJSON"><a href="Class.html#toJSON">toJSON</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Decoder">
+            <span class="title">
+                <a href="Decoder.html">Decoder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Decoder#decode"><a href="Decoder.html#decode">decode</a></li>
+            
+                <li data-name="Decoder#generate"><a href="Decoder.html#generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Encoder">
+            <span class="title">
+                <a href="Encoder.html">Encoder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Encoder#encode"><a href="Encoder.html#encode">encode</a></li>
+            
+                <li data-name="Encoder#generate"><a href="Encoder.html#generate">generate</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -458,14 +510,6 @@
             
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
-                <li data-name="Field#decode"><a href="Field.html#decode">decode</a></li>
-            
-                <li data-name="Field#encode"><a href="Field.html#encode">encode</a></li>
-            
-                <li data-name="Field#generateDecoder"><a href="Field.html#generateDecoder">generateDecoder</a></li>
-            
-                <li data-name="Field#generateEncoder"><a href="Field.html#generateEncoder">generateEncoder</a></li>
-            
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
@@ -564,14 +608,6 @@
                 <li data-name="MapField.fromJSON"><a href="MapField.html#.fromJSON">fromJSON</a></li>
             
                 <li data-name="MapField.testJSON"><a href="MapField.html#.testJSON">testJSON</a></li>
-            
-                <li data-name="MapField#decode"><a href="MapField.html#decode">decode</a></li>
-            
-                <li data-name="MapField#encode"><a href="MapField.html#encode">encode</a></li>
-            
-                <li data-name="MapField#generateDecoder"><a href="MapField.html#generateDecoder">generateDecoder</a></li>
-            
-                <li data-name="MapField#generateEncoder"><a href="MapField.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
@@ -845,7 +881,7 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Prototype.toJSON"><a href="Prototype.html#.toJSON">toJSON</a></li>
+                <li data-name="Prototype#toJSON"><a href="Prototype.html#toJSON">toJSON</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1166,6 +1202,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Type.useCodegen"><a href="Type.html#.useCodegen">useCodegen</a></li>
+            
                 <li data-name="Type#empty"><a href="Type.html#empty">empty</a></li>
             
                 <li data-name="Type#extensions"><a href="Type.html#extensions">extensions</a></li>
@@ -1220,6 +1258,8 @@
             
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
+                <li data-name="Type#create_"><a href="Type.html#create_">create_</a></li>
+            
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
             
                 <li data-name="Type#decode_"><a href="Type.html#decode_">decode_</a></li>
@@ -1234,9 +1274,11 @@
             
                 <li data-name="Type#encode"><a href="Type.html#encode">encode</a></li>
             
+                <li data-name="Type#encode_"><a href="Type.html#encode_">encode_</a></li>
+            
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
-                <li data-name="Type#generateEncoder"><a href="Type.html#generateEncoder">generateEncoder</a></li>
+                <li data-name="Type#encodeDelimited_"><a href="Type.html#encodeDelimited_">encodeDelimited_</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
@@ -1375,7 +1417,7 @@
 
     <section>
         <article class="readme"><h1>protobuf.js</h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">see</a>).</p>
-<p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
+<p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
 <p><strong>This is the development branch of protobuf.js 6.</strong> Are you looking for the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5">current stable branch</a>?</p>
 <h2>Contents</h2><ul>
 <li><p><a href="#examples">Examples</a><br /><br>A few examples to get you started.</p>
@@ -1483,6 +1525,10 @@ var message = AwesomeMessage.decode(buffer);
 </li>
 <li><p><strong>BufferReader</strong> <em>extends <strong>Reader</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">source</a>]<br /><br>Wire format reader, node version.</p>
 </li>
+<li><p><strong>Encoder</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encoder.js">source</a>]<br /><br>Wire format encoder using code generation on top of reflection.</p>
+</li>
+<li><p><strong>Decoder</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">source</a>]<br /><br>Wire format decoder using code generation on top of reflection.</p>
+</li>
 </ul>
 <h3>Reflection</h3><ul>
 <li><p><strong>ReflectionObject</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">source</a>]<br /><br>Base class of all reflection objects.</p>
@@ -1528,6 +1574,8 @@ var message = AwesomeMessage.decode(buffer);
 <pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run types</code></pre><h2>Compatibility</h2><ul>
 <li><p>protobuf.js requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest. If typed arrays are not supported, it uses plain arrays instead.</p>
+</li>
+<li><p>The library will try to generate highly optimized type specific encoders and decoders at runtime, which requires <code>Function</code> (basically <code>eval</code>) support. If code generation fails, it uses an equivalent but slower fallback.</p>
 </li>
 <li><p>If you'd like to use node's buffer API in the browser, you can use <a target="_blank" href="https://github.com/feross/buffer">feross/buffer</a> for example and assign its constructor, or that of any compatible library, to <code>protobuf.util.Buffer</code>.</p>
 </li>

@@ -314,6 +314,58 @@
             
                 <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
             
+                <li data-name="Class#toJSON"><a href="Class.html#toJSON">toJSON</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Decoder">
+            <span class="title">
+                <a href="Decoder.html">Decoder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Decoder#decode"><a href="Decoder.html#decode">decode</a></li>
+            
+                <li data-name="Decoder#generate"><a href="Decoder.html#generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Encoder">
+            <span class="title">
+                <a href="Encoder.html">Encoder</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Encoder#encode"><a href="Encoder.html#encode">encode</a></li>
+            
+                <li data-name="Encoder#generate"><a href="Encoder.html#generate">generate</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -458,14 +510,6 @@
             
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
-                <li data-name="Field#decode"><a href="Field.html#decode">decode</a></li>
-            
-                <li data-name="Field#encode"><a href="Field.html#encode">encode</a></li>
-            
-                <li data-name="Field#generateDecoder"><a href="Field.html#generateDecoder">generateDecoder</a></li>
-            
-                <li data-name="Field#generateEncoder"><a href="Field.html#generateEncoder">generateEncoder</a></li>
-            
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
@@ -564,14 +608,6 @@
                 <li data-name="MapField.fromJSON"><a href="MapField.html#.fromJSON">fromJSON</a></li>
             
                 <li data-name="MapField.testJSON"><a href="MapField.html#.testJSON">testJSON</a></li>
-            
-                <li data-name="MapField#decode"><a href="MapField.html#decode">decode</a></li>
-            
-                <li data-name="MapField#encode"><a href="MapField.html#encode">encode</a></li>
-            
-                <li data-name="MapField#generateDecoder"><a href="MapField.html#generateDecoder">generateDecoder</a></li>
-            
-                <li data-name="MapField#generateEncoder"><a href="MapField.html#generateEncoder">generateEncoder</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
@@ -845,7 +881,7 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Prototype.toJSON"><a href="Prototype.html#.toJSON">toJSON</a></li>
+                <li data-name="Prototype#toJSON"><a href="Prototype.html#toJSON">toJSON</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1166,6 +1202,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="Type.useCodegen"><a href="Type.html#.useCodegen">useCodegen</a></li>
+            
                 <li data-name="Type#empty"><a href="Type.html#empty">empty</a></li>
             
                 <li data-name="Type#extensions"><a href="Type.html#extensions">extensions</a></li>
@@ -1220,6 +1258,8 @@
             
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
+                <li data-name="Type#create_"><a href="Type.html#create_">create_</a></li>
+            
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
             
                 <li data-name="Type#decode_"><a href="Type.html#decode_">decode_</a></li>
@@ -1234,9 +1274,11 @@
             
                 <li data-name="Type#encode"><a href="Type.html#encode">encode</a></li>
             
+                <li data-name="Type#encode_"><a href="Type.html#encode_">encode_</a></li>
+            
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
-                <li data-name="Type#generateEncoder"><a href="Type.html#generateEncoder">generateEncoder</a></li>
+                <li data-name="Type#encodeDelimited_"><a href="Type.html#encodeDelimited_">encodeDelimited_</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
@@ -2374,6 +2416,160 @@
                     
             </td>
             <td class="description last">Encoded message</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
+        <h4 class="name" id="toJSON">
+            
+                <span class="inherited"><a href="Prototype.html#toJSON">inherited</a></span>
+            
+            <span class="type-signature ">abstract</span>toJSON<span class="signature">(<span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object.&lt;string, *>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/prototype.js">prototype.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/prototype.js#L35">line 35</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Converts a runtime message to a JSON object.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Conversion options</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Object.&lt;string, *>
+                        
+                    
+            </td>
+            <td class="description last">JSON object</td>
         </tr>
     
     </tbody>

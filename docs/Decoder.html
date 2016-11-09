@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: ReflectionObject</title>
+    <title>Class: Decoder</title>
     
     
     
@@ -1394,7 +1394,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="ReflectionObject.html">Class: ReflectionObject</h1>
+        <h1 class="page-title" data-filename="Decoder.html">Class: Decoder</h1>
         
 
 
@@ -1403,7 +1403,7 @@
     
 <header>
     <h2>
-    ReflectionObject
+    Decoder
     </h2>
     
 </header>  
@@ -1416,14 +1416,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="ReflectionObject">
+        <h4 class="name" id="Decoder">
             
-            <span class="type-signature ">abstract</span>new ReflectionObject<span class="signature">(name, <span class="optional">options</span>)</span>
+            new Decoder<span class="signature">(type)</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L15">line 15</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L13">line 13</a>
         </div>
         
     </div>
@@ -1434,7 +1434,7 @@
     
     
     <div class="description">
-        <p>Base class of all reflection objects.</p>
+        <p>Wire format decoder using code generation on top of reflection.</p>
     </div>
     
 
@@ -1465,13 +1465,13 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="Type.html">Type</a></span>
 
 
             
@@ -1481,42 +1481,7 @@
             
             <td class="description last">
                 
-                    
-                    
-                        
-                    
-                
-                <p>Object name</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Object options</p></td>
+                <p>Message type</p></td>
         </tr>
 	
 	
@@ -1576,370 +1541,6 @@
     
     
     
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="fullName"><span class="type-signature ">readonly</span>fullName<span class="type-signature type string">string</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Full name including leading dot.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="name">name<span class="type-signature type string">string</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Unique name within its namespace.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="options">options<span class="type-signature type object.<string, *>">Object.&lt;string, *></span> <span class="type-signature type undefined">undefined</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Options.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="parent"><span class="type-signature ">nullable</span>parent<span class="type-signature type namespace"><a href="Namespace.html">Namespace</a></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Parent namespace.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="properties"><span class="type-signature ">nullable</span>properties<span class="type-signature type object.<string, *>">Object.&lt;string, *></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>JSON-exportable properties.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="resolved">resolved<span class="type-signature type boolean">boolean</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Whether already resolved or not.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="root"><span class="type-signature ">readonly</span>root<span class="type-signature type root"><a href="Root.html">Root</a></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Reference to the root namespace.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="visible"><span class="type-signature ">nullable</span>visible<span class="type-signature type boolean">boolean</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Whether this object is visible when exporting definitions. Possible values are <code>true</code> to<br>be visible, <code>false</code> to be not and <code>null</code> (setter only) to inherit from parent.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
     
     
     
@@ -1949,14 +1550,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".exposeJSON">
+        <h4 class="name" id="decode">
             
-            <span class="type-signature static">static</span>ReflectionObject.exposeJSON<span class="signature">(prototype, propertyNames)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
+            decode<span class="signature">(reader, message, limit)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Prototype.html">Prototype</a>}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L153">line 153</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L27">line 27</a>
         </div>
         
     </div>
@@ -1967,15 +1568,12 @@
     
     
     <div class="description">
-        <p>Exposes the specified properties to JSON.</p>
+        <p>Decodes a message of this decoder's message type.</p>
     </div>
     
 
     
     
-    
-        <h5>This:</h5>
-        <ul><li><a href="ReflectionObject.html">ReflectionObject</a></li></ul>
     
     
     
@@ -2001,13 +1599,13 @@
 	
         <tr>
             
-                <td class="name"><code>prototype</code></td>
+                <td class="name"><code>reader</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="Reader.html">Reader</a></span>
 
 
             
@@ -2017,20 +1615,20 @@
             
             <td class="description last">
                 
-                <p>Prototype to expose the properties upon</p></td>
+                <p>Reader to decode from</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>propertyNames</code></td>
+                <td class="name"><code>message</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type"><a href="Prototype.html">Prototype</a></span>
 
 
             
@@ -2040,7 +1638,30 @@
             
             <td class="description last">
                 
-                <p>Property names to expose</p></td>
+                <p>Runtime message to populate</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Maximum read offset</p></td>
         </tr>
 	
 	
@@ -2101,11 +1722,11 @@
             
             <td class="type">
             
-                        Object
+                        <a href="Prototype.html">Prototype</a>
                         
                     
             </td>
-            <td class="description last">prototype</td>
+            <td class="description last">Populated runtime message</td>
         </tr>
     
     </tbody>
@@ -2120,14 +1741,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".extend">
+        <h4 class="name" id="generate">
             
-            <span class="type-signature static">static</span>ReflectionObject.extend<span class="signature">(constructor, <span class="optional">exposePropertyNames</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
+            generate<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{function}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L136">line 136</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L105">line 105</a>
         </div>
         
     </div>
@@ -2138,625 +1759,7 @@
     
     
     <div class="description">
-        <p>Extends this class and optionally exposes the specified properties to JSON.</p>
-    </div>
-    
-
-    
-    
-    
-        <h5>This:</h5>
-        <ul><li><a href="ReflectionObject.html">ReflectionObject</a></li></ul>
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>constructor</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Extending constructor</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>exposePropertyNames</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Properties to expose to JSON</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        Object
-                        
-                    
-            </td>
-            <td class="description last">Prototype</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="getOption">
-            
-            getOption<span class="signature">(name)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L242">line 242</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Gets an option value.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Option name</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        *
-                        
-                    
-            </td>
-            <td class="description last">Option value or <code>undefined</code> if not set</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="onAdd">
-            
-            onAdd<span class="signature">(parent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{undefined}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L190">line 190</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Called when this object is added to a parent.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>parent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ReflectionObject.html">ReflectionObject</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Parent added to</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        undefined
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="onRemove">
-            
-            onRemove<span class="signature">(parent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{undefined}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L205">line 205</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Called when this object is removed from a parent.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>parent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ReflectionObject.html">ReflectionObject</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Parent removed from</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        undefined
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="resolve">
-            
-            resolve<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ReflectionObject.html">ReflectionObject</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L217">line 217</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Resolves this objects type references.</p>
+        <p>Generates a decoder specific to this decoder's message type.</p>
     </div>
     
 
@@ -2819,750 +1822,11 @@
             
             <td class="type">
             
-                        <a href="ReflectionObject.html">ReflectionObject</a>
+                        function
                         
                     
             </td>
-            <td class="description last"><code>this</code></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setOption">
-            
-            setOption<span class="signature">(name, value, <span class="optional">ifNotSet</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ReflectionObject.html">ReflectionObject</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L255">line 255</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Sets an option.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Option name</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Option value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>ifNotSet</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Sets the option only if it isn't currently set</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="ReflectionObject.html">ReflectionObject</a>
-                        
-                    
-            </td>
-            <td class="description last"><code>this</code></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setOptions">
-            
-            setOptions<span class="signature">(options)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ReflectionObject.html">ReflectionObject</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L266">line 266</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Sets multiple options.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Options to set</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="ReflectionObject.html">ReflectionObject</a>
-                        
-                    
-            </td>
-            <td class="description last"><code>this</code></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="toJSON">
-            
-            toJSON<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L179">line 179</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Converts this reflection object to its JSON representation.<br>Returns only properties that have explicitly been exposed.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="ReflectionObject.html#.exposeJSON">ReflectionObject.exposeJSON</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        Object
-                        
-                    
-            </td>
-            <td class="description last">JSON object</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="toString">
-            
-            toString<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L278">line 278</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Converts this instance to its string representation.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        string
-                        
-                    
-            </td>
-            <td class="description last">Constructor name plus full name</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="visibility">
-            
-            visibility<span class="signature">(visible)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ReflectionObject.html">ReflectionObject</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L232">line 232</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Changes this object's visibility when exporting definitions.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>visible</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        <span class="nullable">nullable</span>
-                    
-                        
-                    
-                
-                <p><code>true</code> for public, <code>false</code> for private, <code>null</code> to inherit from parent</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        <p>If arguments are invalid</p>
-        </div>
-    </dt>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">TypeError</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-</dl>
-
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="ReflectionObject.html">ReflectionObject</a>
-                        
-                    
-            </td>
-            <td class="description last"><code>this</code></td>
+            <td class="description last">Decoder function with an identical signature to Decoder#decode]</td>
         </tr>
     
     </tbody>
