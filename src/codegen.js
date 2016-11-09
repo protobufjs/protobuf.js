@@ -62,7 +62,7 @@ function codegen(/* varargs */) {
  * @type {boolean}
  */
 codegen.supported = false;
-// try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
+try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * When set to true, codegen will log generated code to console. Useful for debugging.

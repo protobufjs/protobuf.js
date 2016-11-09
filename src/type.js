@@ -329,6 +329,16 @@ TypePrototype.create = function create(properties, constructor) {
 };
 
 /**
+ * Creates a new message of this type by using the registered constructor or internal prototype.
+ * @returns {Prototype} Message instance
+ */
+TypePrototype.create_ = function create_internal() {
+    return this._constructor
+        ? new this._constructor()
+        : Object.create(this.prototype);
+};
+
+/**
  * Encodes a message of this type.
  * @param {Prototype|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
@@ -347,13 +357,13 @@ TypePrototype.encode = function encode(message, writer) {
  */
 TypePrototype.encode_ = function encode_setup(message, writer) {
     this.encode_ = codegen.supported
-        ? encode_generate(this)
-        : encode_internal;
+        ? generateEncoder(this)
+        : encode_fallback;
     return this.encode_(message, writer);
 };
 
 // Codegen reference and also fallback if code generation is not supported
-function encode_internal(message, writer) {
+function encode_fallback(message, writer) {
     /* eslint-disable no-invalid-this */
     var fieldsArray = this.fieldsArray,
         fieldsCount = fieldsArray.length;
@@ -370,31 +380,101 @@ function encode_internal(message, writer) {
 
 /**
  * Generates an encoder specific to the specified message type.
- * @name Type.generateEncoder
- * @param {Type} type Message type
+ * @memberof Type
+ * @param {Type} messageType Message type
  * @returns {function} Encoder
  */
-function encode_generate(type) {
-    var fieldsArray = type.fieldsArray,
+function generateEncoder(messageType) {
+    var fieldsArray = messageType.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$fields", "message", "writer")
+    var gen = codegen("$resolvedTypes", "message", "writer")
+
     ('"use strict";')
-    ("var values = message.$values || message;");
+    ("var values = message.$values || message, value;");
+    
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
-        if (field.required) gen
-            ("$fields[%d].encode(values[%j], writer);", i, field.name);
-        else gen
-            ("if (values[%j] != %j)", field.name, field.defaultValue)
-                ("$fields[%d].encode(values[%j], writer);", i, field.name);
+        var type = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            wireType = types.wireTypes[type];
+        
+        // Map fields
+        if (field.map) {
+            var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
+                keyWireType = types.mapKeyWireTypes[keyType];
+            gen
+
+    ("var keys;")
+    ("if ((value = values[%j]) && (keys = Object.keys(value)).length) {", field.name)
+        ("writer.tag(%d, 2).fork();", field.id)
+        ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
+            ("writer.tag(1, %d).%s(key = keys[i]);", keyWireType, keyType);
+            if (wireType !== undefined) gen
+            ("writer.tag(2, %d).%s(value[key]);", wireType, type);
+            else gen
+            ("var resolvedType = $resolvedTypes[%d];", i)
+            ("resolvedType.encodeDelimited_(value[key], writer);");
+            gen
+        ("}")
+        ("writer.bytes(writer.finish());")
+    ("}")
+
+        // Repeated fields
+        } else if (field.repeated) { gen
+
+    ("var i = 0, k = (value = values[%j]).length;", field.name);
+
+            // Packed repeated
+            if (field.packed && types.packableWireTypes[type] !== undefined) { gen
+
+    ("writer.fork();")
+    ("while (i < k)")
+        ("writer.%s(value[i++]);", type)
+    ("var buffer = writer.finish();")
+    ("if (buffer.length)")
+        ("writer.tag(%d, 2).bytes(buffer);", field.id);
+
+            // Non-packed
+            } else { gen
+
+    ("var resolvedType = $resolvedTypes[i];", i)
+    ("while (i < k)")
+        ("resolvedType.encodeDelimited_(value[i++], writer.tag(%d, 2));", field.id);
+
+            }
+
+        // Non-repeated
+        } else {
+
+            if (field.required) {
+
+                if (wireType !== undefined) gen
+    ("writer.tag(%d, %d).%s(values[%j]);", field.id, wireType, type, field.name);
+                else gen
+    ("var resolvedType = $resolvedTypes[%d];", i)
+    ("resolvedType.encodeDelimited_(values[%j], writer.tag(%d, 2));", field.name, field.id, field.name);
+
+            } else { gen
+
+                if (wireType !== undefined) gen
+    ("if ((value = values[%j]) != %j)", field.name, field.defaultValue)
+        ("writer.tag(%d, %d).%s(value);", field.id, wireType, type);
+                else gen
+    ("if ((value = values[%j]) != %j) {", field.name, field.defaultValue)
+        ("var resolvedType = $resolvedTypes[%d];", i)
+        ("resolvedType.encodeDelimited_(value, writer.tag(%d, 2));", field.id)
+    ("}")
+
+            }
+    
+        }
     }
     return gen
     ("return writer;")
-    .eof(type.fullName + "$encode")
-    .bind(type, fieldsArray);
+    .eof(messageType.fullName + "$encode")
+    .bind(messageType, fieldsArray.map(function(fld) { return fld.resolvedType; }));
 }
 
-Type.generateEncoder = encode_generate;
+Type.generateEncoder = generateEncoder;
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint.
@@ -445,7 +525,7 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
  * @param {number} limit Maximum read offset
  * @returns {Prototype} Populated message instance
  */
-TypePrototype.decode_ = function decode_setup(reader, message, limit) {
+TypePrototype.decode_ = function decode_internal(reader, message, limit) {
     this.decode_ = codegen.supported
         ? generateDecoder(this)
         : decode_fallback;
@@ -454,9 +534,10 @@ TypePrototype.decode_ = function decode_setup(reader, message, limit) {
 
 // Codegen reference and fallback if code generation is not supported.
 function decode_fallback(reader, message, limit) {
+
     // NOTE: This intentionally performs as few checks as possible which SHOULD however still result
-    // in errors being thrown for invalid wire formats. If it doesn't throw, feel free to fill an
-    // issue.
+    // in errors being thrown for invalid wire formats. If it doesn't throw where required, feel
+    // free to fill an issue.
 
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
     var fieldsById = this.fieldsById;
@@ -479,18 +560,14 @@ function decode_fallback(reader, message, limit) {
                     length += reader.pos;
                     var keys = [], values = [], ki = 0, vi = 0;
                     while (reader.pos < length) {
-                        tag = reader.tag();
-                        if (tag.id === 1)
+                        if (reader.tag().id === 1)
                             keys[ki++] = reader[keyType]();
-                        else if (tag.id === 2) {
-                            if (wireType !== undefined)
-                                values[vi++] = reader[type]();
-                            else {
-                                var resolvedType = field.resolvedType;
-                                values[vi++] = resolvedType.decodeDelimited_(reader, resolvedType._constructor ? new resolvedType._constructor() : Object.create(resolvedType.prototype));
-                            }
-                        } else
-                            throw Error('illegal wire format for ' + this);
+                        else if (wireType !== undefined)
+                            values[vi++] = reader[type]();
+                        else {
+                            var resolvedType = field.resolvedType;
+                            values[vi++] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
+                        }
                     }
                     var key;
                     for (ki = 0; ki < vi; ++ki)
@@ -516,15 +593,15 @@ function decode_fallback(reader, message, limit) {
                     values[length++] = reader[type]();
                 } else {
                     var resolvedType = field.resolvedType;
-                    values[length++] = resolvedType.decodeDelimited_(reader, resolvedType._constructor ? new resolvedType._constructor() : Object.create(resolvedType.prototype));
+                    values[length++] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
                 }
 
             // Non-repeated
             } else if (wireType !== undefined) {
                 message.$values[field.name] = reader[type]();
-            } else{
+            } else {
                 var resolvedType = field.resolvedType;
-                message.$values[field.name] = resolvedType.decodeDelimited_(reader, resolvedType._constructor ? new resolvedType._constructor() : Object.create(resolvedType.prototype));
+                message.$values[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
             }
 
         // Unknown fields
@@ -568,18 +645,17 @@ function generateDecoder(messageType) {
                     ("length += reader.pos;")
                     ("var keys = [], values = [], ki = 0, vi = 0;")
                     ("while (reader.pos < length) {")
-                        ("tag = reader.tag();")
-                        ("if (tag.id === 1)")
+                        ("if (reader.tag().id === 1)")
                             ("keys[ki++] = reader.%s();", keyType)
-                        ("else if (tag.id === 2) {");
-                            if (wireType !== undefined) gen
+                        if (wireType !== undefined) gen
+                        ("else")
                             ("values[vi++] = reader.%s();", type);
-                            else gen
-                            ("var type = $types[%d];", i)
-                            ("values[vi++] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));");
-                        gen
-                        ("} else")
-                            ("throw Error('illegal wire format for %s');", field.fullName)
+                        else gen
+                        ("else {")
+                            ("var type = $resolvedTypes[%d];", i)
+                            ("values[vi++] = type.decodeDelimited_(reader, type.create_());")
+                        ("}")
+                    gen
                     ("}")
                     ("var key;")
                     ("for (ki = 0; ki < vi; ++ki)")
@@ -608,7 +684,7 @@ function generateDecoder(messageType) {
             else gen
 
                     ("var type = $resolvedTypes[%d];", i)
-                    ("values[length++] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));");
+                    ("values[length++] = type.decodeDelimited_(reader, type.create_());");
 
             if (field.packed && packType !== undefined) gen
 
@@ -621,7 +697,7 @@ function generateDecoder(messageType) {
         } else { gen
 
                 ("var type = $resolvedTypes[%d];", i)
-                ("message.$values[%j] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));", field.name);
+                ("message.$values[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
 
         } gen
                 ("break;");
@@ -631,14 +707,14 @@ function generateDecoder(messageType) {
                 ("break;")
         ("}")
     ("}")
-    ("return message;");
+    ("return message;")
     return gen.eof(messageType.fullName + "$decode").bind(messageType, fieldsArray.map(function(fld) { return fld.resolvedType; }), util.toHash);
 }
 
 Type.generateDecoder = generateDecoder;
 
 /**
- * Decodes a message of this m type preceeded by its byte length as a varint.
+ * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
  * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
  * @returns {Prototype} Decoded message
@@ -649,8 +725,9 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer, constru
 };
 
 /**
- * Decodes a message of this type. This method differs from {@link Type#decodeDelimited} in that it
- * expects already type checked and known to be present arguments.
+ * Decodes a message of this type preceeded by its byte length as a varint. This method differs
+ * from {@link Type#decodeDelimited} in that it expects already type checked and known to be
+ * present arguments.
  * @param {Reader} reader Reader to decode from
  * @param {Prototype} message Message instance to populate
  * @returns {Prototype} Populated message instance

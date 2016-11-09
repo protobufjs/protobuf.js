@@ -341,9 +341,9 @@ function parse(source, root, visible) {
 
     function parseOption(parent, token) {
         var custom = omit('(');
-        if (!typeRefRe.test(token))
-            throw Error(illegal(token, "option name"));
-        var name = token;
+        var name = next();
+        if (!typeRefRe.test(name))
+            throw Error(illegal(name, "option name"));
         if (custom) {
             skip(')');
             name = '(' + name + ')';
