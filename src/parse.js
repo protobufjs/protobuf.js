@@ -407,7 +407,7 @@ function parse(source, root, visible) {
                         skip(";");
                         break;
                     case "rpc":
-                        parseMethod(parent, tokenLower);
+                        parseMethod(service, tokenLower);
                         break;
                     default:
                         throw Error(illegal(token));

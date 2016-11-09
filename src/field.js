@@ -278,9 +278,13 @@ function encode_generate(field) {
     var type = field.resolve().resolvedType instanceof Enum ? "uint32" : field.type,
         gen  = codegen("$type", "value", "writer")
     ('"use strict";');
+
     if (field.repeated) { gen
+
         ("var i = 0, k = value.length;");
+
         if (field.packed && types.packableWireTypes[type] !== undefined) gen
+        
             ("writer.fork();")
             ("while (i < k)")
                 ("writer.%s(value[i++]);", type)
