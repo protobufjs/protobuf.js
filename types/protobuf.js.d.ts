@@ -1,20 +1,76 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Tue, 08 Nov 2016 05:42:42 UTC
+ * Generated Wed, 09 Nov 2016 21:12:23 UTC
  */
 declare module protobuf {
 
    /**
-    * @typedef {function(string, ...*): Appender} Appender
+    * Programmatically generates a function. When done appending code, call `eof()` on the Appender
+    * to generate the actual function.
+    * @param {...string} params Function parameter names
+    * @returns {function} Appender function similar to `util.format` known from node
+    * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}
     */
-   type Appender = () => void;
+   function codegen(params: string): (() => any);
    
    /**
-    * Programmatically generates a function.
-    * @param {...string} params Parameter names
-    * @returns {Appender} Appender
+    * Wire format decoder using code generation on top of reflection.
+    * @constructor
+    * @param {Type} type Message type
     */
-   function codegen(params: string): Appender;
+   class Decoder {
+      /**
+       * Wire format decoder using code generation on top of reflection.
+       * @constructor
+       * @param {Type} type Message type
+       */
+      constructor(type: Type);
+   
+      /**
+       * Decodes a message of this decoder's message type.
+       * @param {Reader} reader Reader to decode from
+       * @param {Prototype} message Runtime message to populate
+       * @param {number} limit Maximum read offset
+       * @returns {Prototype} Populated runtime message
+       */
+      decode(reader: Reader, message: Prototype, limit: number): Prototype;
+   
+      /**
+       * Generates a decoder specific to this decoder's message type.
+       * @returns {function} Decoder function with an identical signature to {@link Decoder#decode]}
+       */
+      generate(): (() => any);
+   
+   }
+   
+   /**
+    * Wire format encoder using code generation on top of reflection.
+    * @constructor
+    * @param {Type} type Message type
+    */
+   class Encoder {
+      /**
+       * Wire format encoder using code generation on top of reflection.
+       * @constructor
+       * @param {Type} type Message type
+       */
+      constructor(type: Type);
+   
+      /**
+       * Encodes a message of this encoder's message type.
+       * @param {Prototype|Object} message Runtime message or plain object to encode
+       * @param {Writer} writer Writer to encode to
+       * @returns {Writer} writer
+       */
+      encode(message: (Prototype|Object), writer: Writer): Writer;
+   
+      /**
+       * Generates an encoder specific to this encoder's message type.
+       * @returns {function} Encoder function with an identical signature to {@link Encoder#encode]}
+       */
+      generate(): (() => any);
+   
+   }
    
    /**
     * Reflected enum.
@@ -230,35 +286,6 @@ declare module protobuf {
        * @throws {TypeError} If arguments are invalid
        */
       static fromJSON(name: string, json: Object): Field;
-   
-      /**
-       * Generates an encoder specific to this field.
-       * @returns {function(*, Writer): Writer} Encoder
-       */
-      generateEncoder(): (() => any);
-   
-      /**
-       * Encodes the specified field value. Assumes that the field is present.
-       * @param {*} value Field value
-       * @param {Writer} writer Writer to encode to
-       * @returns {Writer} writer
-       */
-      encode(value: any, writer: Writer): Writer;
-   
-      /**
-       * Generates a decoder specific to this field.
-       * @returns {function(Reader,number):*} Decoder
-       */
-      generateDecoder(): (() => any);
-   
-      /**
-       * Decodes a field value.
-       * @param {Reader} reader Reader to decode from
-       * @param {number} receivedWireType Wire type received
-       * @returns {*} Field value
-       * @throws {Error} If the wire format is invalid
-       */
-      decode(reader: Reader, receivedWireType: number): any;
    
       /**
        * Converts a field value to JSON using the specified options.
@@ -869,7 +896,7 @@ declare module protobuf {
        * @returns {Object.<string,*>} JSON object
        * @virtual
        */
-      static toJSON(options?: { [k: string]: any }): { [k: string]: any };
+      toJSON(options?: { [k: string]: any }): { [k: string]: any };
    
    }
    
@@ -984,29 +1011,29 @@ declare module protobuf {
    
       /**
        * Reads a float (32 bit) as a number.
+       * @function
        * @returns {number} Value read
        */
       float(): number;
    
       /**
        * Reads a double (64 bit float) as a number.
+       * @function
        * @returns {number} Value read
        */
       double(): number;
    
       /**
-       * Reads a sequence of bytes.
-       * @param {number} [length] Optional number of bytes to read, if known beforehand
+       * Reads a sequence of bytes preceeded by its length as a varint.
        * @returns {number[]} Value read
        */
-      bytes(length?: number): number[];
+      bytes(): number[];
    
       /**
-       * Reads a string.
-       * @param {number} [length] Optional number of bytes to read, if known beforehand
+       * Reads a string preceeded by its byte length as a varint.
        * @returns {string} Value read
        */
-      string(length?: number): string;
+      string(): string;
    
       /**
        * Skips the specified number of bytes if provided, otherwise skips a varint.
@@ -1256,6 +1283,13 @@ declare module protobuf {
       private _constructor: (() => any);
    
       /**
+       * Whether to use code generation or not. Will be set to `false` automatically if code generation
+       * on any type or field failed.
+       * @type {boolean}
+       */
+      static useCodegen: boolean;
+   
+      /**
        * Message fields by id.
        * @name Type#fieldsById
        * @type {Object.<number,Field>}
@@ -1305,10 +1339,10 @@ declare module protobuf {
       create(properties?: Object, constructor?: (() => any)): Prototype;
    
       /**
-       * Generates an encoder specific to this message type.
-       * @returns {function((Prototype|Object),Writer):Writer} Encoder
+       * Creates a new message of this type by using the registered constructor or internal prototype.
+       * @returns {Prototype} Message instance
        */
-      generateEncoder(): (() => any);
+      create_(): Prototype;
    
       /**
        * Encodes a message of this type.
@@ -1319,12 +1353,30 @@ declare module protobuf {
       encode(message: (Prototype|Object), writer?: Writer): Writer;
    
       /**
+       * Encodes a message of this type. This method differs from {@link Type#encode} in that it expects
+       * already type checked and known to be present arguments.
+       * @param {Prototype|Object} message Message instance or plain object
+       * @param {Writer} [writer] Writer to encode to
+       * @returns {Writer} writer
+       */
+      encode_(message: (Prototype|Object), writer?: Writer): Writer;
+   
+      /**
        * Encodes a message of this type preceeded by its byte length as a varint.
        * @param {Prototype|Object} message Message instance or plain object
        * @param {Writer} [writer] Writer to encode to
        * @returns {Writer} writer
        */
       encodeDelimited(message: (Prototype|Object), writer?: Writer): Writer;
+   
+      /**
+       * Encodes a message of this type preceeded by its byte length as a varint. This method differs
+       * from {@link Type#encodeDelimited} in that it expects already type checked and known to be present arguments.
+       * @param {Prototype|Object} message Message instance or plain object
+       * @param {Writer} writer Writer to encode to
+       * @returns {Writer} writer
+       */
+      encodeDelimited_(message: (Prototype|Object), writer: Writer): Writer;
    
       /**
        * Decodes a message of this type.
@@ -1336,16 +1388,9 @@ declare module protobuf {
       decode(readerOrBuffer: (Reader|number[]), constructor?: (() => any), length?: number): Prototype;
    
       /**
-       * Decodes a message of this m type preceeded by its byte length as a varint.
-       * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
-       * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
-       * @returns {Prototype} Decoded message
-       */
-      decodeDelimited(readerOrBuffer: (Reader|number[]), constructor?: (() => any)): Prototype;
-   
-      /**
        * Decodes a message of this type. This method differs from {@link Type#decode} in that it expects
        * already type checked and known to be present arguments.
+       * @function
        * @param {Reader} reader Reader to decode from
        * @param {Prototype} message Message instance to populate
        * @param {number} limit Maximum read offset
@@ -1354,8 +1399,17 @@ declare module protobuf {
       decode_(reader: Reader, message: Prototype, limit: number): Prototype;
    
       /**
-       * Decodes a message of this type. This method differs from {@link Type#decodeDelimited} in that it
-       * expects already type checked and known to be present arguments.
+       * Decodes a message of this type preceeded by its byte length as a varint.
+       * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+       * @param {Function} [constructor] Optional constructor of the created message, see {@link Type#create}
+       * @returns {Prototype} Decoded message
+       */
+      decodeDelimited(readerOrBuffer: (Reader|number[]), constructor?: (() => any)): Prototype;
+   
+      /**
+       * Decodes a message of this type preceeded by its byte length as a varint. This method differs
+       * from {@link Type#decodeDelimited} in that it expects already type checked and known to be
+       * present arguments.
        * @param {Reader} reader Reader to decode from
        * @param {Prototype} message Message instance to populate
        * @returns {Prototype} Populated message instance
@@ -1687,6 +1741,7 @@ declare module protobuf {
    
       /**
        * Writes a float (32 bit).
+       * @function
        * @param {number} value Value to write
        * @returns {Writer} `this`
        */
@@ -1694,6 +1749,7 @@ declare module protobuf {
    
       /**
        * Writes a double (64 bit float).
+       * @function
        * @param {number} value Value to write
        * @returns {Writer} `this`
        */
@@ -1724,17 +1780,15 @@ declare module protobuf {
       /**
        * Resets this instance to the last state. If there is no last state, all references
        * to previous buffers will be cleared.
-       * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
        * @returns {Writer} `this`
        */
-      reset(clearForkedStates?: boolean): Writer;
+      reset(): Writer;
    
       /**
        * Finishes the current sequence of write operations and frees all resources.
-       * @param {boolean} [clearForkedStates=false] `true` to clear all previously forked states
        * @returns {number[]} Finished buffer
        */
-      finish(clearForkedStates?: boolean): number[];
+      finish(): number[];
    
    }
    

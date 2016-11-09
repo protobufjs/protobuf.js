@@ -3,7 +3,7 @@ protobuf.js
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
 
-**protobuf.js** is a pure JavaScript implementation for node and the browser with zero dependencies. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.
+**protobuf.js** is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.
 
 **This is the development branch of protobuf.js 6.** Are you looking for the [current stable branch](https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5)?
 
@@ -168,6 +168,12 @@ The library exports a flat `protobuf` namespace with the following members, orde
 * **BufferReader** _extends **Reader**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
   Wire format reader, node version.
 
+* **Encoder** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/encoder.js)]<br />
+  Wire format encoder using code generation on top of reflection.
+
+* **Decoder** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js)]<br />
+  Wire format decoder using code generation on top of reflection.
+
 ### Reflection
 
 * **ReflectionObject** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js)]<br />
@@ -250,6 +256,8 @@ $> npm run types
 Compatibility
 -------------
 * protobuf.js requires an ES5-capable browser. To load .proto files, it requires XMLHttpRequest. If typed arrays are not supported, it uses plain arrays instead.
+
+* The library will try to generate highly optimized type specific encoders and decoders at runtime, which requires `Function` (basically `eval`) support. If code generation fails, it uses an equivalent but slower fallback.
 
 * If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer) for example and assign its constructor, or that of any compatible library, to `protobuf.util.Buffer`.
 

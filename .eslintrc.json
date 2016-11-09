@@ -24,7 +24,6 @@
         "no-template-curly-in-string": 1,
         "no-unsafe-negation": 1,
         "valid-jsdoc": 1,
-        "no-unexpected-multiline": 0,       // for codegen
 
         // Best practices
         "accessor-pairs": 1,

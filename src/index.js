@@ -32,6 +32,8 @@ protobuf.Writer           = require("./writer");
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
 protobuf.Reader           = require("./reader");
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
+protobuf.Encoder          = require("./encoder");
+protobuf.Decoder          = require("./decoder");
 
 // Reflection
 protobuf.ReflectionObject = require("./object");

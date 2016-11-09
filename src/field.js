@@ -7,8 +7,7 @@ var FieldPrototype = ReflectionObject.extend(Field, [ "rule", "type", "id", "ext
 var Type      = require("./type"),
     Enum      = require("./enum"),
     types     = require("./types"),
-    util      = require("./util"),
-    codegen   = require("./codegen");
+    util      = require("./util");
 
 /**
  * Reflected message field.
@@ -227,87 +226,6 @@ FieldPrototype.resolve = function resolve() {
     
     return ReflectionObject.prototype.resolve.call(this);
 };
-
-/**
- * Encodes the specified field value. Assumes that the field is present.
- * @param {*} value Field value
- * @param {Writer} writer Writer to encode to
- * @returns {Writer} writer
- */
-FieldPrototype.encode = function encode_setup(value, writer) {
-    this.encode = codegen.supported
-        ? encode_generate(this)
-        : encode_internal;
-    return this.encode(value, writer);
-};
-
-// Codegen reference and also fallback if code generation is not supported.
-function encode_internal(value, writer) {
-    /* eslint-disable no-invalid-this */
-    var type = this.resolvedType instanceof Enum ? "uint32" : this.type;
-    if (this.repeated) {
-        var i = 0, k = value.length;
-        if (this.packed && types.packableWireTypes[type] !== undefined) {
-            writer.fork();
-            while (i < k)
-                writer[type](value[i++]);
-            var buf = writer.finish();
-            if (buf.length)
-                writer.tag(this.id, 2).bytes(buf);
-        } else
-            while (i < k)
-                this.resolvedType.encodeDelimited_(value[i++], writer.tag(this.id, 2));
-    } else {
-        var wireType = types.wireTypes[type];
-        if (wireType !== undefined)
-            writer.tag(this.id, wireType)[type](value);
-        else
-            this.resolvedType.encodeDelimited_(value, writer.tag(this.id, 2));
-    }
-    return writer;
-    /* eslint-enable no-invalid-this */
-}
-
-/**
- * Generates an encoder specific to the specified field.
- * @name Field.generateEncoder
- * @param {Field} field Field
- * @returns {function} Encoder
- */
-function encode_generate(field) {
-    var type = field.resolve().resolvedType instanceof Enum ? "uint32" : field.type,
-        gen  = codegen("$type", "value", "writer")
-    ('"use strict";');
-
-    if (field.repeated) { gen
-
-        ("var i = 0, k = value.length;");
-
-        if (field.packed && types.packableWireTypes[type] !== undefined) gen
-        
-            ("writer.fork();")
-            ("while (i < k)")
-                ("writer.%s(value[i++]);", type)
-            ("var b = writer.finish();")
-            ("if (b.length)")
-                ("writer.tag(%d, 2).bytes(b);", field.id);
-        else gen
-            ("while (i < k)")
-                ("$type.encodeDelimited_(value[i++], writer.tag(%d, 2));", field.id);
-    } else {
-        var wireType = types.wireTypes[type];
-        if (wireType !== undefined) gen
-            ("writer.tag(%d, %d).%s(value);", field.id, wireType, type);
-        else gen
-            ("$type.encodeDelimited_(value, writer.tag(%d, 2));", field.id);
-    }
-    return gen
-    ("return writer;")
-    .eof(field.fullName + "$encode")
-    .bind(field, field.resolvedType);
-}
-
-Field.generateEncoder = encode_generate;
 
 /**
  * Converts a field value to JSON using the specified options.

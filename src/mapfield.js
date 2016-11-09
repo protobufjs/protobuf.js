@@ -6,7 +6,6 @@ var MapFieldPrototype = Field.extend(MapField, [ "keyType" ]);
 
 var Enum    = require("./enum"),
     types   = require("./types"),
-    codegen = require("./codegen"),
     util    = require("./util");
 
 /**
@@ -80,68 +79,3 @@ MapFieldPrototype.resolve = function resolve() {
 
     return Field.prototype.resolve.call(this);
 };
-
-/**
- * @override
- */
-MapFieldPrototype.encode = function encode_setup(value, writer) {
-    this.encode = codegen.supported
-        ? encode_generate(this)
-        : encode_internal;
-    return this.encode(value, writer);
-};
-
-// Codegen reference and also fallback if code generation is not supported.
-function encode_internal(value, writer) {
-    /* eslint-disable no-invalid-this */
-    var keys;
-    if (!(value && (keys = Object.keys(value)).length))
-        return writer;
-    var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
-        keyWireType = types.mapKeyWireTypes[keyType];
-    var valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
-        valueWireType = types.wireTypes[valueType];
-    writer.tag(this.id, 2).fork();
-    for (var i = 0, k = keys.length, key; i < k; ++i) {
-        writer.tag(1, keyWireType)[keyType](key = keys[i]);
-        if (valueWireType === undefined)
-            this.resolvedType.encodeDelimited_(value[key], writer);
-        else
-            writer.tag(2, valueWireType)[valueType](value[key]);
-    }
-    return writer.bytes(writer.finish());
-    /* eslint-enable no-invalid-this */
-}
-
-/**
- * Generates an encoder specific to the specified map field.
- * @name MapField.generateEncoder
- * @param {MapField} field Map field
- * @returns {function} Encoder
- */
-function encode_generate(field) {
-    var gen = codegen("$type", "value", "writer")
-    ('"use strict";')
-    ("var keys;")
-    ("if (!value || (keys = Object.keys(value)).length === 0)")
-        ("return writer;");
-    var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-        keyWireType = types.mapKeyWireTypes[keyType];
-    var valueType = field.resolvedType instanceof Enum ? "uint32" : field.type,
-        valueWireType = types.wireTypes[valueType];
-    gen
-    ("writer.tag(%d, 2).fork();", field.id)
-    ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
-        ("writer.tag(1, %d).%s(key = keys[i]);", keyWireType, keyType);
-        if (valueWireType === undefined) gen
-        ("$type.encodeDelimited_(value[key], writer);");
-        else gen
-        ("writer.tag(2, %d).%s(value[key]);", valueWireType, valueType);
-    return gen
-    ("}")
-    ("return writer.bytes(writer.finish());")
-    .eof(field.fullName + "$encode")
-    .bind(field, field.resolvedType);
-}
-
-MapField.generateEncoder = encode_generate;

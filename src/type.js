@@ -13,9 +13,10 @@ var Enum      = require("./enum"),
     Prototype = require("./prototype"),
     inherits  = require("./inherits"),
     util      = require("./util"),
-    types     = require("./types"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
+    Encoder   = require("./encoder"),
+    Decoder   = require("./decoder"),
     codegen   = require("./codegen");
 
 /**
@@ -355,126 +356,13 @@ TypePrototype.encode = function encode(message, writer) {
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
-TypePrototype.encode_ = function encode_setup(message, writer) {
+TypePrototype.encode_ = function encode_internal(message, writer) {
+    var encoder = new Encoder(this);
     this.encode_ = codegen.supported
-        ? generateEncoder(this)
-        : encode_fallback;
+        ? encoder.generate()
+        : encoder.encode;
     return this.encode_(message, writer);
 };
-
-// Codegen reference and also fallback if code generation is not supported
-function encode_fallback(message, writer) {
-    /* eslint-disable no-invalid-this */
-    var fieldsArray = this.fieldsArray,
-        fieldsCount = fieldsArray.length;
-    var values = message.$values || message; // throws if not an object
-    for (var i = 0; i < fieldsCount; ++i) {
-        var field = fieldsArray[i].resolve(),
-            value = values[field.name];
-        if (field.required || value != field.defaultValue) // eslint-disable-line eqeqeq
-            field.encode(value, writer);
-    }
-    return writer;
-    /* eslint-enable no-invalid-this */
-}
-
-/**
- * Generates an encoder specific to the specified message type.
- * @memberof Type
- * @param {Type} messageType Message type
- * @returns {function} Encoder
- */
-function generateEncoder(messageType) {
-    var fieldsArray = messageType.fieldsArray,
-        fieldsCount = fieldsArray.length;
-    var gen = codegen("$resolvedTypes", "message", "writer")
-
-    ('"use strict";')
-    ("var values = message.$values || message, value;");
-    
-    for (var i = 0; i < fieldsCount; ++i) {
-        var field = fieldsArray[i].resolve();
-        var type = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.wireTypes[type];
-        
-        // Map fields
-        if (field.map) {
-            var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-                keyWireType = types.mapKeyWireTypes[keyType];
-            gen
-
-    ("var keys;")
-    ("if ((value = values[%j]) && (keys = Object.keys(value)).length) {", field.name)
-        ("writer.tag(%d, 2).fork();", field.id)
-        ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
-            ("writer.tag(1, %d).%s(key = keys[i]);", keyWireType, keyType);
-            if (wireType !== undefined) gen
-            ("writer.tag(2, %d).%s(value[key]);", wireType, type);
-            else gen
-            ("var resolvedType = $resolvedTypes[%d];", i)
-            ("resolvedType.encodeDelimited_(value[key], writer);");
-            gen
-        ("}")
-        ("writer.bytes(writer.finish());")
-    ("}")
-
-        // Repeated fields
-        } else if (field.repeated) { gen
-
-    ("var i = 0, k = (value = values[%j]).length;", field.name);
-
-            // Packed repeated
-            if (field.packed && types.packableWireTypes[type] !== undefined) { gen
-
-    ("writer.fork();")
-    ("while (i < k)")
-        ("writer.%s(value[i++]);", type)
-    ("var buffer = writer.finish();")
-    ("if (buffer.length)")
-        ("writer.tag(%d, 2).bytes(buffer);", field.id);
-
-            // Non-packed
-            } else { gen
-
-    ("var resolvedType = $resolvedTypes[i];", i)
-    ("while (i < k)")
-        ("resolvedType.encodeDelimited_(value[i++], writer.tag(%d, 2));", field.id);
-
-            }
-
-        // Non-repeated
-        } else {
-
-            if (field.required) {
-
-                if (wireType !== undefined) gen
-    ("writer.tag(%d, %d).%s(values[%j]);", field.id, wireType, type, field.name);
-                else gen
-    ("var resolvedType = $resolvedTypes[%d];", i)
-    ("resolvedType.encodeDelimited_(values[%j], writer.tag(%d, 2));", field.name, field.id, field.name);
-
-            } else { gen
-
-                if (wireType !== undefined) gen
-    ("if ((value = values[%j]) != %j)", field.name, field.defaultValue)
-        ("writer.tag(%d, %d).%s(value);", field.id, wireType, type);
-                else gen
-    ("if ((value = values[%j]) != %j) {", field.name, field.defaultValue)
-        ("var resolvedType = $resolvedTypes[%d];", i)
-        ("resolvedType.encodeDelimited_(value, writer.tag(%d, 2));", field.id)
-    ("}")
-
-            }
-    
-        }
-    }
-    return gen
-    ("return writer;")
-    .eof(messageType.fullName + "$encode")
-    .bind(messageType, fieldsArray.map(function(fld) { return fld.resolvedType; }));
-}
-
-Type.generateEncoder = generateEncoder;
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint.
@@ -526,192 +414,12 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
  * @returns {Prototype} Populated message instance
  */
 TypePrototype.decode_ = function decode_internal(reader, message, limit) {
+    var decoder = new Decoder(this);
     this.decode_ = codegen.supported
-        ? generateDecoder(this)
-        : decode_fallback;
+        ? decoder.generate()
+        : decoder.decode;
     return this.decode_(reader, message, limit);
 };
-
-// Codegen reference and fallback if code generation is not supported.
-function decode_fallback(reader, message, limit) {
-
-    // NOTE: This intentionally performs as few checks as possible which SHOULD however still result
-    // in errors being thrown for invalid wire formats. If it doesn't throw where required, feel
-    // free to fill an issue.
-
-    /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
-    var fieldsById = this.fieldsById;
-    while (reader.pos < limit) {
-        var tag      = reader.tag(),
-            field    = fieldsById[tag.id],
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.wireTypes[type];
-        
-        // Known fields
-        if (field) {
-
-            // Map fields
-            if (field.map) {
-
-                var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-                    length  = reader.uint32(),
-                    map     = {};
-                if (length) {
-                    length += reader.pos;
-                    var keys = [], values = [], ki = 0, vi = 0;
-                    while (reader.pos < length) {
-                        if (reader.tag().id === 1)
-                            keys[ki++] = reader[keyType]();
-                        else if (wireType !== undefined)
-                            values[vi++] = reader[type]();
-                        else {
-                            var resolvedType = field.resolvedType;
-                            values[vi++] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
-                        }
-                    }
-                    var key;
-                    for (ki = 0; ki < vi; ++ki)
-                        map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
-                }
-                message.$values[field.name] = map;
-
-            // Repeated fields
-            } else if (field.repeated) {
-
-                var values   = message.$values[field.name],
-                    length   = values.length,
-                    packType = types.packableWireTypes[type];
-
-                // Packed
-                if (field.packed && tag.wireType === packType) {
-                    var plimit = reader.uint32() + reader.pos;
-                    while (reader.pos < plimit)
-                        values[length++] = reader[type]();
-
-                // Non-packed
-                } else if (wireType !== undefined) {
-                    values[length++] = reader[type]();
-                } else {
-                    var resolvedType = field.resolvedType;
-                    values[length++] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
-                }
-
-            // Non-repeated
-            } else if (wireType !== undefined) {
-                message.$values[field.name] = reader[type]();
-            } else {
-                var resolvedType = field.resolvedType;
-                message.$values[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
-            }
-
-        // Unknown fields
-        } else
-            reader.skipType(tag.wireType);
-    }
-    return message;
-    /* eslint-enable no-invalid-this, block-scoped-var, no-redeclare */
-}
-
-/**
- * Generates a decoder specific to the specified message type.
- * @memberof Type
- * @param {Type} messageType Message type
- * @returns {function} Decoder
- */
-function generateDecoder(messageType) {
-    var fieldsArray = messageType.fieldsArray,
-        fieldsCount = fieldsArray.length;
-    
-    var gen = codegen("$resolvedTypes", "$toHash", "reader", "message", "limit")
-
-    ('"use strict";')
-    ("while (reader.pos < limit) {")
-        ("var tag = reader.tag();")
-        ("switch (tag.id) {");
-    
-    for (var i = 0; i < fieldsCount; ++i) {
-        var field    = fieldsArray[i].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.wireTypes[type],
-            packType = types.packableWireTypes[type];
-        gen
-            ("case %d:", field.id);
-
-        if (field.map) {
-            var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            gen
-                ("var length = reader.uint32(), map = {};")
-                ("if (length) {")
-                    ("length += reader.pos;")
-                    ("var keys = [], values = [], ki = 0, vi = 0;")
-                    ("while (reader.pos < length) {")
-                        ("if (reader.tag().id === 1)")
-                            ("keys[ki++] = reader.%s();", keyType)
-                        if (wireType !== undefined) gen
-                        ("else")
-                            ("values[vi++] = reader.%s();", type);
-                        else gen
-                        ("else {")
-                            ("var type = $resolvedTypes[%d];", i)
-                            ("values[vi++] = type.decodeDelimited_(reader, type.create_());")
-                        ("}")
-                    gen
-                    ("}")
-                    ("var key;")
-                    ("for (ki = 0; ki < vi; ++ki)")
-                        ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
-                ("}")
-                ("message.$values[%j] = map;", field.name);
-
-        } else if (field.repeated) { gen
-
-                ("var values = message.$values[%j], length = values.length;", field.name);
-
-            if (field.packed && packType !== undefined) { gen
-
-                ("if (tag.wireType === %d) {", packType)
-                    ("var plimit = reader.uint32() + reader.pos;")
-                    ("while (reader.pos < plimit)")
-                        ("values[length++] = reader.%s();", type)
-                ("} else {");
-
-            }
-
-            if (wireType !== undefined) gen
-
-                    ("values[length++] = reader.%s();", type);
-
-            else gen
-
-                    ("var type = $resolvedTypes[%d];", i)
-                    ("values[length++] = type.decodeDelimited_(reader, type.create_());");
-
-            if (field.packed && packType !== undefined) gen
-
-                ("}");
-
-        } else if (wireType !== undefined) { gen
-
-                ("message.$values[%j] = reader.%s();", field.name, type);
-
-        } else { gen
-
-                ("var type = $resolvedTypes[%d];", i)
-                ("message.$values[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
-
-        } gen
-                ("break;");
-    } gen
-            ("default:")
-                ("reader.skipType(tag.wireType);")
-                ("break;")
-        ("}")
-    ("}")
-    ("return message;")
-    return gen.eof(messageType.fullName + "$decode").bind(messageType, fieldsArray.map(function(fld) { return fld.resolvedType; }), util.toHash);
-}
-
-Type.generateDecoder = generateDecoder;
 
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
