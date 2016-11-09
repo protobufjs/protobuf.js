@@ -275,13 +275,13 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.float = (function write_float(ieee754_write, value) {
+WriterPrototype.float = function write_float(value) {
     if (this.pos + 4 > this.len)
         expand(this, 4);
-    ieee754_write(this.buf, value, this.pos, true, 23, 4);
+    ieee754.write(this.buf, value, this.pos, true, 23, 4);
     this.pos += 4;
     return this;
-}).bind(null, ieee754.write);
+};
 
 /**
  * Writes a double (64 bit float).
@@ -289,13 +289,13 @@ WriterPrototype.float = (function write_float(ieee754_write, value) {
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.double = (function write_double(ieee754_write, value) {
+WriterPrototype.double = function write_double(value) {
     if (this.pos + 8 > this.len)
         expand(this, 8);
-    ieee754_write(this.buf, value, this.pos, true, 52, 8);
+    ieee754.write(this.buf, value, this.pos, true, 52, 8);
     this.pos += 8;
     return this;
-}).bind(null, ieee754.write);
+};
 
 /**
  * Writes a sequence of bytes.

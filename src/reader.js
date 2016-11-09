@@ -199,26 +199,26 @@ ReaderPrototype.sfixed64 = function read_sfixed64() {
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.float = (function read_float(ieee754_read) {
+ReaderPrototype.float = function read_float() {
     if (this.pos + 4 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    var value = ieee754_read(this.buf, this.pos, true, 23, 4);
+    var value = ieee754.read(this.buf, this.pos, true, 23, 4);
     this.pos += 4;
-    return this;
-}).bind(null, ieee754.read);
+    return value;
+};
 
 /**
  * Reads a double (64 bit float) as a number.
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.double = (function read_double(ieee754_read) {
+ReaderPrototype.double = function read_double() {
     if (this.pos + 8 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    var value = ieee754_read(this.buf, this.pos, true, 52, 8);
+    var value = ieee754.read(this.buf, this.pos, true, 52, 8);
     this.pos += 8;
-    return this;
-}).bind(null, ieee754.read);
+    return value;
+};
 
 /**
  * Reads a sequence of bytes preceeded by its length as a varint.

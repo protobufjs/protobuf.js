@@ -145,35 +145,3 @@ function encode_generate(field) {
 }
 
 MapField.generateEncoder = encode_generate;
-
-/**
- * @override
- */
-MapFieldPrototype.decode = function decode_setup(reader) {    
-    var length = reader.uint32(), map = {};
-    if (length) {
-        length += reader.pos;
-
-        var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
-            valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
-            valueWireType = types.wireTypes[valueType];
-            
-        var keys = [], ki = 0, values = [], vi = 0;
-        while (reader.pos < length) {
-            var tag = reader.tag();
-            if (tag.id === 1)
-                keys[ki++] = reader[keyType]();
-            else if (tag.id === 2) {
-                if (valueWireType !== undefined)
-                    values[vi++] = reader[valueType]();
-                else
-                    values[vi++] = this.resolvedType.decodeDelimited_(reader); // throws if invalid
-            } else
-                throw Error("illegal wire format for " + this.fullName);
-        }
-        var key;
-        for (ki = 0; i < ki; ++ki)
-            map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
-    }
-    return map;
-}

@@ -54,10 +54,9 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
             console.log();
         }
 
-        var reader = protobuf.Reader(new Buffer(0)),
-            writer = protobuf.Writer();
-
         function bench_protobuf_rw() {
+            var reader = protobuf.Reader(new Buffer(0)),
+                writer = protobuf.Writer();
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {

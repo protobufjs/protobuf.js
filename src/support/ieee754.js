@@ -30,6 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 // ref: https://github.com/feross/ieee754
 
+/* eslint-disable semi, no-extra-parens, no-empty */
+
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
     var e, m
     var eLen = nBytes * 8 - mLen - 1

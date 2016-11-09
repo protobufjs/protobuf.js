@@ -306,31 +306,6 @@ function encode_generate(field) {
 Field.generateEncoder = encode_generate;
 
 /**
- * Decodes a field value.
- * @param {Reader} reader Reader to decode from
- * @param {number} receivedWireType Wire type received
- * @returns {*} Field value
- * @throws {Error} If the wire format is invalid
- */
-FieldPrototype.decode = function decode_internal(reader, receivedWireType) {
-    var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
-    if (this.repeated && this.packed && types.packableWireTypes[type] === receivedWireType) {
-        var limit = reader.uint32() + reader.pos,
-            values = [], i = 0;
-        while (reader.pos < limit)
-            values[i++] = reader[type]();
-        return values;
-    }
-    var value = receivedWireType === types.wireTypes[type]
-        ? reader[type]()
-        : this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor // assumes wire type 2, throws if invalid
-        ? new this.resolvedType._constructor()
-        : Object.create(this.resolvedType.prototype)
-    );
-    return this.repeated ? [ value ] : value;
-};
-
-/**
  * Converts a field value to JSON using the specified options.
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
