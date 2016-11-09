@@ -5,7 +5,7 @@ var protobuf = require(".."),
 
 function toValues(message) {
     var values = {};
-    Object.keys(message.$values).forEach(function(key) {
+    Object.keys(message._fields).forEach(function(key) {
         var value = message[key];
         if (value instanceof protobuf.Prototype)
             values[key] = toValues(value);

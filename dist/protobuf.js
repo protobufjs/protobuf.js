@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Wed, 09 Nov 2016 21:12:11 UTC
+ * Compiled Wed, 09 Nov 2016 22:16:13 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -139,12 +139,12 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                     for (ki = 0; ki < vi; ++ki)
                         map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
                 }
-                message.$values[field.name] = map;
+                message._fields[field.name] = map;
 
             // Repeated fields
             } else if (field.repeated) {
 
-                var values   = message.$values[field.name],
+                var values   = message._fields[field.name],
                     length   = values.length,
                     packType = types.packableWireTypes[type];
 
@@ -164,10 +164,10 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
 
             // Non-repeated
             } else if (wireType !== undefined) {
-                message.$values[field.name] = reader[type]();
+                message._fields[field.name] = reader[type]();
             } else {
                 var resolvedType = field.resolvedType;
-                message.$values[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
+                message._fields[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
             }
 
         // Unknown fields
@@ -180,7 +180,7 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
 
 /**
  * Generates a decoder specific to this decoder's message type.
- * @returns {function} Decoder function with an identical signature to {@link Decoder#decode]}
+ * @returns {function} Decoder function with an identical signature to {@link Decoder#decode}
  */
 DecoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
@@ -226,11 +226,11 @@ DecoderPrototype.generate = function generate() {
                     ("for (ki = 0; ki < vi; ++ki)")
                         ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
                 ("}")
-                ("message.$values[%j] = map;", field.name);
+                ("message._fields[%j] = map;", field.name);
 
         } else if (field.repeated) { gen
 
-                ("var values = message.$values[%j], length = values.length;", field.name);
+                ("var values = message._fields[%j], length = values.length;", field.name);
 
             if (field.packed && packType !== undefined) { gen
 
@@ -257,12 +257,12 @@ DecoderPrototype.generate = function generate() {
 
         } else if (wireType !== undefined) { gen
 
-                ("message.$values[%j] = reader.%s();", field.name, type);
+                ("message._fields[%j] = reader.%s();", field.name, type);
 
         } else { gen
 
                 ("var type = $resolvedTypes[%d];", i)
-                ("message.$values[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
+                ("message._fields[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
 
         } gen
                 ("break;");
@@ -307,7 +307,7 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
 
-    var values = message.$values || message, value; // throws if not an object
+    var values = message._fields || message, value; // throws if not an object
     for (var fi = 0; fi < fieldsCount; ++fi) {
         var field    = fieldsArray[fi].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -365,7 +365,7 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
 
 /**
  * Generates an encoder specific to this encoder's message type.
- * @returns {function} Encoder function with an identical signature to {@link Encoder#encode]}
+ * @returns {function} Encoder function with an identical signature to {@link Encoder#encode}
  */
 EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
@@ -374,7 +374,7 @@ EncoderPrototype.generate = function generate() {
     var gen = codegen("$resolvedTypes", "message", "writer")
 
     ('"use strict";')
-    ("var values = message.$values || message, value;");
+    ("var values = message._fields || message, value;");
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
@@ -686,7 +686,7 @@ function Field(name, id, type, rule, extend, options) {
     this.extensionField = null;
 
     /**
-     * Sister-field within the declaring type if an extended field.
+     * Sister-field within the declaring namespace if an extended field.
      * @type {?Field}
      */
     this.declaringField = null;
@@ -800,13 +800,8 @@ FieldPrototype.resolve = function resolve() {
  * Converts a field value to JSON using the specified options.
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
- * @param {Function} [options.long] Long conversion type.
- * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
- *  Defaults to the internal number/long-like representation.
- * @param {Function} [options.enum] Enum value conversion type.
- *  Only valid value is `String`.
- *  Defaults to the values' numeric ids.
  * @returns {*} Converted value
+ * @see {@link Prototype#asJSON}
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (this.repeated) {
@@ -893,6 +888,8 @@ module.exports = inherits;
 
 var Prototype = require("./prototype"),
     Type      = require("./type"),
+    Reader    = require("./reader"),
+    Writer    = require("./writer"),
     util      = require("./util");
 
 /**
@@ -932,16 +929,6 @@ function inherits(clazz, type, options) {
          */
         $type: {
             value: type
-        },
-
-        /**
-         * Field names present on the message. Useful as an alternative to `Object.keys`.
-         * @name Class.$keys
-         * @type {string[]}
-         * @readonly
-         */
-        $keys: {
-            value: Object.keys(type.fields)
         }
     };
 
@@ -953,11 +940,12 @@ function inherits(clazz, type, options) {
              * @name Class.encode
              * @function
              * @param {Prototype|Object} message Message to encode
+             * @param {Writer} [writer] Optional writer to use
              * @returns {number[]} Encoded message
              */
             encode: {
-                value: function encode(message) {
-                    return this.$type.encode(message).finish();
+                value: function encode(message, writer) {
+                    return this.$type.encode_(message, writer || Writer()).finish();
                 }
             },
 
@@ -966,11 +954,12 @@ function inherits(clazz, type, options) {
              * @name Class.encodeDelimited
              * @function
              * @param {Prototype|Object} message Message to encode
+             * @param {Writer} [writer] Optional writer to use
              * @returns {number[]} Encoded message
              */
             encodeDelimited: {
-                value: function encodeDelimited(message) {
-                    return this.$type.encodeDelimited(message).finish();
+                value: function encodeDelimited(message, writer) {
+                    return this.$type.encodeDelimited_(message, writer || Writer()).finish();
                 }
             },
 
@@ -983,7 +972,7 @@ function inherits(clazz, type, options) {
              */
             decode: {
                 value: function decode(buffer) {
-                    return this.$type.decode(buffer, clazz);
+                    return this.$type.decode_(Reader(buffer), new this(), buffer.length);
                 }
             },
 
@@ -996,7 +985,7 @@ function inherits(clazz, type, options) {
              */
             decodeDelimited: {
                 value: function decodeDelimited(buffer) {
-                    return this.$type.decodeDelimited(buffer, clazz);
+                    return this.$type.decodeDelimited_(Reader(buffer), new this(), buffer.length);
                 }
             }
 
@@ -1015,7 +1004,8 @@ function inherits(clazz, type, options) {
 
 /**
  * Defines getters and setters corresponding to the reflected type's fields and oneofs on the
- * specified prototype. Stores field values within {@link Prototype#$values}.
+ * specified prototype. Stores field values within {@link Prototype#_fields} and oneofs present
+ * in {@link Prototype#_oneofs}.
  * @memberof inherits
  * @param {Prototype} prototype Prototype to define properties upon
  * @param {Type} type Reflected message type
@@ -1038,32 +1028,22 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         },
 
         /**
-         * Field names present on the message. Useful as an alternative to `Object.keys`.
-         * @name Prototype#$keys
-         * @type {string[]}
-         * @readonly
-         */
-        $keys: {
-            value: Object.keys(type.fields)
-        },
-
-        /**
          * Field values present on the message.
-         * @name Prototype#$values
+         * @name Prototype#_fields
          * @type {Object.<string,*>}
          * @readonly
          */
-        $values: {
+        _fields: {
             value: defaultValues
         },
 
         /**
          * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
-         * @name Prototype#$oneofs
+         * @name Prototype#_oneofs
          * @type {Object.<string,string|undefined>}
          * @readonly
          */
-        $oneofs: {
+        _oneofs: {
             value: {}
         }
     };
@@ -1076,23 +1056,23 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         
         prototypeProperties[field.name] = {
             get: function() {
-                return this.$values[field.name];
+                return this._fields[field.name];
             },
             set: function(value) {
                 if (field.partOf) { // Handle oneof side effects
-                    var fieldNameSet = this.$oneofs[field.partOf.name];
+                    var fieldNameSet = this._oneofs[field.partOf.name];
                     if (value === undefined || value === null) {
                         if (fieldNameSet === field.name)
-                            this.$oneofs[field.partOf.name] = undefined;
-                        this.$values[field.name] = field.defaultValue;
+                            this._oneofs[field.partOf.name] = undefined;
+                        this._fields[field.name] = field.defaultValue;
                     } else {
                         if (fieldNameSet !== undefined)
-                            this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
-                        this.$values[field.name] = value;
-                        this.$oneofs[field.partOf.name] = field.name;
+                            this._fields[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
+                        this._fields[field.name] = value;
+                        this._oneofs[field.partOf.name] = field.name;
                     }
                 } else // Just set the value and reset to the default when unset
-                    this.$values[field.name] = value === undefined || value === null
+                    this._fields[field.name] = value === undefined || value === null
                         ? field.defaultValue
                         : value;
             },
@@ -1106,7 +1086,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         
         prototypeProperties[oneof.name] = {
             get: function() {
-                return this.$oneofs[oneof.name];
+                return this._oneofs[oneof.name];
             }
         };
     });
@@ -1115,7 +1095,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     return prototype;
 };
 
-},{"./prototype":14,"./type":21,"./util":23}],8:[function(require,module,exports){
+},{"./prototype":14,"./reader":15,"./type":21,"./util":23,"./writer":24}],8:[function(require,module,exports){
 module.exports = MapField;
 
 var Field = require("./field");
@@ -2504,15 +2484,10 @@ module.exports = Prototype;
 
 /**
  * Runtime message prototype ready to be extended by custom classes or generated code.
- * 
- * Calling the prototype constructor from within your own classes is optional but you can do so if
- * all you want is to initialize your instance's properties in conformance with the reflected type's
- * fields.
- * 
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
  * @param {Object.<string,*>} [options] Initialization options
- * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
+ * @param {boolean} [options.fieldsOnly=false] Sets only properties that reference a field
  * @abstract
  * @see {@link inherits}
  * @see {@link Class}
@@ -2524,28 +2499,41 @@ function Prototype(properties, options) {
             keys = Object.keys(properties);
         for (var i = 0, k = keys.length, key; i < k; ++i)
             if (!fieldsOnly || fields[key])
-                this[key = keys[i]] = properties[key];
+                this._fields[key = keys[i]] = properties[key];
     }
 }
 
 /**
  * Converts a runtime message to a JSON object.
  * @param {Object.<string,*>} [options] Conversion options
+ * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
+ * @param {Function} [options.long] Long conversion type. Valid values are `String` (requires a
+ * long library) and `Number` (throws without a long library if unsafe).
+ * Defaults to the internal representation.
+ * @param {Function} [options.enum] Enum value conversion type. Only valid value is `String`.
+ * Defaults to the values' numeric ids.
  * @returns {Object.<string,*>} JSON object
- * @virtual
  */
-Prototype.prototype.toJSON = function toJSON(options) {
-    var values = this.$values;
-    if (!options)
-        return values;
-    var json = {},
-        keys = Object.keys(values);
-    for (var i = 0, k = keys.length, key; i < k; ++i) {
-        var field = this.constructor.$type.fields[key = keys[i]];
+Prototype.prototype.asJSON = function asJSON(options) {
+    var fields = this.constructor.$type.fields,
+        json = {};
+    for (var key in this) { // also enumerates prototype
+        var field = fields[key];
         if (field)
-            json[key] = field.jsonConvert(values[key], options);
+            json[key] = field.jsonConvert(this[key], options)
+        else if (!options.fieldsOnly)
+            json[key] = this[key];
     }
     return json;
+};
+
+/**
+ * Beware: This method does not return JSON but it overrides the object serialized by `JSON.stringify`.
+ * To convert a message to JSON manually, use {@link Prototype#asJSON} instead.
+ * @returns {Object.<string,*>} JSON serializable object
+ */
+Prototype.prototype.toJSON = function toJSON() {
+    return this._fields;
 };
 
 },{}],15:[function(require,module,exports){
@@ -4337,7 +4325,7 @@ TypePrototype.create = function create(properties, constructor) {
         for (var i = 0, k = keys.length, key; i < k; ++i) {
             var field = this.fields[key = keys[i]];
             if (field)
-                message.$values[key] = properties[key];
+                message._fields[key] = properties[key];
             else
                 message[key] = properties[key];
         }

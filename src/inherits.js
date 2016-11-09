@@ -2,6 +2,8 @@ module.exports = inherits;
 
 var Prototype = require("./prototype"),
     Type      = require("./type"),
+    Reader    = require("./reader"),
+    Writer    = require("./writer"),
     util      = require("./util");
 
 /**
@@ -41,16 +43,6 @@ function inherits(clazz, type, options) {
          */
         $type: {
             value: type
-        },
-
-        /**
-         * Field names present on the message. Useful as an alternative to `Object.keys`.
-         * @name Class.$keys
-         * @type {string[]}
-         * @readonly
-         */
-        $keys: {
-            value: Object.keys(type.fields)
         }
     };
 
@@ -62,11 +54,12 @@ function inherits(clazz, type, options) {
              * @name Class.encode
              * @function
              * @param {Prototype|Object} message Message to encode
+             * @param {Writer} [writer] Optional writer to use
              * @returns {number[]} Encoded message
              */
             encode: {
-                value: function encode(message) {
-                    return this.$type.encode(message).finish();
+                value: function encode(message, writer) {
+                    return this.$type.encode_(message, writer || Writer()).finish();
                 }
             },
 
@@ -75,11 +68,12 @@ function inherits(clazz, type, options) {
              * @name Class.encodeDelimited
              * @function
              * @param {Prototype|Object} message Message to encode
+             * @param {Writer} [writer] Optional writer to use
              * @returns {number[]} Encoded message
              */
             encodeDelimited: {
-                value: function encodeDelimited(message) {
-                    return this.$type.encodeDelimited(message).finish();
+                value: function encodeDelimited(message, writer) {
+                    return this.$type.encodeDelimited_(message, writer || Writer()).finish();
                 }
             },
 
@@ -92,7 +86,7 @@ function inherits(clazz, type, options) {
              */
             decode: {
                 value: function decode(buffer) {
-                    return this.$type.decode(buffer, clazz);
+                    return this.$type.decode_(Reader(buffer), new this(), buffer.length);
                 }
             },
 
@@ -105,7 +99,7 @@ function inherits(clazz, type, options) {
              */
             decodeDelimited: {
                 value: function decodeDelimited(buffer) {
-                    return this.$type.decodeDelimited(buffer, clazz);
+                    return this.$type.decodeDelimited_(Reader(buffer), new this(), buffer.length);
                 }
             }
 
@@ -124,7 +118,8 @@ function inherits(clazz, type, options) {
 
 /**
  * Defines getters and setters corresponding to the reflected type's fields and oneofs on the
- * specified prototype. Stores field values within {@link Prototype#$values}.
+ * specified prototype. Stores field values within {@link Prototype#_fields} and oneofs present
+ * in {@link Prototype#_oneofs}.
  * @memberof inherits
  * @param {Prototype} prototype Prototype to define properties upon
  * @param {Type} type Reflected message type
@@ -147,32 +142,22 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         },
 
         /**
-         * Field names present on the message. Useful as an alternative to `Object.keys`.
-         * @name Prototype#$keys
-         * @type {string[]}
-         * @readonly
-         */
-        $keys: {
-            value: Object.keys(type.fields)
-        },
-
-        /**
          * Field values present on the message.
-         * @name Prototype#$values
+         * @name Prototype#_fields
          * @type {Object.<string,*>}
          * @readonly
          */
-        $values: {
+        _fields: {
             value: defaultValues
         },
 
         /**
          * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
-         * @name Prototype#$oneofs
+         * @name Prototype#_oneofs
          * @type {Object.<string,string|undefined>}
          * @readonly
          */
-        $oneofs: {
+        _oneofs: {
             value: {}
         }
     };
@@ -185,23 +170,23 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         
         prototypeProperties[field.name] = {
             get: function() {
-                return this.$values[field.name];
+                return this._fields[field.name];
             },
             set: function(value) {
                 if (field.partOf) { // Handle oneof side effects
-                    var fieldNameSet = this.$oneofs[field.partOf.name];
+                    var fieldNameSet = this._oneofs[field.partOf.name];
                     if (value === undefined || value === null) {
                         if (fieldNameSet === field.name)
-                            this.$oneofs[field.partOf.name] = undefined;
-                        this.$values[field.name] = field.defaultValue;
+                            this._oneofs[field.partOf.name] = undefined;
+                        this._fields[field.name] = field.defaultValue;
                     } else {
                         if (fieldNameSet !== undefined)
-                            this.$values[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
-                        this.$values[field.name] = value;
-                        this.$oneofs[field.partOf.name] = field.name;
+                            this._fields[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
+                        this._fields[field.name] = value;
+                        this._oneofs[field.partOf.name] = field.name;
                     }
                 } else // Just set the value and reset to the default when unset
-                    this.$values[field.name] = value === undefined || value === null
+                    this._fields[field.name] = value === undefined || value === null
                         ? field.defaultValue
                         : value;
             },
@@ -215,7 +200,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         
         prototypeProperties[oneof.name] = {
             get: function() {
-                return this.$oneofs[oneof.name];
+                return this._oneofs[oneof.name];
             }
         };
     });

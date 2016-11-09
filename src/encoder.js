@@ -27,7 +27,7 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
 
-    var values = message.$values || message, value; // throws if not an object
+    var values = message._fields || message, value; // throws if not an object
     for (var fi = 0; fi < fieldsCount; ++fi) {
         var field    = fieldsArray[fi].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -85,7 +85,7 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
 
 /**
  * Generates an encoder specific to this encoder's message type.
- * @returns {function} Encoder function with an identical signature to {@link Encoder#encode]}
+ * @returns {function} Encoder function with an identical signature to {@link Encoder#encode}
  */
 EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
@@ -94,7 +94,7 @@ EncoderPrototype.generate = function generate() {
     var gen = codegen("$resolvedTypes", "message", "writer")
 
     ('"use strict";')
-    ("var values = message.$values || message, value;");
+    ("var values = message._fields || message, value;");
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();

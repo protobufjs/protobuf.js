@@ -117,7 +117,7 @@ function Field(name, id, type, rule, extend, options) {
     this.extensionField = null;
 
     /**
-     * Sister-field within the declaring type if an extended field.
+     * Sister-field within the declaring namespace if an extended field.
      * @type {?Field}
      */
     this.declaringField = null;
@@ -231,13 +231,8 @@ FieldPrototype.resolve = function resolve() {
  * Converts a field value to JSON using the specified options.
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
- * @param {Function} [options.long] Long conversion type.
- * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
- *  Defaults to the internal number/long-like representation.
- * @param {Function} [options.enum] Enum value conversion type.
- *  Only valid value is `String`.
- *  Defaults to the values' numeric ids.
  * @returns {*} Converted value
+ * @see {@link Prototype#asJSON}
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (this.repeated) {

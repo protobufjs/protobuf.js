@@ -321,7 +321,7 @@ TypePrototype.create = function create(properties, constructor) {
         for (var i = 0, k = keys.length, key; i < k; ++i) {
             var field = this.fields[key = keys[i]];
             if (field)
-                message.$values[key] = properties[key];
+                message._fields[key] = properties[key];
             else
                 message[key] = properties[key];
         }

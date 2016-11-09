@@ -59,12 +59,12 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                     for (ki = 0; ki < vi; ++ki)
                         map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
                 }
-                message.$values[field.name] = map;
+                message._fields[field.name] = map;
 
             // Repeated fields
             } else if (field.repeated) {
 
-                var values   = message.$values[field.name],
+                var values   = message._fields[field.name],
                     length   = values.length,
                     packType = types.packableWireTypes[type];
 
@@ -84,10 +84,10 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
 
             // Non-repeated
             } else if (wireType !== undefined) {
-                message.$values[field.name] = reader[type]();
+                message._fields[field.name] = reader[type]();
             } else {
                 var resolvedType = field.resolvedType;
-                message.$values[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
+                message._fields[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
             }
 
         // Unknown fields
@@ -100,7 +100,7 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
 
 /**
  * Generates a decoder specific to this decoder's message type.
- * @returns {function} Decoder function with an identical signature to {@link Decoder#decode]}
+ * @returns {function} Decoder function with an identical signature to {@link Decoder#decode}
  */
 DecoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
@@ -146,11 +146,11 @@ DecoderPrototype.generate = function generate() {
                     ("for (ki = 0; ki < vi; ++ki)")
                         ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
                 ("}")
-                ("message.$values[%j] = map;", field.name);
+                ("message._fields[%j] = map;", field.name);
 
         } else if (field.repeated) { gen
 
-                ("var values = message.$values[%j], length = values.length;", field.name);
+                ("var values = message._fields[%j], length = values.length;", field.name);
 
             if (field.packed && packType !== undefined) { gen
 
@@ -177,12 +177,12 @@ DecoderPrototype.generate = function generate() {
 
         } else if (wireType !== undefined) { gen
 
-                ("message.$values[%j] = reader.%s();", field.name, type);
+                ("message._fields[%j] = reader.%s();", field.name, type);
 
         } else { gen
 
                 ("var type = $resolvedTypes[%d];", i)
-                ("message.$values[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
+                ("message._fields[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
 
         } gen
                 ("break;");

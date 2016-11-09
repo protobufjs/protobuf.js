@@ -22,7 +22,7 @@ tap.test("google.protobuf.Any class", function(test) {
 
         test.ok(any instanceof protobuf.Prototype, "should extend Prototype");
         test.ok(any instanceof Any, "should extend the custom class");
-        test.deepEqual(any.$values, {
+        test.deepEqual(any._fields, {
             type_url: "some.type",
             value: valueBuffer
         }, "should be populated with the contents we provided");
