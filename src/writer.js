@@ -9,8 +9,7 @@ Writer.Buffer = null;
 Writer.BufferWriter = BufferWriter;
 
 var long_   = require("./support/long"),
-    string_ = require("./support/string"),
-    float_  = require("./support/float");
+    ieee754 = require("./support/ieee754");
 
 /**
  * Default buffer size.
@@ -272,25 +271,31 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 
 /**
  * Writes a float (32 bit).
+ * @function
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.float = function write_float(value) {
+WriterPrototype.float = (function write_float(ieee754_write, value) {
     if (this.pos + 4 > this.len)
         expand(this, 4);
-    return float_._write(this, value, 4);
-};
+    ieee754_write(this.buf, value, this.pos, true, 23, 4);
+    this.pos += 4;
+    return this;
+}).bind(null, ieee754.write);
 
 /**
  * Writes a double (64 bit float).
+ * @function
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.double = function write_double(value) {
+WriterPrototype.double = (function write_double(ieee754_write, value) {
     if (this.pos + 8 > this.len)
         expand(this, 8);
-    return float_._write(this, value, 8);
-};
+    ieee754_write(this.buf, value, this.pos, true, 52, 8);
+    this.pos += 8;
+    return this;
+}).bind(null, ieee754.write);
 
 /**
  * Writes a sequence of bytes.
@@ -299,12 +304,16 @@ WriterPrototype.double = function write_double(value) {
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length;
-    this.uint32(len);
     if (len) {
+        this.uint32(len);
         if (this.pos + len > this.len)
             expand(this, len);
         this._set.call(this.buf, value, this.pos);
         this.pos += len;
+    } else {
+        if (this.pos >= this.len)
+            expand(this, 1);
+        this.buf[this.pos++] = 0;
     }
     return this;
 };
@@ -315,7 +324,36 @@ WriterPrototype.bytes = function write_bytes(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.string = function write_string(value) {
-    return this.bytes(string_._encode(value));
+    // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
+    var len = value.length;
+    if (len) {
+        var out = new Array(len << 2), p = 0;
+        for (var i = 0; i < len; i++) {
+            var c1 = value.charCodeAt(i), c2;
+            if (c1 < 128) {
+                out[p++] = c1;
+            } else if (c1 < 2048) {
+                out[p++] = c1 >> 6 | 192;
+                out[p++] = c1 & 63 | 128;
+            } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = value.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+                c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+                ++i;
+                out[p++] =  c1 >> 18      | 240;
+                out[p++] =  c1 >> 12 & 63 | 128;
+                out[p++] =  c1 >> 6  & 63 | 128;
+                out[p++] =  c1       & 63 | 128;
+            } else {
+                out[p++] = c1 >> 12      | 224;
+                out[p++] = c1 >> 6  & 63 | 128;
+                out[p++] = c1       & 63 | 128;
+            }
+        }
+        return this.bytes(out.slice(0, p));
+    }
+    if (this.pos >= this.len)
+        expand(this, 1);
+    this.buf[this.pos++] = 0;
+    return this;
 };
 
 /**
@@ -387,7 +425,7 @@ WriterPrototype.finish = function finish() {
     if (buf) {
         if (pos < len)
             buf = this._slice.call(buf, 0, pos);
-        if (bufs.length === 0)
+        if (!bufs.length)
             return buf;
     } else
         return emptyArray;

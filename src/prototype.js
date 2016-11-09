@@ -32,7 +32,7 @@ function Prototype(properties, options) {
  * @returns {Object.<string,*>} JSON object
  * @virtual
  */
-Prototype.toJSON = function toJSON(options) {
+Prototype.prototype.toJSON = function toJSON(options) {
     var values = this.$values;
     if (!options)
         return values;

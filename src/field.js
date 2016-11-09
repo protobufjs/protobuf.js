@@ -312,16 +312,7 @@ Field.generateEncoder = encode_generate;
  * @returns {*} Field value
  * @throws {Error} If the wire format is invalid
  */
-FieldPrototype.decode = function decode_setup(reader, receivedWireType) {
-    this.decode = codegen.supported
-        ? decode_generate(this)
-        : decode_internal;
-    return this.decode(reader, receivedWireType);
-};
-
-// Codegen reference and also fallback if code generation is not supported.
-function decode_internal(reader, receivedWireType) {
-    /* eslint-disable no-invalid-this */
+FieldPrototype.decode = function decode_internal(reader, receivedWireType) {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
     if (this.repeated && this.packed && types.packableWireTypes[type] === receivedWireType) {
         var limit = reader.uint32() + reader.pos,
@@ -330,46 +321,14 @@ function decode_internal(reader, receivedWireType) {
             values[i++] = reader[type]();
         return values;
     }
-    return receivedWireType === types.wireTypes[type]
+    var value = receivedWireType === types.wireTypes[type]
         ? reader[type]()
         : this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor // assumes wire type 2, throws if invalid
         ? new this.resolvedType._constructor()
         : Object.create(this.resolvedType.prototype)
     );
-    /* eslint-enable no-invalid-this */
-}
-
-/**
- * Generates a decoder specific to the specified field.
- * @name Field.generateDecoder
- * @param {Field} field Field
- * @returns {function} Decoder
- */
-function decode_generate(field) {
-    var type = field.resolve().resolvedType instanceof Enum ? "uint32" : field.type,
-        gen  = codegen("$type", "reader", "wireType")
-    ('"use strict";');
-    if (field.repeated && field.packed && types.packableWireTypes[type] !== undefined) gen
-        ("if (wireType === %d) {", types.packableWireTypes[type])
-            ("var limit = reader.uint32() + reader.pos, values = [], i = 0;")
-            ("while (reader.pos < limit)")
-                ("values[i++] = r.%s();", type)
-            ("return values;")
-        ("}");
-    var wireType = types.wireTypes[type];
-    if (wireType !== undefined) gen
-        ("if (wireType === %d)", wireType)
-            ("return reader.%s();", type)
-        ("else")
-            ("return $type.decodeDelimited_(reader, $type._constructor ? new $type._constructor() : Object.create($type.prototype));");
-    else gen
-        ("return $type.decodeDelimited_(reader, $type._constructor ? new $type._constructor() : Object.create($type.prototype));");
-    return gen
-    .eof(field.fullName + "$decode")
-    .bind(field, field.resolvedType);
-}
-
-Field.generateDecoder = decode_generate;
+    return this.repeated ? [ value ] : value;
+};
 
 /**
  * Converts a field value to JSON using the specified options.

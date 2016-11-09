@@ -9,8 +9,7 @@ Reader.Buffer = null;
 Reader.BufferReader = BufferReader;
 
 var long_   = require("./support/long"),
-    string_ = require("./support/string"),
-    float_  = require("./support/float");
+    ieee754 = require("./support/ieee754");
 
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
@@ -55,6 +54,18 @@ var ArrayImpl = typeof Uint8Array !== 'undefined'
 ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
+ * Tag read.
+ * @constructor
+ * @param {number} id Field id
+ * @param {number} wireType Wire type
+ * @ignore
+ */
+function Tag(id, wireType) {
+    this.id = id;
+    this.wireType = wireType;
+}
+
+/**
  * Reads a tag.
  * @returns {{id: number, wireType: number}} Field id and wire type
  */
@@ -62,10 +73,7 @@ ReaderPrototype.tag = function read_tag() {
     if (this.pos >= this.len)
         throw RangeError(indexOutOfRange(this));
     var octet = this.buf[this.pos++];
-    return {
-        id: octet >>> 3,
-        wireType: octet & 7
-    };
+    return new Tag(octet >>> 3, octet & 7);
 };
 
 /**
@@ -188,34 +196,38 @@ ReaderPrototype.sfixed64 = function read_sfixed64() {
 
 /**
  * Reads a float (32 bit) as a number.
+ * @function
  * @returns {number} Value read
  */
-ReaderPrototype.float = function read_float() {
+ReaderPrototype.float = (function read_float(ieee754_read) {
     if (this.pos + 4 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    return float_._read(this, 4);
-};
+    var value = ieee754_read(this.buf, this.pos, true, 23, 4);
+    this.pos += 4;
+    return this;
+}).bind(null, ieee754.read);
 
 /**
  * Reads a double (64 bit float) as a number.
+ * @function
  * @returns {number} Value read
  */
-ReaderPrototype.double = function read_double() {
+ReaderPrototype.double = (function read_double(ieee754_read) {
     if (this.pos + 8 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    return float_._read(this, 8);
-};
+    var value = ieee754_read(this.buf, this.pos, true, 52, 8);
+    this.pos += 8;
+    return this;
+}).bind(null, ieee754.read);
 
 /**
- * Reads a sequence of bytes.
- * @param {number} [length] Optional number of bytes to read, if known beforehand
+ * Reads a sequence of bytes preceeded by its length as a varint.
  * @returns {number[]} Value read
  */
-ReaderPrototype.bytes = function read_bytes(length) {
-    if (length === undefined)
-        length = this.int32() >>> 0;
-    var start = this.pos,
-        end   = this.pos + length;
+ReaderPrototype.bytes = function read_bytes() {
+    var length = this.int32() >>> 0,
+        start  = this.pos,
+        end    = this.pos + length;
     if (end > this.len)
         throw RangeError(indexOutOfRange(this, length));
     this.pos += length;
@@ -223,12 +235,31 @@ ReaderPrototype.bytes = function read_bytes(length) {
 };
 
 /**
- * Reads a string.
- * @param {number} [length] Optional number of bytes to read, if known beforehand
+ * Reads a string preceeded by its byte length as a varint.
  * @returns {string} Value read
  */
-ReaderPrototype.string = function read_string(length) {
-    return string_._decode(this.bytes(length));
+ReaderPrototype.string = function read_string() {
+    // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
+    var bytes = this.bytes(),
+        len = bytes.length;
+    if (len) {
+        var out = new Array(len), p = 0, c = 0;
+        while (p < len) {
+            var c1 = bytes[p++];
+            if (c1 < 128)
+                out[c++] = c1;
+            else if (c1 > 191 && c1 < 224)
+                out[c++] = (c1 & 31) << 6 | bytes[p++] & 63;
+            else if (c1 > 239 && c1 < 365) {
+                var u = ((c1 & 7) << 18 | (bytes[p++] & 63) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63) - 0x10000;
+                out[c++] = 0xD800 + (u >> 10);
+                out[c++] = 0xDC00 + (u & 1023);
+            } else
+                out[c++] = (c1 & 15) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63;
+        }
+        return String.fromCharCode.apply(String, out.slice(0, c));
+    }
+    return "";
 };
 
 /**

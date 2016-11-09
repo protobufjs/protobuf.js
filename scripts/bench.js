@@ -7,60 +7,72 @@ var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 100000;
 console.log("usage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
 console.log("encoding/decoding " + times + " iterations ...\n");
 
+// NOTE: This benchmark measures message to buffer respectively buffer to message performance.
+
+var testData = {
+    foo: 'hello',
+    hello: 42,
+    payload: new Buffer('a'),
+    meh: {
+        b: {
+            tmp: {
+                baz: 1000
+            }
+        },
+        lol: 'lol'
+    }
+};
+
 protobuf.load(__dirname + "/bench.proto", function(err, root) {
     if (err)
         throw err;
 
     try {
-        var testData = {
-            foo: 'hello',
-            hello: 42,
-            payload: new Buffer('a'),
-            meh: {
-                b: {
-                    tmp: {
-                        baz: 1000
-                    }
-                },
-                lol: 'lol'
-            }
-        };
         var Test = root.lookup("Test");
-        Test.decode(Test.encode(testData).finish());
         
         function summarize(name, start, length) {
             var time = Date.now() - start;
-            var sb = [ pad(name, 15, 1), " : ", pad(time + "ms", 10), "   ", pad(length + " bytes", 15) ];
+            var sb = [ pad(name, 24, 1), " : ", pad(time + "ms", 10), "   ", pad(length + " bytes", 15) ];
             console.log(sb.join(''));
         }
 
-        function bench_protobuf_object() {
+        function bench_protobuf() {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
                 var buf = Test.encode(testData).finish();
-                Test.decode(buf);
                 len += buf.length;
             }
-            summarize("PBJS " + "object", start, len);
+            summarize("encode protobuf." + "js", start, len);
+            start = Date.now();
+            len = 0;
+            for (var i = 0; i < times; ++i) {
+                var msg = Test.decode(buf);
+                len += buf.length;
+            }
+            summarize("decode protobuf." + "js", start, len);
+            console.log();
         }
 
-        function TestClass(properties) {
-            protobuf.Prototype.call(this, properties);
-        }
-        protobuf.inherits(TestClass, Test);
+        var reader = protobuf.Reader(new Buffer(0)),
+            writer = protobuf.Writer();
 
-        var instance = new TestClass(testData);
-
-        function bench_protobuf_class() {
+        function bench_protobuf_rw() {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = TestClass.encode(instance);
-                TestClass.decode(buf);
+                var buf = Test.encode_(testData, writer).finish();
                 len += buf.length;
             }
-            summarize("PBJS " + "class", start, len);
+            summarize("encode protobuf." + "js r/w", start, len);
+            start = Date.now();
+            len = 0;
+            for (var i = 0; i < times; ++i) {
+                var msg = Test.decode_(reader.reset(buf), Object.create(Test.prototype), buf.length);
+                len += buf.length;
+            }
+            summarize("decode protobuf." + "js r/w", start, len);
+            console.log();
         }
 
         function bench_json(name, JSON) {
@@ -68,22 +80,29 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
                 len = 0;
             for (var i = 0; i < times; ++i) {
                 var buf = Buffer.from(JSON.stringify(testData), "utf8");
-                JSON.parse(buf.toString("utf8"));
                 len += buf.length;
             }
-            summarize("JSON " + name, start, len);
+            summarize("encode JSON " + name, start, len);
+            start = Date.now();
+            len = 0;
+            for (var i = 0; i < times; ++i) {
+                var msg = JSON.parse(buf.toString("utf8"));
+                len += buf.length;
+            }
+            summarize("decode JSON " + name, start, len);
+            console.log();
         }
 
-        bench_protobuf_object();
-        bench_protobuf_class();
+        bench_protobuf();
+        bench_protobuf_rw();
         if (process.argv.length < 4) {
             bench_json("native", JSON);
             bench_json("poly", JSONPoly);
         }
 
-        console.log("\n--- warmed up ---");
-        bench_protobuf_object();
-        bench_protobuf_class();
+        console.log("--- warmed up ---\n");
+        bench_protobuf();
+        bench_protobuf_rw();
         if (process.argv.length < 4) {
             bench_json("native", JSON);
             bench_json("poly", JSONPoly);

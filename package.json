@@ -24,7 +24,6 @@
     "all": "npm run test && npm run build && npm run docs && npm run types && npm run lint && npm run bench"
   },
   "optionalDependencies": {
-    "ieee754": "^1.1.8",
     "long": "^3.2.0"
   },
   "devDependencies": {
@@ -37,7 +36,6 @@
     "gulp-if": "^2.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
-    "ieee754": "^1.1.8",
     "jaguarjs-jsdoc": "dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^3.4.2",
     "long": "^3.2.0",

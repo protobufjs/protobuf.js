@@ -1,96 +1,10 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Tue, 08 Nov 2016 23:38:44 UTC
+ * Compiled Wed, 09 Nov 2016 06:02:13 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-},{}],2:[function(require,module,exports){
 module.exports = codegen;
 
 /**
@@ -118,11 +32,14 @@ function codegen(/* varargs */) {
         var level = indent;
         if (src.length) {
             var prev = src[src.length - 1];
-            if (/[\{\[]$/.test(prev)) // block open (increment and keep)
+            if (/[\{\[\:]$/.test(prev)) // block open before (increment and keep)
                 level = ++indent;
-            else if (!/;$/.test(prev)) // no semi = single line (indent only once)
-                level = indent + 1;
-            else if (/^[\}\]]/.test(line)) // block close (decrement and keep)
+            else if (/^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/.test(prev)) // branch without block before (increment once)
+                ++level;
+            else if (/(?:break|continue);$/.test(prev)) // control flow before (decrement and keep)
+                level = --indent;
+            
+            if (/^[\}\]]/.test(line)) // block close on line (decrement and keep)
                 level = --indent;
         }
         for (index = 0; index < level; ++index)
@@ -133,8 +50,7 @@ function codegen(/* varargs */) {
 
     // Converts the so far generated source to a string
     gen.toString = function toString(name) {
-        name = name ? name.replace(/[^\w_$]/g, "_") : "";
-        return "function " + name + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
     };
 
     // Ends generation
@@ -161,7 +77,7 @@ try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } cat
  */
 codegen.verbose = false;
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 module.exports = Enum;
 
 var ReflectionObject = require("./object");
@@ -269,7 +185,7 @@ EnumPrototype.remove = function(name) {
     return this;
 };
 
-},{"./object":10,"./util":23}],4:[function(require,module,exports){
+},{"./object":9,"./util":21}],3:[function(require,module,exports){
 module.exports = Field;
 
 var ReflectionObject = require("./object");
@@ -584,16 +500,7 @@ Field.generateEncoder = encode_generate;
  * @returns {*} Field value
  * @throws {Error} If the wire format is invalid
  */
-FieldPrototype.decode = function decode_setup(reader, receivedWireType) {
-    this.decode = codegen.supported
-        ? decode_generate(this)
-        : decode_internal;
-    return this.decode(reader, receivedWireType);
-};
-
-// Codegen reference and also fallback if code generation is not supported.
-function decode_internal(reader, receivedWireType) {
-    /* eslint-disable no-invalid-this */
+FieldPrototype.decode = function decode_internal(reader, receivedWireType) {
     var type = this.resolve().resolvedType instanceof Enum ? "uint32" : this.type;
     if (this.repeated && this.packed && types.packableWireTypes[type] === receivedWireType) {
         var limit = reader.uint32() + reader.pos,
@@ -602,46 +509,14 @@ function decode_internal(reader, receivedWireType) {
             values[i++] = reader[type]();
         return values;
     }
-    return receivedWireType === types.wireTypes[type]
+    var value = receivedWireType === types.wireTypes[type]
         ? reader[type]()
         : this.resolvedType.decodeDelimited_(reader, this.resolvedType._constructor // assumes wire type 2, throws if invalid
         ? new this.resolvedType._constructor()
         : Object.create(this.resolvedType.prototype)
     );
-    /* eslint-enable no-invalid-this */
-}
-
-/**
- * Generates a decoder specific to the specified field.
- * @name Field.generateDecoder
- * @param {Field} field Field
- * @returns {function} Decoder
- */
-function decode_generate(field) {
-    var type = field.resolve().resolvedType instanceof Enum ? "uint32" : field.type,
-        gen  = codegen("$type", "reader", "wireType")
-    ('"use strict";');
-    if (field.repeated && field.packed && types.packableWireTypes[type] !== undefined) gen
-        ("if (wireType === %d) {", types.packableWireTypes[type])
-            ("var limit = reader.uint32() + reader.pos, values = [], i = 0;")
-            ("while (reader.pos < limit)")
-                ("values[i++] = r.%s();", type)
-            ("return values;")
-        ("}");
-    var wireType = types.wireTypes[type];
-    if (wireType !== undefined) gen
-        ("if (wireType === %d)", wireType)
-            ("return reader.%s();", type)
-        ("else")
-            ("return $type.decodeDelimited_(reader, $type._constructor ? new $type._constructor() : Object.create($type.prototype));");
-    else gen
-        ("return $type.decodeDelimited_(reader, $type._constructor ? new $type._constructor() : Object.create($type.prototype));");
-    return gen
-    .eof(field.fullName + "$decode")
-    .bind(field, field.resolvedType);
-}
-
-Field.generateDecoder = decode_generate;
+    return this.repeated ? [ value ] : value;
+};
 
 /**
  * Converts a field value to JSON using the specified options.
@@ -677,7 +552,7 @@ FieldPrototype.jsonConvert = function(value, options) {
     return value;
 };
 
-},{"./codegen":2,"./enum":3,"./object":10,"./type":21,"./types":22,"./util":23}],5:[function(require,module,exports){
+},{"./codegen":1,"./enum":2,"./object":9,"./type":19,"./types":20,"./util":21}],4:[function(require,module,exports){
 var protobuf = exports;
 
 var util = require("./util");
@@ -729,10 +604,11 @@ protobuf.Prototype        = require("./prototype");
 protobuf.inherits         = require("./inherits");
 
 // Utility
+protobuf.codegen          = require("./codegen");
 protobuf.types            = require("./types");
 protobuf.util             = util;
 
-},{"./enum":3,"./field":4,"./inherits":6,"./mapfield":7,"./method":8,"./namespace":9,"./object":10,"./parse":12,"./prototype":13,"./reader":14,"./root":15,"./service":16,"./tokenize":20,"./type":21,"./types":22,"./util":23,"./writer":24}],6:[function(require,module,exports){
+},{"./codegen":1,"./enum":2,"./field":3,"./inherits":5,"./mapfield":6,"./method":7,"./namespace":8,"./object":9,"./parse":11,"./prototype":12,"./reader":13,"./root":14,"./service":15,"./tokenize":18,"./type":19,"./types":20,"./util":21,"./writer":22}],5:[function(require,module,exports){
 module.exports = inherits;
 
 var Prototype = require("./prototype"),
@@ -959,7 +835,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     return prototype;
 };
 
-},{"./prototype":13,"./type":21,"./util":23}],7:[function(require,module,exports){
+},{"./prototype":12,"./type":19,"./util":21}],6:[function(require,module,exports){
 module.exports = MapField;
 
 var Field = require("./field");
@@ -1112,29 +988,16 @@ MapField.generateEncoder = encode_generate;
  * @override
  */
 MapFieldPrototype.decode = function decode_setup(reader) {    
-    this.decode = codegen.supported
-        ? decode_generate(this)
-        : decode_internal;
-    return this.decode(reader);
-};
-
-// Codegen reference and also fallback if code generation is not supported.
-function decode_internal(reader) {
-    /* eslint-disable no-invalid-this */
-    var length = reader.uint32(),
-        map = {};
-    
+    var length = reader.uint32(), map = {};
     if (length) {
+        length += reader.pos;
 
         var keyType = this.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : this.keyType,
             valueType = this.resolvedType instanceof Enum ? "uint32" : this.type,
             valueWireType = types.wireTypes[valueType];
-
-        var limit  = reader.pos + length,
-            keys   = [], ki = 0,
-            values = [], vi = 0;
-
-        while (reader.pos < limit) {
+            
+        var keys = [], ki = 0, values = [], vi = 0;
+        while (reader.pos < length) {
             var tag = reader.tag();
             if (tag.id === 1)
                 keys[ki++] = reader[keyType]();
@@ -1144,55 +1007,16 @@ function decode_internal(reader) {
                 else
                     values[vi++] = this.resolvedType.decodeDelimited_(reader); // throws if invalid
             } else
-                throw Error("illegal wire format");
+                throw Error("illegal wire format for " + this.fullName);
         }
-        for (var i = 0, key; i < ki; ++i)
-            map[typeof (key = keys[i]) === 'object' ? util.toHash(key) : key] = values[i];
+        var key;
+        for (ki = 0; i < ki; ++ki)
+            map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
     }
     return map;
-    /* eslint-enable no-invalid-this */
 }
 
-/**
- * Generates a decoder specific to the specified map field.
- * @name MapField.generateDecoder
- * @param {MapField} field Map field
- * @returns {function} Decoder
- */
-function decode_generate(field) {
-    var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-        valueType = field.resolvedType instanceof Enum ? "uint32" : field.type,
-        valueWireType = types.wireTypes[valueType];
-    var gen = codegen("$type", "$hash", "reader")
-    ('"use strict";')
-    ("var length = reader.uint32(), map = {};")
-    ("if (length) {")
-        ("var limit = reader.pos + length, keys = [], ki = 0, values = [], vi = 0;")
-        ("while (reader.pos < limit) {")
-            ("var tag = reader.tag();")
-            ("if (tag.id === 1)")
-                ("keys[ki++] = reader.%s();", keyType)
-            ("else if (tag.id === 2)");
-                if (valueWireType !== undefined) gen
-                ("values[vi++] = reader.%s();", valueType);
-                else gen
-                ("values[vi++] = $type.decodeDelimited_(reader);");
-            gen
-            ("else")
-                ("throw Error('illegal wire format');")
-        ("}")
-        ("for (var i = 0, key; i < ki; ++i)")
-            ("map[typeof (key = keys[i]) === 'object' ? $hash(key) : key] = values[i];")
-    ("}")
-    ("return map;");
-    return gen
-    .eof(field.fullName + "$decode")
-    .bind(field, field.resolvedType, util.toHash);
-}
-
-MapField.generateDecoder = decode_generate;
-
-},{"./codegen":2,"./enum":3,"./field":4,"./types":22,"./util":23}],8:[function(require,module,exports){
+},{"./codegen":1,"./enum":2,"./field":3,"./types":20,"./util":21}],7:[function(require,module,exports){
 module.exports = Method;
 
 var ReflectionObject = require("./object");
@@ -1286,7 +1110,7 @@ Method.fromJSON = function fromJSON(name, json) {
     return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);
 };
 
-},{"./object":10,"./util":23}],9:[function(require,module,exports){
+},{"./object":9,"./util":21}],8:[function(require,module,exports){
 module.exports = Namespace;
 
 var ReflectionObject = require("./object");
@@ -1555,7 +1379,7 @@ NamespacePrototype.toJSON = function toJSON() {
     return hasVisibleMembers ? { nested: visibleMembers } : undefined;
 };
 
-},{"./enum":3,"./field":4,"./object":10,"./service":16,"./type":21,"./util":23}],10:[function(require,module,exports){
+},{"./enum":2,"./field":3,"./object":9,"./service":15,"./type":19,"./util":21}],9:[function(require,module,exports){
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
@@ -1837,7 +1661,7 @@ ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.fullName;
 };
 
-},{"./root":15,"./util":23}],11:[function(require,module,exports){
+},{"./root":14,"./util":21}],10:[function(require,module,exports){
 module.exports = OneOf;
 
 var ReflectionObject = require("./object");
@@ -1969,7 +1793,7 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"./field":4,"./object":10,"./util":23}],12:[function(require,module,exports){
+},{"./field":3,"./object":9,"./util":21}],11:[function(require,module,exports){
 module.exports = parse;
 
 var tokenize = require("./tokenize"),
@@ -2493,7 +2317,7 @@ function parse(source, root, visible) {
     };
 }
 
-},{"./enum":3,"./field":4,"./mapfield":7,"./method":8,"./oneof":11,"./root":15,"./service":16,"./tokenize":20,"./type":21,"./types":22}],13:[function(require,module,exports){
+},{"./enum":2,"./field":3,"./mapfield":6,"./method":7,"./oneof":10,"./root":14,"./service":15,"./tokenize":18,"./type":19,"./types":20}],12:[function(require,module,exports){
 module.exports = Prototype;
 
 /**
@@ -2528,7 +2352,7 @@ function Prototype(properties, options) {
  * @returns {Object.<string,*>} JSON object
  * @virtual
  */
-Prototype.toJSON = function toJSON(options) {
+Prototype.prototype.toJSON = function toJSON(options) {
     var values = this.$values;
     if (!options)
         return values;
@@ -2542,7 +2366,7 @@ Prototype.toJSON = function toJSON(options) {
     return json;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = Reader;
 
 /**
@@ -2554,8 +2378,7 @@ Reader.Buffer = null;
 Reader.BufferReader = BufferReader;
 
 var long_   = require("./support/long"),
-    string_ = require("./support/string"),
-    float_  = require("./support/float");
+    ieee754 = require("./support/ieee754");
 
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
@@ -2600,6 +2423,18 @@ var ArrayImpl = typeof Uint8Array !== 'undefined'
 ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
+ * Tag read.
+ * @constructor
+ * @param {number} id Field id
+ * @param {number} wireType Wire type
+ * @ignore
+ */
+function Tag(id, wireType) {
+    this.id = id;
+    this.wireType = wireType;
+}
+
+/**
  * Reads a tag.
  * @returns {{id: number, wireType: number}} Field id and wire type
  */
@@ -2607,10 +2442,7 @@ ReaderPrototype.tag = function read_tag() {
     if (this.pos >= this.len)
         throw RangeError(indexOutOfRange(this));
     var octet = this.buf[this.pos++];
-    return {
-        id: octet >>> 3,
-        wireType: octet & 7
-    };
+    return new Tag(octet >>> 3, octet & 7);
 };
 
 /**
@@ -2733,34 +2565,38 @@ ReaderPrototype.sfixed64 = function read_sfixed64() {
 
 /**
  * Reads a float (32 bit) as a number.
+ * @function
  * @returns {number} Value read
  */
-ReaderPrototype.float = function read_float() {
+ReaderPrototype.float = (function read_float(ieee754_read) {
     if (this.pos + 4 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    return float_._read(this, 4);
-};
+    var value = ieee754_read(this.buf, this.pos, true, 23, 4);
+    this.pos += 4;
+    return this;
+}).bind(null, ieee754.read);
 
 /**
  * Reads a double (64 bit float) as a number.
+ * @function
  * @returns {number} Value read
  */
-ReaderPrototype.double = function read_double() {
+ReaderPrototype.double = (function read_double(ieee754_read) {
     if (this.pos + 8 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    return float_._read(this, 8);
-};
+    var value = ieee754_read(this.buf, this.pos, true, 52, 8);
+    this.pos += 8;
+    return this;
+}).bind(null, ieee754.read);
 
 /**
- * Reads a sequence of bytes.
- * @param {number} [length] Optional number of bytes to read, if known beforehand
+ * Reads a sequence of bytes preceeded by its length as a varint.
  * @returns {number[]} Value read
  */
-ReaderPrototype.bytes = function read_bytes(length) {
-    if (length === undefined)
-        length = this.int32() >>> 0;
-    var start = this.pos,
-        end   = this.pos + length;
+ReaderPrototype.bytes = function read_bytes() {
+    var length = this.int32() >>> 0,
+        start  = this.pos,
+        end    = this.pos + length;
     if (end > this.len)
         throw RangeError(indexOutOfRange(this, length));
     this.pos += length;
@@ -2768,12 +2604,31 @@ ReaderPrototype.bytes = function read_bytes(length) {
 };
 
 /**
- * Reads a string.
- * @param {number} [length] Optional number of bytes to read, if known beforehand
+ * Reads a string preceeded by its byte length as a varint.
  * @returns {string} Value read
  */
-ReaderPrototype.string = function read_string(length) {
-    return string_._decode(this.bytes(length));
+ReaderPrototype.string = function read_string() {
+    // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
+    var bytes = this.bytes(),
+        len = bytes.length;
+    if (len) {
+        var out = new Array(len), p = 0, c = 0;
+        while (p < len) {
+            var c1 = bytes[p++];
+            if (c1 < 128)
+                out[c++] = c1;
+            else if (c1 > 191 && c1 < 224)
+                out[c++] = (c1 & 31) << 6 | bytes[p++] & 63;
+            else if (c1 > 239 && c1 < 365) {
+                var u = ((c1 & 7) << 18 | (bytes[p++] & 63) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63) - 0x10000;
+                out[c++] = 0xD800 + (u >> 10);
+                out[c++] = 0xDC00 + (u & 1023);
+            } else
+                out[c++] = (c1 & 15) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63;
+        }
+        return String.fromCharCode.apply(String, out.slice(0, c));
+    }
+    return "";
 };
 
 /**
@@ -2939,7 +2794,7 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
     return remain;
 };
 
-},{"./support/float":17,"./support/long":18,"./support/string":19}],15:[function(require,module,exports){
+},{"./support/ieee754":16,"./support/long":17}],14:[function(require,module,exports){
 module.exports = Root;
 
 var Namespace = require("./namespace"),
@@ -3362,7 +3217,7 @@ RootPrototype.toString = function toString() {
     return this.constructor.name;
 };
 
-},{"./enum":3,"./field":4,"./namespace":9,"./oneof":11,"./parse":12,"./type":21,"./util":23}],16:[function(require,module,exports){
+},{"./enum":2,"./field":3,"./namespace":8,"./oneof":10,"./parse":11,"./type":19,"./util":21}],15:[function(require,module,exports){
 module.exports = Service;
 
 var Namespace = require("./namespace");
@@ -3454,16 +3309,9 @@ ServicePrototype.remove = function remove(method) {
     return this;
 };
 
-},{"./method":8,"./namespace":9,"./util":23}],17:[function(require,module,exports){
-// This module provides support for reading and writing floats and doubles to and from bytes
-// within browsers. It intentionally doesn't use typed arrays (i.e. Float32Array) so that the
-// library can fall back to plain arrays if typed arrays are not supported.
-
-var float_ = exports;
-
-var ieee754 = require("ieee754");
+},{"./method":7,"./namespace":8,"./util":21}],16:[function(require,module,exports){
 /*
-ieee754 is Copyright (c) 2008, Fair Oaks Labs, Inc.
+ieee754 Copyright (c) 2008, Fair Oaks Labs, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -3492,35 +3340,94 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
+// ref: https://github.com/feross/ieee754
 
-/**
- * Writes a float to the specified writer.
- * @param {Writer} writer Writer to write to
- * @param {number} value Value to write
- * @param {number} size Size in bytes
- * @returns {Writer} writer
- * @private
- */
-float_._write = function float_write(writer, value, size) {
-    ieee754.write(writer.buf, value, writer.pos, true, size === 4 ? 23 : 52, size);
-    writer.pos += size;
-    return writer;
-};
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+    var e, m
+    var eLen = nBytes * 8 - mLen - 1
+    var eMax = (1 << eLen) - 1
+    var eBias = eMax >> 1
+    var nBits = -7
+    var i = isLE ? (nBytes - 1) : 0
+    var d = isLE ? -1 : 1
+    var s = buffer[offset + i]
 
-/**
- * Reads a float from the specified reader.
- * @param {Reader} reader Reader to read from
- * @param {number} size Size in bytes
- * @returns {number} Value read
- * @private
- */
-float_._read = function float_read(reader, size) {
-    var value = ieee754.read(reader.buf, reader.pos, true, size === 4 ? 23 : 52, size);
-    reader.pos += size;
-    return value;
-};
+    i += d
 
-},{"ieee754":1}],18:[function(require,module,exports){
+    e = s & ((1 << (-nBits)) - 1)
+    s >>= (-nBits)
+    nBits += eLen
+    for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) { }
+
+    m = e & ((1 << (-nBits)) - 1)
+    e >>= (-nBits)
+    nBits += mLen
+    for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) { }
+
+    if (e === 0) {
+        e = 1 - eBias
+    } else if (e === eMax) {
+        return m ? NaN : ((s ? -1 : 1) * Infinity)
+    } else {
+        m = m + Math.pow(2, mLen)
+        e = e - eBias
+    }
+    return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+    var e, m, c
+    var eLen = nBytes * 8 - mLen - 1
+    var eMax = (1 << eLen) - 1
+    var eBias = eMax >> 1
+    var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+    var i = isLE ? 0 : (nBytes - 1)
+    var d = isLE ? 1 : -1
+    var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+    value = Math.abs(value)
+
+    if (isNaN(value) || value === Infinity) {
+        m = isNaN(value) ? 1 : 0
+        e = eMax
+    } else {
+        e = Math.floor(Math.log(value) / Math.LN2)
+        if (value * (c = Math.pow(2, -e)) < 1) {
+            e--
+            c *= 2
+        }
+        if (e + eBias >= 1) {
+            value += rt / c
+        } else {
+            value += rt * Math.pow(2, 1 - eBias)
+        }
+        if (value * c >= 2) {
+            e++
+            c /= 2
+        }
+
+        if (e + eBias >= eMax) {
+            m = 0
+            e = eMax
+        } else if (e + eBias >= 1) {
+            m = (value * c - 1) * Math.pow(2, mLen)
+            e = e + eBias
+        } else {
+            m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+            e = 0
+        }
+    }
+
+    for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) { }
+
+    e = (e << mLen) | m
+    eLen += mLen
+    for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) { }
+
+    buffer[offset + i - d] |= s * 128
+}
+
+},{}],17:[function(require,module,exports){
 // This module provides minimal support for 64 bit values. It's just enough to read and write
 // JavaScript numbers and Long-like objects without sacrificing performance. Note that always
 // converting hence and forth between longs and strings would yield terrible performance.
@@ -3789,77 +3696,7 @@ long_._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)
     return long_;
 };
 
-},{"../util":23}],19:[function(require,module,exports){
-// This module provides support for encoding and decoding of utf8 strings to and from bytes within
-// browsers. It intentionally uses arrays for intermediate storage in case typed arrays are not
-// supported (we'd have to also polyfill Uint32Array and Uint16Array otherwise).
-
-// ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
-
-var string_ = exports;
-
-/**
- * Encodes a string to UTF8 bytes.
- * @param {string} str String to encode
- * @returns {number[]} Array of encoded bytes
- * @private
- */
-string_._encode = function string_encode_utf8(str) {
-    var l = str.length;
-    if (!l)
-        return [];
-    var out = new Array(l << 2), p = 0;
-    for (var i = 0; i < l; i++) {
-        var c1 = str.charCodeAt(i), c2;
-        if (c1 < 128) {
-            out[p++] = c1;
-        } else if (c1 < 2048) {
-            out[p++] = c1 >> 6 | 192;
-            out[p++] = c1 & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < l && ((c2 = str.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
-            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
-            ++i;
-            out[p++] =  c1 >> 18      | 240;
-            out[p++] =  c1 >> 12 & 63 | 128;
-            out[p++] =  c1 >> 6  & 63 | 128;
-            out[p++] =  c1       & 63 | 128;
-        } else {
-            out[p++] = c1 >> 12      | 224;
-            out[p++] = c1 >> 6  & 63 | 128;
-            out[p++] = c1       & 63 | 128;
-        }
-    }
-    return out.slice(0, p);
-};
-
-/**
- * Decodes a string from UTF8 bytes.
- * @param {number[]} bytes Bytes to decode
- * @returns {string} Decoded string
- * @private
- */
-string_._decode = function string_decode_utf8(bytes) {
-    var l = bytes.length;
-    if (!l)
-        return "";
-    var out = new Array(l), p = 0, c = 0;
-    while (p < l) {
-        var c1 = bytes[p++];
-        if (c1 < 128)
-            out[c++] = c1;
-        else if (c1 > 191 && c1 < 224)
-            out[c++] = (c1 & 31) << 6 | bytes[p++] & 63;
-        else if (c1 > 239 && c1 < 365) {
-            var u = ((c1 & 7) << 18 | (bytes[p++] & 63) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63) - 0x10000;
-            out[c++] = 0xD800 + (u >> 10);
-            out[c++] = 0xDC00 + (u & 1023);
-        } else
-            out[c++] = (c1 & 15) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63;
-    }
-    return String.fromCharCode.apply(String, out.slice(0, c));
-};
-
-},{}],20:[function(require,module,exports){
+},{"../util":21}],18:[function(require,module,exports){
 /* eslint-disable default-case, callback-return */
 
 module.exports = tokenize;
@@ -3992,7 +3829,7 @@ function tokenize(source) {
         omit: omit
     };
 }
-},{}],21:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = Type; 
 
 var Namespace = require("./namespace");
@@ -4008,6 +3845,7 @@ var Enum      = require("./enum"),
     Prototype = require("./prototype"),
     inherits  = require("./inherits"),
     util      = require("./util"),
+    types     = require("./types"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
     codegen   = require("./codegen");
@@ -4441,7 +4279,7 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
  */
 TypePrototype.decode_ = function decode_setup(reader, message, limit) {
     this.decode_ = codegen.supported
-        ? decode_generate(this)
+        ? generateDecoder(this)
         : decode_internal;
     return this.decode_(reader, message, limit);
 };
@@ -4457,12 +4295,9 @@ function decode_internal(reader, message, limit) {
         if (field /* known */) {
             var name  = field.name,
                 value = field.decode(reader, tag.wireType);
-            if (field.repeated) {
-                if (Array.isArray(value))
-                    Array.prototype.push.apply(values[name], value);
-                else
-                    values[name].push(value);
-            } else
+            if (field.repeated)
+                Array.prototype.push.apply(values[name], value);
+            else
                 values[name] = value;
         } else
             reader.skipType(tag.wireType);
@@ -4473,43 +4308,105 @@ function decode_internal(reader, message, limit) {
 
 /**
  * Generates a decoder specific to the specified message type.
- * @name Type.generateDecoder
+ * @memberof Type
  * @param {Type} type Message type
  * @returns {function} Decoder
  */
-function decode_generate(type) {
-    var fieldsArray = type.fieldsArray,
+function generateDecoder(Type) {
+    var fieldsArray = Type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$fields", "reader", "message", "limit")
+    
+    var gen = codegen("$resolvedTypes", "$toHash", "reader", "message", "limit")
+
     ('"use strict";')
     ("while (reader.pos < limit) {")
-        ("var tag = reader.tag(), value;")
+        ("var tag = reader.tag();")
         ("switch (tag.id) {");
-        for (var i = 0, field; i < fieldsCount; ++i) { gen
-            ("case %d:", (field = fieldsArray[i]).id)
-                ("value = $fields[%d].decode(reader, tag.wireType);", i);
-                if (field.repeated) gen
-                ("if (Array.isArray(value))")
-                    ("Array.prototype.push.apply(message.$values[%j], value);", field.name)
-                ("else")
-                    ("message.$values[%j].push(value);", field.name);
-                else gen
-                ("message.$values[%j] = value;", field.name);
-                gen
-                ("break;");
+    
+    for (var i = 0, field; i < fieldsCount; ++i) {
+        var field    = fieldsArray[i].resolve(),
+            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            wireType = types.wireTypes[type],
+            packType = types.packableWireTypes[type];
+        gen
+            ("case %d:", field.id);
+
+        if (field.map) {
+            var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
+            gen
+                ("var length = reader.uint32(), map = {};")
+                ("if (length) {")
+                    ("length += reader.pos;")
+                    ("var keys = [], values = [], ki = 0, vi = 0;")
+                    ("while (reader.pos < length) {")
+                        ("tag = reader.tag();")
+                        ("if (tag.id === 1)")
+                            ("keys[ki++] = reader.%s();", keyType)
+                        ("else if (tag.id === 2) {");
+                            if (wireType !== undefined) gen
+                            ("values[vi++] = reader.%s();", type);
+                            else gen
+                            ("var type = $types[%d];", i)
+                            ("values[vi++] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));");
+                        gen
+                        ("} else")
+                            ("throw Error('illegal wire format for %s');", field.fullName)
+                    ("}")
+                    ("var key;")
+                    ("for (ki = 0; ki < vi; ++ki)")
+                        ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
+                ("}")
+                ("message.$values[%j] = map;", field.name);
+
+        } else if (field.repeated) { gen
+
+                ("var values = message.$values[%j], length = values.length;", field.name)
+
+            if (field.packed && packType !== undefined) { gen
+
+                ("if (tag.wireType === %d) {", packType)
+                    ("var plimit = reader.uint32() + reader.pos;")
+                    ("while (reader.pos < plimit)")
+                        ("values[length++] = reader.%s();", type)
+                ("} else {");
+
+            }
+
+            if (wireType !== undefined) gen
+
+                    ("values[length++] = reader.%s();", type);
+
+            else gen
+
+                    ("var type = $resolvedTypes[%d];", i)
+                    ("values[length++] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));");
+
+            if (field.packed && packType !== undefined) gen
+
+                ("}");
+
+        } else if (wireType !== undefined) { gen
+
+                ("message.$values[%j] = reader.%s();", field.name, type);
+
+        } else { gen
+
+                ("var type = $resolvedTypes[%d];", i)
+                ("message.$values[%j] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));", field.name);
+
         } gen
+                ("break;");
+    } gen
             ("default:")
                 ("reader.skipType(tag.wireType);")
                 ("break;")
         ("}")
-    ("}");
-    return gen
-    ("return message;")
-    .eof(type.fullName + "$decode")
-    .bind(type, fieldsArray);
+    ("}")
+    ("return message;");
+    return gen.eof(Type.fullName + "$decode").bind(Type, fieldsArray.map(function(field) { return field.resolvedType; }), util.toHash);
 }
 
-Type.generateDecoder = decode_generate;
+Type.generateDecoder = generateDecoder;
 
 /**
  * Decodes a message of this m type preceeded by its byte length as a varint.
@@ -4533,7 +4430,7 @@ TypePrototype.decodeDelimited_ = function decodeDelimited_internal(reader, messa
     return this.decode_(reader, message, reader.uint32() + reader.pos);
 };
 
-},{"./codegen":2,"./enum":3,"./field":4,"./inherits":6,"./namespace":9,"./oneof":11,"./prototype":13,"./reader":14,"./service":16,"./util":23,"./writer":24}],22:[function(require,module,exports){
+},{"./codegen":1,"./enum":2,"./field":3,"./inherits":5,"./namespace":8,"./oneof":10,"./prototype":12,"./reader":13,"./service":15,"./types":20,"./util":21,"./writer":22}],20:[function(require,module,exports){
 // NOTE: These types are structured in a way that makes looking up wire types and similar fast,
 // but not necessarily comfortable. Do not modify them unless you know exactly what you are doing.
 
@@ -4646,7 +4543,7 @@ types.packableWireTypes = {
 
 };
 
-},{}],23:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Utility functions.
  * @namespace
@@ -4894,7 +4791,7 @@ util.merge = function merge(dst, src, ifNotSet) {
     return dst;
 };
 
-},{"./reader":14,"./support/long":18,"./writer":24,"buffer":"buffer","fs":undefined,"long":"long"}],24:[function(require,module,exports){
+},{"./reader":13,"./support/long":17,"./writer":22,"buffer":"buffer","fs":undefined,"long":"long"}],22:[function(require,module,exports){
 module.exports = Writer;
 
 /**
@@ -4906,8 +4803,7 @@ Writer.Buffer = null;
 Writer.BufferWriter = BufferWriter;
 
 var long_   = require("./support/long"),
-    string_ = require("./support/string"),
-    float_  = require("./support/float");
+    ieee754 = require("./support/ieee754");
 
 /**
  * Default buffer size.
@@ -5169,25 +5065,31 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 
 /**
  * Writes a float (32 bit).
+ * @function
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.float = function write_float(value) {
+WriterPrototype.float = (function write_float(ieee754_write, value) {
     if (this.pos + 4 > this.len)
         expand(this, 4);
-    return float_._write(this, value, 4);
-};
+    ieee754_write(this.buf, value, this.pos, true, 23, 4);
+    this.pos += 4;
+    return this;
+}).bind(null, ieee754.write);
 
 /**
  * Writes a double (64 bit float).
+ * @function
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.double = function write_double(value) {
+WriterPrototype.double = (function write_double(ieee754_write, value) {
     if (this.pos + 8 > this.len)
         expand(this, 8);
-    return float_._write(this, value, 8);
-};
+    ieee754_write(this.buf, value, this.pos, true, 52, 8);
+    this.pos += 8;
+    return this;
+}).bind(null, ieee754.write);
 
 /**
  * Writes a sequence of bytes.
@@ -5196,12 +5098,16 @@ WriterPrototype.double = function write_double(value) {
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length;
-    this.uint32(len);
     if (len) {
+        this.uint32(len);
         if (this.pos + len > this.len)
             expand(this, len);
         this._set.call(this.buf, value, this.pos);
         this.pos += len;
+    } else {
+        if (this.pos >= this.len)
+            expand(this, 1);
+        this.buf[this.pos++] = 0;
     }
     return this;
 };
@@ -5212,7 +5118,36 @@ WriterPrototype.bytes = function write_bytes(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.string = function write_string(value) {
-    return this.bytes(string_._encode(value));
+    // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
+    var len = value.length;
+    if (len) {
+        var out = new Array(len << 2), p = 0;
+        for (var i = 0; i < len; i++) {
+            var c1 = value.charCodeAt(i), c2;
+            if (c1 < 128) {
+                out[p++] = c1;
+            } else if (c1 < 2048) {
+                out[p++] = c1 >> 6 | 192;
+                out[p++] = c1 & 63 | 128;
+            } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = value.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+                c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+                ++i;
+                out[p++] =  c1 >> 18      | 240;
+                out[p++] =  c1 >> 12 & 63 | 128;
+                out[p++] =  c1 >> 6  & 63 | 128;
+                out[p++] =  c1       & 63 | 128;
+            } else {
+                out[p++] = c1 >> 12      | 224;
+                out[p++] = c1 >> 6  & 63 | 128;
+                out[p++] = c1       & 63 | 128;
+            }
+        }
+        return this.bytes(out.slice(0, p));
+    }
+    if (this.pos >= this.len)
+        expand(this, 1);
+    this.buf[this.pos++] = 0;
+    return this;
 };
 
 /**
@@ -5284,7 +5219,7 @@ WriterPrototype.finish = function finish() {
     if (buf) {
         if (pos < len)
             buf = this._slice.call(buf, 0, pos);
-        if (bufs.length === 0)
+        if (!bufs.length)
             return buf;
     } else
         return emptyArray;
@@ -5429,7 +5364,7 @@ BufferWriterPrototype.finish = function finish_buffer() {
     return emptyBuffer;
 };
 
-},{"./support/float":17,"./support/long":18,"./support/string":19}]},{},[5])
+},{"./support/ieee754":16,"./support/long":17}]},{},[4])
 
 
 //# sourceMappingURL=protobuf.js.map

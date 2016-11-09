@@ -13,6 +13,7 @@ var Enum      = require("./enum"),
     Prototype = require("./prototype"),
     inherits  = require("./inherits"),
     util      = require("./util"),
+    types     = require("./types"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
     codegen   = require("./codegen");
@@ -446,7 +447,7 @@ TypePrototype.decode = function decode(readerOrBuffer, constructor, length) {
  */
 TypePrototype.decode_ = function decode_setup(reader, message, limit) {
     this.decode_ = codegen.supported
-        ? decode_generate(this)
+        ? generateDecoder(this)
         : decode_internal;
     return this.decode_(reader, message, limit);
 };
@@ -462,12 +463,9 @@ function decode_internal(reader, message, limit) {
         if (field /* known */) {
             var name  = field.name,
                 value = field.decode(reader, tag.wireType);
-            if (field.repeated) {
-                if (Array.isArray(value))
-                    Array.prototype.push.apply(values[name], value);
-                else
-                    values[name].push(value);
-            } else
+            if (field.repeated)
+                Array.prototype.push.apply(values[name], value);
+            else
                 values[name] = value;
         } else
             reader.skipType(tag.wireType);
@@ -478,43 +476,105 @@ function decode_internal(reader, message, limit) {
 
 /**
  * Generates a decoder specific to the specified message type.
- * @name Type.generateDecoder
+ * @memberof Type
  * @param {Type} type Message type
  * @returns {function} Decoder
  */
-function decode_generate(type) {
-    var fieldsArray = type.fieldsArray,
+function generateDecoder(Type) {
+    var fieldsArray = Type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$fields", "reader", "message", "limit")
+    
+    var gen = codegen("$resolvedTypes", "$toHash", "reader", "message", "limit")
+
     ('"use strict";')
     ("while (reader.pos < limit) {")
-        ("var tag = reader.tag(), value;")
+        ("var tag = reader.tag();")
         ("switch (tag.id) {");
-        for (var i = 0, field; i < fieldsCount; ++i) { gen
-            ("case %d:", (field = fieldsArray[i]).id)
-                ("value = $fields[%d].decode(reader, tag.wireType);", i);
-                if (field.repeated) gen
-                ("if (Array.isArray(value))")
-                    ("Array.prototype.push.apply(message.$values[%j], value);", field.name)
-                ("else")
-                    ("message.$values[%j].push(value);", field.name);
-                else gen
-                ("message.$values[%j] = value;", field.name);
-                gen
-                ("break;");
+    
+    for (var i = 0, field; i < fieldsCount; ++i) {
+        var field    = fieldsArray[i].resolve(),
+            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            wireType = types.wireTypes[type],
+            packType = types.packableWireTypes[type];
+        gen
+            ("case %d:", field.id);
+
+        if (field.map) {
+            var keyType = field.resolve().resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
+            gen
+                ("var length = reader.uint32(), map = {};")
+                ("if (length) {")
+                    ("length += reader.pos;")
+                    ("var keys = [], values = [], ki = 0, vi = 0;")
+                    ("while (reader.pos < length) {")
+                        ("tag = reader.tag();")
+                        ("if (tag.id === 1)")
+                            ("keys[ki++] = reader.%s();", keyType)
+                        ("else if (tag.id === 2) {");
+                            if (wireType !== undefined) gen
+                            ("values[vi++] = reader.%s();", type);
+                            else gen
+                            ("var type = $types[%d];", i)
+                            ("values[vi++] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));");
+                        gen
+                        ("} else")
+                            ("throw Error('illegal wire format for %s');", field.fullName)
+                    ("}")
+                    ("var key;")
+                    ("for (ki = 0; ki < vi; ++ki)")
+                        ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
+                ("}")
+                ("message.$values[%j] = map;", field.name);
+
+        } else if (field.repeated) { gen
+
+                ("var values = message.$values[%j], length = values.length;", field.name)
+
+            if (field.packed && packType !== undefined) { gen
+
+                ("if (tag.wireType === %d) {", packType)
+                    ("var plimit = reader.uint32() + reader.pos;")
+                    ("while (reader.pos < plimit)")
+                        ("values[length++] = reader.%s();", type)
+                ("} else {");
+
+            }
+
+            if (wireType !== undefined) gen
+
+                    ("values[length++] = reader.%s();", type);
+
+            else gen
+
+                    ("var type = $resolvedTypes[%d];", i)
+                    ("values[length++] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));");
+
+            if (field.packed && packType !== undefined) gen
+
+                ("}");
+
+        } else if (wireType !== undefined) { gen
+
+                ("message.$values[%j] = reader.%s();", field.name, type);
+
+        } else { gen
+
+                ("var type = $resolvedTypes[%d];", i)
+                ("message.$values[%j] = type.decodeDelimited_(reader, type._constructor ? new type._constructor() : Object.create(type.prototype));", field.name);
+
         } gen
+                ("break;");
+    } gen
             ("default:")
                 ("reader.skipType(tag.wireType);")
                 ("break;")
         ("}")
-    ("}");
-    return gen
-    ("return message;")
-    .eof(type.fullName + "$decode")
-    .bind(type, fieldsArray);
+    ("}")
+    ("return message;");
+    return gen.eof(Type.fullName + "$decode").bind(Type, fieldsArray.map(function(field) { return field.resolvedType; }), util.toHash);
 }
 
-Type.generateDecoder = decode_generate;
+Type.generateDecoder = generateDecoder;
 
 /**
  * Decodes a message of this m type preceeded by its byte length as a varint.
