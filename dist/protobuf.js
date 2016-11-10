@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Thu, 10 Nov 2016 00:16:49 UTC
+ * Compiled Thu, 10 Nov 2016 02:05:47 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -682,7 +682,7 @@ EnumPrototype.remove = function(name) {
     return this;
 };
 
-},{"./object":12,"./util":23}],6:[function(require,module,exports){
+},{"./object":13,"./util":23}],6:[function(require,module,exports){
 module.exports = Field;
 
 var ReflectionObject = require("./object");
@@ -934,7 +934,7 @@ FieldPrototype.jsonConvert = function(value, options) {
     return value;
 };
 
-},{"./enum":5,"./object":12,"./type":21,"./types":22,"./util":23}],7:[function(require,module,exports){
+},{"./enum":5,"./object":13,"./type":21,"./types":22,"./util":23}],7:[function(require,module,exports){
 var protobuf = exports;
 
 var util = require("./util");
@@ -992,7 +992,7 @@ protobuf.codegen          = require("./codegen");
 protobuf.types            = require("./types");
 protobuf.util             = util;
 
-},{"./codegen":2,"./decoder":3,"./encoder":4,"./enum":5,"./field":6,"./inherits":8,"./mapfield":9,"./method":10,"./namespace":11,"./object":12,"./parse":14,"./prototype":15,"./reader":16,"./root":17,"./service":18,"./tokenize":20,"./type":21,"./types":22,"./util":23,"./writer":24}],8:[function(require,module,exports){
+},{"./codegen":2,"./decoder":3,"./encoder":4,"./enum":5,"./field":6,"./inherits":8,"./mapfield":10,"./method":11,"./namespace":12,"./object":13,"./parse":15,"./prototype":16,"./reader":17,"./root":18,"./service":19,"./tokenize":20,"./type":21,"./types":22,"./util":23,"./writer":24}],8:[function(require,module,exports){
 module.exports = inherits;
 
 var Prototype = require("./prototype"),
@@ -1165,7 +1165,120 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     return prototype;
 };
 
-},{"./prototype":15,"./reader":16,"./type":21,"./util":23,"./writer":24}],9:[function(require,module,exports){
+},{"./prototype":16,"./reader":17,"./type":21,"./util":23,"./writer":24}],9:[function(require,module,exports){
+module.exports = LongBits;
+
+/**
+ * A helper class to work with the low and high bits of a long.
+ * @constructor
+ * @param {number} lo Low bits
+ * @param {number} hi High bits
+ */
+function LongBits(lo, hi) {
+    // make sure to always call this with unsigned 32bits for proper optimization
+    this.lo = lo;
+    this.hi = hi;
+}
+
+/**
+ * Constructs new long bits from the specified number.
+ * @param {number} value Value
+ * @returns {LongBits} Instance
+ */
+LongBits.fromNumber = function fromNUmber(value) {
+    var sign  = value < 0;
+        value = Math.abs(value);
+    var lo = value >>> 0,
+        hi = (value - lo) / 4294967296 >>> 0;
+    if (sign) {
+        hi = ~hi >>> 0;
+        lo = ~lo >>> 0;
+        if (++lo > 4294967295) {
+            lo = 0;
+            if (++hi > 4294967295)
+                hi = 0;
+        }
+    }
+    return new LongBits(lo, hi);
+};
+
+/**
+ * Converts this long bits to a possibly unsafe JavaScript number.
+ * @param {boolean} unsigned Whether unsigned or not
+ * @returns {number} Possibly unsafe number
+ */
+LongBits.prototype.toNumber = function(unsigned) {
+    if (!unsigned && this.hi >>> 31) {
+        this.lo = ~this.lo + 1 >>> 0;
+        this.hi = ~this.hi     >>> 0;
+        if (!this.lo)
+            this.hi = this.hi + 1 >>> 0;
+        return -(this.lo + this.hi * 4294967296);
+    }
+    return this.lo + this.hi * 4294967296;
+};
+
+var charCodeAt = String.prototype.charCodeAt;
+
+/**
+ * Constructs new long bits from the specified 8 characters long hash.
+ * @param {string} hash Hash
+ * @returns {LongBits} Bits
+ */
+LongBits.fromHash = function fromHash(hash) {
+    return new LongBits(
+        ( charCodeAt.call(hash, 0)
+        | charCodeAt.call(hash, 1) << 8
+        | charCodeAt.call(hash, 2) << 16
+        | charCodeAt.call(hash, 3) << 24) >>> 0
+    ,
+        ( charCodeAt.call(hash, 4)
+        | charCodeAt.call(hash, 5) << 8
+        | charCodeAt.call(hash, 6) << 16
+        | charCodeAt.call(hash, 7) << 24) >>> 0
+    );
+};
+
+/**
+ * Converts this long bits to a 8 characters long hash.
+ * @returns {string} Hash
+ */
+LongBits.prototype.toHash = function() {
+    return String.fromCharCode(
+        this.lo        & 255,
+        this.lo >>> 8  & 255,
+        this.lo >>> 16 & 255,
+        this.lo >>> 24 & 255,
+        this.hi        & 255,
+        this.hi >>> 8  & 255,
+        this.hi >>> 16 & 255,
+        this.hi >>> 24 & 255
+    );
+};
+
+/**
+ * Zig-zag encodes this long bits.
+ * @returns {LongBits} `this`
+ */
+LongBits.prototype.zzEncode = function() {
+    var mask = -(this.hi >>> 31);
+    this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
+    this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
+    return this;
+};
+
+/**
+ * Zig-zag decodes this long bits.
+ * @returns {LongBits} `this`
+ */
+LongBits.prototype.zzDecode = function() {
+    var mask = -(this.lo & 1);
+    this.lo  = ((this.lo >>> 1 | (this.hi & 1) << 31) ^ mask) >>> 0;
+    this.hi  = ( this.hi >>> 1                        ^ mask) >>> 0;
+    return this;
+};
+
+},{}],10:[function(require,module,exports){
 module.exports = MapField;
 
 var Field = require("./field");
@@ -1248,7 +1361,7 @@ MapFieldPrototype.resolve = function resolve() {
     return Field.prototype.resolve.call(this);
 };
 
-},{"./enum":5,"./field":6,"./types":22,"./util":23}],10:[function(require,module,exports){
+},{"./enum":5,"./field":6,"./types":22,"./util":23}],11:[function(require,module,exports){
 module.exports = Method;
 
 var ReflectionObject = require("./object");
@@ -1342,7 +1455,7 @@ Method.fromJSON = function fromJSON(name, json) {
     return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);
 };
 
-},{"./object":12,"./util":23}],11:[function(require,module,exports){
+},{"./object":13,"./util":23}],12:[function(require,module,exports){
 module.exports = Namespace;
 
 var ReflectionObject = require("./object");
@@ -1611,7 +1724,7 @@ NamespacePrototype.toJSON = function toJSON() {
     return hasVisibleMembers ? { nested: visibleMembers } : undefined;
 };
 
-},{"./enum":5,"./field":6,"./object":12,"./service":18,"./type":21,"./util":23}],12:[function(require,module,exports){
+},{"./enum":5,"./field":6,"./object":13,"./service":19,"./type":21,"./util":23}],13:[function(require,module,exports){
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
@@ -1893,7 +2006,7 @@ ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.fullName;
 };
 
-},{"./root":17,"./util":23}],13:[function(require,module,exports){
+},{"./root":18,"./util":23}],14:[function(require,module,exports){
 module.exports = OneOf;
 
 var ReflectionObject = require("./object");
@@ -2025,7 +2138,7 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"./field":6,"./object":12,"./util":23}],14:[function(require,module,exports){
+},{"./field":6,"./object":13,"./util":23}],15:[function(require,module,exports){
 module.exports = parse;
 
 var tokenize = require("./tokenize"),
@@ -2549,7 +2662,7 @@ function parse(source, root, visible) {
     };
 }
 
-},{"./enum":5,"./field":6,"./mapfield":9,"./method":10,"./oneof":13,"./root":17,"./service":18,"./tokenize":20,"./type":21,"./types":22}],15:[function(require,module,exports){
+},{"./enum":5,"./field":6,"./mapfield":10,"./method":11,"./oneof":14,"./root":18,"./service":19,"./tokenize":20,"./type":21,"./types":22}],16:[function(require,module,exports){
 module.exports = Prototype;
 
 /**
@@ -2609,19 +2722,14 @@ Prototype.prototype.asJSON = function asJSON(options) {
     return json;
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = Reader;
-
-/**
- * Buffer implementation, if available.
- * @type {?Function}
- */
-Reader.Buffer = null;
 
 Reader.BufferReader = BufferReader;
 
-var long_   = require("./support/long"),
-    ieee754 = require("../lib/ieee754");
+var LongBits = require("./longbits"),
+    util     = require("./util"),
+    ieee754  = require("../lib/ieee754");
 
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
@@ -2634,7 +2742,7 @@ function indexOutOfRange(reader, writeLength) {
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
-        return Reader.Buffer && (!buffer || Reader.Buffer.isBuffer(buffer))
+        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer))
             ? new BufferReader(buffer)
             : new Reader(buffer);
 
@@ -2724,32 +2832,102 @@ ReaderPrototype.sint32 = function read_sint32() {
     return value >>> 1 ^ -(value & 1);
 };
 
+function readLongVarint(reader) {
+    var lo = 0, hi = 0,
+        i  = 0, b  = 0;
+    if (reader.len - reader.pos > 9) { // fast route
+        for (i = 0; i < 4; ++i) {
+            b = reader.buf[reader.pos++];
+            lo |= (b & 127) << i * 7;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+        b = reader.buf[reader.pos++];
+        lo |= (b & 127) << 28;
+        hi |= (b & 127) >> 4;
+        if (b < 128)
+            return new LongBits(lo >>> 0, hi >>> 0);
+        for (i = 0; i < 5; ++i) {
+            b = reader.buf[reader.pos++];
+            hi |= (b & 127) << i * 7 + 3;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+    } else {
+        for (i = 0; i < 4; ++i) {
+            if (reader.pos >= reader.len)
+                throw RangeError(indexOutOfRange(reader));
+            b = reader.buf[reader.pos++];
+            lo |= (b & 127) << i * 7;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+        if (reader.pos >= reader.len)
+            throw RangeError(indexOutOfRange(reader));
+        b = reader.buf[reader.pos++];
+        lo |= (b & 127) << 28;
+        hi |= (b & 127) >> 4;
+        if (b < 128)
+            return new LongBits(lo >>> 0, hi >>> 0);
+        for (i = 0; i < 5; ++i) {
+            if (reader.pos >= reader.len)
+                throw RangeError(indexOutOfRange(reader));
+            b = reader.buf[reader.pos++];
+            hi |= (b & 127) << i * 7 + 3;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+    }
+    throw Error("invalid varint encoding");
+}
+
+function readLongFixed(reader) {
+    if (reader.pos + 8 > reader.len)
+        throw RangeError(indexOutOfRange(reader, 8));
+    return new LongBits(
+      ( reader.buf[reader.pos++]
+      | reader.buf[reader.pos++] << 8
+      | reader.buf[reader.pos++] << 16
+      | reader.buf[reader.pos++] << 24 ) >>> 0
+    ,
+      ( reader.buf[reader.pos++]
+      | reader.buf[reader.pos++] << 8
+      | reader.buf[reader.pos++] << 16
+      | reader.buf[reader.pos++] << 24 ) >>> 0
+    );
+}
+
 /**
  * Reads a varint as a signed 64 bit value.
- * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.int64 = function read_int64() {
-    return long_._read(this, indexOutOfRange)
-                ._get(false);
+    var bits = readLongVarint(this);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, false);
+    return bits.toNumber(false);
 };
 
 /**
  * Reads a varint as an unsigned 64 bit value.
- * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.uint64 = function read_uint64() {
-    return long_._read(this, indexOutOfRange)
-                ._get(true);
+    var bits = readLongVarint(this);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, true);
+    return bits.toNumber(true);
 };
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.sint64 = function read_sint64() {
-    return long_._read(this, indexOutOfRange)
-                ._zigZagDecode()
-                ._get(false);
+    var bits = readLongVarint(this).zzDecode();
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, false);
+    return bits.toNumber(false);
 };
 
 /**
@@ -2785,25 +2963,24 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 
 /**
  * Reads fixed 64 bits as a Long.
- * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.fixed64 = function read_fixed64() {
-    if (this.pos + 8 > this.len)
-        throw RangeError(indexOutOfRange(this, 8));
-    return long_._readFixed(this)
-                ._get(true);
+    var bits = readLongFixed(this);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, true);
+    return bits.toNumber(true);
 };
 
 /**
  * Reads zig-zag encoded 64 bits as a Long.
- * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.sfixed64 = function read_sfixed64() {
-    if (this.pos + 8 > this.len)
-        throw RangeError(indexOutOfRange(this, 8));
-    return long_._readFixed(this)
-                ._zigZagDecode()
-                ._get(false);
+    var bits = readLongFixed(this).zzDecode();
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, false);
+    return bits.toNumber(false);
 };
 
 /**
@@ -2960,9 +3137,9 @@ ReaderPrototype.finish = function finish(buffer) {
 // One time function to initialize BufferReader with the now-known buffer
 // implementation's slice method
 var initBufferReader = function() {
-    if (!Reader.Buffer)
+    if (!util.Buffer)
         throw Error("Buffer is not supported");
-    BufferReaderPrototype._slice = Reader.Buffer.prototype.slice;
+    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
     initBufferReader = false;
 };
 
@@ -2982,8 +3159,6 @@ function BufferReader(buffer) {
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 
 BufferReaderPrototype.constructor = BufferReader;
-
-Reader.BufferReader = BufferReader;
 
 /**
  * Reads a float (32 bit) as a number using node buffers.
@@ -3037,7 +3212,7 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
     return remain;
 };
 
-},{"../lib/ieee754":1,"./support/long":19}],17:[function(require,module,exports){
+},{"../lib/ieee754":1,"./longbits":9,"./util":23}],18:[function(require,module,exports){
 module.exports = Root;
 
 var Namespace = require("./namespace"),
@@ -3460,7 +3635,7 @@ RootPrototype.toString = function toString() {
     return this.constructor.name;
 };
 
-},{"./enum":5,"./field":6,"./namespace":11,"./oneof":13,"./parse":14,"./type":21,"./util":23}],18:[function(require,module,exports){
+},{"./enum":5,"./field":6,"./namespace":12,"./oneof":14,"./parse":15,"./type":21,"./util":23}],19:[function(require,module,exports){
 module.exports = Service;
 
 var Namespace = require("./namespace");
@@ -3552,276 +3727,7 @@ ServicePrototype.remove = function remove(method) {
     return this;
 };
 
-},{"./method":10,"./namespace":11,"./util":23}],19:[function(require,module,exports){
-// This module provides minimal support for 64 bit values. It's just enough to read and write
-// JavaScript numbers and Long-like objects without sacrificing performance. Note that always
-// converting hence and forth between longs and strings would yield terrible performance.
-
-// For values less than or equal Number.MAX_SAFE_INTEGER and greater than or equal
-// Number.MIN_SAFE_INTEGER, JavaScript numbers are returned. Unsafe values are returned as an
-// object with a low and high property corresponding to their respective low and high 32 bits.
-
-// If your application does not deal with unsafe integers, then this implementation is fine for
-// you. If you need to properly work with larger numbers, then you don't need to craft this by
-// yourself but should install long.js alongside protobuf.js, which will make this module
-// reliably return proper Long instances for all 64 bit numbers.
-
-var long_ = exports;
-
-var util = require("../util");
-
-/**
- * Temporary low bits of a 64 bit value.
- * @type {number}
- * @private
- */
-long_._lo = 0;
-
-/**
- * Temporary high bits of a 64 bit value.
- * @type {number}
- * @private
- */
-long_._hi = 0;
-
-// ref: https://github.com/google/protobuf/blob/master/js/binary/encoder.js
-
-// Reading
-
-/**
- * Reads a varint from the specified reader and stores its low and high bits.
- * @param {Reader} reader Reader to read from
- * @param {function(Reader, number=)} indexOutOfRange Error message function
- * @returns {Object} `this`
- * @private
- */
-long_._read = function long_read(reader, indexOutOfRange) {
-    var i, b;
-    for (i = this._lo = this._hi = 0; i < 4; ++i) {
-        if (reader.pos >= reader.len)
-            throw RangeError(indexOutOfRange(reader));
-        b = reader.buf[reader.pos++];
-        this._lo |= (b & 0x7f) << i * 7;
-        if (b < 128) {
-            this._lo >>>= 0;
-            this._hi = 0;
-            return long_;
-        }
-    }
-    if (reader.pos >= reader.len)
-        throw RangeError(indexOutOfRange(reader));
-    b = reader.buf[reader.pos++];
-    this._lo |= (b & 0x7f) << 28;
-    this._hi |= (b & 0x7f) >> 4;
-    if (b < 128) {
-        this._lo >>>= 0;
-        this._hi >>>= 0;
-        return long_;
-    }
-    for (i = 0; i < 5; ++i) {
-        if (reader.pos >= reader.len)
-            throw RangeError(indexOutOfRange(reader));
-        b = reader.buf[reader.pos++];
-        this._hi |= (b & 0x7F) << i * 7 + 3;
-        if (b < 128) {
-            this._lo >>>= 0;
-            this._hi >>>= 0;
-            return long_;
-        }
-    }
-    throw Error("illegal varint encoding");
-};
-
-/**
- * Reads fixed 64 bits from the specified reader and stores the low and high bits.
- * @param {Reader} reader Reader to read from
- * @returns {Object} `this`
- * @private
- */
-long_._readFixed = function long_readFixed(reader) {
-    this._lo = (reader.buf[reader.pos++]
-              | reader.buf[reader.pos++] << 8
-              | reader.buf[reader.pos++] << 16
-              | reader.buf[reader.pos++] << 24) >>> 0;
-    this._hi = (reader.buf[reader.pos++]
-              | reader.buf[reader.pos++] << 8
-              | reader.buf[reader.pos++] << 16
-              | reader.buf[reader.pos++] << 24) >>> 0;
-    return long_;
-};
-
-// Writing
-
-/**
- * Writes the low and high bits to the specified writer, as a varint.
- * @param {Writer} writer Writer to write to
- * @param {function(Writer, number)} expand Expand function
- * @returns {Writer} writer
- * @private
- */
-long_._write = function long_write(writer, expand) {
-    if (writer.len - writer.pos > 9) // fast route
-        while (this._hi || this._lo > 127) {
-            writer.buf[writer.pos++] = this._lo & 127 | 128;
-            this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
-            this._hi >>>= 7;
-        }
-    else {
-        while (this._hi || this._lo > 127) {
-            if (writer.pos >= writer.len)
-                expand(writer, 1);
-            writer.buf[writer.pos++] = this._lo & 127 | 128;
-            this._lo = (this._lo >>> 7 | this._hi << 25) >>> 0;
-            this._hi >>>= 7;
-        }
-        if (writer.pos >= writer.len)
-            expand(writer, 1);
-    }
-    writer.buf[writer.pos++] = this._lo;
-    return writer;
-};
-
-/**
- * Writes the low and high bits to the specified writer, as fixed 64 bits.
- * @param {Writer} writer Writer to write to
- * @returns {Writer} writer
- * @private
- */
-long_._writeFixed = function long_writeFixed(writer) {
-    writer.buf[writer.pos++] = this._lo        & 255;
-    writer.buf[writer.pos++] = this._lo >>> 8  & 255;
-    writer.buf[writer.pos++] = this._lo >>> 16 & 255;
-    writer.buf[writer.pos++] = this._lo >>> 24      ;
-    writer.buf[writer.pos++] = this._hi        & 255;
-    writer.buf[writer.pos++] = this._hi >>> 8  & 255;
-    writer.buf[writer.pos++] = this._hi >>> 16 & 255;
-    writer.buf[writer.pos++] = this._hi >>> 24      ;
-    return writer;
-};
-
-// Get / Set
-
-/**
- * Gets the low and high bits as a JavaScript number, long-like object or actual Long.
- * @param {boolean} unsigned Whether unsigned or not
- * @returns {number|!{ low: number, high: number, unsigned: boolean }|!Long} Value read
- * @private
- */
-long_._get = function long_get(unsigned) {
-    if (util.Long)
-        return util.Long.fromBits(this._lo, this._hi, unsigned);
-    var neg = this._hi > 2147483647,
-        lo = this._lo,
-        hi = this._hi;
-    if (!unsigned && neg) {
-        lo = ~lo + 1 >>> 0;
-        hi = ~hi     >>> 0;
-        if (!lo)
-            hi = hi + 1 >>> 0;
-    }
-    var num = lo + hi * 4294967296;
-    if (num <= 9007199254740991)
-        return neg ? -num : num;
-    return { low: this._lo, high: this._hi, unsigned: unsigned };
-};
-
-/**
- * Gets the low and high bits as an 8 characters long hash string.
- * @returns {string} Hashed string
- * @private
- */
-long_._getHash = function long_getHash() {
-    return String.fromCharCode(
-        this._lo        & 255,
-        this._lo >>> 8  & 255,
-        this._lo >>> 16 & 255,
-        this._lo >>> 24 & 255,
-        this._hi        & 255,
-        this._hi >>> 8  & 255,
-        this._hi >>> 16 & 255,
-        this._hi >>> 24 & 255
-    );
-};
-
-/**
- * Sets the low and high bits from a number, long-like object or hash string.
- * @param {number|{ low: number, high: number }|Long|string} value Value to set
- * @returns {Object} `this`
- * @private
- */
-long_._set = function long_set(value) {
-    if (typeof value === 'number') {
-        var sign = value < 0;
-           value = Math.abs(value);
-        this._lo = value >>> 0;
-        this._hi = (value - this._lo) / 4294967296 >>> 0;
-        if (sign) {
-            this._hi = ~this._hi >>> 0;
-            this._lo = ~this._lo >>> 0;
-            if (++this._lo > 4294967295) {
-                this._lo = 0;
-                if (++this._hi > 4294967295)
-                    this._hi = 0;
-            }
-        }
-    } else if (typeof value === 'object') {
-        this._lo = value.low  >>> 0;
-        this._hi = value.high >>> 0;
-    } else
-        long_setHash(value);
-    return long_;
-};
-
-var charCodeAt = String.prototype.charCodeAt;
-
-function long_setHash(hash) {
-    long_._lo = (charCodeAt.call(hash, 0)
-                |  charCodeAt.call(hash, 1) << 8
-                |  charCodeAt.call(hash, 2) << 16
-                |  charCodeAt.call(hash, 3) << 24) >>> 0;
-    long_._hi = (charCodeAt.call(hash, 4)
-                |  charCodeAt.call(hash, 5) << 8
-                |  charCodeAt.call(hash, 6) << 16
-                |  charCodeAt.call(hash, 7) << 24) >>> 0;
-    return long_;
-}
-
-/**
- * Sets the low and high bits from a 8 characters long hash string.
- * @function
- * @param {string} Hashed value to set
- * @returns {Object} `this`
- * @private
- */
-long_._setHash = long_setHash;
-
-// Zig-zag encoding
-
-/**
- * Zig-zag encodes the low and high bits.
- * @returns {Object} `this`
- * @private
- */
-long_._zigZagEncode = function long_zigZagEncode() { // (n << 1) ^ (n >> 63)
-    var mask = -(this._hi >>> 31);
-    this._hi = ((this._hi << 1 | this._lo >>> 31) ^ mask) >>> 0;
-    this._lo = ( this._lo << 1                    ^ mask) >>> 0;
-    return long_;
-};
-
-/**
- * Zig-zag decodes the low and high bits.
- * @returns {Object} `this`
- * @private
- */
-long_._zigZagDecode = function long_zigZagDecode() { // (n >>> 1) ^ -(n & 1)
-    var mask = -(this._lo & 1);
-    this._lo = ((this._lo >>> 1 | (this._hi & 1) << 31) ^ mask) >>> 0;
-    this._hi = ( this._hi >>> 1                         ^ mask) >>> 0;
-    return long_;
-};
-
-},{"../util":23}],20:[function(require,module,exports){
+},{"./method":11,"./namespace":12,"./util":23}],20:[function(require,module,exports){
 /* eslint-disable default-case, callback-return */
 
 module.exports = tokenize;
@@ -4397,7 +4303,7 @@ TypePrototype.decodeDelimited_ = function decodeDelimited_internal(reader, messa
     return this.decode_(reader, message, reader.uint32() + reader.pos);
 };
 
-},{"./codegen":2,"./decoder":3,"./encoder":4,"./enum":5,"./field":6,"./inherits":8,"./namespace":11,"./oneof":13,"./prototype":15,"./reader":16,"./service":18,"./util":23,"./writer":24}],22:[function(require,module,exports){
+},{"./codegen":2,"./decoder":3,"./encoder":4,"./enum":5,"./field":6,"./inherits":8,"./namespace":12,"./oneof":14,"./prototype":16,"./reader":17,"./service":19,"./util":23,"./writer":24}],22:[function(require,module,exports){
 // NOTE: These types are structured in a way that makes looking up wire types and similar fast,
 // but not necessarily comfortable. Do not modify them unless you know exactly what you are doing.
 
@@ -4517,24 +4423,14 @@ types.packableWireTypes = {
  */
 var util = module.exports = {};
 
-var Reader = require("./reader"),
-    Writer = require("./writer"),
-    long_  = require("./support/long");
+var LongBits = require("./longbits");
 
 /**
  * Optional buffer class to use. If you assign any compatible buffer implementation to this
  * property, the library will use it.
- * @memberof util
  * @type {?Function}
  */
-Object.defineProperty(util, "Buffer", {
-    get: function() {
-        return Writer.Buffer;
-    },
-    set: function(value) {
-        Writer.Buffer = Reader.Buffer = value;
-    }
-});
+util.Buffer = null;
 
 try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
 
@@ -4723,22 +4619,28 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
 };
 
 /**
- * Converts a number or long-like object to an 8 characters long hash string.
- * @param {number|{ low: number, high: number }} value Value to convert
- * @returns {string} Hashed value
+ * Converts a number or long to an 8 characters long hash string.
+ * @param {Long|number} value Value to convert
+ * @returns {string} Hash
  */
 util.toHash = function toHash(value) {
-    return long_._set(value)._getHash();
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    return bits.toHash();
 };
 
 /**
- * Converts an 8 characters long hash string to a number or long-like object.
- * @param {string} hash Hashed value to convert
+ * Converts an 8 characters long hash string to a long or number.
+ * @param {string} hash Hash
  * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {number|{ low: number, high: number, unsigned: boolean }} Original value
+ * @returns {Long|number} Original value
  */
 util.fromHash = function fromHash(hash, unsigned) {
-    return long_._setHash(hash)._get(Boolean(unsigned));
+    var bits = LongBits.fromHash(hash);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
+    return bits.toNumber(Boolean(unsigned));
 };
 
 /**
@@ -4758,19 +4660,14 @@ util.merge = function merge(dst, src, ifNotSet) {
     return dst;
 };
 
-},{"./reader":16,"./support/long":19,"./writer":24,"buffer":"buffer","fs":undefined,"long":"long"}],24:[function(require,module,exports){
+},{"./longbits":9,"buffer":"buffer","fs":undefined,"long":"long"}],24:[function(require,module,exports){
 module.exports = Writer;
-
-/**
- * Buffer implementation, if available.
- * @type {?Function}
- */
-Writer.Buffer = null;
 
 Writer.BufferWriter = BufferWriter;
 
-var long_   = require("./support/long"),
-    ieee754 = require("../lib/ieee754");
+var LongBits = require("./longbits"),
+    util     = require("./util"),
+    ieee754  = require("../lib/ieee754");
 
 /**
  * Default buffer size.
@@ -4785,7 +4682,7 @@ Writer.BUFFER_SIZE = 1024;
  */
 function Writer() {
     if (!(this instanceof Writer))
-        return Writer.Buffer
+        return util.Buffer
             ? new BufferWriter()
             : new Writer();
 
@@ -4940,14 +4837,39 @@ WriterPrototype.sint32 = function write_sint32(value) {
     return this.uint32(value << 1 ^ value >> 31);
 };
 
+function writeLongVarint(writer, lo, hi) {
+    if (writer.len - writer.pos > 9) // fast route
+        while (hi || lo > 127) {
+            writer.buf[writer.pos++] = lo & 127 | 128;
+            lo = (lo >>> 7 | hi << 25) >>> 0;
+            hi >>>= 7;
+        }
+    else {
+        while (hi || lo > 127) {
+            if (writer.pos >= writer.len)
+                expand(writer, 1);
+            writer.buf[writer.pos++] = lo & 127 | 128;
+            lo = (lo >>> 7 | hi << 25) >>> 0;
+            hi >>>= 7;
+        }
+        if (writer.pos >= writer.len)
+            expand(writer, 1);
+    }
+    writer.buf[writer.pos++] = lo;
+    return writer;
+}
+
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.uint64 = function write_uint64(value) {
-    return long_._set(value)
-                ._write(this, expand);
+    if (typeof value === 'number') {
+        var bits = LongBits.fromNumber(value);
+        return writeLongVarint(this, bits.lo, bits.hi);
+    }
+    return writeLongVarint(this, value.low >>> 0, value.high >>> 0);
 };
 
 /**
@@ -4964,9 +4886,11 @@ WriterPrototype.int64 = WriterPrototype.uint64;
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
-    return long_._set(value)
-                ._zigZagEncode()
-                ._write(this, expand);
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    bits.zzEncode();
+    return writeLongVarint(this, bits.lo, bits.hi);
 };
 
 /**
@@ -5005,16 +4929,33 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
     return this.fixed32(value << 1 ^ value >> 31);
 };
 
+function writeLongFixed(writer, lo, hi) {
+    if (writer.pos + 8 > writer.len)
+        expand(writer, 8);
+    var buf = writer.buf,
+        pos = writer.pos; // changes in expand
+    buf[pos++] = lo        & 255;
+    buf[pos++] = lo >>> 8  & 255;
+    buf[pos++] = lo >>> 16 & 255;
+    buf[pos++] = lo >>> 24      ;
+    buf[pos++] = hi        & 255;
+    buf[pos++] = hi >>> 8  & 255;
+    buf[pos++] = hi >>> 16 & 255;
+    buf[pos++] = hi >>> 24      ;
+    writer.pos = pos;
+    return writer;
+}
+
 /**
  * Writes a 64 bit value as fixed 64 bits.
  * @param {number|{ low: number, high: number }|Long} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
-    if (this.pos + 8 > this.len)
-        expand(this, 8);
-    return long_._set(value)
-                ._writeFixed(this);
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    return writeLongFixed(this, bits.lo, bits.hi);
 };
 
 /**
@@ -5023,11 +4964,11 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
-    if (this.pos + 8 > this.len)
-        expand(this, 8);
-    return long_._set(value)
-                ._zigZagEncode()
-                ._writeFixed(this);
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    bits.zzEncode();
+    return writeLongFixed(this, bits.lo, bits.hi);
 };
 
 /**
@@ -5230,12 +5171,12 @@ var emptyBuffer = null;
  * @returns {Function} `BufferWriter`
  */
 BufferWriter.setup = function setup_buffer() {
-    if (!Writer.Buffer)
+    if (!util.Buffer)
         throw Error("Buffer is not supported");
 
-    BufferWriterPrototype._slice = Writer.Buffer.prototype.slice;
+    BufferWriterPrototype._slice = util.Buffer.prototype.slice;
 
-    BufferWriter.alloc = Writer.Buffer.allocUnsafe || Writer.Buffer.alloc || function alloc_buffer(size) { return new Writer.Buffer(size); };
+    BufferWriter.alloc = util.Buffer.allocUnsafe || util.Buffer.alloc || function alloc_buffer(size) { return new util.Buffer(size); };
 
     emptyBuffer = BufferWriter.alloc(0);
     if (Object.freeze)
@@ -5302,7 +5243,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
  * @returns {BufferWriter} `this`
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
-    var len = Writer.Buffer.byteLength(value);
+    var len = util.Buffer.byteLength(value);
     this.uint32(len);
     if (len) {
         if (this.pos + len > this.len)
@@ -5326,12 +5267,12 @@ BufferWriterPrototype.finish = function finish_buffer() {
         if (bufs.length === 0)
             return buf.slice(0, pos);
         bufs.push(buf.slice(0, pos));
-        return Writer.Buffer.concat(bufs);
+        return util.Buffer.concat(bufs);
     }
     return emptyBuffer;
 };
 
-},{"../lib/ieee754":1,"./support/long":19}]},{},[7])
+},{"../lib/ieee754":1,"./longbits":9,"./util":23}]},{},[7])
 
 
 //# sourceMappingURL=protobuf.js.map

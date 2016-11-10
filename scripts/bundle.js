@@ -38,7 +38,7 @@ function bundle(compress) {
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(
-                gulpif(compress, uglify({ mangleProperties: { regex: /^(?!(?:_fields|_oneofs)$)_/ } })) // _fields/_oneofs is used on prototypes
+                gulpif(compress, uglify({ mangleProperties: { regex: /^_/ } }))
             )
             .pipe(header(license, {
                 date: (new Date()).toUTCString().replace('GMT', 'UTC'),

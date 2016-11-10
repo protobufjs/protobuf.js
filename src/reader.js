@@ -1,15 +1,10 @@
 module.exports = Reader;
 
-/**
- * Buffer implementation, if available.
- * @type {?Function}
- */
-Reader.Buffer = null;
-
 Reader.BufferReader = BufferReader;
 
-var long_   = require("./support/long"),
-    ieee754 = require("../lib/ieee754");
+var LongBits = require("./longbits"),
+    util     = require("./util"),
+    ieee754  = require("../lib/ieee754");
 
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
@@ -22,7 +17,7 @@ function indexOutOfRange(reader, writeLength) {
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
-        return Reader.Buffer && (!buffer || Reader.Buffer.isBuffer(buffer))
+        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer))
             ? new BufferReader(buffer)
             : new Reader(buffer);
 
@@ -112,32 +107,102 @@ ReaderPrototype.sint32 = function read_sint32() {
     return value >>> 1 ^ -(value & 1);
 };
 
+function readLongVarint(reader) {
+    var lo = 0, hi = 0,
+        i  = 0, b  = 0;
+    if (reader.len - reader.pos > 9) { // fast route
+        for (i = 0; i < 4; ++i) {
+            b = reader.buf[reader.pos++];
+            lo |= (b & 127) << i * 7;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+        b = reader.buf[reader.pos++];
+        lo |= (b & 127) << 28;
+        hi |= (b & 127) >> 4;
+        if (b < 128)
+            return new LongBits(lo >>> 0, hi >>> 0);
+        for (i = 0; i < 5; ++i) {
+            b = reader.buf[reader.pos++];
+            hi |= (b & 127) << i * 7 + 3;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+    } else {
+        for (i = 0; i < 4; ++i) {
+            if (reader.pos >= reader.len)
+                throw RangeError(indexOutOfRange(reader));
+            b = reader.buf[reader.pos++];
+            lo |= (b & 127) << i * 7;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+        if (reader.pos >= reader.len)
+            throw RangeError(indexOutOfRange(reader));
+        b = reader.buf[reader.pos++];
+        lo |= (b & 127) << 28;
+        hi |= (b & 127) >> 4;
+        if (b < 128)
+            return new LongBits(lo >>> 0, hi >>> 0);
+        for (i = 0; i < 5; ++i) {
+            if (reader.pos >= reader.len)
+                throw RangeError(indexOutOfRange(reader));
+            b = reader.buf[reader.pos++];
+            hi |= (b & 127) << i * 7 + 3;
+            if (b < 128)
+                return new LongBits(lo >>> 0, hi >>> 0);
+        }
+    }
+    throw Error("invalid varint encoding");
+}
+
+function readLongFixed(reader) {
+    if (reader.pos + 8 > reader.len)
+        throw RangeError(indexOutOfRange(reader, 8));
+    return new LongBits(
+      ( reader.buf[reader.pos++]
+      | reader.buf[reader.pos++] << 8
+      | reader.buf[reader.pos++] << 16
+      | reader.buf[reader.pos++] << 24 ) >>> 0
+    ,
+      ( reader.buf[reader.pos++]
+      | reader.buf[reader.pos++] << 8
+      | reader.buf[reader.pos++] << 16
+      | reader.buf[reader.pos++] << 24 ) >>> 0
+    );
+}
+
 /**
  * Reads a varint as a signed 64 bit value.
- * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.int64 = function read_int64() {
-    return long_._read(this, indexOutOfRange)
-                ._get(false);
+    var bits = readLongVarint(this);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, false);
+    return bits.toNumber(false);
 };
 
 /**
  * Reads a varint as an unsigned 64 bit value.
- * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.uint64 = function read_uint64() {
-    return long_._read(this, indexOutOfRange)
-                ._get(true);
+    var bits = readLongVarint(this);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, true);
+    return bits.toNumber(true);
 };
 
 /**
  * Reads a zig-zag encoded varint as a signed 64 bit value.
- * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.sint64 = function read_sint64() {
-    return long_._read(this, indexOutOfRange)
-                ._zigZagDecode()
-                ._get(false);
+    var bits = readLongVarint(this).zzDecode();
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, false);
+    return bits.toNumber(false);
 };
 
 /**
@@ -173,25 +238,24 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 
 /**
  * Reads fixed 64 bits as a Long.
- * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.fixed64 = function read_fixed64() {
-    if (this.pos + 8 > this.len)
-        throw RangeError(indexOutOfRange(this, 8));
-    return long_._readFixed(this)
-                ._get(true);
+    var bits = readLongFixed(this);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, true);
+    return bits.toNumber(true);
 };
 
 /**
  * Reads zig-zag encoded 64 bits as a Long.
- * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+ * @returns {Long|number} Value read
  */
 ReaderPrototype.sfixed64 = function read_sfixed64() {
-    if (this.pos + 8 > this.len)
-        throw RangeError(indexOutOfRange(this, 8));
-    return long_._readFixed(this)
-                ._zigZagDecode()
-                ._get(false);
+    var bits = readLongFixed(this).zzDecode();
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, false);
+    return bits.toNumber(false);
 };
 
 /**
@@ -348,9 +412,9 @@ ReaderPrototype.finish = function finish(buffer) {
 // One time function to initialize BufferReader with the now-known buffer
 // implementation's slice method
 var initBufferReader = function() {
-    if (!Reader.Buffer)
+    if (!util.Buffer)
         throw Error("Buffer is not supported");
-    BufferReaderPrototype._slice = Reader.Buffer.prototype.slice;
+    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
     initBufferReader = false;
 };
 
@@ -370,8 +434,6 @@ function BufferReader(buffer) {
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 
 BufferReaderPrototype.constructor = BufferReader;
-
-Reader.BufferReader = BufferReader;
 
 /**
  * Reads a float (32 bit) as a number using node buffers.

@@ -98,7 +98,7 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
         bench_protobuf_rw();
         if (process.argv.length < 4) {
             bench_json("native", JSON);
-            bench_json("poly", JSONPoly);
+            bench_json("polyfill", JSONPoly);
         }
 
         console.log("--- warmed up ---\n");
@@ -106,7 +106,7 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
         bench_protobuf_rw();
         if (process.argv.length < 4) {
             bench_json("native", JSON);
-            bench_json("poly", JSONPoly);
+            bench_json("polyfill", JSONPoly);
         }
 
     } catch (e) {

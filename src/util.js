@@ -4,24 +4,14 @@
  */
 var util = module.exports = {};
 
-var Reader = require("./reader"),
-    Writer = require("./writer"),
-    long_  = require("./support/long");
+var LongBits = require("./longbits");
 
 /**
  * Optional buffer class to use. If you assign any compatible buffer implementation to this
  * property, the library will use it.
- * @memberof util
  * @type {?Function}
  */
-Object.defineProperty(util, "Buffer", {
-    get: function() {
-        return Writer.Buffer;
-    },
-    set: function(value) {
-        Writer.Buffer = Reader.Buffer = value;
-    }
-});
+util.Buffer = null;
 
 try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
 
@@ -210,22 +200,28 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
 };
 
 /**
- * Converts a number or long-like object to an 8 characters long hash string.
- * @param {number|{ low: number, high: number }} value Value to convert
- * @returns {string} Hashed value
+ * Converts a number or long to an 8 characters long hash string.
+ * @param {Long|number} value Value to convert
+ * @returns {string} Hash
  */
 util.toHash = function toHash(value) {
-    return long_._set(value)._getHash();
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    return bits.toHash();
 };
 
 /**
- * Converts an 8 characters long hash string to a number or long-like object.
- * @param {string} hash Hashed value to convert
+ * Converts an 8 characters long hash string to a long or number.
+ * @param {string} hash Hash
  * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {number|{ low: number, high: number, unsigned: boolean }} Original value
+ * @returns {Long|number} Original value
  */
 util.fromHash = function fromHash(hash, unsigned) {
-    return long_._setHash(hash)._get(Boolean(unsigned));
+    var bits = LongBits.fromHash(hash);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
+    return bits.toNumber(Boolean(unsigned));
 };
 
 /**

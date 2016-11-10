@@ -1,15 +1,10 @@
 module.exports = Writer;
 
-/**
- * Buffer implementation, if available.
- * @type {?Function}
- */
-Writer.Buffer = null;
-
 Writer.BufferWriter = BufferWriter;
 
-var long_   = require("./support/long"),
-    ieee754 = require("../lib/ieee754");
+var LongBits = require("./longbits"),
+    util     = require("./util"),
+    ieee754  = require("../lib/ieee754");
 
 /**
  * Default buffer size.
@@ -24,7 +19,7 @@ Writer.BUFFER_SIZE = 1024;
  */
 function Writer() {
     if (!(this instanceof Writer))
-        return Writer.Buffer
+        return util.Buffer
             ? new BufferWriter()
             : new Writer();
 
@@ -179,14 +174,39 @@ WriterPrototype.sint32 = function write_sint32(value) {
     return this.uint32(value << 1 ^ value >> 31);
 };
 
+function writeLongVarint(writer, lo, hi) {
+    if (writer.len - writer.pos > 9) // fast route
+        while (hi || lo > 127) {
+            writer.buf[writer.pos++] = lo & 127 | 128;
+            lo = (lo >>> 7 | hi << 25) >>> 0;
+            hi >>>= 7;
+        }
+    else {
+        while (hi || lo > 127) {
+            if (writer.pos >= writer.len)
+                expand(writer, 1);
+            writer.buf[writer.pos++] = lo & 127 | 128;
+            lo = (lo >>> 7 | hi << 25) >>> 0;
+            hi >>>= 7;
+        }
+        if (writer.pos >= writer.len)
+            expand(writer, 1);
+    }
+    writer.buf[writer.pos++] = lo;
+    return writer;
+}
+
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.uint64 = function write_uint64(value) {
-    return long_._set(value)
-                ._write(this, expand);
+    if (typeof value === 'number') {
+        var bits = LongBits.fromNumber(value);
+        return writeLongVarint(this, bits.lo, bits.hi);
+    }
+    return writeLongVarint(this, value.low >>> 0, value.high >>> 0);
 };
 
 /**
@@ -203,9 +223,11 @@ WriterPrototype.int64 = WriterPrototype.uint64;
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
-    return long_._set(value)
-                ._zigZagEncode()
-                ._write(this, expand);
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    bits.zzEncode();
+    return writeLongVarint(this, bits.lo, bits.hi);
 };
 
 /**
@@ -244,16 +266,33 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
     return this.fixed32(value << 1 ^ value >> 31);
 };
 
+function writeLongFixed(writer, lo, hi) {
+    if (writer.pos + 8 > writer.len)
+        expand(writer, 8);
+    var buf = writer.buf,
+        pos = writer.pos; // changes in expand
+    buf[pos++] = lo        & 255;
+    buf[pos++] = lo >>> 8  & 255;
+    buf[pos++] = lo >>> 16 & 255;
+    buf[pos++] = lo >>> 24      ;
+    buf[pos++] = hi        & 255;
+    buf[pos++] = hi >>> 8  & 255;
+    buf[pos++] = hi >>> 16 & 255;
+    buf[pos++] = hi >>> 24      ;
+    writer.pos = pos;
+    return writer;
+}
+
 /**
  * Writes a 64 bit value as fixed 64 bits.
  * @param {number|{ low: number, high: number }|Long} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
-    if (this.pos + 8 > this.len)
-        expand(this, 8);
-    return long_._set(value)
-                ._writeFixed(this);
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    return writeLongFixed(this, bits.lo, bits.hi);
 };
 
 /**
@@ -262,11 +301,11 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
-    if (this.pos + 8 > this.len)
-        expand(this, 8);
-    return long_._set(value)
-                ._zigZagEncode()
-                ._writeFixed(this);
+    var bits = typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+    bits.zzEncode();
+    return writeLongFixed(this, bits.lo, bits.hi);
 };
 
 /**
@@ -469,12 +508,12 @@ var emptyBuffer = null;
  * @returns {Function} `BufferWriter`
  */
 BufferWriter.setup = function setup_buffer() {
-    if (!Writer.Buffer)
+    if (!util.Buffer)
         throw Error("Buffer is not supported");
 
-    BufferWriterPrototype._slice = Writer.Buffer.prototype.slice;
+    BufferWriterPrototype._slice = util.Buffer.prototype.slice;
 
-    BufferWriter.alloc = Writer.Buffer.allocUnsafe || Writer.Buffer.alloc || function alloc_buffer(size) { return new Writer.Buffer(size); };
+    BufferWriter.alloc = util.Buffer.allocUnsafe || util.Buffer.alloc || function alloc_buffer(size) { return new util.Buffer(size); };
 
     emptyBuffer = BufferWriter.alloc(0);
     if (Object.freeze)
@@ -541,7 +580,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
  * @returns {BufferWriter} `this`
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
-    var len = Writer.Buffer.byteLength(value);
+    var len = util.Buffer.byteLength(value);
     this.uint32(len);
     if (len) {
         if (this.pos + len > this.len)
@@ -565,7 +604,7 @@ BufferWriterPrototype.finish = function finish_buffer() {
         if (bufs.length === 0)
             return buf.slice(0, pos);
         bufs.push(buf.slice(0, pos));
-        return Writer.Buffer.concat(bufs);
+        return util.Buffer.concat(bufs);
     }
     return emptyBuffer;
 };
