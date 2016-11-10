@@ -1,5 +1,7 @@
 // ref: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON#Polyfill
+
 exports.parse = function (sJSON) { return eval('(' + sJSON + ')'); };
+
 exports.stringify = (function () {
     var toString = Object.prototype.toString;
     var isArray = Array.isArray || function (a) { return toString.call(a) === '[object Array]'; };

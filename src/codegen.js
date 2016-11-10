@@ -42,7 +42,7 @@ function codegen(/* varargs */) {
                 level = ++indent;
             else if (/^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/.test(prev)) // branch without block before (increment once)
                 ++level;
-            else if (/(?:break|continue);$/.test(prev)) // control flow before (decrement and keep)
+            else if (/\b(?:break|continue);?$/.test(prev)) // control flow before (decrement and keep)
                 level = --indent;
             
             if (/^[\}\]]/.test(line)) // block close on line (decrement and keep)
@@ -56,7 +56,7 @@ function codegen(/* varargs */) {
 
     // Converts the so far generated source to a string
     gen.toString = function toString(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(",") + ") {\n" + src.join("\n") + "\n}";
     };
 
     // Ends generation

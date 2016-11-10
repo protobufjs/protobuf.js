@@ -1,15 +1,9 @@
-var protobuf = require(__dirname + "/../src/index"),
-    Long     = require("long"),
-    path     = require("path"),
-    assert   = require("assert");
-
-var JSONPoly = require("./lib/jsonpoly");
+var path     = require("path"),
+    protobuf = require(__dirname + "/../src/index"),
+    JSONPoly = require("./lib/jsonpoly"),
+    data     = require("./bench.json");
 
 var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 100000;
-
-// NOTE: This benchmark measures message to buffer respectively buffer to message performance.
-
-var data = require("./bench.json");
 
 protobuf.load(require.resolve("./bench.proto"), function(err, root) {
     if (err)
@@ -22,7 +16,8 @@ protobuf.load(require.resolve("./bench.proto"), function(err, root) {
         Test.decode(Test.encode(data).finish());
         protobuf.codegen.verbose = false;
 
-        console.log("\nusage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
+        console.log("\nThis benchmark measures message to buffer respectively buffer to message performance.");
+        console.log("usage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
         console.log("encoding/decoding " + times + " iterations ...\n");
         
         function summarize(name, start, length) {

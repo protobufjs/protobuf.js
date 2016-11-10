@@ -92,9 +92,9 @@ EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$types", "message", "writer")
+    var gen = codegen("$t", "m", "w")
 
-    ('"use strict";');
+    ('"use strict"');
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
@@ -107,58 +107,58 @@ EncoderPrototype.generate = function generate() {
                 keyWireType = types.mapKeyWireTypes[keyType];
             gen
 
-    ("var map = message[%j], keys;", field.name)
-    ("if (map && (keys = Object.keys(map)).length) {")
-        ("writer.tag(%d,2).fork();", field.id)
-        ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
-            ("writer.tag(1,%d).%s(key = keys[i]);", keyWireType, keyType);
+    ("var o=m[%j],ks", field.name)
+    ("if(o&&(ks=Object.keys(o)).length){")
+        ("w.tag(%d,2).fork()", field.id)
+        ("for(var i=0,l=ks.length,k;i<l;++i){")
+            ("w.tag(1,%d).%s(k=ks[i])", keyWireType, keyType);
             if (wireType !== undefined) gen
-            ("writer.tag(2,%d).%s(map[key]);", wireType, type);
+            ("w.tag(2,%d).%s(o[k])", wireType, type);
             else gen
-            ("$types[%d].encodeDelimited_(map[key], writer.tag(2,2));", i);
+            ("$t[%d].encodeDelimited_(o[k],w.tag(2,2))", i);
             gen
         ("}")
-        ("writer.bytes(writer.finish());")
+        ("w.bytes(w.finish())")
     ("}");
 
         // Repeated fields
         } else if (field.repeated) { gen
 
-    ("var vals = message[%j], i = 0, k = vals.length;", field.name);
+    ("var vs=m[%j],i=0,k=vs.length", field.name);
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) { gen
 
-    ("writer.fork();")
-    ("while (i < k)")
-        ("writer.%s(vals[i++]);", type)
-    ("var buf = writer.finish();")
-    ("if (buf.length)")
-        ("writer.tag(%d,2).bytes(buf);", field.id);
+    ("w.fork()")
+    ("while(i<k)")
+        ("w.%s(vs[i++])", type)
+    ("var b=w.finish()")
+    ("if(b.length)")
+        ("w.tag(%d,2).bytes(b)", field.id);
 
             // Non-packed
             } else { gen
 
-    ("while (i < k)")
-        ("$types[%d].encodeDelimited_(vals[i++],writer.tag(%d,2));", i, field.id);
+    ("while(i<k)")
+        ("$t[%d].encodeDelimited_(vs[i++],w.tag(%d,2))", i, field.id);
 
             }
 
         // Non-repeated
         } else { gen
-    ("var value = message[%j];", field.name);
+    ("var v=m[%j]", field.name);
 
             if (!field.required) gen
-    ("if (value %s %j)", field.long ? "!==" : "!=", field.defaultValue);
+    ("if(v%s%j)", field.long ? "!==" : "!=", field.defaultValue);
             if (wireType !== undefined) gen
-    ("writer.tag(%d,%d).%s(value);", field.id, wireType, type);
+    ("w.tag(%d,%d).%s(v)", field.id, wireType, type);
             else gen
-    ("$types[%d].encodeDelimited_(value, writer.tag(%d,2));", i, field.id);
+    ("$t[%d].encodeDelimited_(v,w.tag(%d,2))", i, field.id);
     
         }
     }
     return gen
-    ("return writer;")
+    ("return w")
     .eof(this.type.fullName + "$encode")
     .bind(this.type, fieldsArray.map(function(fld) { return fld.resolvedType; }));
     /* eslint-enable no-unexpected-multiline */

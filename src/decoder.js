@@ -44,10 +44,10 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                     map     = {};
                 if (length) {
                     length += reader.pos;
-                    var keys = [], values = [], ki = 0, vi = 0;
+                    var ks = [], values = [], ki = 0, vi = 0;
                     while (reader.pos < length) {
                         if (reader.tag().id === 1)
-                            keys[ki++] = reader[keyType]();
+                            ks[ki++] = reader[keyType]();
                         else if (wireType !== undefined)
                             values[vi++] = reader[type]();
                         else
@@ -55,7 +55,7 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                     }
                     var key;
                     for (ki = 0; ki < vi; ++ki)
-                        map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
+                        map[typeof (key = ks[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
                 }
                 message[field.name] = map;
 
@@ -100,12 +100,12 @@ DecoderPrototype.generate = function generate() {
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
     
-    var gen = codegen("$types", "$toHash", "reader", "message", "limit")
+    var gen = codegen("$t", "$h", "r", "m", "l")
 
-    ('"use strict";')
-    ("while (reader.pos < limit) {")
-        ("var tag = reader.tag();")
-        ("switch (tag.id) {");
+    ('"use strict"')
+    ("while(r.pos<l){")
+        ("var t=r.tag()")
+        ("switch(t.id){");
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field    = fieldsArray[i].resolve(),
@@ -118,70 +118,66 @@ DecoderPrototype.generate = function generate() {
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("var length = reader.uint32(), map = {};")
-                ("if (length) {")
-                    ("length += reader.pos;")
-                    ("var keys = [], values = [], ki = 0, vi = 0;")
-                    ("while (reader.pos < length) {")
-                        ("if (reader.tag().id === 1)")
-                            ("keys[ki++] = reader.%s();", keyType);
+                ("var n=r.uint32(),o={}")
+                ("if(n){")
+                    ("n+=r.pos")
+                    ("var ks=[],vs =[],ki=0,vi=0")
+                    ("while(r.pos<n){")
+                        ("if(r.tag().id===1)")
+                            ("ks[ki++]=r.%s()", keyType);
                         if (wireType !== undefined) gen
                         ("else")
-                            ("values[vi++] = reader.%s();", type);
+                            ("vs[vi++]=r.%s()", type);
                         else gen
                         ("else")
-                            ("values[vi++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i);
+                            ("vs[vi++]=$t[%d].decodeDelimited_(r,$t[%d].create_())", i, i);
                     gen
                     ("}")
-                    ("var key;")
-                    ("for (ki = 0; ki < vi; ++ki)")
-                        ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
+                    ("var k")
+                    ("for (ki=0;ki<vi;++ki)")
+                        ("o[typeof(k=ks[ki])==='object'?$h(k):k]=vs[ki]")
                 ("}")
-                ("message[%j] = map;", field.name);
+                ("m[%j]=o", field.name);
 
         } else if (field.repeated) { gen
 
-                ("var values = (message[%j] || (message[%j] = [])), length = values.length;", field.name, field.name);
+                ("var vs=m[%j]||(m[%j]=[]),n=vs.length", field.name, field.name);
 
             if (field.packed && packType !== undefined) { gen
 
-                ("if (tag.wireType === 2) {")
-                    ("var plimit = reader.uint32() + reader.pos;")
-                    ("while (reader.pos < plimit)")
-                        ("values[length++] = reader.%s();", type)
-                ("} else {");
+                ("if(t.wireType===2){")
+                    ("var e=r.uint32()+r.pos")
+                    ("while(r.pos<e)")
+                        ("vs[n++]=r.%s()", type)
+                ("}else");
 
             }
 
             if (wireType !== undefined) gen
 
-                    ("values[length++] = reader.%s();", type);
+                    ("vs[n++]=r.%s()", type);
 
             else gen
 
-                    ("values[length++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i);
-
-            if (field.packed && packType !== undefined) gen
-
-                ("}");
+                    ("vs[n++]=$t[%d].decodeDelimited_(r,$t[%d].create_())", i, i);
 
         } else if (wireType !== undefined) { gen
 
-                ("message[%j] = reader.%s();", field.name, type);
+                ("m[%j]=r.%s()", field.name, type);
 
         } else { gen
 
-                ("message[%j] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", field.name, i, i);
+                ("m[%j]=$t[%d].decodeDelimited_(r,$t[%d].create_())", field.name, i, i);
 
         } gen
-                ("break;");
+                ("break");
     } gen
             ("default:")
-                ("reader.skipType(tag.wireType);")
-                ("break;")
+                ("r.skipType(t.wireType)")
+                ("break")
         ("}")
     ("}")
-    ("return message;");
+    ("return m");
     return gen.eof(this.type.fullName + "$decode").bind(this.type, fieldsArray.map(function(fld) { return fld.resolvedType; }), util.toHash);
     /* eslint-enable no-unexpected-multiline */
 };

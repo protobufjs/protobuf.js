@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Thu, 10 Nov 2016 05:26:08 UTC
+ * Compiled Thu, 10 Nov 2016 20:51:07 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -167,28 +167,28 @@ function codegen(/* varargs */) {
                 level = ++indent;
             else if (/^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/.test(prev)) // branch without block before (increment once)
                 ++level;
-            else if (/(?:break|continue);$/.test(prev)) // control flow before (decrement and keep)
+            else if (/\b(?:break|continue);?$/.test(prev)) // control flow before (decrement and keep)
                 level = --indent;
             
             if (/^[\}\]]/.test(line)) // block close on line (decrement and keep)
                 level = --indent;
         }
         for (index = 0; index < level; ++index)
-            line = "    " + line;
+            line = "\t" + line;
         src.push(line);
         return gen;
     }
 
     // Converts the so far generated source to a string
     gen.toString = function toString(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(",") + ") {\n" + src.join("\n") + "\n}";
     };
 
     // Ends generation
     gen.eof = function eof(name) {
         var code = gen.toString(name);
         if (codegen.verbose)
-            console.log("--- codegen ---\n" + code.replace(/^/mg, "> ")); // eslint-disable-line no-console
+            console.log("--- codegen ---\n" + code.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
         return new Function("return " + code + ";")(); // eslint-disable-line no-new-func
     };
 
@@ -242,10 +242,10 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                     map     = {};
                 if (length) {
                     length += reader.pos;
-                    var keys = [], values = [], ki = 0, vi = 0;
+                    var ks = [], values = [], ki = 0, vi = 0;
                     while (reader.pos < length) {
                         if (reader.tag().id === 1)
-                            keys[ki++] = reader[keyType]();
+                            ks[ki++] = reader[keyType]();
                         else if (wireType !== undefined)
                             values[vi++] = reader[type]();
                         else
@@ -253,7 +253,7 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                     }
                     var key;
                     for (ki = 0; ki < vi; ++ki)
-                        map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
+                        map[typeof (key = ks[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
                 }
                 message[field.name] = map;
 
@@ -298,12 +298,12 @@ DecoderPrototype.generate = function generate() {
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
     
-    var gen = codegen("$types", "$toHash", "reader", "message", "limit")
+    var gen = codegen("$t", "$h", "r", "m", "l")
 
-    ('"use strict";')
-    ("while (reader.pos < limit) {")
-        ("var tag = reader.tag();")
-        ("switch (tag.id) {");
+    ('"use strict"')
+    ("while(r.pos<l){")
+        ("var t=r.tag()")
+        ("switch(t.id){");
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field    = fieldsArray[i].resolve(),
@@ -316,71 +316,66 @@ DecoderPrototype.generate = function generate() {
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("var length = reader.uint32(), map = {};")
-                ("if (length) {")
-                    ("length += reader.pos;")
-                    ("var keys = [], values = [], ki = 0, vi = 0;")
-                    ("while (reader.pos < length) {")
-                        ("if (reader.tag().id === 1)")
-                            ("keys[ki++] = reader.%s();", keyType);
+                ("var n=r.uint32(),o={}")
+                ("if(n){")
+                    ("n+=r.pos")
+                    ("var ks=[],vs =[],ki=0,vi=0")
+                    ("while(r.pos<n){")
+                        ("if(r.tag().id===1)")
+                            ("ks[ki++]=r.%s()", keyType);
                         if (wireType !== undefined) gen
                         ("else")
-                            ("values[vi++] = reader.%s();", type);
+                            ("vs[vi++]=r.%s()", type);
                         else gen
-                        ("else {")
-                            ("values[vi++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i)
-                        ("}");
+                        ("else")
+                            ("vs[vi++]=$t[%d].decodeDelimited_(r,$t[%d].create_())", i, i);
                     gen
                     ("}")
-                    ("var key;")
-                    ("for (ki = 0; ki < vi; ++ki)")
-                        ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
+                    ("var k")
+                    ("for (ki=0;ki<vi;++ki)")
+                        ("o[typeof(k=ks[ki])==='object'?$h(k):k]=vs[ki]")
                 ("}")
-                ("message[%j] = map;", field.name);
+                ("m[%j]=o", field.name);
 
         } else if (field.repeated) { gen
 
-                ("var values = (message[%j] || (message[%j] = [])), length = values.length;", field.name, field.name);
+                ("var vs=m[%j]||(m[%j]=[]),n=vs.length", field.name, field.name);
 
             if (field.packed && packType !== undefined) { gen
 
-                ("if (tag.wireType === 2) {")
-                    ("var plimit = reader.uint32() + reader.pos;")
-                    ("while (reader.pos < plimit)")
-                        ("values[length++] = reader.%s();", type)
-                ("} else {");
+                ("if(t.wireType===2){")
+                    ("var e=r.uint32()+r.pos")
+                    ("while(r.pos<e)")
+                        ("vs[n++]=r.%s()", type)
+                ("}else");
 
             }
 
             if (wireType !== undefined) gen
 
-                    ("values[length++] = reader.%s();", type);
+                    ("vs[n++]=r.%s()", type);
 
             else gen
 
-                    ("values[length++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i);
-
-            if (field.packed && packType !== undefined) gen
-
-                ("}");
+                    ("vs[n++]=$t[%d].decodeDelimited_(r,$t[%d].create_())", i, i);
 
         } else if (wireType !== undefined) { gen
 
-                ("message[%j] = reader.%s();", field.name, type);
+                ("m[%j]=r.%s()", field.name, type);
 
         } else { gen
 
-                ("message[%j] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", field.name, i, i);
+                ("m[%j]=$t[%d].decodeDelimited_(r,$t[%d].create_())", field.name, i, i);
 
         } gen
-                ("break;");
+                ("break");
     } gen
             ("default:")
-                ("reader.skipType(tag.wireType);")
-                ("break;")
+                ("r.skipType(t.wireType)")
+                ("break")
         ("}")
     ("}")
-    ("return message;");
+    ("return m");
     return gen.eof(this.type.fullName + "$decode").bind(this.type, fieldsArray.map(function(fld) { return fld.resolvedType; }), util.toHash);
     /* eslint-enable no-unexpected-multiline */
 };
@@ -458,8 +453,9 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
 
         // Non-repeated
         } else {
-            var value = message[field.name];
-            if (field.required || value !== field.defaultValue) {
+            var value = message[field.name],
+                strict = field.long;
+            if (field.required || (strict && value !== field.defaultValue) || (!strict && value != field.defaultValue)) {
                 if (wireType !== undefined)
                     writer.tag(field.id, wireType)[type](value);
                 else
@@ -479,9 +475,9 @@ EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$types", "message", "writer")
+    var gen = codegen("$t", "m", "w")
 
-    ('"use strict";');
+    ('"use strict"');
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
@@ -494,58 +490,58 @@ EncoderPrototype.generate = function generate() {
                 keyWireType = types.mapKeyWireTypes[keyType];
             gen
 
-    ("var map = message[%j], keys;", field.name)
-    ("if (map && (keys = Object.keys(map)).length) {")
-        ("writer.tag(%d,2).fork();", field.id)
-        ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
-            ("writer.tag(1,%d).%s(key = keys[i]);", keyWireType, keyType);
+    ("var o=m[%j],ks", field.name)
+    ("if(o&&(ks=Object.keys(o)).length){")
+        ("w.tag(%d,2).fork()", field.id)
+        ("for(var i=0,l=ks.length,k;i<l;++i){")
+            ("w.tag(1,%d).%s(k=ks[i])", keyWireType, keyType);
             if (wireType !== undefined) gen
-            ("writer.tag(2,%d).%s(map[key]);", wireType, type);
+            ("w.tag(2,%d).%s(o[k])", wireType, type);
             else gen
-            ("$types[%d].encodeDelimited_(map[key], writer.tag(2,2));", i);
+            ("$t[%d].encodeDelimited_(o[k],w.tag(2,2))", i);
             gen
         ("}")
-        ("writer.bytes(writer.finish());")
+        ("w.bytes(w.finish())")
     ("}");
 
         // Repeated fields
         } else if (field.repeated) { gen
 
-    ("var vals = message[%j], i = 0, k = vals.length;", field.name);
+    ("var vs=m[%j],i=0,k=vs.length", field.name);
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) { gen
 
-    ("writer.fork();")
-    ("while (i < k)")
-        ("writer.%s(vals[i++]);", type)
-    ("var buf = writer.finish();")
-    ("if (buf.length)")
-        ("writer.tag(%d,2).bytes(buf);", field.id);
+    ("w.fork()")
+    ("while(i<k)")
+        ("w.%s(vs[i++])", type)
+    ("var b=w.finish()")
+    ("if(b.length)")
+        ("w.tag(%d,2).bytes(b)", field.id);
 
             // Non-packed
             } else { gen
 
-    ("while (i < k)")
-        ("$types[%d].encodeDelimited_(vals[i++],writer.tag(%d,2));", i, field.id);
+    ("while(i<k)")
+        ("$t[%d].encodeDelimited_(vs[i++],w.tag(%d,2))", i, field.id);
 
             }
 
         // Non-repeated
         } else { gen
-    ("var value = message[%j];", field.name);
+    ("var v=m[%j]", field.name);
 
             if (!field.required) gen
-    ("if (value !== %j)", field.defaultValue);
+    ("if(v%s%j)", field.long ? "!==" : "!=", field.defaultValue);
             if (wireType !== undefined) gen
-    ("writer.tag(%d,%d).%s(value);", field.id, wireType, type);
+    ("w.tag(%d,%d).%s(v)", field.id, wireType, type);
             else gen
-    ("$types[%d].encodeDelimited_(value, writer.tag(%d,2));", i, field.id);
+    ("$t[%d].encodeDelimited_(v,w.tag(%d,2))", i, field.id);
     
         }
     }
     return gen
-    ("return writer;")
+    ("return w")
     .eof(this.type.fullName + "$encode")
     .bind(this.type, fieldsArray.map(function(fld) { return fld.resolvedType; }));
     /* eslint-enable no-unexpected-multiline */
@@ -767,6 +763,12 @@ function Field(name, id, type, rule, extend, options) {
     this.defaultValue = null;
 
     /**
+     * Whether this field's value is a long.
+     * @type {boolean}
+     */
+    this.long = types.longWireTypes[type] !== undefined;
+
+    /**
      * Resolved type if not a basic type.
      * @type {?(Type|Enum)}
      */
@@ -805,18 +807,6 @@ Object.defineProperties(FieldPrototype, {
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
-        }
-    },
-
-    /**
-     * Determines whether this field's type is a long type (64 bit).
-     * @name Field#long
-     * @type {boolean}
-     * @readonly
-     */
-    long : {
-        get: function() {
-            return types.longWireTypes[this.type] !== undefined;
         }
     }
 
@@ -1165,7 +1155,7 @@ function LongBits(lo, hi) {
  * @param {number} value Value
  * @returns {LongBits} Instance
  */
-LongBits.fromNumber = function fromNUmber(value) {
+LongBits.fromNumber = function fromNumber(value) {
     var sign  = value < 0;
         value = Math.abs(value);
     var lo = value >>> 0,
@@ -1183,11 +1173,22 @@ LongBits.fromNumber = function fromNUmber(value) {
 };
 
 /**
+ * Constrcuts new long bits from a number or long.
+ * @param {Long|number} value Value
+ * @returns {LongBits}
+ */
+LongBits.from = function from(value) {
+    return typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+};
+
+/**
  * Converts this long bits to a possibly unsafe JavaScript number.
  * @param {boolean} unsigned Whether unsigned or not
  * @returns {number} Possibly unsafe number
  */
-LongBits.prototype.toNumber = function(unsigned) {
+LongBits.prototype.toNumber = function toNumber(unsigned) {
     if (!unsigned && this.hi >>> 31) {
         this.lo = ~this.lo + 1 >>> 0;
         this.hi = ~this.hi     >>> 0;
@@ -1223,7 +1224,7 @@ LongBits.fromHash = function fromHash(hash) {
  * Converts this long bits to a 8 characters long hash.
  * @returns {string} Hash
  */
-LongBits.prototype.toHash = function() {
+LongBits.prototype.toHash = function toHash() {
     return String.fromCharCode(
         this.lo        & 255,
         this.lo >>> 8  & 255,
@@ -1240,7 +1241,7 @@ LongBits.prototype.toHash = function() {
  * Zig-zag encodes this long bits.
  * @returns {LongBits} `this`
  */
-LongBits.prototype.zzEncode = function() {
+LongBits.prototype.zzEncode = function zzEncode() {
     var mask = -(this.hi >>> 31);
     this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
     this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
@@ -1251,7 +1252,7 @@ LongBits.prototype.zzEncode = function() {
  * Zig-zag decodes this long bits.
  * @returns {LongBits} `this`
  */
-LongBits.prototype.zzDecode = function() {
+LongBits.prototype.zzDecode = function zzDecode() {
     var mask = -(this.lo & 1);
     this.lo  = ((this.lo >>> 1 | (this.hi & 1) << 31) ^ mask) >>> 0;
     this.hi  = ( this.hi >>> 1                        ^ mask) >>> 0;
@@ -4566,7 +4567,7 @@ function normalizePath(path) {
     var prefix = "";
     if (abs)
         prefix = parts.shift() + '/';
-    for (var i = 0, k = parts.length, part; i < k;)
+    for (var i = 0, k = parts.length, part; i < k;) {
         if ((part = parts[i]) === '..') {
             if (i > 0)
                 parts.splice(--i, 2);
@@ -4577,7 +4578,9 @@ function normalizePath(path) {
         } else if (part === '.')
             parts.splice(i, 1);
         else
-            ++i;    return prefix + parts.join('/');
+            ++i;
+    }
+    return prefix + parts.join('/');
 }
 
 util.normalizePath = normalizePath;
@@ -4606,10 +4609,7 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
  * @returns {string} Hash
  */
 util.toHash = function toHash(value) {
-    var bits = typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    return bits.toHash();
+    return LongBits.from(value).toHash();
 };
 
 /**
@@ -4655,7 +4655,7 @@ var LongBits = require("./longbits"),
  * Default buffer size.
  * @type {number}
  */
-Writer.BUFFER_SIZE = 1024;
+Writer.BUFFER_SIZE = 256; // For some reason this is considerably faster on node than 128 or 512.
 
 /**
  * Wire format writer using `Uint8Array` if available, otherwise `Array`.
@@ -4705,15 +4705,16 @@ var WriterPrototype = Writer.prototype;
 
 var emptyArray = null;
 
+var ArrayImpl = typeof Uint8Array !== 'undefined'
+    ? Uint8Array
+    : Array;
+
 /**
  * Sets up the Writer class before first use. This is done automatically when the first buffer is
  * allocated.
  * @returns {Function} `Writer`
  */
 Writer.setup = function setup() {
-    var ArrayImpl = typeof Uint8Array !== 'undefined'
-        ? Uint8Array
-        : Array;
 
     WriterPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
@@ -4724,13 +4725,7 @@ Writer.setup = function setup() {
             this[offset + i] = array[i];
     };
 
-    function alloc_array(size) {
-        alloc_array.count++;
-        alloc_array.bytes += size;
-        return new ArrayImpl(size);
-    }
-    alloc_array.count = alloc_array.total = 0;
-    Writer.alloc = alloc_array;
+    Writer.alloc = function alloc_array(size) { return new ArrayImpl(size); }
 
     emptyArray = Writer.alloc(0);
     if (Object.freeze)
@@ -4873,9 +4868,7 @@ WriterPrototype.int64 = WriterPrototype.uint64;
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
-    var bits = (typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0)).zzEncode();
+    var bits = LongBits.fromValue(value).zzEncode();
     return this._writeLongVarint(bits.lo, bits.hi);
 };
 
@@ -4942,10 +4935,11 @@ WriterPrototype._writeLongFixed = function writeLongFixed(lo, hi) {
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
-    var bits = typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    return this._writeLongFixed(bits.lo, bits.hi);
+    if (typeof value === 'number') {
+        var bits = LongBits.fromNumber(value);
+        return this._writeLongFixed(bits.lo, bits.hi);
+    }
+    return this._writeLongFixed(value.low >>> 0, value.high >>> 0);
 };
 
 /**
@@ -4954,10 +4948,7 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
-    var bits = typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    bits.zzEncode();
+    var bits = LongBits.from(value).zzEncode();
     return this._writeLongFixed(bits.lo, bits.hi);
 };
 
@@ -4995,7 +4986,7 @@ WriterPrototype.double = function write_double(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.bytes = function write_bytes(value) {
-    var len = value.length;
+    var len = value.length >>> 0;
     if (len) {
         this.uint32(len);
         if (this.pos + len > this.len)
@@ -5017,30 +5008,45 @@ WriterPrototype.bytes = function write_bytes(value) {
  */
 WriterPrototype.string = function write_string(value) {
     // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
-    var len = value.length;
+    var len = value.length >>> 0;
     if (len) {
-        var out = new Array(len << 2), p = 0;
-        for (var i = 0; i < len; i++) {
+        var blen = 0, i = 0;
+        for (; i < len; ++i) {
+            var c1 = value.charCodeAt(i), c2;
+            if (c1 < 128)
+                blen += 1;
+            else if (c1 < 2048)
+                blen += 2;
+            else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = value.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+                ++i;
+                blen += 4;
+            } else
+                blen += 3;
+        }
+        this.uint32(blen);
+        if (this.pos + blen > this.len)
+            this.expand(blen);
+        for (i = 0; i < len; ++i) {
             var c1 = value.charCodeAt(i), c2;
             if (c1 < 128) {
-                out[p++] = c1;
+                this.buf[this.pos++] = c1;
             } else if (c1 < 2048) {
-                out[p++] = c1 >> 6 | 192;
-                out[p++] = c1 & 63 | 128;
+                this.buf[this.pos++] = c1 >> 6 | 192;
+                this.buf[this.pos++] = c1 & 63 | 128;
             } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = value.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
                 c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
                 ++i;
-                out[p++] =  c1 >> 18      | 240;
-                out[p++] =  c1 >> 12 & 63 | 128;
-                out[p++] =  c1 >> 6  & 63 | 128;
-                out[p++] =  c1       & 63 | 128;
+                this.buf[this.pos++] = c1 >> 18      | 240;
+                this.buf[this.pos++] = c1 >> 12 & 63 | 128;
+                this.buf[this.pos++] = c1 >> 6  & 63 | 128;
+                this.buf[this.pos++] = c1       & 63 | 128;
             } else {
-                out[p++] = c1 >> 12      | 224;
-                out[p++] = c1 >> 6  & 63 | 128;
-                out[p++] = c1       & 63 | 128;
+                this.buf[this.pos++] = c1 >> 12      | 224;
+                this.buf[this.pos++] = c1 >> 6  & 63 | 128;
+                this.buf[this.pos++] = c1       & 63 | 128;
             }
         }
-        return this.bytes(out.slice(0, p));
+        return this;
     }
     if (this.pos >= this.len)
         this.expand(1);
@@ -5216,9 +5222,9 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
  * @returns {BufferWriter} `this`
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
-    var len = value.length;
+    var len = value.length >>> 0;
     this.uint32(len);
-    if (len > 0) {
+    if (len) {
         if (this.pos + len > this.len)
             this.expand(len);
         value.copy(this.buf, this.pos, 0, len);
@@ -5235,7 +5241,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = util.Buffer.byteLength(value);
     this.uint32(len);
-    if (len > 0) {
+    if (len) {
         if (this.pos + len > this.len)
             this.expand(len);
         this.buf.write(value, this.pos, len, "utf8");
@@ -5254,10 +5260,12 @@ BufferWriterPrototype.finish = function finish_buffer() {
         pos  = this.pos;
     this.reset();
     if (buf) {
-        if (bufs.length === 0)
-            return buf.slice(0, pos);
-        bufs.push(buf.slice(0, pos));
-        return util.Buffer.concat(bufs);
+        var len = bufs.length;
+        if (len) {
+            bufs[len] = buf.slice(0, pos);
+            return util.Buffer.concat(bufs);
+        }
+        return buf.slice(0, pos);
     }
     return emptyBuffer;
 };
