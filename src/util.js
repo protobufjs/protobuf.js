@@ -46,14 +46,6 @@ util.isObject = function isObject(value) {
 };
 
 /**
- * Tests if the specified value is an array.
- * @function
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is an array
- */
-util.isArray = Array.isArray;
-
-/**
  * Tests if the specified value is an integer.
  * @function
  * @param {*} value Value to test

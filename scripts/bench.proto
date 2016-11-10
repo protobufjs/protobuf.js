@@ -1,28 +1,36 @@
-message Bar {
-  message Foo {
-    optional uint32 baz = 1;
-  }
-
-  optional Foo tmp = 1;
-}
-
-enum FOO {
-  LOL=1;
-  ABE=3;
-}
-
-message Yo {
-  repeated FOO lol = 1;
-}
-
-message Lol {
-  optional string lol = 1;
-  required Bar b = 2;
-}
+syntax = "proto3";
 
 message Test {
-  optional Lol meh = 6;
-  optional uint32 hello = 3;
-  optional string foo = 1;
-  optional bytes payload = 7;
+
+    string  string = 1;
+    uint32  uint32 = 2;
+    Inner   inner  = 3;
+
+    message Inner {
+
+        int32      int32      = 1;
+        InnerInner innerInner = 2;
+        Outer      outer      = 3;
+
+        message InnerInner {
+
+            int64  long   = 1;
+            Enum   enum   = 2;
+            sint32 sint32 = 3;
+        }
+    }
+
+    enum Enum {
+
+        ONE   = 0;
+        TWO   = 1;
+        THREE = 2;
+        FOUR  = 3;
+        FIVE  = 3;
+    }
+}
+
+message Outer {
+
+    bool bool = 1;
 }

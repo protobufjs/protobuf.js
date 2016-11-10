@@ -11,7 +11,7 @@ function indexOutOfRange(reader, writeLength) {
 }
 
 /**
- * Wire format reader using arrays.
+ * Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  * @param {number[]} buffer Buffer to read from
  */
@@ -78,12 +78,12 @@ ReaderPrototype.tag = function read_tag() {
 ReaderPrototype.int32 = function read_int32() {
     var value = 0,
         shift = 0,
-        octet;
+        octet = 0;
     do {
         if (this.pos >= this.len)
             throw RangeError(indexOutOfRange(this));
         octet = this.buf[this.pos++];
-        if (shift < 28)
+        if (shift < 32)
             value |= (octet & 127) << shift;
         shift += 7;
     } while (octet & 128);

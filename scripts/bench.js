@@ -1,25 +1,27 @@
 var protobuf = require(__dirname + "/../src/index"),
+    Long     = require("long"),
     path     = require("path"),
-    pkg      = require(__dirname + "/../package.json");
+    assert   = require("assert");
+
 var JSONPoly = require("./lib/jsonpoly");
 
 var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 100000;
-console.log("usage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
-console.log("encoding/decoding " + times + " iterations ...\n");
 
 // NOTE: This benchmark measures message to buffer respectively buffer to message performance.
 
-var testData = {
-    foo: 'hello',
-    hello: 42,
-    payload: new Buffer('a'),
-    meh: {
-        b: {
-            tmp: {
-                baz: 1000
-            }
+var data = {
+    string : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+    uint32 : 9000,
+    inner : {
+        int32 : 20161110,
+        innerInner : {
+            long : new Long(1051, 151234, false),
+            enum : 1,
+            sint32: -42
         },
-        lol: 'lol'
+        outer : {
+            bool : true
+        }
     }
 };
 
@@ -28,9 +30,16 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
         throw err;
 
     try {
-        var Test = root.lookup("Test");
 
-        var t = Test.create();
+        // Set up our test message and verify that it encodes/decodes what we provided
+        var Test = root.lookup("Test");
+        protobuf.codegen.verbose = true;
+        var decoded = Test.decode(Test.encode(data).finish());
+        protobuf.codegen.verbose = false;
+        assert.deepEqual(decoded, data);
+
+        console.log("\nusage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
+        console.log("encoding/decoding " + times + " iterations ...\n");
         
         function summarize(name, start, length) {
             var time = Date.now() - start;
@@ -42,7 +51,7 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = Test.encode(testData).finish();
+                var buf = Test.encode(data).finish();
                 len += buf.length;
             }
             summarize("encode protobuf." + "js", start, len);
@@ -62,7 +71,7 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = Test.encode_(testData, writer).finish();
+                var buf = Test.encode_(data, writer).finish();
                 len += buf.length;
             }
             summarize("encode protobuf." + "js r/w", start, len);
@@ -80,7 +89,7 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
             var start = Date.now(),
                 len = 0;
             for (var i = 0; i < times; ++i) {
-                var buf = Buffer.from(JSON.stringify(testData), "utf8");
+                var buf = Buffer.from(JSON.stringify(data), "utf8");
                 len += buf.length;
             }
             summarize("encode JSON " + name, start, len);

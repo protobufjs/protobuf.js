@@ -16,12 +16,12 @@ var Field = require("./field"),
  * @param {Object} [options] Oneof options
  */
 function OneOf(name, fieldNames, options) {
-    if (!util.isArray(fieldNames)) {
+    if (!Array.isArray(fieldNames)) {
         options = fieldNames;
         fieldNames = undefined;
     }
     ReflectionObject.call(this, name, options);
-    if (fieldNames && !util.isArray(fieldNames))
+    if (fieldNames && !Array.isArray(fieldNames))
         throw util._TypeError("fieldNames", "an Array");
 
     /**

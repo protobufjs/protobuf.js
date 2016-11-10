@@ -157,16 +157,16 @@ The library exports a flat `protobuf` namespace with the following members, orde
 ### Serialization
 
 * **Writer** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js)]<br />
-  Wire format writer.
+  Wire format writer using `Uint8Array` if available, otherwise `Array`.
 
 * **BufferWriter** _extends **Writer**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js)]<br />
-  Wire format writer, node version.
+  Wire format writer using node buffers.
 
 * **Reader** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
-  Wire format reader.
+  Wire format reader using `Uint8Array` if available, otherwise `Array`.
 
 * **BufferReader** _extends **Reader**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
-  Wire format reader, node version.
+  Wire format reader using node buffers.
 
 * **Encoder** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/encoder.js)]<br />
   Wire format encoder using code generation on top of reflection.
@@ -212,6 +212,9 @@ The library exports a flat `protobuf` namespace with the following members, orde
   Runtime message prototype ready to be extended by custom classes or generated code.
 
 ### Utility
+
+* **codegen(`...string`): `function`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js)]<br />
+  Programmatically generates a function.
 
 * **util: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
   Utility functions.

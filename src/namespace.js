@@ -177,7 +177,7 @@ NamespacePrototype.remove = function remove(object) {
 NamespacePrototype.define = function define(path, json, visible) {
     if (util.isString(path))
         path = path.split('.');
-    else if (!util.isArray(path)) {
+    else if (!Array.isArray(path)) {
         visible = json;
         json = path;
         path = undefined;

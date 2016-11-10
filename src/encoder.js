@@ -71,7 +71,7 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
         // Non-repeated
         } else {
             var value = message[field.name];
-            if (field.required || value != field.defaultValue) { // eslint-disable-line eqeqeq
+            if (field.required || value !== field.defaultValue) {
                 if (wireType !== undefined)
                     writer.tag(field.id, wireType)[type](value);
                 else
@@ -91,7 +91,7 @@ EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$resolvedTypes", "message", "writer")
+    var gen = codegen("$types", "message", "writer")
 
     ('"use strict";');
     
@@ -106,15 +106,15 @@ EncoderPrototype.generate = function generate() {
                 keyWireType = types.mapKeyWireTypes[keyType];
             gen
 
-    ("var value = message[%j], keys;", field.name)
-    ("if (value && (keys = Object.keys(value)).length) {")
-        ("writer.tag(%d, 2).fork();", field.id)
+    ("var map = message[%j], keys;", field.name)
+    ("if (map && (keys = Object.keys(map)).length) {")
+        ("writer.tag(%d,2).fork();", field.id)
         ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
-            ("writer.tag(1, %d).%s(key = keys[i]);", keyWireType, keyType);
+            ("writer.tag(1,%d).%s(key = keys[i]);", keyWireType, keyType);
             if (wireType !== undefined) gen
-            ("writer.tag(2, %d).%s(value[key]);", wireType, type);
+            ("writer.tag(2,%d).%s(map[key]);", wireType, type);
             else gen
-            ("$resolvedTypes[%d].encodeDelimited_(value[key], writer.tag(2, 2));", i);
+            ("$types[%d].encodeDelimited_(map[key], writer.tag(2,2));", i);
             gen
         ("}")
         ("writer.bytes(writer.finish());")
@@ -123,49 +123,36 @@ EncoderPrototype.generate = function generate() {
         // Repeated fields
         } else if (field.repeated) { gen
 
-    ("var values = message[%j], i = 0, k = values.length;", field.name);
+    ("var vals = message[%j], i = 0, k = vals.length;", field.name);
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) { gen
 
     ("writer.fork();")
     ("while (i < k)")
-        ("writer.%s(values[i++]);", type)
-    ("var buffer = writer.finish();")
-    ("if (buffer.length)")
-        ("writer.tag(%d, 2).bytes(buffer);", field.id);
+        ("writer.%s(vals[i++]);", type)
+    ("var buf = writer.finish();")
+    ("if (buf.length)")
+        ("writer.tag(%d,2).bytes(buf);", field.id);
 
             // Non-packed
             } else { gen
 
     ("while (i < k)")
-        ("$resolvedTypes[%d].encodeDelimited_(values[i++], writer.tag(%d, 2));", i, field.id);
+        ("$types[%d].encodeDelimited_(vals[i++],writer.tag(%d,2));", i, field.id);
 
             }
 
         // Non-repeated
-        } else {
-
-            if (field.required) {
-
-                if (wireType !== undefined) gen
-    ("writer.tag(%d, %d).%s(message[%j]);", field.id, wireType, type, field.name);
-                else gen
-    ("$resolvedTypes[%d].encodeDelimited_(message[%j], writer.tag(%d, 2));", i, field.name, field.id);
-
-            } else { gen
-
+        } else { gen
     ("var value = message[%j];", field.name);
 
-                if (wireType !== undefined) gen
-    ("if (value != %j)", field.defaultValue)
-        ("writer.tag(%d, %d).%s(value);", field.id, wireType, type);
-                else gen
-    ("if (value != %j) {", field.defaultValue)
-        ("$resolvedTypes[%d].encodeDelimited_(value, writer.tag(%d, 2));", i, field.id)
-    ("}");
-
-            }
+            if (!field.required) gen
+    ("if (value !== %j)", field.defaultValue);
+            if (wireType !== undefined) gen
+    ("writer.tag(%d,%d).%s(value);", field.id, wireType, type);
+            else gen
+    ("$types[%d].encodeDelimited_(value, writer.tag(%d,2));", i, field.id);
     
         }
     }

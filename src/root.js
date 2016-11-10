@@ -332,7 +332,7 @@ RootPrototype.load = function load(filename, callback, ctx) {
 
     // Assembling the root namespace doesn't require working type
     // references anymore, so we can load everything in parallel
-    if (util.isArray(filename))
+    if (Array.isArray(filename))
         filename.forEach(function(file) {
             fetch(file, true, false);
         });
