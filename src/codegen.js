@@ -63,7 +63,7 @@ function codegen(/* varargs */) {
     gen.eof = function eof(name) {
         var code = gen.toString(name);
         if (codegen.verbose)
-            console.log("--- codegen ---\n" + code.replace(/^/mg, "> ")); // eslint-disable-line no-console
+            console.log("--- codegen ---\n" + code.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
         return new Function("return " + code + ";")(); // eslint-disable-line no-new-func
     };
 

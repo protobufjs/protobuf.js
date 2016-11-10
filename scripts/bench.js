@@ -9,41 +9,18 @@ var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 100000;
 
 // NOTE: This benchmark measures message to buffer respectively buffer to message performance.
 
-var data = {
-    string : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-    uint32 : 9000,
-    inner : {
-        int32 : 20161110,
-        innerInner : {
-            long : new Long(1051, 151234, false),
-            enum : 1,
-            sint32: -42
-        },
-        outer : {
-            bool : [ true, false, false, true, false, false, true ]
-        }
-    }
-};
+var data = require("./bench.json");
 
-protobuf.load(__dirname + "/bench.proto", function(err, root) {
+protobuf.load(require.resolve("./bench.proto"), function(err, root) {
     if (err)
         throw err;
 
     try {
-
-        // Set up our test message and verify that it encodes/decodes what we provided
+        // Set up our test message and print the generated code
         var Test = root.lookup("Test");
         protobuf.codegen.verbose = true;
-        var buf = Test.encode(data).finish();
-        var decoded = Test.decode(buf);
+        Test.decode(Test.encode(data).finish());
         protobuf.codegen.verbose = false;
-        try {
-            assert.deepEqual(decoded, data);
-        } catch (err) {
-            console.log(JSON.stringify(data, null, 2));
-            console.log(JSON.stringify(decoded, null, 2));
-            throw "payloads do not match";
-        }
 
         console.log("\nusage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
         console.log("encoding/decoding " + times + " iterations ...\n");
@@ -74,10 +51,11 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
 
         function bench_protobuf_rw() {
             var start = Date.now(),
-                len = 0;
+                len = 0,
+                buf;
             var writer = protobuf.Writer();
             for (var i = 0; i < times; ++i) {
-                var buf = Test.encode_(data, writer).finish();
+                buf = Test.encode_(data, writer).finish();
                 len += buf.length;
             }
             summarize("encode protobuf." + "js r/w", start, len);

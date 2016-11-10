@@ -1,0 +1,19 @@
+{
+    "string" : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+    "uint32" : 9000,
+    "inner" : {
+        "int32" : 20161110,
+        "innerInner" : {
+            "long" : {
+                "low": 1051,
+                "high": 151234,
+                "unsigned": false
+            },
+            "enum" : 1,
+            "sint32": -42
+        },
+        "outer" : {
+            "bool" : [ true, false, false, true, false, false, true ]
+        }
+    }
+}

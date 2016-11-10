@@ -10,7 +10,7 @@ var LongBits = require("./longbits"),
  * Default buffer size.
  * @type {number}
  */
-Writer.BUFFER_SIZE = 256; // TODO: For some reason this is considerably faster on node than 128 or 512.
+Writer.BUFFER_SIZE = 256; // For some reason this is considerably faster on node than 128 or 512.
 
 /**
  * Wire format writer using `Uint8Array` if available, otherwise `Array`.
@@ -60,15 +60,16 @@ var WriterPrototype = Writer.prototype;
 
 var emptyArray = null;
 
+var ArrayImpl = typeof Uint8Array !== 'undefined'
+    ? Uint8Array
+    : Array;
+
 /**
  * Sets up the Writer class before first use. This is done automatically when the first buffer is
  * allocated.
  * @returns {Function} `Writer`
  */
 Writer.setup = function setup() {
-    var ArrayImpl = typeof Uint8Array !== 'undefined'
-        ? Uint8Array
-        : Array;
 
     WriterPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
@@ -79,13 +80,7 @@ Writer.setup = function setup() {
             this[offset + i] = array[i];
     };
 
-    function alloc_array(size) {
-        alloc_array.count++;
-        alloc_array.bytes += size;
-        return new ArrayImpl(size);
-    }
-    alloc_array.count = alloc_array.total = 0;
-    Writer.alloc = alloc_array;
+    Writer.alloc = function alloc_array(size) { return new ArrayImpl(size); }
 
     emptyArray = Writer.alloc(0);
     if (Object.freeze)
@@ -346,7 +341,7 @@ WriterPrototype.double = function write_double(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.bytes = function write_bytes(value) {
-    var len = value.length;
+    var len = value.length >>> 0;
     if (len) {
         this.uint32(len);
         if (this.pos + len > this.len)
@@ -368,30 +363,45 @@ WriterPrototype.bytes = function write_bytes(value) {
  */
 WriterPrototype.string = function write_string(value) {
     // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
-    var len = value.length;
+    var len = value.length >>> 0;
     if (len) {
-        var out = new Array(len << 2), p = 0;
-        for (var i = 0; i < len; i++) {
+        var blen = 0, i = 0;
+        for (; i < len; ++i) {
+            var c1 = value.charCodeAt(i), c2;
+            if (c1 < 128)
+                blen += 1;
+            else if (c1 < 2048)
+                blen += 2;
+            else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = value.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+                ++i;
+                blen += 4;
+            } else
+                blen += 3;
+        }
+        this.uint32(blen);
+        if (this.pos + blen > this.len)
+            this.expand(blen);
+        for (i = 0; i < len; ++i) {
             var c1 = value.charCodeAt(i), c2;
             if (c1 < 128) {
-                out[p++] = c1;
+                this.buf[this.pos++] = c1;
             } else if (c1 < 2048) {
-                out[p++] = c1 >> 6 | 192;
-                out[p++] = c1 & 63 | 128;
+                this.buf[this.pos++] = c1 >> 6 | 192;
+                this.buf[this.pos++] = c1 & 63 | 128;
             } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = value.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
                 c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
                 ++i;
-                out[p++] =  c1 >> 18      | 240;
-                out[p++] =  c1 >> 12 & 63 | 128;
-                out[p++] =  c1 >> 6  & 63 | 128;
-                out[p++] =  c1       & 63 | 128;
+                this.buf[this.pos++] = c1 >> 18      | 240;
+                this.buf[this.pos++] = c1 >> 12 & 63 | 128;
+                this.buf[this.pos++] = c1 >> 6  & 63 | 128;
+                this.buf[this.pos++] = c1       & 63 | 128;
             } else {
-                out[p++] = c1 >> 12      | 224;
-                out[p++] = c1 >> 6  & 63 | 128;
-                out[p++] = c1       & 63 | 128;
+                this.buf[this.pos++] = c1 >> 12      | 224;
+                this.buf[this.pos++] = c1 >> 6  & 63 | 128;
+                this.buf[this.pos++] = c1       & 63 | 128;
             }
         }
-        return this.bytes(out.slice(0, p));
+        return this;
     }
     if (this.pos >= this.len)
         this.expand(1);
@@ -567,7 +577,7 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
  * @returns {BufferWriter} `this`
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
-    var len = value.length;
+    var len = value.length >>> 0;
     this.uint32(len);
     if (len) {
         if (this.pos + len > this.len)
