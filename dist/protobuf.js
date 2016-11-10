@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Thu, 10 Nov 2016 04:55:02 UTC
+ * Compiled Thu, 10 Nov 2016 05:26:08 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -340,7 +340,7 @@ DecoderPrototype.generate = function generate() {
 
         } else if (field.repeated) { gen
 
-                ("var values = (message[%j] || (message[%j] = [])), length = values.length;", field.name, field.name)
+                ("var values = (message[%j] || (message[%j] = [])), length = values.length;", field.name, field.name);
 
             if (field.packed && packType !== undefined) { gen
 
@@ -1114,7 +1114,8 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     // Initialize default values
     type.fieldsArray.forEach(function(field) {
         field.resolve();
-        if (!util.isObject(field.defaultValue)) // objects are mutable (i.e. would modify the array on prototype)
+        if (!util.isObject(field.defaultValue))
+            // objects are mutable (i.e. would modify the array on the prototype, not the instance)
             prototype[field.name] = field.defaultValue;
     });
 
@@ -2813,7 +2814,7 @@ ReaderPrototype.sint32 = function read_sint32() {
 
 /**
  * Reads a possibly 64 bits varint.
- * @returns {LongBits}
+ * @returns {LongBits} Long bits
  * @private
  */
 ReaderPrototype._readLongVarint = function readLongVarint() {
@@ -2863,28 +2864,7 @@ ReaderPrototype._readLongVarint = function readLongVarint() {
         }
     }
     throw Error("invalid varint encoding");
-}
-
-/**
- * Reads a 64 bit value.
- * @returns {LongBits}
- * @private 
- */
-ReaderPrototype._readLongFixed = function readLongFixed() {
-    if (reader.pos + 8 > reader.len)
-        throw RangeError(indexOutOfRange(reader, 8));
-    return new LongBits(
-      ( reader.buf[reader.pos++]
-      | reader.buf[reader.pos++] << 8
-      | reader.buf[reader.pos++] << 16
-      | reader.buf[reader.pos++] << 24 ) >>> 0
-    ,
-      ( reader.buf[reader.pos++]
-      | reader.buf[reader.pos++] << 8
-      | reader.buf[reader.pos++] << 16
-      | reader.buf[reader.pos++] << 24 ) >>> 0
-    );
-}
+};
 
 /**
  * Reads a varint as a signed 64 bit value.
@@ -2948,6 +2928,27 @@ ReaderPrototype.fixed32 = function read_fixed32() {
 ReaderPrototype.sfixed32 = function read_sfixed32() {
     var value = this.fixed32();
     return value >>> 1 ^ -(value & 1);
+};
+
+/**
+ * Reads a 64 bit value.
+ * @returns {LongBits} Long bits
+ * @private 
+ */
+ReaderPrototype._readLongFixed = function readLongFixed() {
+    if (this.pos + 8 > this.len)
+        throw RangeError(indexOutOfRange(this, 8));
+    return new LongBits(
+      ( this.buf[this.pos++]
+      | this.buf[this.pos++] << 8
+      | this.buf[this.pos++] << 16
+      | this.buf[this.pos++] << 24 ) >>> 0
+    ,
+      ( this.buf[this.pos++]
+      | this.buf[this.pos++] << 8
+      | this.buf[this.pos++] << 16
+      | this.buf[this.pos++] << 24 ) >>> 0
+    );
 };
 
 /**
@@ -4749,7 +4750,6 @@ Writer.alloc = function alloc_array_setup(size) {
 
 /**
  * Allocates more memory on the specified writer.
- * @param {Writer} writer Writer to expand
  * @param {number} writeLength Write length requested
  * @returns {Writer} `this`
  */

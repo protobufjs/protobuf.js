@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Thu, 10 Nov 2016 02:10:16 UTC
+ * Generated Thu, 10 Nov 2016 05:26:15 UTC
  */
 declare module protobuf {
 
@@ -931,13 +931,13 @@ declare module protobuf {
    }
    
    /**
-    * Wire format reader using arrays.
+    * Wire format reader using `Uint8Array` if available, otherwise `Array`.
     * @constructor
     * @param {number[]} buffer Buffer to read from
     */
    class Reader {
       /**
-       * Wire format reader using arrays.
+       * Wire format reader using `Uint8Array` if available, otherwise `Array`.
        * @constructor
        * @param {number[]} buffer Buffer to read from
        */
@@ -986,6 +986,13 @@ declare module protobuf {
       sint32(): number;
    
       /**
+       * Reads a possibly 64 bits varint.
+       * @returns {LongBits} Long bits
+       * @private
+       */
+      private _readLongVarint(): LongBits;
+   
+      /**
        * Reads a varint as a signed 64 bit value.
        * @returns {Long|number} Value read
        */
@@ -1020,6 +1027,13 @@ declare module protobuf {
        * @returns {number} Value read
        */
       sfixed32(): number;
+   
+      /**
+       * Reads a 64 bit value.
+       * @returns {LongBits} Long bits
+       * @private
+       */
+      private _readLongFixed(): LongBits;
    
       /**
        * Reads fixed 64 bits as a Long.
@@ -1514,14 +1528,6 @@ declare module protobuf {
       function isObject(value: any): boolean;
    
       /**
-       * Tests if the specified value is an array.
-       * @function
-       * @param {*} value Value to test
-       * @returns {boolean} `true` if the value is an array
-       */
-      function isArray(value: any): boolean;
-   
-      /**
        * Tests if the specified value is an integer.
        * @function
        * @param {*} value Value to test
@@ -1614,13 +1620,13 @@ declare module protobuf {
    }
    
    /**
-    * Wire format writer using arrays.
+    * Wire format writer using `Uint8Array` if available, otherwise `Array`.
     * @exports Writer
     * @constructor
     */
    class Writer {
       /**
-       * Wire format writer using arrays.
+       * Wire format writer using `Uint8Array` if available, otherwise `Array`.
        * @exports Writer
        * @constructor
        */
@@ -1678,6 +1684,13 @@ declare module protobuf {
       static alloc(size: number): number[];
    
       /**
+       * Allocates more memory on the specified writer.
+       * @param {number} writeLength Write length requested
+       * @returns {Writer} `this`
+       */
+      expand(writeLength: number): Writer;
+   
+      /**
        * Writes a tag.
        * @param {number} id Field id
        * @param {number} wireType Wire type
@@ -1706,6 +1719,15 @@ declare module protobuf {
        * @returns {Writer} `this`
        */
       sint32(value: number): Writer;
+   
+      /**
+       * Writes a long as a varint.
+       * @param {number} lo Low bits
+       * @param {number} hi High bits
+       * @returns {Writer} `this`
+       * @private
+       */
+      private _writeLongVarint(lo: number, hi: number): Writer;
    
       /**
        * Writes an unsigned 64 bit value as a varint.
@@ -1749,6 +1771,15 @@ declare module protobuf {
        * @returns {Writer} `this`
        */
       sfixed32(value: number): Writer;
+   
+      /**
+       * Writes a 64 bit value.
+       * @param {number} lo Low bits
+       * @param {number} hi High bits
+       * @returns {Writer} `this`
+       * @private
+       */
+      private _writeLongFixed(lo: number, hi: number): Writer;
    
       /**
        * Writes a 64 bit value as fixed 64 bits.

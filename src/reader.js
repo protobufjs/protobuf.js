@@ -109,7 +109,7 @@ ReaderPrototype.sint32 = function read_sint32() {
 
 /**
  * Reads a possibly 64 bits varint.
- * @returns {LongBits}
+ * @returns {LongBits} Long bits
  * @private
  */
 ReaderPrototype._readLongVarint = function readLongVarint() {
@@ -159,28 +159,7 @@ ReaderPrototype._readLongVarint = function readLongVarint() {
         }
     }
     throw Error("invalid varint encoding");
-}
-
-/**
- * Reads a 64 bit value.
- * @returns {LongBits}
- * @private 
- */
-ReaderPrototype._readLongFixed = function readLongFixed() {
-    if (reader.pos + 8 > reader.len)
-        throw RangeError(indexOutOfRange(reader, 8));
-    return new LongBits(
-      ( reader.buf[reader.pos++]
-      | reader.buf[reader.pos++] << 8
-      | reader.buf[reader.pos++] << 16
-      | reader.buf[reader.pos++] << 24 ) >>> 0
-    ,
-      ( reader.buf[reader.pos++]
-      | reader.buf[reader.pos++] << 8
-      | reader.buf[reader.pos++] << 16
-      | reader.buf[reader.pos++] << 24 ) >>> 0
-    );
-}
+};
 
 /**
  * Reads a varint as a signed 64 bit value.
@@ -244,6 +223,27 @@ ReaderPrototype.fixed32 = function read_fixed32() {
 ReaderPrototype.sfixed32 = function read_sfixed32() {
     var value = this.fixed32();
     return value >>> 1 ^ -(value & 1);
+};
+
+/**
+ * Reads a 64 bit value.
+ * @returns {LongBits} Long bits
+ * @private 
+ */
+ReaderPrototype._readLongFixed = function readLongFixed() {
+    if (this.pos + 8 > this.len)
+        throw RangeError(indexOutOfRange(this, 8));
+    return new LongBits(
+      ( this.buf[this.pos++]
+      | this.buf[this.pos++] << 8
+      | this.buf[this.pos++] << 16
+      | this.buf[this.pos++] << 24 ) >>> 0
+    ,
+      ( this.buf[this.pos++]
+      | this.buf[this.pos++] << 8
+      | this.buf[this.pos++] << 16
+      | this.buf[this.pos++] << 24 ) >>> 0
+    );
 };
 
 /**

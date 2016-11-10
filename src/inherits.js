@@ -142,7 +142,8 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     // Initialize default values
     type.fieldsArray.forEach(function(field) {
         field.resolve();
-        if (!util.isObject(field.defaultValue)) // objects are mutable (i.e. would modify the array on prototype)
+        if (!util.isObject(field.defaultValue))
+            // objects are mutable (i.e. would modify the array on the prototype, not the instance)
             prototype[field.name] = field.defaultValue;
     });
 

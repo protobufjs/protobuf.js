@@ -142,7 +142,7 @@ DecoderPrototype.generate = function generate() {
 
         } else if (field.repeated) { gen
 
-                ("var values = (message[%j] || (message[%j] = [])), length = values.length;", field.name, field.name)
+                ("var values = (message[%j] || (message[%j] = [])), length = values.length;", field.name, field.name);
 
             if (field.packed && packType !== undefined) { gen
 

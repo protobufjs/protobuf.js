@@ -105,7 +105,6 @@ Writer.alloc = function alloc_array_setup(size) {
 
 /**
  * Allocates more memory on the specified writer.
- * @param {Writer} writer Writer to expand
  * @param {number} writeLength Write length requested
  * @returns {Writer} `this`
  */
