@@ -141,7 +141,9 @@ inherits.defineProperties = function defineProperties(prototype, type) {
 
     // Initialize default values
     type.fieldsArray.forEach(function(field) {
-        prototype[field.name] = field.resolve().defaultValue;
+        field.resolve();
+        if (!util.isObject(field.defaultValue)) // objects are mutable (i.e. would modify the array on prototype)
+            prototype[field.name] = field.defaultValue;
     });
 
     // Define each oneof with a non-enumerable getter and setter for the present field

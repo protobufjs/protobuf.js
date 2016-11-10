@@ -10,7 +10,7 @@ var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 100000;
 // NOTE: This benchmark measures message to buffer respectively buffer to message performance.
 
 var data = {
-    string : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+    string : "a", // Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
     uint32 : 9000,
     inner : {
         int32 : 20161110,
@@ -20,7 +20,7 @@ var data = {
             sint32: -42
         },
         outer : {
-            bool : true
+            bool : [ true, false, false, true, false, false, true ]
         }
     }
 };
@@ -34,9 +34,16 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
         // Set up our test message and verify that it encodes/decodes what we provided
         var Test = root.lookup("Test");
         protobuf.codegen.verbose = true;
-        var decoded = Test.decode(Test.encode(data).finish());
+        var buf = Test.encode(data).finish();
+        var decoded = Test.decode(buf);
         protobuf.codegen.verbose = false;
-        assert.deepEqual(decoded, data);
+        try {
+            assert.deepEqual(decoded, data);
+        } catch (err) {
+            console.log(JSON.stringify(data, null, 2));
+            console.log(JSON.stringify(decoded, null, 2));
+            throw "payloads do not match";
+        }
 
         console.log("\nusage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");
         console.log("encoding/decoding " + times + " iterations ...\n");

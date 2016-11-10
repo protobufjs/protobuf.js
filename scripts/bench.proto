@@ -26,11 +26,11 @@ message Test {
         TWO   = 1;
         THREE = 2;
         FOUR  = 3;
-        FIVE  = 3;
+        FIVE  = 4;
     }
 }
 
 message Outer {
 
-    bool bool = 1;
+    repeated bool bool = 1;
 }

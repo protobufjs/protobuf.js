@@ -107,47 +107,52 @@ ReaderPrototype.sint32 = function read_sint32() {
     return value >>> 1 ^ -(value & 1);
 };
 
-function readLongVarint(reader) {
+/**
+ * Reads a possibly 64 bits varint.
+ * @returns {LongBits}
+ * @private
+ */
+ReaderPrototype._readLongVarint = function readLongVarint() {
     var lo = 0, hi = 0,
         i  = 0, b  = 0;
-    if (reader.len - reader.pos > 9) { // fast route
+    if (this.len - this.pos > 9) { // fast route
         for (i = 0; i < 4; ++i) {
-            b = reader.buf[reader.pos++];
+            b = this.buf[this.pos++];
             lo |= (b & 127) << i * 7;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
         }
-        b = reader.buf[reader.pos++];
+        b = this.buf[this.pos++];
         lo |= (b & 127) << 28;
         hi |= (b & 127) >> 4;
         if (b < 128)
             return new LongBits(lo >>> 0, hi >>> 0);
         for (i = 0; i < 5; ++i) {
-            b = reader.buf[reader.pos++];
+            b = this.buf[this.pos++];
             hi |= (b & 127) << i * 7 + 3;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
         }
     } else {
         for (i = 0; i < 4; ++i) {
-            if (reader.pos >= reader.len)
-                throw RangeError(indexOutOfRange(reader));
-            b = reader.buf[reader.pos++];
+            if (this.pos >= this.len)
+                throw RangeError(indexOutOfRange(this));
+            b = this.buf[this.pos++];
             lo |= (b & 127) << i * 7;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
         }
-        if (reader.pos >= reader.len)
-            throw RangeError(indexOutOfRange(reader));
-        b = reader.buf[reader.pos++];
+        if (this.pos >= this.len)
+            throw RangeError(indexOutOfRange(this));
+        b = this.buf[this.pos++];
         lo |= (b & 127) << 28;
         hi |= (b & 127) >> 4;
         if (b < 128)
             return new LongBits(lo >>> 0, hi >>> 0);
         for (i = 0; i < 5; ++i) {
-            if (reader.pos >= reader.len)
-                throw RangeError(indexOutOfRange(reader));
-            b = reader.buf[reader.pos++];
+            if (this.pos >= this.len)
+                throw RangeError(indexOutOfRange(this));
+            b = this.buf[this.pos++];
             hi |= (b & 127) << i * 7 + 3;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
@@ -156,7 +161,12 @@ function readLongVarint(reader) {
     throw Error("invalid varint encoding");
 }
 
-function readLongFixed(reader) {
+/**
+ * Reads a 64 bit value.
+ * @returns {LongBits}
+ * @private 
+ */
+ReaderPrototype._readLongFixed = function readLongFixed() {
     if (reader.pos + 8 > reader.len)
         throw RangeError(indexOutOfRange(reader, 8));
     return new LongBits(
@@ -177,7 +187,7 @@ function readLongFixed(reader) {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.int64 = function read_int64() {
-    var bits = readLongVarint(this);
+    var bits = this._readLongVarint();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, false);
     return bits.toNumber(false);
@@ -188,7 +198,7 @@ ReaderPrototype.int64 = function read_int64() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.uint64 = function read_uint64() {
-    var bits = readLongVarint(this);
+    var bits = this._readLongVarint();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, true);
     return bits.toNumber(true);
@@ -199,7 +209,7 @@ ReaderPrototype.uint64 = function read_uint64() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.sint64 = function read_sint64() {
-    var bits = readLongVarint(this).zzDecode();
+    var bits = this._readLongVarint().zzDecode();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, false);
     return bits.toNumber(false);
@@ -241,7 +251,7 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.fixed64 = function read_fixed64() {
-    var bits = readLongFixed(this);
+    var bits = this._readLongFixed();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, true);
     return bits.toNumber(true);
@@ -252,7 +262,7 @@ ReaderPrototype.fixed64 = function read_fixed64() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.sfixed64 = function read_sfixed64() {
-    var bits = readLongFixed(this).zzDecode();
+    var bits = this._readLongFixed().zzDecode();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, false);
     return bits.toNumber(false);

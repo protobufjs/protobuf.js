@@ -177,7 +177,7 @@ WriterPrototype.sint32 = function write_sint32(value) {
  * Writes a long as a varint.
  * @param {number} lo Low bits
  * @param {number} hi High bits
- * @returns {undefined}
+ * @returns {Writer} `this`
  * @private
  */
 WriterPrototype._writeLongVarint = function writeLongVarint(lo, hi) {
@@ -199,6 +199,7 @@ WriterPrototype._writeLongVarint = function writeLongVarint(lo, hi) {
             this.expand(1);
     }
     this.buf[this.pos++] = lo;
+    return this;
 };
 
 /**
@@ -209,10 +210,9 @@ WriterPrototype._writeLongVarint = function writeLongVarint(lo, hi) {
 WriterPrototype.uint64 = function write_uint64(value) {
     if (typeof value === 'number') {
         var bits = LongBits.fromNumber(value);
-        this._writeLongVarint(bits.lo, bits.hi);
-    } else
-        this._writeLongVarint(value.low >>> 0, value.high >>> 0);
-    return this;
+        return this._writeLongVarint(bits.lo, bits.hi);
+    } 
+    return this._writeLongVarint(value.low >>> 0, value.high >>> 0);
 };
 
 /**
@@ -229,12 +229,10 @@ WriterPrototype.int64 = WriterPrototype.uint64;
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
-    var bits = typeof value === 'number'
+    var bits = (typeof value === 'number'
         ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    bits.zzEncode();
-    this._writeLongVarint(bits.lo, bits.hi);
-    return this;
+        : new LongBits(value.low >>> 0, value.high >>> 0)).zzEncode();
+    return this._writeLongVarint(bits.lo, bits.hi);
 };
 
 /**
@@ -277,7 +275,7 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
  * Writes a 64 bit value.
  * @param {number} lo Low bits
  * @param {number} hi High bits
- * @returns {undefined} this
+ * @returns {Writer} `this`
  * @private
  */
 WriterPrototype._writeLongFixed = function writeLongFixed(lo, hi) {
@@ -291,6 +289,7 @@ WriterPrototype._writeLongFixed = function writeLongFixed(lo, hi) {
     this.buf[this.pos++] = hi >>> 8  & 255;
     this.buf[this.pos++] = hi >>> 16 & 255;
     this.buf[this.pos++] = hi >>> 24      ;
+    return this;
 };
 
 /**
@@ -302,8 +301,7 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
     var bits = typeof value === 'number'
         ? LongBits.fromNumber(value)
         : new LongBits(value.low >>> 0, value.high >>> 0);
-    this._writeLongFixed(this, bits.lo, bits.hi);
-    return this;
+    return this._writeLongFixed(bits.lo, bits.hi);
 };
 
 /**
@@ -316,8 +314,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
         ? LongBits.fromNumber(value)
         : new LongBits(value.low >>> 0, value.high >>> 0);
     bits.zzEncode();
-    this._writeLongFixed(this, bits.lo, bits.hi);
-    return this;
+    return this._writeLongFixed(bits.lo, bits.hi);
 };
 
 /**

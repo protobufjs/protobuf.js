@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Thu, 10 Nov 2016 02:05:47 UTC
+ * Compiled Thu, 10 Nov 2016 04:55:02 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -248,10 +248,8 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                             keys[ki++] = reader[keyType]();
                         else if (wireType !== undefined)
                             values[vi++] = reader[type]();
-                        else {
-                            var resolvedType = field.resolvedType;
-                            values[vi++] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
-                        }
+                        else
+                            values[vi++] = field.resolvedType.decodeDelimited_(reader, field.resolvedType.create_());
                     }
                     var key;
                     for (ki = 0; ki < vi; ++ki)
@@ -262,31 +260,26 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
             // Repeated fields
             } else if (field.repeated) {
 
-                var values   = message[field.name],
-                    length   = values.length,
-                    packType = types.packableWireTypes[type];
+                var values   = message[field.name] || (message[field.name] = []),
+                    length   = values.length;
 
                 // Packed
-                if (field.packed && tag.wireType === packType) {
+                if (field.packed && types.packableWireTypes[type] !== undefined && tag.wireType === 2) {
                     var plimit = reader.uint32() + reader.pos;
                     while (reader.pos < plimit)
                         values[length++] = reader[type]();
 
                 // Non-packed
-                } else if (wireType !== undefined) {
+                } else if (wireType !== undefined)
                     values[length++] = reader[type]();
-                } else {
-                    var resolvedType = field.resolvedType;
-                    values[length++] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
-                }
+                else
+                    values[length++] = field.resolvedType.decodeDelimited_(reader, field.resolvedType.create_());
 
             // Non-repeated
-            } else if (wireType !== undefined) {
+            } else if (wireType !== undefined)
                 message[field.name] = reader[type]();
-            } else {
-                var resolvedType = field.resolvedType;
-                message[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
-            }
+            else
+                message[field.name] = field.resolvedType.decodeDelimited_(reader, field.resolvedType.create_());
 
         // Unknown fields
         } else
@@ -305,7 +298,7 @@ DecoderPrototype.generate = function generate() {
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
     
-    var gen = codegen("$resolvedTypes", "$toHash", "reader", "message", "limit")
+    var gen = codegen("$types", "$toHash", "reader", "message", "limit")
 
     ('"use strict";')
     ("while (reader.pos < limit) {")
@@ -335,8 +328,7 @@ DecoderPrototype.generate = function generate() {
                             ("values[vi++] = reader.%s();", type);
                         else gen
                         ("else {")
-                            ("var type = $resolvedTypes[%d];", i)
-                            ("values[vi++] = type.decodeDelimited_(reader, type.create_());")
+                            ("values[vi++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i)
                         ("}");
                     gen
                     ("}")
@@ -348,11 +340,11 @@ DecoderPrototype.generate = function generate() {
 
         } else if (field.repeated) { gen
 
-                ("var values = message[%j], length = values.length;", field.name);
+                ("var values = (message[%j] || (message[%j] = [])), length = values.length;", field.name, field.name)
 
             if (field.packed && packType !== undefined) { gen
 
-                ("if (tag.wireType === %d) {", packType)
+                ("if (tag.wireType === 2) {")
                     ("var plimit = reader.uint32() + reader.pos;")
                     ("while (reader.pos < plimit)")
                         ("values[length++] = reader.%s();", type)
@@ -366,8 +358,7 @@ DecoderPrototype.generate = function generate() {
 
             else gen
 
-                    ("var type = $resolvedTypes[%d];", i)
-                    ("values[length++] = type.decodeDelimited_(reader, type.create_());");
+                    ("values[length++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i);
 
             if (field.packed && packType !== undefined) gen
 
@@ -379,8 +370,7 @@ DecoderPrototype.generate = function generate() {
 
         } else { gen
 
-                ("var type = $resolvedTypes[%d];", i)
-                ("message[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
+                ("message[%j] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", field.name, i, i);
 
         } gen
                 ("break;");
@@ -469,7 +459,7 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
         // Non-repeated
         } else {
             var value = message[field.name];
-            if (field.required || value != field.defaultValue) { // eslint-disable-line eqeqeq
+            if (field.required || value !== field.defaultValue) {
                 if (wireType !== undefined)
                     writer.tag(field.id, wireType)[type](value);
                 else
@@ -489,7 +479,7 @@ EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$resolvedTypes", "message", "writer")
+    var gen = codegen("$types", "message", "writer")
 
     ('"use strict";');
     
@@ -504,15 +494,15 @@ EncoderPrototype.generate = function generate() {
                 keyWireType = types.mapKeyWireTypes[keyType];
             gen
 
-    ("var value = message[%j], keys;", field.name)
-    ("if (value && (keys = Object.keys(value)).length) {")
-        ("writer.tag(%d, 2).fork();", field.id)
+    ("var map = message[%j], keys;", field.name)
+    ("if (map && (keys = Object.keys(map)).length) {")
+        ("writer.tag(%d,2).fork();", field.id)
         ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
-            ("writer.tag(1, %d).%s(key = keys[i]);", keyWireType, keyType);
+            ("writer.tag(1,%d).%s(key = keys[i]);", keyWireType, keyType);
             if (wireType !== undefined) gen
-            ("writer.tag(2, %d).%s(value[key]);", wireType, type);
+            ("writer.tag(2,%d).%s(map[key]);", wireType, type);
             else gen
-            ("$resolvedTypes[%d].encodeDelimited_(value[key], writer.tag(2, 2));", i);
+            ("$types[%d].encodeDelimited_(map[key], writer.tag(2,2));", i);
             gen
         ("}")
         ("writer.bytes(writer.finish());")
@@ -521,49 +511,36 @@ EncoderPrototype.generate = function generate() {
         // Repeated fields
         } else if (field.repeated) { gen
 
-    ("var values = message[%j], i = 0, k = values.length;", field.name);
+    ("var vals = message[%j], i = 0, k = vals.length;", field.name);
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) { gen
 
     ("writer.fork();")
     ("while (i < k)")
-        ("writer.%s(values[i++]);", type)
-    ("var buffer = writer.finish();")
-    ("if (buffer.length)")
-        ("writer.tag(%d, 2).bytes(buffer);", field.id);
+        ("writer.%s(vals[i++]);", type)
+    ("var buf = writer.finish();")
+    ("if (buf.length)")
+        ("writer.tag(%d,2).bytes(buf);", field.id);
 
             // Non-packed
             } else { gen
 
     ("while (i < k)")
-        ("$resolvedTypes[%d].encodeDelimited_(values[i++], writer.tag(%d, 2));", i, field.id);
+        ("$types[%d].encodeDelimited_(vals[i++],writer.tag(%d,2));", i, field.id);
 
             }
 
         // Non-repeated
-        } else {
-
-            if (field.required) {
-
-                if (wireType !== undefined) gen
-    ("writer.tag(%d, %d).%s(message[%j]);", field.id, wireType, type, field.name);
-                else gen
-    ("$resolvedTypes[%d].encodeDelimited_(message[%j], writer.tag(%d, 2));", i, field.name, field.id);
-
-            } else { gen
-
+        } else { gen
     ("var value = message[%j];", field.name);
 
-                if (wireType !== undefined) gen
-    ("if (value != %j)", field.defaultValue)
-        ("writer.tag(%d, %d).%s(value);", field.id, wireType, type);
-                else gen
-    ("if (value != %j) {", field.defaultValue)
-        ("$resolvedTypes[%d].encodeDelimited_(value, writer.tag(%d, 2));", i, field.id)
-    ("}");
-
-            }
+            if (!field.required) gen
+    ("if (value !== %j)", field.defaultValue);
+            if (wireType !== undefined) gen
+    ("writer.tag(%d,%d).%s(value);", field.id, wireType, type);
+            else gen
+    ("$types[%d].encodeDelimited_(value, writer.tag(%d,2));", i, field.id);
     
         }
     }
@@ -1136,7 +1113,9 @@ inherits.defineProperties = function defineProperties(prototype, type) {
 
     // Initialize default values
     type.fieldsArray.forEach(function(field) {
-        prototype[field.name] = field.resolve().defaultValue;
+        field.resolve();
+        if (!util.isObject(field.defaultValue)) // objects are mutable (i.e. would modify the array on prototype)
+            prototype[field.name] = field.defaultValue;
     });
 
     // Define each oneof with a non-enumerable getter and setter for the present field
@@ -1635,7 +1614,7 @@ NamespacePrototype.remove = function remove(object) {
 NamespacePrototype.define = function define(path, json, visible) {
     if (util.isString(path))
         path = path.split('.');
-    else if (!util.isArray(path)) {
+    else if (!Array.isArray(path)) {
         visible = json;
         json = path;
         path = undefined;
@@ -2025,12 +2004,12 @@ var Field = require("./field"),
  * @param {Object} [options] Oneof options
  */
 function OneOf(name, fieldNames, options) {
-    if (!util.isArray(fieldNames)) {
+    if (!Array.isArray(fieldNames)) {
         options = fieldNames;
         fieldNames = undefined;
     }
     ReflectionObject.call(this, name, options);
-    if (fieldNames && !util.isArray(fieldNames))
+    if (fieldNames && !Array.isArray(fieldNames))
         throw util._TypeError("fieldNames", "an Array");
 
     /**
@@ -2736,7 +2715,7 @@ function indexOutOfRange(reader, writeLength) {
 }
 
 /**
- * Wire format reader using arrays.
+ * Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  * @param {number[]} buffer Buffer to read from
  */
@@ -2803,12 +2782,12 @@ ReaderPrototype.tag = function read_tag() {
 ReaderPrototype.int32 = function read_int32() {
     var value = 0,
         shift = 0,
-        octet;
+        octet = 0;
     do {
         if (this.pos >= this.len)
             throw RangeError(indexOutOfRange(this));
         octet = this.buf[this.pos++];
-        if (shift < 28)
+        if (shift < 32)
             value |= (octet & 127) << shift;
         shift += 7;
     } while (octet & 128);
@@ -2832,47 +2811,52 @@ ReaderPrototype.sint32 = function read_sint32() {
     return value >>> 1 ^ -(value & 1);
 };
 
-function readLongVarint(reader) {
+/**
+ * Reads a possibly 64 bits varint.
+ * @returns {LongBits}
+ * @private
+ */
+ReaderPrototype._readLongVarint = function readLongVarint() {
     var lo = 0, hi = 0,
         i  = 0, b  = 0;
-    if (reader.len - reader.pos > 9) { // fast route
+    if (this.len - this.pos > 9) { // fast route
         for (i = 0; i < 4; ++i) {
-            b = reader.buf[reader.pos++];
+            b = this.buf[this.pos++];
             lo |= (b & 127) << i * 7;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
         }
-        b = reader.buf[reader.pos++];
+        b = this.buf[this.pos++];
         lo |= (b & 127) << 28;
         hi |= (b & 127) >> 4;
         if (b < 128)
             return new LongBits(lo >>> 0, hi >>> 0);
         for (i = 0; i < 5; ++i) {
-            b = reader.buf[reader.pos++];
+            b = this.buf[this.pos++];
             hi |= (b & 127) << i * 7 + 3;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
         }
     } else {
         for (i = 0; i < 4; ++i) {
-            if (reader.pos >= reader.len)
-                throw RangeError(indexOutOfRange(reader));
-            b = reader.buf[reader.pos++];
+            if (this.pos >= this.len)
+                throw RangeError(indexOutOfRange(this));
+            b = this.buf[this.pos++];
             lo |= (b & 127) << i * 7;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
         }
-        if (reader.pos >= reader.len)
-            throw RangeError(indexOutOfRange(reader));
-        b = reader.buf[reader.pos++];
+        if (this.pos >= this.len)
+            throw RangeError(indexOutOfRange(this));
+        b = this.buf[this.pos++];
         lo |= (b & 127) << 28;
         hi |= (b & 127) >> 4;
         if (b < 128)
             return new LongBits(lo >>> 0, hi >>> 0);
         for (i = 0; i < 5; ++i) {
-            if (reader.pos >= reader.len)
-                throw RangeError(indexOutOfRange(reader));
-            b = reader.buf[reader.pos++];
+            if (this.pos >= this.len)
+                throw RangeError(indexOutOfRange(this));
+            b = this.buf[this.pos++];
             hi |= (b & 127) << i * 7 + 3;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
@@ -2881,7 +2865,12 @@ function readLongVarint(reader) {
     throw Error("invalid varint encoding");
 }
 
-function readLongFixed(reader) {
+/**
+ * Reads a 64 bit value.
+ * @returns {LongBits}
+ * @private 
+ */
+ReaderPrototype._readLongFixed = function readLongFixed() {
     if (reader.pos + 8 > reader.len)
         throw RangeError(indexOutOfRange(reader, 8));
     return new LongBits(
@@ -2902,7 +2891,7 @@ function readLongFixed(reader) {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.int64 = function read_int64() {
-    var bits = readLongVarint(this);
+    var bits = this._readLongVarint();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, false);
     return bits.toNumber(false);
@@ -2913,7 +2902,7 @@ ReaderPrototype.int64 = function read_int64() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.uint64 = function read_uint64() {
-    var bits = readLongVarint(this);
+    var bits = this._readLongVarint();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, true);
     return bits.toNumber(true);
@@ -2924,7 +2913,7 @@ ReaderPrototype.uint64 = function read_uint64() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.sint64 = function read_sint64() {
-    var bits = readLongVarint(this).zzDecode();
+    var bits = this._readLongVarint().zzDecode();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, false);
     return bits.toNumber(false);
@@ -2966,7 +2955,7 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.fixed64 = function read_fixed64() {
-    var bits = readLongFixed(this);
+    var bits = this._readLongFixed();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, true);
     return bits.toNumber(true);
@@ -2977,7 +2966,7 @@ ReaderPrototype.fixed64 = function read_fixed64() {
  * @returns {Long|number} Value read
  */
 ReaderPrototype.sfixed64 = function read_sfixed64() {
-    var bits = readLongFixed(this).zzDecode();
+    var bits = this._readLongFixed().zzDecode();
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, false);
     return bits.toNumber(false);
@@ -3547,7 +3536,7 @@ RootPrototype.load = function load(filename, callback, ctx) {
 
     // Assembling the root namespace doesn't require working type
     // references anymore, so we can load everything in parallel
-    if (util.isArray(filename))
+    if (Array.isArray(filename))
         filename.forEach(function(file) {
             fetch(file, true, false);
         });
@@ -4465,14 +4454,6 @@ util.isObject = function isObject(value) {
 };
 
 /**
- * Tests if the specified value is an array.
- * @function
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is an array
- */
-util.isArray = Array.isArray;
-
-/**
  * Tests if the specified value is an integer.
  * @function
  * @param {*} value Value to test
@@ -4676,7 +4657,7 @@ var LongBits = require("./longbits"),
 Writer.BUFFER_SIZE = 1024;
 
 /**
- * Wire format writer using arrays.
+ * Wire format writer using `Uint8Array` if available, otherwise `Array`.
  * @exports Writer
  * @constructor
  */
@@ -4770,16 +4751,15 @@ Writer.alloc = function alloc_array_setup(size) {
  * Allocates more memory on the specified writer.
  * @param {Writer} writer Writer to expand
  * @param {number} writeLength Write length requested
- * @returns {undefined}
- * @inner
- * @ignore
+ * @returns {Writer} `this`
  */
-function expand(writer, writeLength) {
-    if (writer.pos)
-        writer.bufs.push(writer._slice.call(writer.buf, 0, writer.pos));
-    writer.buf = writer.constructor.alloc(writer.len = Math.max(writeLength, Writer.BUFFER_SIZE));
-    writer.pos = 0;
-}
+WriterPrototype.expand = function expand(writeLength) {
+    if (this.pos)
+        this.bufs.push(this._slice.call(this.buf, 0, this.pos));
+    this.buf = this.constructor.alloc(this.len = Math.max(writeLength, Writer.BUFFER_SIZE));
+    this.pos = 0;
+    return this;
+};
 
 /**
  * Writes a tag.
@@ -4789,7 +4769,7 @@ function expand(writer, writeLength) {
  */
 WriterPrototype.tag = function write_tag(id, wireType) {
     if (this.pos + 1 > this.len)
-        expand(this, 1);
+        this.expand(1);
     this.buf[this.pos++] = (id << 3 | wireType & 7) & 255;
     return this;
 };
@@ -4801,7 +4781,7 @@ WriterPrototype.tag = function write_tag(id, wireType) {
  */
 WriterPrototype.uint32 = function write_uint32(value) {
     value >>>= 0;
-    if (this.len - this.pos > 4) // fast route
+    if (this.pos + 4 < this.len) // fast route
         while (value > 127) {
             this.buf[this.pos++] = value & 127 | 128;
             value >>>= 7;
@@ -4809,12 +4789,12 @@ WriterPrototype.uint32 = function write_uint32(value) {
     else {
         while (value > 127) {
             if (this.pos >= this.len)
-                expand(this, 1);
+                this.expand(1);
             this.buf[this.pos++] = value & 127 | 128;
             value >>>= 7;
         }
         if (this.pos >= this.len)
-            expand(this, 1);
+            this.expand(1);
     }
     this.buf[this.pos++] = value;
     return this;
@@ -4837,27 +4817,34 @@ WriterPrototype.sint32 = function write_sint32(value) {
     return this.uint32(value << 1 ^ value >> 31);
 };
 
-function writeLongVarint(writer, lo, hi) {
-    if (writer.len - writer.pos > 9) // fast route
-        while (hi || lo > 127) {
-            writer.buf[writer.pos++] = lo & 127 | 128;
+/**
+ * Writes a long as a varint.
+ * @param {number} lo Low bits
+ * @param {number} hi High bits
+ * @returns {Writer} `this`
+ * @private
+ */
+WriterPrototype._writeLongVarint = function writeLongVarint(lo, hi) {
+    if (this.pos + 9 < this.len) { // fast route
+        while (hi > 0 || lo > 127) {
+            this.buf[this.pos++] = lo & 127 | 128;
             lo = (lo >>> 7 | hi << 25) >>> 0;
             hi >>>= 7;
         }
-    else {
-        while (hi || lo > 127) {
-            if (writer.pos >= writer.len)
-                expand(writer, 1);
-            writer.buf[writer.pos++] = lo & 127 | 128;
+    } else {
+        while (hi > 0 || lo > 127) {
+            if (this.pos >= this.len)
+                this.expand(1);
+            this.buf[this.pos++] = lo & 127 | 128;
             lo = (lo >>> 7 | hi << 25) >>> 0;
             hi >>>= 7;
         }
-        if (writer.pos >= writer.len)
-            expand(writer, 1);
+        if (this.pos >= this.len)
+            this.expand(1);
     }
-    writer.buf[writer.pos++] = lo;
-    return writer;
-}
+    this.buf[this.pos++] = lo;
+    return this;
+};
 
 /**
  * Writes an unsigned 64 bit value as a varint.
@@ -4867,30 +4854,29 @@ function writeLongVarint(writer, lo, hi) {
 WriterPrototype.uint64 = function write_uint64(value) {
     if (typeof value === 'number') {
         var bits = LongBits.fromNumber(value);
-        return writeLongVarint(this, bits.lo, bits.hi);
-    }
-    return writeLongVarint(this, value.low >>> 0, value.high >>> 0);
+        return this._writeLongVarint(bits.lo, bits.hi);
+    } 
+    return this._writeLongVarint(value.low >>> 0, value.high >>> 0);
 };
 
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.int64 = WriterPrototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
-    var bits = typeof value === 'number'
+    var bits = (typeof value === 'number'
         ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    bits.zzEncode();
-    return writeLongVarint(this, bits.lo, bits.hi);
+        : new LongBits(value.low >>> 0, value.high >>> 0)).zzEncode();
+    return this._writeLongVarint(bits.lo, bits.hi);
 };
 
 /**
@@ -4900,7 +4886,7 @@ WriterPrototype.sint64 = function sint64(value) {
  */
 WriterPrototype.bool = function write_bool(value) {
     if (this.pos >= this.len)
-        expand(this, 1);
+        this.expand(1);
     this.buf[this.pos++] = value ? 1 : 0;
     return this;
 };
@@ -4912,7 +4898,7 @@ WriterPrototype.bool = function write_bool(value) {
  */
 WriterPrototype.fixed32 = function write_fixed32(value) {
     if (this.pos + 4 > this.len)
-        expand(this, 4);
+        this.expand(4);
     this.buf[this.pos++] = (value >>>= 0) & 255;
     this.buf[this.pos++] =  value >>> 8   & 255;
     this.buf[this.pos++] =  value >>> 16  & 255;
@@ -4929,38 +4915,42 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
     return this.fixed32(value << 1 ^ value >> 31);
 };
 
-function writeLongFixed(writer, lo, hi) {
-    if (writer.pos + 8 > writer.len)
-        expand(writer, 8);
-    var buf = writer.buf,
-        pos = writer.pos; // changes in expand
-    buf[pos++] = lo        & 255;
-    buf[pos++] = lo >>> 8  & 255;
-    buf[pos++] = lo >>> 16 & 255;
-    buf[pos++] = lo >>> 24      ;
-    buf[pos++] = hi        & 255;
-    buf[pos++] = hi >>> 8  & 255;
-    buf[pos++] = hi >>> 16 & 255;
-    buf[pos++] = hi >>> 24      ;
-    writer.pos = pos;
-    return writer;
-}
+/**
+ * Writes a 64 bit value.
+ * @param {number} lo Low bits
+ * @param {number} hi High bits
+ * @returns {Writer} `this`
+ * @private
+ */
+WriterPrototype._writeLongFixed = function writeLongFixed(lo, hi) {
+    if (this.pos + 8 > this.len)
+        this.expand(8);
+    this.buf[this.pos++] = lo        & 255;
+    this.buf[this.pos++] = lo >>> 8  & 255;
+    this.buf[this.pos++] = lo >>> 16 & 255;
+    this.buf[this.pos++] = lo >>> 24      ;
+    this.buf[this.pos++] = hi        & 255;
+    this.buf[this.pos++] = hi >>> 8  & 255;
+    this.buf[this.pos++] = hi >>> 16 & 255;
+    this.buf[this.pos++] = hi >>> 24      ;
+    return this;
+};
 
 /**
  * Writes a 64 bit value as fixed 64 bits.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
     var bits = typeof value === 'number'
         ? LongBits.fromNumber(value)
         : new LongBits(value.low >>> 0, value.high >>> 0);
-    return writeLongFixed(this, bits.lo, bits.hi);
+    return this._writeLongFixed(bits.lo, bits.hi);
 };
 
 /**
  * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
@@ -4968,7 +4958,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
         ? LongBits.fromNumber(value)
         : new LongBits(value.low >>> 0, value.high >>> 0);
     bits.zzEncode();
-    return writeLongFixed(this, bits.lo, bits.hi);
+    return this._writeLongFixed(bits.lo, bits.hi);
 };
 
 /**
@@ -4979,7 +4969,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
  */
 WriterPrototype.float = function write_float(value) {
     if (this.pos + 4 > this.len)
-        expand(this, 4);
+        this.expand(4);
     ieee754.write(this.buf, value, this.pos, true, 23, 4);
     this.pos += 4;
     return this;
@@ -4993,7 +4983,7 @@ WriterPrototype.float = function write_float(value) {
  */
 WriterPrototype.double = function write_double(value) {
     if (this.pos + 8 > this.len)
-        expand(this, 8);
+        this.expand(8);
     ieee754.write(this.buf, value, this.pos, true, 52, 8);
     this.pos += 8;
     return this;
@@ -5009,12 +4999,12 @@ WriterPrototype.bytes = function write_bytes(value) {
     if (len) {
         this.uint32(len);
         if (this.pos + len > this.len)
-            expand(this, len);
+            this.expand(len);
         this._set.call(this.buf, value, this.pos);
         this.pos += len;
     } else {
         if (this.pos >= this.len)
-            expand(this, 1);
+            this.expand(1);
         this.buf[this.pos++] = 0;
     }
     return this;
@@ -5053,7 +5043,7 @@ WriterPrototype.string = function write_string(value) {
         return this.bytes(out.slice(0, p));
     }
     if (this.pos >= this.len)
-        expand(this, 1);
+        this.expand(1);
     this.buf[this.pos++] = 0;
     return this;
 };
@@ -5201,7 +5191,7 @@ BufferWriter.alloc = function alloc_buffer_setup(size) {
  */
 BufferWriterPrototype.float = function write_float_buffer(value) {
     if (this.pos + 4 > this.len)
-        expand(this, 4);
+        this.expand(4);
     this.buf.writeFloatLE(value, this.pos, true);
     this.pos += 4;
     return this;
@@ -5214,7 +5204,7 @@ BufferWriterPrototype.float = function write_float_buffer(value) {
  */
 BufferWriterPrototype.double = function write_double_buffer(value) {
     if (this.pos + 8 > this.len)
-        expand(this, 8);
+        this.expand(8);
     this.buf.writeDoubleLE(value, this.pos, true);
     this.pos += 8;
     return this;
@@ -5228,9 +5218,9 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     var len = value.length;
     this.uint32(len);
-    if (len) {
+    if (len > 0) {
         if (this.pos + len > this.len)
-            expand(this, len);
+            this.expand(len);
         value.copy(this.buf, this.pos, 0, len);
         this.pos += len;
     }
@@ -5245,9 +5235,9 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = util.Buffer.byteLength(value);
     this.uint32(len);
-    if (len) {
+    if (len > 0) {
         if (this.pos + len > this.len)
-            expand(this, len);
+            this.expand(len);
         this.buf.write(value, this.pos, len, "utf8");
         this.pos += len;
     }
