@@ -10,7 +10,7 @@ var LongBits = require("./longbits"),
  * Default buffer size.
  * @type {number}
  */
-Writer.BUFFER_SIZE = 1024;
+Writer.BUFFER_SIZE = 256; // TODO: For some reason this is considerably faster on node than 128 or 512.
 
 /**
  * Wire format writer using `Uint8Array` if available, otherwise `Array`.
@@ -228,9 +228,7 @@ WriterPrototype.int64 = WriterPrototype.uint64;
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
-    var bits = (typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0)).zzEncode();
+    var bits = LongBits.fromValue(value).zzEncode();
     return this._writeLongVarint(bits.lo, bits.hi);
 };
 
@@ -297,10 +295,11 @@ WriterPrototype._writeLongFixed = function writeLongFixed(lo, hi) {
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
-    var bits = typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    return this._writeLongFixed(bits.lo, bits.hi);
+    if (typeof value === 'number') {
+        var bits = LongBits.fromNumber(value);
+        return this._writeLongFixed(bits.lo, bits.hi);
+    }
+    return this._writeLongFixed(value.low >>> 0, value.high >>> 0);
 };
 
 /**
@@ -309,10 +308,7 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
-    var bits = typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    bits.zzEncode();
+    var bits = LongBits.from(value).zzEncode();
     return this._writeLongFixed(bits.lo, bits.hi);
 };
 
@@ -573,7 +569,7 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     var len = value.length;
     this.uint32(len);
-    if (len > 0) {
+    if (len) {
         if (this.pos + len > this.len)
             this.expand(len);
         value.copy(this.buf, this.pos, 0, len);
@@ -590,7 +586,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = util.Buffer.byteLength(value);
     this.uint32(len);
-    if (len > 0) {
+    if (len) {
         if (this.pos + len > this.len)
             this.expand(len);
         this.buf.write(value, this.pos, len, "utf8");
@@ -609,10 +605,12 @@ BufferWriterPrototype.finish = function finish_buffer() {
         pos  = this.pos;
     this.reset();
     if (buf) {
-        if (bufs.length === 0)
-            return buf.slice(0, pos);
-        bufs.push(buf.slice(0, pos));
-        return util.Buffer.concat(bufs);
+        var len = bufs.length;
+        if (len) {
+            bufs[len] = buf.slice(0, pos);
+            return util.Buffer.concat(bufs);
+        }
+        return buf.slice(0, pos);
     }
     return emptyBuffer;
 };

@@ -17,7 +17,7 @@ function LongBits(lo, hi) {
  * @param {number} value Value
  * @returns {LongBits} Instance
  */
-LongBits.fromNumber = function fromNUmber(value) {
+LongBits.fromNumber = function fromNumber(value) {
     var sign  = value < 0;
         value = Math.abs(value);
     var lo = value >>> 0,
@@ -35,11 +35,22 @@ LongBits.fromNumber = function fromNUmber(value) {
 };
 
 /**
+ * Constrcuts new long bits from a number or long.
+ * @param {Long|number} value Value
+ * @returns {LongBits}
+ */
+LongBits.from = function from(value) {
+    return typeof value === 'number'
+        ? LongBits.fromNumber(value)
+        : new LongBits(value.low >>> 0, value.high >>> 0);
+};
+
+/**
  * Converts this long bits to a possibly unsafe JavaScript number.
  * @param {boolean} unsigned Whether unsigned or not
  * @returns {number} Possibly unsafe number
  */
-LongBits.prototype.toNumber = function(unsigned) {
+LongBits.prototype.toNumber = function toNumber(unsigned) {
     if (!unsigned && this.hi >>> 31) {
         this.lo = ~this.lo + 1 >>> 0;
         this.hi = ~this.hi     >>> 0;
@@ -75,7 +86,7 @@ LongBits.fromHash = function fromHash(hash) {
  * Converts this long bits to a 8 characters long hash.
  * @returns {string} Hash
  */
-LongBits.prototype.toHash = function() {
+LongBits.prototype.toHash = function toHash() {
     return String.fromCharCode(
         this.lo        & 255,
         this.lo >>> 8  & 255,
@@ -92,7 +103,7 @@ LongBits.prototype.toHash = function() {
  * Zig-zag encodes this long bits.
  * @returns {LongBits} `this`
  */
-LongBits.prototype.zzEncode = function() {
+LongBits.prototype.zzEncode = function zzEncode() {
     var mask = -(this.hi >>> 31);
     this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
     this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
@@ -103,7 +114,7 @@ LongBits.prototype.zzEncode = function() {
  * Zig-zag decodes this long bits.
  * @returns {LongBits} `this`
  */
-LongBits.prototype.zzDecode = function() {
+LongBits.prototype.zzDecode = function zzDecode() {
     var mask = -(this.lo & 1);
     this.lo  = ((this.lo >>> 1 | (this.hi & 1) << 31) ^ mask) >>> 0;
     this.hi  = ( this.hi >>> 1                        ^ mask) >>> 0;

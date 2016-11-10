@@ -129,9 +129,8 @@ DecoderPrototype.generate = function generate() {
                         ("else")
                             ("values[vi++] = reader.%s();", type);
                         else gen
-                        ("else {")
-                            ("values[vi++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i)
-                        ("}");
+                        ("else")
+                            ("values[vi++] = $types[%d].decodeDelimited_(reader, $types[%d].create_());", i, i);
                     gen
                     ("}")
                     ("var key;")

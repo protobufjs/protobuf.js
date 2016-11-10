@@ -157,7 +157,7 @@ function normalizePath(path) {
     var prefix = "";
     if (abs)
         prefix = parts.shift() + '/';
-    for (var i = 0, k = parts.length, part; i < k;)
+    for (var i = 0, k = parts.length, part; i < k;) {
         if ((part = parts[i]) === '..') {
             if (i > 0)
                 parts.splice(--i, 2);
@@ -168,7 +168,9 @@ function normalizePath(path) {
         } else if (part === '.')
             parts.splice(i, 1);
         else
-            ++i;    return prefix + parts.join('/');
+            ++i;
+    }
+    return prefix + parts.join('/');
 }
 
 util.normalizePath = normalizePath;
@@ -197,10 +199,7 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
  * @returns {string} Hash
  */
 util.toHash = function toHash(value) {
-    var bits = typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
-    return bits.toHash();
+    return LongBits.from(value).toHash();
 };
 
 /**

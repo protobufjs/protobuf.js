@@ -49,7 +49,7 @@ function codegen(/* varargs */) {
                 level = --indent;
         }
         for (index = 0; index < level; ++index)
-            line = "    " + line;
+            line = "\t" + line;
         src.push(line);
         return gen;
     }

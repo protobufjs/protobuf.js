@@ -10,7 +10,7 @@ var times = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 100000;
 // NOTE: This benchmark measures message to buffer respectively buffer to message performance.
 
 var data = {
-    string : "a", // Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+    string : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
     uint32 : 9000,
     inner : {
         int32 : 20161110,
@@ -73,10 +73,9 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
         }
 
         function bench_protobuf_rw() {
-            var reader = protobuf.Reader(new Buffer(0)),
-                writer = protobuf.Writer();
             var start = Date.now(),
                 len = 0;
+            var writer = protobuf.Writer();
             for (var i = 0; i < times; ++i) {
                 var buf = Test.encode_(data, writer).finish();
                 len += buf.length;
@@ -84,6 +83,7 @@ protobuf.load(__dirname + "/bench.proto", function(err, root) {
             summarize("encode protobuf." + "js r/w", start, len);
             start = Date.now();
             len = 0;
+            var reader = protobuf.Reader(buf);
             for (var i = 0; i < times; ++i) {
                 var msg = Test.decode_(reader.reset(buf), Object.create(Test.prototype), buf.length);
                 len += buf.length;

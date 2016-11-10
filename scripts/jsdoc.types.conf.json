@@ -6,9 +6,7 @@
         "include": [
             "./src/"
         ],
-        "exclude": [
-            "./src/support/"
-        ],
+        "exclude": [],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },

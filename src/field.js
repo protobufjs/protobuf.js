@@ -105,6 +105,12 @@ function Field(name, id, type, rule, extend, options) {
     this.defaultValue = null;
 
     /**
+     * Whether this field's value is a long.
+     * @type {boolean}
+     */
+    this.long = types.longWireTypes[type] !== undefined;
+
+    /**
      * Resolved type if not a basic type.
      * @type {?(Type|Enum)}
      */
@@ -143,18 +149,6 @@ Object.defineProperties(FieldPrototype, {
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
-        }
-    },
-
-    /**
-     * Determines whether this field's type is a long type (64 bit).
-     * @name Field#long
-     * @type {boolean}
-     * @readonly
-     */
-    long : {
-        get: function() {
-            return types.longWireTypes[this.type] !== undefined;
         }
     }
 
