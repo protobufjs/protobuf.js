@@ -93,6 +93,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
+            
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
             </ul>
@@ -528,6 +530,39 @@
             </ul>
         </li>
     
+        <li class="item" data-name="LongBits">
+            <span class="title">
+                <a href="LongBits.html">LongBits</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="LongBits.fromHash"><a href="LongBits.html#.fromHash">fromHash</a></li>
+            
+                <li data-name="LongBits.fromNumber"><a href="LongBits.html#.fromNumber">fromNumber</a></li>
+            
+                <li data-name="LongBits#toHash"><a href="LongBits.html#toHash">toHash</a></li>
+            
+                <li data-name="LongBits#toNumber"><a href="LongBits.html#toNumber">toNumber</a></li>
+            
+                <li data-name="LongBits#zzDecode"><a href="LongBits.html#zzDecode">zzDecode</a></li>
+            
+                <li data-name="LongBits#zzEncode"><a href="LongBits.html#zzEncode">zzEncode</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="MapField">
             <span class="title">
                 <a href="MapField.html">MapField</a>
@@ -883,8 +918,6 @@
             <ul class="members itemMembers">
             
             <span class="subtitle">Members</span>
-            
-                <li data-name="Reader.Buffer"><a href="Reader.html#.Buffer">Buffer</a></li>
             
                 <li data-name="Reader#buf"><a href="Reader.html#buf">buf</a></li>
             
@@ -1309,8 +1342,6 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="Writer.Buffer"><a href="Writer.html#.Buffer">Buffer</a></li>
-            
                 <li data-name="Writer.BUFFER_SIZE"><a href="Writer.html#.BUFFER_SIZE">BUFFER_SIZE</a></li>
             
                 <li data-name="Writer#buf"><a href="Writer.html#buf">buf</a></li>
@@ -1450,6 +1481,51 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".Buffer"><span class="type-signature static">static,nullable</span>util.Buffer<span class="type-signature type function">function</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Optional buffer class to use. If you assign any compatible buffer implementation to this<br>property, the library will use it.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".Long"><span class="type-signature static">static,nullable</span>util.Long<span class="type-signature type function">function</span> </h4>
     </div>
     
@@ -1508,7 +1584,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L109">line 109</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L99">line 99</a>
         </div>
         
     </div>
@@ -1653,7 +1729,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L129">line 129</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L119">line 119</a>
         </div>
         
     </div>
@@ -1831,12 +1907,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".fromHash">
             
-            <span class="type-signature static">static</span>util.fromHash<span class="signature">(hash, <span class="optional">unsigned</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number|Object}</span>
+            <span class="type-signature static">static</span>util.fromHash<span class="signature">(hash, <span class="optional">unsigned</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Long|number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L227">line 227</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L220">line 220</a>
         </div>
         
     </div>
@@ -1847,7 +1923,7 @@
     
     
     <div class="description">
-        <p>Converts an 8 characters long hash string to a number or long-like object.</p>
+        <p>Converts an 8 characters long hash string to a long or number.</p>
     </div>
     
 
@@ -1905,7 +1981,7 @@
                         
                     
                 
-                <p>Hashed value to convert</p></td>
+                <p>Hash</p></td>
         </tr>
 	
 	
@@ -2002,10 +2078,10 @@
             
             <td class="type">
             
-                        number
+                        Long
                          | 
                     
-                        Object
+                        number
                         
                     
             </td>
@@ -2031,7 +2107,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L158">line 158</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L148">line 148</a>
         </div>
         
     </div>
@@ -2176,7 +2252,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L64">line 64</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L54">line 54</a>
         </div>
         
     </div>
@@ -2321,7 +2397,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L72">line 72</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L62">line 62</a>
         </div>
         
     </div>
@@ -2466,7 +2542,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L54">line 54</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L44">line 44</a>
         </div>
         
     </div>
@@ -2611,7 +2687,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L43">line 43</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L33">line 33</a>
         </div>
         
     </div>
@@ -2756,7 +2832,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L238">line 238</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L234">line 234</a>
         </div>
         
     </div>
@@ -2980,7 +3056,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L170">line 170</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L160">line 160</a>
         </div>
         
     </div>
@@ -3125,7 +3201,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L201">line 201</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L191">line 191</a>
         </div>
         
     </div>
@@ -3333,7 +3409,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L81">line 81</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L71">line 71</a>
         </div>
         
     </div>
@@ -3478,7 +3554,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L217">line 217</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L207">line 207</a>
         </div>
         
     </div>
@@ -3489,7 +3565,7 @@
     
     
     <div class="description">
-        <p>Converts a number or long-like object to an 8 characters long hash string.</p>
+        <p>Converts a number or long to an 8 characters long hash string.</p>
     </div>
     
 
@@ -3526,10 +3602,10 @@
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Long</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">number</span>
 
 
             
@@ -3604,7 +3680,7 @@
                         
                     
             </td>
-            <td class="description last">Hashed value</td>
+            <td class="description last">Hash</td>
         </tr>
     
     </tbody>

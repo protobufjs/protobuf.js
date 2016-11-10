@@ -212,14 +212,14 @@ WriterPrototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.int64 = WriterPrototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
@@ -285,7 +285,7 @@ function writeLongFixed(writer, lo, hi) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
@@ -297,7 +297,7 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
- * @param {number|{ low: number, high: number }|Long} value Value to write
+ * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {

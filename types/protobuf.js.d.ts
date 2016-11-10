@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Thu, 10 Nov 2016 00:16:55 UTC
+ * Generated Thu, 10 Nov 2016 02:10:16 UTC
  */
 declare module protobuf {
 
@@ -379,6 +379,62 @@ declare module protobuf {
        * @returns {Prototype} Decoded message
        */
       static decodeDelimited(buffer: number[]): Prototype;
+   
+   }
+   
+   /**
+    * A helper class to work with the low and high bits of a long.
+    * @constructor
+    * @param {number} lo Low bits
+    * @param {number} hi High bits
+    */
+   class LongBits {
+      /**
+       * A helper class to work with the low and high bits of a long.
+       * @constructor
+       * @param {number} lo Low bits
+       * @param {number} hi High bits
+       */
+      constructor(lo: number, hi: number);
+   
+      /**
+       * Constructs new long bits from the specified number.
+       * @param {number} value Value
+       * @returns {LongBits} Instance
+       */
+      static fromNumber(value: number): LongBits;
+   
+      /**
+       * Converts this long bits to a possibly unsafe JavaScript number.
+       * @param {boolean} unsigned Whether unsigned or not
+       * @returns {number} Possibly unsafe number
+       */
+      toNumber(unsigned: boolean): number;
+   
+      /**
+       * Constructs new long bits from the specified 8 characters long hash.
+       * @param {string} hash Hash
+       * @returns {LongBits} Bits
+       */
+      static fromHash(hash: string): LongBits;
+   
+      /**
+       * Converts this long bits to a 8 characters long hash.
+       * @returns {string} Hash
+       */
+      toHash(): string;
+   
+      /**
+       * Zig-zag encodes this long bits.
+       * @returns {LongBits} `this`
+       */
+      zzEncode(): LongBits;
+   
+      /**
+       * Zig-zag decodes this long bits.
+       * @returns {LongBits} `this`
+       */
+      zzDecode(): LongBits;
    
    }
    
@@ -888,12 +944,6 @@ declare module protobuf {
       constructor(buffer: number[]);
    
       /**
-       * Buffer implementation, if available.
-       * @type {?Function}
-       */
-      static Buffer: (() => any);
-   
-      /**
        * Read buffer.
        * @type {number[]}
        */
@@ -937,21 +987,21 @@ declare module protobuf {
    
       /**
        * Reads a varint as a signed 64 bit value.
-       * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+       * @returns {Long|number} Value read
        */
-      int64(): (number|Object|Long);
+      int64(): (Long|number);
    
       /**
        * Reads a varint as an unsigned 64 bit value.
-       * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
+       * @returns {Long|number} Value read
        */
-      uint64(): (number|Object|Long);
+      uint64(): (Long|number);
    
       /**
        * Reads a zig-zag encoded varint as a signed 64 bit value.
-       * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+       * @returns {Long|number} Value read
        */
-      sint64(): (number|Object|Long);
+      sint64(): (Long|number);
    
       /**
        * Reads a varint as a boolean.
@@ -973,15 +1023,15 @@ declare module protobuf {
    
       /**
        * Reads fixed 64 bits as a Long.
-       * @returns {number|{ low: number, high: number, unsigned: true }|Long} Value read
+       * @returns {Long|number} Value read
        */
-      fixed64(): (number|Object|Long);
+      fixed64(): (Long|number);
    
       /**
        * Reads zig-zag encoded 64 bits as a Long.
-       * @returns {number|{ low: number, high: number, unsigned: false }|Long} Value read
+       * @returns {Long|number} Value read
        */
-      sfixed64(): (number|Object|Long);
+      sfixed64(): (Long|number);
    
       /**
        * Reads a float (32 bit) as a number.
@@ -1435,6 +1485,13 @@ declare module protobuf {
     */
    module util {
       /**
+       * Optional buffer class to use. If you assign any compatible buffer implementation to this
+       * property, the library will use it.
+       * @type {?Function}
+       */
+      var Buffer: (() => any);
+   
+      /**
        * Optional Long class to use. If you assign any compatible long implementation to this property,
        * the library will use it.
        * @type {?Function}
@@ -1531,19 +1588,19 @@ declare module protobuf {
       function resolvePath(originPath: string, importPath: string, alreadyNormalized?: boolean): string;
    
       /**
-       * Converts a number or long-like object to an 8 characters long hash string.
-       * @param {number|{ low: number, high: number }} value Value to convert
-       * @returns {string} Hashed value
+       * Converts a number or long to an 8 characters long hash string.
+       * @param {Long|number} value Value to convert
+       * @returns {string} Hash
        */
-      function toHash(value: (number|Object)): string;
+      function toHash(value: (Long|number)): string;
    
       /**
-       * Converts an 8 characters long hash string to a number or long-like object.
-       * @param {string} hash Hashed value to convert
+       * Converts an 8 characters long hash string to a long or number.
+       * @param {string} hash Hash
        * @param {boolean} [unsigned=false] Whether unsigned or not
-       * @returns {number|{ low: number, high: number, unsigned: boolean }} Original value
+       * @returns {Long|number} Original value
        */
-      function fromHash(hash: string, unsigned?: boolean): (number|Object);
+      function fromHash(hash: string, unsigned?: boolean): (Long|number);
    
       /**
        * Merges the properties of the source object into the destination object.
@@ -1568,12 +1625,6 @@ declare module protobuf {
        * @constructor
        */
       constructor();
-   
-      /**
-       * Buffer implementation, if available.
-       * @type {?Function}
-       */
-      static Buffer: (() => any);
    
       /**
        * Default buffer size.
@@ -1658,25 +1709,25 @@ declare module protobuf {
    
       /**
        * Writes an unsigned 64 bit value as a varint.
-       * @param {number|{ low: number, high: number }|Long} value Value to write
+       * @param {Long|number} value Value to write
        * @returns {Writer} `this`
        */
-      uint64(value: (number|Object|Long)): Writer;
+      uint64(value: (Long|number)): Writer;
    
       /**
        * Writes a signed 64 bit value as a varint.
        * @function
-       * @param {number|{ low: number, high: number }|Long} value Value to write
+       * @param {Long|number} value Value to write
        * @returns {Writer} `this`
        */
-      int64(value: (number|Object|Long)): Writer;
+      int64(value: (Long|number)): Writer;
    
       /**
        * Writes a signed 64 bit value as a varint, zig-zag encoded.
-       * @param {number|{ low: number, high: number }|Long} value Value to write
+       * @param {Long|number} value Value to write
        * @returns {Writer} `this`
        */
-      sint64(value: (number|Object|Long)): Writer;
+      sint64(value: (Long|number)): Writer;
    
       /**
        * Writes a boolish value as a varint.
@@ -1701,17 +1752,17 @@ declare module protobuf {
    
       /**
        * Writes a 64 bit value as fixed 64 bits.
-       * @param {number|{ low: number, high: number }|Long} value Value to write
+       * @param {Long|number} value Value to write
        * @returns {Writer} `this`
        */
-      fixed64(value: (number|Object|Long)): Writer;
+      fixed64(value: (Long|number)): Writer;
    
       /**
        * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
-       * @param {number|{ low: number, high: number }|Long} value Value to write
+       * @param {Long|number} value Value to write
        * @returns {Writer} `this`
        */
-      sfixed64(value: (number|Object|Long)): Writer;
+      sfixed64(value: (Long|number)): Writer;
    
       /**
        * Writes a float (32 bit).
