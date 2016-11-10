@@ -168,6 +168,7 @@ Object.defineProperties(TypePrototype, {
 function clearCache(type) {
     type._fieldsById = type._fieldsArray = type._oneofsArray = type._prototype = null;
     delete type.encode_;
+    delete type.decode_;
     return type;
 }
 
@@ -318,13 +319,8 @@ TypePrototype.create = function create(properties, constructor) {
     var message = Object.create(this.prototype);
     if (properties) {
         var keys = Object.keys(properties);
-        for (var i = 0, k = keys.length, key; i < k; ++i) {
-            var field = this.fields[key = keys[i]];
-            if (field)
-                message._fields[key] = properties[key];
-            else
-                message[key] = properties[key];
-        }
+        for (var i = 0, k = keys.length, key; i < k; ++i)
+            message[key = keys[i]] = properties[key];
     }
     return message;
 };
@@ -360,7 +356,7 @@ TypePrototype.encode_ = function encode_internal(message, writer) {
     var encoder = new Encoder(this);
     this.encode_ = codegen.supported
         ? encoder.generate()
-        : encoder.encode;
+        : encoder.encode.bind(encoder);
     return this.encode_(message, writer);
 };
 
@@ -417,7 +413,7 @@ TypePrototype.decode_ = function decode_internal(reader, message, limit) {
     var decoder = new Decoder(this);
     this.decode_ = codegen.supported
         ? decoder.generate()
-        : decoder.decode;
+        : decoder.decode.bind(decoder);
     return this.decode_(reader, message, limit);
 };
 

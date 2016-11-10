@@ -27,7 +27,6 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
 
-    var values = message._fields || message, value; // throws if not an object
     for (var fi = 0; fi < fieldsCount; ++fi) {
         var field    = fieldsArray[fi].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -37,8 +36,8 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
         if (field.map) {
             var keyType     = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
                 keyWireType = types.mapKeyWireTypes[keyType];
-            var keys;
-            if ((value = values[field.name]) && (keys = Object.keys(value)).length) {
+            var value, keys;
+            if ((value = message[field.name]) && (keys = Object.keys(value)).length) {
                 writer.tag(field.id, 2).fork();
                 for (var i = 0, k = keys.length, key; i < k; ++i) {
                     writer.tag(1, keyWireType)[keyType](key = keys[i]);
@@ -52,13 +51,13 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
 
         // Repeated fields
         } else if (field.repeated) {
-            var i = 0, k = (value = values[field.name]).length;
+            var values = message[field.name], i = 0, k = values.length;
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) {
                 writer.fork();
                 while (i < k)
-                    writer[type](value[i++]);
+                    writer[type](values[i++]);
                 var buffer = writer.finish();
                 if (buffer.length)
                     writer.tag(field.id, 2).bytes(buffer);
@@ -66,12 +65,13 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
             // Non-packed
             } else {
                 while (i < k)
-                    field.resolvedType.encodeDelimited_(value[i++], writer.tag(field.id, 2));
+                    field.resolvedType.encodeDelimited_(values[i++], writer.tag(field.id, 2));
             }
 
         // Non-repeated
         } else {
-            if (field.required || (value = values[field.name]) != field.defaultValue) { // eslint-disable-line eqeqeq
+            var value = message[field.name];
+            if (field.required || value != field.defaultValue) { // eslint-disable-line eqeqeq
                 if (wireType !== undefined)
                     writer.tag(field.id, wireType)[type](value);
                 else
@@ -93,8 +93,7 @@ EncoderPrototype.generate = function generate() {
         fieldsCount = fieldsArray.length;
     var gen = codegen("$resolvedTypes", "message", "writer")
 
-    ('"use strict";')
-    ("var values = message._fields || message, value;");
+    ('"use strict";');
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
@@ -107,8 +106,8 @@ EncoderPrototype.generate = function generate() {
                 keyWireType = types.mapKeyWireTypes[keyType];
             gen
 
-    ("var keys;")
-    ("if ((value = values[%j]) && (keys = Object.keys(value)).length) {", field.name)
+    ("var value = message[%j], keys;", field.name)
+    ("if (value && (keys = Object.keys(value)).length) {")
         ("writer.tag(%d, 2).fork();", field.id)
         ("for (var i = 0, k = keys.length, key; i < k; ++i) {")
             ("writer.tag(1, %d).%s(key = keys[i]);", keyWireType, keyType);
@@ -124,14 +123,14 @@ EncoderPrototype.generate = function generate() {
         // Repeated fields
         } else if (field.repeated) { gen
 
-    ("var i = 0, k = (value = values[%j]).length;", field.name);
+    ("var values = message[%j], i = 0, k = values.length;", field.name);
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) { gen
 
     ("writer.fork();")
     ("while (i < k)")
-        ("writer.%s(value[i++]);", type)
+        ("writer.%s(values[i++]);", type)
     ("var buffer = writer.finish();")
     ("if (buffer.length)")
         ("writer.tag(%d, 2).bytes(buffer);", field.id);
@@ -139,9 +138,8 @@ EncoderPrototype.generate = function generate() {
             // Non-packed
             } else { gen
 
-    ("var resolvedType = $resolvedTypes[i];", i)
     ("while (i < k)")
-        ("resolvedType.encodeDelimited_(value[i++], writer.tag(%d, 2));", field.id);
+        ("$resolvedTypes[%d].encodeDelimited_(values[i++], writer.tag(%d, 2));", i, field.id);
 
             }
 
@@ -151,20 +149,20 @@ EncoderPrototype.generate = function generate() {
             if (field.required) {
 
                 if (wireType !== undefined) gen
-    ("writer.tag(%d, %d).%s(values[%j]);", field.id, wireType, type, field.name);
+    ("writer.tag(%d, %d).%s(message[%j]);", field.id, wireType, type, field.name);
                 else gen
-    ("var resolvedType = $resolvedTypes[%d];", i)
-    ("resolvedType.encodeDelimited_(values[%j], writer.tag(%d, 2));", field.name, field.id, field.name);
+    ("$resolvedTypes[%d].encodeDelimited_(message[%j], writer.tag(%d, 2));", i, field.name, field.id);
 
-            } else {
+            } else { gen
+
+    ("var value = message[%j];", field.name);
 
                 if (wireType !== undefined) gen
-    ("if ((value = values[%j]) != %j)", field.name, field.defaultValue)
+    ("if (value != %j)", field.defaultValue)
         ("writer.tag(%d, %d).%s(value);", field.id, wireType, type);
                 else gen
-    ("if ((value = values[%j]) != %j) {", field.name, field.defaultValue)
-        ("var resolvedType = $resolvedTypes[%d];", i)
-        ("resolvedType.encodeDelimited_(value, writer.tag(%d, 2));", field.id)
+    ("if (value != %j) {", field.defaultValue)
+        ("$resolvedTypes[%d].encodeDelimited_(value, writer.tag(%d, 2));", i, field.id)
     ("}");
 
             }

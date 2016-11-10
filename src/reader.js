@@ -9,7 +9,7 @@ Reader.Buffer = null;
 Reader.BufferReader = BufferReader;
 
 var long_   = require("./support/long"),
-    ieee754 = require("./support/ieee754");
+    ieee754 = require("../lib/ieee754");
 
 function indexOutOfRange(reader, writeLength) {
     return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;

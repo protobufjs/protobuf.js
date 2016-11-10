@@ -286,17 +286,9 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="Class.$keys"><a href="Class.html#.$keys">$keys</a></li>
-            
                 <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
             
-                <li data-name="Class#$keys"><a href="Class.html#$keys">$keys</a></li>
-            
-                <li data-name="Class#$oneofs"><a href="Class.html#$oneofs">$oneofs</a></li>
-            
                 <li data-name="Class#$type"><a href="Class.html#$type">$type</a></li>
-            
-                <li data-name="Class#$values"><a href="Class.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -314,7 +306,7 @@
             
                 <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
             
-                <li data-name="Class#toJSON"><a href="Class.html#toJSON">toJSON</a></li>
+                <li data-name="Class#asJSON"><a href="Class.html#asJSON">asJSON</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -865,13 +857,7 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="Prototype#$keys"><a href="Prototype.html#$keys">$keys</a></li>
-            
-                <li data-name="Prototype#$oneofs"><a href="Prototype.html#$oneofs">$oneofs</a></li>
-            
                 <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
-            
-                <li data-name="Prototype#$values"><a href="Prototype.html#$values">$values</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -881,7 +867,7 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Prototype#toJSON"><a href="Prototype.html#toJSON">toJSON</a></li>
+                <li data-name="Prototype#asJSON"><a href="Prototype.html#asJSON">asJSON</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1681,7 +1667,7 @@
 <dd>
     
     <div class="description">
-        <p>Sister-field within the declaring type if an extended field.</p>
+        <p>Sister-field within the declaring namespace if an extended field.</p>
     </div>
     
     
@@ -3345,7 +3331,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L242">line 242</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L238">line 238</a>
         </div>
         
     </div>
@@ -3356,7 +3342,7 @@
     
     
     <div class="description">
-        <p>Converts a field value to JSON using the specified options.</p>
+        <p>Converts a field value to JSON using the specified options. Note that this method does not<br>account for repeated fields and must be called once for each repeated element instead.</p>
     </div>
     
 
@@ -3438,89 +3424,7 @@
                         
                     
                 
-                <p>Conversion options</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>long</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Long conversion type.<br>Valid values are <code>String</code> (requires a long library) and <code>Number</code> (throws without a long library if unsafe).<br> Defaults to the internal number/long-like representation.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>enum</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Enum value conversion type.<br> Only valid value is <code>String</code>.<br> Defaults to the values' numeric ids.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
+                <p>Conversion options</p></td>
         </tr>
 	
 	
@@ -3548,6 +3452,13 @@
     
     
     
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Prototype.html#asJSON">Prototype#asJSON</a></li>
+        </ul>
+    </dd>
     
     
     

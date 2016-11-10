@@ -15,9 +15,11 @@ function Prototype(properties, options) {
         var fieldsOnly = Boolean(options && options.fieldsOnly),
             fields = this.constructor.$type.fields,
             keys = Object.keys(properties);
-        for (var i = 0, k = keys.length, key; i < k; ++i)
+        for (var i = 0, k = keys.length, key; i < k; ++i) {
+            key = keys[i];
             if (!fieldsOnly || fields[key])
-                this._fields[key = keys[i]] = properties[key];
+                this[key] = properties[key];
+        }
     }
 }
 
@@ -35,21 +37,22 @@ function Prototype(properties, options) {
 Prototype.prototype.asJSON = function asJSON(options) {
     var fields = this.constructor.$type.fields,
         json = {};
-    for (var key in this) { // also enumerates prototype
-        var field = fields[key];
-        if (field)
-            json[key] = field.jsonConvert(this[key], options)
-        else if (!options.fieldsOnly)
-            json[key] = this[key];
+    var keys = Object.keys(this);
+    for (var i = 0, k = keys.length, key; i < k; ++i) {
+        var field = fields[key = keys[i]],
+            value = this[key];
+        if (field) {
+            if (field.repeated) {
+                if (value && value.length) {
+                    var array = new Array(value.length);
+                    for (var j = 0, l = value.length; j < l; ++j)
+                        array[j] = field.jsonConvert(value[j], options);
+                    json[key] = array;
+                }
+            } else
+                json[key] = field.jsonConvert(value, options);
+        } else if (!options || !options.fieldsOnly)
+            json[key] = value;
     }
     return json;
-};
-
-/**
- * Beware: This method does not return JSON but it overrides the object serialized by `JSON.stringify`.
- * To convert a message to JSON manually, use {@link Prototype#asJSON} instead.
- * @returns {Object.<string,*>} JSON serializable object
- */
-Prototype.prototype.toJSON = function toJSON() {
-    return this._fields;
 };

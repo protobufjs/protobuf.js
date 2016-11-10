@@ -9,7 +9,7 @@ Writer.Buffer = null;
 Writer.BufferWriter = BufferWriter;
 
 var long_   = require("./support/long"),
-    ieee754 = require("./support/ieee754");
+    ieee754 = require("../lib/ieee754");
 
 /**
  * Default buffer size.

@@ -59,12 +59,12 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
                     for (ki = 0; ki < vi; ++ki)
                         map[typeof (key = keys[ki]) === 'object' ? util.toHash(key) : key] = values[ki];
                 }
-                message._fields[field.name] = map;
+                message[field.name] = map;
 
             // Repeated fields
             } else if (field.repeated) {
 
-                var values   = message._fields[field.name],
+                var values   = message[field.name],
                     length   = values.length,
                     packType = types.packableWireTypes[type];
 
@@ -84,10 +84,10 @@ DecoderPrototype.decode = function decode(reader, message, limit) { // codegen r
 
             // Non-repeated
             } else if (wireType !== undefined) {
-                message._fields[field.name] = reader[type]();
+                message[field.name] = reader[type]();
             } else {
                 var resolvedType = field.resolvedType;
-                message._fields[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
+                message[field.name] = resolvedType.decodeDelimited_(reader, resolvedType.create_());
             }
 
         // Unknown fields
@@ -146,11 +146,11 @@ DecoderPrototype.generate = function generate() {
                     ("for (ki = 0; ki < vi; ++ki)")
                         ("map[typeof (key = keys[ki]) === 'object' ? $toHash(key) : key] = values[ki];")
                 ("}")
-                ("message._fields[%j] = map;", field.name);
+                ("message[%j] = map;", field.name);
 
         } else if (field.repeated) { gen
 
-                ("var values = message._fields[%j], length = values.length;", field.name);
+                ("var values = message[%j], length = values.length;", field.name);
 
             if (field.packed && packType !== undefined) { gen
 
@@ -177,12 +177,12 @@ DecoderPrototype.generate = function generate() {
 
         } else if (wireType !== undefined) { gen
 
-                ("message._fields[%j] = reader.%s();", field.name, type);
+                ("message[%j] = reader.%s();", field.name, type);
 
         } else { gen
 
                 ("var type = $resolvedTypes[%d];", i)
-                ("message._fields[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
+                ("message[%j] = type.decodeDelimited_(reader, type.create_());", field.name);
 
         } gen
                 ("break;");

@@ -1,6 +1,19 @@
 module.exports = codegen;
 
 /**
+ * Whether code generation is supported by the environment.
+ * @type {boolean}
+ */
+codegen.supported = false;
+try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
+
+/**
+ * When set to true, codegen will log generated code to console. Useful for debugging.
+ * @type {boolean}
+ */
+codegen.verbose = false;
+
+/**
  * Programmatically generates a function. When done appending code, call `eof()` on the Appender
  * to generate the actual function.
  * @param {...string} params Function parameter names
@@ -56,16 +69,3 @@ function codegen(/* varargs */) {
 
     return gen;
 }
-
-/**
- * Whether code generation is supported by the environment.
- * @type {boolean}
- */
-codegen.supported = false;
-try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
-
-/**
- * When set to true, codegen will log generated code to console. Useful for debugging.
- * @type {boolean}
- */
-codegen.verbose = false;

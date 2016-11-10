@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Wed, 09 Nov 2016 21:12:23 UTC
+ * Generated Thu, 10 Nov 2016 00:16:55 UTC
  */
 declare module protobuf {
 
@@ -37,7 +37,7 @@ declare module protobuf {
    
       /**
        * Generates a decoder specific to this decoder's message type.
-       * @returns {function} Decoder function with an identical signature to {@link Decoder#decode]}
+       * @returns {function} Decoder function with an identical signature to {@link Decoder#decode}
        */
       generate(): (() => any);
    
@@ -66,7 +66,7 @@ declare module protobuf {
    
       /**
        * Generates an encoder specific to this encoder's message type.
-       * @returns {function} Encoder function with an identical signature to {@link Encoder#encode]}
+       * @returns {function} Encoder function with an identical signature to {@link Encoder#encode}
        */
       generate(): (() => any);
    
@@ -243,7 +243,7 @@ declare module protobuf {
       extensionField: Field;
    
       /**
-       * Sister-field within the declaring type if an extended field.
+       * Sister-field within the declaring namespace if an extended field.
        * @type {?Field}
        */
       declaringField: Field;
@@ -288,16 +288,12 @@ declare module protobuf {
       static fromJSON(name: string, json: Object): Field;
    
       /**
-       * Converts a field value to JSON using the specified options.
+       * Converts a field value to JSON using the specified options. Note that this method does not
+       * account for repeated fields and must be called once for each repeated element instead.
        * @param {*} value Field value
        * @param {Object.<string,*>} [options] Conversion options
-       * @param {Function} [options.long] Long conversion type.
-       * Valid values are `String` (requires a long library) and `Number` (throws without a long library if unsafe).
-       *  Defaults to the internal number/long-like representation.
-       * @param {Function} [options.enum] Enum value conversion type.
-       *  Only valid value is `String`.
-       *  Defaults to the values' numeric ids.
        * @returns {*} Converted value
+       * @see {@link Prototype#asJSON}
        */
       jsonConvert(value: any, options?: { [k: string]: any }): any;
    
@@ -351,18 +347,20 @@ declare module protobuf {
        * @name Class.encode
        * @function
        * @param {Prototype|Object} message Message to encode
+       * @param {Writer} [writer] Optional writer to use
        * @returns {number[]} Encoded message
        */
-      static encode(message: (Prototype|Object)): number[];
+      static encode(message: (Prototype|Object), writer?: Writer): number[];
    
       /**
        * Encodes a message of this type preceeded by its length as a varint to a buffer.
        * @name Class.encodeDelimited
        * @function
        * @param {Prototype|Object} message Message to encode
+       * @param {Writer} [writer] Optional writer to use
        * @returns {number[]} Encoded message
        */
-      static encodeDelimited(message: (Prototype|Object)): number[];
+      static encodeDelimited(message: (Prototype|Object), writer?: Writer): number[];
    
       /**
        * Decodes a message of this type from a buffer.
@@ -844,15 +842,10 @@ declare module protobuf {
    
    /**
     * Runtime message prototype ready to be extended by custom classes or generated code.
-    *
-    * Calling the prototype constructor from within your own classes is optional but you can do so if
-    * all you want is to initialize your instance's properties in conformance with the reflected type's
-    * fields.
-    *
     * @constructor
     * @param {Object.<string,*>} [properties] Properties to set
     * @param {Object.<string,*>} [options] Initialization options
-    * @param {boolean} [options.fieldsOnly=false] Sets only properties that actually reference a field
+    * @param {boolean} [options.fieldsOnly=false] Sets only properties that reference a field
     * @abstract
     * @see {@link inherits}
     * @see {@link Class}
@@ -867,36 +860,17 @@ declare module protobuf {
       $type: Type;
    
       /**
-       * Field names present on the message. Useful as an alternative to `Object.keys`.
-       * @name Prototype#$keys
-       * @type {string[]}
-       * @readonly
-       */
-      $keys: string[];
-   
-      /**
-       * Field values present on the message.
-       * @name Prototype#$values
-       * @type {Object.<string,*>}
-       * @readonly
-       */
-      $values: { [k: string]: any };
-   
-      /**
-       * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
-       * @name Prototype#$oneofs
-       * @type {Object.<string,string|undefined>}
-       * @readonly
-       */
-      $oneofs: { [k: string]: (string|undefined) };
-   
-      /**
        * Converts a runtime message to a JSON object.
        * @param {Object.<string,*>} [options] Conversion options
+       * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
+       * @param {Function} [options.long] Long conversion type. Valid values are `String` (requires a
+       * long library) and `Number` (throws without a long library if unsafe).
+       * Defaults to the internal representation.
+       * @param {Function} [options.enum] Enum value conversion type. Only valid value is `String`.
+       * Defaults to the values' numeric ids.
        * @returns {Object.<string,*>} JSON object
-       * @virtual
        */
-      toJSON(options?: { [k: string]: any }): { [k: string]: any };
+      asJSON(options?: { [k: string]: any }): { [k: string]: any };
    
    }
    

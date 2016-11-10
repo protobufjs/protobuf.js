@@ -228,21 +228,14 @@ FieldPrototype.resolve = function resolve() {
 };
 
 /**
- * Converts a field value to JSON using the specified options.
+ * Converts a field value to JSON using the specified options. Note that this method does not
+ * account for repeated fields and must be called once for each repeated element instead.
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
  * @returns {*} Converted value
  * @see {@link Prototype#asJSON}
  */
 FieldPrototype.jsonConvert = function(value, options) {
-    if (this.repeated) {
-        if (!value)
-            return [];
-        var self = this;
-        return value.map(function(val) {
-            return self.jsonConvert(val, options);
-        });
-    }
     if (options) {
         if (this.resolvedType instanceof Enum && options.enum === String)
             return this.resolvedType.valuesById[value];

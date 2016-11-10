@@ -117,9 +117,8 @@ function inherits(clazz, type, options) {
 }
 
 /**
- * Defines getters and setters corresponding to the reflected type's fields and oneofs on the
- * specified prototype. Stores field values within {@link Prototype#_fields} and oneofs present
- * in {@link Prototype#_oneofs}.
+ * Defines the reflected type's default values and virtual oneof properties on the specified
+ * prototype.
  * @memberof inherits
  * @param {Prototype} prototype Prototype to define properties upon
  * @param {Type} type Reflected message type
@@ -127,8 +126,6 @@ function inherits(clazz, type, options) {
  */
 inherits.defineProperties = function defineProperties(prototype, type) {
 
-    var defaultValues = {};
-    
     var prototypeProperties = {
 
         /**
@@ -139,68 +136,32 @@ inherits.defineProperties = function defineProperties(prototype, type) {
          */
         $type: {
             value: type
-        },
-
-        /**
-         * Field values present on the message.
-         * @name Prototype#_fields
-         * @type {Object.<string,*>}
-         * @readonly
-         */
-        _fields: {
-            value: defaultValues
-        },
-
-        /**
-         * Virtual OneOf field values. Stores the present field's name for each OneOf, or, if no field is present, `undefined`.
-         * @name Prototype#_oneofs
-         * @type {Object.<string,string|undefined>}
-         * @readonly
-         */
-        _oneofs: {
-            value: {}
         }
     };
 
-    // Initialize default values and define each field with a getter and a setter
+    // Initialize default values
     type.fieldsArray.forEach(function(field) {
-        field.resolve();
-
-        defaultValues[field.name] = field.defaultValue;
-        
-        prototypeProperties[field.name] = {
-            get: function() {
-                return this._fields[field.name];
-            },
-            set: function(value) {
-                if (field.partOf) { // Handle oneof side effects
-                    var fieldNameSet = this._oneofs[field.partOf.name];
-                    if (value === undefined || value === null) {
-                        if (fieldNameSet === field.name)
-                            this._oneofs[field.partOf.name] = undefined;
-                        this._fields[field.name] = field.defaultValue;
-                    } else {
-                        if (fieldNameSet !== undefined)
-                            this._fields[fieldNameSet] = type.fields[fieldNameSet].defaultValue;
-                        this._fields[field.name] = value;
-                        this._oneofs[field.partOf.name] = field.name;
-                    }
-                } else // Just set the value and reset to the default when unset
-                    this._fields[field.name] = value === undefined || value === null
-                        ? field.defaultValue
-                        : value;
-            },
-            enumerable: true // makes properties iterable with for-in loops
-        };
+        prototype[field.name] = field.resolve().defaultValue;
     });
 
-    // Define each oneof with a non-enumerable getter returning the name of the currently set field
+    // Define each oneof with a non-enumerable getter and setter for the present field
     type.oneofsArray.forEach(function(oneof) {
-        oneof.resolve();
-        
-        prototypeProperties[oneof.name] = {
+        prototypeProperties[oneof.resolve().name] = {
             get: function() {
-                return this._oneofs[oneof.name];
+                var keys = oneof.oneof;
+                for (var i = 0, k = keys.length, key; i < k; ++i) {
+                    var field = oneof.parent.fields[key = keys[i]];
+                    if (this[key] != field.defaultValue) // eslint-disable-line eqeqeq
+                        return key;
+                }
+                return undefined;
+            },
+            set: function(value) {
+                var keys = oneof.oneof;
+                for (var i = 0, k = keys.length, key; i < k; ++i) {
+                    if ((key = keys[i]) !== value)
+                        delete this[key];
+                }
             }
         };
     });
