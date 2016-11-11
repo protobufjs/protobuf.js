@@ -131,6 +131,7 @@ function fetch(path, callback) {
         return callback(Error("request failed"));
     };
     xhr.open("GET", path, true);
+    xhr.send();
     return undefined;
 }
 
