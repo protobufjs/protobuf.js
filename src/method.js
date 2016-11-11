@@ -86,7 +86,7 @@ Object.defineProperties(MethodPrototype, {
     // override
     object: {
         get: function() {
-            return MethodPrototype.call.bind(this);
+            return this._object || (this._object = MethodPrototype.call.bind(this));
         }
     }
 });

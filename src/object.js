@@ -61,6 +61,13 @@ function ReflectionObject(name, options) {
      * @private
      */
     this._visible = null;
+
+    /**
+     * Cached object representation.
+     * @type {Object|undefined}
+     * @private
+     */
+    this._object = undefined;
 }
 
 /** @alias ReflectionObject.prototype */
@@ -133,7 +140,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      */
     object: {
         get: function() {
-            return undefined;
+            return this._object;
         }
     }
 
@@ -205,6 +212,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
     if (this.parent && this.parent !== parent)
         this.parent.remove(this);
     this.parent = parent;
+    parent._object = undefined;
     this.resolved = false;
     var root = parent.root;
     if (root instanceof Root)
@@ -221,6 +229,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
+    parent._object = undefined;
     this.resolved = false;
 };
 

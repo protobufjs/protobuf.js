@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Fri, 11 Nov 2016 04:13:40 UTC
+ * Compiled Fri, 11 Nov 2016 04:46:27 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -609,7 +609,7 @@ Object.defineProperties(EnumPrototype, {
     // override
     object: {
         get: function() {
-            return util.merge({}, this.values);
+            return this._object || util.merge(this._object = {}, this.values);
         }
     }
 });
@@ -1401,7 +1401,7 @@ Object.defineProperties(MethodPrototype, {
     // override
     object: {
         get: function() {
-            return MethodPrototype.call.bind(this);
+            return this._object || (this._object = MethodPrototype.call.bind(this));
         }
     }
 });
@@ -1445,7 +1445,7 @@ MethodPrototype.resolve = function resolve() {
 /**
  * Calls this method.
  * @param {Prototype|Object} message Request message
- * @param {function(number[], function(Error?, number[]=))} performRequest A function performing the
+ * @param {function(number[], function(?Error, (number[])=))} performRequest A function performing the
  * request on binary level, taking a buffer and a node-style callback for the response buffer as
  * its parameters.
  * @param {function(Error, Prototype=)} [callback] Node-style callback function
@@ -1459,7 +1459,7 @@ MethodPrototype.call = function call(message, performRequest, callback, ctx) {
         ctx = this;
     var requestBuffer;
     try {
-        requestBuffer = this.resolvedRequestType.encode(message);
+        requestBuffer = this.resolve().resolvedRequestType.encode(message);
     } catch (e1) {
         setTimeout(function() {
             callback.call(ctx, e1);
@@ -1533,7 +1533,9 @@ Object.defineProperties(NamespacePrototype, {
     // override
     object: {
         get: function() {
-            var obj = Object.create(this);
+            if (this._object)
+                return this._object;
+            var obj = this._object = Object.create(this);
             this.each(function(nested, name) {
                 obj[name] = nested.object;
             });
@@ -1628,6 +1630,8 @@ NamespacePrototype.get = function get(name) {
 NamespacePrototype.add = function add(object) {
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw _TypeError("object", nestedError);
+    if (object instanceof Field && object.extend === undefined)
+        throw _TypeError("object", "an extension field when not part of a type");
     if (!this.nested)
         this.nested = {};
     else {
@@ -1640,8 +1644,6 @@ NamespacePrototype.add = function add(object) {
                 throw Error("duplicate name '" + object.name + "' in " + this);
         }
     }
-    if (object instanceof Field && object.extend === undefined)
-        throw _TypeError("object", "an extension field when not part of a type");
     this.nested[object.name] = object;
     object.onAdd(this);
     return this;
@@ -1827,6 +1829,13 @@ function ReflectionObject(name, options) {
      * @private
      */
     this._visible = null;
+
+    /**
+     * Cached object representation.
+     * @type {Object|undefined}
+     * @private
+     */
+    this._object = undefined;
 }
 
 /** @alias ReflectionObject.prototype */
@@ -1899,7 +1908,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      */
     object: {
         get: function() {
-            return undefined;
+            return this._object;
         }
     }
 
@@ -1971,6 +1980,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
     if (this.parent && this.parent !== parent)
         this.parent.remove(this);
     this.parent = parent;
+    parent._object = undefined;
     this.resolved = false;
     var root = parent.root;
     if (root instanceof Root)
@@ -1987,6 +1997,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
+    parent._object = undefined;
     this.resolved = false;
 };
 
@@ -3736,7 +3747,9 @@ Object.defineProperties(ServicePrototype, {
     // override
     object: {
         get: function() {
-            var obj = Object.create(this);
+            if (this._object)
+                return this._object;
+            var obj = this._object = Object.create(this);
             this.each(function(method, name) {
                 obj[name] = method.object;
             }, this, this.methods);

@@ -49,7 +49,9 @@ Object.defineProperties(NamespacePrototype, {
     // override
     object: {
         get: function() {
-            var obj = Object.create(this);
+            if (this._object)
+                return this._object;
+            var obj = this._object = Object.create(this);
             this.each(function(nested, name) {
                 obj[name] = nested.object;
             });
@@ -144,6 +146,8 @@ NamespacePrototype.get = function get(name) {
 NamespacePrototype.add = function add(object) {
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw _TypeError("object", nestedError);
+    if (object instanceof Field && object.extend === undefined)
+        throw _TypeError("object", "an extension field when not part of a type");
     if (!this.nested)
         this.nested = {};
     else {
@@ -156,8 +160,6 @@ NamespacePrototype.add = function add(object) {
                 throw Error("duplicate name '" + object.name + "' in " + this);
         }
     }
-    if (object instanceof Field && object.extend === undefined)
-        throw _TypeError("object", "an extension field when not part of a type");
     this.nested[object.name] = object;
     object.onAdd(this);
     return this;

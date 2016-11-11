@@ -31,7 +31,9 @@ Object.defineProperties(ServicePrototype, {
     // override
     object: {
         get: function() {
-            var obj = Object.create(this);
+            if (this._object)
+                return this._object;
+            var obj = this._object = Object.create(this);
             this.each(function(method, name) {
                 obj[name] = method.object;
             }, this, this.methods);

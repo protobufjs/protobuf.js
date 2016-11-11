@@ -54,4 +54,6 @@ gp.add(
 
 console.log(inspect(gp));
 
-console.log(gp.object);
+console.log(gp.object.Something);
+console.log(gp.object.Something === gp.object.Something);
+console.log(gp.object === gp.object);
