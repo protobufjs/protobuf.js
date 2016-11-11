@@ -1,3 +1,7 @@
+module.exports = bundle;
+
+var path       = require('path');
+
 var browserify = require('browserify');
 
 var header     = require('gulp-header');
@@ -20,14 +24,14 @@ var license = [
     " */"
 ].join('\n') + '\n';
 
-module.exports = bundle;
-
 function bundle(compress) {
+    var basedir = path.join(__dirname, "..", "src");
     var bundler = browserify({
-        entries: __dirname + '/../src/index.js',
+        entries: basedir,
         debug: true
     })
     return bundler
+    .require(basedir, { expose: "protobuf" })
     .external("long")
     .external("buffer")
     .exclude("process")

@@ -75,12 +75,12 @@ Writer.setup = function setup() {
 
     WriterPrototype._set = ArrayImpl.prototype.set || function set_array(array, offset) {
         if (offset + array.length > this.length)
-            throw RangeError("offset would store beyond the end of the array");
+            throw RangeError("offset");
         for (var i = 0, k = array.length; i < k; ++i)
             this[offset + i] = array[i];
     };
 
-    Writer.alloc = function alloc_array(size) { return new ArrayImpl(size); }
+    Writer.alloc = function alloc_array(size) { return new ArrayImpl(size); };
 
     emptyArray = Writer.alloc(0);
     if (Object.freeze)
@@ -203,7 +203,7 @@ WriterPrototype._writeLongVarint = function writeLongVarint(lo, hi) {
  */
 WriterPrototype.uint64 = function write_uint64(value) {
     if (typeof value === 'number') {
-        var bits = LongBits.fromNumber(value);
+        var bits = value ? LongBits.fromNumber(value) : LongBits.zero;
         return this._writeLongVarint(bits.lo, bits.hi);
     } 
     return this._writeLongVarint(value.low >>> 0, value.high >>> 0);
@@ -291,7 +291,7 @@ WriterPrototype._writeLongFixed = function writeLongFixed(lo, hi) {
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
     if (typeof value === 'number') {
-        var bits = LongBits.fromNumber(value);
+        var bits = value ? LongBits.fromNumber(value) : LongBits.zero;
         return this._writeLongFixed(bits.lo, bits.hi);
     }
     return this._writeLongFixed(value.low >>> 0, value.high >>> 0);
@@ -365,9 +365,9 @@ WriterPrototype.string = function write_string(value) {
     // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
     var len = value.length >>> 0;
     if (len) {
-        var blen = 0, i = 0;
+        var blen = 0, i = 0, c1, c2;
         for (; i < len; ++i) {
-            var c1 = value.charCodeAt(i), c2;
+            c1 = value.charCodeAt(i);
             if (c1 < 128)
                 blen += 1;
             else if (c1 < 2048)
@@ -382,7 +382,7 @@ WriterPrototype.string = function write_string(value) {
         if (this.pos + blen > this.len)
             this.expand(blen);
         for (i = 0; i < len; ++i) {
-            var c1 = value.charCodeAt(i), c2;
+            c1 = value.charCodeAt(i);
             if (c1 < 128) {
                 this.buf[this.pos++] = c1;
             } else if (c1 < 2048) {

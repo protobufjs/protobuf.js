@@ -84,9 +84,9 @@ function importGoogleTypes(root, visible) {
 
     var bool     = "bool",
         int32    = "int32",
-        uint32   = "u"+int32,
+        uint32   = "uint32",
         int64    = "int64",
-        uint64   = "u"+int64,
+        uint64   = "uint64",
         float    = "float",
         double   = "double",
         string   = "string",
@@ -248,12 +248,13 @@ function importGoogleTypes(root, visible) {
         ]
     };
 
-    var googleNamespace = root.define([ "google", "protobuf" ], visible);
+    var gp = "google/protobuf";
+    var ns = root.define(gp.split('/'), visible);
     Object.keys(types).forEach(function(protoName) {
-        if (!root.addLoaded("google/protobuf/" + protoName + ".proto"))
+        if (!root.addLoaded(gp + "/" + protoName + ".proto"))
             return;
         types[protoName].forEach(function(type) {
-            googleNamespace.add(type);
+            ns.add(type);
             root.common[type.name] = type;
         });
     });

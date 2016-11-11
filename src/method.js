@@ -5,6 +5,8 @@ ReflectionObject.extend(Method, [ "type", "requestType", "requestStream", "respo
 
 var util = require("./util");
 
+var _TypeError = util._TypeError;
+
 /**
  * Reflected service method.
  * @extends ReflectionObject
@@ -26,11 +28,11 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         responseStream = undefined;
     }
     if (!util.isString(type))
-        throw util._TypeError("type");
+        throw _TypeError("type");
     if (!util.isString(requestType))
-        throw util._TypeError("requestType");
+        throw _TypeError("requestType");
     if (!util.isString(responseType))
-        throw util._TypeError("responseType");
+        throw _TypeError("responseType");
     
     ReflectionObject.call(this, name, options);
 

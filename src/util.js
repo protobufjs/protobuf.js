@@ -199,7 +199,9 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
  * @returns {string} Hash
  */
 util.toHash = function toHash(value) {
-    return LongBits.from(value).toHash();
+    return value
+        ? LongBits.from(value).toHash()
+        : '\0\0\0\0\0\0\0\0';
 };
 
 /**

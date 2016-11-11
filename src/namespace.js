@@ -10,6 +10,8 @@ var Enum    = require("./enum"),
     Service = require("./service"),
     util    = require("./util");
 
+var _TypeError = util._TypeError;
+
 var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
 
@@ -88,7 +90,7 @@ NamespacePrototype.addJSON = function addJSON(json) {
                     this.add(ReflObj.fromJSON(key, nested));
                     break;
                 }
-            throw util._TypeError("json." + key, "JSON for " + nestedError);
+            throw _TypeError("json." + key, "JSON for " + nestedError);
         }
     }
     return this;
@@ -130,7 +132,7 @@ NamespacePrototype.get = function get(name) {
  */
 NamespacePrototype.add = function add(object) {
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
-        throw util._TypeError("object", nestedError);
+        throw _TypeError("object", nestedError);
     if (!this.nested)
         this.nested = {};
     else {
@@ -144,7 +146,7 @@ NamespacePrototype.add = function add(object) {
         }
     }
     if (object instanceof Field && object.extend === undefined)
-        throw util._TypeError("object", "an extension field when not part of a type");
+        throw _TypeError("object", "an extension field when not part of a type");
     this.nested[object.name] = object;
     object.onAdd(this);
     return this;
@@ -157,7 +159,7 @@ NamespacePrototype.add = function add(object) {
  */
 NamespacePrototype.remove = function remove(object) {
     if (!(object instanceof ReflectionObject))
-        throw util._TypeError("object", "a ReflectionObject");
+        throw _TypeError("object", "a ReflectionObject");
     if (object.parent !== this)
         throw Error(object + " is not a member of " + this);
     delete this.nested[object.name];

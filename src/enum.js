@@ -6,6 +6,8 @@ var EnumPrototype = ReflectionObject.extend(Enum, [ "values" ]);
 
 var util = require("./util");
 
+var _TypeError = util._TypeError;
+
 /**
  * Reflected enum.
  * @extends ReflectionObject
@@ -84,9 +86,9 @@ Enum.fromJSON = function fromJSON(name, json) {
  */
 EnumPrototype.add = function(name, id) {
     if (!util.isString(name))
-        throw util._TypeError("name");
+        throw _TypeError("name");
     if (!util.isInteger(id) || id < 0)
-        throw util._TypeError("id", "a non-negative integer");
+        throw _TypeError("id", "a non-negative integer");
     this.values[name] = id;
     this._valuesById = null;
     return this;
@@ -99,7 +101,7 @@ EnumPrototype.add = function(name, id) {
  */
 EnumPrototype.remove = function(name) {
     if (!util.isString(name))
-        throw util._TypeError("name");
+        throw _TypeError("name");
     delete this.values[name];
     this._valuesById = null;
     return this;

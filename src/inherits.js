@@ -6,6 +6,8 @@ var Prototype = require("./prototype"),
     Writer    = require("./writer"),
     util      = require("./util");
 
+var _TypeError = util._TypeError;
+
 /**
  * Inherits a custom class from the message prototype of the specified message type.
  * @param {Function} clazz Inheriting class
@@ -17,9 +19,9 @@ var Prototype = require("./prototype"),
  */
 function inherits(clazz, type, options) {
     if (typeof clazz !== 'function')
-        throw util._TypeError("clazz", "a function");
+        throw _TypeError("clazz", "a function");
     if (!(type instanceof Type))
-        throw util._TypeError("type", "a Type");
+        throw _TypeError("type", "a Type");
     if (!options)
         options = {};
 

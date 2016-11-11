@@ -12,14 +12,12 @@ module.exports = Prototype;
  */
 function Prototype(properties, options) {
     if (properties) {
-        var fieldsOnly = Boolean(options && options.fieldsOnly),
+        var any    = !(options && options.fieldsOnly),
             fields = this.constructor.$type.fields,
-            keys = Object.keys(properties);
-        for (var i = 0, k = keys.length, key; i < k; ++i) {
-            key = keys[i];
-            if (!fieldsOnly || fields[key])
+            keys   = Object.keys(properties);
+        for (var i = 0, k = keys.length, key; i < k; ++i)
+            if (fields[key = keys[i]] || any)
                 this[key] = properties[key];
-        }
     }
 }
 
@@ -27,17 +25,19 @@ function Prototype(properties, options) {
  * Converts a runtime message to a JSON object.
  * @param {Object.<string,*>} [options] Conversion options
  * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
- * @param {Function} [options.long] Long conversion type. Valid values are `String` (requires a
- * long library) and `Number` (throws without a long library if unsafe).
- * Defaults to the internal representation.
- * @param {Function} [options.enum] Enum value conversion type. Only valid value is `String`.
+ * @param {Function} [options.long] Long conversion type. Only relevant with a long library. Valid
+ * values are `String` and `Number` (the global types).
+ * Defaults to a possibly unsafe number without, and a `Long` with a long library.
+ * @param {Function} [options.enum=Number] Enum value conversion type. Valid values are `String`
+ * and `Number` (the global types).
  * Defaults to the values' numeric ids.
  * @returns {Object.<string,*>} JSON object
  */
 Prototype.prototype.asJSON = function asJSON(options) {
-    var fields = this.constructor.$type.fields,
-        json = {};
-    var keys = Object.keys(this);
+    var any    = !(options && options.fieldsOnly),
+        fields = this.constructor.$type.fields,
+        json   = {};
+    var keys   = Object.keys(this);
     for (var i = 0, k = keys.length, key; i < k; ++i) {
         var field = fields[key = keys[i]],
             value = this[key];
@@ -51,7 +51,7 @@ Prototype.prototype.asJSON = function asJSON(options) {
                 }
             } else
                 json[key] = field.jsonConvert(value, options);
-        } else if (!options || !options.fieldsOnly)
+        } else if (any)
             json[key] = value;
     }
     return json;

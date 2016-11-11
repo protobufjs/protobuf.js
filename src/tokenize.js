@@ -22,12 +22,16 @@ function tokenize(source) {
 
     var stringDelim = null;
 
+    function illegal(name) {
+        return Error("illegal " + name + " (line " + line + ")");
+    }
+
     function readString() {
         var re = stringDelim === '"' ? stringDoubleRe : stringSingleRe;
         re.lastIndex = offset - 1;
         var match = re.exec(source);
         if (!match)
-            throw Error("unterminated string (line " + line + ")");
+            throw illegal("string");
         offset = re.lastIndex;
         push(stringDelim);
         stringDelim = null;
@@ -54,7 +58,7 @@ function tokenize(source) {
             }
             if (source.charAt(offset) === '/') {
                 if (++offset === length)
-                    throw Error("unterminated comment (line " + line + ")");
+                    throw illegal("comment");
                 if (source.charAt(offset) === '/') { // Line
                     while (source.charAt(++offset) !== '\n')
                         if (offset === length)
@@ -109,7 +113,7 @@ function tokenize(source) {
     function skip(expected) {
         var actual = next();
         if (actual !== expected)
-            throw Error("illegal token '" + actual + "' ('" + expected + "' expected, line " + line + ")");
+            throw illegal("token '" + actual + "', '" + expected + "' expected");
     }
 
     function omit(optional) {

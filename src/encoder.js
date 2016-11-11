@@ -72,7 +72,7 @@ EncoderPrototype.encode = function encode(message, writer) { // codegen referenc
         } else {
             var value = message[field.name],
                 strict = field.long;
-            if (field.required || (strict && value !== field.defaultValue) || (!strict && value != field.defaultValue)) {
+            if (field.required || strict && value !== field.defaultValue || !strict && value != field.defaultValue) { // eslint-disable-line eqeqeq
                 if (wireType !== undefined)
                     writer.tag(field.id, wireType)[type](value);
                 else
@@ -149,7 +149,7 @@ EncoderPrototype.generate = function generate() {
     ("var v=m[%j]", field.name);
 
             if (!field.required) gen
-    ("if(v%s%j)", field.long ? "!==" : "!=", field.defaultValue);
+    ("if(v%s%j)", typeof field.defaultValue === 'object' || field.long ? "!==" : "!=", field.defaultValue);
             if (wireType !== undefined) gen
     ("w.tag(%d,%d).%s(v)", field.id, wireType, type);
             else gen

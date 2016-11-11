@@ -1,4 +1,4 @@
-var protobuf = exports;
+var protobuf = global.protobuf = exports;
 
 var util = require("./util");
 
@@ -53,4 +53,5 @@ protobuf.inherits         = require("./inherits");
 // Utility
 protobuf.codegen          = require("./codegen");
 protobuf.types            = require("./types");
+protobuf.LongBits         = require("./longbits");
 protobuf.util             = util;

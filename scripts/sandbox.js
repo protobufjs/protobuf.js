@@ -42,8 +42,5 @@ function inspect(object, indent) {
 
 var root = new Root(),
     gp = root.lookup("google.protobuf");
-// console.log(inspect(gp));
-var Any = gp.lookup("Any"),
-    any = Any.create();
-
-gp.add(new Field("test", 10, "string", "optional", "Any"));
+    
+console.log(inspect(gp));

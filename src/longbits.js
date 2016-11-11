@@ -8,9 +8,25 @@ module.exports = LongBits;
  */
 function LongBits(lo, hi) {
     // make sure to always call this with unsigned 32bits for proper optimization
+
+    /**
+     * Low bits.
+     * @type {number}
+     */
     this.lo = lo;
+
+    /**
+     * High bits.
+     * @type {number}
+     */
     this.hi = hi;
 }
+
+/**
+ * Zero bits.
+ * @type {number}
+ */
+LongBits.zero = new LongBits(0, 0);
 
 /**
  * Constructs new long bits from the specified number.
@@ -37,7 +53,7 @@ LongBits.fromNumber = function fromNumber(value) {
 /**
  * Constrcuts new long bits from a number or long.
  * @param {Long|number} value Value
- * @returns {LongBits}
+ * @returns {LongBits} Instance
  */
 LongBits.from = function from(value) {
     return typeof value === 'number'

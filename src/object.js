@@ -5,6 +5,8 @@ ReflectionObject.extend = extend;
 var Root = require("./root"),
     util = require("./util");
 
+var _TypeError = util._TypeError;
+
 /**
  * Base class of all reflection objects.
  * @constructor
@@ -14,9 +16,9 @@ var Root = require("./root"),
  */
 function ReflectionObject(name, options) {
     if (!util.isString(name))
-        throw util._TypeError("name");
+        throw _TypeError("name");
     if (options && !util.isObject(options))
-        throw util._TypeError("options", "an object");
+        throw _TypeError("options", "an object");
 
     /**
      * JSON-exportable properties.
@@ -118,7 +120,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
         },
         set: function(value) {
             if (value !== null && typeof value !== 'boolean')
-                throw util._TypeError("value", "a boolean or null");
+                throw _TypeError("value", "a boolean or null");
             this._visible = value;
         }
     }
@@ -177,9 +179,9 @@ ReflectionObject.exposeJSON = exposeJSON;
  * @see {@link ReflectionObject.exposeJSON}
  */
 ReflectionObjectPrototype.toJSON = function toJSON() {
-    if (!this.visible)
-        return undefined;
-    return this.properties || undefined;
+    if (this.visible)
+        return this.properties || undefined;
+    return undefined;
 };
 
 /**
@@ -188,7 +190,7 @@ ReflectionObjectPrototype.toJSON = function toJSON() {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onAdd = function onAdd(parent) {
-    if (this.parent !== parent && this.parent)
+    if (this.parent && this.parent !== parent)
         this.parent.remove(this);
     this.parent = parent;
     this.resolved = false;
@@ -240,9 +242,9 @@ ReflectionObjectPrototype.visibility = function visibility(visible) {
  * @returns {*} Option value or `undefined` if not set
  */
 ReflectionObjectPrototype.getOption = function getOption(name) {
-    if (!this.options)
-        return undefined;
-    return this.options[name];
+    if (this.options)
+        return this.options[name];
+    return undefined;
 };
 
 /**

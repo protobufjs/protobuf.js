@@ -9,6 +9,8 @@ var Type      = require("./type"),
     types     = require("./types"),
     util      = require("./util");
 
+var _TypeError = util._TypeError;
+
 /**
  * Reflected message field.
  * @extends ReflectionObject
@@ -30,13 +32,13 @@ function Field(name, id, type, rule, extend, options) {
     }
     ReflectionObject.call(this, name, options);
     if (!util.isInteger(id) || id < 0)
-        throw util._TypeError("id", "a non-negative integer");
+        throw _TypeError("id", "a non-negative integer");
     if (!util.isString(type))
-        throw util._TypeError("type");
+        throw _TypeError("type");
     if (extend !== undefined && !util.isString(extend))
-        throw util._TypeError("extend");
+        throw _TypeError("extend");
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
-        throw util._TypeError("rule", "a valid rule string");
+        throw _TypeError("rule", "a valid rule string");
 
     /**
      * Field rule, if any.

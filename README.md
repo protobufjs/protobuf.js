@@ -1,4 +1,4 @@
-protobuf.js
+protobuf.js [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url]
 ===========
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
@@ -6,6 +6,11 @@ protobuf.js
 **protobuf.js** is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.
 
 **This is the development branch of protobuf.js 6.** Are you looking for the [current stable branch](https://github.com/dcodeIO/protobuf.js/tree/ProtoBuf5)?
+
+[travis-image]: https://img.shields.io/travis/dcodeIO/protobuf.js.svg
+[travis-url]: https://travis-ci.org/dcodeIO/protobuf.js
+[npm-image]: https://img.shields.io/npm/v/protobufjs.svg
+[npm-url]: https://npmjs.org/package/protobufjs
 
 Contents
 --------
