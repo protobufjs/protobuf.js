@@ -1,7 +1,6 @@
 module.exports = Decoder;
 
 var Enum    = require("./enum"),
-    codegen = require("./codegen"),
     types   = require("./types"),
     util    = require("./util");
 
@@ -100,7 +99,7 @@ DecoderPrototype.generate = function generate() {
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
     
-    var gen = codegen("$t", "$h", "r", "m", "l")
+    var gen = util.codegen("$t", "$h", "r", "m", "l")
 
     ('"use strict"')
     ("while(r.pos<l){")
@@ -111,7 +110,8 @@ DecoderPrototype.generate = function generate() {
         var field    = fieldsArray[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.wireTypes[type],
-            packType = types.packableWireTypes[type];
+            packType = types.packableWireTypes[type],
+            prop     = util.safeProp(field.name);
         gen
             ("case %d:", field.id);
 
@@ -121,7 +121,7 @@ DecoderPrototype.generate = function generate() {
                 ("var n=r.uint32(),o={}")
                 ("if(n){")
                     ("n+=r.pos")
-                    ("var ks=[],vs =[],ki=0,vi=0")
+                    ("var ks=[],vs=[],ki=0,vi=0")
                     ("while(r.pos<n){")
                         ("if(r.tag().id===1)")
                             ("ks[ki++]=r.%s()", keyType);
@@ -137,11 +137,11 @@ DecoderPrototype.generate = function generate() {
                     ("for (ki=0;ki<vi;++ki)")
                         ("o[typeof(k=ks[ki])==='object'?$h(k):k]=vs[ki]")
                 ("}")
-                ("m[%j]=o", field.name);
+                ("m%s=o", prop);
 
         } else if (field.repeated) { gen
 
-                ("var vs=m[%j]||(m[%j]=[]),n=vs.length", field.name, field.name);
+                ("var vs=m%s||(m%s=[]),n=vs.length", prop, prop);
 
             if (field.packed && packType !== undefined) { gen
 
@@ -163,11 +163,11 @@ DecoderPrototype.generate = function generate() {
 
         } else if (wireType !== undefined) { gen
 
-                ("m[%j]=r.%s()", field.name, type);
+                ("m%s=r.%s()", prop, type);
 
         } else { gen
 
-                ("m[%j]=$t[%d].decodeDelimited_(r,$t[%d].create_())", field.name, i, i);
+                ("m%s=$t[%d].decodeDelimited_(r,$t[%d].create_())", prop, i, i);
 
         } gen
                 ("break");

@@ -238,3 +238,12 @@ util.merge = function merge(dst, src, ifNotSet) {
     }
     return dst;
 };
+
+/**
+ * Returns a safe property accessor for the specified properly name.
+ * @param {string} prop Property name
+ * @returns {string} Safe accessor
+ */
+util.safeProp = function safeProp(prop) {
+    return /^[a-z_$][a-z0-9_$]*$/i.test(prop) ? "." + prop : "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+};

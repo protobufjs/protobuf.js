@@ -2,7 +2,7 @@ module.exports = Encoder;
 
 var Enum    = require("./enum"),
     types   = require("./types"),
-    codegen = require("./codegen");
+    util    = require("./util");
 
 /**
  * Wire format encoder using code generation on top of reflection.
@@ -92,14 +92,15 @@ EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$t", "m", "w")
+    var gen = util.codegen("$t", "m", "w")
 
     ('"use strict"');
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
         var type = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.wireTypes[type];
+            wireType = types.wireTypes[type],
+            prop = util.safeProp(field.name);
         
         // Map fields
         if (field.map) {
@@ -107,7 +108,7 @@ EncoderPrototype.generate = function generate() {
                 keyWireType = types.mapKeyWireTypes[keyType];
             gen
 
-    ("var o=m[%j],ks", field.name)
+    ("var o=m%s,ks", prop)
     ("if(o&&(ks=Object.keys(o)).length){")
         ("w.tag(%d,2).fork()", field.id)
         ("for(var i=0,l=ks.length,k;i<l;++i){")
@@ -124,7 +125,7 @@ EncoderPrototype.generate = function generate() {
         // Repeated fields
         } else if (field.repeated) { gen
 
-    ("var vs=m[%j],i=0,k=vs.length", field.name);
+    ("var vs=m%s,i=0,k=vs.length", prop);
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) { gen
@@ -146,14 +147,12 @@ EncoderPrototype.generate = function generate() {
 
         // Non-repeated
         } else { gen
-    ("var v=m[%j]", field.name);
-
             if (!field.required) gen
-    ("if(v%s%j)", typeof field.defaultValue === 'object' || field.long ? "!==" : "!=", field.defaultValue);
+    ("if(m%s%s%j)", prop, typeof field.defaultValue === 'object' || field.long ? "!==" : "!=", field.defaultValue);
             if (wireType !== undefined) gen
-    ("w.tag(%d,%d).%s(v)", field.id, wireType, type);
+    ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
             else gen
-    ("$t[%d].encodeDelimited_(v,w.tag(%d,2))", i, field.id);
+    ("$t[%d].encodeDelimited_(m%s,w.tag(%d,2))", i, prop, field.id);
     
         }
     }

@@ -1,126 +1,128 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Fri, 11 Nov 2016 05:21:23 UTC
+ * Compiled Fri, 11 Nov 2016 06:13:56 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/*
-ieee754 Copyright (c) 2008, Fair Oaks Labs, Inc.
-All rights reserved.
+// Copyright (c) 2008, Fair Oaks Labs, Inc.
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+//  * Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
+//
+//  * Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+//  * Neither the name of Fair Oaks Labs, Inc. nor the names of its contributors
+//    may be used to endorse or promote products derived from this software
+//    without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+//
+//
+// Modifications to writeIEEE754 to support negative zeroes made by Brian White
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+// ref: https://github.com/nodejs/node/blob/87286cc7371886d9856edf424785aaa890ba05a9/lib/buffer_ieee754.js
 
- * Redistributions of source code must retain the above copyright notice,
-   this list of conditions and the following disclaimer.
+exports.read = function readIEEE754(buffer, offset, isBE, mLen, nBytes) {
+    var e, m,
+        eLen = nBytes * 8 - mLen - 1,
+        eMax = (1 << eLen) - 1,
+        eBias = eMax >> 1,
+        nBits = -7,
+        i = isBE ? 0 : (nBytes - 1),
+        d = isBE ? 1 : -1,
+        s = buffer[offset + i];
 
- * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
+    i += d;
 
- * Neither the name of Fair Oaks Labs, Inc. nor the names of its contributors
-   may be used to endorse or promote products derived from this software
-   without specific prior written permission.
+    e = s & ((1 << (-nBits)) - 1);
+    s >>= (-nBits);
+    nBits += eLen;
+    for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8);
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-*/
-// ref: https://github.com/feross/ieee754 - parked here to include the license
-
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-    var e, m
-    var eLen = nBytes * 8 - mLen - 1
-    var eMax = (1 << eLen) - 1
-    var eBias = eMax >> 1
-    var nBits = -7
-    var i = isLE ? (nBytes - 1) : 0
-    var d = isLE ? -1 : 1
-    var s = buffer[offset + i]
-
-    i += d
-
-    e = s & ((1 << (-nBits)) - 1)
-    s >>= (-nBits)
-    nBits += eLen
-    for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) { }
-
-    m = e & ((1 << (-nBits)) - 1)
-    e >>= (-nBits)
-    nBits += mLen
-    for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) { }
+    m = e & ((1 << (-nBits)) - 1);
+    e >>= (-nBits);
+    nBits += mLen;
+    for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8);
 
     if (e === 0) {
-        e = 1 - eBias
+        e = 1 - eBias;
     } else if (e === eMax) {
-        return m ? NaN : ((s ? -1 : 1) * Infinity)
+        return m ? NaN : ((s ? -1 : 1) * Infinity);
     } else {
-        m = m + Math.pow(2, mLen)
-        e = e - eBias
+        m = m + Math.pow(2, mLen);
+        e = e - eBias;
     }
-    return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
+    return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
+};
 
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-    var e, m, c
-    var eLen = nBytes * 8 - mLen - 1
-    var eMax = (1 << eLen) - 1
-    var eBias = eMax >> 1
-    var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-    var i = isLE ? 0 : (nBytes - 1)
-    var d = isLE ? 1 : -1
-    var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+exports.write = function writeIEEE754(buffer, value, offset, isBE, mLen, nBytes) {
+    var e, m, c,
+        eLen = nBytes * 8 - mLen - 1,
+        eMax = (1 << eLen) - 1,
+        eBias = eMax >> 1,
+        rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0),
+        i = isBE ? (nBytes - 1) : 0,
+        d = isBE ? -1 : 1,
+        s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
 
-    value = Math.abs(value)
+    value = Math.abs(value);
 
     if (isNaN(value) || value === Infinity) {
-        m = isNaN(value) ? 1 : 0
-        e = eMax
+        m = isNaN(value) ? 1 : 0;
+        e = eMax;
     } else {
-        e = Math.floor(Math.log(value) / Math.LN2)
+        e = Math.floor(Math.log(value) / Math.LN2);
         if (value * (c = Math.pow(2, -e)) < 1) {
-            e--
-            c *= 2
+            e--;
+            c *= 2;
         }
         if (e + eBias >= 1) {
-            value += rt / c
+            value += rt / c;
         } else {
-            value += rt * Math.pow(2, 1 - eBias)
+            value += rt * Math.pow(2, 1 - eBias);
         }
         if (value * c >= 2) {
-            e++
-            c /= 2
+            e++;
+            c /= 2;
         }
 
         if (e + eBias >= eMax) {
-            m = 0
-            e = eMax
+            m = 0;
+            e = eMax;
         } else if (e + eBias >= 1) {
-            m = (value * c - 1) * Math.pow(2, mLen)
-            e = e + eBias
+            m = (value * c - 1) * Math.pow(2, mLen);
+            e = e + eBias;
         } else {
-            m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-            e = 0
+            m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
+            e = 0;
         }
     }
 
-    for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) { }
+    for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8);
 
-    e = (e << mLen) | m
-    eLen += mLen
-    for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) { }
+    e = (e << mLen) | m;
+    eLen += mLen;
+    for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
 
-    buffer[offset + i - d] |= s * 128
-}
+    buffer[offset + i - d] |= s * 128;
+};
 
 },{}],2:[function(require,module,exports){
 module.exports = codegen;
@@ -202,7 +204,6 @@ function codegen(/* varargs */) {
 module.exports = Decoder;
 
 var Enum    = require("./enum"),
-    codegen = require("./codegen"),
     types   = require("./types"),
     util    = require("./util");
 
@@ -301,7 +302,7 @@ DecoderPrototype.generate = function generate() {
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
     
-    var gen = codegen("$t", "$h", "r", "m", "l")
+    var gen = util.codegen("$t", "$h", "r", "m", "l")
 
     ('"use strict"')
     ("while(r.pos<l){")
@@ -312,7 +313,8 @@ DecoderPrototype.generate = function generate() {
         var field    = fieldsArray[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.wireTypes[type],
-            packType = types.packableWireTypes[type];
+            packType = types.packableWireTypes[type],
+            prop     = util.safeProp(field.name);
         gen
             ("case %d:", field.id);
 
@@ -322,7 +324,7 @@ DecoderPrototype.generate = function generate() {
                 ("var n=r.uint32(),o={}")
                 ("if(n){")
                     ("n+=r.pos")
-                    ("var ks=[],vs =[],ki=0,vi=0")
+                    ("var ks=[],vs=[],ki=0,vi=0")
                     ("while(r.pos<n){")
                         ("if(r.tag().id===1)")
                             ("ks[ki++]=r.%s()", keyType);
@@ -338,11 +340,11 @@ DecoderPrototype.generate = function generate() {
                     ("for (ki=0;ki<vi;++ki)")
                         ("o[typeof(k=ks[ki])==='object'?$h(k):k]=vs[ki]")
                 ("}")
-                ("m[%j]=o", field.name);
+                ("m%s=o", prop);
 
         } else if (field.repeated) { gen
 
-                ("var vs=m[%j]||(m[%j]=[]),n=vs.length", field.name, field.name);
+                ("var vs=m%s||(m%s=[]),n=vs.length", prop, prop);
 
             if (field.packed && packType !== undefined) { gen
 
@@ -364,11 +366,11 @@ DecoderPrototype.generate = function generate() {
 
         } else if (wireType !== undefined) { gen
 
-                ("m[%j]=r.%s()", field.name, type);
+                ("m%s=r.%s()", prop, type);
 
         } else { gen
 
-                ("m[%j]=$t[%d].decodeDelimited_(r,$t[%d].create_())", field.name, i, i);
+                ("m%s=$t[%d].decodeDelimited_(r,$t[%d].create_())", prop, i, i);
 
         } gen
                 ("break");
@@ -383,12 +385,12 @@ DecoderPrototype.generate = function generate() {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"./codegen":2,"./enum":5,"./types":21,"./util":22}],4:[function(require,module,exports){
+},{"./enum":5,"./types":21,"./util":22}],4:[function(require,module,exports){
 module.exports = Encoder;
 
 var Enum    = require("./enum"),
     types   = require("./types"),
-    codegen = require("./codegen");
+    util    = require("./util");
 
 /**
  * Wire format encoder using code generation on top of reflection.
@@ -478,14 +480,15 @@ EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
     var fieldsArray = this.type.fieldsArray,
         fieldsCount = fieldsArray.length;
-    var gen = codegen("$t", "m", "w")
+    var gen = util.codegen("$t", "m", "w")
 
     ('"use strict"');
     
     for (var i = 0; i < fieldsCount; ++i) {
         var field = fieldsArray[i].resolve();
         var type = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.wireTypes[type];
+            wireType = types.wireTypes[type],
+            prop = util.safeProp(field.name);
         
         // Map fields
         if (field.map) {
@@ -493,7 +496,7 @@ EncoderPrototype.generate = function generate() {
                 keyWireType = types.mapKeyWireTypes[keyType];
             gen
 
-    ("var o=m[%j],ks", field.name)
+    ("var o=m%s,ks", prop)
     ("if(o&&(ks=Object.keys(o)).length){")
         ("w.tag(%d,2).fork()", field.id)
         ("for(var i=0,l=ks.length,k;i<l;++i){")
@@ -510,7 +513,7 @@ EncoderPrototype.generate = function generate() {
         // Repeated fields
         } else if (field.repeated) { gen
 
-    ("var vs=m[%j],i=0,k=vs.length", field.name);
+    ("var vs=m%s,i=0,k=vs.length", prop);
 
             // Packed repeated
             if (field.packed && types.packableWireTypes[type] !== undefined) { gen
@@ -532,14 +535,12 @@ EncoderPrototype.generate = function generate() {
 
         // Non-repeated
         } else { gen
-    ("var v=m[%j]", field.name);
-
             if (!field.required) gen
-    ("if(v%s%j)", typeof field.defaultValue === 'object' || field.long ? "!==" : "!=", field.defaultValue);
+    ("if(m%s%s%j)", prop, typeof field.defaultValue === 'object' || field.long ? "!==" : "!=", field.defaultValue);
             if (wireType !== undefined) gen
-    ("w.tag(%d,%d).%s(v)", field.id, wireType, type);
+    ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
             else gen
-    ("$t[%d].encodeDelimited_(v,w.tag(%d,2))", i, field.id);
+    ("$t[%d].encodeDelimited_(m%s,w.tag(%d,2))", i, prop, field.id);
     
         }
     }
@@ -550,7 +551,7 @@ EncoderPrototype.generate = function generate() {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"./codegen":2,"./enum":5,"./types":21}],5:[function(require,module,exports){
+},{"./enum":5,"./types":21,"./util":22}],5:[function(require,module,exports){
 module.exports = Enum;
 
 var ReflectionObject = require("./object");
@@ -3079,7 +3080,7 @@ ReaderPrototype.sfixed64 = function read_sfixed64() {
 ReaderPrototype.float = function read_float() {
     if (this.pos + 4 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    var value = ieee754.read(this.buf, this.pos, true, 23, 4);
+    var value = ieee754.read(this.buf, this.pos, false, 23, 4);
     this.pos += 4;
     return value;
 };
@@ -3092,7 +3093,7 @@ ReaderPrototype.float = function read_float() {
 ReaderPrototype.double = function read_double() {
     if (this.pos + 8 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    var value = ieee754.read(this.buf, this.pos, true, 52, 8);
+    var value = ieee754.read(this.buf, this.pos, false, 52, 8);
     this.pos += 8;
     return value;
 };
@@ -4773,6 +4774,15 @@ util.merge = function merge(dst, src, ifNotSet) {
     return dst;
 };
 
+/**
+ * Returns a safe property accessor for the specified properly name.
+ * @param {string} prop Property name
+ * @returns {string} Safe accessor
+ */
+util.safeProp = function safeProp(prop) {
+    return /^[a-z_$][a-z0-9_$]*$/i.test(prop) ? "." + prop : "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+};
+
 },{"./codegen":2,"./longbits":8,"buffer":"buffer","fs":undefined,"long":"long"}],23:[function(require,module,exports){
 module.exports = Writer;
 
@@ -5092,7 +5102,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 WriterPrototype.float = function write_float(value) {
     if (this.pos + 4 > this.len)
         this.expand(4);
-    ieee754.write(this.buf, value, this.pos, true, 23, 4);
+    ieee754.write(this.buf, value, this.pos, false, 23, 4);
     this.pos += 4;
     return this;
 };
@@ -5106,7 +5116,7 @@ WriterPrototype.float = function write_float(value) {
 WriterPrototype.double = function write_double(value) {
     if (this.pos + 8 > this.len)
         this.expand(8);
-    ieee754.write(this.buf, value, this.pos, true, 52, 8);
+    ieee754.write(this.buf, value, this.pos, false, 52, 8);
     this.pos += 8;
     return this;
 };
