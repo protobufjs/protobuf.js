@@ -278,7 +278,7 @@ TypePrototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
         if (this.fields[object.name] !== object)
-            throw Error("not a member of " + this);
+            throw Error(object + " is not a member of " + this);
         delete clearCache(this).fields[object.name];
         object.message = null;
         return this;

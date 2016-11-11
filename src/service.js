@@ -1,13 +1,12 @@
 module.exports = Service;
 
 var Namespace = require("./namespace");
+/** @alias Namespace.prototype */
+var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
 
-var Method    = require("./method"),
-    util      = require("./util");
-
-var _TypeError = util._TypeError;
+var Method    = require("./method");
 
 /**
  * Reflected service.
@@ -26,6 +25,24 @@ function Service(name, options) {
      */
     this.methods = {}; // exposed, marker
 }
+
+Object.defineProperties(ServicePrototype, {
+
+    // override
+    object: {
+        get: function() {
+            var obj = Object.create(this);
+            this.each(function(method, name) {
+                obj[name] = method.object;
+            }, this, this.methods);
+            this.each(function(nested, name) {
+                obj[name] = nested.object;
+            });
+            return obj;
+        }
+    }
+
+});
 
 /**
  * Tests if the specified JSON object describes a service.
@@ -50,43 +67,44 @@ Service.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
+ServicePrototype.get = function get(name) {
+    return NamespacePrototype.get.call(this, name) || this.methods[name] || null;
+};
+
+/**
+ * @override
+ */
 ServicePrototype.resolveAll = function resolve() {
     this.each(function(method) {
         method.resolve();
     }, this, this.methods);
-    return Namespace.prototype.resolve.call(this);
+    return NamespacePrototype.resolve.call(this);
 };
 
 /**
- * Adds a method to this service.
- * @param {Method} method Method to add
- * @returns {Service} `this`
- * @throws {TypeError} If arguments are invalid
- * @throws {Error} If there are duplicate names
+ * @override
  */
-ServicePrototype.add = function add(method) {
-    if (!(method instanceof Method))
-        throw _TypeError("method", "a Method");
-    if (this.methods[method.name])
-        throw Error("duplicate name '" + method.name + "' in " + this);
-    this.methods[method.name] = method;
-    method.service = this;
-    return this;
+ServicePrototype.add = function add(object) {
+    if (this.get(object.name))
+        throw Error("duplicate name '" + object.name + '" in ' + this);
+    if (object instanceof Method) {
+        this.methods[object.name] = object;
+        object.parent = this;
+        return this;
+    }
+    return NamespacePrototype.add.call(this, object);
 };
 
 /**
- * Removes a method from this service.
- * @param {Method} method Method to remove
- * @returns {Service} `this`
- * @throws {TypeError} If arguments are invalid
- * @throws {Error} If the method is not a member of this service
+ * @override
  */
-ServicePrototype.remove = function remove(method) {
-    if (!(method instanceof Method))
-        throw _TypeError("method", "a Method");
-    if (this.methods[method.name] !== method)
-        throw Error(method + " is not a member of " + this);
-    delete this.methods[method.name];
-    method.service = null;
-    return this;
+ServicePrototype.remove = function remove(object) {
+    if (object instanceof Method) {
+        if (this.methods[object.name] !== object)
+            throw Error(object + " is not a member of " + this);
+        delete this.methods[object.name];
+        object.parent = null;
+        return this;
+    }
+    return NamespacePrototype.remove.call(this, object);
 };

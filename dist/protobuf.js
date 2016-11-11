@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Fri, 11 Nov 2016 02:50:17 UTC
+ * Compiled Fri, 11 Nov 2016 04:13:40 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -604,8 +604,14 @@ Object.defineProperties(EnumPrototype, {
             }
             return this._valuesById;
         }
-    }
+    },
 
+    // override
+    object: {
+        get: function() {
+            return util.merge({}, this.values);
+        }
+    }
 });
 
 /**
@@ -1310,9 +1316,11 @@ MapFieldPrototype.resolve = function resolve() {
 module.exports = Method;
 
 var ReflectionObject = require("./object");
-ReflectionObject.extend(Method, [ "type", "requestType", "requestStream", "responseType", "responseStream" ]);
+/** @alias Method.prototype */
+var MethodPrototype = ReflectionObject.extend(Method, [ "type", "requestType", "requestStream", "responseType", "responseStream" ]);
 
-var util = require("./util");
+var Type = require("./type"),
+    util = require("./util");
 
 var _TypeError = util._TypeError;
 
@@ -1376,11 +1384,27 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
     this.responseStream = responseStream ? true : undefined; // exposed
 
     /**
-     * Service this method belongs to.
-     * @type {?Service}
+     * Resolved request type.
+     * @type {?Type}
      */
-    this.service = null;
+    this.resolvedRequestType = null;
+
+    /**
+     * Resolved response type.
+     * @type {?Type}
+     */
+    this.resolvedResponseType = null;
 }
+
+Object.defineProperties(MethodPrototype, {
+
+    // override
+    object: {
+        get: function() {
+            return MethodPrototype.call.bind(this);
+        }
+    }
+});
 
 /**
  * Tests if the specified JSON object describes a service method.
@@ -1402,7 +1426,62 @@ Method.fromJSON = function fromJSON(name, json) {
     return new Method(name, json.type, json.requestType, json.responseType, json.requestStream, json.responseStream, json.options);
 };
 
-},{"./object":12,"./util":22}],11:[function(require,module,exports){
+/**
+ * @override
+ */
+MethodPrototype.resolve = function resolve() {
+    if (this.resolved)
+        return this;
+    var resolved = this.parent.lookup(this.requestType);
+    if (!(resolved && resolved instanceof Type))
+        throw Error("unresolvable request type: " + this.requestType);
+    this.resolvedRequestType = resolved;
+    resolved = this.parent.lookup(this.responseType);
+    if (!(resolved && resolved instanceof Type))
+        throw Error("unresolvable response type: " + this.requestType);
+    return ReflectionObject.prototype.resolve.call(this);
+};
+
+/**
+ * Calls this method.
+ * @param {Prototype|Object} message Request message
+ * @param {function(number[], function(Error?, number[]=))} performRequest A function performing the
+ * request on binary level, taking a buffer and a node-style callback for the response buffer as
+ * its parameters.
+ * @param {function(Error, Prototype=)} [callback] Node-style callback function
+ * @param {Object} [ctx] Optional callback context
+ * @returns {Promise<Prototype>|undefined} A promise if `callback` has been omitted
+ */
+MethodPrototype.call = function call(message, performRequest, callback, ctx) {
+    if (!callback)
+        return util.asPromise(MethodPrototype.call, this, message, performRequest, undefined, ctx);
+    if (!ctx)
+        ctx = this;
+    var requestBuffer;
+    try {
+        requestBuffer = this.resolvedRequestType.encode(message);
+    } catch (e1) {
+        setTimeout(function() {
+            callback.call(ctx, e1);
+        });
+        return undefined;
+    }
+    var self = this;
+    performRequest(requestBuffer, function(err, responseBuffer) {
+        if (!err) {
+            try {
+                callback.call(ctx, null, self.resolvedResponseType.decode(responseBuffer));
+                return;
+            } catch (e2) {
+                err = e2;
+            }
+        }
+        callback.call(ctx, err);
+    });
+    return undefined;
+};
+
+},{"./object":12,"./type":20,"./util":22}],11:[function(require,module,exports){
 module.exports = Namespace;
 
 var ReflectionObject = require("./object");
@@ -1448,6 +1527,17 @@ Object.defineProperties(NamespacePrototype, {
     empty: {
         get: function() {
             return Boolean(this.nested && Object.keys(this.nested).length);
+        }
+    },
+
+    // override
+    object: {
+        get: function() {
+            var obj = Object.create(this);
+            this.each(function(nested, name) {
+                obj[name] = nested.object;
+            });
+            return obj;
         }
     }
 
@@ -1798,6 +1888,18 @@ Object.defineProperties(ReflectionObjectPrototype, {
             if (value !== null && typeof value !== 'boolean')
                 throw _TypeError("value", "a boolean or null");
             this._visible = value;
+        }
+    },
+
+    /**
+     * Gets this object as a plain JavaScript object composed of messages, enums etc.
+     * @name ReflectionObject#object
+     * @type {Object|undefined}
+     * @readonly
+     */
+    object: {
+        get: function() {
+            return undefined;
         }
     }
 
@@ -3446,13 +3548,13 @@ Root.importGoogleTypes = importGoogleTypes;
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {function(?Error, Root=)} [callback] Node-style callback function
  * @param {Object} [ctx] Optional callback context
- * @returns {Promise<Root>|undefined} A promise if callback has been omitted, otherwise `undefined`
+ * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
  * @throws {TypeError} If arguments are invalid
  */
 RootPrototype.load = function load(filename, callback, ctx) {
     var self = this;
     if (!callback)
-        return util.asPromise(load, filename);
+        return util.asPromise(RootPrototype.load, this, filename);
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
@@ -3604,13 +3706,12 @@ RootPrototype.toString = function toString() {
 module.exports = Service;
 
 var Namespace = require("./namespace");
+/** @alias Namespace.prototype */
+var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service, [ "methods" ]);
 
-var Method    = require("./method"),
-    util      = require("./util");
-
-var _TypeError = util._TypeError;
+var Method    = require("./method");
 
 /**
  * Reflected service.
@@ -3629,6 +3730,24 @@ function Service(name, options) {
      */
     this.methods = {}; // exposed, marker
 }
+
+Object.defineProperties(ServicePrototype, {
+
+    // override
+    object: {
+        get: function() {
+            var obj = Object.create(this);
+            this.each(function(method, name) {
+                obj[name] = method.object;
+            }, this, this.methods);
+            this.each(function(nested, name) {
+                obj[name] = nested.object;
+            });
+            return obj;
+        }
+    }
+
+});
 
 /**
  * Tests if the specified JSON object describes a service.
@@ -3653,48 +3772,49 @@ Service.fromJSON = function fromJSON(name, json) {
 /**
  * @override
  */
+ServicePrototype.get = function get(name) {
+    return NamespacePrototype.get.call(this, name) || this.methods[name] || null;
+};
+
+/**
+ * @override
+ */
 ServicePrototype.resolveAll = function resolve() {
     this.each(function(method) {
         method.resolve();
     }, this, this.methods);
-    return Namespace.prototype.resolve.call(this);
+    return NamespacePrototype.resolve.call(this);
 };
 
 /**
- * Adds a method to this service.
- * @param {Method} method Method to add
- * @returns {Service} `this`
- * @throws {TypeError} If arguments are invalid
- * @throws {Error} If there are duplicate names
+ * @override
  */
-ServicePrototype.add = function add(method) {
-    if (!(method instanceof Method))
-        throw _TypeError("method", "a Method");
-    if (this.methods[method.name])
-        throw Error("duplicate name '" + method.name + "' in " + this);
-    this.methods[method.name] = method;
-    method.service = this;
-    return this;
+ServicePrototype.add = function add(object) {
+    if (this.get(object.name))
+        throw Error("duplicate name '" + object.name + '" in ' + this);
+    if (object instanceof Method) {
+        this.methods[object.name] = object;
+        object.parent = this;
+        return this;
+    }
+    return NamespacePrototype.add.call(this, object);
 };
 
 /**
- * Removes a method from this service.
- * @param {Method} method Method to remove
- * @returns {Service} `this`
- * @throws {TypeError} If arguments are invalid
- * @throws {Error} If the method is not a member of this service
+ * @override
  */
-ServicePrototype.remove = function remove(method) {
-    if (!(method instanceof Method))
-        throw _TypeError("method", "a Method");
-    if (this.methods[method.name] !== method)
-        throw Error(method + " is not a member of " + this);
-    delete this.methods[method.name];
-    method.service = null;
-    return this;
+ServicePrototype.remove = function remove(object) {
+    if (object instanceof Method) {
+        if (this.methods[object.name] !== object)
+            throw Error(object + " is not a member of " + this);
+        delete this.methods[object.name];
+        object.parent = null;
+        return this;
+    }
+    return NamespacePrototype.remove.call(this, object);
 };
 
-},{"./method":10,"./namespace":11,"./util":22}],19:[function(require,module,exports){
+},{"./method":10,"./namespace":11}],19:[function(require,module,exports){
 /* eslint-disable default-case, callback-return */
 
 module.exports = tokenize;
@@ -4112,7 +4232,7 @@ TypePrototype.remove = function remove(object) {
     if (object instanceof Field && object.extend === undefined) {
         // See Type#add for the reason why extension fields are excluded here.
         if (this.fields[object.name] !== object)
-            throw Error("not a member of " + this);
+            throw Error(object + " is not a member of " + this);
         delete clearCache(this).fields[object.name];
         object.message = null;
         return this;
@@ -4476,11 +4596,12 @@ util._TypeError = function(name, description) {
  * Returns a promise from a node-style function.
  * @memberof util
  * @param {function(Error, ...*)} fn Function to call
+ * @param {Object} ctx Function context
  * @returns {Promise<*>} Promisified function
  */
-function asPromise(fn/*, varargs */) {
+function asPromise(fn, ctx/*, varargs */) {
     return new Promise(function(resolve, reject) {
-        fn.apply(null, Array.prototype.slice.call(arguments, 1).concat([
+        fn.apply(ctx, Array.prototype.slice.call(arguments, 2).concat([
             function(err/*, varargs */) {
                 if (err) reject(err);
                 else resolve.apply(null, Array.prototype.slice.call(arguments, 1));
@@ -4500,7 +4621,7 @@ util.asPromise = asPromise;
  */
 function fetch(path, callback) {
     if (!callback)
-        return asPromise(fetch, path);
+        return asPromise(fetch, util, path);
     var fs; try { fs = require("fs"); } catch (e) {} // eslint-disable-line no-empty
     if (fs && fs.readFile)
         return fs.readFile(path, "utf8", callback);

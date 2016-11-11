@@ -123,6 +123,18 @@ Object.defineProperties(ReflectionObjectPrototype, {
                 throw _TypeError("value", "a boolean or null");
             this._visible = value;
         }
+    },
+
+    /**
+     * Gets this object as a plain JavaScript object composed of messages, enums etc.
+     * @name ReflectionObject#object
+     * @type {Object|undefined}
+     * @readonly
+     */
+    object: {
+        get: function() {
+            return undefined;
+        }
     }
 
 });

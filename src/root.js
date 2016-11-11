@@ -267,13 +267,13 @@ Root.importGoogleTypes = importGoogleTypes;
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {function(?Error, Root=)} [callback] Node-style callback function
  * @param {Object} [ctx] Optional callback context
- * @returns {Promise<Root>|undefined} A promise if callback has been omitted, otherwise `undefined`
+ * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
  * @throws {TypeError} If arguments are invalid
  */
 RootPrototype.load = function load(filename, callback, ctx) {
     var self = this;
     if (!callback)
-        return util.asPromise(load, filename);
+        return util.asPromise(RootPrototype.load, this, filename);
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {

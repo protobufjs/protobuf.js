@@ -44,6 +44,17 @@ Object.defineProperties(NamespacePrototype, {
         get: function() {
             return Boolean(this.nested && Object.keys(this.nested).length);
         }
+    },
+
+    // override
+    object: {
+        get: function() {
+            var obj = Object.create(this);
+            this.each(function(nested, name) {
+                obj[name] = nested.object;
+            });
+            return obj;
+        }
     }
 
 });

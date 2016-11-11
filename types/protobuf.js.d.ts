@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Thu, 10 Nov 2016 05:26:15 UTC
+ * Generated Fri, 11 Nov 2016 04:14:43 UTC
  */
 declare module protobuf {
 
@@ -231,6 +231,12 @@ declare module protobuf {
       defaultValue: any;
    
       /**
+       * Whether this field's value is a long.
+       * @type {boolean}
+       */
+      long: boolean;
+   
+      /**
        * Resolved type if not a basic type.
        * @type {?(Type|Enum)}
        */
@@ -262,14 +268,6 @@ declare module protobuf {
        * @readonly
        */
       packed: boolean;
-   
-      /**
-       * Determines whether this field's type is a long type (64 bit).
-       * @name Field#long
-       * @type {boolean}
-       * @readonly
-       */
-      long: boolean;
    
       /**
        * Tests if the specified JSON object describes a field.
@@ -398,11 +396,36 @@ declare module protobuf {
       constructor(lo: number, hi: number);
    
       /**
+       * Low bits.
+       * @type {number}
+       */
+      lo: number;
+   
+      /**
+       * High bits.
+       * @type {number}
+       */
+      hi: number;
+   
+      /**
+       * Zero bits.
+       * @type {number}
+       */
+      static zero: number;
+   
+      /**
        * Constructs new long bits from the specified number.
        * @param {number} value Value
        * @returns {LongBits} Instance
        */
       static fromNumber(value: number): LongBits;
+   
+      /**
+       * Constrcuts new long bits from a number or long.
+       * @param {Long|number} value Value
+       * @returns {LongBits} Instance
+       */
+      static from(value: (Long|number)): LongBits;
    
       /**
        * Converts this long bits to a possibly unsafe JavaScript number.
@@ -533,10 +556,16 @@ declare module protobuf {
       responseStream: (boolean|undefined);
    
       /**
-       * Service this method belongs to.
-       * @type {?Service}
+       * Resolved request type.
+       * @type {?Type}
        */
-      service: Service;
+      resolvedRequestType: Type;
+   
+      /**
+       * Resolved response type.
+       * @type {?Type}
+       */
+      resolvedResponseType: Type;
    
       /**
        * Tests if the specified JSON object describes a service method.
@@ -553,6 +582,18 @@ declare module protobuf {
        * @throws {TypeError} If arguments are invalid
        */
       static fromJSON(name: string, json: Object): Method;
+   
+      /**
+       * Calls this method.
+       * @param {Prototype|Object} message Request message
+       * @param {function(number[], function(?Error, (number[])=))} performRequest A function performing the
+       * request on binary level, taking a buffer and a node-style callback for the response buffer as
+       * its parameters.
+       * @param {function(Error, Prototype=)} [callback] Node-style callback function
+       * @param {Object} [ctx] Optional callback context
+       * @returns {Promise<Prototype>|undefined} A promise if `callback` has been omitted
+       */
+      call(message: (Prototype|Object), performRequest: (() => any), callback?: (() => any), ctx?: Object): (Promise<Prototype>|undefined);
    
    }
    
@@ -737,6 +778,14 @@ declare module protobuf {
       visible: boolean;
    
       /**
+       * Gets this object as a plain JavaScript object composed of messages, enums etc.
+       * @name ReflectionObject#object
+       * @type {Object|undefined}
+       * @readonly
+       */
+      object: (Object|undefined);
+   
+      /**
        * Extends this class and optionally exposes the specified properties to JSON.
        * @memberof ReflectionObject
        * @param {Function} constructor Extending constructor
@@ -919,10 +968,11 @@ declare module protobuf {
        * Converts a runtime message to a JSON object.
        * @param {Object.<string,*>} [options] Conversion options
        * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
-       * @param {Function} [options.long] Long conversion type. Valid values are `String` (requires a
-       * long library) and `Number` (throws without a long library if unsafe).
-       * Defaults to the internal representation.
-       * @param {Function} [options.enum] Enum value conversion type. Only valid value is `String`.
+       * @param {Function} [options.long] Long conversion type. Only relevant with a long library. Valid
+       * values are `String` and `Number` (the global types).
+       * Defaults to a possibly unsafe number without, and a `Long` with a long library.
+       * @param {Function} [options.enum=Number] Enum value conversion type. Valid values are `String`
+       * and `Number` (the global types).
        * Defaults to the values' numeric ids.
        * @returns {Object.<string,*>} JSON object
        */
@@ -1187,7 +1237,7 @@ declare module protobuf {
        * @param {string|string[]} filename Names of one or multiple files to load
        * @param {function(?Error, Root=)} [callback] Node-style callback function
        * @param {Object} [ctx] Optional callback context
-       * @returns {Promise<Root>|undefined} A promise if callback has been omitted, otherwise `undefined`
+       * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
        * @throws {TypeError} If arguments are invalid
        */
       load(filename: (string|string[]), callback?: (() => any), ctx?: Object): (Promise<Root>|undefined);
@@ -1555,9 +1605,10 @@ declare module protobuf {
        * Returns a promise from a node-style function.
        * @memberof util
        * @param {function(Error, ...*)} fn Function to call
+       * @param {Object} ctx Function context
        * @returns {Promise<*>} Promisified function
        */
-      function asPromise(fn: (() => any)): Promise<any>;
+      function asPromise(fn: (() => any), ctx: Object): Promise<any>;
    
       /**
        * Fetches the contents of a file.

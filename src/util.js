@@ -86,11 +86,12 @@ util._TypeError = function(name, description) {
  * Returns a promise from a node-style function.
  * @memberof util
  * @param {function(Error, ...*)} fn Function to call
+ * @param {Object} ctx Function context
  * @returns {Promise<*>} Promisified function
  */
-function asPromise(fn/*, varargs */) {
+function asPromise(fn, ctx/*, varargs */) {
     return new Promise(function(resolve, reject) {
-        fn.apply(null, Array.prototype.slice.call(arguments, 1).concat([
+        fn.apply(ctx, Array.prototype.slice.call(arguments, 2).concat([
             function(err/*, varargs */) {
                 if (err) reject(err);
                 else resolve.apply(null, Array.prototype.slice.call(arguments, 1));
@@ -110,7 +111,7 @@ util.asPromise = asPromise;
  */
 function fetch(path, callback) {
     if (!callback)
-        return asPromise(fetch, path);
+        return asPromise(fetch, util, path);
     var fs; try { fs = require("fs"); } catch (e) {} // eslint-disable-line no-empty
     if (fs && fs.readFile)
         return fs.readFile(path, "utf8", callback);

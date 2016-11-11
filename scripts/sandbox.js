@@ -32,6 +32,10 @@ function inspect(object, indent) {
             object.each(function(oneof) {
                 sb.push(inspect(oneof, indent + "  "));
             }, object, object.oneofs);
+        if (object.methods)
+            object.each(function(service) {
+                sb.push(inspect(service, indent + "  "));
+            }, object, object.methods);
         if (object.nested)
             object.each(function(nested) {
                 sb.push(inspect(nested, indent + "  "));
@@ -42,5 +46,12 @@ function inspect(object, indent) {
 
 var root = new Root(),
     gp = root.lookup("google.protobuf");
-    
+
+gp.add(
+    new protobuf.Service("Something")
+    .add(new protobuf.Method("Get", "rpc", "Any", "Any"))
+);
+
 console.log(inspect(gp));
+
+console.log(gp.object);
