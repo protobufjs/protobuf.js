@@ -57,6 +57,7 @@ protobuf.load("awesome.proto", function(err, root) {
     
     // Obtain a message type
     var AwesomeMessage = root.lookup("awesomepackage.AwesomeMessage");
+    // or, if you prefer: root.object.awesomepackage.AwesomeMessage
 
     // Create a new message
     var message = AwesomeMessage.create({ awesomefield: "AwesomeString" });
@@ -237,9 +238,12 @@ Documentation
 Building
 --------
 
-To build the library or its components yourself, first install the development dependencies:
+To build the library or its components yourself, clone it from GitHub and install the development
+dependencies:
 
 ```
+$> git clone https://github.com/dcodeIO/protobuf.js.git
+$> cd protobuf.js
 $> npm install --dev
 ```
 

@@ -144,7 +144,7 @@ MethodPrototype.call = function call(message, performRequest, callback, ctx) {
         ctx = this;
     var requestBuffer;
     try {
-        requestBuffer = this.resolvedRequestType.encode(message);
+        requestBuffer = this.resolve().resolvedRequestType.encode(message);
     } catch (e1) {
         setTimeout(function() {
             callback.call(ctx, e1);
