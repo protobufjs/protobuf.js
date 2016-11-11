@@ -1,18 +1,9 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Fri, 11 Nov 2016 04:14:43 UTC
+ * Generated Fri, 11 Nov 2016 05:21:28 UTC
  */
 declare module protobuf {
 
-   /**
-    * Programmatically generates a function. When done appending code, call `eof()` on the Appender
-    * to generate the actual function.
-    * @param {...string} params Function parameter names
-    * @returns {function} Appender function similar to `util.format` known from node
-    * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}
-    */
-   function codegen(params: string): (() => any);
-   
    /**
     * Wire format decoder using code generation on top of reflection.
     * @constructor
@@ -381,87 +372,6 @@ declare module protobuf {
    }
    
    /**
-    * A helper class to work with the low and high bits of a long.
-    * @constructor
-    * @param {number} lo Low bits
-    * @param {number} hi High bits
-    */
-   class LongBits {
-      /**
-       * A helper class to work with the low and high bits of a long.
-       * @constructor
-       * @param {number} lo Low bits
-       * @param {number} hi High bits
-       */
-      constructor(lo: number, hi: number);
-   
-      /**
-       * Low bits.
-       * @type {number}
-       */
-      lo: number;
-   
-      /**
-       * High bits.
-       * @type {number}
-       */
-      hi: number;
-   
-      /**
-       * Zero bits.
-       * @type {number}
-       */
-      static zero: number;
-   
-      /**
-       * Constructs new long bits from the specified number.
-       * @param {number} value Value
-       * @returns {LongBits} Instance
-       */
-      static fromNumber(value: number): LongBits;
-   
-      /**
-       * Constrcuts new long bits from a number or long.
-       * @param {Long|number} value Value
-       * @returns {LongBits} Instance
-       */
-      static from(value: (Long|number)): LongBits;
-   
-      /**
-       * Converts this long bits to a possibly unsafe JavaScript number.
-       * @param {boolean} unsigned Whether unsigned or not
-       * @returns {number} Possibly unsafe number
-       */
-      toNumber(unsigned: boolean): number;
-   
-      /**
-       * Constructs new long bits from the specified 8 characters long hash.
-       * @param {string} hash Hash
-       * @returns {LongBits} Bits
-       */
-      static fromHash(hash: string): LongBits;
-   
-      /**
-       * Converts this long bits to a 8 characters long hash.
-       * @returns {string} Hash
-       */
-      toHash(): string;
-   
-      /**
-       * Zig-zag encodes this long bits.
-       * @returns {LongBits} `this`
-       */
-      zzEncode(): LongBits;
-   
-      /**
-       * Zig-zag decodes this long bits.
-       * @returns {LongBits} `this`
-       */
-      zzDecode(): LongBits;
-   
-   }
-   
-   /**
     * Reflected message map field.
     * @extends Field
     * @constructor
@@ -752,6 +662,13 @@ declare module protobuf {
        * @private
        */
       private _visible: boolean;
+   
+      /**
+       * Cached object representation.
+       * @type {Object|undefined}
+       * @private
+       */
+      private _object: (Object|undefined);
    
       /**
        * Reference to the root namespace.
@@ -1548,6 +1465,100 @@ declare module protobuf {
     * @namespace
     */
    module util {
+      /**
+       * Programmatically generates a function. When done appending code, call `eof()` on the Appender
+       * to generate the actual function.
+       * @memberof util
+       * @param {...string} params Function parameter names
+       * @returns {function} Appender function similar to `util.format` known from node
+       * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}
+       */
+      function codegen(params: string): (() => any);
+   
+      /**
+       * A helper class to work with the low and high bits of a long.
+       * @memberof util
+       * @constructor
+       * @param {number} lo Low bits
+       * @param {number} hi High bits
+       */
+      class LongBits {
+          /**
+           * A helper class to work with the low and high bits of a long.
+           * @memberof util
+           * @constructor
+           * @param {number} lo Low bits
+           * @param {number} hi High bits
+           */
+          constructor(lo: number, hi: number);
+   
+          /**
+           * Low bits.
+           * @type {number}
+           */
+          lo: number;
+   
+          /**
+           * High bits.
+           * @type {number}
+           */
+          hi: number;
+   
+          /**
+           * Zero bits.
+           * @memberof util.LongBits
+           * @type {util.LongBits}
+           */
+          static zero: util.LongBits;
+   
+          /**
+           * Constructs new long bits from the specified number.
+           * @param {number} value Value
+           * @returns {util.LongBits} Instance
+           */
+          static fromNumber(value: number): util.LongBits;
+   
+          /**
+           * Constrcuts new long bits from a number or long.
+           * @param {Long|number} value Value
+           * @returns {util.LongBits} Instance
+           */
+          static from(value: (Long|number)): util.LongBits;
+   
+          /**
+           * Converts this long bits to a possibly unsafe JavaScript number.
+           * @param {boolean} unsigned Whether unsigned or not
+           * @returns {number} Possibly unsafe number
+           */
+          toNumber(unsigned: boolean): number;
+   
+          /**
+           * Constructs new long bits from the specified 8 characters long hash.
+           * @param {string} hash Hash
+           * @returns {util.LongBits} Bits
+           */
+          static fromHash(hash: string): util.LongBits;
+   
+          /**
+           * Converts this long bits to a 8 characters long hash.
+           * @returns {string} Hash
+           */
+          toHash(): string;
+   
+          /**
+           * Zig-zag encodes this long bits.
+           * @returns {util.LongBits} `this`
+           */
+          zzEncode(): util.LongBits;
+   
+          /**
+           * Zig-zag decodes this long bits.
+           * @returns {util.LongBits} `this`
+           */
+          zzDecode(): util.LongBits;
+   
+      }
+   
       /**
        * Optional buffer class to use. If you assign any compatible buffer implementation to this
        * property, the library will use it.

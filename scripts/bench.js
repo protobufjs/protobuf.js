@@ -12,9 +12,9 @@ protobuf.load(require.resolve("./bench.proto"), function(err, root) {
     try {
         // Set up our test message and print the generated code
         var Test = root.lookup("Test");
-        protobuf.codegen.verbose = true;
+        protobuf.util.codegen.verbose = true;
         Test.decode(Test.encode(data).finish());
-        protobuf.codegen.verbose = false;
+        protobuf.util.codegen.verbose = false;
 
         console.log("\nThis benchmark measures message to buffer respectively buffer to message performance.");
         console.log("usage: " + path.basename(process.argv[1]) + " [iterations="+times+"] [protobufOnly]\n");

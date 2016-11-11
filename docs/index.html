@@ -107,6 +107,8 @@
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
             
+                <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
+            
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
                 <li data-name="util.fromHash"><a href="util.html#.fromHash">fromHash</a></li>
@@ -527,49 +529,6 @@
                 <li data-name="Field#toString"><a href="Field.html#toString">toString</a></li>
             
                 <li data-name="Field#visibility"><a href="Field.html#visibility">visibility</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="LongBits">
-            <span class="title">
-                <a href="LongBits.html">LongBits</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="LongBits.zero"><a href="LongBits.html#.zero">zero</a></li>
-            
-                <li data-name="LongBits#hi"><a href="LongBits.html#hi">hi</a></li>
-            
-                <li data-name="LongBits#lo"><a href="LongBits.html#lo">lo</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="LongBits.from"><a href="LongBits.html#.from">from</a></li>
-            
-                <li data-name="LongBits.fromHash"><a href="LongBits.html#.fromHash">fromHash</a></li>
-            
-                <li data-name="LongBits.fromNumber"><a href="LongBits.html#.fromNumber">fromNumber</a></li>
-            
-                <li data-name="LongBits#toHash"><a href="LongBits.html#toHash">toHash</a></li>
-            
-                <li data-name="LongBits#toNumber"><a href="LongBits.html#toNumber">toNumber</a></li>
-            
-                <li data-name="LongBits#zzDecode"><a href="LongBits.html#zzDecode">zzDecode</a></li>
-            
-                <li data-name="LongBits#zzEncode"><a href="LongBits.html#zzEncode">zzEncode</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1367,6 +1326,49 @@
             </ul>
         </li>
     
+        <li class="item" data-name="util.LongBits">
+            <span class="title">
+                <a href="util.LongBits.html">util.LongBits</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="util.LongBits.zero"><a href="util.LongBits.html#.zero">zero</a></li>
+            
+                <li data-name="util.LongBits#hi"><a href="util.LongBits.html#hi">hi</a></li>
+            
+                <li data-name="util.LongBits#lo"><a href="util.LongBits.html#lo">lo</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.LongBits.from"><a href="util.LongBits.html#.from">from</a></li>
+            
+                <li data-name="util.LongBits.fromHash"><a href="util.LongBits.html#.fromHash">fromHash</a></li>
+            
+                <li data-name="util.LongBits.fromNumber"><a href="util.LongBits.html#.fromNumber">fromNumber</a></li>
+            
+                <li data-name="util.LongBits#toHash"><a href="util.LongBits.html#toHash">toHash</a></li>
+            
+                <li data-name="util.LongBits#toNumber"><a href="util.LongBits.html#toNumber">toNumber</a></li>
+            
+                <li data-name="util.LongBits#zzDecode"><a href="util.LongBits.html#zzDecode">zzDecode</a></li>
+            
+                <li data-name="util.LongBits#zzEncode"><a href="util.LongBits.html#zzEncode">zzEncode</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Writer">
             <span class="title">
                 <a href="Writer.html">Writer</a>
@@ -1497,6 +1499,7 @@ protobuf.load(&quot;awesome.proto&quot;, function(err, root) {
 
     // Obtain a message type
     var AwesomeMessage = root.lookup(&quot;awesomepackage.AwesomeMessage&quot;);
+    // or, if you prefer: root.object.awesomepackage.AwesomeMessage
 
     // Create a new message
     var message = AwesomeMessage.create({ awesomefield: &quot;AwesomeString&quot; });
@@ -1623,14 +1626,16 @@ var message = AwesomeMessage.decode(buffer);
 <li><p><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a></p>
 </li>
 </ul>
-<h2>Building</h2><p>To build the library or its components yourself, first install the development dependencies:</p>
-<pre class="prettyprint source"><code>$> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
+<h2>Building</h2><p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
+<pre class="prettyprint source"><code>$> git clone https://github.com/dcodeIO/protobuf.js.git
+$> cd protobuf.js
+$> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run types</code></pre><h2>Compatibility</h2><ul>
 <li><p>protobuf.js requires an ES5-capable browser. If typed arrays are not supported, it uses plain arrays instead.</p>
 </li>
-<li><p>The library will try to generate highly optimized type specific encoders and decoders at runtime, which requires <code>Function</code> (basically <code>eval</code>) support. If code generation fails, it uses an equivalent but slower fallback.</p>
+<li><p>The library will try to generate optimized type specific encoders and decoders at runtime, which requires <code>Function</code> (basically <code>eval</code>) support. If code generation fails, it uses an equivalent but slower fallback.</p>
 </li>
 <li><p>If you'd like to use node's buffer API in the browser, you can use <a target="_blank" href="https://github.com/feross/buffer">feross/buffer</a> for example and assign its constructor, or that of any compatible library, to <code>protobuf.util.Buffer</code>.</p>
 </li>

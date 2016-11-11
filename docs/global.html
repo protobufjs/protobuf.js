@@ -107,6 +107,8 @@
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
             
+                <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
+            
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
                 <li data-name="util.fromHash"><a href="util.html#.fromHash">fromHash</a></li>
@@ -527,49 +529,6 @@
                 <li data-name="Field#toString"><a href="Field.html#toString">toString</a></li>
             
                 <li data-name="Field#visibility"><a href="Field.html#visibility">visibility</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="LongBits">
-            <span class="title">
-                <a href="LongBits.html">LongBits</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="LongBits.zero"><a href="LongBits.html#.zero">zero</a></li>
-            
-                <li data-name="LongBits#hi"><a href="LongBits.html#hi">hi</a></li>
-            
-                <li data-name="LongBits#lo"><a href="LongBits.html#lo">lo</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="LongBits.from"><a href="LongBits.html#.from">from</a></li>
-            
-                <li data-name="LongBits.fromHash"><a href="LongBits.html#.fromHash">fromHash</a></li>
-            
-                <li data-name="LongBits.fromNumber"><a href="LongBits.html#.fromNumber">fromNumber</a></li>
-            
-                <li data-name="LongBits#toHash"><a href="LongBits.html#toHash">toHash</a></li>
-            
-                <li data-name="LongBits#toNumber"><a href="LongBits.html#toNumber">toNumber</a></li>
-            
-                <li data-name="LongBits#zzDecode"><a href="LongBits.html#zzDecode">zzDecode</a></li>
-            
-                <li data-name="LongBits#zzEncode"><a href="LongBits.html#zzEncode">zzEncode</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1367,6 +1326,49 @@
             </ul>
         </li>
     
+        <li class="item" data-name="util.LongBits">
+            <span class="title">
+                <a href="util.LongBits.html">util.LongBits</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="util.LongBits.zero"><a href="util.LongBits.html#.zero">zero</a></li>
+            
+                <li data-name="util.LongBits#hi"><a href="util.LongBits.html#hi">hi</a></li>
+            
+                <li data-name="util.LongBits#lo"><a href="util.LongBits.html#lo">lo</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.LongBits.from"><a href="util.LongBits.html#.from">from</a></li>
+            
+                <li data-name="util.LongBits.fromHash"><a href="util.LongBits.html#.fromHash">fromHash</a></li>
+            
+                <li data-name="util.LongBits.fromNumber"><a href="util.LongBits.html#.fromNumber">fromNumber</a></li>
+            
+                <li data-name="util.LongBits#toHash"><a href="util.LongBits.html#toHash">toHash</a></li>
+            
+                <li data-name="util.LongBits#toNumber"><a href="util.LongBits.html#toNumber">toNumber</a></li>
+            
+                <li data-name="util.LongBits#zzDecode"><a href="util.LongBits.html#zzDecode">zzDecode</a></li>
+            
+                <li data-name="util.LongBits#zzEncode"><a href="util.LongBits.html#zzEncode">zzEncode</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Writer">
             <span class="title">
                 <a href="Writer.html">Writer</a>
@@ -1514,165 +1516,6 @@
         <h3 class="subsection-title">Methods</h3>
         
         <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="codegen">
-            
-            codegen<span class="signature">(params)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{function}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js">codegen.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js#L23">line 23</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Programmatically generates a function. When done appending code, call <code>eof()</code> on the Appender<br>to generate the actual function.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                        <span class="repeatable">repeatable</span>
-                    
-                
-                <p>Function parameter names</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a target="_blank" href="https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args">https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        function
-                        
-                    
-            </td>
-            <td class="description last">Appender function similar to <code>util.format</code> known from node</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
             
 <dt>
     <div class="nameContainer">

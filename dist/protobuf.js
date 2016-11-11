@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Fri, 11 Nov 2016 04:46:27 UTC
+ * Compiled Fri, 11 Nov 2016 05:21:23 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -127,6 +127,7 @@ module.exports = codegen;
 
 /**
  * Whether code generation is supported by the environment.
+ * @memberof util.codegen
  * @type {boolean}
  */
 codegen.supported = false;
@@ -134,6 +135,7 @@ try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } cat
 
 /**
  * When set to true, codegen will log generated code to console. Useful for debugging.
+ * @memberof util.codegen
  * @type {boolean}
  */
 codegen.verbose = false;
@@ -141,6 +143,7 @@ codegen.verbose = false;
 /**
  * Programmatically generates a function. When done appending code, call `eof()` on the Appender
  * to generate the actual function.
+ * @memberof util
  * @param {...string} params Function parameter names
  * @returns {function} Appender function similar to `util.format` known from node
  * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}
@@ -609,7 +612,7 @@ Object.defineProperties(EnumPrototype, {
     // override
     object: {
         get: function() {
-            return this._object || util.merge(this._object = {}, this.values);
+            return this._object || (this._object = util.merge({}, this.values));
         }
     }
 });
@@ -1094,6 +1097,7 @@ module.exports = LongBits;
 
 /**
  * A helper class to work with the low and high bits of a long.
+ * @memberof util
  * @constructor
  * @param {number} lo Low bits
  * @param {number} hi High bits
@@ -1114,16 +1118,23 @@ function LongBits(lo, hi) {
     this.hi = hi;
 }
 
+/** @alias util.LongBits.prototype */
+var LongBitsPrototype = LongBits.prototype;
+
 /**
  * Zero bits.
- * @type {number}
+ * @memberof util.LongBits
+ * @type {util.LongBits}
  */
-LongBits.zero = new LongBits(0, 0);
+var zero = new LongBits(0, 0);
+
+zero.toNumber = function() { return 0; };
+zero.zzEncode = zero.zzDecode = function() { return this; };
 
 /**
  * Constructs new long bits from the specified number.
  * @param {number} value Value
- * @returns {LongBits} Instance
+ * @returns {util.LongBits} Instance
  */
 LongBits.fromNumber = function fromNumber(value) {
     var sign  = value < 0;
@@ -1145,7 +1156,7 @@ LongBits.fromNumber = function fromNumber(value) {
 /**
  * Constrcuts new long bits from a number or long.
  * @param {Long|number} value Value
- * @returns {LongBits} Instance
+ * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
     return typeof value === 'number'
@@ -1158,7 +1169,7 @@ LongBits.from = function from(value) {
  * @param {boolean} unsigned Whether unsigned or not
  * @returns {number} Possibly unsafe number
  */
-LongBits.prototype.toNumber = function toNumber(unsigned) {
+LongBitsPrototype.toNumber = function toNumber(unsigned) {
     if (!unsigned && this.hi >>> 31) {
         this.lo = ~this.lo + 1 >>> 0;
         this.hi = ~this.hi     >>> 0;
@@ -1174,7 +1185,7 @@ var charCodeAt = String.prototype.charCodeAt;
 /**
  * Constructs new long bits from the specified 8 characters long hash.
  * @param {string} hash Hash
- * @returns {LongBits} Bits
+ * @returns {util.LongBits} Bits
  */
 LongBits.fromHash = function fromHash(hash) {
     return new LongBits(
@@ -1194,7 +1205,7 @@ LongBits.fromHash = function fromHash(hash) {
  * Converts this long bits to a 8 characters long hash.
  * @returns {string} Hash
  */
-LongBits.prototype.toHash = function toHash() {
+LongBitsPrototype.toHash = function toHash() {
     return String.fromCharCode(
         this.lo        & 255,
         this.lo >>> 8  & 255,
@@ -1209,9 +1220,9 @@ LongBits.prototype.toHash = function toHash() {
 
 /**
  * Zig-zag encodes this long bits.
- * @returns {LongBits} `this`
+ * @returns {util.LongBits} `this`
  */
-LongBits.prototype.zzEncode = function zzEncode() {
+LongBitsPrototype.zzEncode = function zzEncode() {
     var mask = -(this.hi >>> 31);
     this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
     this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
@@ -1220,9 +1231,9 @@ LongBits.prototype.zzEncode = function zzEncode() {
 
 /**
  * Zig-zag decodes this long bits.
- * @returns {LongBits} `this`
+ * @returns {util.LongBits} `this`
  */
-LongBits.prototype.zzDecode = function zzDecode() {
+LongBitsPrototype.zzDecode = function zzDecode() {
     var mask = -(this.lo & 1);
     this.lo  = ((this.lo >>> 1 | (this.hi & 1) << 31) ^ mask) >>> 0;
     this.hi  = ( this.hi >>> 1                        ^ mask) >>> 0;
@@ -4527,7 +4538,11 @@ types.packableWireTypes = {
  */
 var util = module.exports = {};
 
-var LongBits = require("./longbits");
+var codegen  = require("./codegen"),
+    LongBits = require("./longbits");
+
+util.codegen  = codegen;
+util.LongBits = LongBits;
 
 /**
  * Optional buffer class to use. If you assign any compatible buffer implementation to this
@@ -4758,7 +4773,7 @@ util.merge = function merge(dst, src, ifNotSet) {
     return dst;
 };
 
-},{"./longbits":8,"buffer":"buffer","fs":undefined,"long":"long"}],23:[function(require,module,exports){
+},{"./codegen":2,"./longbits":8,"buffer":"buffer","fs":undefined,"long":"long"}],23:[function(require,module,exports){
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
@@ -5441,14 +5456,12 @@ protobuf.Prototype        = require("./prototype");
 protobuf.inherits         = require("./inherits");
 
 // Utility
-protobuf.codegen          = require("./codegen");
 protobuf.types            = require("./types");
-protobuf.LongBits         = require("./longbits");
 protobuf.util             = util;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./codegen":2,"./decoder":3,"./encoder":4,"./enum":5,"./field":6,"./inherits":7,"./longbits":8,"./mapfield":9,"./method":10,"./namespace":11,"./object":12,"./parse":14,"./prototype":15,"./reader":16,"./root":17,"./service":18,"./tokenize":19,"./type":20,"./types":21,"./util":22,"./writer":23}]},{},["protobuf"])
+},{"./decoder":3,"./encoder":4,"./enum":5,"./field":6,"./inherits":7,"./mapfield":9,"./method":10,"./namespace":11,"./object":12,"./parse":14,"./prototype":15,"./reader":16,"./root":17,"./service":18,"./tokenize":19,"./type":20,"./types":21,"./util":22,"./writer":23}]},{},["protobuf"])
 
 
 //# sourceMappingURL=protobuf.js.map

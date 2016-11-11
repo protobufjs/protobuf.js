@@ -2,6 +2,7 @@ module.exports = LongBits;
 
 /**
  * A helper class to work with the low and high bits of a long.
+ * @memberof util
  * @constructor
  * @param {number} lo Low bits
  * @param {number} hi High bits
@@ -22,16 +23,23 @@ function LongBits(lo, hi) {
     this.hi = hi;
 }
 
+/** @alias util.LongBits.prototype */
+var LongBitsPrototype = LongBits.prototype;
+
 /**
  * Zero bits.
- * @type {number}
+ * @memberof util.LongBits
+ * @type {util.LongBits}
  */
-LongBits.zero = new LongBits(0, 0);
+var zero = new LongBits(0, 0);
+
+zero.toNumber = function() { return 0; };
+zero.zzEncode = zero.zzDecode = function() { return this; };
 
 /**
  * Constructs new long bits from the specified number.
  * @param {number} value Value
- * @returns {LongBits} Instance
+ * @returns {util.LongBits} Instance
  */
 LongBits.fromNumber = function fromNumber(value) {
     var sign  = value < 0;
@@ -53,7 +61,7 @@ LongBits.fromNumber = function fromNumber(value) {
 /**
  * Constrcuts new long bits from a number or long.
  * @param {Long|number} value Value
- * @returns {LongBits} Instance
+ * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
     return typeof value === 'number'
@@ -66,7 +74,7 @@ LongBits.from = function from(value) {
  * @param {boolean} unsigned Whether unsigned or not
  * @returns {number} Possibly unsafe number
  */
-LongBits.prototype.toNumber = function toNumber(unsigned) {
+LongBitsPrototype.toNumber = function toNumber(unsigned) {
     if (!unsigned && this.hi >>> 31) {
         this.lo = ~this.lo + 1 >>> 0;
         this.hi = ~this.hi     >>> 0;
@@ -82,7 +90,7 @@ var charCodeAt = String.prototype.charCodeAt;
 /**
  * Constructs new long bits from the specified 8 characters long hash.
  * @param {string} hash Hash
- * @returns {LongBits} Bits
+ * @returns {util.LongBits} Bits
  */
 LongBits.fromHash = function fromHash(hash) {
     return new LongBits(
@@ -102,7 +110,7 @@ LongBits.fromHash = function fromHash(hash) {
  * Converts this long bits to a 8 characters long hash.
  * @returns {string} Hash
  */
-LongBits.prototype.toHash = function toHash() {
+LongBitsPrototype.toHash = function toHash() {
     return String.fromCharCode(
         this.lo        & 255,
         this.lo >>> 8  & 255,
@@ -117,9 +125,9 @@ LongBits.prototype.toHash = function toHash() {
 
 /**
  * Zig-zag encodes this long bits.
- * @returns {LongBits} `this`
+ * @returns {util.LongBits} `this`
  */
-LongBits.prototype.zzEncode = function zzEncode() {
+LongBitsPrototype.zzEncode = function zzEncode() {
     var mask = -(this.hi >>> 31);
     this.hi  = ((this.hi << 1 | this.lo >>> 31) ^ mask) >>> 0;
     this.lo  = ( this.lo << 1                   ^ mask) >>> 0;
@@ -128,9 +136,9 @@ LongBits.prototype.zzEncode = function zzEncode() {
 
 /**
  * Zig-zag decodes this long bits.
- * @returns {LongBits} `this`
+ * @returns {util.LongBits} `this`
  */
-LongBits.prototype.zzDecode = function zzDecode() {
+LongBitsPrototype.zzDecode = function zzDecode() {
     var mask = -(this.lo & 1);
     this.lo  = ((this.lo >>> 1 | (this.hi & 1) << 31) ^ mask) >>> 0;
     this.hi  = ( this.hi >>> 1                        ^ mask) >>> 0;

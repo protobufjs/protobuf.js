@@ -219,9 +219,6 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 ### Utility
 
-* **codegen(`...string`): `function`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js)]<br />
-  Programmatically generates a function.
-
 * **util: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
   Utility functions.
 
@@ -269,7 +266,7 @@ Compatibility
 -------------
 * protobuf.js requires an ES5-capable browser. If typed arrays are not supported, it uses plain arrays instead.
 
-* The library will try to generate highly optimized type specific encoders and decoders at runtime, which requires `Function` (basically `eval`) support. If code generation fails, it uses an equivalent but slower fallback.
+* The library will try to generate optimized type specific encoders and decoders at runtime, which requires `Function` (basically `eval`) support. If code generation fails, it uses an equivalent but slower fallback.
 
 * If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer) for example and assign its constructor, or that of any compatible library, to `protobuf.util.Buffer`.
 

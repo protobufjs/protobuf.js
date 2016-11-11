@@ -2,6 +2,7 @@ module.exports = codegen;
 
 /**
  * Whether code generation is supported by the environment.
+ * @memberof util.codegen
  * @type {boolean}
  */
 codegen.supported = false;
@@ -9,6 +10,7 @@ try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } cat
 
 /**
  * When set to true, codegen will log generated code to console. Useful for debugging.
+ * @memberof util.codegen
  * @type {boolean}
  */
 codegen.verbose = false;
@@ -16,6 +18,7 @@ codegen.verbose = false;
 /**
  * Programmatically generates a function. When done appending code, call `eof()` on the Appender
  * to generate the actual function.
+ * @memberof util
  * @param {...string} params Function parameter names
  * @returns {function} Appender function similar to `util.format` known from node
  * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}

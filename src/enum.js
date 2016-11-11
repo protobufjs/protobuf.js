@@ -59,7 +59,7 @@ Object.defineProperties(EnumPrototype, {
     // override
     object: {
         get: function() {
-            return this._object || util.merge(this._object = {}, this.values);
+            return this._object || (this._object = util.merge({}, this.values));
         }
     }
 });
