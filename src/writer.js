@@ -316,7 +316,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 WriterPrototype.float = function write_float(value) {
     if (this.pos + 4 > this.len)
         this.expand(4);
-    ieee754.write(this.buf, value, this.pos, true, 23, 4);
+    ieee754.write(this.buf, value, this.pos, false, 23, 4);
     this.pos += 4;
     return this;
 };
@@ -330,7 +330,7 @@ WriterPrototype.float = function write_float(value) {
 WriterPrototype.double = function write_double(value) {
     if (this.pos + 8 > this.len)
         this.expand(8);
-    ieee754.write(this.buf, value, this.pos, true, 52, 8);
+    ieee754.write(this.buf, value, this.pos, false, 52, 8);
     this.pos += 8;
     return this;
 };

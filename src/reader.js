@@ -276,7 +276,7 @@ ReaderPrototype.sfixed64 = function read_sfixed64() {
 ReaderPrototype.float = function read_float() {
     if (this.pos + 4 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    var value = ieee754.read(this.buf, this.pos, true, 23, 4);
+    var value = ieee754.read(this.buf, this.pos, false, 23, 4);
     this.pos += 4;
     return value;
 };
@@ -289,7 +289,7 @@ ReaderPrototype.float = function read_float() {
 ReaderPrototype.double = function read_double() {
     if (this.pos + 8 > this.len)
         throw RangeError(indexOutOfRange(this, 4));
-    var value = ieee754.read(this.buf, this.pos, true, 52, 8);
+    var value = ieee754.read(this.buf, this.pos, false, 52, 8);
     this.pos += 8;
     return value;
 };
