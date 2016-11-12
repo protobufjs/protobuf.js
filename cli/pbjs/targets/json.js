@@ -58,6 +58,7 @@ json.description = description;
 function buildNamespace(ns, out) {
     var messages, enums, services;
     util.extend(out, {
+        "syntax"   : ns.syntax   || 'proto2',
         "options"  : out.options || {},
         "messages" : messages = [],
         "enums"    : enums    = [],
@@ -151,6 +152,7 @@ function buildMessage(msg) {
     var fields, oneofs;
     var out = {
         "name"     : msg.name,
+        "syntax"   : msg.syntax || 'proto2',
         "options"  : {},
         "fields"   : fields   = [],
         "oneofs"   : oneofs   = {}
@@ -210,6 +212,7 @@ function buildEnum(enm) {
     var values;
     var out = {
         "name"    : enm.name,
+        "syntax"  : enm.syntax || 'proto2',
         "values"  : values = []
     };
     enm.getChildren(ProtoBuf.Reflect.Enum.Value).forEach(function(val) {
