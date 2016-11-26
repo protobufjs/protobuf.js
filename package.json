@@ -1,0 +1,69 @@
+{
+  "name": "protobufjs",
+  "version": "6.0.0-dev",
+  "description": "Protocol Buffers for JavaScript.",
+  "author": "Daniel Wirtz",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dcodeIO/protobuf.js.git"
+  },
+  "bugs": "https://github.com/dcodeIO/protobuf.js/issues",
+  "homepage": "http://dcode.io/protobuf.js",
+  "keywords": [
+    "protobuf",
+    "protocol",
+    "buffers",
+    "protocol buffers",
+    "serialization",
+    "encoding"
+  ],
+  "main": "src/index",
+  "bin": {
+    "pbjs": "bin/pbjs"
+  },
+  "types": "types/protobuf.js.d.ts",
+  "scripts": {
+    "build": "gulp",
+    "docs": "jsdoc -c jsdoc.docs.json -R README.md",
+    "types": "jsdoc -c jsdoc.types.json && node scripts/types.js",
+    "lint": "eslint src",
+    "test": "tape tests/*.js | tap-pessimist",
+    "bench": "node bench",
+    "all": "npm run lint && npm run test && npm run build && npm run docs && npm run types && npm run bench"
+  },
+  "optionalDependencies": {
+    "long": "^3.2.0"
+  },
+  "devDependencies": {
+    "benchmark": "^2.1.2",
+    "browserify": "^13.1.1",
+    "bundle-collapser": "^1.2.1",
+    "chalk": "^1.1.3",
+    "eslint": "^3.10.0",
+    "gh-pages": "^0.12.0",
+    "glob": "^7.1.1",
+    "gulp": "^3.9.1",
+    "gulp-gzip": "^1.4.0",
+    "gulp-header": "^1.8.8",
+    "gulp-if": "^2.0.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
+    "jaguarjs-jsdoc": "dcodeIO/jaguarjs-jsdoc",
+    "jsdoc": "^3.4.2",
+    "long": "^3.2.0",
+    "minimist": "^1.2.0",
+    "tap-pessimist": "^1.0.1",
+    "tape": "^4.6.3",
+    "tsd-jsdoc": "dcodeIO/tsd-jsdoc",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-fs": "^2.4.4",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "browser": {
+    "process": false,
+    "_process": false,
+    "buffer": false,
+    "fs": false
+  }
+}

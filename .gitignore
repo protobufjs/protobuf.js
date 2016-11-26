@@ -1,0 +1,6 @@
+*.log
+npm-debug.*
+node_modules/
+types/types.d.ts
+bench.txt
+docs/

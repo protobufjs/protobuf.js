@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+message Test {
+
+    string  string = 1;
+    uint32  uint32 = 2;
+    Inner   inner  = 3;
+
+    message Inner {
+
+        int32      int32      = 1;
+        InnerInner innerInner = 2;
+        Outer      outer      = 3;
+
+        message InnerInner {
+
+            int64  long   = 1;
+            Enum   enum   = 2;
+            sint32 sint32 = 3;
+        }
+    }
+
+    enum Enum {
+
+        ONE   = 0;
+        TWO   = 1;
+        THREE = 2;
+        FOUR  = 3;
+        FIVE  = 4;
+    }
+}
+
+message Outer {
+
+    repeated bool bool = 1;
+}
