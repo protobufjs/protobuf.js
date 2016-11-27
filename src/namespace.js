@@ -241,7 +241,7 @@ NamespacePrototype.resolveAll = function resolve() {
 };
 
 /**
- * Looks up the reflection object specified by path, relative to this namespace.
+ * Looks up the reflection object at the specified path, relative to this namespace.
  * @param {string|string[]} path Path to look up
  * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
@@ -258,7 +258,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
         return this.root.lookup(path.slice(1));
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
-    if (found && (path.length === 1 || found.lookup && (found = found.lookup(path.slice(1), true))))
+    if (found && (path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true))))
         return found;
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)

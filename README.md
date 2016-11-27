@@ -16,6 +16,8 @@ protobuf.js [![travis][travis-image]][travis-url] [![david][david-image]][david-
 [paypal-image]: https://img.shields.io/badge/paypal-donate-yellow.svg
 [paypal-url]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=%3C3%20protobuf.js
 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/protobuf.svg)](https://saucelabs.com/u/protobuf)
+
 Contents
 --------
 
@@ -184,9 +186,6 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
   * **imports: `Array|undefined`**<br />
     File names of imported files, if any.
-
-  * **publicImports: `Array|undefined`**<br />
-    File names of publicly imported files, if any.
 
   * **weakImports: `Array|undefined`**<br />
     File names of weakly imported files, if any.

@@ -81,7 +81,7 @@ function State(writer) {
 
 Writer.State = State;
 
-var ArrayImpl =  typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
  * Constructs a new writer.

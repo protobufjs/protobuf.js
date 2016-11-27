@@ -11,20 +11,28 @@ util.LongBits = require("./util/longbits");
 util.codegen  = require("./util/codegen");
 
 /**
+ * Whether running within node or not.
+ * @memberof util
+ * @type {boolean}
+ */
+var isNode = util.isNode = Boolean(typeof process !== 'undefined' && process.versions && process.versions.node);
+
+/**
  * Optional buffer class to use.
  * If you assign any compatible buffer implementation to this property, the library will use it.
  * @type {?Function}
  */
 util.Buffer = null;
 
-try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
+if (isNode)
+    try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Optional Long class to use.
  * If you assign any compatible long implementation to this property, the library will use it.
  * @type {?Function}
  */
-util.Long = null;
+util.Long = global.Long || null;
 
 try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
@@ -267,4 +275,18 @@ util.merge = function merge(dst, src, ifNotSet) {
  */
 util.safeProp = function safeProp(prop) {
     return /^[a-z_$][a-z0-9_$]*$/i.test(prop) ? "." + prop : "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+};
+
+/**
+ * Creates a new buffer of whatever type supported by the environment.
+ * @param {number} [size=0] Buffer size
+ * @returns {Buffer|Uint8Array|Array}
+ */
+util.newBuffer = function newBuffer(size) {
+    size = size || 0;
+    return util.Buffer
+        ? new Buffer(size)
+        : typeof Uint8Array !== 'undefined'
+        ? new Uint8Array(size)
+        : new Array(size);
 };

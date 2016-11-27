@@ -26,9 +26,11 @@
   "scripts": {
     "build": "gulp",
     "docs": "jsdoc -c jsdoc.docs.json -R README.md",
+    "pages": "node scripts/pages",
     "types": "jsdoc -c jsdoc.types.json && node scripts/types.js",
     "lint": "eslint src",
-    "test": "tape tests/*.js | tap-pessimist",
+    "test": "tape tests/*.js | tap-spec",
+    "zuul": "zuul tests/*.js",
     "bench": "node bench",
     "all": "npm run lint && npm run test && npm run build && npm run docs && npm run types && npm run bench"
   },
@@ -53,12 +55,13 @@
     "jsdoc": "^3.4.2",
     "long": "^3.2.0",
     "minimist": "^1.2.0",
-    "tap-pessimist": "^1.0.1",
+    "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "tsd-jsdoc": "dcodeIO/tsd-jsdoc",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "zuul": "^3.11.1"
   },
   "browser": {
     "process": false,

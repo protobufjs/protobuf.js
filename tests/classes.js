@@ -14,7 +14,7 @@ tape.test("google.protobuf.Any class", function(test) {
         }
         inherits(Any, root.lookup("google.protobuf.Any"));
 
-        var valueBuffer = typeof Buffer !== "undefined" ? new Buffer(0) : new Uint8Array(0);
+        var valueBuffer = protobuf.util.newBuffer(0);
         var any = new Any({
             type_url: "some.type",
             value: valueBuffer

@@ -11,7 +11,7 @@ tape.test("google.protobuf.Any type", function(test) {
 
         test.ok(Any instanceof protobuf.Type, "should extend Type");
 
-        var valueBuffer = typeof Buffer !== 'undefined' ? new Buffer(0) : new Uint8Array(0);
+        var valueBuffer = protobuf.util.newBuffer(0);
         var any = Any.create({
             type_url: "some.type",
             value: valueBuffer
@@ -29,16 +29,31 @@ tape.test("google.protobuf.Any type", function(test) {
                 buf,
                 msg;
 
-            test.test("should encode", function(test) {
-                
-                writer = Any.encode(any);
-                buf = writer.finish();
-
+            function verifyEncode(test, buf) {
                 test.equal(buf[0]    , 1 << 3 | 2, "a tag with id 1, wire type 2");
                 test.equal(buf[1]    , 9         , "a field length of 9");
                 test.equal(buf[11]   , 2 << 3 | 2, "a tag with id 2, wire type 2");
                 test.equal(buf[12]   , 0         , "a field length of 0");
                 test.equal(buf.length, 13        , "13 bytes in total");
+            }
+
+            test.test("should encode", function(test) {
+                
+                writer = Any.encode(any);
+                buf = writer.finish();
+
+                verifyEncode(test, buf);
+
+                test.end();
+            });
+
+            test.test("should encode (fallback)", function(test) {
+                
+                var enc = new protobuf.Encoder(Any);
+                writer = enc.encode(any);
+                buf = writer.finish();
+
+                verifyEncode(test, buf);
 
                 test.end();
             });
@@ -46,6 +61,17 @@ tape.test("google.protobuf.Any type", function(test) {
             test.test("should decode", function(test) {
 
                 msg = Any.decode(buf);
+
+                test.deepEqual(msg, any, "an equal message");
+
+                test.end();
+            });
+
+            test.test("should decode (fallback)", function(test) {
+
+                var dec = new protobuf.Decoder(Any);
+                msg = dec.decode(buf);
+
                 test.deepEqual(msg, any, "an equal message");
 
                 test.end();

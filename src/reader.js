@@ -47,9 +47,7 @@ function Reader(buffer) {
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-var ArrayImpl = typeof Uint8Array !== 'undefined'
-    ? Uint8Array
-    : Array;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
@@ -331,7 +329,9 @@ ReaderPrototype.bytes = function read_bytes() {
     if (end > this.len)
         throw RangeError(indexOutOfRange(this, length));
     this.pos += length;
-    return this._slice.call(this.buf, start, end);
+    return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
+        ? new this.buf.constructor(0)
+        : this._slice.call(this.buf, start, end);
 };
 
 /**

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Fri, 25 Nov 2016 23:30:00 UTC
+ * Compiled Sun, 27 Nov 2016 21:06:46 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1807,7 +1807,7 @@ NamespacePrototype.resolveAll = function resolve() {
 };
 
 /**
- * Looks up the reflection object specified by path, relative to this namespace.
+ * Looks up the reflection object at the specified path, relative to this namespace.
  * @param {string|string[]} path Path to look up
  * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
@@ -1824,7 +1824,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
         return this.root.lookup(path.slice(1));
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
-    if (found && (path.length === 1 || found.lookup && (found = found.lookup(path.slice(1), true))))
+    if (found && (path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true))))
         return found;
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
@@ -2855,9 +2855,7 @@ function Reader(buffer) {
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-var ArrayImpl = typeof Uint8Array !== 'undefined'
-    ? Uint8Array
-    : Array;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
@@ -3139,7 +3137,9 @@ ReaderPrototype.bytes = function read_bytes() {
     if (end > this.len)
         throw RangeError(indexOutOfRange(this, length));
     this.pos += length;
-    return this._slice.call(this.buf, start, end);
+    return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
+        ? new ArrayImpl(0)
+        : this._slice.call(this.buf, start, end);
 };
 
 /**
@@ -4436,6 +4436,7 @@ types.packed = bake([
 ], 2);
 
 },{}],21:[function(require,module,exports){
+(function (process,global,Buffer){
 "use strict";
 
 /**
@@ -4449,20 +4450,28 @@ util.LongBits = require(23);
 util.codegen  = require(22);
 
 /**
+ * Whether running within node or not.
+ * @memberof util
+ * @type {boolean}
+ */
+var isNode = util.isNode = Boolean(typeof process !== 'undefined' && process.versions && process.versions.node);
+
+/**
  * Optional buffer class to use.
  * If you assign any compatible buffer implementation to this property, the library will use it.
  * @type {?Function}
  */
 util.Buffer = null;
 
-try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
+if (isNode)
+    try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Optional Long class to use.
  * If you assign any compatible long implementation to this property, the library will use it.
  * @type {?Function}
  */
-util.Long = null;
+util.Long = global.Long || null;
 
 try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
@@ -4706,6 +4715,22 @@ util.merge = function merge(dst, src, ifNotSet) {
 util.safeProp = function safeProp(prop) {
     return /^[a-z_$][a-z0-9_$]*$/i.test(prop) ? "." + prop : "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
 };
+
+/**
+ * Creates a new buffer of whatever type supported by the environment.
+ * @param {number} [size=0] Buffer size
+ * @returns {Buffer|Uint8Array|Array}
+ */
+util.newBuffer = function newBuffer(size) {
+    size = size || 0;
+    return util.Buffer
+        ? new Buffer(size)
+        : typeof Uint8Array !== 'undefined'
+        ? new Uint8Array(size)
+        : new Array(size);
+};
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
 
 },{"22":22,"23":23,"buffer":"buffer","long":"long","undefined":undefined}],22:[function(require,module,exports){
 "use strict";
@@ -5244,7 +5269,7 @@ function State(writer) {
 
 Writer.State = State;
 
-var ArrayImpl =  typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
  * Constructs a new writer.

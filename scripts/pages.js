@@ -7,6 +7,7 @@ ghpages.publish(path.join(__dirname, "..", "docs"), {
     }
 }, function(err) {
     if (err)
-        throw err;
-    console.log("done");
+        console.error(err);
+    else
+        console.log("done");
 });
