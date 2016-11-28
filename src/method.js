@@ -37,7 +37,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         throw _TypeError("requestType");
     if (!util.isString(responseType))
         throw _TypeError("responseType");
-    
+
     ReflectionObject.call(this, name, options);
 
     /**
@@ -130,5 +130,6 @@ MethodPrototype.resolve = function resolve() {
     resolved = this.parent.lookup(this.responseType);
     if (!(resolved && resolved instanceof Type))
         throw Error("unresolvable response type: " + this.requestType);
+    this.resolvedResponseType = resolved;
     return ReflectionObject.prototype.resolve.call(this);
 };
