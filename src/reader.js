@@ -9,7 +9,7 @@ var LongBits = util.LongBits,
     Long     = util.Long;
 
 function indexOutOfRange(reader, writeLength) {
-    return "index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len;
+    return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
 }
 
 /**
@@ -68,7 +68,7 @@ function Tag(id, wireType) {
  */
 ReaderPrototype.tag = function read_tag() {
     if (this.pos >= this.len)
-        throw RangeError(indexOutOfRange(this));
+        throw indexOutOfRange(this);
     return new Tag(this.buf[this.pos] >>> 3, this.buf[this.pos++] & 7);
 };
 
@@ -82,7 +82,7 @@ ReaderPrototype.int32 = function read_int32() {
         octet = 0;
     do {
         if (this.pos >= this.len)
-            throw RangeError(indexOutOfRange(this));
+            throw indexOutOfRange(this);
         octet = this.buf[this.pos++];
         if (shift < 32)
             value |= (octet & 127) << shift;
@@ -139,14 +139,14 @@ function readLongVarint() {
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
-                throw RangeError(indexOutOfRange(this));
+                throw indexOutOfRange(this);
             b = this.buf[this.pos++];
             lo |= (b & 127) << i * 7;
             if (b < 128)
                 return new LongBits(lo >>> 0, hi >>> 0);
         }
         if (this.pos >= this.len)
-            throw RangeError(indexOutOfRange(this));
+            throw indexOutOfRange(this);
         b = this.buf[this.pos++];
         lo |= (b & 127) << 28;
         hi |= (b & 127) >> 4;
@@ -154,7 +154,7 @@ function readLongVarint() {
             return new LongBits(lo >>> 0, hi >>> 0);
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
-                throw RangeError(indexOutOfRange(this));
+                throw indexOutOfRange(this);
             b = this.buf[this.pos++];
             hi |= (b & 127) << i * 7 + 3;
             if (b < 128)
@@ -223,7 +223,7 @@ ReaderPrototype.bool = function read_bool() {
  */
 ReaderPrototype.fixed32 = function read_fixed32() {
     if (this.pos + 4 > this.len)
-        throw RangeError(indexOutOfRange(this, 4));
+        throw indexOutOfRange(this, 4);
     this.pos += 4;
     return this.buf[this.pos - 4]
          | this.buf[this.pos - 3] << 8
@@ -249,7 +249,7 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
  */
 function readLongFixed() {
     if (this.pos + 8 > this.len)
-        throw RangeError(indexOutOfRange(this, 8));
+        throw indexOutOfRange(this, 8);
     return new LongBits(
       ( this.buf[this.pos++]
       | this.buf[this.pos++] << 8
@@ -299,7 +299,7 @@ ReaderPrototype.sfixed64 = Long && read_sfixed64_long || read_sfixed64_number;
  */
 ReaderPrototype.float = function read_float() {
     if (this.pos + 4 > this.len)
-        throw RangeError(indexOutOfRange(this, 4));
+        throw indexOutOfRange(this, 4);
     var value = ieee754.read(this.buf, this.pos, false, 23, 4);
     this.pos += 4;
     return value;
@@ -312,7 +312,7 @@ ReaderPrototype.float = function read_float() {
  */
 ReaderPrototype.double = function read_double() {
     if (this.pos + 8 > this.len)
-        throw RangeError(indexOutOfRange(this, 4));
+        throw indexOutOfRange(this, 4);
     var value = ieee754.read(this.buf, this.pos, false, 52, 8);
     this.pos += 8;
     return value;
@@ -327,7 +327,7 @@ ReaderPrototype.bytes = function read_bytes() {
         start  = this.pos,
         end    = this.pos + length;
     if (end > this.len)
-        throw RangeError(indexOutOfRange(this, length));
+        throw indexOutOfRange(this, length);
     this.pos += length;
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
         ? new this.buf.constructor(0)
@@ -371,11 +371,11 @@ ReaderPrototype.skip = function skip(length) {
     if (length === undefined) {
         do {
             if (this.pos >= this.len)
-                throw RangeError(indexOutOfRange(this));
+                throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
     } else {
         if (this.pos + length > this.len)
-            throw RangeError(indexOutOfRange(this, length));
+            throw indexOutOfRange(this, length);
         this.pos += length;
     }
     return this;
@@ -476,7 +476,7 @@ BufferReaderPrototype.constructor = BufferReader;
  */
 BufferReaderPrototype.float = function read_float_buffer() {
     if (this.pos + 4 > this.len)
-        throw RangeError(indexOutOfRange(this, 4));
+        throw indexOutOfRange(this, 4);
     var value = this.buf.readFloatLE(this.pos, true);
     this.pos += 4;
     return value;
@@ -488,7 +488,7 @@ BufferReaderPrototype.float = function read_float_buffer() {
  */
 BufferReaderPrototype.double = function read_double_buffer() {
     if (this.pos + 8 > this.len)
-        throw RangeError(indexOutOfRange(this, 8));
+        throw indexOutOfRange(this, 8);
     var value = this.buf.readDoubleLE(this.pos, true);
     this.pos += 8;
     return value;
@@ -503,7 +503,7 @@ BufferReaderPrototype.string = function read_string_buffer() {
         start = this.pos,
         end   = this.pos + length;
     if (end > this.len)
-        throw RangeError(indexOutOfRange(this, length));
+        throw indexOutOfRange(this, length);
     this.pos += length;
     return this.buf.toString("utf8", start, end);
 };

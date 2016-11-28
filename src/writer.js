@@ -189,7 +189,11 @@ WriterPrototype.uint32 = function write_uint32(value) {
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.int32 = WriterPrototype.uint32;
+WriterPrototype.int32 = function write_int32(value) {
+    return value < 0
+        ? this.push(writeVarint64, 10, LongBits.fromNumber(value)) // 10 bytes per spec
+        : this.uint32(value);
+};
 
 /**
  * Writes a 32 bit value as a varint, zig-zag encoded.
