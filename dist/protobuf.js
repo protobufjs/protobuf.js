@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Sun, 27 Nov 2016 21:06:46 UTC
+ * Compiled Mon, 28 Nov 2016 15:08:53 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -294,8 +294,8 @@ Object.defineProperties(DecoderPrototype, {
      * @readonly
      */
     fieldsById: {
-        get: function() {
-            return this.type.fieldsById;
+        get: DecoderPrototype.getFieldsById = function getFieldsById() {
+            return this.type.getFieldsById();
         }
     },
 
@@ -305,8 +305,8 @@ Object.defineProperties(DecoderPrototype, {
      * @type {Prototype}
      */
     ctor: {
-        get: function() {
-            return this.type.ctor;
+        get: DecoderPrototype.getCtor = function getCtor() {
+            return this.type.getCtor();
         }
     }
 });
@@ -319,10 +319,10 @@ Object.defineProperties(DecoderPrototype, {
  */
 DecoderPrototype.decode = function decode_fallback(reader, length) { // codegen reference and fallback
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
-    var fields  = this.fieldsById,
+    var fields  = this.getFieldsById(),
         reader  = reader instanceof Reader ? reader : Reader(reader),
         limit   = length === undefined ? reader.len : reader.pos + length,
-        message = new this.ctor();
+        message = new (this.getCtor())();
     while (reader.pos < limit) {
         var tag      = reader.tag(),
             field    = fields[tag.id].resolve(),
@@ -387,11 +387,11 @@ DecoderPrototype.decode = function decode_fallback(reader, length) { // codegen 
  */
 DecoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.fieldsArray;    
+    var fields = this.type.getFieldsArray();    
     var gen = util.codegen("r", "l")
 
     ("r instanceof Reader||(r=Reader(r))")
-    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor()")
+    ("var c=l===undefined?r.len:r.pos+l,m=new (this.getCtor())()")
     ("while(r.pos<c){")
         ("var t=r.tag()")
         ("switch(t.id){");
@@ -469,7 +469,7 @@ DecoderPrototype.generate = function generate() {
     ("}")
     ("return m");
     return gen
-    .eof(this.type.fullName + "$decode", {
+    .eof(this.type.getFullName() + "$decode", {
         Reader : Reader,
         types  : fields.map(function(fld) { return fld.resolvedType; }),
         util   : util.toHash
@@ -514,8 +514,8 @@ Object.defineProperties(EncoderPrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function() {
-            return this.type.fieldsArray;
+        get: EncoderPrototype.getFieldsArray = function getFieldsArray() {
+            return this.type.getFieldsArray();
         }
     }
 });
@@ -530,7 +530,7 @@ EncoderPrototype.encode = function encode_fallback(message, writer) { // codegen
     /* eslint-disable block-scoped-var, no-redeclare */
     if (!writer)
         writer = Writer();
-    var fields = this.fieldsArray, fi = 0;
+    var fields = this.getFieldsArray(), fi = 0;
     while (fi < fields.length) {
         var field    = fields[fi++].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -604,7 +604,7 @@ EncoderPrototype.encode = function encode_fallback(message, writer) { // codegen
  */
 EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.fieldsArray;
+    var fields = this.type.getFieldsArray();
     var gen = util.codegen("m", "w")
     ("w||(w=Writer())");
 
@@ -691,7 +691,7 @@ EncoderPrototype.generate = function generate() {
     return gen
     ("return w")
 
-    .eof(this.type.fullName + "$encode", {
+    .eof(this.type.getFullName() + "$encode", {
         Writer : Writer,
         types  : fields.map(function(fld) { return fld.resolvedType; }),
         util   : util
@@ -746,7 +746,7 @@ Object.defineProperties(EnumPrototype, {
      * @readonly
      */
     valuesById: {
-        get: function() {
+        get: EnumPrototype.getValuesById = function getValuesById() {
             if (!this._valuesById) {
                 this._valuesById = {};
                 Object.keys(this.values).forEach(function(name) {
@@ -811,7 +811,7 @@ EnumPrototype.add = function(name, id) {
         throw _TypeError("id", "a non-negative integer");
     if (this.values[name] !== undefined)
         throw Error('duplicate name "' + name + '" in ' + this);
-    if (this.valuesById[id] !== undefined)
+    if (this.getValuesById()[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
     this.values[name] = id;
     return clearCache(this);
@@ -986,7 +986,7 @@ Object.defineProperties(FieldPrototype, {
      * @readonly
      */
     packed: {
-        get: function() {
+        get: FieldPrototype.isPacked = function() {
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
@@ -1069,7 +1069,7 @@ FieldPrototype.resolve = function resolve() {
         this.defaultValue = {};
     else if (this.repeated)
         this.defaultValue = [];
-    else if (this.options && (optionDefault = this.options.default) !== undefined)
+    else if (this.options && (optionDefault = this.options['default']) !== undefined) // eslint-disable-line dot-notation
         this.defaultValue = optionDefault;
     else
         this.defaultValue = typeDefault;
@@ -1089,8 +1089,8 @@ FieldPrototype.resolve = function resolve() {
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (options) {
-        if (this.resolvedType instanceof Enum && options.enum === String)
-            return this.resolvedType.valuesById[value];
+        if (this.resolvedType instanceof Enum && options['enum'] === String) // eslint-disable-line dot-notation
+            return this.resolvedType.getValuesById()[value];
         else if (this.long && options.long)
             return options.long === Number
                 ? typeof value === 'number'
@@ -1234,7 +1234,7 @@ function inherits(clazz, type, options) {
     prototype.constructor = clazz;
 
     if (!options.noRegister)
-        type.ctor = clazz;
+        type.setCtor(clazz);
 
     return prototype;
 }
@@ -1262,7 +1262,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     };
 
     // Initialize default values
-    type.fieldsArray.forEach(function(field) {
+    type.getFieldsArray().forEach(function(field) {
         field.resolve();
         if (!util.isObject(field.defaultValue))
             // objects are mutable (i.e. would modify the array on the prototype, not the instance)
@@ -1270,7 +1270,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     });
 
     // Define each oneof with a non-enumerable getter and setter for the present field
-    type.oneofsArray.forEach(function(oneof) {
+    type.getOneofsArray().forEach(function(oneof) {
         prototypeProperties[oneof.resolve().name] = {
             get: function() {
                 var keys = oneof.oneof;
@@ -1529,40 +1529,6 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-/**
- * Calls this method.
- * @param {Prototype|Object} message Request message
- * @param {function(number[], function(?Error, (number[])=))} performRequest A function performing the request on binary level, taking a buffer and a node-style callback for the response buffer as its parameters.
- * @param {function(Error, Prototype=)} [callback] Node-style callback function
- * @returns {Promise<Prototype>|undefined} A promise if `callback` has been omitted
- */
-MethodPrototype.call = function call(message, performRequest, callback) {
-    if (!callback)
-        return util.asPromise(call, this, message, performRequest);
-    var requestBuffer;
-    try {
-        requestBuffer = this.resolve().resolvedRequestType.encode(message);
-    } catch (e1) {
-        setTimeout(function() {
-            callback(e1);
-        });
-        return undefined;
-    }
-    var self = this;
-    performRequest(requestBuffer, function(err, responseBuffer) {
-        if (!err) {
-            try {
-                callback(null, self.resolvedResponseType.decode(responseBuffer));
-                return;
-            } catch (e2) {
-                err = e2;
-            }
-        }
-        callback(err);
-    });
-    return undefined;
-};
-
 },{"11":11,"19":19,"21":21}],10:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
@@ -1621,7 +1587,7 @@ Object.defineProperties(NamespacePrototype, {
      * @readonly
      */
     nestedArray: {
-        get: function() {
+        get: NamespacePrototype.getNestedArray = function getNestedArray() {
             return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
         }
     }
@@ -1661,7 +1627,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
 NamespacePrototype.toJSON = function toJSON() {
     return {
         options : this.options,
-        nested  : arrayToJSON(this.nestedArray)
+        nested  : arrayToJSON(this.getNestedArray())
     };
 };
 
@@ -1731,7 +1697,7 @@ NamespacePrototype.add = function add(object) {
         if (prev) {
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
-                var nested = prev.nestedArray;
+                var nested = prev.getNestedArray();
                 for (var i = 0; i < nested.length; ++i)
                     object.add(nested[i]);
                 this.remove(prev);
@@ -1800,7 +1766,7 @@ NamespacePrototype.define = function define(path, json) {
  * @returns {Namespace} `this`
  */
 NamespacePrototype.resolveAll = function resolve() {
-    var nested = this.nestedArray, i = 0;
+    var nested = this.getNestedArray(), i = 0;
     while (i < nested.length)
         nested[i++].resolve();
     return ReflectionObject.prototype.resolve.call(this);
@@ -1821,7 +1787,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
         return null;
     // Start at root if path is absolute
     if (path[0] === "")
-        return this.root.lookup(path.slice(1));
+        return this.getRoot().lookup(path.slice(1));
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
     if (found && (path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true))))
@@ -1894,7 +1860,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      * @readonly
      */
     root: {
-        get: function() {
+        get: ReflectionObjectPrototype.getRoot = function getRoot() {
             var ptr = this;
             while (ptr.parent !== null)
                 ptr = ptr.parent;
@@ -1909,7 +1875,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      * @readonly
      */
     fullName: {
-        get: function() {
+        get: ReflectionObjectPrototype.getFullName = function getFullName() {
             var path = [ this.name ],
                 ptr = this.parent;
             while (ptr) {
@@ -1954,7 +1920,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         this.parent.remove(this);
     this.parent = parent;
     this.resolved = false;
-    var root = parent.root;
+    var root = parent.getRoot();
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -1965,7 +1931,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
-    var root = parent.root;
+    var root = parent.getRoot();
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
@@ -1979,7 +1945,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    var root = this.root;
+    var root = this.getRoot();
     if (root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
@@ -2028,7 +1994,7 @@ ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
  * @returns {string} Constructor name, space, full name
  */
 ReflectionObjectPrototype.toString = function toString() {
-    return this.constructor.name + " " + this.fullName;
+    return this.constructor.name + " " + this.getFullName();
 };
 
 },{"16":16,"21":21}],12:[function(require,module,exports){
@@ -3138,7 +3104,7 @@ ReaderPrototype.bytes = function read_bytes() {
         throw RangeError(indexOutOfRange(this, length));
     this.pos += length;
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
-        ? new ArrayImpl(0)
+        ? new this.buf.constructor(0)
         : this._slice.call(this.buf, start, end);
 };
 
@@ -3370,7 +3336,7 @@ function Root(options) {
  */
 Root.fromJSON = function fromJSON(json, root) {
     if (!root)
-        root = new protobuf.Root();
+        root = new Root();
     return root.addJSON(json);
 };
 
@@ -3497,7 +3463,7 @@ RootPrototype.load = function load(filename, callback) {
 function handleExtension(field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
-        var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
+        var sisterField = new Field(field.getFullName(), field.id, field.type, field.rule, undefined, field.options);
         sisterField.declaringField = field;
         field.extensionField = sisterField;
         extendedType.add(sisterField);
@@ -3527,7 +3493,7 @@ RootPrototype._handleAdd = function handleAdd(object) {
     if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
         this.deferred.push(object);
     else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
+        var nested = object.getNestedArray();
         for (i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleAdd(nested[i]);
     }
@@ -3553,7 +3519,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
             object.extensionField = null;
         }
     } else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
+        var nested = object.getNestedArray();
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
     }
@@ -3614,7 +3580,7 @@ Object.defineProperties(ServicePrototype, {
      * @readonly
      */
     methodsArray: {
-        get: function() {
+        get: ServicePrototype.getMethodsArray = function getMethodsArray() {
             return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
         }
     }
@@ -3653,7 +3619,7 @@ ServicePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.methodsArray) || {},
+        methods : Namespace.arrayToJSON(this.getMethodsArray()) || {},
         nested  : inherited && inherited.nested || undefined
     };
 };
@@ -3669,7 +3635,7 @@ ServicePrototype.get = function get(name) {
  * @override
  */
 ServicePrototype.resolveAll = function resolve() {
-    var methods = this.methodsArray;
+    var methods = this.getMethodsArray();
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
     return NamespacePrototype.resolve.call(this);
@@ -3968,13 +3934,6 @@ function Type(name, options) {
     this._fieldsArray = null;
 
     /**
-     * Cached required fields as an array.
-     * @type {?Field[]}
-     * @private
-     */
-    this._requiredFieldsArray = null;
-
-    /**
      * Cached oneofs as an array.
      * @type {?OneOf[]}
      * @private
@@ -3998,7 +3957,7 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     fieldsById: {
-        get: function() {
+        get: TypePrototype.getFieldsById = function getFieldsById() {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
@@ -4021,27 +3980,8 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function() {
+        get: TypePrototype.getFieldsArray = function getFieldsArray() {
             return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
-        }
-    },
-
-    /**
-     * Required fields of thiss message as an array for iteration.
-     * @name Type#requiredFieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    requiredFieldsArray: {
-        get: function() {
-            if (this._requiredFieldsArray)
-                return this._requiredFieldsArray;
-            var fields   = this.fieldsArray,
-                required = this._requiredFieldsArray = [];
-            for (var i = 0; i < fields.length; ++i)
-                if (fields[i].required)
-                    required[required.length] = fields[i];
-            return required;
         }
     },
 
@@ -4052,7 +3992,7 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     oneofsArray: {
-        get: function() {
+        get: TypePrototype.getOneofsArray = function getOneofsArray() {
             return this._oneofsArray || (this._oneofsArray = util.toArray(this.oneofs));
         }
     },
@@ -4063,12 +4003,12 @@ Object.defineProperties(TypePrototype, {
      * @type {Prototype}
      */
     ctor: {
-        get: function() {
+        get: TypePrototype.getCtor = function getCtor() {
             if (this._ctor)
                 return this._ctor;
             var ctor;
             if (codegen.supported)
-                ctor = codegen("p")("P.call(this,p)").eof(this.fullName + "$ctor", {
+                ctor = codegen("p")("P.call(this,p)").eof(this.getFullName() + "$ctor", {
                     P: Prototype
                 });
             else
@@ -4079,7 +4019,7 @@ Object.defineProperties(TypePrototype, {
             this._ctor = ctor;
             return ctor;
         },
-        set: function(ctor) {
+        set: TypePrototype.setCtor = function setCtor(ctor) {
             if (ctor && !(ctor.prototype instanceof Prototype))
                 throw util._TypeError("ctor", "a constructor inheriting from Prototype");
             this._ctor = ctor;
@@ -4088,7 +4028,7 @@ Object.defineProperties(TypePrototype, {
 });
 
 function clearCache(type) {
-    type._fieldsById = type._fieldsArray = type._requiredFieldsArray = type._oneofsArray = type._ctor = null;
+    type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;
     delete type.encode;
     delete type.decode;
     return type;
@@ -4144,8 +4084,8 @@ TypePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
-        oneofs  : Namespace.arrayToJSON(this.oneofsArray),
-        fields  : Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
+        oneofs  : Namespace.arrayToJSON(this.getOneofsArray()),
+        fields  : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
         nested  : inherited && inherited.nested || undefined
     };
 };
@@ -4154,10 +4094,10 @@ TypePrototype.toJSON = function toJSON() {
  * @override
  */
 TypePrototype.resolveAll = function resolve() {
-    var fields = this.fieldsArray, i = 0;
+    var fields = this.getFieldsArray(), i = 0;
     while (i < fields.length)
         fields[i++].resolve();
-    var oneofs = this.oneofsArray; i = 0;
+    var oneofs = this.getOneofsArray(); i = 0;
     while (i < oneofs.length)
         oneofs[i++].resolve();
     return NamespacePrototype.resolve.call(this);
@@ -4184,7 +4124,7 @@ TypePrototype.add = function add(object) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
-        if (this.fieldsById[object.id])
+        if (this.getFieldsById()[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
         if (object.parent)
             object.parent.remove(object);
@@ -4239,7 +4179,7 @@ TypePrototype.create = function create(properties, ctor) {
         if (!(ctor.prototype instanceof Prototype))
             throw util._TypeError("ctor", "a constructor inheriting from Prototype");
     } else
-        ctor = this.ctor;
+        ctor = this.getCtor();
     return new ctor(properties);
 };
 
@@ -4436,7 +4376,7 @@ types.packed = bake([
 ], 2);
 
 },{}],21:[function(require,module,exports){
-(function (process,global,Buffer){
+(function (process,global){
 "use strict";
 
 /**
@@ -4571,15 +4511,16 @@ function fetch(path, callback) {
     if (fs && fs.readFile)
         return fs.readFile(path, "utf8", callback);
     var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
+    function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)
             return callback(Error("status " + xhr.status));
         if (isString(xhr.responseText))
             return callback(null, xhr.responseText);
         return callback(Error("request failed"));
-    };
-    xhr.onerror = function() {
-        return callback(Error("request failed"));
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4)
+            onload();
     };
     xhr.open("GET", path, true);
     xhr.send();
@@ -4707,30 +4648,30 @@ util.merge = function merge(dst, src, ifNotSet) {
     return dst;
 };
 
+// Reserved words, ref: https://msdn.microsoft.com/en-us/library/ttyab5c8.aspx
+// var reserved = "break,case,catch,class,const,continue,debugger,default,delete,do,else,export,extends,false,finally,for,function,if,import,in,instanceof,new,null,protected,return,super,switch,this,throw,true,try,typeof,var,while,with,abstract,boolean,byte,char,decimal,double,enum,final,float,get,implements,int,interface,internal,long,package,private,protected,public,sbyte,set,short,static,uint,ulong,ushort,void,assert,ensure,event,goto,invariant,namespace,native,require,synchronized,throws,transient,use,volatile".split(',');
+
 /**
  * Returns a safe property accessor for the specified properly name.
  * @param {string} prop Property name
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    return /^[a-z_$][a-z0-9_$]*$/i.test(prop) ? "." + prop : "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+    // NOTE: While dot notation looks cleaner it doesn't seem to have a significant difference on performance.
+    // Hence, we can safe the extra bytes from providing the reserved keywords above for pre-ES5 envs.
+    return /* /^[a-z_$][a-z0-9_$]*$/i.test(prop) && !reserved.indexOf(prop) ? "." + prop : */ "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
 };
 
 /**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
- * @returns {Buffer|Uint8Array|Array}
+ * @returns {Buffer|Uint8Array|Array} Buffer
  */
 util.newBuffer = function newBuffer(size) {
-    size = size || 0;
-    return util.Buffer
-        ? new Buffer(size)
-        : typeof Uint8Array !== 'undefined'
-        ? new Uint8Array(size)
-        : new Array(size);
+    return new (util.Buffer || typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size || 0);
 };
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"22":22,"23":23,"buffer":"buffer","long":"long","undefined":undefined}],22:[function(require,module,exports){
 "use strict";
@@ -5087,8 +5028,8 @@ Object.defineProperties(VerifierPrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function() {
-            return this.type.fieldsArray;
+        get: VerifierPrototype.getFieldsArray = function getFieldsArray() {
+            return this.type.getFieldsArray();
         }
     },
 
@@ -5099,8 +5040,8 @@ Object.defineProperties(VerifierPrototype, {
      * @readonly
      */
     fullName: {
-        get: function() {
-            return this.type.fullName;
+        get: VerifierPrototype.getFullName = function getFullName() {
+            return this.type.getFullName();
         }
     }
 });
@@ -5111,7 +5052,7 @@ Object.defineProperties(VerifierPrototype, {
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 VerifierPrototype.verify = function verify_fallback(message) {
-    var fields = this.fieldsArray,
+    var fields = this.getFieldsArray(),
         i = 0;
     while (i < fields.length) {
         var field = fields[i++].resolve(),
@@ -5119,14 +5060,14 @@ VerifierPrototype.verify = function verify_fallback(message) {
 
         if (value === undefined) {
             if (field.required)
-                return "missing required field " + field.name + " in " + this.fullName;
+                return "missing required field " + field.name + " in " + this.getFullName();
 
-        } else if (field.resolvedType instanceof Enum && field.resolvedType.valuesById[value] === undefined) {
-            return "invalid enum value " + field.name + " = " + value + " in " + this.fullName;
+        } else if (field.resolvedType instanceof Enum && field.resolvedType.getValuesById()[value] === undefined) {
+            return "invalid enum value " + field.name + " = " + value + " in " + this.getFullName();
 
         } else if (field.resolvedType instanceof Type) {
             if (!value && field.required)
-                return "missing required field " + field.name + " in " + this.fullName;
+                return "missing required field " + field.name + " in " + this.getFullName();
             var reason;
             if ((reason = field.resolvedType.verify(value)) !== null)
                 return reason;
@@ -5141,7 +5082,7 @@ VerifierPrototype.verify = function verify_fallback(message) {
  */
 VerifierPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.fieldsArray;
+    var fields = this.type.getFieldsArray();
     var gen = util.codegen("m");
     var hasReasonVar = false;
 
@@ -5151,14 +5092,14 @@ VerifierPrototype.generate = function generate() {
         if (field.required) { gen
 
             ("if(m%s===undefined)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.fullName);
+                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
 
         } else if (field.resolvedType instanceof Enum) {
             var values = util.toArray(field.resolvedType.values); gen
 
             ("switch(m%s){", prop)
                 ("default:")
-                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, this.type.fullName);
+                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, this.type.getFullName());
 
             for (var j = 0, l = values.length; j < l; ++j) gen
                 ("case %d:", values[j]); gen
@@ -5168,7 +5109,7 @@ VerifierPrototype.generate = function generate() {
             if (field.required) gen
 
             ("if(!m%s)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.fullName);
+                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
 
             if (!hasReasonVar) { gen("var r"); hasReasonVar = true; } gen
 
@@ -5179,7 +5120,7 @@ VerifierPrototype.generate = function generate() {
     return gen
     ("return null")
 
-    .eof(this.type.fullName + "$verify", {
+    .eof(this.type.getFullName() + "$verify", {
         types : fields.map(function(fld) { return fld.resolvedType; })
     });
     /* eslint-enable no-unexpected-multiline */

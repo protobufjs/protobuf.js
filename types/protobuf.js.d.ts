@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Thu, 24 Nov 2016 17:12:09 UTC
+ * Generated Mon, 28 Nov 2016 15:09:05 UTC
  */
 declare module protobuf {
 
@@ -596,15 +596,6 @@ declare module protobuf {
        */
       static fromJSON(name: string, json: Object): Method;
    
-      /**
-       * Calls this method.
-       * @param {Prototype|Object} message Request message
-       * @param {function(number[], function(?Error, (number[])=))} performRequest A function performing the request on binary level, taking a buffer and a node-style callback for the response buffer as its parameters.
-       * @param {function(Error, Prototype=)} [callback] Node-style callback function
-       * @returns {Promise<Prototype>|undefined} A promise if `callback` has been omitted
-       */
-      call(message: (Prototype|Object), performRequest: (() => any), callback?: (() => any)): (Promise<Prototype>|undefined);
-   
    }
    
    /**
@@ -711,7 +702,7 @@ declare module protobuf {
       resolveAll(): Namespace;
    
       /**
-       * Looks up the reflection object specified by path, relative to this namespace.
+       * Looks up the reflection object at the specified path, relative to this namespace.
        * @param {string|string[]} path Path to look up
        * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
        * @returns {?ReflectionObject} Looked up object or `null` if none could be found
@@ -1205,7 +1196,7 @@ declare module protobuf {
       deferred: Field[];
    
       /**
-       * Loaded files.
+       * Resolved file names of loaded files.
        * @type {string[]}
        */
       files: string[];
@@ -1375,14 +1366,6 @@ declare module protobuf {
        * @readonly
        */
       fieldsArray: Field[];
-   
-      /**
-       * Required fields of thiss message as an array for iteration.
-       * @name Type#requiredFieldsArray
-       * @type {Field[]}
-       * @readonly
-       */
-      requiredFieldsArray: Field[];
    
       /**
        * Oneofs of this message as an array for iteration.
@@ -1668,6 +1651,13 @@ declare module protobuf {
       }
    
       /**
+       * Whether running within node or not.
+       * @memberof util
+       * @type {boolean}
+       */
+      var isNode: boolean;
+   
+      /**
        * Optional buffer class to use.
        * If you assign any compatible buffer implementation to this property, the library will use it.
        * @type {?Function}
@@ -1793,6 +1783,13 @@ declare module protobuf {
        * @returns {string} Safe accessor
        */
       function safeProp(prop: string): string;
+   
+      /**
+       * Creates a new buffer of whatever type supported by the environment.
+       * @param {number} [size=0] Buffer size
+       * @returns {Buffer|Uint8Array|Array} Buffer
+       */
+      function newBuffer(size?: number): (Buffer|Uint8Array|Array);
    
    }
    

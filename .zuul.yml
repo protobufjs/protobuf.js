@@ -1,18 +1,20 @@
 ui: tape
 browsers:
   - name: chrome
-    version: [-1..latest, beta]
+    version: [26, latest]
   - name: firefox
-    version: [-1..latest, beta]
+    version: [4, latest]
   - name: microsoftedge
-    version: -1..latest
+    version: [13, latest]
   - name: safari
-    version: 7..latest
+    version: [5, latest]
   - name: ie
-    version: 9..latest
+    version: [8, 9, 10, 11]
   - name: opera
-    version: 11..latest
+    version: [11, 12]
   - name: android
-    version: 4.1..latest
+    version: [4.0, 4.4, latest]
   - name: iphone
-    version: 8.1..latest
+    version: [8.1, 9.0, latest]
+scripts:
+  - scripts/polyfill.js

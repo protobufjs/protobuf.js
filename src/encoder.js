@@ -34,8 +34,8 @@ Object.defineProperties(EncoderPrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function() {
-            return this.type.fieldsArray;
+        get: EncoderPrototype.getFieldsArray = function getFieldsArray() {
+            return this.type.getFieldsArray();
         }
     }
 });
@@ -50,7 +50,7 @@ EncoderPrototype.encode = function encode_fallback(message, writer) { // codegen
     /* eslint-disable block-scoped-var, no-redeclare */
     if (!writer)
         writer = Writer();
-    var fields = this.fieldsArray, fi = 0;
+    var fields = this.getFieldsArray(), fi = 0;
     while (fi < fields.length) {
         var field    = fields[fi++].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -124,7 +124,7 @@ EncoderPrototype.encode = function encode_fallback(message, writer) { // codegen
  */
 EncoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.fieldsArray;
+    var fields = this.type.getFieldsArray();
     var gen = util.codegen("m", "w")
     ("w||(w=Writer())");
 
@@ -211,7 +211,7 @@ EncoderPrototype.generate = function generate() {
     return gen
     ("return w")
 
-    .eof(this.type.fullName + "$encode", {
+    .eof(this.type.getFullName() + "$encode", {
         Writer : Writer,
         types  : fields.map(function(fld) { return fld.resolvedType; }),
         util   : util

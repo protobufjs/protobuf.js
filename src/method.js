@@ -132,37 +132,3 @@ MethodPrototype.resolve = function resolve() {
         throw Error("unresolvable response type: " + this.requestType);
     return ReflectionObject.prototype.resolve.call(this);
 };
-
-/**
- * Calls this method.
- * @param {Prototype|Object} message Request message
- * @param {function(number[], function(?Error, (number[])=))} performRequest A function performing the request on binary level, taking a buffer and a node-style callback for the response buffer as its parameters.
- * @param {function(Error, Prototype=)} [callback] Node-style callback function
- * @returns {Promise<Prototype>|undefined} A promise if `callback` has been omitted
- */
-MethodPrototype.call = function call(message, performRequest, callback) {
-    if (!callback)
-        return util.asPromise(call, this, message, performRequest);
-    var requestBuffer;
-    try {
-        requestBuffer = this.resolve().resolvedRequestType.encode(message);
-    } catch (e1) {
-        setTimeout(function() {
-            callback(e1);
-        });
-        return undefined;
-    }
-    var self = this;
-    performRequest(requestBuffer, function(err, responseBuffer) {
-        if (!err) {
-            try {
-                callback(null, self.resolvedResponseType.decode(responseBuffer));
-                return;
-            } catch (e2) {
-                err = e2;
-            }
-        }
-        callback(err);
-    });
-    return undefined;
-};

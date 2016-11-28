@@ -45,7 +45,7 @@ Object.defineProperties(ServicePrototype, {
      * @readonly
      */
     methodsArray: {
-        get: function() {
+        get: ServicePrototype.getMethodsArray = function getMethodsArray() {
             return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
         }
     }
@@ -84,7 +84,7 @@ ServicePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.methodsArray) || {},
+        methods : Namespace.arrayToJSON(this.getMethodsArray()) || {},
         nested  : inherited && inherited.nested || undefined
     };
 };
@@ -100,7 +100,7 @@ ServicePrototype.get = function get(name) {
  * @override
  */
 ServicePrototype.resolveAll = function resolve() {
-    var methods = this.methodsArray;
+    var methods = this.getMethodsArray();
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
     return NamespacePrototype.resolve.call(this);

@@ -59,7 +59,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      * @readonly
      */
     root: {
-        get: function() {
+        get: ReflectionObjectPrototype.getRoot = function getRoot() {
             var ptr = this;
             while (ptr.parent !== null)
                 ptr = ptr.parent;
@@ -74,7 +74,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      * @readonly
      */
     fullName: {
-        get: function() {
+        get: ReflectionObjectPrototype.getFullName = function getFullName() {
             var path = [ this.name ],
                 ptr = this.parent;
             while (ptr) {
@@ -119,7 +119,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         this.parent.remove(this);
     this.parent = parent;
     this.resolved = false;
-    var root = parent.root;
+    var root = parent.getRoot();
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -130,7 +130,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
-    var root = parent.root;
+    var root = parent.getRoot();
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
@@ -144,7 +144,7 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    var root = this.root;
+    var root = this.getRoot();
     if (root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
@@ -193,5 +193,5 @@ ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
  * @returns {string} Constructor name, space, full name
  */
 ReflectionObjectPrototype.toString = function toString() {
-    return this.constructor.name + " " + this.fullName;
+    return this.constructor.name + " " + this.getFullName();
 };

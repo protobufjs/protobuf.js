@@ -1,7 +1,7 @@
-protobuf.js [![travis][travis-image]][travis-url] [![david][david-image]][david-url] [![david-dev][david-image-dev]][david-url-dev] [![npm][npm-image]][npm-url] [![donate][paypal-image]][paypal-url]
+protobuf.js [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![donate][paypal-image]][paypal-url]
 ===========
 
-**Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/docs/overview)).
+**Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
 **protobuf.js** is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.
 
@@ -9,14 +9,8 @@ protobuf.js [![travis][travis-image]][travis-url] [![david][david-image]][david-
 [travis-url]: https://travis-ci.org/dcodeIO/protobuf.js
 [npm-image]: https://img.shields.io/npm/v/protobufjs.svg
 [npm-url]: https://npmjs.org/package/protobufjs
-[david-image]: https://img.shields.io/david/dcodeIO/protobuf.js.svg
-[david-url]: https://david-dm.org/dcodeIO/protobuf.js
-[david-image-dev]: https://img.shields.io/david/dev/dcodeIO/protobuf.js.svg
-[david-url-dev]: https://david-dm.org/dcodeIO/protobuf.js?type=dev
 [paypal-image]: https://img.shields.io/badge/paypal-donate-yellow.svg
 [paypal-url]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=%3C3%20protobuf.js
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/protobuf.svg)](https://saucelabs.com/u/protobuf)
 
 Contents
 --------
@@ -387,14 +381,17 @@ Note that JSON is a native binding nowadays and as such is *really* fast. So, ho
 
 Note that code generation requires `new Function(...)` (basically `eval`) support and that an equivalent but slower fallback will be used where unsupported.
 
-Also note that as of this writing, protobuf.js performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.
+Also note that as of this writing, the benchmark suite performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.
 
 Compatibility
 -------------
-* protobuf.js requires an ES5-capable browser. If typed arrays are not supported, it uses plain arrays instead.
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/protobuf.svg)](https://saucelabs.com/u/protobuf)
+
 * Because the internals of this package do not rely on `google/protobuf/descriptor.proto`, options are parsed and presented literally.
-* If you'd like to use node's buffer API in the browser, you can use [feross/buffer](https://github.com/feross/buffer) for example and assign its constructor, or that of any compatible library, to `protobuf.util.Buffer`. Might affect [performance](https://github.com/feross/buffer#performance).
-* If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install [long.js](https://github.com/dcodeIO/long.js) alongside this library. Just as with buffers, you can assign its constructor to `protobuf.util.Long`. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
+* If typed arrays are not supported by the environment, plain arrays will be used instead.
+* Support for pre-ES5 environments can be achieved by [using a polyfill](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js) and, instead of using property getters and setters on reflection objects, calling the respective functions prefixed with `get`, `set` or `is` directly.
+* If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html), bundled external libraries may have [their own license](https://github.com/dcodeIO/protobuf.js/tree/master/lib)
 

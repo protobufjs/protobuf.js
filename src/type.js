@@ -70,13 +70,6 @@ function Type(name, options) {
     this._fieldsArray = null;
 
     /**
-     * Cached required fields as an array.
-     * @type {?Field[]}
-     * @private
-     */
-    this._requiredFieldsArray = null;
-
-    /**
      * Cached oneofs as an array.
      * @type {?OneOf[]}
      * @private
@@ -100,7 +93,7 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     fieldsById: {
-        get: function() {
+        get: TypePrototype.getFieldsById = function getFieldsById() {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
@@ -123,27 +116,8 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function() {
+        get: TypePrototype.getFieldsArray = function getFieldsArray() {
             return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
-        }
-    },
-
-    /**
-     * Required fields of thiss message as an array for iteration.
-     * @name Type#requiredFieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    requiredFieldsArray: {
-        get: function() {
-            if (this._requiredFieldsArray)
-                return this._requiredFieldsArray;
-            var fields   = this.fieldsArray,
-                required = this._requiredFieldsArray = [];
-            for (var i = 0; i < fields.length; ++i)
-                if (fields[i].required)
-                    required[required.length] = fields[i];
-            return required;
         }
     },
 
@@ -154,7 +128,7 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     oneofsArray: {
-        get: function() {
+        get: TypePrototype.getOneofsArray = function getOneofsArray() {
             return this._oneofsArray || (this._oneofsArray = util.toArray(this.oneofs));
         }
     },
@@ -165,12 +139,12 @@ Object.defineProperties(TypePrototype, {
      * @type {Prototype}
      */
     ctor: {
-        get: function() {
+        get: TypePrototype.getCtor = function getCtor() {
             if (this._ctor)
                 return this._ctor;
             var ctor;
             if (codegen.supported)
-                ctor = codegen("p")("P.call(this,p)").eof(this.fullName + "$ctor", {
+                ctor = codegen("p")("P.call(this,p)").eof(this.getFullName() + "$ctor", {
                     P: Prototype
                 });
             else
@@ -181,7 +155,7 @@ Object.defineProperties(TypePrototype, {
             this._ctor = ctor;
             return ctor;
         },
-        set: function(ctor) {
+        set: TypePrototype.setCtor = function setCtor(ctor) {
             if (ctor && !(ctor.prototype instanceof Prototype))
                 throw util._TypeError("ctor", "a constructor inheriting from Prototype");
             this._ctor = ctor;
@@ -190,7 +164,7 @@ Object.defineProperties(TypePrototype, {
 });
 
 function clearCache(type) {
-    type._fieldsById = type._fieldsArray = type._requiredFieldsArray = type._oneofsArray = type._ctor = null;
+    type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;
     delete type.encode;
     delete type.decode;
     return type;
@@ -246,8 +220,8 @@ TypePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
-        oneofs  : Namespace.arrayToJSON(this.oneofsArray),
-        fields  : Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
+        oneofs  : Namespace.arrayToJSON(this.getOneofsArray()),
+        fields  : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
         nested  : inherited && inherited.nested || undefined
     };
 };
@@ -256,10 +230,10 @@ TypePrototype.toJSON = function toJSON() {
  * @override
  */
 TypePrototype.resolveAll = function resolve() {
-    var fields = this.fieldsArray, i = 0;
+    var fields = this.getFieldsArray(), i = 0;
     while (i < fields.length)
         fields[i++].resolve();
-    var oneofs = this.oneofsArray; i = 0;
+    var oneofs = this.getOneofsArray(); i = 0;
     while (i < oneofs.length)
         oneofs[i++].resolve();
     return NamespacePrototype.resolve.call(this);
@@ -286,7 +260,7 @@ TypePrototype.add = function add(object) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
-        if (this.fieldsById[object.id])
+        if (this.getFieldsById()[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
         if (object.parent)
             object.parent.remove(object);
@@ -341,7 +315,7 @@ TypePrototype.create = function create(properties, ctor) {
         if (!(ctor.prototype instanceof Prototype))
             throw util._TypeError("ctor", "a constructor inheriting from Prototype");
     } else
-        ctor = this.ctor;
+        ctor = this.getCtor();
     return new ctor(properties);
 };
 

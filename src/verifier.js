@@ -33,8 +33,8 @@ Object.defineProperties(VerifierPrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function() {
-            return this.type.fieldsArray;
+        get: VerifierPrototype.getFieldsArray = function getFieldsArray() {
+            return this.type.getFieldsArray();
         }
     },
 
@@ -45,8 +45,8 @@ Object.defineProperties(VerifierPrototype, {
      * @readonly
      */
     fullName: {
-        get: function() {
-            return this.type.fullName;
+        get: VerifierPrototype.getFullName = function getFullName() {
+            return this.type.getFullName();
         }
     }
 });
@@ -57,7 +57,7 @@ Object.defineProperties(VerifierPrototype, {
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 VerifierPrototype.verify = function verify_fallback(message) {
-    var fields = this.fieldsArray,
+    var fields = this.getFieldsArray(),
         i = 0;
     while (i < fields.length) {
         var field = fields[i++].resolve(),
@@ -65,14 +65,14 @@ VerifierPrototype.verify = function verify_fallback(message) {
 
         if (value === undefined) {
             if (field.required)
-                return "missing required field " + field.name + " in " + this.fullName;
+                return "missing required field " + field.name + " in " + this.getFullName();
 
-        } else if (field.resolvedType instanceof Enum && field.resolvedType.valuesById[value] === undefined) {
-            return "invalid enum value " + field.name + " = " + value + " in " + this.fullName;
+        } else if (field.resolvedType instanceof Enum && field.resolvedType.getValuesById()[value] === undefined) {
+            return "invalid enum value " + field.name + " = " + value + " in " + this.getFullName();
 
         } else if (field.resolvedType instanceof Type) {
             if (!value && field.required)
-                return "missing required field " + field.name + " in " + this.fullName;
+                return "missing required field " + field.name + " in " + this.getFullName();
             var reason;
             if ((reason = field.resolvedType.verify(value)) !== null)
                 return reason;
@@ -87,7 +87,7 @@ VerifierPrototype.verify = function verify_fallback(message) {
  */
 VerifierPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.fieldsArray;
+    var fields = this.type.getFieldsArray();
     var gen = util.codegen("m");
     var hasReasonVar = false;
 
@@ -97,14 +97,14 @@ VerifierPrototype.generate = function generate() {
         if (field.required) { gen
 
             ("if(m%s===undefined)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.fullName);
+                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
 
         } else if (field.resolvedType instanceof Enum) {
             var values = util.toArray(field.resolvedType.values); gen
 
             ("switch(m%s){", prop)
                 ("default:")
-                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, this.type.fullName);
+                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, this.type.getFullName());
 
             for (var j = 0, l = values.length; j < l; ++j) gen
                 ("case %d:", values[j]); gen
@@ -114,7 +114,7 @@ VerifierPrototype.generate = function generate() {
             if (field.required) gen
 
             ("if(!m%s)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.fullName);
+                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
 
             if (!hasReasonVar) { gen("var r"); hasReasonVar = true; } gen
 
@@ -125,7 +125,7 @@ VerifierPrototype.generate = function generate() {
     return gen
     ("return null")
 
-    .eof(this.type.fullName + "$verify", {
+    .eof(this.type.getFullName() + "$verify", {
         types : fields.map(function(fld) { return fld.resolvedType; })
     });
     /* eslint-enable no-unexpected-multiline */

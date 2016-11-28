@@ -130,7 +130,7 @@ function inherits(clazz, type, options) {
     prototype.constructor = clazz;
 
     if (!options.noRegister)
-        type.ctor = clazz;
+        type.setCtor(clazz);
 
     return prototype;
 }
@@ -158,7 +158,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     };
 
     // Initialize default values
-    type.fieldsArray.forEach(function(field) {
+    type.getFieldsArray().forEach(function(field) {
         field.resolve();
         if (!util.isObject(field.defaultValue))
             // objects are mutable (i.e. would modify the array on the prototype, not the instance)
@@ -166,7 +166,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     });
 
     // Define each oneof with a non-enumerable getter and setter for the present field
-    type.oneofsArray.forEach(function(oneof) {
+    type.getOneofsArray().forEach(function(oneof) {
         prototypeProperties[oneof.resolve().name] = {
             get: function() {
                 var keys = oneof.oneof;

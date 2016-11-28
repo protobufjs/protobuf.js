@@ -44,7 +44,7 @@ Object.defineProperties(EnumPrototype, {
      * @readonly
      */
     valuesById: {
-        get: function() {
+        get: EnumPrototype.getValuesById = function getValuesById() {
             if (!this._valuesById) {
                 this._valuesById = {};
                 Object.keys(this.values).forEach(function(name) {
@@ -109,7 +109,7 @@ EnumPrototype.add = function(name, id) {
         throw _TypeError("id", "a non-negative integer");
     if (this.values[name] !== undefined)
         throw Error('duplicate name "' + name + '" in ' + this);
-    if (this.valuesById[id] !== undefined)
+    if (this.getValuesById()[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
     this.values[name] = id;
     return clearCache(this);

@@ -7,7 +7,7 @@ tape.test("enums", function(test) {
         a: 1,
         b: 2
     });
-    test.deepEqual(enm.valuesById, valsById = {
+    test.deepEqual(enm.getValuesById(), valsById = {
         1: 'a',
         2: 'b'
     }, "should also expose their values by id");
@@ -18,7 +18,7 @@ tape.test("enums", function(test) {
         b: 2,
         c: 3
     }, "should allow adding new values");
-    test.deepEqual(enm.valuesById, {
+    test.deepEqual(enm.getValuesById(), {
         1: 'a',
         2: 'b',
         3: 'c'
@@ -29,7 +29,7 @@ tape.test("enums", function(test) {
         a: 1,
         c: 3
     }, "should allow removing existing values");
-    test.deepEqual(enm.valuesById, {
+    test.deepEqual(enm.getValuesById(), {
         1: 'a',
         3: 'c'
     }, "should no longer expose any removed values by id");

@@ -34,8 +34,8 @@ Object.defineProperties(DecoderPrototype, {
      * @readonly
      */
     fieldsById: {
-        get: function() {
-            return this.type.fieldsById;
+        get: DecoderPrototype.getFieldsById = function getFieldsById() {
+            return this.type.getFieldsById();
         }
     },
 
@@ -45,8 +45,8 @@ Object.defineProperties(DecoderPrototype, {
      * @type {Prototype}
      */
     ctor: {
-        get: function() {
-            return this.type.ctor;
+        get: DecoderPrototype.getCtor = function getCtor() {
+            return this.type.getCtor();
         }
     }
 });
@@ -59,10 +59,10 @@ Object.defineProperties(DecoderPrototype, {
  */
 DecoderPrototype.decode = function decode_fallback(reader, length) { // codegen reference and fallback
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
-    var fields  = this.fieldsById,
+    var fields  = this.getFieldsById(),
         reader  = reader instanceof Reader ? reader : Reader(reader),
         limit   = length === undefined ? reader.len : reader.pos + length,
-        message = new this.ctor();
+        message = new (this.getCtor())();
     while (reader.pos < limit) {
         var tag      = reader.tag(),
             field    = fields[tag.id].resolve(),
@@ -127,11 +127,11 @@ DecoderPrototype.decode = function decode_fallback(reader, length) { // codegen 
  */
 DecoderPrototype.generate = function generate() {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.fieldsArray;    
+    var fields = this.type.getFieldsArray();    
     var gen = util.codegen("r", "l")
 
     ("r instanceof Reader||(r=Reader(r))")
-    ("var c=l===undefined?r.len:r.pos+l,m=new this.ctor()")
+    ("var c=l===undefined?r.len:r.pos+l,m=new (this.getCtor())()")
     ("while(r.pos<c){")
         ("var t=r.tag()")
         ("switch(t.id){");
@@ -209,7 +209,7 @@ DecoderPrototype.generate = function generate() {
     ("}")
     ("return m");
     return gen
-    .eof(this.type.fullName + "$decode", {
+    .eof(this.type.getFullName() + "$decode", {
         Reader : Reader,
         types  : fields.map(function(fld) { return fld.resolvedType; }),
         util   : util.toHash

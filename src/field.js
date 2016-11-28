@@ -150,7 +150,7 @@ Object.defineProperties(FieldPrototype, {
      * @readonly
      */
     packed: {
-        get: function() {
+        get: FieldPrototype.isPacked = function() {
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
@@ -233,7 +233,7 @@ FieldPrototype.resolve = function resolve() {
         this.defaultValue = {};
     else if (this.repeated)
         this.defaultValue = [];
-    else if (this.options && (optionDefault = this.options.default) !== undefined)
+    else if (this.options && (optionDefault = this.options['default']) !== undefined) // eslint-disable-line dot-notation
         this.defaultValue = optionDefault;
     else
         this.defaultValue = typeDefault;
@@ -253,8 +253,8 @@ FieldPrototype.resolve = function resolve() {
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (options) {
-        if (this.resolvedType instanceof Enum && options.enum === String)
-            return this.resolvedType.valuesById[value];
+        if (this.resolvedType instanceof Enum && options['enum'] === String) // eslint-disable-line dot-notation
+            return this.resolvedType.getValuesById()[value];
         else if (this.long && options.long)
             return options.long === Number
                 ? typeof value === 'number'

@@ -55,7 +55,7 @@ Object.defineProperties(NamespacePrototype, {
      * @readonly
      */
     nestedArray: {
-        get: function() {
+        get: NamespacePrototype.getNestedArray = function getNestedArray() {
             return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
         }
     }
@@ -95,7 +95,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
 NamespacePrototype.toJSON = function toJSON() {
     return {
         options : this.options,
-        nested  : arrayToJSON(this.nestedArray)
+        nested  : arrayToJSON(this.getNestedArray())
     };
 };
 
@@ -165,7 +165,7 @@ NamespacePrototype.add = function add(object) {
         if (prev) {
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
-                var nested = prev.nestedArray;
+                var nested = prev.getNestedArray();
                 for (var i = 0; i < nested.length; ++i)
                     object.add(nested[i]);
                 this.remove(prev);
@@ -234,7 +234,7 @@ NamespacePrototype.define = function define(path, json) {
  * @returns {Namespace} `this`
  */
 NamespacePrototype.resolveAll = function resolve() {
-    var nested = this.nestedArray, i = 0;
+    var nested = this.getNestedArray(), i = 0;
     while (i < nested.length)
         nested[i++].resolve();
     return ReflectionObject.prototype.resolve.call(this);
@@ -255,7 +255,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
         return null;
     // Start at root if path is absolute
     if (path[0] === "")
-        return this.root.lookup(path.slice(1));
+        return this.getRoot().lookup(path.slice(1));
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
     if (found && (path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true))))

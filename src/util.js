@@ -132,15 +132,16 @@ function fetch(path, callback) {
     if (fs && fs.readFile)
         return fs.readFile(path, "utf8", callback);
     var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
+    function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)
             return callback(Error("status " + xhr.status));
         if (isString(xhr.responseText))
             return callback(null, xhr.responseText);
         return callback(Error("request failed"));
-    };
-    xhr.onerror = function() {
-        return callback(Error("request failed"));
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4)
+            onload();
     };
     xhr.open("GET", path, true);
     xhr.send();
@@ -268,25 +269,25 @@ util.merge = function merge(dst, src, ifNotSet) {
     return dst;
 };
 
+// Reserved words, ref: https://msdn.microsoft.com/en-us/library/ttyab5c8.aspx
+// var reserved = "break,case,catch,class,const,continue,debugger,default,delete,do,else,export,extends,false,finally,for,function,if,import,in,instanceof,new,null,protected,return,super,switch,this,throw,true,try,typeof,var,while,with,abstract,boolean,byte,char,decimal,double,enum,final,float,get,implements,int,interface,internal,long,package,private,protected,public,sbyte,set,short,static,uint,ulong,ushort,void,assert,ensure,event,goto,invariant,namespace,native,require,synchronized,throws,transient,use,volatile".split(',');
+
 /**
  * Returns a safe property accessor for the specified properly name.
  * @param {string} prop Property name
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    return /^[a-z_$][a-z0-9_$]*$/i.test(prop) ? "." + prop : "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+    // NOTE: While dot notation looks cleaner it doesn't seem to have a significant difference on performance.
+    // Hence, we can safe the extra bytes from providing the reserved keywords above for pre-ES5 envs.
+    return /* /^[a-z_$][a-z0-9_$]*$/i.test(prop) && !reserved.indexOf(prop) ? "." + prop : */ "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
 };
 
 /**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
- * @returns {Buffer|Uint8Array|Array}
+ * @returns {Buffer|Uint8Array|Array} Buffer
  */
 util.newBuffer = function newBuffer(size) {
-    size = size || 0;
-    return util.Buffer
-        ? new Buffer(size)
-        : typeof Uint8Array !== 'undefined'
-        ? new Uint8Array(size)
-        : new Array(size);
+    return new (util.Buffer || typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size || 0);
 };

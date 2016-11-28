@@ -40,7 +40,7 @@ function Root(options) {
  */
 Root.fromJSON = function fromJSON(json, root) {
     if (!root)
-        root = new protobuf.Root();
+        root = new Root();
     return root.addJSON(json);
 };
 
@@ -167,7 +167,7 @@ RootPrototype.load = function load(filename, callback) {
 function handleExtension(field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
-        var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
+        var sisterField = new Field(field.getFullName(), field.id, field.type, field.rule, undefined, field.options);
         sisterField.declaringField = field;
         field.extensionField = sisterField;
         extendedType.add(sisterField);
@@ -197,7 +197,7 @@ RootPrototype._handleAdd = function handleAdd(object) {
     if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
         this.deferred.push(object);
     else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
+        var nested = object.getNestedArray();
         for (i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleAdd(nested[i]);
     }
@@ -223,7 +223,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
             object.extensionField = null;
         }
     } else if (object instanceof Namespace) {
-        var nested = object.nestedArray;
+        var nested = object.getNestedArray();
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
     }
