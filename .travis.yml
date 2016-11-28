@@ -5,3 +5,12 @@ node_js:
   - 4
   - 6
   - 7
+
+branches:
+  only:
+    - master
+
+matrix:
+  include:
+  - node_js: 6
+    script: npm run zuul

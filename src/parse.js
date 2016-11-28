@@ -547,10 +547,10 @@ function parse(source, root) {
     }
 
     return {
-        package       : pkg,
-        imports       : imports,
-        weakImports   : weakImports,
-        syntax        : syntax,
-        root          : root
+        'package'     : pkg,
+        'imports'     : imports,
+        'weakImports' : weakImports,
+        'syntax'      : syntax,
+        'root'        : root
     };
 }

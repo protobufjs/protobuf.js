@@ -278,7 +278,7 @@ util.merge = function merge(dst, src, ifNotSet) {
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    // NOTE: While dot notation looks cleaner it doesn't seem to have a significant difference on performance.
+    // NOTE: While dot notation looks cleaner it doesn't seem to have a significant impact on performance.
     // Hence, we can safe the extra bytes from providing the reserved keywords above for pre-ES5 envs.
     return /* /^[a-z_$][a-z0-9_$]*$/i.test(prop) && !reserved.indexOf(prop) ? "." + prop : */ "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
 };

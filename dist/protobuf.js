@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0-dev (c) 2016 Daniel Wirtz
- * Compiled Mon, 28 Nov 2016 15:08:53 UTC
+ * Compiled Mon, 28 Nov 2016 16:17:51 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2694,11 +2694,11 @@ function parse(source, root) {
     }
 
     return {
-        package       : pkg,
-        imports       : imports,
-        weakImports   : weakImports,
-        syntax        : syntax,
-        root          : root
+        'package'     : pkg,
+        'imports'     : imports,
+        'weakImports' : weakImports,
+        'syntax'      : syntax,
+        'root'        : root
     };
 }
 
@@ -4657,7 +4657,7 @@ util.merge = function merge(dst, src, ifNotSet) {
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    // NOTE: While dot notation looks cleaner it doesn't seem to have a significant difference on performance.
+    // NOTE: While dot notation looks cleaner it doesn't seem to have a significant impact on performance.
     // Hence, we can safe the extra bytes from providing the reserved keywords above for pre-ES5 envs.
     return /* /^[a-z_$][a-z0-9_$]*$/i.test(prop) && !reserved.indexOf(prop) ? "." + prop : */ "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
 };
