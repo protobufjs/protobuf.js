@@ -14,3 +14,4 @@ matrix:
   include:
   - node_js: 6
     script: npm run zuul
+    script: sleep 3
