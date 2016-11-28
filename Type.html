@@ -96,6 +96,8 @@
             
                 <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
             
+                <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
+            
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
             </ul>
@@ -135,6 +137,8 @@
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
             
                 <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
+            
+                <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
             
                 <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
             
@@ -687,8 +691,6 @@
             
                 <li data-name="Method.testJSON"><a href="Method.html#.testJSON">testJSON</a></li>
             
-                <li data-name="Method#call"><a href="Method.html#call">call</a></li>
-            
                 <li data-name="Method#getOption"><a href="Method.html#getOption">getOption</a></li>
             
                 <li data-name="Method#onAdd"><a href="Method.html#onAdd">onAdd</a></li>
@@ -1186,8 +1188,6 @@
                 <li data-name="Type#options"><a href="Type.html#options">options</a></li>
             
                 <li data-name="Type#parent"><a href="Type.html#parent">parent</a></li>
-            
-                <li data-name="Type#requiredFieldsArray"><a href="Type.html#requiredFieldsArray">requiredFieldsArray</a></li>
             
                 <li data-name="Type#reserved"><a href="Type.html#reserved">reserved</a></li>
             
@@ -2193,51 +2193,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="requiredFieldsArray">requiredFieldsArray <span class="type-signature ">readonly</span><span class="type-signature type">{ <a href="Field.html">Field</a>[] }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Required fields of thiss message as an array for iteration.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="reserved">reserved <span class="type-signature type">{ number[][] }</span></h4>
     </div>
     
@@ -2386,7 +2341,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L216">line 216</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L190">line 190</a>
         </div>
         
     </div>
@@ -2554,7 +2509,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L204">line 204</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L178">line 178</a>
         </div>
         
     </div>
@@ -2699,7 +2654,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L282">line 282</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L256">line 256</a>
         </div>
         
     </div>
@@ -3045,7 +3000,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L334">line 334</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L308">line 308</a>
         </div>
         
     </div>
@@ -3229,7 +3184,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L378">line 378</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L352">line 352</a>
         </div>
         
     </div>
@@ -3412,7 +3367,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L391">line 391</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L365">line 365</a>
         </div>
         
     </div>
@@ -3745,7 +3700,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L354">line 354</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L328">line 328</a>
         </div>
         
     </div>
@@ -3928,7 +3883,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L368">line 368</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L342">line 342</a>
         </div>
         
     </div>
@@ -4418,7 +4373,7 @@
     
     
     <div class="description">
-        <p>Looks up the reflection object specified by path, relative to this namespace.</p>
+        <p>Looks up the reflection object at the specified path, relative to this namespace.</p>
     </div>
     
 
@@ -4884,7 +4839,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L315">line 315</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L289">line 289</a>
         </div>
         
     </div>
@@ -5883,7 +5838,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L401">line 401</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js">type.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js#L375">line 375</a>
         </div>
         
     </div>

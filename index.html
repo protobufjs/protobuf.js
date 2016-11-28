@@ -96,6 +96,8 @@
             
                 <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
             
+                <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
+            
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
             
             </ul>
@@ -135,6 +137,8 @@
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
             
                 <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
+            
+                <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
             
                 <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
             
@@ -687,8 +691,6 @@
             
                 <li data-name="Method.testJSON"><a href="Method.html#.testJSON">testJSON</a></li>
             
-                <li data-name="Method#call"><a href="Method.html#call">call</a></li>
-            
                 <li data-name="Method#getOption"><a href="Method.html#getOption">getOption</a></li>
             
                 <li data-name="Method#onAdd"><a href="Method.html#onAdd">onAdd</a></li>
@@ -1187,8 +1189,6 @@
             
                 <li data-name="Type#parent"><a href="Type.html#parent">parent</a></li>
             
-                <li data-name="Type#requiredFieldsArray"><a href="Type.html#requiredFieldsArray">requiredFieldsArray</a></li>
-            
                 <li data-name="Type#reserved"><a href="Type.html#reserved">reserved</a></li>
             
                 <li data-name="Type#resolved"><a href="Type.html#resolved">resolved</a></li>
@@ -1439,7 +1439,7 @@
 
 
     <section>
-        <article class="readme"><h1>protobuf.js <a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://david-dm.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/david/dcodeIO/protobuf.js.svg" alt="david"></a> <a target="_blank" href="https://david-dm.org/dcodeIO/protobuf.js?type=dev"><img src="https://img.shields.io/david/dev/dcodeIO/protobuf.js.svg" alt="david-dev"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">see</a>).</p>
+        <article class="readme"><h1>protobuf.js <a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
 <h2>Contents</h2><ul>
 <li><p><a href="#usage">Usage</a><br /><br>How to include protobuf.js in your project.</p>
@@ -1535,8 +1535,6 @@ var message = AwesomeMessage.decode(buffer);
 <li><p><strong>package: <code>string|undefined</code></strong><br /><br>The package name, if declared.</p>
 </li>
 <li><p><strong>imports: <code>Array|undefined</code></strong><br /><br>File names of imported files, if any.</p>
-</li>
-<li><p><strong>publicImports: <code>Array|undefined</code></strong><br /><br>File names of publicly imported files, if any.</p>
 </li>
 <li><p><strong>weakImports: <code>Array|undefined</code></strong><br /><br>File names of weakly imported files, if any.</p>
 </li>
@@ -1661,12 +1659,13 @@ JSON to/from buffer x 102,350 ops/sec ±1.23% (92 runs sampled)
 <li>Quite a bit of V8-specific profiling is accountable for everything else.</li>
 </ul>
 <p>Note that code generation requires <code>new Function(...)</code> (basically <code>eval</code>) support and that an equivalent but slower fallback will be used where unsupported.</p>
-<p>Also note that as of this writing, protobuf.js performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.</p>
-<h2>Compatibility</h2><ul>
-<li>protobuf.js requires an ES5-capable browser. If typed arrays are not supported, it uses plain arrays instead.</li>
+<p>Also note that as of this writing, the benchmark suite performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.</p>
+<h2>Compatibility</h2><p><a target="_blank" href="https://saucelabs.com/u/protobuf"><img src="https://saucelabs.com/browser-matrix/protobuf.svg" alt="Sauce Test Status"></a></p>
+<ul>
 <li>Because the internals of this package do not rely on <code>google/protobuf/descriptor.proto</code>, options are parsed and presented literally.</li>
-<li>If you'd like to use node's buffer API in the browser, you can use <a target="_blank" href="https://github.com/feross/buffer">feross/buffer</a> for example and assign its constructor, or that of any compatible library, to <code>protobuf.util.Buffer</code>. Might affect <a target="_blank" href="https://github.com/feross/buffer#performance">performance</a>.</li>
-<li>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install <a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. Just as with buffers, you can assign its constructor to <code>protobuf.util.Long</code>. All 64 bit numbers will then be returned as a <code>Long</code> instance instead of a possibly unsafe JavaScript number (<a target="_blank" href="https://github.com/dcodeIO/long.js">see</a>).</li>
+<li>If typed arrays are not supported by the environment, plain arrays will be used instead.</li>
+<li>Support for pre-ES5 environments like IE8 can be achieved by <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js">using a polyfill</a> and, instead of using property getters and setters on reflection objects, calling the respective functions prefixed with <code>get</code>, <code>set</code> or <code>is</code> directly (i.e. calling <code>Type#getFieldsById()</code> instead of accessing <code>Type#fieldsById</code>).</li>
+<li>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install <a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. All 64 bit numbers will then be returned as a <code>Long</code> instance instead of a possibly unsafe JavaScript number (<a target="_blank" href="https://github.com/dcodeIO/long.js">see</a>).</li>
 </ul>
 <p><strong>License:</strong> <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, Version 2.0</a>, bundled external libraries may have <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/lib">their own license</a></p>
 <p><a target="_blank" href="https://github.com/igrigorik/ga-beacon"><img src="https://ga-beacon.appspot.com/UA-40277577-2/dcodeIO/protobuf.js" alt="Analytics"></a></p></article>
