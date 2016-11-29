@@ -357,7 +357,7 @@ function parse(source, root) {
             throw illegal(token, s_name);
         var name = token;
         skip("=");
-        var value = parseId(next());
+        var value = parseNumber(next());
         parseInlineOptions(parent.values[name] = new Number(value)); // eslint-disable-line no-new-wrappers
     }
 
