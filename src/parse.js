@@ -139,7 +139,7 @@ function parse(source, root) {
             case "nan": return NaN;
             case "0": return 0;
         }
-        if (/^[1-9][0-9]*$/.test(token))
+        if (/^[\-1-9][0-9]*$/.test(token))
             return sign * parseInt(token, 10);
         if (/^0[x][0-9a-f]+$/.test(tokenLower))
             return sign * parseInt(token, 16);
@@ -157,7 +157,7 @@ function parse(source, root) {
             case "max": return 0x1FFFFFFF;
             case "0": return 0;
         }
-        if (/^[1-9][0-9]*$/.test(token))
+        if (/^[\-1-9][0-9]*$/.test(token))
             return parseInt(token, 10);
         if (/^0[x][0-9a-f]+$/.test(tokenLower))
             return parseInt(token, 16);
