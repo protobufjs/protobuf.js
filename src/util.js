@@ -15,7 +15,7 @@ util.codegen  = require("./util/codegen");
  * @memberof util
  * @type {boolean}
  */
-var isNode = util.isNode = Boolean(typeof process !== 'undefined' && process.versions && process.versions.node);
+var isNode = util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
  * Optional buffer class to use.

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 29 Nov 2016 16:14:45 UTC
+ * Compiled Tue, 29 Nov 2016 21:14:25 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3406,7 +3406,7 @@ RootPrototype.load = function load(filename, callback) {
     // Fetches a single file
     function fetch(filename, weak) {
 
-        // Check if this file references a bundled definition
+        // Strip path if this file references a bundled definition
         var idx = filename.indexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
@@ -4396,7 +4396,7 @@ types.packed = bake([
 ], 2);
 
 },{}],21:[function(require,module,exports){
-(function (process,global){
+(function (global){
 "use strict";
 
 /**
@@ -4414,7 +4414,7 @@ util.codegen  = require(22);
  * @memberof util
  * @type {boolean}
  */
-var isNode = util.isNode = Boolean(typeof process !== 'undefined' && process.versions && process.versions.node);
+var isNode = util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
  * Optional buffer class to use.
@@ -4691,7 +4691,7 @@ util.newBuffer = function newBuffer(size) {
     return new (util.Buffer || typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size || 0);
 };
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"22":22,"23":23,"buffer":"buffer","long":"long","undefined":undefined}],22:[function(require,module,exports){
 "use strict";
@@ -5505,14 +5505,14 @@ WriterPrototype.bytes = function write_bytes(value) {
 };
 
 function writeString(buf, pos, val) {
-    for (var i = 0, len = val.length, c1, c2; i < len; ++i) {
-        c1 = val.charCodeAt(i);
+    for (var i = 0; i < val.length; ++i) {
+        var c1 = val.charCodeAt(i), c2;
         if (c1 < 128) {
             buf[pos++] = c1;
         } else if (c1 < 2048) {
             buf[pos++] = c1 >> 6 | 192;
             buf[pos++] = c1 & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+        } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < val.length && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
             c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
             ++i;
             buf[pos++] = c1 >> 18      | 240;

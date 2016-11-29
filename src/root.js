@@ -104,7 +104,7 @@ RootPrototype.load = function load(filename, callback) {
     // Fetches a single file
     function fetch(filename, weak) {
 
-        // Check if this file references a bundled definition
+        // Strip path if this file references a bundled definition
         var idx = filename.indexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);

@@ -356,14 +356,14 @@ WriterPrototype.bytes = function write_bytes(value) {
 };
 
 function writeString(buf, pos, val) {
-    for (var i = 0, len = val.length, c1, c2; i < len; ++i) {
-        c1 = val.charCodeAt(i);
+    for (var i = 0; i < val.length; ++i) {
+        var c1 = val.charCodeAt(i), c2;
         if (c1 < 128) {
             buf[pos++] = c1;
         } else if (c1 < 2048) {
             buf[pos++] = c1 >> 6 | 192;
             buf[pos++] = c1 & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < len && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+        } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < val.length && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
             c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
             ++i;
             buf[pos++] = c1 >> 18      | 240;
