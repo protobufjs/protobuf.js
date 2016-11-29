@@ -172,8 +172,7 @@ NamespacePrototype.add = function add(object) {
                 if (!this.nested)
                     this.nested = {};
                 object.setOptions(prev.options, true);
-            } else
-                throw Error("duplicate name '" + object.name + "' in " + this);
+            }
         }
     }
     this.nested[object.name] = object;
