@@ -64,11 +64,5 @@
     "vinyl-source-stream": "^1.1.0",
     "zuul": "^3.11.1",
     "zuul-ngrok": "^4.0.0"
-  },
-  "browser": {
-    "process": false,
-    "_process": false,
-    "buffer": false,
-    "fs": false
   }
 }
