@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 28 Nov 2016 21:16:44 UTC
+ * Compiled Tue, 29 Nov 2016 12:17:58 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1433,7 +1433,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         throw _TypeError("requestType");
     if (!util.isString(responseType))
         throw _TypeError("responseType");
-    
+
     ReflectionObject.call(this, name, options);
 
     /**
@@ -1526,6 +1526,7 @@ MethodPrototype.resolve = function resolve() {
     resolved = this.parent.lookup(this.responseType);
     if (!(resolved && resolved instanceof Type))
         throw Error("unresolvable response type: " + this.requestType);
+    this.resolvedResponseType = resolved;
     return ReflectionObject.prototype.resolve.call(this);
 };
 
@@ -1768,14 +1769,17 @@ NamespacePrototype.define = function define(path, json) {
 NamespacePrototype.resolveAll = function resolve() {
     var nested = this.getNestedArray(), i = 0;
     while (i < nested.length)
-        nested[i++].resolve();
+        if (nested[i] instanceof Namespace)
+            nested[i++].resolveAll();
+        else
+            nested[i++].resolve();
     return ReflectionObject.prototype.resolve.call(this);
 };
 
 /**
  * Looks up the reflection object at the specified path, relative to this namespace.
  * @param {string|string[]} path Path to look up
- * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
+ * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */
 NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
@@ -2292,7 +2296,7 @@ function parse(source, root) {
             return sign * parseInt(token, 16);
         if (/^0[0-7]+$/.test(token))
             return sign * parseInt(token, 8);
-        if (/^[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
+        if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
         throw illegal(token, 'number');
     }
@@ -3671,7 +3675,6 @@ ServicePrototype.remove = function remove(object) {
 
 },{"10":10,"21":21,"9":9}],18:[function(require,module,exports){
 "use strict";
-/* eslint-disable default-case, callback-return */
 module.exports = tokenize;
 
 var delimRe        = /[\s{}=;:[\],'"()<>]/g,
@@ -3692,12 +3695,27 @@ var s_nl = "\n",
     s_sl = '/',
     s_as = '*';
 
+function unescape(str) {
+    return str.replace(/\\(.?)/g, function($0, $1) {
+        switch ($1) {
+            case "\\":
+            case "":
+                return $1;
+            case "0":
+                return "\u0000";
+            default:
+                return $1;
+        }
+    });
+}
+
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @returns {TokenizerHandle} Tokenizer handle
  */
 function tokenize(source) {
+    /* eslint-disable default-case, callback-return */
     source = source.toString();
     
     var offset = 0,
@@ -3732,7 +3750,7 @@ function tokenize(source) {
         offset = re.lastIndex;
         push(stringDelim);
         stringDelim = null;
-        return match[1];
+        return unescape(match[1]);
     }
 
     /**
@@ -3860,6 +3878,7 @@ function tokenize(source) {
         push: push,
         skip: skip
     };
+    /* eslint-enable default-case, callback-return */
 }
 },{}],19:[function(require,module,exports){
 "use strict";
@@ -5318,7 +5337,11 @@ WriterPrototype.uint32 = function write_uint32(value) {
  * @param {number} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.int32 = WriterPrototype.uint32;
+WriterPrototype.int32 = function write_int32(value) {
+    return value < 0
+        ? this.push(writeVarint64, 10, LongBits.fromNumber(value)) // 10 bytes per spec
+        : this.uint32(value);
+};
 
 /**
  * Writes a 32 bit value as a varint, zig-zag encoded.

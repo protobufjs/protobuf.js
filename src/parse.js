@@ -145,7 +145,7 @@ function parse(source, root) {
             return sign * parseInt(token, 16);
         if (/^0[0-7]+$/.test(token))
             return sign * parseInt(token, 8);
-        if (/^[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
+        if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
         throw illegal(token, 'number');
     }

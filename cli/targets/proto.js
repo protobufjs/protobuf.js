@@ -10,7 +10,9 @@ var Namespace = protobuf.Namespace,
     Field     = protobuf.Field,
     OneOf     = protobuf.OneOf,
     Service   = protobuf.Service,
-    Method    = protobuf.Method;
+    Method    = protobuf.Method,
+    types     = protobuf.types,
+    util      = protobuf.util;
 
 var out = [];
 var indent = 0;
@@ -59,6 +61,22 @@ function under_score(name) {
     return name.substring(0,1)
          + name.substring(1)
                .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
+}
+
+function escape(str) {
+    return str.replace(/[\\"']/g, '\\$&')
+              .replace(/\u0000/g, '\\0');
+}
+
+function value(v) {
+    switch (typeof v) {
+        case 'boolean':
+            return v ? 'true' : 'false';
+        case 'number':
+            return v.toString();
+        default:
+            return '"' + escape(v + '') + '"';
+    }
 }
 
 function buildRoot(root) {
@@ -135,12 +153,18 @@ function buildType(type) {
     first = true;
     type.fieldsArray.forEach(build);
     consolidateExtends(type.nestedArray).remaining.forEach(build);
+    if (type.extensions && type.extensions.length) {
+        push("");
+        type.extensions.forEach(function(range) {
+            push("extensions " + range[0] + " to " + (range[1] === 0x1FFFFFFF ? "max" : range[1]) + ";");
+        });
+    }
     --indent;
     push("}");
 }
 
 function buildField(field, passExtend) {
-    if (field.partOf || field.declaringType || (field.extend !== undefined && !passExtend))
+    if (field.partOf || field.declaringField || (field.extend !== undefined && !passExtend))
         return;
     if (first)
         first = false, push("");
@@ -154,20 +178,44 @@ function buildField(field, passExtend) {
     else
         sb.push(field.type);
     sb.push(under_score(field.name), "=", field.id);
-    var opts = [];
-    if (field.repeated) {
-        if (syntax === 2) {
-            if (field.packed)
-                opts.push("packed=true");
-        } else {
-            if (!field.packed)
-                opts.push("packed=false");
-        }
-        // TODO: Proper field options
-    }
-    if (opts.length)
-        sb.push("[" + opts.join(', ') + "]");
+    var opts = buildFieldOptions(field);
+    if (opts)
+        sb.push(opts);
     push(sb.join(" ") + ";");
+}
+
+function buildFieldOptions(field) {
+    var keys;
+    if (!field.options || !(keys = Object.keys(field.options)).length)
+        return null;
+    var sb = [];
+    Object.keys(field.options).forEach(function(key) {
+        var val = field.options[key];
+        var wireType = types.packed[field.resolvedType instanceof Enum ? "uint32" : field.type];
+        switch (key) {
+            case "packed":
+                val = Boolean(val);
+                // skip when not packable or syntax default
+                if (wireType === undefined || (syntax === 3) === val)
+                    return;
+                break;
+            case "default":
+                // skip default (resolved) default values
+                if (field.long && !util.longNeq(field.defaultValue, types.defaults[field.type]) || !field.long && field.defaultValue === types.defaults[field.type])
+                    return;
+                // enum defaults specified as strings are type references and not enclosed in quotes
+                if (field.resolvedType instanceof Enum)
+                    break;
+                // otherwise fallthrough
+            default:
+                val = value(val);
+                break;
+        }
+        sb.push(key + "=" + val);
+    });
+    return sb.length
+        ? "[" + sb.join(", ") + "]"
+        : null;
 }
 
 function consolidateExtends(nested) {
@@ -201,7 +249,8 @@ function buildOneOf(oneof) {
         var field = oneof.parent.get(fieldName);
         if (first)
             push(""), first = false;
-        push(field.type + " " + under_score(field.name) + " = " + field.id + ";");
+        var opts = buildFieldOptions(field);
+        push(field.type + " " + under_score(field.name) + " = " + field.id + (opts ? " " + opts : "") + ";");
     });
     --indent;
     push("}");

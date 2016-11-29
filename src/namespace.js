@@ -236,14 +236,17 @@ NamespacePrototype.define = function define(path, json) {
 NamespacePrototype.resolveAll = function resolve() {
     var nested = this.getNestedArray(), i = 0;
     while (i < nested.length)
-        nested[i++].resolve();
+        if (nested[i] instanceof Namespace)
+            nested[i++].resolveAll();
+        else
+            nested[i++].resolve();
     return ReflectionObject.prototype.resolve.call(this);
 };
 
 /**
  * Looks up the reflection object at the specified path, relative to this namespace.
  * @param {string|string[]} path Path to look up
- * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
+ * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */
 NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {

@@ -1,5 +1,4 @@
 "use strict";
-/* eslint-disable default-case, callback-return */
 module.exports = tokenize;
 
 var delimRe        = /[\s{}=;:[\],'"()<>]/g,
@@ -20,12 +19,27 @@ var s_nl = "\n",
     s_sl = '/',
     s_as = '*';
 
+function unescape(str) {
+    return str.replace(/\\(.?)/g, function($0, $1) {
+        switch ($1) {
+            case "\\":
+            case "":
+                return $1;
+            case "0":
+                return "\u0000";
+            default:
+                return $1;
+        }
+    });
+}
+
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @returns {TokenizerHandle} Tokenizer handle
  */
 function tokenize(source) {
+    /* eslint-disable default-case, callback-return */
     source = source.toString();
     
     var offset = 0,
@@ -60,7 +74,7 @@ function tokenize(source) {
         offset = re.lastIndex;
         push(stringDelim);
         stringDelim = null;
-        return match[1];
+        return unescape(match[1]);
     }
 
     /**
@@ -188,4 +202,5 @@ function tokenize(source) {
         push: push,
         skip: skip
     };
+    /* eslint-enable default-case, callback-return */
 }

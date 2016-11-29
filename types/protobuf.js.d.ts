@@ -1,6 +1,6 @@
 /*
- * protobuf.js v6.0.0-dev TypeScript definitions
- * Generated Mon, 28 Nov 2016 15:09:05 UTC
+ * protobuf.js v6.0.0 TypeScript definitions
+ * Generated Tue, 29 Nov 2016 12:18:27 UTC
  */
 declare module protobuf {
 
@@ -704,7 +704,7 @@ declare module protobuf {
       /**
        * Looks up the reflection object at the specified path, relative to this namespace.
        * @param {string|string[]} path Path to look up
-       * @param {boolean} [parentAlreadyChecked] Whether the parent has already been checked
+       * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
        * @returns {?ReflectionObject} Looked up object or `null` if none could be found
        */
       lookup(path: (string|string[]), parentAlreadyChecked?: boolean): ReflectionObject;
