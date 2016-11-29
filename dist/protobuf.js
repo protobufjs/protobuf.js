@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 29 Nov 2016 12:17:58 UTC
+ * Compiled Tue, 29 Nov 2016 16:14:45 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2301,18 +2301,20 @@ function parse(source, root) {
         throw illegal(token, 'number');
     }
 
-    function parseId(token) {
+    function parseId(token, acceptNegative) {
         var tokenLower = lower(token);
         switch (tokenLower) {
             case "min": return 1;
             case "max": return 0x1FFFFFFF;
             case "0": return 0;
         }
-        if (/^[1-9][0-9]*$/.test(token))
+        if (token.charAt(0) === '-' && !acceptNegative)
+            throw illegal(token, "id");
+        if (/^\-?[1-9][0-9]*$/.test(token))
             return parseInt(token, 10);
-        if (/^0[x][0-9a-f]+$/.test(tokenLower))
+        if (/^\-?0[x][0-9a-f]+$/.test(tokenLower))
             return parseInt(token, 16);
-        if (/^0[0-7]+$/.test(token))
+        if (/^\-?0[0-7]+$/.test(token))
             return parseInt(token, 8);
         throw illegal(token, "id");
     }
@@ -2508,7 +2510,7 @@ function parse(source, root) {
             throw illegal(token, s_name);
         var name = token;
         skip("=");
-        var value = parseId(next());
+        var value = parseId(next(), true);
         parseInlineOptions(parent.values[name] = new Number(value)); // eslint-disable-line no-new-wrappers
     }
 
@@ -3380,12 +3382,10 @@ RootPrototype.load = function load(filename, callback) {
         try {
             if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
-            if (!util.isString(source)) {
+            if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
-                self.files.push(filename);
-            } else {
+            else {
                 var parsed = require(13)(source, self);
-                self.files.push(filename);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -3417,6 +3417,7 @@ RootPrototype.load = function load(filename, callback) {
         // Skip if already loaded
         if (self.files.indexOf(filename) > -1)
             return;
+        self.files.push(filename);
 
         // Shortcut bundled definitions
         if (filename in common) {

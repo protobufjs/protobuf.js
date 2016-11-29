@@ -80,12 +80,10 @@ RootPrototype.load = function load(filename, callback) {
         try {
             if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
-            if (!util.isString(source)) {
+            if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
-                self.files.push(filename);
-            } else {
+            else {
                 var parsed = require("./parse")(source, self);
-                self.files.push(filename);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -117,6 +115,7 @@ RootPrototype.load = function load(filename, callback) {
         // Skip if already loaded
         if (self.files.indexOf(filename) > -1)
             return;
+        self.files.push(filename);
 
         // Shortcut bundled definitions
         if (filename in common) {
