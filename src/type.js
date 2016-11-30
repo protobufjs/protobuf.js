@@ -210,6 +210,10 @@ Type.fromJSON = function fromJSON(name, json) {
             }
             throw Error("invalid nested object in " + type + ": " + nestedName);
         });
+    if (json.extensions && json.extensions.length)
+        type.extensions = json.extensions;
+    if (json.reserved && json.reserved.length)
+        type.reserved = json.reserved;
     return type;
 };
 
@@ -219,10 +223,12 @@ Type.fromJSON = function fromJSON(name, json) {
 TypePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
-        options : inherited && inherited.options || undefined,
-        oneofs  : Namespace.arrayToJSON(this.getOneofsArray()),
-        fields  : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
-        nested  : inherited && inherited.nested || undefined
+        options    : inherited && inherited.options || undefined,
+        oneofs     : Namespace.arrayToJSON(this.getOneofsArray()),
+        fields     : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
+        extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
+        reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
+        nested     : inherited && inherited.nested || undefined
     };
 };
 
@@ -345,7 +351,7 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 
 /**
  * Decodes a message of this type.
- * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Prototype} Decoded message
  */
@@ -359,7 +365,7 @@ TypePrototype.decode = function decode(readerOrBuffer, length) {
 
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
- * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @returns {Prototype} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {

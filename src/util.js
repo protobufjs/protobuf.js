@@ -287,7 +287,7 @@ util.safeProp = function safeProp(prop) {
 /**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
- * @returns {Buffer|Uint8Array|Array} Buffer
+ * @returns {Uint8Array} Buffer
  */
 util.newBuffer = function newBuffer(size) {
     return new (util.Buffer || typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size || 0);

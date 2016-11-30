@@ -17,7 +17,7 @@ function indexOutOfRange(reader, writeLength) {
  * When called as a function, returns an appropriate reader for the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
- * @param {number[]} buffer Buffer to read from
+ * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
@@ -25,7 +25,7 @@ function Reader(buffer) {
 
     /**
      * Read buffer.
-     * @type {number[]}
+     * @type {Uint8Array}
      */
     this.buf = buffer;
 
@@ -318,7 +318,7 @@ ReaderPrototype.double = function read_double() {
 
 /**
  * Reads a sequence of bytes preceeded by its length as a varint.
- * @returns {number[]} Value read
+ * @returns {Uint8Array} Value read
  */
 ReaderPrototype.bytes = function read_bytes() {
     var length = this.int32() >>> 0,
@@ -414,7 +414,7 @@ ReaderPrototype.skipType = function(wireType) {
 
 /**
  * Resets this instance and frees all resources.
- * @param {number[]} [buffer] New buffer for a new sequence of read operations
+ * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
  * @returns {Reader} `this`
  */
 ReaderPrototype.reset = function reset(buffer) {
@@ -431,8 +431,8 @@ ReaderPrototype.reset = function reset(buffer) {
 
 /**
  * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
- * @param {number[]} [buffer] New buffer for a new sequence of read operations
- * @returns {number[]} Finished buffer
+ * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
+ * @returns {Uint8Array} Finished buffer
  */
 ReaderPrototype.finish = function finish(buffer) {
     var remain = this.pos
@@ -469,8 +469,7 @@ var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.protot
 BufferReaderPrototype.constructor = BufferReader;
 
 /**
- * Reads a float (32 bit) as a number using node buffers.
- * @returns {number} Value read
+ * @override
  */
 BufferReaderPrototype.float = function read_float_buffer() {
     if (this.pos + 4 > this.len)
@@ -481,8 +480,7 @@ BufferReaderPrototype.float = function read_float_buffer() {
 };
 
 /**
- * Reads a double (64 bit float) as a number using node buffers.
- * @returns {number} Value read
+ * @override
  */
 BufferReaderPrototype.double = function read_double_buffer() {
     if (this.pos + 8 > this.len)
@@ -493,8 +491,7 @@ BufferReaderPrototype.double = function read_double_buffer() {
 };
 
 /**
- * Reads a string.
- * @returns {string} Value read
+ * @override
  */
 BufferReaderPrototype.string = function read_string_buffer() {
     var length = this.int32() >>> 0,
@@ -507,9 +504,7 @@ BufferReaderPrototype.string = function read_string_buffer() {
 };
 
 /**
- * Finishes the current sequence of read operations using node buffers, frees all resources and returns the remaining buffer.
- * @param {Buffer} [buffer] New buffer for a new sequence of read operations
- * @returns {Buffer} Finished buffer
+ * @override
  */
 BufferReaderPrototype.finish = function finish_buffer(buffer) {
     var remain = this.pos ? this.buf.slice(this.pos) : this.buf;

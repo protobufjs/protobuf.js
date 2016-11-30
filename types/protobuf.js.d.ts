@@ -1,6 +1,9 @@
+/// <reference path="../node_modules/@types/node/index.d.ts" />
+/// <reference path="../node_modules/@types/long/index.d.ts" />
+
 /*
- * protobuf.js v6.0.0 TypeScript definitions
- * Generated Tue, 29 Nov 2016 12:18:27 UTC
+ * protobuf.js v6.0.1 TypeScript definitions
+ * Generated Wed, 30 Nov 2016 13:45:03 UTC
  */
 declare module protobuf {
 
@@ -411,9 +414,9 @@ declare module protobuf {
        * @function
        * @param {Prototype|Object} message Message to encode
        * @param {Writer} [writer] Writer to use
-       * @returns {number[]} Encoded message
+       * @returns {Uint8Array} Encoded message
        */
-      static encode(message: (Prototype|Object), writer?: Writer): number[];
+      static encode(message: (Prototype|Object), writer?: Writer): Uint8Array;
    
       /**
        * Encodes a message of this type preceeded by its length as a varint to a buffer.
@@ -421,27 +424,27 @@ declare module protobuf {
        * @function
        * @param {Prototype|Object} message Message to encode
        * @param {Writer} [writer] Writer to use
-       * @returns {number[]} Encoded message
+       * @returns {Uint8Array} Encoded message
        */
-      static encodeDelimited(message: (Prototype|Object), writer?: Writer): number[];
+      static encodeDelimited(message: (Prototype|Object), writer?: Writer): Uint8Array;
    
       /**
        * Decodes a message of this type from a buffer.
        * @name Class.decode
        * @function
-       * @param {number[]} buffer Buffer to decode
+       * @param {Uint8Array} buffer Buffer to decode
        * @returns {Prototype} Decoded message
        */
-      static decode(buffer: number[]): Prototype;
+      static decode(buffer: Uint8Array): Prototype;
    
       /**
        * Decodes a message of this type preceeded by its length as a varint from a buffer.
        * @name Class.decodeDelimited
        * @function
-       * @param {number[]} buffer Buffer to decode
+       * @param {Uint8Array} buffer Buffer to decode
        * @returns {Prototype} Decoded message
        */
-      static decodeDelimited(buffer: number[]): Prototype;
+      static decodeDelimited(buffer: Uint8Array): Prototype;
    
       /**
        * Verifies a message of this type.
@@ -657,10 +660,10 @@ declare module protobuf {
    
       /**
        * Adds nested elements to this namespace from JSON.
-       * @param {Object.<string,*>} json Nested JSON
+       * @param {Object.<string,*>} nestedJson Nested JSON
        * @returns {Namespace} `this`
        */
-      addJSON(json: { [k: string]: any }): Namespace;
+      addJSON(nestedJson: { [k: string]: any }): Namespace;
    
       /**
        * Gets the nested object of the specified name.
@@ -966,7 +969,7 @@ declare module protobuf {
     * When called as a function, returns an appropriate reader for the specified buffer.
     * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
     * @constructor
-    * @param {number[]} buffer Buffer to read from
+    * @param {Uint8Array} buffer Buffer to read from
     */
    class Reader {
       /**
@@ -974,15 +977,15 @@ declare module protobuf {
        * When called as a function, returns an appropriate reader for the specified buffer.
        * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
        * @constructor
-       * @param {number[]} buffer Buffer to read from
+       * @param {Uint8Array} buffer Buffer to read from
        */
-      constructor(buffer: number[]);
+      constructor(buffer: Uint8Array);
    
       /**
        * Read buffer.
-       * @type {number[]}
+       * @type {Uint8Array}
        */
-      buf: number[];
+      buf: Uint8Array;
    
       /**
        * Read buffer position.
@@ -1088,9 +1091,9 @@ declare module protobuf {
    
       /**
        * Reads a sequence of bytes preceeded by its length as a varint.
-       * @returns {number[]} Value read
+       * @returns {Uint8Array} Value read
        */
-      bytes(): number[];
+      bytes(): Uint8Array;
    
       /**
        * Reads a string preceeded by its byte length as a varint.
@@ -1114,17 +1117,17 @@ declare module protobuf {
    
       /**
        * Resets this instance and frees all resources.
-       * @param {number[]} [buffer] New buffer for a new sequence of read operations
+       * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
        * @returns {Reader} `this`
        */
-      reset(buffer?: number[]): Reader;
+      reset(buffer?: Uint8Array): Reader;
    
       /**
        * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
-       * @param {number[]} [buffer] New buffer for a new sequence of read operations
-       * @returns {number[]} Finished buffer
+       * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
+       * @returns {Uint8Array} Finished buffer
        */
-      finish(buffer?: number[]): number[];
+      finish(buffer?: Uint8Array): Uint8Array;
    
    }
    
@@ -1144,31 +1147,6 @@ declare module protobuf {
        * @param {Buffer} buffer Buffer to read from
        */
       constructor(buffer: Buffer);
-   
-      /**
-       * Reads a float (32 bit) as a number using node buffers.
-       * @returns {number} Value read
-       */
-      float(): number;
-   
-      /**
-       * Reads a double (64 bit float) as a number using node buffers.
-       * @returns {number} Value read
-       */
-      double(): number;
-   
-      /**
-       * Reads a string.
-       * @returns {string} Value read
-       */
-      string(): string;
-   
-      /**
-       * Finishes the current sequence of read operations using node buffers, frees all resources and returns the remaining buffer.
-       * @param {Buffer} [buffer] New buffer for a new sequence of read operations
-       * @returns {Buffer} Finished buffer
-       */
-      finish(buffer?: Buffer): Buffer;
    
    }
    
@@ -1442,18 +1420,18 @@ declare module protobuf {
    
       /**
        * Decodes a message of this type.
-       * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+       * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
        * @param {number} [length] Length of the message, if known beforehand
        * @returns {Prototype} Decoded message
        */
-      decode(readerOrBuffer: (Reader|number[]), length?: number): Prototype;
+      decode(readerOrBuffer: (Reader|Uint8Array), length?: number): Prototype;
    
       /**
        * Decodes a message of this type preceeded by its byte length as a varint.
-       * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+       * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
        * @returns {Prototype} Decoded message
        */
-      decodeDelimited(readerOrBuffer: (Reader|number[])): Prototype;
+      decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Prototype;
    
       /**
        * Verifies that enum values are valid and that any required fields are present.
@@ -1787,9 +1765,9 @@ declare module protobuf {
       /**
        * Creates a new buffer of whatever type supported by the environment.
        * @param {number} [size=0] Buffer size
-       * @returns {Buffer|Uint8Array|Array} Buffer
+       * @returns {Uint8Array} Buffer
        */
-      function newBuffer(size?: number): (Buffer|Uint8Array|Array);
+      function newBuffer(size?: number): Uint8Array;
    
    }
    
@@ -1888,7 +1866,7 @@ declare module protobuf {
    
       /**
        * Pushes a new operation to the queue.
-       * @param {function(number[], number, *)} fn Function to call
+       * @param {function(Uint8Array, number, *)} fn Function to call
        * @param {number} len Value byte length
        * @param {number} val Value to write
        * @returns {Writer} `this`
@@ -2000,10 +1978,10 @@ declare module protobuf {
    
       /**
        * Writes a sequence of bytes.
-       * @param {number[]} value Value to write
+       * @param {Uint8Array} value Value to write
        * @returns {Writer} `this`
        */
-      bytes(value: number[]): Writer;
+      bytes(value: Uint8Array): Writer;
    
       /**
        * Writes a string.
@@ -2034,9 +2012,9 @@ declare module protobuf {
    
       /**
        * Finishes the current sequence of write operations and frees all resources.
-       * @returns {number[]} Finished buffer
+       * @returns {Uint8Array} Finished buffer
        */
-      finish(): number[];
+      finish(): Uint8Array;
    
    }
    
@@ -2056,40 +2034,6 @@ declare module protobuf {
        * @constructor
        */
       constructor();
-   
-      /**
-       * Writes a float (32 bit) using node buffers.
-       * @param {number} value Value to write
-       * @returns {BufferWriter} `this`
-       */
-      float(value: number): BufferWriter;
-   
-      /**
-       * Writes a double (64 bit float) using node buffers.
-       * @param {number} value Value to write
-       * @returns {BufferWriter} `this`
-       */
-      double(value: number): BufferWriter;
-   
-      /**
-       * Writes a sequence of bytes using node buffers.
-       * @param {Buffer} value Value to write
-       * @returns {BufferWriter} `this`
-       */
-      bytes(value: Buffer): BufferWriter;
-   
-      /**
-       * Writes a string using node buffers.
-       * @param {string} value Value to write
-       * @returns {BufferWriter} `this`
-       */
-      string(value: string): BufferWriter;
-   
-      /**
-       * Finishes the current sequence of write operations using node buffers and frees all resources.
-       * @returns {Buffer} Finished buffer
-       */
-      finish(): Buffer;
    
    }
    

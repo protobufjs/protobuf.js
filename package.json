@@ -33,7 +33,8 @@
     "zuul": "zuul --ui tape --no-coverage --concurrency 1 -- tests/*.js",
     "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js",
     "bench": "node bench",
-    "all": "npm run lint && npm run test && npm run build && npm run docs && npm run types && npm run bench"
+    "all": "npm run lint && npm run test && npm run build && npm run types && npm run docs && npm run bench",
+    "postinstall": "npm install @types/node @types/long"
   },
   "optionalDependencies": {
     "long": "^3.2.0"

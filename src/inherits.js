@@ -61,7 +61,7 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {number[]} Encoded message
+             * @returns {Uint8Array} Encoded message
              */
             encode: {
                 value: function encode(message, writer) {
@@ -75,7 +75,7 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {number[]} Encoded message
+             * @returns {Uint8Array} Encoded message
              */
             encodeDelimited: {
                 value: function encodeDelimited(message, writer) {
@@ -87,7 +87,7 @@ function inherits(clazz, type, options) {
              * Decodes a message of this type from a buffer.
              * @name Class.decode
              * @function
-             * @param {number[]} buffer Buffer to decode
+             * @param {Uint8Array} buffer Buffer to decode
              * @returns {Prototype} Decoded message
              */
             decode: {
@@ -100,7 +100,7 @@ function inherits(clazz, type, options) {
              * Decodes a message of this type preceeded by its length as a varint from a buffer.
              * @name Class.decodeDelimited
              * @function
-             * @param {number[]} buffer Buffer to decode
+             * @param {Uint8Array} buffer Buffer to decode
              * @returns {Prototype} Decoded message
              */
             decodeDelimited: {

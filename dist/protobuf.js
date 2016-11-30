@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Wed, 30 Nov 2016 00:09:03 UTC
+ * Compiled Wed, 30 Nov 2016 13:44:58 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1165,7 +1165,7 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {number[]} Encoded message
+             * @returns {Uint8Array} Encoded message
              */
             encode: {
                 value: function encode(message, writer) {
@@ -1179,7 +1179,7 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {number[]} Encoded message
+             * @returns {Uint8Array} Encoded message
              */
             encodeDelimited: {
                 value: function encodeDelimited(message, writer) {
@@ -1191,7 +1191,7 @@ function inherits(clazz, type, options) {
              * Decodes a message of this type from a buffer.
              * @name Class.decode
              * @function
-             * @param {number[]} buffer Buffer to decode
+             * @param {Uint8Array} buffer Buffer to decode
              * @returns {Prototype} Decoded message
              */
             decode: {
@@ -1204,7 +1204,7 @@ function inherits(clazz, type, options) {
              * Decodes a message of this type preceeded by its length as a varint from a buffer.
              * @name Class.decodeDelimited
              * @function
-             * @param {number[]} buffer Buffer to decode
+             * @param {Uint8Array} buffer Buffer to decode
              * @returns {Prototype} Decoded message
              */
             decodeDelimited: {
@@ -2796,7 +2796,7 @@ function indexOutOfRange(reader, writeLength) {
  * When called as a function, returns an appropriate reader for the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
- * @param {number[]} buffer Buffer to read from
+ * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
@@ -2804,7 +2804,7 @@ function Reader(buffer) {
 
     /**
      * Read buffer.
-     * @type {number[]}
+     * @type {Uint8Array}
      */
     this.buf = buffer;
 
@@ -3097,7 +3097,7 @@ ReaderPrototype.double = function read_double() {
 
 /**
  * Reads a sequence of bytes preceeded by its length as a varint.
- * @returns {number[]} Value read
+ * @returns {Uint8Array} Value read
  */
 ReaderPrototype.bytes = function read_bytes() {
     var length = this.int32() >>> 0,
@@ -3193,7 +3193,7 @@ ReaderPrototype.skipType = function(wireType) {
 
 /**
  * Resets this instance and frees all resources.
- * @param {number[]} [buffer] New buffer for a new sequence of read operations
+ * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
  * @returns {Reader} `this`
  */
 ReaderPrototype.reset = function reset(buffer) {
@@ -3210,8 +3210,8 @@ ReaderPrototype.reset = function reset(buffer) {
 
 /**
  * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
- * @param {number[]} [buffer] New buffer for a new sequence of read operations
- * @returns {number[]} Finished buffer
+ * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
+ * @returns {Uint8Array} Finished buffer
  */
 ReaderPrototype.finish = function finish(buffer) {
     var remain = this.pos
@@ -3248,8 +3248,7 @@ var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.protot
 BufferReaderPrototype.constructor = BufferReader;
 
 /**
- * Reads a float (32 bit) as a number using node buffers.
- * @returns {number} Value read
+ * @override
  */
 BufferReaderPrototype.float = function read_float_buffer() {
     if (this.pos + 4 > this.len)
@@ -3260,8 +3259,7 @@ BufferReaderPrototype.float = function read_float_buffer() {
 };
 
 /**
- * Reads a double (64 bit float) as a number using node buffers.
- * @returns {number} Value read
+ * @override
  */
 BufferReaderPrototype.double = function read_double_buffer() {
     if (this.pos + 8 > this.len)
@@ -3272,8 +3270,7 @@ BufferReaderPrototype.double = function read_double_buffer() {
 };
 
 /**
- * Reads a string.
- * @returns {string} Value read
+ * @override
  */
 BufferReaderPrototype.string = function read_string_buffer() {
     var length = this.int32() >>> 0,
@@ -3286,9 +3283,7 @@ BufferReaderPrototype.string = function read_string_buffer() {
 };
 
 /**
- * Finishes the current sequence of read operations using node buffers, frees all resources and returns the remaining buffer.
- * @param {Buffer} [buffer] New buffer for a new sequence of read operations
- * @returns {Buffer} Finished buffer
+ * @override
  */
 BufferReaderPrototype.finish = function finish_buffer(buffer) {
     var remain = this.pos ? this.buf.slice(this.pos) : this.buf;
@@ -4096,6 +4091,10 @@ Type.fromJSON = function fromJSON(name, json) {
             }
             throw Error("invalid nested object in " + type + ": " + nestedName);
         });
+    if (json.extensions && json.extensions.length)
+        type.extensions = json.extensions;
+    if (json.reserved && json.reserved.length)
+        type.reserved = json.reserved;
     return type;
 };
 
@@ -4105,10 +4104,12 @@ Type.fromJSON = function fromJSON(name, json) {
 TypePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
-        options : inherited && inherited.options || undefined,
-        oneofs  : Namespace.arrayToJSON(this.getOneofsArray()),
-        fields  : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
-        nested  : inherited && inherited.nested || undefined
+        options    : inherited && inherited.options || undefined,
+        oneofs     : Namespace.arrayToJSON(this.getOneofsArray()),
+        fields     : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
+        extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
+        reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
+        nested     : inherited && inherited.nested || undefined
     };
 };
 
@@ -4231,7 +4232,7 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
 
 /**
  * Decodes a message of this type.
- * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Prototype} Decoded message
  */
@@ -4245,7 +4246,7 @@ TypePrototype.decode = function decode(readerOrBuffer, length) {
 
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
- * @param {Reader|number[]} readerOrBuffer Reader or buffer to decode from
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @returns {Prototype} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -4688,7 +4689,7 @@ util.safeProp = function safeProp(prop) {
 /**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
- * @returns {Buffer|Uint8Array|Array} Buffer
+ * @returns {Uint8Array} Buffer
  */
 util.newBuffer = function newBuffer(size) {
     return new (util.Buffer || typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size || 0);
@@ -5164,7 +5165,7 @@ var LongBits = util.LongBits;
  * @classdesc Scheduled writer operation.
  * @memberof Writer
  * @constructor
- * @param {function(number[], number, *)} fn Function to call
+ * @param {function(Uint8Array, number, *)} fn Function to call
  * @param {*} val Value to write
  * @param {number} len Value byte length
  * @private
@@ -5174,7 +5175,7 @@ function Op(fn, val, len) {
 
     /**
      * Function to call.
-     * @type {function(number[], number, *)}
+     * @type {function(Uint8Array, number, *)}
      */
     this.fn = fn;
 
@@ -5282,7 +5283,7 @@ var WriterPrototype = Writer.prototype;
 
 /**
  * Pushes a new operation to the queue.
- * @param {function(number[], number, *)} fn Function to call
+ * @param {function(Uint8Array, number, *)} fn Function to call
  * @param {number} len Value byte length
  * @param {number} val Value to write
  * @returns {Writer} `this`
@@ -5495,7 +5496,7 @@ var writeBytes = ArrayImpl.prototype.set
 
 /**
  * Writes a sequence of bytes.
- * @param {number[]} value Value to write
+ * @param {Uint8Array} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.bytes = function write_bytes(value) {
@@ -5611,7 +5612,7 @@ WriterPrototype.ldelim = function ldelim(id) {
 
 /**
  * Finishes the current sequence of write operations and frees all resources.
- * @returns {number[]} Finished buffer
+ * @returns {Uint8Array} Finished buffer
  */
 WriterPrototype.finish = function finish() {
     var head = this.head.next, // skip noop
@@ -5646,9 +5647,7 @@ function writeFloatBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a float (32 bit) using node buffers.
- * @param {number} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.float = function write_float_buffer(value) {
     return this.push(writeFloatBuffer, 4, value);
@@ -5659,9 +5658,7 @@ function writeDoubleBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a double (64 bit float) using node buffers.
- * @param {number} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.double = function write_double_buffer(value) {
     return this.push(writeDoubleBuffer, 8, value);
@@ -5673,9 +5670,7 @@ function writeBytesBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a sequence of bytes using node buffers.
- * @param {Buffer} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     var len = value.length >>> 0;
@@ -5689,9 +5684,7 @@ function writeStringBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a string using node buffers.
- * @param {string} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = byteLength(value);
@@ -5701,8 +5694,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 };
 
 /**
- * Finishes the current sequence of write operations using node buffers and frees all resources.
- * @returns {Buffer} Finished buffer
+ * @override
  */
 BufferWriterPrototype.finish = function finish_buffer() {
     var head = this.head.next, // skip noop

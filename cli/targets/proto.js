@@ -144,6 +144,18 @@ function buildEnum(enm) {
     push("}");
 }
 
+function buildRanges(keyword, ranges) {
+    if (ranges && ranges.length) {
+        push("");
+        ranges.forEach(function(range) {
+            if (range[0] === range[1])
+                push(keyword + " " + range[0] + ";");
+            else
+                push(keyword + " " + range[0] + " to " + (range[1] === 0x1FFFFFFF ? "max" : range[1]) + ";");
+        });
+    }
+}
+
 function buildType(type) {
     push("");
     push("message " + type.name + " {");
@@ -153,12 +165,8 @@ function buildType(type) {
     first = true;
     type.fieldsArray.forEach(build);
     consolidateExtends(type.nestedArray).remaining.forEach(build);
-    if (type.extensions && type.extensions.length) {
-        push("");
-        type.extensions.forEach(function(range) {
-            push("extensions " + range[0] + " to " + (range[1] === 0x1FFFFFFF ? "max" : range[1]) + ";");
-        });
-    }
+    buildRanges("extensions", type.extensions);
+    buildRanges("reserved", type.reserved);
     --indent;
     push("}");
 }

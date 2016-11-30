@@ -17,7 +17,10 @@
                 "file": {
                   "rule": "repeated",
                   "type": "FileDescriptorProto",
-                  "id": 1
+                  "id": 1,
+                  "options": {
+                    "packed": false
+                  }
                 }
               }
             },
@@ -34,37 +37,58 @@
                 "dependency": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 3
+                  "id": 3,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "publicDependency": {
                   "rule": "repeated",
                   "type": "int32",
-                  "id": 10
+                  "id": 10,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "weakDependency": {
                   "rule": "repeated",
                   "type": "int32",
-                  "id": 11
+                  "id": 11,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "messageType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 4
+                  "id": 4,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 5
+                  "id": 5,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "service": {
                   "rule": "repeated",
                   "type": "ServiceDescriptorProto",
-                  "id": 6
+                  "id": 6,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 7
+                  "id": 7,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "options": {
                   "type": "FileOptions",
@@ -89,32 +113,50 @@
                 "field": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 2
+                  "id": 2,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 6
+                  "id": 6,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "nestedType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 3
+                  "id": 3,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 4
+                  "id": 4,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "extensionRange": {
                   "rule": "repeated",
                   "type": "ExtensionRange",
-                  "id": 5
+                  "id": 5,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "oneofDecl": {
                   "rule": "repeated",
                   "type": "OneofDescriptorProto",
-                  "id": 8
+                  "id": 8,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "options": {
                   "type": "MessageOptions",
@@ -123,12 +165,18 @@
                 "reservedRange": {
                   "rule": "repeated",
                   "type": "ReservedRange",
-                  "id": 9
+                  "id": 9,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "reservedName": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 10
+                  "id": 10,
+                  "options": {
+                    "packed": false
+                  }
                 }
               },
               "nested": {
@@ -254,7 +302,10 @@
                 "value": {
                   "rule": "repeated",
                   "type": "EnumValueDescriptorProto",
-                  "id": 2
+                  "id": 2,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "options": {
                   "type": "EnumOptions",
@@ -287,7 +338,10 @@
                 "method": {
                   "rule": "repeated",
                   "type": "MethodDescriptorProto",
-                  "id": 2
+                  "id": 2,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "options": {
                   "type": "ServiceOptions",
@@ -417,9 +471,24 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
               },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ],
+              "reserved": [
+                [
+                  38,
+                  38
+                ]
+              ],
               "nested": {
                 "OptimizeMode": {
                   "values": {
@@ -460,9 +529,24 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
-              }
+              },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ],
+              "reserved": [
+                [
+                  8,
+                  8
+                ]
+              ]
             },
             "FieldOptions": {
               "fields": {
@@ -508,9 +592,24 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
               },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ],
+              "reserved": [
+                [
+                  4,
+                  4
+                ]
+              ],
               "nested": {
                 "CType": {
                   "values": {
@@ -533,9 +632,18 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
-              }
+              },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ]
             },
             "EnumOptions": {
               "fields": {
@@ -553,9 +661,18 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
-              }
+              },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ]
             },
             "EnumValueOptions": {
               "fields": {
@@ -569,9 +686,18 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
-              }
+              },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ]
             },
             "ServiceOptions": {
               "fields": {
@@ -585,9 +711,18 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
-              }
+              },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ]
             },
             "MethodOptions": {
               "fields": {
@@ -601,16 +736,28 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999
+                  "id": 999,
+                  "options": {
+                    "packed": false
+                  }
                 }
-              }
+              },
+              "extensions": [
+                [
+                  1000,
+                  536870911
+                ]
+              ]
             },
             "UninterpretedOption": {
               "fields": {
                 "name": {
                   "rule": "repeated",
                   "type": "NamePart",
-                  "id": 2
+                  "id": 2,
+                  "options": {
+                    "packed": false
+                  }
                 },
                 "identifierValue": {
                   "type": "string",
@@ -659,7 +806,10 @@
                 "location": {
                   "rule": "repeated",
                   "type": "Location",
-                  "id": 1
+                  "id": 1,
+                  "options": {
+                    "packed": false
+                  }
                 }
               },
               "nested": {
@@ -692,7 +842,10 @@
                     "leadingDetachedComments": {
                       "rule": "repeated",
                       "type": "string",
-                      "id": 6
+                      "id": 6,
+                      "options": {
+                        "packed": false
+                      }
                     }
                   }
                 }
@@ -703,7 +856,10 @@
                 "annotation": {
                   "rule": "repeated",
                   "type": "Annotation",
-                  "id": 1
+                  "id": 1,
+                  "options": {
+                    "packed": false
+                  }
                 }
               },
               "nested": {

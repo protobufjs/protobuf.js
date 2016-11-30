@@ -4,6 +4,9 @@ var fs = require("fs"),
 var dir = path.join(__dirname, "..", "types");
 
 var header = [
+    '/// <reference path="../node_modules/@types/node/index.d.ts" />',
+    '/// <reference path="../node_modules/@types/long/index.d.ts" />',
+    "",
     "/*",
     " * protobuf.js v" + pkg.version + " TypeScript definitions",
     " * Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),

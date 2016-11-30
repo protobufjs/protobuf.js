@@ -12,7 +12,7 @@ var LongBits = util.LongBits;
  * @classdesc Scheduled writer operation.
  * @memberof Writer
  * @constructor
- * @param {function(number[], number, *)} fn Function to call
+ * @param {function(Uint8Array, number, *)} fn Function to call
  * @param {*} val Value to write
  * @param {number} len Value byte length
  * @private
@@ -22,7 +22,7 @@ function Op(fn, val, len) {
 
     /**
      * Function to call.
-     * @type {function(number[], number, *)}
+     * @type {function(Uint8Array, number, *)}
      */
     this.fn = fn;
 
@@ -130,7 +130,7 @@ var WriterPrototype = Writer.prototype;
 
 /**
  * Pushes a new operation to the queue.
- * @param {function(number[], number, *)} fn Function to call
+ * @param {function(Uint8Array, number, *)} fn Function to call
  * @param {number} len Value byte length
  * @param {number} val Value to write
  * @returns {Writer} `this`
@@ -343,7 +343,7 @@ var writeBytes = ArrayImpl.prototype.set
 
 /**
  * Writes a sequence of bytes.
- * @param {number[]} value Value to write
+ * @param {Uint8Array} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.bytes = function write_bytes(value) {
@@ -459,7 +459,7 @@ WriterPrototype.ldelim = function ldelim(id) {
 
 /**
  * Finishes the current sequence of write operations and frees all resources.
- * @returns {number[]} Finished buffer
+ * @returns {Uint8Array} Finished buffer
  */
 WriterPrototype.finish = function finish() {
     var head = this.head.next, // skip noop
@@ -494,9 +494,7 @@ function writeFloatBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a float (32 bit) using node buffers.
- * @param {number} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.float = function write_float_buffer(value) {
     return this.push(writeFloatBuffer, 4, value);
@@ -507,9 +505,7 @@ function writeDoubleBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a double (64 bit float) using node buffers.
- * @param {number} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.double = function write_double_buffer(value) {
     return this.push(writeDoubleBuffer, 8, value);
@@ -521,9 +517,7 @@ function writeBytesBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a sequence of bytes using node buffers.
- * @param {Buffer} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     var len = value.length >>> 0;
@@ -537,9 +531,7 @@ function writeStringBuffer(buf, pos, val) {
 }
 
 /**
- * Writes a string using node buffers.
- * @param {string} value Value to write
- * @returns {BufferWriter} `this`
+ * @override
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = byteLength(value);
@@ -549,8 +541,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 };
 
 /**
- * Finishes the current sequence of write operations using node buffers and frees all resources.
- * @returns {Buffer} Finished buffer
+ * @override
  */
 BufferWriterPrototype.finish = function finish_buffer() {
     var head = this.head.next, // skip noop
