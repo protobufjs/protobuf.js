@@ -205,7 +205,7 @@ Type.fromJSON = function fromJSON(name, json) {
             for (var i = 0; i < nestedTypes.length; ++i) {
                 if (nestedTypes[i].testJSON(nested)) {
                     type.add(nestedTypes[i].fromJSON(nestedName, nested));
-                    break;
+                    return;
                 }
             }
             throw Error("invalid nested object in " + type + ": " + nestedName);

@@ -21,9 +21,7 @@ function indexOutOfRange(reader, writeLength) {
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
-        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer))
-            ? new BufferReader(buffer)
-            : new Reader(buffer);
+        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer)) && new BufferReader(buffer) || new Reader(buffer);
 
     /**
      * Read buffer.

@@ -41,7 +41,7 @@ function Root(options) {
 Root.fromJSON = function fromJSON(json, root) {
     if (!root)
         root = new Root();
-    return root.addJSON(json);
+    return root.setOptions(json.options).addJSON(json.nested);
 };
 
 /**

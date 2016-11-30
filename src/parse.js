@@ -159,11 +159,11 @@ function parse(source, root) {
         }
         if (token.charAt(0) === '-' && !acceptNegative)
             throw illegal(token, "id");
-        if (/^\-?[1-9][0-9]*$/.test(token))
+        if (/^-?[1-9][0-9]*$/.test(token))
             return parseInt(token, 10);
-        if (/^\-?0[x][0-9a-f]+$/.test(tokenLower))
+        if (/^-?0[x][0-9a-f]+$/.test(tokenLower))
             return parseInt(token, 16);
-        if (/^\-?0[0-7]+$/.test(token))
+        if (/^-?0[0-7]+$/.test(token))
             return parseInt(token, 8);
         throw illegal(token, "id");
     }

@@ -118,20 +118,19 @@ Namespace.arrayToJSON = arrayToJSON;
 
 /**
  * Adds nested elements to this namespace from JSON.
- * @param {Object.<string,*>} json Nested JSON
+ * @param {Object.<string,*>} nestedJson Nested JSON
  * @returns {Namespace} `this`
  */
-NamespacePrototype.addJSON = function addJSON(json) {
-    if (json) {
-        var keys = Object.keys(json);
-        for (var i = 0; i < keys.length; ++i) {
-            var nested = json[keys[i]];
+NamespacePrototype.addJSON = function addJSON(nestedJson) {
+    var ns = this;
+    if (nestedJson)
+        Object.keys(nestedJson).forEach(function(nestedName) {
+            var nested = nestedJson[nestedName];
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
-                    return this.add(nestedTypes[j].fromJSON(keys[i], nested));
-            throw _TypeError("json." + keys[i], "JSON for " + nestedError);
-        }
-    }
+                    return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
+            throw _TypeError("nested." + nestedName, "JSON for " + nestedError);
+        });
     return this;
 };
 

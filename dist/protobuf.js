@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.0.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 29 Nov 2016 21:30:41 UTC
+ * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
+ * Compiled Wed, 30 Nov 2016 00:09:03 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1651,20 +1651,19 @@ Namespace.arrayToJSON = arrayToJSON;
 
 /**
  * Adds nested elements to this namespace from JSON.
- * @param {Object.<string,*>} json Nested JSON
+ * @param {Object.<string,*>} nestedJson Nested JSON
  * @returns {Namespace} `this`
  */
-NamespacePrototype.addJSON = function addJSON(json) {
-    if (json) {
-        var keys = Object.keys(json);
-        for (var i = 0; i < keys.length; ++i) {
-            var nested = json[keys[i]];
+NamespacePrototype.addJSON = function addJSON(nestedJson) {
+    var ns = this;
+    if (nestedJson)
+        Object.keys(nestedJson).forEach(function(nestedName) {
+            var nested = nestedJson[nestedName];
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
-                    return this.add(nestedTypes[j].fromJSON(keys[i], nested));
-            throw _TypeError("json." + keys[i], "JSON for " + nestedError);
-        }
-    }
+                    return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
+            throw _TypeError("nested." + nestedName, "JSON for " + nestedError);
+        });
     return this;
 };
 
@@ -2310,11 +2309,11 @@ function parse(source, root) {
         }
         if (token.charAt(0) === '-' && !acceptNegative)
             throw illegal(token, "id");
-        if (/^\-?[1-9][0-9]*$/.test(token))
+        if (/^-?[1-9][0-9]*$/.test(token))
             return parseInt(token, 10);
-        if (/^\-?0[x][0-9a-f]+$/.test(tokenLower))
+        if (/^-?0[x][0-9a-f]+$/.test(tokenLower))
             return parseInt(token, 16);
-        if (/^\-?0[0-7]+$/.test(token))
+        if (/^-?0[0-7]+$/.test(token))
             return parseInt(token, 8);
         throw illegal(token, "id");
     }
@@ -2801,9 +2800,7 @@ function indexOutOfRange(reader, writeLength) {
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
-        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer))
-            ? new BufferReader(buffer)
-            : new Reader(buffer);
+        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer)) && new BufferReader(buffer) || new Reader(buffer);
 
     /**
      * Read buffer.
@@ -3343,7 +3340,7 @@ function Root(options) {
 Root.fromJSON = function fromJSON(json, root) {
     if (!root)
         root = new Root();
-    return root.addJSON(json);
+    return root.setOptions(json.options).addJSON(json.nested);
 };
 
 /**
@@ -3614,7 +3611,12 @@ Service.testJSON = function testJSON(json) {
  * @throws {TypeError} If arguments are invalid
  */
 Service.fromJSON = function fromJSON(name, json) {
-    return new Service(name, json.options);
+    var service = new Service(name, json.options);
+    if (json.methods)
+        Object.keys(json.methods).forEach(function(methodName) {
+            service.add(Method.fromJSON(methodName, json.methods[methodName]));
+        });
+    return service;
 };
 
 /**
@@ -4089,7 +4091,7 @@ Type.fromJSON = function fromJSON(name, json) {
             for (var i = 0; i < nestedTypes.length; ++i) {
                 if (nestedTypes[i].testJSON(nested)) {
                     type.add(nestedTypes[i].fromJSON(nestedName, nested));
-                    break;
+                    return;
                 }
             }
             throw Error("invalid nested object in " + type + ": " + nestedName);
@@ -4431,9 +4433,10 @@ if (isNode)
  * If you assign any compatible long implementation to this property, the library will use it.
  * @type {?Function}
  */
-util.Long = global.Long || null;
+util.Long = global.dcodeIO && global.dcodeIO.Long || null;
 
-try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
+if (!util.Long)
+    try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Tests if the specified value is a string.
@@ -5241,9 +5244,7 @@ var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
  */
 function Writer() {
     if (!(this instanceof Writer))
-        return util.Buffer
-            ? new BufferWriter()
-            : new Writer();
+        return util.Buffer && new BufferWriter() || new Writer();
 
     /**
      * Current length.
@@ -5295,7 +5296,7 @@ WriterPrototype.push = function push(fn, len, val) {
 };
 
 function writeByte(buf, pos, val) {
-    buf[pos] = val;
+    buf[pos] = val & 255;
 }
 
 /**
@@ -5305,7 +5306,7 @@ function writeByte(buf, pos, val) {
  * @returns {Writer} `this`
  */
 WriterPrototype.tag = function write_tag(id, wireType) {
-    return this.push(writeByte, 1, (id << 3 | wireType & 7) & 255);
+    return this.push(writeByte, 1, id << 3 | wireType & 7);
 };
 
 function writeVarint32(buf, pos, val) {

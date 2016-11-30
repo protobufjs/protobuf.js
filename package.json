@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Protocol Buffers for JavaScript.",
   "author": "Daniel Wirtz",
   "license": "Apache-2.0",
@@ -31,7 +31,7 @@
     "lint": "eslint src",
     "test": "tape tests/*.js | tap-spec",
     "zuul": "zuul --ui tape --no-coverage --concurrency 1 -- tests/*.js",
-    "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 -- tests/*.js",
+    "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js",
     "bench": "node bench",
     "all": "npm run lint && npm run test && npm run build && npm run docs && npm run types && npm run bench"
   },

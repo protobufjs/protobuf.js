@@ -74,7 +74,12 @@ Service.testJSON = function testJSON(json) {
  * @throws {TypeError} If arguments are invalid
  */
 Service.fromJSON = function fromJSON(name, json) {
-    return new Service(name, json.options);
+    var service = new Service(name, json.options);
+    if (json.methods)
+        Object.keys(json.methods).forEach(function(methodName) {
+            service.add(Method.fromJSON(methodName, json.methods[methodName]));
+        });
+    return service;
 };
 
 /**

@@ -92,9 +92,7 @@ var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
  */
 function Writer() {
     if (!(this instanceof Writer))
-        return util.Buffer
-            ? new BufferWriter()
-            : new Writer();
+        return util.Buffer && new BufferWriter() || new Writer();
 
     /**
      * Current length.
@@ -146,7 +144,7 @@ WriterPrototype.push = function push(fn, len, val) {
 };
 
 function writeByte(buf, pos, val) {
-    buf[pos] = val;
+    buf[pos] = val & 255;
 }
 
 /**
@@ -156,7 +154,7 @@ function writeByte(buf, pos, val) {
  * @returns {Writer} `this`
  */
 WriterPrototype.tag = function write_tag(id, wireType) {
-    return this.push(writeByte, 1, (id << 3 | wireType & 7) & 255);
+    return this.push(writeByte, 1, id << 3 | wireType & 7);
 };
 
 function writeVarint32(buf, pos, val) {

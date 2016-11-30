@@ -32,9 +32,10 @@ if (isNode)
  * If you assign any compatible long implementation to this property, the library will use it.
  * @type {?Function}
  */
-util.Long = global.Long || null;
+util.Long = global.dcodeIO && global.dcodeIO.Long || null;
 
-try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
+if (!util.Long)
+    try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Tests if the specified value is a string.
