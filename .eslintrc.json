@@ -1,7 +1,7 @@
 {
     "env": {
         "node": true,
-        "shared-node-browser": true
+        "browser": true
     },
     "globals": {
         "Uint8Array": true,
