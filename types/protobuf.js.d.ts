@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Wed, 30 Nov 2016 13:45:03 UTC
+ * Generated Wed, 30 Nov 2016 22:05:17 UTC
  */
 declare module protobuf {
 
@@ -1259,7 +1259,27 @@ declare module protobuf {
        */
       static fromJSON(name: string, json: Object): Service;
    
+      /**
+       * Creates a runtime service using the specified rpc implementation.
+       * @param {RPCImpl} rpc RPC implementation
+       * @param {boolean} [requestDelimited=false] Whether request data is length delimited
+       * @param {boolean} [responseDelimited=false] Whether response data is length delimited
+       * @returns {Object} Runtime service
+       */
+      create(rpc: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): Object;
+   
    }
+   
+   /**
+    * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
+    * @typedef RPCImpl
+    * @function
+    * @param {Method} method Reflected method being called
+    * @param {Uint8Array} requestData Request data
+    * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data
+    * @returns {undefined}
+    */
+   function RPCImpl(method: Method, requestData: Uint8Array, callback: (() => any)): undefined;
    
    /**
     * Handle object returned from {@link tokenize}.

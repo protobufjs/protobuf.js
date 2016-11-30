@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Wed, 30 Nov 2016 13:44:58 UTC
+ * Compiled Wed, 30 Nov 2016 22:05:11 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3669,6 +3669,55 @@ ServicePrototype.remove = function remove(object) {
         return clearCache(this);
     }
     return NamespacePrototype.remove.call(this, object);
+};
+
+/**
+ * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
+ * @typedef RPCImpl
+ * @function
+ * @param {Method} method Reflected method being called
+ * @param {Uint8Array} requestData Request data
+ * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data
+ * @returns {undefined}
+ */
+
+/**
+ * Creates a runtime service using the specified rpc implementation.
+ * @param {RPCImpl} rpc RPC implementation
+ * @param {boolean} [requestDelimited=false] Whether request data is length delimited
+ * @param {boolean} [responseDelimited=false] Whether response data is length delimited
+ * @returns {Object} Runtime service
+ */
+ServicePrototype.create = function create(rpc, requestDelimited, responseDelimited) {
+    var rpcService = {};
+    this.getMethodsArray().forEach(function(method) {
+        rpcService[method.resolve().name] = function(request, callback) {
+            var requestData;
+            try {
+                requestData = (requestDelimited && method.resolvedRequestType.encodeDelimited(request) || method.resolvedRequestType.encode(request)).finish();
+            } catch (err) {
+                (typeof setImmediate === 'function' && setImmediate || setTimeout)(function() { callback(err); });
+                return;
+            }
+            // Calls the custom RPC implementation with the reflected method and binary request data
+            // and expects the rpc implementation to call its callback with the binary response data.
+            rpc(method, requestData, function(err, responseData) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                var response;
+                try {
+                    response = responseDelimited && method.resolvedResponseType.decodeDelimited(responseData) || method.resolvedResponseType.decode(responseData);
+                } catch (err2) {
+                    callback(err2);
+                    return;
+                }
+                callback(null, response);
+            });
+        };
+    });
+    return rpcService;
 };
 
 },{"10":10,"21":21,"9":9}],18:[function(require,module,exports){
