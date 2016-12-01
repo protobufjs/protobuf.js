@@ -218,7 +218,7 @@ function writeVarint64(buf, pos, val) {
  * @returns {Writer} `this`
  */
 WriterPrototype.uint64 = function write_uint64(value) {
-    var bits = LongBits.from(value).zzEncode();
+    var bits = LongBits.from(value);
     return this.push(writeVarint64, bits.length(), bits);
 };
 
@@ -235,7 +235,11 @@ WriterPrototype.int64 = WriterPrototype.uint64;
  * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  */
-WriterPrototype.sint64 = WriterPrototype.uint64;
+WriterPrototype.sint64 = function sint64(value) {
+    var bits = LongBits.from(value).zzEncode();
+    return this.push(writeVarint64, bits.length(), bits);
+};
+
 
 /**
  * Writes a boolish value as a varint.
