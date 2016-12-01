@@ -279,8 +279,9 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits.
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
+ * @throws {TypeError} If `value` is a string and no long library is present.
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
     var bits = LongBits.from(value);

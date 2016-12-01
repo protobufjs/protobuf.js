@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Thu, 01 Dec 2016 10:13:55 UTC
+ * Compiled Thu, 01 Dec 2016 10:27:23 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4961,7 +4961,7 @@ LongBits.fromNumber = function fromNumber(value) {
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
 LongBits.from = function from(value) {
-    switch (typeof value) {
+    switch (typeof value) { // eslint-disable-line default-case
         case 'number':
             return LongBits.fromNumber(value);
         case 'string':
@@ -5491,8 +5491,9 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits.
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
+ * @throws {TypeError} If `value` is a string and no long library is present.
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
     var bits = LongBits.from(value);

@@ -72,7 +72,7 @@ LongBits.fromNumber = function fromNumber(value) {
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
 LongBits.from = function from(value) {
-    switch (typeof value) {
+    switch (typeof value) { // eslint-disable-line default-case
         case 'number':
             return LongBits.fromNumber(value);
         case 'string':
