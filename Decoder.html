@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: Decoder</title>
+    <title>Namespace: decoder</title>
     
     
     
@@ -48,6 +48,60 @@
                 <a href="global.html">[ top level ]</a>
                 <span class="static">static</span>
             </span>
+        </li>
+    
+        <li class="item" data-name="decoder">
+            <span class="title">
+                <a href="decoder.html">decoder</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="decoder.fallback"><a href="decoder.html#.fallback">fallback</a></li>
+            
+                <li data-name="decoder.generate"><a href="decoder.html#.generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="encoder">
+            <span class="title">
+                <a href="encoder.html">encoder</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="encoder.fallback"><a href="encoder.html#.fallback">fallback</a></li>
+            
+                <li data-name="encoder.generate"><a href="encoder.html#.generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
         </li>
     
         <li class="item" data-name="types">
@@ -328,70 +382,6 @@
                 <li data-name="Class.verify"><a href="Class.html#.verify">verify</a></li>
             
                 <li data-name="Class#asJSON"><a href="Class.html#asJSON">asJSON</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Decoder">
-            <span class="title">
-                <a href="Decoder.html">Decoder</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Decoder#ctor"><a href="Decoder.html#ctor">ctor</a></li>
-            
-                <li data-name="Decoder#fieldsById"><a href="Decoder.html#fieldsById">fieldsById</a></li>
-            
-                <li data-name="Decoder#type"><a href="Decoder.html#type">type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Decoder#decode"><a href="Decoder.html#decode">decode</a></li>
-            
-                <li data-name="Decoder#generate"><a href="Decoder.html#generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Encoder">
-            <span class="title">
-                <a href="Encoder.html">Encoder</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Encoder#fieldsArray"><a href="Encoder.html#fieldsArray">fieldsArray</a></li>
-            
-                <li data-name="Encoder#type"><a href="Encoder.html#type">type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Encoder#encode"><a href="Encoder.html#encode">encode</a></li>
-            
-                <li data-name="Encoder#generate"><a href="Encoder.html#generate">generate</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1413,7 +1403,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="Decoder.html">Class: Decoder</h1>
+        <h1 class="page-title" data-filename="decoder.html">Namespace: decoder</h1>
         
 
 
@@ -1422,10 +1412,8 @@
     
 <header>
     <h2>
-    Decoder
+    decoder
     </h2>
-    
-        <div class="class-description"><p>Wire format decoder using code generation on top of reflection.</p></div>
     
 </header>  
 
@@ -1435,82 +1423,10 @@
     
     
         
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="Decoder">
-            
-            new Decoder<span class="signature">(type)</span>
-        </h4>
-    
+            <div class="description"><p>Wire format decoder using code generation on top of reflection.</p></div>
         
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L15">line 15</a>
-        </div>
         
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Constructs a new decoder for the specified message type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Message type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
 <dl class="details">
     
         
@@ -1535,105 +1451,13 @@
     
 </dl>
 
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
         
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="ctor">ctor <span class="type-signature type">{ <a href="Prototype.html">Prototype</a> }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>With this decoder's message type registered constructor, if any registered, otherwise a generic constructor.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
         
     
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="fieldsById">fieldsById <span class="type-signature ">readonly</span><span class="type-signature type">{ Object&lt;number, <a href="Field.html">Field</a>> }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Fields of this decoder's message type by id for lookups.</p>
     </div>
     
     
     
-<dl class="details">
-    
-        
-    
-    
-    
-
     
     
     
@@ -1642,65 +1466,6 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="type">type <span class="type-signature type">{ <a href="Type.html">Type</a> }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Message type.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
     
     
     
@@ -1710,14 +1475,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="decode">
+        <h4 class="name" id=".fallback">
             
-            decode<span class="signature">(reader, <span class="optional">length</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Prototype.html">Prototype</a> }</span>
+            decoder.fallback<span class="signature">(reader, <span class="optional">length</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Prototype.html">Prototype</a> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L60">line 60</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L21">line 21</a>
         </div>
         
     </div>
@@ -1728,12 +1493,15 @@
     
     
     <div class="description">
-        <p>Decodes a message of this decoder's message type.</p>
+        <p>Decodes a message of <code>this</code> message's type.</p>
     </div>
     
 
     
     
+    
+        <h5>This:</h5>
+        <ul><li><a href="Type.html">Type</a></li></ul>
     
     
     
@@ -1890,14 +1658,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="generate">
+        <h4 class="name" id=".generate">
             
-            generate<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ function }</span>
+            decoder.generate<span class="signature">(mtype)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="util.html#.CodegenAppender">util.CodegenAppender</a> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L128">line 128</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L90">line 90</a>
         </div>
         
     </div>
@@ -1908,7 +1676,7 @@
     
     
     <div class="description">
-        <p>Generates a decoder specific to this decoder's message type.</p>
+        <p>Generates a decoder specific to the specified message type.</p>
     </div>
     
 
@@ -1916,6 +1684,51 @@
     
     
     
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>mtype</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Type.html">Type</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Message type</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1971,11 +1784,11 @@
             
             <td class="type">
             
-                        function
+                        <a href="util.html#.CodegenAppender">util.CodegenAppender</a>
                         
                     
             </td>
-            <td class="description last">Decoder function with an identical signature to <a href="Decoder.html#decode">Decoder#decode</a></td>
+            <td class="description last">Unscoped codegen instance</td>
         </tr>
     
     </tbody>

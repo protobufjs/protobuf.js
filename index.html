@@ -50,6 +50,60 @@
             </span>
         </li>
     
+        <li class="item" data-name="decoder">
+            <span class="title">
+                <a href="decoder.html">decoder</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="decoder.fallback"><a href="decoder.html#.fallback">fallback</a></li>
+            
+                <li data-name="decoder.generate"><a href="decoder.html#.generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="encoder">
+            <span class="title">
+                <a href="encoder.html">encoder</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="encoder.fallback"><a href="encoder.html#.fallback">fallback</a></li>
+            
+                <li data-name="encoder.generate"><a href="encoder.html#.generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="types">
             <span class="title">
                 <a href="types.html">types</a>
@@ -328,70 +382,6 @@
                 <li data-name="Class.verify"><a href="Class.html#.verify">verify</a></li>
             
                 <li data-name="Class#asJSON"><a href="Class.html#asJSON">asJSON</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Decoder">
-            <span class="title">
-                <a href="Decoder.html">Decoder</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Decoder#ctor"><a href="Decoder.html#ctor">ctor</a></li>
-            
-                <li data-name="Decoder#fieldsById"><a href="Decoder.html#fieldsById">fieldsById</a></li>
-            
-                <li data-name="Decoder#type"><a href="Decoder.html#type">type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Decoder#decode"><a href="Decoder.html#decode">decode</a></li>
-            
-                <li data-name="Decoder#generate"><a href="Decoder.html#generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="Encoder">
-            <span class="title">
-                <a href="Encoder.html">Encoder</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Encoder#fieldsArray"><a href="Encoder.html#fieldsArray">fieldsArray</a></li>
-            
-                <li data-name="Encoder#type"><a href="Encoder.html#type">type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Encoder#encode"><a href="Encoder.html#encode">encode</a></li>
-            
-                <li data-name="Encoder#generate"><a href="Encoder.html#generate">generate</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1462,8 +1452,8 @@
 </li>
 </ul>
 <h2>Usage</h2><h3>node.js</h3><pre class="prettyprint source"><code>$> npm install protobufjs</code></pre><pre class="prettyprint source lang-js"><code>var protobuf = require(&quot;protobufjs&quot;);</code></pre><h3>Browsers</h3><p>Development:</p>
-<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.0/dist/protobuf.js&quot;>&lt;/script></code></pre><p>Production:</p>
-<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.0/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p>The <code>protobuf</code> namespace will be available globally.</p>
+<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.1/dist/protobuf.js&quot;>&lt;/script></code></pre><p>Production:</p>
+<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.1/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p>The <code>protobuf</code> namespace will be available globally.</p>
 <p><strong>NOTE:</strong> Remember to replace the version tag with the exact <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/releases">release</a> your project depends upon.</p>
 <h2>Examples</h2><h3>Using .proto files</h3><pre class="prettyprint source lang-protobuf"><code>// awesome.proto
 package awesomepackage;
