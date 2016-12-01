@@ -35,7 +35,7 @@ var LongBitsPrototype = LongBits.prototype;
  * @memberof util.LongBits
  * @type {util.LongBits}
  */
-var zero = new LongBits(0, 0);
+var zero = LongBits.zero = new LongBits(0, 0);
 
 zero.toNumber = function() { return 0; };
 zero.zzEncode = zero.zzDecode = function() { return this; };
@@ -71,9 +71,13 @@ LongBits.fromNumber = function fromNumber(value) {
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    return typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
+    switch (typeof value) {
+        case 'number':
+            return LongBits.fromNumber(value);
+        case 'string':
+            value = util.Long.fromString(value); // throws without a long lib
+    }
+    return (value.low || value.high) && new LongBits(value.low >>> 0, value.high >>> 0) || zero;
 };
 
 /**

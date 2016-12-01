@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Wed, 30 Nov 2016 22:05:11 UTC
+ * Compiled Thu, 01 Dec 2016 10:05:00 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2510,7 +2510,8 @@ function parse(source, root) {
         var name = token;
         skip("=");
         var value = parseId(next(), true);
-        parseInlineOptions(parent.values[name] = new Number(value)); // eslint-disable-line no-new-wrappers
+        parent.values[name] = value;
+        parseInlineOptions({}); // skips enum value options
     }
 
     function parseOption(parent, token) {
@@ -3683,15 +3684,19 @@ ServicePrototype.remove = function remove(object) {
 
 /**
  * Creates a runtime service using the specified rpc implementation.
- * @param {RPCImpl} rpc RPC implementation
+ * @param {function(Method, Uint8Array, function)} rpc RPC implementation ({@link RPCImpl|see})
  * @param {boolean} [requestDelimited=false] Whether request data is length delimited
  * @param {boolean} [responseDelimited=false] Whether response data is length delimited
  * @returns {Object} Runtime service
  */
 ServicePrototype.create = function create(rpc, requestDelimited, responseDelimited) {
     var rpcService = {};
+    Object.defineProperty(rpcService, "$rpc", {
+        value: rpc
+    });
     this.getMethodsArray().forEach(function(method) {
-        rpcService[method.resolve().name] = function(request, callback) {
+        rpcService[method.name] = function(request, callback) {
+            method.resolve();
             var requestData;
             try {
                 requestData = (requestDelimited && method.resolvedRequestType.encodeDelimited(request) || method.resolvedRequestType.encode(request)).finish();
@@ -4919,7 +4924,7 @@ var LongBitsPrototype = LongBits.prototype;
  * @memberof util.LongBits
  * @type {util.LongBits}
  */
-var zero = new LongBits(0, 0);
+var zero = LongBits.zero = new LongBits(0, 0);
 
 zero.toNumber = function() { return 0; };
 zero.zzEncode = zero.zzDecode = function() { return this; };
@@ -4955,9 +4960,13 @@ LongBits.fromNumber = function fromNumber(value) {
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    return typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
+    switch (typeof value) {
+        case 'number':
+            return LongBits.fromNumber(value);
+        case 'string':
+            value = util.Long.fromString(value); // throws without a long lib
+    }
+    return (value.low || value.high) && new LongBits(value.low >>> 0, value.high >>> 0) || zero;
 };
 
 /**
@@ -5420,13 +5429,7 @@ function writeVarint64(buf, pos, val) {
  * @returns {Writer} `this`
  */
 WriterPrototype.uint64 = function write_uint64(value) {
-    var bits;
-    if (typeof value === 'number')
-        bits = value ? LongBits.fromNumber(value) : LongBits.zero;
-    else if (value.low || value.high)
-        bits = new LongBits(value.low >>> 0, value.high >>> 0);
-    else
-        bits = LongBits.zero;
+    var bits = LongBits.from(value);
     return this.push(writeVarint64, bits.length(), bits);
 };
 
@@ -5482,24 +5485,14 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
     return this.push(writeFixed32, 4, value << 1 ^ value >> 31);
 };
 
-function writeFixed64(buf, pos, val) {
-    buf[pos++] = val.lo        & 255;
-    buf[pos++] = val.lo >>> 8  & 255;
-    buf[pos++] = val.lo >>> 16 & 255;
-    buf[pos++] = val.lo >>> 24      ;
-    buf[pos++] = val.hi        & 255;
-    buf[pos++] = val.hi >>> 8  & 255;
-    buf[pos++] = val.hi >>> 16 & 255;
-    buf[pos  ] = val.hi >>> 24      ;
-}
-
 /**
  * Writes a 64 bit value as fixed 64 bits.
  * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
-    return this.push(writeFixed64, 8, LongBits.from(value));
+    var bits = LongBits.from(value);
+    return this.push(writeFixed32, 4, bits.hi).push(writeFixed32, 4, bits.lo);
 };
 
 /**

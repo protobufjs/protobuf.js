@@ -218,13 +218,7 @@ function writeVarint64(buf, pos, val) {
  * @returns {Writer} `this`
  */
 WriterPrototype.uint64 = function write_uint64(value) {
-    var bits;
-    if (typeof value === 'number')
-        bits = value ? LongBits.fromNumber(value) : LongBits.zero;
-    else if (value.low || value.high)
-        bits = new LongBits(value.low >>> 0, value.high >>> 0);
-    else
-        bits = LongBits.zero;
+    var bits = LongBits.from(value);
     return this.push(writeVarint64, bits.length(), bits);
 };
 
@@ -280,24 +274,14 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
     return this.push(writeFixed32, 4, value << 1 ^ value >> 31);
 };
 
-function writeFixed64(buf, pos, val) {
-    buf[pos++] = val.lo        & 255;
-    buf[pos++] = val.lo >>> 8  & 255;
-    buf[pos++] = val.lo >>> 16 & 255;
-    buf[pos++] = val.lo >>> 24      ;
-    buf[pos++] = val.hi        & 255;
-    buf[pos++] = val.hi >>> 8  & 255;
-    buf[pos++] = val.hi >>> 16 & 255;
-    buf[pos  ] = val.hi >>> 24      ;
-}
-
 /**
  * Writes a 64 bit value as fixed 64 bits.
  * @param {Long|number} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
-    return this.push(writeFixed64, 8, LongBits.from(value));
+    var bits = LongBits.from(value);
+    return this.push(writeFixed32, 4, bits.hi).push(writeFixed32, 4, bits.lo);
 };
 
 /**

@@ -34,12 +34,14 @@
     "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js",
     "bench": "node bench",
     "all": "npm run lint && npm run test && npm run build && npm run types && npm run docs && npm run bench",
-    "postinstall": "npm install @types/node @types/long"
+    "prepublish": "node scripts/prepublish.js"
   },
   "optionalDependencies": {
     "long": "^3.2.0"
   },
   "devDependencies": {
+    "@types/long": "^3.0.31",
+    "@types/node": "0.0.1",
     "benchmark": "^2.1.2",
     "browserify": "^13.1.1",
     "bundle-collapser": "^1.2.1",

@@ -360,7 +360,8 @@ function parse(source, root) {
         var name = token;
         skip("=");
         var value = parseId(next(), true);
-        parseInlineOptions(parent.values[name] = new Number(value)); // eslint-disable-line no-new-wrappers
+        parent.values[name] = value;
+        parseInlineOptions({}); // skips enum value options
     }
 
     function parseOption(parent, token) {

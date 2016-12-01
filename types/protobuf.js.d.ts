@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Wed, 30 Nov 2016 22:05:17 UTC
+ * Generated Wed, 30 Nov 2016 22:50:15 UTC
  */
 declare module protobuf {
 
@@ -1261,12 +1261,12 @@ declare module protobuf {
    
       /**
        * Creates a runtime service using the specified rpc implementation.
-       * @param {RPCImpl} rpc RPC implementation
+       * @param {function(Method, Uint8Array, function)} rpc RPC implementation ({@link RPCImpl|see})
        * @param {boolean} [requestDelimited=false] Whether request data is length delimited
        * @param {boolean} [responseDelimited=false] Whether response data is length delimited
        * @returns {Object} Runtime service
        */
-      create(rpc: RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): Object;
+      create(rpc: (() => any), requestDelimited?: boolean, responseDelimited?: boolean): Object;
    
    }
    
