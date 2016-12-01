@@ -38,8 +38,6 @@ tape.test("RPC", function(test) {
         
         var MyService = root.lookup("MyService");
         var service = MyService.create(rpc, true, false);
-
-        test.deepEqual(Object.keys(service), [ "MyMethod" ], "should create a service with exactly one method");
         
         service.MyMethod(MyRequest.create({
             path: "/"

@@ -7,12 +7,12 @@ CDN usage
 
 Development:
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.0/dist/protobuf.js"></script>
+<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.1/dist/protobuf.js"></script>
 ```
 
 Production:
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.0/dist/protobuf.min.js"></script>
+<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.1/dist/protobuf.min.js"></script>
 ```
 
 **NOTE:** Remember to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/releases) your project depends upon.
