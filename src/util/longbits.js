@@ -74,10 +74,15 @@ LongBits.from = function from(value) {
     var type = typeof value, result=zero;
     if(type === 'number')
         result = LongBits.fromNumber(value);
-   else if(type === 'string' && util.Long)
-       result = util.Long.fromString(value);
-   else
-       result = new LongBits(value.low >>> 0, value.high >>> 0);    
+    else 
+    {
+        if(type === 'string' && util.Long)
+            value = util.Long.fromString(value);
+    
+        if(value.low || value.high)
+            result = new LongBits(value.low >>> 0, value.high >>> 0);
+    }
+        
     return result;
 };
 
