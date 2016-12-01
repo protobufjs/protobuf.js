@@ -67,7 +67,7 @@ LongBits.fromNumber = function fromNumber(value) {
 
 /**
  * Constrcuts new long bits from a number or long.
- * @param {Long|number} value Value
+ * @param {Long|number|string} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
