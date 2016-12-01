@@ -1,5 +1,10 @@
 "use strict";
-module.exports = Decoder;
+
+/**
+ * Wire format decoder using code generation on top of reflection.
+ * @namespace
+ */
+var decoder = exports;
 
 var Enum   = require("./enum"),
     Reader = require("./reader"),
@@ -7,57 +12,13 @@ var Enum   = require("./enum"),
     util   = require("./util");
 
 /**
- * Constructs a new decoder for the specified message type.
- * @classdesc Wire format decoder using code generation on top of reflection.
- * @constructor
- * @param {Type} type Message type
- */
-function Decoder(type) {
-
-    /**
-     * Message type.
-     * @type {Type}
-     */
-    this.type = type;
-}
-
-/** @alias Decoder.prototype */
-var DecoderPrototype = Decoder.prototype;
-
-// This is here to mimic Type so that fallback functions work without having to bind()
-Object.defineProperties(DecoderPrototype, {
-
-    /**
-     * Fields of this decoder's message type by id for lookups.
-     * @name Decoder#fieldsById
-     * @type {Object.<number,Field>}
-     * @readonly
-     */
-    fieldsById: {
-        get: DecoderPrototype.getFieldsById = function getFieldsById() {
-            return this.type.getFieldsById();
-        }
-    },
-
-    /**
-     * With this decoder's message type registered constructor, if any registered, otherwise a generic constructor.
-     * @name Decoder#ctor
-     * @type {Prototype}
-     */
-    ctor: {
-        get: DecoderPrototype.getCtor = function getCtor() {
-            return this.type.getCtor();
-        }
-    }
-});
-
-/**
- * Decodes a message of this decoder's message type.
+ * Decodes a message of `this` message's type.
  * @param {Reader} reader Reader to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Prototype} Populated runtime message
+ * @this Type
  */
-DecoderPrototype.decode = function decode_fallback(reader, length) { // codegen reference and fallback
+decoder.fallback = function fallback(reader, length) {
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
     var fields  = this.getFieldsById(),
         reader  = reader instanceof Reader ? reader : Reader(reader),
@@ -122,16 +83,17 @@ DecoderPrototype.decode = function decode_fallback(reader, length) { // codegen 
 };
 
 /**
- * Generates a decoder specific to this decoder's message type.
- * @returns {function} Decoder function with an identical signature to {@link Decoder#decode}
+ * Generates a decoder specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {util.CodegenAppender} Unscoped codegen instance
  */
-DecoderPrototype.generate = function generate() {
+decoder.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.getFieldsArray();    
+    var fields = mtype.getFieldsArray();    
     var gen = util.codegen("r", "l")
 
     ("r instanceof Reader||(r=Reader(r))")
-    ("var c=l===undefined?r.len:r.pos+l,m=new (this.getCtor())()")
+    ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
         ("var t=r.tag()")
         ("switch(t.id){");
@@ -201,18 +163,12 @@ DecoderPrototype.generate = function generate() {
 
         } gen
                 ("break");
-    } gen
+    } return gen
             ("default:")
                 ("r.skipType(t.wireType)")
                 ("break")
         ("}")
     ("}")
     ("return m");
-    return gen
-    .eof(this.type.getFullName() + "$decode", {
-        Reader : Reader,
-        types  : fields.map(function(fld) { return fld.resolvedType; }),
-        util   : util.toHash
-    });
     /* eslint-enable no-unexpected-multiline */
 };

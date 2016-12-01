@@ -4,7 +4,7 @@
  * Utility functions.
  * @namespace
  */
-var util = module.exports = {};
+var util = exports;
 
 var LongBits =
 util.LongBits = require("./util/longbits");

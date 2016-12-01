@@ -12,12 +12,14 @@ var Enum      = require("./enum"),
     Field     = require("./field"),
     Service   = require("./service"),
     Prototype = require("./prototype"),
-    inherits  = require("./inherits"),
-    util      = require("./util"),
     Reader    = require("./reader"),
-    Encoder   = require("./encoder"),
-    Decoder   = require("./decoder"),
-    Verifier  = require("./verifier");
+    Writer    = require("./writer"),
+    encoder   = require("./encoder"),
+    decoder   = require("./decoder"),
+    Verifier  = require("./verifier"),
+    inherits  = require("./inherits"),
+    util      = require("./util");
+
 var codegen   = util.codegen;
 
 /**
@@ -332,11 +334,14 @@ TypePrototype.create = function create(properties, ctor) {
  * @returns {Writer} writer
  */
 TypePrototype.encode = function encode(message, writer) {
-    var encoder = new Encoder(this);
-    this.encode = codegen.supported
-        ? encoder.generate()
-        : encoder.encode;
-    return this.encode(message, writer);
+    return (this.encode = codegen.supported
+        ? encoder.generate(this).eof(this.getFullName() + "$encode", {
+              Writer : Writer,
+              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util   : util
+          })
+        : encoder.fallback
+    ).call(this, message, writer);
 };
 
 /**
@@ -356,11 +361,14 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @returns {Prototype} Decoded message
  */
 TypePrototype.decode = function decode(readerOrBuffer, length) {
-    var decoder = new Decoder(this);
-    this.decode = codegen.supported
-        ? decoder.generate()
-        : decoder.decode;
-    return this.decode(readerOrBuffer, length);
+    return (this.decode = codegen.supported
+        ? decoder.generate(this).eof(this.getFullName() + "$decode", {
+              Reader : Reader,
+              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util   : util
+          })
+        : decoder.fallback
+    ).call(this, readerOrBuffer, length);
 };
 
 /**

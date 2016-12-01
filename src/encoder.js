@@ -1,5 +1,10 @@
 "use strict";
-module.exports = Encoder;
+
+/**
+ * Wire format encoder using code generation on top of reflection.
+ * @namespace
+ */
+var encoder = exports;
 
 var Enum   = require("./enum"),
     Writer = require("./writer"),
@@ -7,46 +12,13 @@ var Enum   = require("./enum"),
     util   = require("./util");
 
 /**
- * Constructs a new encoder for the specified message type.
- * @classdesc Wire format encoder using code generation on top of reflection
- * @constructor
- * @param {Type} type Message type
- */
-function Encoder(type) {
-
-    /**
-     * Message type.
-     * @type {Type}
-     */
-    this.type = type;
-}
-
-/** @alias Encoder.prototype */
-var EncoderPrototype = Encoder.prototype;
-
-// This is here to mimic Type so that fallback functions work without having to bind()
-Object.defineProperties(EncoderPrototype, {
-
-    /**
-     * Fields of this encoder's message type as an array for iteration.
-     * @name Encoder#fieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    fieldsArray: {
-        get: EncoderPrototype.getFieldsArray = function getFieldsArray() {
-            return this.type.getFieldsArray();
-        }
-    }
-});
-
-/**
- * Encodes a message of this encoder's message type.
+ * Encodes a message of `this` message's type.
  * @param {Prototype|Object} message Runtime message or plain object to encode
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
+ * @this Type
  */
-EncoderPrototype.encode = function encode_fallback(message, writer) { // codegen reference and fallback
+encoder.fallback = function fallback(message, writer) {
     /* eslint-disable block-scoped-var, no-redeclare */
     if (!writer)
         writer = Writer();
@@ -119,12 +91,13 @@ EncoderPrototype.encode = function encode_fallback(message, writer) { // codegen
 };
 
 /**
- * Generates an encoder specific to this encoder's message type.
- * @returns {function} Encoder function with an identical signature to {@link Encoder#encode}
+ * Generates an encoder specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {util.CodegenAppender} Unscoped codegen instance
  */
-EncoderPrototype.generate = function generate() {
+encoder.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.getFieldsArray();
+    var fields = mtype.getFieldsArray();
     var gen = util.codegen("m", "w")
     ("w||(w=Writer())");
 
@@ -209,12 +182,6 @@ EncoderPrototype.generate = function generate() {
         }
     }
     return gen
-    ("return w")
-
-    .eof(this.type.getFullName() + "$encode", {
-        Writer : Writer,
-        types  : fields.map(function(fld) { return fld.resolvedType; }),
-        util   : util
-    });
+    ("return w");
     /* eslint-enable no-unexpected-multiline */
 };

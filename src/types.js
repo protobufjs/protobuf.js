@@ -4,7 +4,7 @@
  * Common type constants.
  * @namespace
  */
-var types = module.exports = {};
+var types = exports;
 
 var s = [
     "double",   // 0

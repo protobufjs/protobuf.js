@@ -49,8 +49,7 @@ tape.test("google.protobuf.Any type", function(test) {
 
             test.test("should encode (fallback)", function(test) {
                 
-                var enc = new protobuf.Encoder(Any);
-                writer = enc.encode(any);
+                writer = protobuf.encoder.fallback.call(Any, any);
                 buf = writer.finish();
 
                 verifyEncode(test, buf);
@@ -69,8 +68,7 @@ tape.test("google.protobuf.Any type", function(test) {
 
             test.test("should decode (fallback)", function(test) {
 
-                var dec = new protobuf.Decoder(Any);
-                msg = dec.decode(buf);
+                msg = protobuf.decoder.fallback.call(Any, buf);
 
                 test.deepEqual(msg, any, "an equal message");
 

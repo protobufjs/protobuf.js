@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Thu, 01 Dec 2016 10:14:01 UTC
+ * Generated Thu, 01 Dec 2016 15:54:46 UTC
  */
 declare module protobuf {
 
@@ -22,99 +22,48 @@ declare module protobuf {
    function common(name: string, json: Object): undefined;
    
    /**
-    * Constructs a new decoder for the specified message type.
-    * @classdesc Wire format decoder using code generation on top of reflection.
-    * @constructor
-    * @param {Type} type Message type
+    * Wire format decoder using code generation on top of reflection.
+    * @namespace
     */
-   class Decoder {
+   module decoder {
       /**
-       * Constructs a new decoder for the specified message type.
-       * @classdesc Wire format decoder using code generation on top of reflection.
-       * @constructor
-       * @param {Type} type Message type
-       */
-      constructor(type: Type);
-   
-      /**
-       * Message type.
-       * @type {Type}
-       */
-      type: Type;
-   
-      /**
-       * Fields of this decoder's message type by id for lookups.
-       * @name Decoder#fieldsById
-       * @type {Object.<number,Field>}
-       * @readonly
-       */
-      fieldsById: { [k: number]: Field };
-   
-      /**
-       * With this decoder's message type registered constructor, if any registered, otherwise a generic constructor.
-       * @name Decoder#ctor
-       * @type {Prototype}
-       */
-      ctor: Prototype;
-   
-      /**
-       * Decodes a message of this decoder's message type.
+       * Decodes a message of `this` message's type.
        * @param {Reader} reader Reader to decode from
        * @param {number} [length] Length of the message, if known beforehand
        * @returns {Prototype} Populated runtime message
+       * @this Type
        */
-      decode(reader: Reader, length?: number): Prototype;
+      function fallback(reader: Reader, length?: number): Prototype;
    
       /**
-       * Generates a decoder specific to this decoder's message type.
-       * @returns {function} Decoder function with an identical signature to {@link Decoder#decode}
+       * Generates a decoder specific to the specified message type.
+       * @param {Type} mtype Message type
+       * @returns {util.CodegenAppender} Unscoped codegen instance
        */
-      generate(): (() => any);
+      function generate(mtype: Type): util.CodegenAppender;
    
    }
    
    /**
-    * Constructs a new encoder for the specified message type.
-    * @classdesc Wire format encoder using code generation on top of reflection
-    * @constructor
-    * @param {Type} type Message type
+    * Wire format encoder using code generation on top of reflection.
+    * @namespace
     */
-   class Encoder {
+   module encoder {
       /**
-       * Constructs a new encoder for the specified message type.
-       * @classdesc Wire format encoder using code generation on top of reflection
-       * @constructor
-       * @param {Type} type Message type
-       */
-      constructor(type: Type);
-   
-      /**
-       * Message type.
-       * @type {Type}
-       */
-      type: Type;
-   
-      /**
-       * Fields of this encoder's message type as an array for iteration.
-       * @name Encoder#fieldsArray
-       * @type {Field[]}
-       * @readonly
-       */
-      fieldsArray: Field[];
-   
-      /**
-       * Encodes a message of this encoder's message type.
+       * Encodes a message of `this` message's type.
        * @param {Prototype|Object} message Runtime message or plain object to encode
        * @param {Writer} [writer] Writer to encode to
        * @returns {Writer} writer
+       * @this Type
        */
-      encode(message: (Prototype|Object), writer?: Writer): Writer;
+      function fallback(message: (Prototype|Object), writer?: Writer): Writer;
    
       /**
-       * Generates an encoder specific to this encoder's message type.
-       * @returns {function} Encoder function with an identical signature to {@link Encoder#encode}
+       * Generates an encoder specific to the specified message type.
+       * @param {Type} mtype Message type
+       * @returns {util.CodegenAppender} Unscoped codegen instance
        */
-      generate(): (() => any);
+      function generate(mtype: Type): util.CodegenAppender;
    
    }
    
@@ -1972,10 +1921,11 @@ declare module protobuf {
    
       /**
        * Writes a 64 bit value as fixed 64 bits.
-       * @param {Long|number} value Value to write
+       * @param {Long|number|string} value Value to write
        * @returns {Writer} `this`
+       * @throws {TypeError} If `value` is a string and no long library is present.
        */
-      fixed64(value: (Long|number)): Writer;
+      fixed64(value: (Long|number|string)): Writer;
    
       /**
        * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
