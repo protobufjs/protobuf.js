@@ -16,7 +16,7 @@ var Enum      = require("./enum"),
     Writer    = require("./writer"),
     encoder   = require("./encoder"),
     decoder   = require("./decoder"),
-    Verifier  = require("./verifier"),
+    verifier  = require("./verifier"),
     inherits  = require("./inherits"),
     util      = require("./util");
 
@@ -387,9 +387,10 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 TypePrototype.verify = function verify(message) {
-    var verifier = new Verifier(this);
-    this.verify = codegen.supported
-        ? verifier.generate()
-        : verifier.verify;
-    return this.verify(message);
+    return (this.verify = codegen.supported
+        ? verifier.generate(this).eof(this.getFullName() + "$verify", {
+              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; })
+          })
+        : verifier.fallback
+    ).call(this, message);
 };

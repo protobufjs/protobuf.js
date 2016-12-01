@@ -1,62 +1,22 @@
 "use strict";
-module.exports = Verifier;
+
+/**
+ * Runtime message verifier using code generation on top of reflection.
+ * @namespace
+ */
+var verifier = exports;
 
 var Enum = require("./enum"),
     Type = require("./type"),
     util = require("./util");
 
 /**
- * Constructs a new verifier for the specified message type.
- * @classdesc Runtime message verifier using code generation on top of reflection.
- * @constructor
- * @param {Type} type Message type
- */
-function Verifier(type) {
-
-    /**
-     * Message type.
-     * @type {Type}
-     */
-    this.type = type;
-}
-
-/** @alias Verifier.prototype */
-var VerifierPrototype = Verifier.prototype;
-
-// This is here to mimic Type so that fallback functions work without having to bind()
-Object.defineProperties(VerifierPrototype, {
-
-    /**
-     * Fields of this verifier's message type as an array for iteration.
-     * @name Verifier#fieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    fieldsArray: {
-        get: VerifierPrototype.getFieldsArray = function getFieldsArray() {
-            return this.type.getFieldsArray();
-        }
-    },
-
-    /**
-     * Full name of this verifier's message type.
-     * @name Verifier#fullName
-     * @type {string}
-     * @readonly
-     */
-    fullName: {
-        get: VerifierPrototype.getFullName = function getFullName() {
-            return this.type.getFullName();
-        }
-    }
-});
-
-/**
- * Verifies a runtime message of this verifier's message type.
+ * Verifies a runtime message of `this` message type.
  * @param {Prototype|Object} message Runtime message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
+ * @this {Type}
  */
-VerifierPrototype.verify = function verify_fallback(message) {
+verifier.fallback = function fallback(message) {
     var fields = this.getFieldsArray(),
         i = 0;
     while (i < fields.length) {
@@ -82,12 +42,13 @@ VerifierPrototype.verify = function verify_fallback(message) {
 };
 
 /**
- * Generates a verifier specific to this verifier's message type.
- * @returns {function} Verifier function with an identical signature to {@link Verifier#verify}
+ * Generates a verifier specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {util.CodegenAppender} Unscoped codegen instance
  */
-VerifierPrototype.generate = function generate() {
+verifier.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.getFieldsArray();
+    var fields = mtype.getFieldsArray();
     var gen = util.codegen("m");
     var hasReasonVar = false;
 
@@ -97,14 +58,14 @@ VerifierPrototype.generate = function generate() {
         if (field.required) { gen
 
             ("if(m%s===undefined)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
+                ("return 'missing required field %s in %s'", field.name, mtype.getFullName());
 
         } else if (field.resolvedType instanceof Enum) {
             var values = util.toArray(field.resolvedType.values); gen
 
             ("switch(m%s){", prop)
                 ("default:")
-                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, this.type.getFullName());
+                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, mtype.getFullName());
 
             for (var j = 0, l = values.length; j < l; ++j) gen
                 ("case %d:", values[j]); gen
@@ -114,7 +75,7 @@ VerifierPrototype.generate = function generate() {
             if (field.required) gen
 
             ("if(!m%s)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
+                ("return 'missing required field %s in %s'", field.name, mtype.getFullName());
 
             if (!hasReasonVar) { gen("var r"); hasReasonVar = true; } gen
 
@@ -123,10 +84,6 @@ VerifierPrototype.generate = function generate() {
         }
     }
     return gen
-    ("return null")
-
-    .eof(this.type.getFullName() + "$verify", {
-        types : fields.map(function(fld) { return fld.resolvedType; })
-    });
+    ("return null");
     /* eslint-enable no-unexpected-multiline */
 };

@@ -33,6 +33,7 @@ protobuf.Reader           = require("./reader");
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
 protobuf.encoder          = require("./encoder");
 protobuf.decoder          = require("./decoder");
+protobuf.verifier         = require("./verifier");
 
 // Reflection
 protobuf.ReflectionObject = require("./object");
