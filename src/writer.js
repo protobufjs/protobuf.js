@@ -214,37 +214,32 @@ function writeVarint64(buf, pos, val) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.uint64 = function write_uint64(value) {
-    var bits;
-    if (typeof value === 'number')
-        bits = value ? LongBits.fromNumber(value) : LongBits.zero;
-    else if (value.low || value.high)
-        bits = new LongBits(value.low >>> 0, value.high >>> 0);
-    else
-        bits = LongBits.zero;
+    var bits = LongBits.from(value);
     return this.push(writeVarint64, bits.length(), bits);
 };
 
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.int64 = WriterPrototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.sint64 = function sint64(value) {
     var bits = LongBits.from(value).zzEncode();
     return this.push(writeVarint64, bits.length(), bits);
 };
+
 
 /**
  * Writes a boolish value as a varint.

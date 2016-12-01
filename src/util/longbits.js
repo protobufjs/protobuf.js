@@ -67,13 +67,23 @@ LongBits.fromNumber = function fromNumber(value) {
 
 /**
  * Constrcuts new long bits from a number or long.
- * @param {Long|number} value Value
+ * @param {Long|number|string} value Value
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    return typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
+    var type = typeof value, result=zero;
+    if(type === 'number')
+        result = LongBits.fromNumber(value);
+    else 
+    {
+        if(type === 'string' && util.Long)
+            value = util.Long.fromString(value);
+    
+        if(value.low || value.high)
+            result = new LongBits(value.low >>> 0, value.high >>> 0);
+    }
+        
+    return result;
 };
 
 /**
