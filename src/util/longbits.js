@@ -71,9 +71,14 @@ LongBits.fromNumber = function fromNumber(value) {
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    return typeof value === 'number'
-        ? LongBits.fromNumber(value)
-        : new LongBits(value.low >>> 0, value.high >>> 0);
+    var type = typeof value, result=zero;
+    if(type === 'number')
+        result = LongBits.fromNumber(value);
+   else if(type === 'string' && util.Long)
+       result = util.Long.fromString(value);
+   else
+       result = new LongBits(value.low >>> 0, value.high >>> 0);    
+    return result;
 };
 
 /**
