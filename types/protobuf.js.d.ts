@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Wed, 30 Nov 2016 22:50:15 UTC
+ * Generated Thu, 01 Dec 2016 10:14:01 UTC
  */
 declare module protobuf {
 
@@ -1595,11 +1595,12 @@ declare module protobuf {
           static fromNumber(value: number): util.LongBits;
    
           /**
-           * Constrcuts new long bits from a number or long.
-           * @param {Long|number} value Value
+           * Constructs new long bits from a number, long or string.
+           * @param {Long|number|string} value Value
            * @returns {util.LongBits} Instance
+           * @throws {TypeError} If `value` is a string and no long library is present.
            */
-          static from(value: (Long|number)): util.LongBits;
+          static from(value: (Long|number|string)): util.LongBits;
    
           /**
            * Converts this long bits to a possibly unsafe JavaScript number.
@@ -1925,25 +1926,28 @@ declare module protobuf {
    
       /**
        * Writes an unsigned 64 bit value as a varint.
-       * @param {Long|number} value Value to write
+       * @param {Long|number|string} value Value to write
        * @returns {Writer} `this`
+       * @throws {TypeError} If `value` is a string and no long library is present.
        */
-      uint64(value: (Long|number)): Writer;
+      uint64(value: (Long|number|string)): Writer;
    
       /**
        * Writes a signed 64 bit value as a varint.
        * @function
-       * @param {Long|number} value Value to write
+       * @param {Long|number|string} value Value to write
        * @returns {Writer} `this`
+       * @throws {TypeError} If `value` is a string and no long library is present.
        */
-      int64(value: (Long|number)): Writer;
+      int64(value: (Long|number|string)): Writer;
    
       /**
        * Writes a signed 64 bit value as a varint, zig-zag encoded.
-       * @param {Long|number} value Value to write
+       * @param {Long|number|string} value Value to write
        * @returns {Writer} `this`
+       * @throws {TypeError} If `value` is a string and no long library is present.
        */
-      sint64(value: (Long|number)): Writer;
+      sint64(value: (Long|number|string)): Writer;
    
       /**
        * Writes a boolish value as a varint.
@@ -1975,10 +1979,11 @@ declare module protobuf {
    
       /**
        * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
-       * @param {Long|number} value Value to write
+       * @param {Long|number|string} value Value to write
        * @returns {Writer} `this`
+       * @throws {TypeError} If `value` is a string and no long library is present.
        */
-      sfixed64(value: (Long|number)): Writer;
+      sfixed64(value: (Long|number|string)): Writer;
    
       /**
        * Writes a float (32 bit).

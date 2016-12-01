@@ -66,9 +66,10 @@ LongBits.fromNumber = function fromNumber(value) {
 };
 
 /**
- * Constrcuts new long bits from a number or long.
- * @param {Long|number} value Value
+ * Constructs new long bits from a number, long or string.
+ * @param {Long|number|string} value Value
  * @returns {util.LongBits} Instance
+ * @throws {TypeError} If `value` is a string and no long library is present.
  */
 LongBits.from = function from(value) {
     switch (typeof value) {

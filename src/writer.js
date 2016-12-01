@@ -214,8 +214,9 @@ function writeVarint64(buf, pos, val) {
 
 /**
  * Writes an unsigned 64 bit value as a varint.
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
+ * @throws {TypeError} If `value` is a string and no long library is present.
  */
 WriterPrototype.uint64 = function write_uint64(value) {
     var bits = LongBits.from(value);
@@ -225,15 +226,17 @@ WriterPrototype.uint64 = function write_uint64(value) {
 /**
  * Writes a signed 64 bit value as a varint.
  * @function
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
+ * @throws {TypeError} If `value` is a string and no long library is present.
  */
 WriterPrototype.int64 = WriterPrototype.uint64;
 
 /**
  * Writes a signed 64 bit value as a varint, zig-zag encoded.
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
+ * @throws {TypeError} If `value` is a string and no long library is present.
  */
 WriterPrototype.sint64 = function sint64(value) {
     var bits = LongBits.from(value).zzEncode();
@@ -286,11 +289,13 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
 
 /**
  * Writes a 64 bit value as fixed 64 bits, zig-zag encoded.
- * @param {Long|number} value Value to write
+ * @param {Long|number|string} value Value to write
  * @returns {Writer} `this`
+ * @throws {TypeError} If `value` is a string and no long library is present.
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
-    return this.push(writeFixed64, 8, LongBits.from(value).zzEncode());
+    var bits = LongBits.from(value).zzEncode();
+    return this.push(writeFixed32, 4, bits.hi).push(writeFixed32, 4, bits.lo);
 };
 
 function writeFloat(buf, pos, val) {
