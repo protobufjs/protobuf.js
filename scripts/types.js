@@ -4,8 +4,8 @@ var fs = require("fs"),
 var dir = path.join(__dirname, "..", "types");
 
 var header = [
-    '/// <reference path="../node_modules/@types/node/index.d.ts" />',
-    '/// <reference path="../node_modules/@types/long/index.d.ts" />',
+    '/// <reference types="node" />',
+    '/// <reference types="long" />',
     "",
     "/*",
     " * protobuf.js v" + pkg.version + " TypeScript definitions",

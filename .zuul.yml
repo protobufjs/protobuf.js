@@ -18,6 +18,7 @@ browsers:
     version: [8.1, 9.0, latest]
 scripts:
   - scripts/polyfill.js
+  - node_modules/long/dist/long.js
 tunnel:
   type: ngrok
   proto: tcp

@@ -1,9 +1,9 @@
-/// <reference path="../node_modules/@types/node/index.d.ts" />
-/// <reference path="../node_modules/@types/long/index.d.ts" />
+/// <reference types="node" />
+/// <reference types="long" />
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Thu, 01 Dec 2016 15:54:46 UTC
+ * Generated Fri, 02 Dec 2016 12:20:52 UTC
  */
 declare module protobuf {
 
@@ -1620,6 +1620,29 @@ declare module protobuf {
       var Long: (() => any);
    
       /**
+       * Converts a number or long to an 8 characters long hash string.
+       * @param {Long|number} value Value to convert
+       * @returns {string} Hash
+       */
+      function longToHash(value: (Long|number)): string;
+   
+      /**
+       * Converts an 8 characters long hash string to a long or number.
+       * @param {string} hash Hash
+       * @param {boolean} [unsigned=false] Whether unsigned or not
+       * @returns {Long|number} Original value
+       */
+      function longFromHash(hash: string, unsigned?: boolean): (Long|number);
+   
+      /**
+       * Tests if two possibly long values are not equal.
+       * @param {number|Long} a First value
+       * @param {number|Long} b Second value
+       * @returns {boolean} `true` if not equal
+       */
+      function longNeq(a: (number|Long), b: (number|Long)): boolean;
+   
+      /**
        * Tests if the specified value is a string.
        * @memberof util
        * @param {*} value Value to test
@@ -1694,29 +1717,6 @@ declare module protobuf {
       function resolvePath(originPath: string, importPath: string, alreadyNormalized?: boolean): string;
    
       /**
-       * Converts a number or long to an 8 characters long hash string.
-       * @param {Long|number} value Value to convert
-       * @returns {string} Hash
-       */
-      function longToHash(value: (Long|number)): string;
-   
-      /**
-       * Converts an 8 characters long hash string to a long or number.
-       * @param {string} hash Hash
-       * @param {boolean} [unsigned=false] Whether unsigned or not
-       * @returns {Long|number} Original value
-       */
-      function longFromHash(hash: string, unsigned?: boolean): (Long|number);
-   
-      /**
-       * Tests if two possibly long values are not equal.
-       * @param {number|Long} a First value
-       * @param {number|Long} b Second value
-       * @returns {boolean} `true` if not equal
-       */
-      function longNeq(a: (number|Long), b: (number|Long)): boolean;
-   
-      /**
        * Merges the properties of the source object into the destination object.
        * @param {Object} dst Destination object
        * @param {Object} src Source object
@@ -1742,54 +1742,24 @@ declare module protobuf {
    }
    
    /**
-    * Constructs a new verifier for the specified message type.
-    * @classdesc Runtime message verifier using code generation on top of reflection.
-    * @constructor
-    * @param {Type} type Message type
+    * Runtime message verifier using code generation on top of reflection.
+    * @namespace
     */
-   class Verifier {
+   module verifier {
       /**
-       * Constructs a new verifier for the specified message type.
-       * @classdesc Runtime message verifier using code generation on top of reflection.
-       * @constructor
-       * @param {Type} type Message type
-       */
-      constructor(type: Type);
-   
-      /**
-       * Message type.
-       * @type {Type}
-       */
-      type: Type;
-   
-      /**
-       * Fields of this verifier's message type as an array for iteration.
-       * @name Verifier#fieldsArray
-       * @type {Field[]}
-       * @readonly
-       */
-      fieldsArray: Field[];
-   
-      /**
-       * Full name of this verifier's message type.
-       * @name Verifier#fullName
-       * @type {string}
-       * @readonly
-       */
-      fullName: string;
-   
-      /**
-       * Verifies a runtime message of this verifier's message type.
+       * Verifies a runtime message of `this` message type.
        * @param {Prototype|Object} message Runtime message or plain object to verify
        * @returns {?string} `null` if valid, otherwise the reason why it is not
+       * @this {Type}
        */
-      verify(message: (Prototype|Object)): string;
+      function fallback(message: (Prototype|Object)): string;
    
       /**
-       * Generates a verifier specific to this verifier's message type.
-       * @returns {function} Verifier function with an identical signature to {@link Verifier#verify}
+       * Generates a verifier specific to the specified message type.
+       * @param {Type} mtype Message type
+       * @returns {util.CodegenAppender} Unscoped codegen instance
        */
-      generate(): (() => any);
+      function generate(mtype: Type): util.CodegenAppender;
    
    }
    
