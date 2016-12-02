@@ -18,6 +18,9 @@ var dts = fs.readFileSync(path.join(dir, "types.d.ts"), "utf8");
 // Fix generic promises
 dts = dts.replace(/Promise\./g, "Promise");
 
+// Fix classes
+dts = dts.replace(/\(\(\) => any\)/g, "any");
+
 // Fix multidimensional arrays
 var found;
 do {
@@ -31,7 +34,7 @@ do {
 // Remove declare statements and wrap everything in a module
 dts = dts.replace(/\bdeclare\s/g, "");
 dts = dts.replace(/^/mg, "   ");
-dts = header.join('\n')+"\ndeclare module protobuf {\n\n" + dts + "\n}\n";
+dts = header.join('\n')+"\ndeclare module \"protobufjs\" {\n\n" + dts + "\n}\n";
 
 fs.writeFileSync(path.join(dir, "protobuf.js.d.ts"), dts);
 fs.unlinkSync(path.join(dir, "types.d.ts"));
