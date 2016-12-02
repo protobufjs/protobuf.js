@@ -160,6 +160,15 @@ var message = AwesomeMessage.decode(buffer);
 
 Custom classes are automatically populated with static `encode`, `encodeDelimited`, `decode`, `decodeDelimited` and `verify` methods and reference their reflected type via the `$type` property. Note that there are no methods (just `$type`) on instances by default as method names might conflict with field names.
 
+### Usage with TypeScript
+
+```ts
+/// <reference path="node_modules/protobufjs/types/protobuf.js.d.ts" />
+
+import * as protobuf from "protobufjs";
+...
+```
+
 Module Structure
 ----------------
 The library exports a flat `protobuf` namespace with the following members, ordered by category:
