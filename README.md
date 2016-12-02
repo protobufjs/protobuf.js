@@ -12,6 +12,15 @@ protobuf.js [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [
 [paypal-image]: https://img.shields.io/badge/paypal-donate-yellow.svg
 [paypal-url]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=%3C3%20protobuf.js
 
+Features
+--------
+* Rapid [runtime code generation](#performance)
+* Exhaustive [browser support](#compatibility)
+* Managed [TypeScript support](#usage-with-typescript)
+* Elaborate [documentation](#documentation)
+* Convenient [CLI utilities](#command-line)
+* Seamless [browserify integration](#browserify-integration)
+
 Contents
 --------
 
@@ -341,6 +350,15 @@ Building the TypeScript definition to `types/`:
 ```
 $> npm run types
 ```
+
+### Browserify integration
+
+protobuf.js integrates seamlessly into your browserify build-process. There are a few optional tweaks, though:
+
+* If performance is a concern or IE8 support is required, you should make sure to exclude the browserified `buffer` module and let protobuf.js do its thing with Uint8Array/Array instead.
+* If you do not need int64 support, you can exclude the `long` module.
+* If your application does not rely on the following modules and/or package size is a concern, you can also exclude `process` , `_process` and `fs`.
+* If you have any special requirements, there is [the bundler](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js) as a reference.
 
 Performance
 -----------
