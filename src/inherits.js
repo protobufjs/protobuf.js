@@ -18,7 +18,7 @@ var _TypeError = util._TypeError;
 /**
  * Inherits a custom class from the message prototype of the specified message type.
  * @param {Function} clazz Inheriting class
- * @param {Type} type Inherited message type
+ * @param {Type|ReflectionObject} type Inherited message type
  * @param {InheritanceOptions} [options] Inheritance options
  * @returns {Prototype} Created prototype
  */
@@ -40,7 +40,7 @@ function inherits(clazz, type, options) {
      */
 
     var classProperties = {
-        
+
         /**
          * Reference to the reflected type.
          * @name Class.$type

@@ -3,9 +3,9 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Fri, 02 Dec 2016 12:20:52 UTC
+ * Generated Fri, 02 Dec 2016 15:01:02 UTC
  */
-declare module protobuf {
+declare module "protobufjs" {
 
    /**
     * Provides common type definitions.
@@ -306,7 +306,7 @@ declare module protobuf {
     * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise the protobuf namespace
     * @throws {TypeError} If arguments are invalid
     */
-   function load(filename: (string|string[]), root?: Root, callback?: (() => any)): (Promise<Root>|Object);
+   function load(filename: (string|string[]), root?: Root, callback?: any): (Promise<Root>|Object);
    
    /**
     * Options passed to {@link inherits}, modifying its behavior.
@@ -324,11 +324,11 @@ declare module protobuf {
    /**
     * Inherits a custom class from the message prototype of the specified message type.
     * @param {Function} clazz Inheriting class
-    * @param {Type} type Inherited message type
+    * @param {Type|ReflectionObject} type Inherited message type
     * @param {InheritanceOptions} [options] Inheritance options
     * @returns {Prototype} Created prototype
     */
-   function inherits(clazz: (() => any), type: Type, options?: InheritanceOptions): Prototype;
+   function inherits(clazz: any, type: (Type|ReflectionObject), options?: InheritanceOptions): Prototype;
    
    /**
     * This is not an actual type but stands as a reference for any constructor of a custom message class that you pass to the library.
@@ -719,7 +719,7 @@ declare module protobuf {
        * @returns {Object} Prototype
        * @this ReflectionObject
        */
-      static extend(constructor: (() => any)): Object;
+      static extend(constructor: any): Object;
    
       /**
        * Converts this reflection object to its JSON representation.
@@ -1153,7 +1153,7 @@ declare module protobuf {
        * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
        * @throws {TypeError} If arguments are invalid
        */
-      load(filename: (string|string[]), callback?: (() => any)): (Promise<Root>|undefined);
+      load(filename: (string|string[]), callback?: any): (Promise<Root>|undefined);
    
    }
    
@@ -1215,7 +1215,7 @@ declare module protobuf {
        * @param {boolean} [responseDelimited=false] Whether response data is length delimited
        * @returns {Object} Runtime service
        */
-      create(rpc: (() => any), requestDelimited?: boolean, responseDelimited?: boolean): Object;
+      create(rpc: any, requestDelimited?: boolean, responseDelimited?: boolean): Object;
    
    }
    
@@ -1228,7 +1228,7 @@ declare module protobuf {
     * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data
     * @returns {undefined}
     */
-   function RPCImpl(method: Method, requestData: Uint8Array, callback: (() => any)): undefined;
+   function RPCImpl(method: Method, requestData: Uint8Array, callback: any): undefined;
    
    /**
     * Handle object returned from {@link tokenize}.
@@ -1240,11 +1240,11 @@ declare module protobuf {
     * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
     */
    interface TokenizerHandle {
-      line: (() => any);
-      next: (() => any);
-      peek: (() => any);
-      push: (() => any);
-      skip: (() => any);
+      line: any;
+      next: any;
+      peek: any;
+      push: any;
+      skip: any;
    }
    
    
@@ -1369,7 +1369,7 @@ declare module protobuf {
        * Defaults to use the internal constuctor.
        * @returns {Prototype} Message instance
        */
-      create(properties?: Object, ctor?: (() => any)): Prototype;
+      create(properties?: Object, ctor?: any): Prototype;
    
       /**
        * Encodes a message of this type.
@@ -1496,7 +1496,7 @@ declare module protobuf {
        * @param {Object|string[]} [scope] Function scope
        * @returns {function} A function to apply the scope manually when `scope` is an array, otherwise the generated function with scope applied
        */
-      type CodegenEnder = (name?: string, scope?: (Object|string[])) => (() => any);
+      type CodegenEnder = (name?: string, scope?: (Object|string[])) => any;
    
       /**
        * Constructs new long bits.
@@ -1610,14 +1610,14 @@ declare module protobuf {
        * If you assign any compatible buffer implementation to this property, the library will use it.
        * @type {?Function}
        */
-      var Buffer: (() => any);
+      var Buffer: any;
    
       /**
        * Optional Long class to use.
        * If you assign any compatible long implementation to this property, the library will use it.
        * @type {?Function}
        */
-      var Long: (() => any);
+      var Long: any;
    
       /**
        * Converts a number or long to an 8 characters long hash string.
@@ -1680,7 +1680,7 @@ declare module protobuf {
        * @param {...*} params Function arguments
        * @returns {Promise<*>} Promisified function
        */
-      function asPromise(fn: (() => any), ctx: Object, params: any): Promise<any>;
+      function asPromise(fn: any, ctx: Object, params: any): Promise<any>;
    
       /**
        * Fetches the contents of a file.
@@ -1689,7 +1689,7 @@ declare module protobuf {
        * @param {function(?Error, string=)} [callback] Node-style callback
        * @returns {Promise<string>|undefined} Promise if callback has been omitted
        */
-      function fetch(path: string, callback?: (() => any)): (Promise<string>|undefined);
+      function fetch(path: string, callback?: any): (Promise<string>|undefined);
    
       /**
        * Tests if the specified path is absolute.
@@ -1811,7 +1811,7 @@ declare module protobuf {
        * @param {number} val Value to write
        * @returns {Writer} `this`
        */
-      push(fn: (() => any), len: number, val: number): Writer;
+      push(fn: any, len: number, val: number): Writer;
    
       /**
        * Writes a tag.
