@@ -1,4 +1,5 @@
-///<reference path="./protobuf.js.d.ts" />
+/// <reference path="./protobuf.js.d.ts" />
+
 import * as protobuf from "protobufjs";
 
 export const proto = {"nested":{"Hello":{"fields":{"value":{"rule":"required","type":"string","id":1}}}}};
@@ -6,9 +7,9 @@ export const proto = {"nested":{"Hello":{"fields":{"value":{"rule":"required","t
 const root = protobuf.Root.fromJSON(proto);
 
 export class Hello {
-  constructor (properties: any) {
-    protobuf.Prototype.call(this, properties);
-  }
+    constructor (properties: any) {
+        protobuf.Prototype.call(this, properties);
+    }
 }
 
-protobuf.inherits(Hello, root.lookup("Hello"));
+protobuf.inherits(Hello, root.lookup("Hello") as protobuf.Type);

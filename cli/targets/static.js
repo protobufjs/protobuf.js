@@ -2,7 +2,9 @@ module.exports = static_target;
 
 static_target.private = true;
 
-// Currently, this file contains initial static code for CommonJS modules.
+// Currently, this target builds single file CommonJS modules.
+// - There is no reflection and no message inheritance from Prototype.
+// - Generated code is tailored for browerify build processes (minimal runtime).
 
 // TBD:
 // - Generate a single file or scaffold an entire project directory? Both?

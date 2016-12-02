@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Fri, 02 Dec 2016 15:01:02 UTC
+ * Generated Fri, 02 Dec 2016 16:05:19 UTC
  */
 declare module "protobufjs" {
 
@@ -324,11 +324,11 @@ declare module "protobufjs" {
    /**
     * Inherits a custom class from the message prototype of the specified message type.
     * @param {Function} clazz Inheriting class
-    * @param {Type|ReflectionObject} type Inherited message type
+    * @param {Type} type Inherited message type
     * @param {InheritanceOptions} [options] Inheritance options
     * @returns {Prototype} Created prototype
     */
-   function inherits(clazz: any, type: (Type|ReflectionObject), options?: InheritanceOptions): Prototype;
+   function inherits(clazz: any, type: Type, options?: InheritanceOptions): Prototype;
    
    /**
     * This is not an actual type but stands as a reference for any constructor of a custom message class that you pass to the library.

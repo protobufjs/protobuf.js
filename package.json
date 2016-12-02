@@ -27,14 +27,14 @@
     "build": "gulp",
     "docs": "jsdoc -c jsdoc.docs.json -R README.md",
     "pages": "node scripts/pages",
-    "types": "jsdoc -c jsdoc.types.json && node scripts/types.js && tsc types/protobuf.js-test.ts --lib es2015 --noEmit",
+    "types": "jsdoc -c jsdoc.types.json && node scripts/types.js && tsc types/test.ts --lib es2015 --noEmit",
     "lint": "eslint src",
     "test": "tape tests/*.js | tap-spec",
     "zuul": "zuul --ui tape --no-coverage --concurrency 1 -- tests/*.js",
     "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js",
     "bench": "node bench",
     "all": "npm run lint && npm run test && npm run build && npm run types && npm run docs && npm run bench",
-    "prepublish": "node scripts/prepublish.js"
+    "prepublish": "node scripts/prepublish"
   },
   "optionalDependencies": {
     "long": "^3.2.0"
