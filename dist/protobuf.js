@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Thu, 01 Dec 2016 15:54:29 UTC
+ * Compiled Fri, 02 Dec 2016 11:19:57 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -443,7 +443,7 @@ decoder.generate = function generate(mtype) {
 var encoder = exports;
 
 var Enum   = require(5),
-    Writer = require(25),
+    Writer = require(26),
     types  = require(20),
     util   = require(21);
 
@@ -622,7 +622,7 @@ encoder.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"20":20,"21":21,"25":25,"5":5}],5:[function(require,module,exports){
+},{"20":20,"21":21,"26":26,"5":5}],5:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
@@ -2706,7 +2706,7 @@ module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util     = require(21),
+var util     = require(24),
     ieee754  = require(1);
 var LongBits = util.LongBits,
     Long     = util.Long;
@@ -3215,7 +3215,7 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
     return remain;
 };
 
-},{"1":1,"21":21}],16:[function(require,module,exports){
+},{"1":1,"24":24}],16:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
@@ -3871,10 +3871,10 @@ var Enum      = require(5),
     Service   = require(17),
     Prototype = require(14),
     Reader    = require(15),
-    Writer    = require(25),
+    Writer    = require(26),
     encoder   = require(4),
     decoder   = require(3),
-    Verifier  = require(24),
+    verifier  = require(25),
     inherits  = require(7),
     util      = require(21);
 
@@ -4245,14 +4245,15 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 TypePrototype.verify = function verify(message) {
-    var verifier = new Verifier(this);
-    this.verify = codegen.supported
-        ? verifier.generate()
-        : verifier.verify;
-    return this.verify(message);
+    return (this.verify = codegen.supported
+        ? verifier.generate(this).eof(this.getFullName() + "$verify", {
+              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; })
+          })
+        : verifier.fallback
+    ).call(this, message);
 };
 
-},{"10":10,"12":12,"14":14,"15":15,"17":17,"21":21,"24":24,"25":25,"3":3,"4":4,"5":5,"6":6,"7":7}],20:[function(require,module,exports){
+},{"10":10,"12":12,"14":14,"15":15,"17":17,"21":21,"25":25,"26":26,"3":3,"4":4,"5":5,"6":6,"7":7}],20:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4370,6 +4371,8 @@ types.mapKey = bake([
  * @type {Object.<string,number>}
  */
 types.packed = bake([
+    /* double   */ 1,
+    /* float    */ 5,
     /* int32    */ 0,
     /* uint32   */ 0,
     /* sint32   */ 0,
@@ -4381,10 +4384,9 @@ types.packed = bake([
     /* fixed64  */ 1,
     /* sfixed64 */ 1,
     /* bool     */ 0
-], 2);
+]);
 
 },{}],21:[function(require,module,exports){
-(function (global){
 "use strict";
 
 /**
@@ -4393,36 +4395,7 @@ types.packed = bake([
  */
 var util = exports;
 
-var LongBits =
-util.LongBits = require(23);
 util.codegen  = require(22);
-
-/**
- * Whether running within node or not.
- * @memberof util
- * @type {boolean}
- */
-var isNode = util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
-
-/**
- * Optional buffer class to use.
- * If you assign any compatible buffer implementation to this property, the library will use it.
- * @type {?Function}
- */
-util.Buffer = null;
-
-if (isNode)
-    try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
-
-/**
- * Optional Long class to use.
- * If you assign any compatible long implementation to this property, the library will use it.
- * @type {?Function}
- */
-util.Long = global.dcodeIO && global.dcodeIO.Long || null;
-
-if (!util.Long)
-    try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
 /**
  * Tests if the specified value is a string.
@@ -4601,46 +4574,6 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
 };
 
 /**
- * Converts a number or long to an 8 characters long hash string.
- * @param {Long|number} value Value to convert
- * @returns {string} Hash
- */
-util.longToHash = function longToHash(value) {
-    return value
-        ? LongBits.from(value).toHash()
-        : '\0\0\0\0\0\0\0\0';
-};
-
-/**
- * Converts an 8 characters long hash string to a long or number.
- * @param {string} hash Hash
- * @param {boolean} [unsigned=false] Whether unsigned or not
- * @returns {Long|number} Original value
- */
-util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = LongBits.fromHash(hash);
-    if (util.Long)
-        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
-    return bits.toNumber(Boolean(unsigned));
-};
-
-/**
- * Tests if two possibly long values are not equal.
- * @param {number|Long} a First value
- * @param {number|Long} b Second value
- * @returns {boolean} `true` if not equal
- */
-util.longNeq = function longNeq(a, b) {
-    return typeof a === 'number'
-         ? typeof b === 'number'
-            ? a !== b
-            : (a = LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
-         : typeof b === 'number'
-            ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
-            : a.low !== b.low || a.high !== b.high;
-};
-
-/**
  * Merges the properties of the source object into the destination object.
  * @param {Object} dst Destination object
  * @param {Object} src Source object
@@ -4680,9 +4613,10 @@ util.newBuffer = function newBuffer(size) {
     return new (util.Buffer || typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size || 0);
 };
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+// Merge in runtime utility
+util.merge(util, require(24));
 
-},{"22":22,"23":23,"buffer":"buffer","long":"long","undefined":undefined}],22:[function(require,module,exports){
+},{"22":22,"24":24,"undefined":undefined}],22:[function(require,module,exports){
 "use strict";
 module.exports = codegen;
 
@@ -5007,65 +4941,102 @@ LongBitsPrototype.length = function length() {
 };
 
 },{"21":21}],24:[function(require,module,exports){
+(function (global){
 "use strict";
-module.exports = Verifier;
+
+var util = exports;
+
+var LongBits = util.LongBits = require(23);
+
+/**
+ * Whether running within node or not.
+ * @memberof util
+ * @type {boolean}
+ */
+var isNode = util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+
+/**
+ * Optional buffer class to use.
+ * If you assign any compatible buffer implementation to this property, the library will use it.
+ * @type {?Function}
+ */
+util.Buffer = null;
+
+if (isNode)
+    try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
+
+/**
+ * Optional Long class to use.
+ * If you assign any compatible long implementation to this property, the library will use it.
+ * @type {?Function}
+ */
+util.Long = global.dcodeIO && global.dcodeIO.Long || null;
+
+if (!util.Long && isNode)
+    try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
+
+/**
+ * Converts a number or long to an 8 characters long hash string.
+ * @param {Long|number} value Value to convert
+ * @returns {string} Hash
+ */
+util.longToHash = function longToHash(value) {
+    return value
+        ? LongBits.from(value).toHash()
+        : '\0\0\0\0\0\0\0\0';
+};
+
+/**
+ * Converts an 8 characters long hash string to a long or number.
+ * @param {string} hash Hash
+ * @param {boolean} [unsigned=false] Whether unsigned or not
+ * @returns {Long|number} Original value
+ */
+util.longFromHash = function longFromHash(hash, unsigned) {
+    var bits = LongBits.fromHash(hash);
+    if (util.Long)
+        return util.Long.fromBits(bits.lo, bits.hi, unsigned);
+    return bits.toNumber(Boolean(unsigned));
+};
+
+/**
+ * Tests if two possibly long values are not equal.
+ * @param {number|Long} a First value
+ * @param {number|Long} b Second value
+ * @returns {boolean} `true` if not equal
+ */
+util.longNeq = function longNeq(a, b) {
+    return typeof a === 'number'
+         ? typeof b === 'number'
+            ? a !== b
+            : (a = LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
+         : typeof b === 'number'
+            ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
+            : a.low !== b.low || a.high !== b.high;
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"23":23,"buffer":"buffer","long":"long"}],25:[function(require,module,exports){
+"use strict";
+
+/**
+ * Runtime message verifier using code generation on top of reflection.
+ * @namespace
+ */
+var verifier = exports;
 
 var Enum = require(5),
     Type = require(19),
     util = require(21);
 
 /**
- * Constructs a new verifier for the specified message type.
- * @classdesc Runtime message verifier using code generation on top of reflection.
- * @constructor
- * @param {Type} type Message type
- */
-function Verifier(type) {
-
-    /**
-     * Message type.
-     * @type {Type}
-     */
-    this.type = type;
-}
-
-/** @alias Verifier.prototype */
-var VerifierPrototype = Verifier.prototype;
-
-// This is here to mimic Type so that fallback functions work without having to bind()
-Object.defineProperties(VerifierPrototype, {
-
-    /**
-     * Fields of this verifier's message type as an array for iteration.
-     * @name Verifier#fieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    fieldsArray: {
-        get: VerifierPrototype.getFieldsArray = function getFieldsArray() {
-            return this.type.getFieldsArray();
-        }
-    },
-
-    /**
-     * Full name of this verifier's message type.
-     * @name Verifier#fullName
-     * @type {string}
-     * @readonly
-     */
-    fullName: {
-        get: VerifierPrototype.getFullName = function getFullName() {
-            return this.type.getFullName();
-        }
-    }
-});
-
-/**
- * Verifies a runtime message of this verifier's message type.
+ * Verifies a runtime message of `this` message type.
  * @param {Prototype|Object} message Runtime message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
+ * @this {Type}
  */
-VerifierPrototype.verify = function verify_fallback(message) {
+verifier.fallback = function fallback(message) {
     var fields = this.getFieldsArray(),
         i = 0;
     while (i < fields.length) {
@@ -5091,12 +5062,13 @@ VerifierPrototype.verify = function verify_fallback(message) {
 };
 
 /**
- * Generates a verifier specific to this verifier's message type.
- * @returns {function} Verifier function with an identical signature to {@link Verifier#verify}
+ * Generates a verifier specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {util.CodegenAppender} Unscoped codegen instance
  */
-VerifierPrototype.generate = function generate() {
+verifier.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = this.type.getFieldsArray();
+    var fields = mtype.getFieldsArray();
     var gen = util.codegen("m");
     var hasReasonVar = false;
 
@@ -5106,14 +5078,14 @@ VerifierPrototype.generate = function generate() {
         if (field.required) { gen
 
             ("if(m%s===undefined)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
+                ("return 'missing required field %s in %s'", field.name, mtype.getFullName());
 
         } else if (field.resolvedType instanceof Enum) {
             var values = util.toArray(field.resolvedType.values); gen
 
             ("switch(m%s){", prop)
                 ("default:")
-                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, this.type.getFullName());
+                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, mtype.getFullName());
 
             for (var j = 0, l = values.length; j < l; ++j) gen
                 ("case %d:", values[j]); gen
@@ -5123,7 +5095,7 @@ VerifierPrototype.generate = function generate() {
             if (field.required) gen
 
             ("if(!m%s)", prop)
-                ("return 'missing required field %s in %s'", field.name, this.type.getFullName());
+                ("return 'missing required field %s in %s'", field.name, mtype.getFullName());
 
             if (!hasReasonVar) { gen("var r"); hasReasonVar = true; } gen
 
@@ -5132,21 +5104,17 @@ VerifierPrototype.generate = function generate() {
         }
     }
     return gen
-    ("return null")
-
-    .eof(this.type.getFullName() + "$verify", {
-        types : fields.map(function(fld) { return fld.resolvedType; })
-    });
+    ("return null");
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"19":19,"21":21,"5":5}],25:[function(require,module,exports){
+},{"19":19,"21":21,"5":5}],26:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util     = require(21),
+var util     = require(24),
     ieee754  = require(1);
 var LongBits = util.LongBits;
 
@@ -5689,7 +5657,7 @@ BufferWriterPrototype.finish = function finish_buffer() {
     return buf;
 };
 
-},{"1":1,"21":21}],26:[function(require,module,exports){
+},{"1":1,"24":24}],27:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -5720,12 +5688,13 @@ protobuf.tokenize         = require(18);
 protobuf.parse            = require(13);
 
 // Serialization
-protobuf.Writer           = require(25);
+protobuf.Writer           = require(26);
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
 protobuf.Reader           = require(15);
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
 protobuf.encoder          = require(4);
 protobuf.decoder          = require(3);
+protobuf.verifier         = require(25);
 
 // Reflection
 protobuf.ReflectionObject = require(11);
@@ -5750,7 +5719,7 @@ protobuf.util             = util;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"20":20,"21":21,"25":25,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}]},{},[26])
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"20":20,"21":21,"25":25,"26":26,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}]},{},[27])
 
 
 //# sourceMappingURL=protobuf.js.map

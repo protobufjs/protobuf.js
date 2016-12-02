@@ -3,7 +3,7 @@ module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util     = require("./util"),
+var util     = require("./util/runtime"),
     ieee754  = require("../lib/ieee754");
 var LongBits = util.LongBits,
     Long     = util.Long;

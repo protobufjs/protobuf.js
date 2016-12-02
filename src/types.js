@@ -115,6 +115,8 @@ types.mapKey = bake([
  * @type {Object.<string,number>}
  */
 types.packed = bake([
+    /* double   */ 1,
+    /* float    */ 5,
     /* int32    */ 0,
     /* uint32   */ 0,
     /* sint32   */ 0,
@@ -126,4 +128,4 @@ types.packed = bake([
     /* fixed64  */ 1,
     /* sfixed64 */ 1,
     /* bool     */ 0
-], 2);
+]);
