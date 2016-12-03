@@ -39,7 +39,7 @@ tape.test("RPC", function(test) {
         var MyService = root.lookup("MyService");
         var service = MyService.create(rpc, true, false);
         
-        service.MyMethod(MyRequest.create({
+        service.myMethod(MyRequest.create({
             path: "/"
         }), function(err, response) {
             if (err)
