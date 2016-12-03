@@ -5,7 +5,20 @@ Writer.BufferWriter = BufferWriter;
 
 var util     = require("./util/runtime"),
     ieee754  = require("../lib/ieee754");
-var LongBits = util.LongBits;
+var LongBits = util.LongBits,
+    ArrayImpl;
+
+/**
+ * Configures the writer interface according to the environment.
+ * @memberof Writer
+ * @returns {undefined}
+ */
+function configure() {
+    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+    writeBytes = ArrayImpl.prototype.set && writeBytes_set || writeBytes_for;
+}
+
+Writer.configure = configure;
 
 /**
  * Constructs a new writer operation.
@@ -80,8 +93,6 @@ function State(writer) {
 }
 
 Writer.State = State;
-
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
  * Constructs a new writer.
@@ -327,9 +338,16 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
-var writeBytes = ArrayImpl.prototype.set
-    ? function writeBytes_set(buf, pos, val) { buf.set(val, pos); }
-    : function writeBytes_for(buf, pos, val) { for (var i = 0; i < val.length; ++i) buf[pos + i] = val[i]; };
+var writeBytes;
+
+function writeBytes_set(buf, pos, val) {
+    buf.set(val, pos);
+}
+
+function writeBytes_for(buf, pos, val) {
+    for (var i = 0; i < val.length; ++i)
+        buf[pos + i] = val[i];
+}
 
 /**
  * Writes a sequence of bytes.
@@ -545,3 +563,5 @@ BufferWriterPrototype.finish = function finish_buffer() {
     }
     return buf;
 };
+
+configure();

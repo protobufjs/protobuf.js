@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Fri, 02 Dec 2016 16:05:19 UTC
+ * Generated Sat, 03 Dec 2016 11:38:06 UTC
  */
 declare module "protobufjs" {
 
@@ -931,6 +931,13 @@ declare module "protobufjs" {
       constructor(buffer: Uint8Array);
    
       /**
+       * Configures the Reader interface according to the environment.
+       * @memberof Reader
+       * @returns {undefined}
+       */
+      static configure(): undefined;
+   
+      /**
        * Read buffer.
        * @type {Uint8Array}
        */
@@ -974,6 +981,7 @@ declare module "protobufjs" {
    
       /**
        * Reads a varint as a signed 64 bit value.
+       * @name Reader#int64
        * @function
        * @returns {Long|number} Value read
        */
@@ -981,6 +989,7 @@ declare module "protobufjs" {
    
       /**
        * Reads a varint as an unsigned 64 bit value.
+       * @name Reader#uint64
        * @function
        * @returns {Long|number} Value read
        */
@@ -988,6 +997,7 @@ declare module "protobufjs" {
    
       /**
        * Reads a zig-zag encoded varint as a signed 64 bit value.
+       * @name Reader#sint64
        * @function
        * @returns {Long|number} Value read
        */
@@ -1013,6 +1023,7 @@ declare module "protobufjs" {
    
       /**
        * Reads fixed 64 bits.
+       * @name Reader#fixed64
        * @function
        * @returns {Long|number} Value read
        */
@@ -1020,9 +1031,11 @@ declare module "protobufjs" {
    
       /**
        * Reads zig-zag encoded fixed 64 bits.
+       * @name Reader#sfixed64
+       * @function
        * @returns {Long|number} Value read
        */
-      sfixed64: any;
+      sfixed64(): (Long|number);
    
       /**
        * Reads a float (32 bit) as a number.
@@ -1779,6 +1792,13 @@ declare module "protobufjs" {
        * @constructor
        */
       constructor();
+   
+      /**
+       * Configures the writer interface according to the environment.
+       * @memberof Writer
+       * @returns {undefined}
+       */
+      static configure(): undefined;
    
       /**
        * Current length.

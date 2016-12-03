@@ -55,3 +55,16 @@ protobuf.inherits         = require("./inherits");
 protobuf.types            = require("./types");
 protobuf.common           = require("./common");
 protobuf.util             = util;
+
+// Be nice to AMD
+/* eslint-disable no-undef */
+if (typeof define === 'function' && define.amd)
+    define(["long"], function(Long) {
+        if (Long) {
+            protobuf.util.Long = Long;
+            protobuf.Reader.configure();
+            protobuf.Writer.configure();
+        }
+        return protobuf;
+    });
+/* eslint-enable no-undef */

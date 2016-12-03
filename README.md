@@ -14,10 +14,10 @@ protobuf.js [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [
 
 Features
 --------
-* Rapid [runtime code generation](#performance)
+* Lightning fast through [runtime code generation](#performance)
 * Exhaustive [browser support](#compatibility)
 * Managed [TypeScript support](#usage-with-typescript)
-* Elaborate [documentation](#documentation)
+* Elaborate [API documentation](#documentation)
 * Convenient [CLI utilities](#command-line)
 * Seamless [browserify integration](#browserify-integration)
 
@@ -294,12 +294,14 @@ The `pbjs` command line utility can be used to bundle and translate between .pro
 ```
 Consolidates imports and converts between file formats.
 
-  -t, --target    Specifies the target format. [json, proto2, proto3]
+  -t, --target    Specifies the target format. [json, proto2, proto3, static]
                   Also accepts a path to require a custom target.
 
   -p, --path      Adds a directory to the include path.
 
   -o, --out       Saves to a file instead of writing to stdout.
+
+  -w, --wrap      Specifies an alternative wrapper for the static target.
 
 usage: pbjs [options] file1.proto file2.json ...
 ```
@@ -356,7 +358,7 @@ $> npm run types
 
 ### Browserify integration
 
-protobuf.js integrates seamlessly into your browserify build-process. There are a few optional tweaks, though:
+protobuf.js integrates nicely into your browserify build-process. There are a few possible tweaks, though:
 
 * If performance is a concern or IE8 support is required, you should make sure to exclude the browserified `buffer` module and let protobuf.js do its thing with Uint8Array/Array instead.
 * If you do not need int64 support, you can exclude the `long` module.

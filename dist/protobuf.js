@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Fri, 02 Dec 2016 16:46:37 UTC
+ * Compiled Sat, 03 Dec 2016 11:37:47 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2709,11 +2709,37 @@ Reader.BufferReader = BufferReader;
 var util     = require(24),
     ieee754  = require(1);
 var LongBits = util.LongBits,
-    Long     = util.Long;
+    ArrayImpl;
 
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
 }
+
+/**
+ * Configures the Reader interface according to the environment.
+ * @memberof Reader
+ * @returns {undefined}
+ */
+function configure() {
+    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+    ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
+
+    if (util.Long) {
+        ReaderPrototype.int64 = read_int64_long;
+        ReaderPrototype.uint64 = read_uint64_long;
+        ReaderPrototype.sint64 = read_sint64_long;
+        ReaderPrototype.fixed64 = read_fixed64_long;
+        ReaderPrototype.sfixed64 = read_sfixed64_long;
+    } else {
+        ReaderPrototype.int64 = read_int64_number;
+        ReaderPrototype.uint64 = read_uint64_number;
+        ReaderPrototype.sint64 = read_sint64_number;
+        ReaderPrototype.fixed64 = read_fixed64_number;
+        ReaderPrototype.sfixed64 = read_sfixed64_number;
+    }
+}
+
+Reader.configure = configure;
 
 /**
  * Constructs a new reader using the specified buffer.
@@ -2747,9 +2773,6 @@ function Reader(buffer) {
 
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
-
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
-ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
  * Tag read.
@@ -2809,13 +2832,8 @@ ReaderPrototype.sint32 = function read_sint32() {
     return value >>> 1 ^ -(value & 1);
 };
 
-/**
- * Reads a possibly 64 bits varint.
- * @returns {LongBits} Long bits
- * @this {Reader}
- * @inner
- * @ignore
- */
+/* eslint-disable no-invalid-this */
+
 function readLongVarint() {
     var lo = 0, hi = 0,
         i  = 0, b  = 0;
@@ -2866,49 +2884,51 @@ function readLongVarint() {
 }
 
 function read_int64_long() {
-    return readLongVarint.call(this).toLong(); // eslint-disable-line no-invalid-this
+    return readLongVarint.call(this).toLong();
 }
 
 function read_int64_number() {
-    return readLongVarint.call(this).toNumber(); // eslint-disable-line no-invalid-this
+    return readLongVarint.call(this).toNumber();
 }
 
-/**
- * Reads a varint as a signed 64 bit value.
- * @function
- * @returns {Long|number} Value read
- */
-ReaderPrototype.int64 = Long && read_int64_long || read_int64_number;
-
 function read_uint64_long() {
-    return readLongVarint.call(this).toLong(true); // eslint-disable-line no-invalid-this
+    return readLongVarint.call(this).toLong(true);
 }
 
 function read_uint64_number() {
-    return readLongVarint.call(this).toNumber(true); // eslint-disable-line no-invalid-this
+    return readLongVarint.call(this).toNumber(true);
 }
 
-/**
- * Reads a varint as an unsigned 64 bit value.
- * @function
- * @returns {Long|number} Value read
- */
-ReaderPrototype.uint64 = Long && read_uint64_long || read_uint64_number;
-
 function read_sint64_long() {
-    return readLongVarint.call(this).zzDecode().toLong(); // eslint-disable-line no-invalid-this
+    return readLongVarint.call(this).zzDecode().toLong();
 }
 
 function read_sint64_number() {
-    return readLongVarint.call(this).zzDecode().toNumber(); // eslint-disable-line no-invalid-this
+    return readLongVarint.call(this).zzDecode().toNumber();
 }
 
+/* eslint-enable no-invalid-this */
+
 /**
- * Reads a zig-zag encoded varint as a signed 64 bit value.
+ * Reads a varint as a signed 64 bit value.
+ * @name Reader#int64
  * @function
  * @returns {Long|number} Value read
  */
-ReaderPrototype.sint64 = Long && read_sint64_long || read_sint64_number;
+
+/**
+ * Reads a varint as an unsigned 64 bit value.
+ * @name Reader#uint64
+ * @function
+ * @returns {Long|number} Value read
+ */
+
+/**
+ * Reads a zig-zag encoded varint as a signed 64 bit value.
+ * @name Reader#sint64
+ * @function
+ * @returns {Long|number} Value read
+ */
 
 /**
  * Reads a varint as a boolean.
@@ -2941,13 +2961,8 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
     return value >>> 1 ^ -(value & 1);
 };
 
-/**
- * Reads a 64 bit value.
- * @returns {LongBits} Long bits
- * @this {Reader}
- * @inner 
- * @ignore
- */
+/* eslint-disable no-invalid-this */
+
 function readLongFixed() {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
@@ -2965,33 +2980,36 @@ function readLongFixed() {
 }
 
 function read_fixed64_long() {
-    return readLongFixed.call(this).toLong(true); // eslint-disable-line no-invalid-this
+    return readLongFixed.call(this).toLong(true);
 }
 
 function read_fixed64_number() {
-    return readLongFixed.call(this).toNumber(true); // eslint-disable-line no-invalid-this
+    return readLongFixed.call(this).toNumber(true);
 }
 
-/**
- * Reads fixed 64 bits.
- * @function
- * @returns {Long|number} Value read
- */
-ReaderPrototype.fixed64 = Long && read_fixed64_long || read_fixed64_number;
-
 function read_sfixed64_long() {
-    return readLongFixed.call(this).zzDecode().toLong(); // eslint-disable-line no-invalid-this
+    return readLongFixed.call(this).zzDecode().toLong();
 }
 
 function read_sfixed64_number() {
-    return readLongFixed.call(this).zzDecode().toNumber(); // eslint-disable-line no-invalid-this
+    return readLongFixed.call(this).zzDecode().toNumber();
 }
+
+/* eslint-enable no-invalid-this */
+
+/**
+ * Reads fixed 64 bits.
+ * @name Reader#fixed64
+ * @function
+ * @returns {Long|number} Value read
+ */
 
 /**
  * Reads zig-zag encoded fixed 64 bits.
+ * @name Reader#sfixed64
+ * @function
  * @returns {Long|number} Value read
  */
-ReaderPrototype.sfixed64 = Long && read_sfixed64_long || read_sfixed64_number;
 
 /**
  * Reads a float (32 bit) as a number.
@@ -3214,6 +3232,8 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
     this.reset(buffer);
     return remain;
 };
+
+configure();
 
 },{"1":1,"24":24}],16:[function(require,module,exports){
 "use strict";
@@ -5116,7 +5136,20 @@ Writer.BufferWriter = BufferWriter;
 
 var util     = require(24),
     ieee754  = require(1);
-var LongBits = util.LongBits;
+var LongBits = util.LongBits,
+    ArrayImpl;
+
+/**
+ * Configures the writer interface according to the environment.
+ * @memberof Writer
+ * @returns {undefined}
+ */
+function configure() {
+    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+    writeBytes = ArrayImpl.prototype.set && writeBytes_set || writeBytes_for;
+}
+
+Writer.configure = configure;
 
 /**
  * Constructs a new writer operation.
@@ -5191,8 +5224,6 @@ function State(writer) {
 }
 
 Writer.State = State;
-
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
  * Constructs a new writer.
@@ -5438,9 +5469,16 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
-var writeBytes = ArrayImpl.prototype.set
-    ? function writeBytes_set(buf, pos, val) { buf.set(val, pos); }
-    : function writeBytes_for(buf, pos, val) { for (var i = 0; i < val.length; ++i) buf[pos + i] = val[i]; };
+var writeBytes;
+
+function writeBytes_set(buf, pos, val) {
+    buf.set(val, pos);
+}
+
+function writeBytes_for(buf, pos, val) {
+    for (var i = 0; i < val.length; ++i)
+        buf[pos + i] = val[i];
+}
 
 /**
  * Writes a sequence of bytes.
@@ -5657,6 +5695,8 @@ BufferWriterPrototype.finish = function finish_buffer() {
     return buf;
 };
 
+configure();
+
 },{"1":1,"24":24}],27:[function(require,module,exports){
 (function (global){
 "use strict";
@@ -5716,6 +5756,19 @@ protobuf.inherits         = require(7);
 protobuf.types            = require(20);
 protobuf.common           = require(2);
 protobuf.util             = util;
+
+// Be nice to AMD
+/* eslint-disable no-undef */
+if (typeof define === 'function' && define.amd)
+    define(["long"], function(Long) {
+        if (Long) {
+            protobuf.util.Long = Long;
+            protobuf.Reader.configure();
+            protobuf.Writer.configure();
+        }
+        return protobuf;
+    });
+/* eslint-enable no-undef */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
