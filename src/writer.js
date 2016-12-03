@@ -546,8 +546,8 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         ? byteLength(value)
         : util.Buffer.byteLength(value);
     return len
-        ? this.uint32(len).push(writeStringBuffer, len, value)		
-        : this.push(writeByte, 1, 0);		
+        ? this.uint32(len).push(writeStringBuffer, len, value)
+        : this.push(writeByte, 1, 0);
 };
 
 /**

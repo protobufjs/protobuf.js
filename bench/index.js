@@ -23,46 +23,57 @@ protobuf.load(require.resolve("./bench.proto"), function onload(err, root) {
     var Test = root.lookup("Test");
 
     protobuf.util.codegen.verbose = true;
-    var buf = Test.encode(data).finish(),
-        dec = Test.decode(buf);
 
-    var str = JSON.stringify(data),
-        strbuf = Buffer.from(str, "utf8");
+    var buf = Test.encode(data).finish();
 
-    newSuite("encoding")
-    .add("Type.encode to buffer", function() {
+    // warm up
+    for (var i = 0; i < 500000; ++i)
         Test.encode(data).finish();
-    })
-    .add("JSON.stringify to string", function() {
-        JSON.stringify(data);
-    })
-    .add("JSON.stringify to buffer", function() {
-        new Buffer(JSON.stringify(data), "utf8");
-    })
-    .run();
-
-    newSuite("decoding")
-    .add("Type.decode from buffer", function() {
+    for (var i = 0; i < 1000000; ++i)
         Test.decode(buf);
-    })
-    .add("JSON.parse from string", function() {
-        JSON.parse(str);
-    })
-    .add("JSON.parse from buffer", function() {
-        JSON.parse(strbuf.toString("utf8"));
-    })
-    .run();
+    console.log("");
 
-    newSuite("combined")
-    .add("Type to/from buffer", function() {
-        Test.decode(Test.encode(data).finish());
-    })
-    .add("JSON to/from string", function() {
-        JSON.parse(JSON.stringify(data));
-    })
-    .add("JSON to/from buffer", function() {
-        JSON.parse(new Buffer(JSON.stringify(data), "utf8").toString("utf8"));
-    })
-    .run();
+    // give the optimizer some time to do its job
+    setTimeout(function() {
+        var str    = JSON.stringify(data),
+            strbuf = Buffer.from(str, "utf8");
+
+        newSuite("encoding")
+        .add("Type.encode to buffer", function() {
+            Test.encode(data).finish();
+        })
+        .add("JSON.stringify to string", function() {
+            JSON.stringify(data);
+        })
+        .add("JSON.stringify to buffer", function() {
+            new Buffer(JSON.stringify(data), "utf8");
+        })
+        .run();
+
+        newSuite("decoding")
+        .add("Type.decode from buffer", function() {
+            Test.decode(buf);
+        })
+        .add("JSON.parse from string", function() {
+            JSON.parse(str);
+        })
+        .add("JSON.parse from buffer", function() {
+            JSON.parse(strbuf.toString("utf8"));
+        })
+        .run();
+
+        newSuite("combined")
+        .add("Type to/from buffer", function() {
+            Test.decode(Test.encode(data).finish());
+        })
+        .add("JSON to/from string", function() {
+            JSON.parse(JSON.stringify(data));
+        })
+        .add("JSON to/from buffer", function() {
+            JSON.parse(new Buffer(JSON.stringify(data), "utf8").toString("utf8"));
+        })
+        .run();
+
+    }, 3000);
 
 });

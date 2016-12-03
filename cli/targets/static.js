@@ -6,7 +6,6 @@ module.exports = static_target;
 // - You can specify a custom wrapper with the --wrap argument.
 // - CommonJS modules depend on the minimal static runtime for reduced package size with browserify.
 // - AMD and global scope depend on the full library for now.
-// - Services aren't supported, yet.
 
 var path = require("path"),
     fs   = require("fs");
@@ -230,9 +229,88 @@ function buildType(ref, type) {
 }
 
 function buildService(ref, service) {
+    var fullName = service.fullName.substring(1);
+
     push("");
-    push(name(ref) + "." + name(service.name) + " = {};");
-    // TODO: Services are just empty objects currently
+    pushComment([
+        "Constructs a new " + service.name + ".",
+        "@exports " + fullName,
+        "@constructor",
+        "@param {function(function, Uint8Array, function)} rpc RPC implementation",
+        "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
+        "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
+    ]);
+    push("function " + name(service.name) + "(rpc, requestDelimited, responseDelimited) {");
+    ++indent;
+    push("");
+    pushComment([
+        "RPC implementation.",
+        "@type {function(function, Uint8Array, function)}"
+    ]);
+    push("this.rpc = rpc;");
+    push("");
+    pushComment([
+        "Whether requests are length-delimited.",
+        "@type {boolean}"
+    ]);
+    push("this.requestDelimited = Boolean(requestDelimited);");
+    push("");
+    pushComment([
+        "Whether responses are length-delimited.",
+        "@type {boolean}"
+    ]);
+    push("this.responseDelimited = Boolean(responseDelimited);");
+    --indent;
+    push("};");
+    service.getMethodsArray().forEach(function(method) {
+        method.resolve();
+        var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
+        push("");
+        pushComment([
+            "Calls " + method.name + ".",
+            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " or plain object",
+            "@param {function(?Error, " + method.resolvedResponseType.fullName.substring(1) + "=)} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
+            "@returns {undefined}"
+        ]);
+        push(name(service.name) + ".prototype." + name(lcName) + " = function " + name(lcName) + "(request, callback) {");
+        ++indent;
+        push("var requestData;");
+        push("try {");
+        ++indent;
+        push("requestData = (this.requestDelimited && $root" + name(method.resolvedRequestType.fullName) + ".encodeDelimited(request) || $root" + name(method.resolvedRequestType.fullName) + ".encode(request)).finish();");
+        --indent;
+        push("} catch (err) {");
+        ++indent;
+        push("(typeof setImmediate === 'function' && setImmediate || setTimeout)(function() { callback(err); });");
+        push("return;");
+        --indent;
+        push("}");
+        push("var self = this;");
+        push("this.rpc(" + name(lcName) + ", requestData, function(err, responseData) {");
+        ++indent;
+        push("if (err) {");
+        ++indent;
+        push("callback(err);");
+        push("return;");
+        --indent;
+        push("}");
+        push("var response;");
+        push("try {");
+        ++indent;
+        push("response = self.responseDelimited && $root" + name(method.resolvedResponseType.fullName) + ".decodeDelimited(responseData) || $root" + name(method.resolvedResponseType.fullName) + ".decode(responseData);");
+        --indent;
+        push("} catch (err2) {");
+        ++indent;
+        push("callback(err2);");
+        push("return;");
+        --indent;
+        push("}");
+        push("callback(null, response);");
+        --indent;
+        push("});");
+        --indent;
+        push("};");
+    });
 }
 
 function buildEnum(ref, enm) {

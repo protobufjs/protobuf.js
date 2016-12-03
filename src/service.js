@@ -152,8 +152,8 @@ ServicePrototype.remove = function remove(object) {
 /**
  * Creates a runtime service using the specified rpc implementation.
  * @param {function(Method, Uint8Array, function)} rpc RPC implementation ({@link RPCImpl|see})
- * @param {boolean} [requestDelimited=false] Whether request data is length delimited
- * @param {boolean} [responseDelimited=false] Whether response data is length delimited
+ * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+ * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  * @returns {Object} Runtime service
  */
 ServicePrototype.create = function create(rpc, requestDelimited, responseDelimited) {
@@ -162,7 +162,8 @@ ServicePrototype.create = function create(rpc, requestDelimited, responseDelimit
         value: rpc
     });
     this.getMethodsArray().forEach(function(method) {
-        rpcService[method.name] = function(request, callback) {
+        var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
+        rpcService[lcName] = function(request, callback) {
             method.resolve();
             var requestData;
             try {

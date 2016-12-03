@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Sat, 03 Dec 2016 12:34:45 UTC
+ * Compiled Sat, 03 Dec 2016 14:06:23 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3628,8 +3628,8 @@ ServicePrototype.remove = function remove(object) {
 /**
  * Creates a runtime service using the specified rpc implementation.
  * @param {function(Method, Uint8Array, function)} rpc RPC implementation ({@link RPCImpl|see})
- * @param {boolean} [requestDelimited=false] Whether request data is length delimited
- * @param {boolean} [responseDelimited=false] Whether response data is length delimited
+ * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+ * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  * @returns {Object} Runtime service
  */
 ServicePrototype.create = function create(rpc, requestDelimited, responseDelimited) {
@@ -3638,7 +3638,8 @@ ServicePrototype.create = function create(rpc, requestDelimited, responseDelimit
         value: rpc
     });
     this.getMethodsArray().forEach(function(method) {
-        rpcService[method.name] = function(request, callback) {
+        var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
+        rpcService[lcName] = function(request, callback) {
             method.resolve();
             var requestData;
             try {
@@ -5677,8 +5678,8 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         ? byteLength(value)
         : util.Buffer.byteLength(value);
     return len
-        ? this.uint32(len).push(writeStringBuffer, len, value)		
-        : this.push(writeByte, 1, 0);		
+        ? this.uint32(len).push(writeStringBuffer, len, value)
+        : this.push(writeByte, 1, 0);
 };
 
 /**
