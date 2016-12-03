@@ -208,6 +208,33 @@
             </ul>
         </li>
     
+        <li class="item" data-name="verifier">
+            <span class="title">
+                <a href="verifier.html">verifier</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="verifier.fallback"><a href="verifier.html#.fallback">fallback</a></li>
+            
+                <li data-name="verifier.generate"><a href="verifier.html#.generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="BufferReader">
             <span class="title">
                 <a href="BufferReader.html">BufferReader</a>
@@ -222,8 +249,6 @@
                 <li data-name="BufferReader#len"><a href="BufferReader.html#len">len</a></li>
             
                 <li data-name="BufferReader#pos"><a href="BufferReader.html#pos">pos</a></li>
-            
-                <li data-name="BufferReader#sfixed64"><a href="BufferReader.html#sfixed64">sfixed64</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -254,6 +279,8 @@
                 <li data-name="BufferReader#reset"><a href="BufferReader.html#reset">reset</a></li>
             
                 <li data-name="BufferReader#sfixed32"><a href="BufferReader.html#sfixed32">sfixed32</a></li>
+            
+                <li data-name="BufferReader#sfixed64"><a href="BufferReader.html#sfixed64">sfixed64</a></li>
             
                 <li data-name="BufferReader#sint32"><a href="BufferReader.html#sint32">sint32</a></li>
             
@@ -881,8 +908,6 @@
             
                 <li data-name="Reader#pos"><a href="Reader.html#pos">pos</a></li>
             
-                <li data-name="Reader#sfixed64"><a href="Reader.html#sfixed64">sfixed64</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -890,6 +915,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="Reader.configure"><a href="Reader.html#.configure">configure</a></li>
             
                 <li data-name="Reader#bool"><a href="Reader.html#bool">bool</a></li>
             
@@ -912,6 +939,8 @@
                 <li data-name="Reader#reset"><a href="Reader.html#reset">reset</a></li>
             
                 <li data-name="Reader#sfixed32"><a href="Reader.html#sfixed32">sfixed32</a></li>
+            
+                <li data-name="Reader#sfixed64"><a href="Reader.html#sfixed64">sfixed64</a></li>
             
                 <li data-name="Reader#sint32"><a href="Reader.html#sint32">sint32</a></li>
             
@@ -1294,39 +1323,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="Verifier">
-            <span class="title">
-                <a href="Verifier.html">Verifier</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Verifier#fieldsArray"><a href="Verifier.html#fieldsArray">fieldsArray</a></li>
-            
-                <li data-name="Verifier#fullName"><a href="Verifier.html#fullName">fullName</a></li>
-            
-                <li data-name="Verifier#type"><a href="Verifier.html#type">type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Verifier#generate"><a href="Verifier.html#generate">generate</a></li>
-            
-                <li data-name="Verifier#verify"><a href="Verifier.html#verify">verify</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="Writer">
             <span class="title">
                 <a href="Writer.html">Writer</a>
@@ -1351,6 +1347,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="Writer.configure"><a href="Writer.html#.configure">configure</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -1433,6 +1431,14 @@
     <section>
         <article class="readme"><h1>protobuf.js <a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
+<h2>Features</h2><ul>
+<li>Lightning fast through <a href="#performance">runtime code generation</a></li>
+<li>Exhaustive <a href="#compatibility">browser support</a></li>
+<li>Managed <a href="#usage-with-typescript">TypeScript support</a></li>
+<li>Elaborate <a href="#documentation">API documentation</a></li>
+<li>Convenient <a href="#command-line">CLI utilities</a></li>
+<li>Seamless <a href="#browserify-integration">browserify integration</a></li>
+</ul>
 <h2>Contents</h2><ul>
 <li><p><a href="#usage">Usage</a><br /><br>How to include protobuf.js in your project.</p>
 </li>
@@ -1516,7 +1522,10 @@ var buffer = AwesomeMessage.encode({ awesomeField: &quot;AwesomeString&quot; });
 // Decode a buffer
 var message = AwesomeMessage.decode(buffer);
 // ... do something with message</code></pre><p>Custom classes are automatically populated with static <code>encode</code>, <code>encodeDelimited</code>, <code>decode</code>, <code>decodeDelimited</code> and <code>verify</code> methods and reference their reflected type via the <code>$type</code> property. Note that there are no methods (just <code>$type</code>) on instances by default as method names might conflict with field names.</p>
-<h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
+<h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
+
+import * as protobuf from &quot;protobufjs&quot;;
+...</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
 <h3>Parser</h3><ul>
 <li><p><strong>load(filename: <code>string|Array</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto files into the specified root or creates a new one when omitted.</p>
 </li>
@@ -1596,9 +1605,14 @@ var message = AwesomeMessage.decode(buffer);
 <h2>Command line</h2><p>The <code>pbjs</code> command line utility can be used to bundle and translate between .proto and .json files.</p>
 <pre class="prettyprint source"><code>Consolidates imports and converts between file formats.
 
-  -t, --target    Specifies the target format. [json, proto2, proto3]
+  -t, --target    Specifies the target format. [json, proto2, proto3, static]
+                  Also accepts a path to require a custom target.
+
   -p, --path      Adds a directory to the include path.
+
   -o, --out       Saves to a file instead of writing to stdout.
+
+  -w, --wrap      Specifies an alternative wrapper for the static target.
 
 usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production environments it is recommended to bundle all your .proto files to a single .json file, which reduces the number of network requests and parser invocations required:</p>
 <pre class="prettyprint source"><code>$> pbjs -t json file1.proto file2.proto > bundle.json</code></pre><p>Now, either include this file in your final bundle:</p>
@@ -1611,7 +1625,14 @@ $> cd protobuf.js
 $> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
-<pre class="prettyprint source"><code>$> npm run types</code></pre><h2>Performance</h2><p>The package includes a <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/bench">benchmark</a> that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
+<pre class="prettyprint source"><code>$> npm run types</code></pre><h3>Browserify integration</h3><p>protobuf.js integrates nicely into your browserify build-process. There are a few possible tweaks, though:</p>
+<ul>
+<li>If performance is a concern or IE8 support is required, you should make sure to exclude the browserified <code>buffer</code> module and let protobuf.js do its thing with Uint8Array/Array instead.</li>
+<li>If you do not need int64 support, you can exclude the <code>long</code> module.</li>
+<li>If your application does not rely on the following modules and/or package size is a concern, you can also exclude <code>process</code> , <code>_process</code> and <code>fs</code>.</li>
+<li>If you have any special requirements, there is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js">the bundler</a> as a reference.</li>
+</ul>
+<h2>Performance</h2><p>The package includes a <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/bench">benchmark</a> that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
 Type.encode to buffer x 402,572 ops/sec ±1.09% (90 runs sampled)
