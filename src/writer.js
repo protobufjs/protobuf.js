@@ -367,9 +367,9 @@ function writeString(buf, pos, val) {
         if (c1 < 128) {
             buf[pos++] = c1;
         } else if (c1 < 2048) {
-            buf[pos++] = c1 >> 6 | 192;
-            buf[pos++] = c1 & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < val.length && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            buf[pos++] = c1 >> 6       | 192;
+            buf[pos++] = c1       & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
             c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
             ++i;
             buf[pos++] = c1 >> 18      | 240;
@@ -386,23 +386,20 @@ function writeString(buf, pos, val) {
 
 function byteLength(val) {
     var strlen = val.length >>> 0;
-    if (strlen) {
-        var len = 0;
-        for (var i = 0, c1; i < strlen; ++i) {
-            c1 = val.charCodeAt(i);
-            if (c1 < 128)
-                len += 1;
-            else if (c1 < 2048)
-                len += 2;
-            else if ((c1 & 0xFC00) === 0xD800 && i + 1 < strlen && (val.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
-                ++i;
-                len += 4;
-            } else
-                len += 3;
-        }
-        return len;
+    var len = 0;
+    for (var i = 0; i < strlen; ++i) {
+        var c1 = val.charCodeAt(i);
+        if (c1 < 128)
+            len += 1;
+        else if (c1 < 2048)
+            len += 2;
+        else if ((c1 & 0xFC00) === 0xD800 && (val.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
+            ++i;
+            len += 4;
+        } else
+            len += 3;
     }
-    return 0;
+    return len;
 }
 
 /**
@@ -535,17 +532,22 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 };
 
 function writeStringBuffer(buf, pos, val) {
-    buf.write(val, pos);
+    if (val.length < 40) // plain js is faster for short strings
+        writeString(buf, pos, val);
+    else
+        buf.write(val, pos);
 }
 
 /**
  * @override
  */
-BufferWriterPrototype.string = function write_string_buffer(value) {
-    var len = byteLength(value);
+BufferWriterPrototype.string = function write_string_buffer(value) {		
+    var len = value.length < 40
+        ? byteLength(value)
+        : util.Buffer.byteLength(value);
     return len
-        ? this.uint32(len).push(writeStringBuffer, len, value)
-        : this.push(writeByte, 1, 0);
+        ? this.uint32(len).push(writeStringBuffer, len, value)		
+        : this.push(writeByte, 1, 0);		
 };
 
 /**

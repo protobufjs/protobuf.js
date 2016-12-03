@@ -1,8 +1,6 @@
 "use strict";
 var protobuf = global.protobuf = exports;
 
-var util = require("./util");
-
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
  * @param {string|string[]} filename One or multiple files to load
@@ -54,7 +52,7 @@ protobuf.inherits         = require("./inherits");
 // Utility
 protobuf.types            = require("./types");
 protobuf.common           = require("./common");
-protobuf.util             = util;
+protobuf.util             = require("./util");
 
 // Be nice to AMD
 /* eslint-disable no-undef */

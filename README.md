@@ -372,33 +372,33 @@ The package includes a [benchmark](https://github.com/dcodeIO/protobuf.js/tree/m
 ```
 benchmarking encoding performance ...
 
-Type.encode to buffer x 402,572 ops/sec ±1.09% (90 runs sampled)
-JSON.stringify to string x 342,004 ops/sec ±1.46% (82 runs sampled)
-JSON.stringify to buffer x 184,468 ops/sec ±1.76% (79 runs sampled)
+Type.encode to buffer x 514,048 ops/sec ±0.75% (93 runs sampled)
+JSON.stringify to string x 355,935 ops/sec ±0.79% (91 runs sampled)
+JSON.stringify to buffer x 191,023 ops/sec ±1.39% (86 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 15.4% slower
-   JSON.stringify to buffer was 54.5% slower
+   JSON.stringify to string was 30.8% slower
+   JSON.stringify to buffer was 63.1% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,170,490 ops/sec ±1.49% (88 runs sampled)
-JSON.parse from string x 328,975 ops/sec ±0.90% (88 runs sampled)
-JSON.parse from buffer x 298,702 ops/sec ±0.82% (89 runs sampled)
+Type.decode from buffer x 1,238,587 ops/sec ±1.73% (87 runs sampled)
+JSON.parse from string x 312,168 ops/sec ±2.22% (83 runs sampled)
+JSON.parse from buffer x 272,975 ops/sec ±2.45% (82 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 71.7% slower
-     JSON.parse from buffer was 74.3% slower
+     JSON.parse from string was 74.9% slower
+     JSON.parse from buffer was 78.1% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 218,688 ops/sec ±1.49% (90 runs sampled)
-JSON to/from string x 144,634 ops/sec ±1.97% (87 runs sampled)
-JSON to/from buffer x 102,350 ops/sec ±1.23% (92 runs sampled)
+Type to/from buffer x 246,428 ops/sec ±1.52% (89 runs sampled)
+JSON to/from string x 136,380 ops/sec ±1.50% (80 runs sampled)
+JSON to/from buffer x 95,229 ops/sec ±1.93% (86 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 34.2% slower
-        JSON to/from buffer was 53.1% slower
+        JSON to/from string was 44.6% slower
+        JSON to/from buffer was 61.5% slower
 ```
 
 Note that JSON is a native binding nowadays and as such is *really* fast. So, how can protobuf.js be faster?

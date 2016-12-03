@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Sat, 03 Dec 2016 11:38:06 UTC
+ * Generated Sat, 03 Dec 2016 12:34:52 UTC
  */
 declare module "protobufjs" {
 

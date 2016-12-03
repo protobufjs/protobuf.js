@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Sat, 03 Dec 2016 11:37:47 UTC
+ * Compiled Sat, 03 Dec 2016 12:34:45 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -5498,9 +5498,9 @@ function writeString(buf, pos, val) {
         if (c1 < 128) {
             buf[pos++] = c1;
         } else if (c1 < 2048) {
-            buf[pos++] = c1 >> 6 | 192;
-            buf[pos++] = c1 & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && i + 1 < val.length && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            buf[pos++] = c1 >> 6       | 192;
+            buf[pos++] = c1       & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
             c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
             ++i;
             buf[pos++] = c1 >> 18      | 240;
@@ -5517,23 +5517,20 @@ function writeString(buf, pos, val) {
 
 function byteLength(val) {
     var strlen = val.length >>> 0;
-    if (strlen) {
-        var len = 0;
-        for (var i = 0, c1; i < strlen; ++i) {
-            c1 = val.charCodeAt(i);
-            if (c1 < 128)
-                len += 1;
-            else if (c1 < 2048)
-                len += 2;
-            else if ((c1 & 0xFC00) === 0xD800 && i + 1 < strlen && (val.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
-                ++i;
-                len += 4;
-            } else
-                len += 3;
-        }
-        return len;
+    var len = 0;
+    for (var i = 0; i < strlen; ++i) {
+        var c1 = val.charCodeAt(i);
+        if (c1 < 128)
+            len += 1;
+        else if (c1 < 2048)
+            len += 2;
+        else if ((c1 & 0xFC00) === 0xD800 && (val.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
+            ++i;
+            len += 4;
+        } else
+            len += 3;
     }
-    return 0;
+    return len;
 }
 
 /**
@@ -5666,17 +5663,22 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 };
 
 function writeStringBuffer(buf, pos, val) {
-    buf.write(val, pos);
+    if (val.length < 40) // plain js is faster for short strings
+        writeString(buf, pos, val);
+    else
+        buf.write(val, pos);
 }
 
 /**
  * @override
  */
-BufferWriterPrototype.string = function write_string_buffer(value) {
-    var len = byteLength(value);
+BufferWriterPrototype.string = function write_string_buffer(value) {		
+    var len = value.length < 40
+        ? byteLength(value)
+        : util.Buffer.byteLength(value);
     return len
-        ? this.uint32(len).push(writeStringBuffer, len, value)
-        : this.push(writeByte, 1, 0);
+        ? this.uint32(len).push(writeStringBuffer, len, value)		
+        : this.push(writeByte, 1, 0);		
 };
 
 /**
@@ -5701,8 +5703,6 @@ configure();
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
-
-var util = require(21);
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
@@ -5755,7 +5755,7 @@ protobuf.inherits         = require(7);
 // Utility
 protobuf.types            = require(20);
 protobuf.common           = require(2);
-protobuf.util             = util;
+protobuf.util             = require(21);
 
 // Be nice to AMD
 /* eslint-disable no-undef */
