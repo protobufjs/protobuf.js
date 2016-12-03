@@ -1,3 +1,4 @@
+"use strict";
 module.exports = proto2_target;
 
 var protobuf = require("../..");

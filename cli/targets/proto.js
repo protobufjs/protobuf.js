@@ -1,3 +1,4 @@
+"use strict";
 module.exports = proto_target;
 
 proto_target.private = true;

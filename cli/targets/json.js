@@ -1,3 +1,4 @@
+"use strict";
 module.exports = json_target;
 
 var protobuf = require("../..");

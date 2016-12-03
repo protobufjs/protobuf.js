@@ -1,15 +1,15 @@
+"use strict";
 module.exports = static_target;
 
-static_target.private = true;
+// - Static code does not have any reflection or JSON features.
+// - The default wrapper supports AMD, CommonJS and the global scope (as window.root), in this order.
+// - You can specify a custom wrapper with the --wrap argument.
+// - CommonJS modules depend on the minimal static runtime for reduced package size with browserify.
+// - AMD and global scope depend on the full library for now.
+// - Services aren't supported, yet.
 
-// Currently, this target builds single file CommonJS modules.
-// - There is no reflection and no message inheritance from Prototype.
-// - Generated code is tailored for browerify build processes (minimal runtime).
-
-// TBD:
-// - Generate a single file or scaffold an entire project directory? Both?
-// - Targets: ES5, ES6, TypeScript? CommonJS? AMD?
-// - What about generating typescript definitions for non-ts targets?
+var path = require("path"),
+    fs   = require("fs");
 
 var protobuf = require("../..");
 
@@ -26,14 +26,21 @@ var out = [];
 var indent = 0;
 
 function static_target(root, options, callback) {
-    tree = {};
+    if (options.wrap)
+        options.wrap = path.resolve(process.cwd(), options.wrap);
+    else
+        options.wrap = path.join(__dirname, "static.tpl");
     try {
-        buildNamespace("module.exports", root);
-        callback(null, out.join('\n'));
+        var wrap = fs.readFileSync(options.wrap).toString("utf8");
+        ++indent;
+        buildNamespace(null, root);
+        --indent;
+        callback(null, wrap.replace(/\r?\n%OUTPUT%/, out.join('\n')));
     } catch (err) {
         callback(err);
     } finally {
         out = [];
+        indent = 0;
     }
 }
 
@@ -63,17 +70,7 @@ function name(name) {
 function buildNamespace(ref, ns) {
     if (!ns)
         return;
-    if (ns.name === "") { // root
-        push(name(ref) + " = (function() {");
-        ++indent;
-        push('"use strict";');
-        push("");
-        push("// Minimal static codegen runtime");
-        push("var $runtime = require(\"protobufjs/runtime\");")
-        push("");
-        push("// Lazily resolved type references");
-        push("var $lazyTypes = [];");
-    } else {
+    if (ns.name !== "") {
         push("");
         push("/** @alias " + ns.fullName.substring(1) + " */");
         push(name(ref) + "." + name(ns.name) + " = (function() {");
@@ -84,7 +81,7 @@ function buildNamespace(ref, ns) {
         buildType(undefined, ns);
     } else if (ns instanceof Service)
         buildService(undefined, ns);
-    else {
+    else if (ns.name !== "") {
         push("");
         push("/** @alias " + (ns.name && ns.fullName.substring(1) || "exports") + " */");
         push("var " + name(ns.name) + " = {};");
@@ -96,13 +93,12 @@ function buildNamespace(ref, ns) {
         else if (nested instanceof Namespace)
             buildNamespace(ns.name, nested);
     });
-    push("");
-    if (ns.name === "") // root
-        push("return $runtime.resolve($root, $lazyTypes);");
-    else
+    if (ns.name !== "") {
+        push("");
         push("return " + name(ns.name) + ";");
-    --indent;
-    push("})();");
+        --indent;
+        push("})();");
+    }
 }
 
 function buildFunction(type, functionName, gen, scope) {
@@ -235,17 +231,24 @@ function buildType(ref, type) {
 
 function buildService(ref, service) {
     push("");
-    push(name(ref) + "." + name(service.name) + " = {};"); // currently just an empty object
+    push(name(ref) + "." + name(service.name) + " = {};");
+    // TODO: Services are just empty objects currently
 }
 
 function buildEnum(ref, enm) {
     push("");
-    push(ref + "." + enm.name + " = {");
+    pushComment([
+        enm.name + " values.",
+        "@exports " + enm.fullName.substring(1),
+        "@type {Object.<string,number>}"
+    ]);
+    push(name(ref) + "." + name(enm.name) + " = {");
     ++indent;
     push("");
-    Object.keys(enm.values).forEach(function(key) {
-        push(name(key) + ": " + enm.values[key].toString(10) + ",");
-    });
+    var keys = Object.keys(enm.values);
+    for (var i = 0; i < keys.length; ++i) {
+        push(name(keys[i]) + ": " + enm.values[keys[i]].toString(10) + (i < keys.length - 1 ? "," : ""));
+    }
     --indent;
     push("};");
 }

@@ -16,13 +16,15 @@ exports.main = function(args) {
         alias: {
             target : "t",
             out    : "o",
-            path   : "p"
+            path   : "p",
+            wrap   : "w"
         },
-        string: [ "target", "out", "path" ],
+        string: [ "target", "out", "path", "wrap" ],
         default: {
             target: "json"
         }
     });
+
     var target = targets[argv.target],
         files  = argv._,
         paths  = typeof argv.path === 'string' ? [ argv.path ] : argv.path || [];
@@ -35,16 +37,17 @@ exports.main = function(args) {
             "",
             "  -t, --target    Specifies the target format. [" + Object.keys(targets).filter(function(key) { return !targets[key].private; }).join(', ') + "]",
             "                  Also accepts a path to require a custom target.",
+            "",
             "  -p, --path      Adds a directory to the include path.",
+            "",
             "  -o, --out       Saves to a file instead of writing to stdout.",
+            "",
+            "  -w, --wrap      Specifies an alternative wrapper for the static target.",
             "",
             "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.proto file2.json ..."
         ].join("\n"));
         return 1;
     }
-
-    if (!target)
-        target = require(path.resolve(process.cwd(), argv.target));
 
     // Resolve glob expressions
     for (var i = 0; i < files.length;) {
@@ -56,9 +59,13 @@ exports.main = function(args) {
             ++i;
     }
 
+    // Require custom target
+    if (!target)
+        target = require(path.resolve(process.cwd(), argv.target));
+
     var root = new protobuf.Root();
 
-    // Fall back to include paths when resolving imports
+    // Search include paths when resolving imports
     root.resolvePath = function pbjsResolvePath(origin, target) {
         var filepath = protobuf.util.resolvePath(origin, target);
         if (fs.existsSync(filepath))
@@ -71,12 +78,10 @@ exports.main = function(args) {
         return filepath;
     };
 
-    var options = {};
-
     root.load(files, function(err) {
         if (err)
             throw err;
-        target(root, options, function(err, output) {
+        target(root, argv, function(err, output) {
             if (err)
                 throw err;
             if (output !== "") {

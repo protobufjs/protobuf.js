@@ -295,7 +295,10 @@ The `pbjs` command line utility can be used to bundle and translate between .pro
 Consolidates imports and converts between file formats.
 
   -t, --target    Specifies the target format. [json, proto2, proto3]
+                  Also accepts a path to require a custom target.
+
   -p, --path      Adds a directory to the include path.
+
   -o, --out       Saves to a file instead of writing to stdout.
 
 usage: pbjs [options] file1.proto file2.json ...

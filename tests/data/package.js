@@ -1,13 +1,21 @@
-module.exports = (function() {
-    "use strict";
+;(function(global, factory) {
 
-    // Minimal static codegen runtime
-    var $runtime = require("../../runtime");
+    /* AMD */ if (typeof define === 'function' && define.amd)
+        define(["protobuf"], factory);
+    
+    /* CommonJS */ else if (typeof require === 'function' && typeof module === 'object' && module && module.exports)
+        module.exports = factory(require("../../runtime"));
+    
+    /* Global */ else
+        global.root = factory(global.protobuf);
+
+})(this, function($runtime) {
+    "use strict";
 
     // Lazily resolved type references
     var $lazyTypes = [];
 
-    /** @alias exports */
+    // Exported root namespace
     var $root = {};
 
     /** @alias Package */
@@ -416,5 +424,18 @@ module.exports = (function() {
         return Package;
     })();
 
-    return $runtime.resolve($root, $lazyTypes);
-})();
+    // Resolve lazy types
+    $lazyTypes.forEach(function(types) {
+        types.forEach(function(path, i) {
+            if (!path)
+                return;
+            path = path.split('.');
+            var ptr = $root;
+            while (path.length)
+                ptr = ptr[path.shift()];
+            types[i] = ptr;
+        });
+    });
+
+    return $root;
+});
