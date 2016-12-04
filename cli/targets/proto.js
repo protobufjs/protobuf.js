@@ -93,9 +93,9 @@ function buildRoot(root) {
         } else
             break;
     } while (true);
-    if (pkg.length)
-        out.push("package " + pkg.join(".") + ";", "");
     out.push('syntax = "proto' + syntax + '";');
+    if (pkg.length)
+        out.push("", "package " + pkg.join(".") + ";");
 
     buildOptions(ptr);
     ptr.nestedArray.forEach(build);

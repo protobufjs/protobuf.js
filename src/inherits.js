@@ -61,11 +61,11 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {Uint8Array} Encoded message
+             * @returns {Writer} Writer
              */
             encode: {
                 value: function encode(message, writer) {
-                    return this.$type.encode(message, writer).finish();
+                    return this.$type.encode(message, writer);
                 }
             },
 
@@ -75,11 +75,11 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {Uint8Array} Encoded message
+             * @returns {Writer} Writer
              */
             encodeDelimited: {
                 value: function encodeDelimited(message, writer) {
-                    return this.$type.encodeDelimited(message, writer).finish();
+                    return this.$type.encodeDelimited(message, writer);
                 }
             },
 

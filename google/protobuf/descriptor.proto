@@ -1,6 +1,6 @@
-package google.protobuf;
-
 syntax = "proto2";
+
+package google.protobuf;
 
 message FileDescriptorSet {
 

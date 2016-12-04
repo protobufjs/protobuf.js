@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Sat, 03 Dec 2016 14:06:23 UTC
+ * Compiled Sun, 04 Dec 2016 12:05:15 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1088,11 +1088,11 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {Uint8Array} Encoded message
+             * @returns {Writer} Writer
              */
             encode: {
                 value: function encode(message, writer) {
-                    return this.$type.encode(message, writer).finish();
+                    return this.$type.encode(message, writer);
                 }
             },
 
@@ -1102,11 +1102,11 @@ function inherits(clazz, type, options) {
              * @function
              * @param {Prototype|Object} message Message to encode
              * @param {Writer} [writer] Writer to use
-             * @returns {Uint8Array} Encoded message
+             * @returns {Writer} Writer
              */
             encodeDelimited: {
                 value: function encodeDelimited(message, writer) {
-                    return this.$type.encodeDelimited(message, writer).finish();
+                    return this.$type.encodeDelimited(message, writer);
                 }
             },
 

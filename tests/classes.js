@@ -33,7 +33,7 @@ tape.test("google.protobuf.Any class", function(test) {
 
             test.test("should encode", function(test) {
 
-                buf = Any.encode(any);
+                buf = Any.encode(any).finish();
 
                 test.equal(buf[0]    , 1 << 3 | 2, "a tag with id 1, wire type 2");
                 test.equal(buf[1]    , 9         , "a field length of 9");
@@ -55,7 +55,7 @@ tape.test("google.protobuf.Any class", function(test) {
 
             test.test("should encodeDelimited", function(test) {
 
-                buf = Any.encodeDelimited(any);
+                buf = Any.encodeDelimited(any).finish();
 
                 test.equal(buf[0]    , 13        , "a length of 13");
                 test.equal(buf[1]    , 1 << 3 | 2, "a tag with id 1, wire type 2");

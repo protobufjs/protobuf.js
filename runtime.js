@@ -6,18 +6,11 @@
  */
 var runtime = exports;
 
-/**
- * @alias Reader
- */
+/** @alias Reader */
 runtime.Reader = require("./src/reader");
 
-/**
- * @alias Writer
- */
+/** @alias Writer */
 runtime.Writer = require("./src/writer");
 
-/**
- * Runtime utility.
- * @memberof runtime
- */
+/** @alias util */
 runtime.util = require("./src/util/runtime");

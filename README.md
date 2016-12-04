@@ -16,7 +16,7 @@ Features
 --------
 * Lightning fast through [runtime code generation](#performance)
 * Exhaustive [browser support](#compatibility)
-* Managed [TypeScript support](#usage-with-typescript)
+* Managed [TypeScript definitions](#usage-with-typescript)
 * Elaborate [API documentation](#documentation)
 * Convenient [CLI utilities](#command-line)
 * Seamless [browserify integration](#browserify-integration)
@@ -102,17 +102,19 @@ protobuf.load("awesome.proto", function(err, root) {
     // Create a new message
     var message = AwesomeMessage.create({ awesomeField: "AwesomeString" });
 
-    // Encode a message (note that reflection encodes to a writer and we need to call finish)
+    // Encode a message
     var buffer = AwesomeMessage.encode(message).finish();
     // ... do something with buffer
 
-    // Or, encode a plain object (note that reflection encodes to a writer and we need to call finish)
+    // Or, encode a plain object
     var buffer = AwesomeMessage.encode({ awesomeField: "AwesomeString" }).finish();
     // ... do something with buffer
 
     // Decode a buffer
     var message = AwesomeMessage.decode(buffer);
     // ... do something with message
+
+    // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited. 
 });
 ```
 
@@ -154,17 +156,7 @@ protobuf.inherits(AwesomeMessage, root.lookup("awesomepackage.AwesomeMessage") /
 
 var message = new AwesomeMessage({ awesomeField: "AwesomeString" });
 
-// Encode a message (note that classes encode to a buffer directly)
-var buffer = AwesomeMessage.encode(message);
-// ... do something with buffer
-
-// Or, encode a plain object (note that classes encode to a buffer directly)
-var buffer = AwesomeMessage.encode({ awesomeField: "AwesomeString" });
-// ... do something with buffer
-
-// Decode a buffer
-var message = AwesomeMessage.decode(buffer);
-// ... do something with message
+// Continue at "Encode a message" above
 ```
 
 Custom classes are automatically populated with static `encode`, `encodeDelimited`, `decode`, `decodeDelimited` and `verify` methods and reference their reflected type via the `$type` property. Note that there are no methods (just `$type`) on instances by default as method names might conflict with field names.
@@ -358,7 +350,7 @@ $> npm run types
 
 ### Browserify integration
 
-protobuf.js integrates nicely into your browserify build-process. There are a few possible tweaks, though:
+protobuf.js integrates into any browserify build-process. There are a few possible tweaks:
 
 * If performance is a concern or IE8 support is required, you should make sure to exclude the browserified `buffer` module and let protobuf.js do its thing with Uint8Array/Array instead.
 * If you do not need int64 support, you can exclude the `long` module.
