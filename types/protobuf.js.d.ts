@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.1 TypeScript definitions
- * Generated Sat, 03 Dec 2016 14:06:28 UTC
+ * Generated Sun, 04 Dec 2016 14:04:03 UTC
  */
 declare module "protobufjs" {
 
@@ -363,9 +363,9 @@ declare module "protobufjs" {
        * @function
        * @param {Prototype|Object} message Message to encode
        * @param {Writer} [writer] Writer to use
-       * @returns {Uint8Array} Encoded message
+       * @returns {Writer} Writer
        */
-      static encode(message: (Prototype|Object), writer?: Writer): Uint8Array;
+      static encode(message: (Prototype|Object), writer?: Writer): Writer;
    
       /**
        * Encodes a message of this type preceeded by its length as a varint to a buffer.
@@ -373,9 +373,9 @@ declare module "protobufjs" {
        * @function
        * @param {Prototype|Object} message Message to encode
        * @param {Writer} [writer] Writer to use
-       * @returns {Uint8Array} Encoded message
+       * @returns {Writer} Writer
        */
-      static encodeDelimited(message: (Prototype|Object), writer?: Writer): Uint8Array;
+      static encodeDelimited(message: (Prototype|Object), writer?: Writer): Writer;
    
       /**
        * Decodes a message of this type from a buffer.
@@ -800,6 +800,12 @@ declare module "protobufjs" {
        * @param {Object} [options] Declared options
        */
       constructor(name: string, fieldNames?: string[], options?: Object);
+   
+      /**
+       * Upper cased name for getter/setter calls.
+       * @type {string}
+       */
+      ucName: string;
    
       /**
        * Field names that belong to this oneof.
@@ -1654,6 +1660,23 @@ declare module "protobufjs" {
        * @returns {boolean} `true` if not equal
        */
       function longNeq(a: (number|Long), b: (number|Long)): boolean;
+   
+      /**
+       * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
+       * @param {Object} target Target object
+       * @param {Object} descriptors Property descriptors
+       * @returns {undefined}
+       */
+      function props(target: Object, descriptors: Object): undefined;
+   
+      /**
+       * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
+       * @param {Object} target Target object
+       * @param {string} key Property name
+       * @param {Object} descriptor Property descriptor
+       * @returns {undefined}
+       */
+      function prop(target: Object, key: string, descriptor: Object): undefined;
    
       /**
        * Tests if the specified value is a string.

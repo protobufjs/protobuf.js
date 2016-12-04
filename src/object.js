@@ -50,7 +50,7 @@ function ReflectionObject(name, options) {
 /** @alias ReflectionObject.prototype */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
-Object.defineProperties(ReflectionObjectPrototype, {
+util.props(ReflectionObjectPrototype, {
 
     /**
      * Reference to the root namespace.
@@ -59,7 +59,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      * @readonly
      */
     root: {
-        get: ReflectionObjectPrototype.getRoot = function getRoot() {
+        get: function getRoot() {
             var ptr = this;
             while (ptr.parent !== null)
                 ptr = ptr.parent;

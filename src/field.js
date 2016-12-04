@@ -141,7 +141,7 @@ function Field(name, id, type, rule, extend, options) {
     this._packed = null;
 }
 
-Object.defineProperties(FieldPrototype, {
+util.props(FieldPrototype, {
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.

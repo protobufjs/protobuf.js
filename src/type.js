@@ -86,7 +86,7 @@ function Type(name, options) {
     this._ctor = null;
 }
 
-Object.defineProperties(TypePrototype, {
+util.props(TypePrototype, {
 
     /**
      * Message fields by id.
@@ -95,7 +95,7 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     fieldsById: {
-        get: TypePrototype.getFieldsById = function getFieldsById() {
+        get: function getFieldsById() {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};

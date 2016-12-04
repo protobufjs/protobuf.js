@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Sun, 04 Dec 2016 13:14:24 UTC
+ * Compiled Sun, 04 Dec 2016 14:27:36 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -660,7 +660,7 @@ function Enum(name, values, options) {
     this._valuesById = null;
 }
 
-Object.defineProperties(EnumPrototype, {
+util.props(EnumPrototype, {
 
     /**
      * Enum values by id.
@@ -669,7 +669,7 @@ Object.defineProperties(EnumPrototype, {
      * @readonly
      */
     valuesById: {
-        get: EnumPrototype.getValuesById = function getValuesById() {
+        get: function getValuesById() {
             if (!this._valuesById) {
                 this._valuesById = {};
                 Object.keys(this.values).forEach(function(name) {
@@ -900,7 +900,7 @@ function Field(name, id, type, rule, extend, options) {
     this._packed = null;
 }
 
-Object.defineProperties(FieldPrototype, {
+util.props(FieldPrototype, {
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
@@ -1151,7 +1151,7 @@ function inherits(clazz, type, options) {
 
         }, true);
 
-    Object.defineProperties(clazz, classProperties);
+    util.props(clazz, classProperties);
     var prototype = inherits.defineProperties(new Prototype(), type);
     clazz.prototype = prototype;
     prototype.constructor = clazz;
@@ -1194,9 +1194,8 @@ inherits.defineProperties = function defineProperties(prototype, type) {
 
     // Define each oneof with a non-enumerable getter and setter for the present field
     type.getOneofsArray().forEach(function(oneof) {
-        oneof.resolve();
-        prototypeProperties[oneof.name] = {
-            get: prototype['get' + oneof.ucName] = function() {
+        util.prop(prototype, oneof.resolve().name, {
+            get: function getVirtual() {
                 var keys = oneof.oneof;
                 for (var i = 0; i < keys.length; ++i) {
                     var field = oneof.parent.fields[keys[i]];
@@ -1205,17 +1204,17 @@ inherits.defineProperties = function defineProperties(prototype, type) {
                 }
                 return undefined;
             },
-            set: prototype['set' + oneof.ucName] = function(value) {
+            set: function setVirtual(value) {
                 var keys = oneof.oneof;
                 for (var i = 0; i < keys.length; ++i) {
                     if (keys[i] !== value)
                         delete this[keys[i]];
                 }
             }
-        };
+        });
     });
 
-    Object.defineProperties(prototype, prototypeProperties);
+    util.props(prototype, prototypeProperties);
     return prototype;
 };
 
@@ -1503,7 +1502,7 @@ function clearCache(namespace) {
     return namespace;
 }
 
-Object.defineProperties(NamespacePrototype, {
+util.props(NamespacePrototype, {
 
     /**
      * Nested objects of this namespace as an array for iteration.
@@ -1512,7 +1511,7 @@ Object.defineProperties(NamespacePrototype, {
      * @readonly
      */
     nestedArray: {
-        get: NamespacePrototype.getNestedArray = function getNestedArray() {
+        get: function getNestedArray() {
             return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
         }
     }
@@ -1778,7 +1777,7 @@ function ReflectionObject(name, options) {
 /** @alias ReflectionObject.prototype */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
-Object.defineProperties(ReflectionObjectPrototype, {
+util.props(ReflectionObjectPrototype, {
 
     /**
      * Reference to the root namespace.
@@ -1787,7 +1786,7 @@ Object.defineProperties(ReflectionObjectPrototype, {
      * @readonly
      */
     root: {
-        get: ReflectionObjectPrototype.getRoot = function getRoot() {
+        get: function getRoot() {
             var ptr = this;
             while (ptr.parent !== null)
                 ptr = ptr.parent;
@@ -3523,7 +3522,7 @@ function Service(name, options) {
     this._methodsArray = null;
 }
 
-Object.defineProperties(ServicePrototype, {
+util.props(ServicePrototype, {
 
     /**
      * Methods of this service as an array for iteration.
@@ -3532,7 +3531,7 @@ Object.defineProperties(ServicePrototype, {
      * @readonly
      */
     methodsArray: {
-        get: ServicePrototype.getMethodsArray = function getMethodsArray() {
+        get: function getMethodsArray() {
             return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
         }
     }
@@ -3645,7 +3644,7 @@ ServicePrototype.remove = function remove(object) {
  */
 ServicePrototype.create = function create(rpc, requestDelimited, responseDelimited) {
     var rpcService = {};
-    Object.defineProperty(rpcService, "$rpc", {
+    util.prop(rpcService, "$rpc", {
         value: rpc
     });
     this.getMethodsArray().forEach(function(method) {
@@ -3976,7 +3975,7 @@ function Type(name, options) {
     this._ctor = null;
 }
 
-Object.defineProperties(TypePrototype, {
+util.props(TypePrototype, {
 
     /**
      * Message fields by id.
@@ -3985,7 +3984,7 @@ Object.defineProperties(TypePrototype, {
      * @readonly
      */
     fieldsById: {
-        get: TypePrototype.getFieldsById = function getFieldsById() {
+        get: function getFieldsById() {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
@@ -5045,6 +5044,44 @@ util.longNeq = function longNeq(a, b) {
          : typeof b === 'number'
             ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
+};
+
+/**
+ * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
+ * @param {Object} target Target object
+ * @param {Object} descriptors Property descriptors
+ * @returns {undefined}
+ */
+util.props = function props(target, descriptors) {
+    Object.keys(descriptors).forEach(function(key) {
+        util.prop(target, key, descriptors[key]);
+    });
+};
+
+/**
+ * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
+ * @param {Object} target Target object
+ * @param {string} key Property name
+ * @param {Object} descriptor Property descriptor
+ * @returns {undefined}
+ */
+util.prop = function prop(target, key, descriptor) {
+    var ie8 = !-[1,];
+    var ucKey = key.substring(0, 1).toUpperCase() + key.substring(1);
+    if (descriptor.get)
+        target['get' + ucKey] = descriptor.get;
+    if (descriptor.set)
+        target['set' + ucKey] = ie8
+            ? function(value) {
+                  descriptor.set.call(this, value);
+                  this[key] = value;
+              }
+            : descriptor.set;
+    if (ie8) {
+        if (descriptor.value !== undefined)
+            target[key] = descriptor.value;
+    } else
+        Object.defineProperty(target, key, descriptor);
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

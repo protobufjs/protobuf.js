@@ -70,3 +70,41 @@ util.longNeq = function longNeq(a, b) {
             ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
 };
+
+/**
+ * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
+ * @param {Object} target Target object
+ * @param {Object} descriptors Property descriptors
+ * @returns {undefined}
+ */
+util.props = function props(target, descriptors) {
+    Object.keys(descriptors).forEach(function(key) {
+        util.prop(target, key, descriptors[key]);
+    });
+};
+
+/**
+ * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
+ * @param {Object} target Target object
+ * @param {string} key Property name
+ * @param {Object} descriptor Property descriptor
+ * @returns {undefined}
+ */
+util.prop = function prop(target, key, descriptor) {
+    var ie8 = !-[1,];
+    var ucKey = key.substring(0, 1).toUpperCase() + key.substring(1);
+    if (descriptor.get)
+        target['get' + ucKey] = descriptor.get;
+    if (descriptor.set)
+        target['set' + ucKey] = ie8
+            ? function(value) {
+                  descriptor.set.call(this, value);
+                  this[key] = value;
+              }
+            : descriptor.set;
+    if (ie8) {
+        if (descriptor.value !== undefined)
+            target[key] = descriptor.value;
+    } else
+        Object.defineProperty(target, key, descriptor);
+};

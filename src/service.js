@@ -36,7 +36,7 @@ function Service(name, options) {
     this._methodsArray = null;
 }
 
-Object.defineProperties(ServicePrototype, {
+util.props(ServicePrototype, {
 
     /**
      * Methods of this service as an array for iteration.
@@ -45,7 +45,7 @@ Object.defineProperties(ServicePrototype, {
      * @readonly
      */
     methodsArray: {
-        get: ServicePrototype.getMethodsArray = function getMethodsArray() {
+        get: function getMethodsArray() {
             return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
         }
     }
@@ -158,7 +158,7 @@ ServicePrototype.remove = function remove(object) {
  */
 ServicePrototype.create = function create(rpc, requestDelimited, responseDelimited) {
     var rpcService = {};
-    Object.defineProperty(rpcService, "$rpc", {
+    util.prop(rpcService, "$rpc", {
         value: rpc
     });
     this.getMethodsArray().forEach(function(method) {

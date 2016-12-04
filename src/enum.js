@@ -35,7 +35,7 @@ function Enum(name, values, options) {
     this._valuesById = null;
 }
 
-Object.defineProperties(EnumPrototype, {
+util.props(EnumPrototype, {
 
     /**
      * Enum values by id.
@@ -44,7 +44,7 @@ Object.defineProperties(EnumPrototype, {
      * @readonly
      */
     valuesById: {
-        get: EnumPrototype.getValuesById = function getValuesById() {
+        get: function getValuesById() {
             if (!this._valuesById) {
                 this._valuesById = {};
                 Object.keys(this.values).forEach(function(name) {

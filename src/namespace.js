@@ -46,7 +46,7 @@ function clearCache(namespace) {
     return namespace;
 }
 
-Object.defineProperties(NamespacePrototype, {
+util.props(NamespacePrototype, {
 
     /**
      * Nested objects of this namespace as an array for iteration.
@@ -55,7 +55,7 @@ Object.defineProperties(NamespacePrototype, {
      * @readonly
      */
     nestedArray: {
-        get: NamespacePrototype.getNestedArray = function getNestedArray() {
+        get: function getNestedArray() {
             return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
         }
     }
