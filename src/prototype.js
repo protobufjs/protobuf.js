@@ -24,9 +24,13 @@ function Prototype(properties, options) {
         var any    = !(options && options.fieldsOnly),
             fields = this.constructor.$type.fields,
             keys   = Object.keys(properties);
-        for (var i = 0; i < keys.length; ++i)
-            if (fields[keys[i]] || any)
+        for (var i = 0; i < keys.length; ++i) {
+            var field = fields[keys[i]];
+            if (field && field.partOf)
+                this['set' + field.partOf.ucName](field.name);
+            if (field || any)
                 this[keys[i]] = properties[keys[i]];
+        }
     }
 }
 

@@ -29,6 +29,12 @@ function OneOf(name, fieldNames, options) {
         throw _TypeError("fieldNames", "an Array");
 
     /**
+     * Upper cased name for getter/setter calls.
+     * @type {string}
+     */
+    this.ucName = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
+
+    /**
      * Field names that belong to this oneof.
      * @type {Array.<string>}
      */

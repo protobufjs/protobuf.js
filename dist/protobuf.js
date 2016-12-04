@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Sun, 04 Dec 2016 12:05:15 UTC
+ * Compiled Sun, 04 Dec 2016 13:14:24 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1194,8 +1194,9 @@ inherits.defineProperties = function defineProperties(prototype, type) {
 
     // Define each oneof with a non-enumerable getter and setter for the present field
     type.getOneofsArray().forEach(function(oneof) {
-        prototypeProperties[oneof.resolve().name] = {
-            get: function() {
+        oneof.resolve();
+        prototypeProperties[oneof.name] = {
+            get: prototype['get' + oneof.ucName] = function() {
                 var keys = oneof.oneof;
                 for (var i = 0; i < keys.length; ++i) {
                     var field = oneof.parent.fields[keys[i]];
@@ -1204,7 +1205,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
                 }
                 return undefined;
             },
-            set: function(value) {
+            set: prototype['set' + oneof.ucName] = function(value) {
                 var keys = oneof.oneof;
                 for (var i = 0; i < keys.length; ++i) {
                     if (keys[i] !== value)
@@ -1955,6 +1956,12 @@ function OneOf(name, fieldNames, options) {
         throw _TypeError("fieldNames", "an Array");
 
     /**
+     * Upper cased name for getter/setter calls.
+     * @type {string}
+     */
+    this.ucName = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
+
+    /**
      * Field names that belong to this oneof.
      * @type {Array.<string>}
      */
@@ -2658,9 +2665,13 @@ function Prototype(properties, options) {
         var any    = !(options && options.fieldsOnly),
             fields = this.constructor.$type.fields,
             keys   = Object.keys(properties);
-        for (var i = 0; i < keys.length; ++i)
-            if (fields[keys[i]] || any)
+        for (var i = 0; i < keys.length; ++i) {
+            var field = fields[keys[i]];
+            if (field && field.partOf)
+                this['set' + field.partOf.ucName](field.name);
+            if (field || any)
                 this[keys[i]] = properties[keys[i]];
+        }
     }
 }
 

@@ -167,8 +167,9 @@ inherits.defineProperties = function defineProperties(prototype, type) {
 
     // Define each oneof with a non-enumerable getter and setter for the present field
     type.getOneofsArray().forEach(function(oneof) {
-        prototypeProperties[oneof.resolve().name] = {
-            get: function() {
+        oneof.resolve();
+        prototypeProperties[oneof.name] = {
+            get: prototype['get' + oneof.ucName] = function() {
                 var keys = oneof.oneof;
                 for (var i = 0; i < keys.length; ++i) {
                     var field = oneof.parent.fields[keys[i]];
@@ -177,7 +178,7 @@ inherits.defineProperties = function defineProperties(prototype, type) {
                 }
                 return undefined;
             },
-            set: function(value) {
+            set: prototype['set' + oneof.ucName] = function(value) {
                 var keys = oneof.oneof;
                 for (var i = 0; i < keys.length; ++i) {
                     if (keys[i] !== value)
