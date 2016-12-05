@@ -322,7 +322,10 @@ declare module "protobufjs" {
     * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise the protobuf namespace
     * @throws {TypeError} If arguments are invalid
     */
-   function load(filename: (string|string[]), root?: Root, callback?: any): (Promise<Root>|Object);
+   function load(filename: (string|string[]), root: Root, callback: (err?: Error, root: Root=) => any): Object;
+   function load(filename: (string|string[]), callback: (err?: Error, root: Root=) => any): Object;
+   function load(filename: (string|string[])): Promise<Root>;
+
    
    /**
     * Options passed to {@link inherits}, modifying its behavior.
