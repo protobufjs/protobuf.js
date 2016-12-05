@@ -196,6 +196,10 @@
             
                 <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
             
+                <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
+            
+                <li data-name="util.props"><a href="util.html#.props">props</a></li>
+            
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
@@ -317,7 +321,7 @@
             
                 <li data-name="BufferWriter#len"><a href="BufferWriter.html#len">len</a></li>
             
-                <li data-name="BufferWriter#stack"><a href="BufferWriter.html#stack">stack</a></li>
+                <li data-name="BufferWriter#states"><a href="BufferWriter.html#states">states</a></li>
             
                 <li data-name="BufferWriter#tail"><a href="BufferWriter.html#tail">tail</a></li>
             
@@ -457,6 +461,8 @@
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
             
+                <li data-name="Enum#getValuesById"><a href="Enum.html#getValuesById">getValuesById</a></li>
+            
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
                 <li data-name="Enum#onRemove"><a href="Enum.html#onRemove">onRemove</a></li>
@@ -545,6 +551,8 @@
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
+            
+                <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
             
@@ -638,6 +646,8 @@
                 <li data-name="MapField.testJSON"><a href="MapField.html#.testJSON">testJSON</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
+            
+                <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
             
                 <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
             
@@ -827,6 +837,8 @@
                 <li data-name="OneOf#resolved"><a href="OneOf.html#resolved">resolved</a></li>
             
                 <li data-name="OneOf#root"><a href="OneOf.html#root">root</a></li>
+            
+                <li data-name="OneOf#ucName"><a href="OneOf.html#ucName">ucName</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1336,7 +1348,7 @@
             
                 <li data-name="Writer#len"><a href="Writer.html#len">len</a></li>
             
-                <li data-name="Writer#stack"><a href="Writer.html#stack">stack</a></li>
+                <li data-name="Writer#states"><a href="Writer.html#states">states</a></li>
             
                 <li data-name="Writer#tail"><a href="Writer.html#tail">tail</a></li>
             
@@ -1347,8 +1359,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="Writer.configure"><a href="Writer.html#.configure">configure</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -1939,6 +1949,51 @@
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="ucName">ucName <span class="type-signature type">{ string }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Upper cased name for getter/setter calls.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
         </dl>
     
     
@@ -1956,7 +2011,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L61">line 61</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L67">line 67</a>
         </div>
         
     </div>
@@ -2152,7 +2207,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L50">line 50</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L56">line 56</a>
         </div>
         
     </div>
@@ -2297,7 +2352,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L95">line 95</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L101">line 101</a>
         </div>
         
     </div>
@@ -2883,7 +2938,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L112">line 112</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js">oneof.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/oneof.js#L118">line 118</a>
         </div>
         
     </div>

@@ -196,6 +196,10 @@
             
                 <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
             
+                <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
+            
+                <li data-name="util.props"><a href="util.html#.props">props</a></li>
+            
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
@@ -317,7 +321,7 @@
             
                 <li data-name="BufferWriter#len"><a href="BufferWriter.html#len">len</a></li>
             
-                <li data-name="BufferWriter#stack"><a href="BufferWriter.html#stack">stack</a></li>
+                <li data-name="BufferWriter#states"><a href="BufferWriter.html#states">states</a></li>
             
                 <li data-name="BufferWriter#tail"><a href="BufferWriter.html#tail">tail</a></li>
             
@@ -457,6 +461,8 @@
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
             
+                <li data-name="Enum#getValuesById"><a href="Enum.html#getValuesById">getValuesById</a></li>
+            
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
                 <li data-name="Enum#onRemove"><a href="Enum.html#onRemove">onRemove</a></li>
@@ -545,6 +551,8 @@
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
+            
+                <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
             
@@ -638,6 +646,8 @@
                 <li data-name="MapField.testJSON"><a href="MapField.html#.testJSON">testJSON</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
+            
+                <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
             
                 <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
             
@@ -827,6 +837,8 @@
                 <li data-name="OneOf#resolved"><a href="OneOf.html#resolved">resolved</a></li>
             
                 <li data-name="OneOf#root"><a href="OneOf.html#root">root</a></li>
+            
+                <li data-name="OneOf#ucName"><a href="OneOf.html#ucName">ucName</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1336,7 +1348,7 @@
             
                 <li data-name="Writer#len"><a href="Writer.html#len">len</a></li>
             
-                <li data-name="Writer#stack"><a href="Writer.html#stack">stack</a></li>
+                <li data-name="Writer#states"><a href="Writer.html#states">states</a></li>
             
                 <li data-name="Writer#tail"><a href="Writer.html#tail">tail</a></li>
             
@@ -1347,8 +1359,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="Writer.configure"><a href="Writer.html#.configure">configure</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -3256,6 +3266,108 @@
             
 <dt>
     <div class="nameContainer inherited">
+        <h4 class="name" id="isPacked">
+            
+                <span class="inherited"><a href="Field.html#isPacked">inherited</a></span>
+            
+            isPacked<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L160">line 160</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Determines whether this field is packed. This is an alias of <a href="Field.html#packed">Field#packed</a>'s getter for use within non-ES5 environments.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
         <h4 class="name" id="jsonConvert">
             
                 <span class="inherited"><a href="Field.html#jsonConvert">inherited</a></span>
@@ -3265,7 +3377,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L254">line 254</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L260">line 260</a>
         </div>
         
     </div>
@@ -3748,7 +3860,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L211">line 211</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L217">line 217</a>
         </div>
         
     </div>

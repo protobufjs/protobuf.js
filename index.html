@@ -196,6 +196,10 @@
             
                 <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
             
+                <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
+            
+                <li data-name="util.props"><a href="util.html#.props">props</a></li>
+            
                 <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
@@ -317,7 +321,7 @@
             
                 <li data-name="BufferWriter#len"><a href="BufferWriter.html#len">len</a></li>
             
-                <li data-name="BufferWriter#stack"><a href="BufferWriter.html#stack">stack</a></li>
+                <li data-name="BufferWriter#states"><a href="BufferWriter.html#states">states</a></li>
             
                 <li data-name="BufferWriter#tail"><a href="BufferWriter.html#tail">tail</a></li>
             
@@ -457,6 +461,8 @@
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
             
+                <li data-name="Enum#getValuesById"><a href="Enum.html#getValuesById">getValuesById</a></li>
+            
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
                 <li data-name="Enum#onRemove"><a href="Enum.html#onRemove">onRemove</a></li>
@@ -545,6 +551,8 @@
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
+            
+                <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
                 <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
             
@@ -638,6 +646,8 @@
                 <li data-name="MapField.testJSON"><a href="MapField.html#.testJSON">testJSON</a></li>
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
+            
+                <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
             
                 <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
             
@@ -827,6 +837,8 @@
                 <li data-name="OneOf#resolved"><a href="OneOf.html#resolved">resolved</a></li>
             
                 <li data-name="OneOf#root"><a href="OneOf.html#root">root</a></li>
+            
+                <li data-name="OneOf#ucName"><a href="OneOf.html#ucName">ucName</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1336,7 +1348,7 @@
             
                 <li data-name="Writer#len"><a href="Writer.html#len">len</a></li>
             
-                <li data-name="Writer#stack"><a href="Writer.html#stack">stack</a></li>
+                <li data-name="Writer#states"><a href="Writer.html#states">states</a></li>
             
                 <li data-name="Writer#tail"><a href="Writer.html#tail">tail</a></li>
             
@@ -1347,8 +1359,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="Writer.configure"><a href="Writer.html#.configure">configure</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -1431,10 +1441,11 @@
     <section>
         <article class="readme"><h1>protobuf.js <a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></h1><p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
+<p><strong>Recommended read:</strong> <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/wiki/Changes-in-protobuf.js-6.0">Changes in protobuf.js 6.0</a></p>
 <h2>Features</h2><ul>
-<li>Lightning fast through <a href="#performance">runtime code generation</a></li>
+<li>Optimized <a href="#performance">for performance</a></li>
 <li>Exhaustive <a href="#compatibility">browser support</a></li>
-<li>Managed <a href="#usage-with-typescript">TypeScript support</a></li>
+<li>Managed <a href="#usage-with-typescript">TypeScript definitions</a></li>
 <li>Elaborate <a href="#documentation">API documentation</a></li>
 <li>Convenient <a href="#command-line">CLI utilities</a></li>
 <li>Seamless <a href="#browserify-integration">browserify integration</a></li>
@@ -1476,17 +1487,19 @@ message AwesomeMessage {
     // Create a new message
     var message = AwesomeMessage.create({ awesomeField: &quot;AwesomeString&quot; });
 
-    // Encode a message (note that reflection encodes to a writer and we need to call finish)
+    // Encode a message
     var buffer = AwesomeMessage.encode(message).finish();
     // ... do something with buffer
 
-    // Or, encode a plain object (note that reflection encodes to a writer and we need to call finish)
+    // Or, encode a plain object
     var buffer = AwesomeMessage.encode({ awesomeField: &quot;AwesomeString&quot; }).finish();
     // ... do something with buffer
 
     // Decode a buffer
     var message = AwesomeMessage.decode(buffer);
     // ... do something with message
+
+    // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited. 
 });</code></pre><p>You can also use promises by omitting the callback:</p>
 <pre class="prettyprint source lang-js"><code>protobuf.load(&quot;awesome.proto&quot;)
     .then(function(root) {
@@ -1511,17 +1524,7 @@ protobuf.inherits(AwesomeMessage, root.lookup(&quot;awesomepackage.AwesomeMessag
 
 var message = new AwesomeMessage({ awesomeField: &quot;AwesomeString&quot; });
 
-// Encode a message (note that classes encode to a buffer directly)
-var buffer = AwesomeMessage.encode(message);
-// ... do something with buffer
-
-// Or, encode a plain object (note that classes encode to a buffer directly)
-var buffer = AwesomeMessage.encode({ awesomeField: &quot;AwesomeString&quot; });
-// ... do something with buffer
-
-// Decode a buffer
-var message = AwesomeMessage.decode(buffer);
-// ... do something with message</code></pre><p>Custom classes are automatically populated with static <code>encode</code>, <code>encodeDelimited</code>, <code>decode</code>, <code>decodeDelimited</code> and <code>verify</code> methods and reference their reflected type via the <code>$type</code> property. Note that there are no methods (just <code>$type</code>) on instances by default as method names might conflict with field names.</p>
+// Continue at &quot;Encode a message&quot; above</code></pre><p>Custom classes are automatically populated with static <code>encode</code>, <code>encodeDelimited</code>, <code>decode</code>, <code>decodeDelimited</code> and <code>verify</code> methods and reference their reflected type via the <code>$type</code> property. Note that there are no methods (just <code>$type</code>) on instances by default as method names might conflict with field names.</p>
 <h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
 
 import * as protobuf from &quot;protobufjs&quot;;
@@ -1625,7 +1628,7 @@ $> cd protobuf.js
 $> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
-<pre class="prettyprint source"><code>$> npm run types</code></pre><h3>Browserify integration</h3><p>protobuf.js integrates nicely into your browserify build-process. There are a few possible tweaks, though:</p>
+<pre class="prettyprint source"><code>$> npm run types</code></pre><h3>Browserify integration</h3><p>protobuf.js integrates into any browserify build-process. There are a few possible tweaks:</p>
 <ul>
 <li>If performance is a concern or IE8 support is required, you should make sure to exclude the browserified <code>buffer</code> module and let protobuf.js do its thing with Uint8Array/Array instead.</li>
 <li>If you do not need int64 support, you can exclude the <code>long</code> module.</li>
@@ -1635,33 +1638,33 @@ $> npm install --dev</code></pre><p>Building the development and production vers
 <h2>Performance</h2><p>The package includes a <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/bench">benchmark</a> that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
-Type.encode to buffer x 402,572 ops/sec ±1.09% (90 runs sampled)
-JSON.stringify to string x 342,004 ops/sec ±1.46% (82 runs sampled)
-JSON.stringify to buffer x 184,468 ops/sec ±1.76% (79 runs sampled)
+Type.encode to buffer x 469,818 ops/sec ±0.58% (89 runs sampled)
+JSON.stringify to string x 309,883 ops/sec ±0.81% (92 runs sampled)
+JSON.stringify to buffer x 174,440 ops/sec ±1.46% (87 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 15.4% slower
-   JSON.stringify to buffer was 54.5% slower
+   JSON.stringify to string was 34.2% slower
+   JSON.stringify to buffer was 63.2% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,170,490 ops/sec ±1.49% (88 runs sampled)
-JSON.parse from string x 328,975 ops/sec ±0.90% (88 runs sampled)
-JSON.parse from buffer x 298,702 ops/sec ±0.82% (89 runs sampled)
+Type.decode from buffer x 1,127,271 ops/sec ±0.76% (90 runs sampled)
+JSON.parse from string x 295,445 ops/sec ±0.74% (92 runs sampled)
+JSON.parse from buffer x 265,703 ops/sec ±0.85% (92 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 71.7% slower
-     JSON.parse from buffer was 74.3% slower
+     JSON.parse from string was 73.8% slower
+     JSON.parse from buffer was 76.4% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 218,688 ops/sec ±1.49% (90 runs sampled)
-JSON to/from string x 144,634 ops/sec ±1.97% (87 runs sampled)
-JSON to/from buffer x 102,350 ops/sec ±1.23% (92 runs sampled)
+Type to/from buffer x 232,255 ops/sec ±0.99% (87 runs sampled)
+JSON to/from string x 125,555 ops/sec ±1.01% (91 runs sampled)
+JSON to/from buffer x 91,243 ops/sec ±0.83% (91 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 34.2% slower
-        JSON to/from buffer was 53.1% slower</code></pre><p>Note that JSON is a native binding nowadays and as such is <em>really</em> fast. So, how can protobuf.js be faster?</p>
+        JSON to/from string was 46.0% slower
+        JSON to/from buffer was 60.7% slower</code></pre><p>Note that JSON is a native binding nowadays and as such is <em>really</em> fast. So, how can protobuf.js be faster?</p>
 <ul>
 <li>The benchmark is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js">somewhat flawed</a>.</li>
 <li>Reader and writer interfaces configure themselves according to the environment to eliminate redundant conditionals.</li>
