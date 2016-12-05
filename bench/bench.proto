@@ -5,7 +5,7 @@ message Test {
     string  string = 1;
     uint32  uint32 = 2;
     Inner   inner  = 3;
-    float   float  = 4;
+    float   float  = 4; // make sure to set something that's fair to JSON
 
     message Inner {
 
@@ -34,5 +34,7 @@ message Test {
 message Outer {
 
     repeated bool bool = 1;
-    double double = 2;
+    double double = 2; // make sure to set something that's fair to JSON
 }
+
+// bytes cannot be used

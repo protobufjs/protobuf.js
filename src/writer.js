@@ -249,7 +249,7 @@ WriterPrototype.int64 = WriterPrototype.uint64;
  * @returns {Writer} `this`
  * @throws {TypeError} If `value` is a string and no long library is present.
  */
-WriterPrototype.sint64 = function sint64(value) {
+WriterPrototype.sint64 = function write_sint64(value) {
     var bits = LongBits.from(value).zzEncode();
     return this.push(writeVarint64, bits.length(), bits);
 };
@@ -316,14 +316,14 @@ var writeFloat = typeof Float32Array !== 'undefined'
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
         return f8b[3] // already le?
-            ? function writeFloat_array(buf, pos, val) {
+            ? function writeFloat_f32(buf, pos, val) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
                 buf[pos++] = f8b[1];
                 buf[pos++] = f8b[2];
                 buf[pos  ] = f8b[3];
             }
-            : function writeFloat_array_le(buf, pos, val) {
+            : function writeFloat_f32_le(buf, pos, val) {
                 f32[0] = val;
                 buf[pos++] = f8b[3];
                 buf[pos++] = f8b[2];
@@ -351,7 +351,7 @@ var writeDouble = typeof Float64Array !== 'undefined'
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
         return f8b[7] // already le?
-            ? function writeDouble_array(buf, pos, val) {
+            ? function writeDouble_f64(buf, pos, val) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
                 buf[pos++] = f8b[1];
@@ -362,7 +362,7 @@ var writeDouble = typeof Float64Array !== 'undefined'
                 buf[pos++] = f8b[6];
                 buf[pos  ] = f8b[7];
             }
-            : function writeDouble_array_le(buf, pos, val) {
+            : function writeDouble_f64_le(buf, pos, val) {
                 f64[0] = val;
                 buf[pos++] = f8b[7];
                 buf[pos++] = f8b[6];
@@ -589,15 +589,15 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-var writeStringBuffer = (function() {
+var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
     return util.Buffer && util.Buffer.prototype.utf8Write // around forever, but not present in browser buffer
-        ? function(buf, pos, val) {
+        ? function writeString_buffer_utf8Write(buf, pos, val) {
             if (val.length < 40)
                 writeString(buf, pos, val);
             else
                 buf.utf8Write(val, pos);
         }
-        : function(buf, pos, val) {
+        : function writeString_buffer_write(buf, pos, val) {
             if (val.length < 40)
                 writeString(buf, pos, val);
             else

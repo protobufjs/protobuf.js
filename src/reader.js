@@ -100,12 +100,16 @@ ReaderPrototype.int32 = function read_int32() {
     var value = 0,
         shift = 0,
         octet = 0;
+    // A fast route could potentially be a thing here, but the benefits are minimal because
+    // of the assertions required (up to 10 bytes if negative, more is invalid).
     do {
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
         octet = this.buf[this.pos++];
-        if (shift < 32)
+        if (shift < 29) // 0..28
             value |= (octet & 127) << shift;
+        else if (shift > 63) // 35..63
+            throw Error("invalid varint encoding");
         shift += 7;
     } while (octet & 128);
     return value;
@@ -307,6 +311,31 @@ function read_sfixed64_number() {
  * @returns {Long|number} Value read
  */
 
+var readFloat = typeof Float32Array !== 'undefined'
+    ? (function() { // eslint-disable-line wrap-iife
+        var f32 = new Float32Array(1),
+            f8b = new Uint8Array(f32.buffer);
+        f32[0] = -0;
+        return f8b[3] // already le?
+            ? function readFloat_f32(buf, pos) {
+                f8b[0] = buf[pos++];
+                f8b[1] = buf[pos++];
+                f8b[2] = buf[pos++];
+                f8b[3] = buf[pos  ];
+                return f32[0];
+            }
+            : function readFloat_f32_le(buf, pos) {
+                f8b[3] = buf[pos++];
+                f8b[2] = buf[pos++];
+                f8b[1] = buf[pos++];
+                f8b[0] = buf[pos  ];
+                return f32[0];
+            };
+    })()
+    : function readFloat_ieee754(buf, pos) {
+        return ieee754.read(buf, pos, false, 23, 4);
+    };
+
 /**
  * Reads a float (32 bit) as a number.
  * @function
@@ -315,10 +344,43 @@ function read_sfixed64_number() {
 ReaderPrototype.float = function read_float() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
-    var value = ieee754.read(this.buf, this.pos, false, 23, 4);
+    var value = readFloat(this.buf, this.pos);
     this.pos += 4;
     return value;
 };
+
+var readDouble = typeof Float64Array !== 'undefined'
+    ? (function() { // eslint-disable-line wrap-iife
+        var f64 = new Float64Array(1),
+            f8b = new Uint8Array(f64.buffer);
+        f64[0] = -0;
+        return f8b[7] // already le?
+            ? function readDouble_f64(buf, pos) {
+                f8b[0] = buf[pos++];
+                f8b[1] = buf[pos++];
+                f8b[2] = buf[pos++];
+                f8b[3] = buf[pos++];
+                f8b[4] = buf[pos++];
+                f8b[5] = buf[pos++];
+                f8b[6] = buf[pos++];
+                f8b[7] = buf[pos  ];
+                return f64[0];
+            }
+            : function readDouble_f64_le(buf, pos) {
+                f8b[7] = buf[pos++];
+                f8b[6] = buf[pos++];
+                f8b[5] = buf[pos++];
+                f8b[4] = buf[pos++];
+                f8b[3] = buf[pos++];
+                f8b[2] = buf[pos++];
+                f8b[1] = buf[pos++];
+                f8b[0] = buf[pos  ];
+                return f64[0];
+            };
+    })()
+    : function readDouble_ieee754(buf, pos) {
+        return ieee754.read(buf, pos, false, 52, 8);
+    };
 
 /**
  * Reads a double (64 bit float) as a number.
@@ -328,7 +390,7 @@ ReaderPrototype.float = function read_float() {
 ReaderPrototype.double = function read_double() {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
-    var value = ieee754.read(this.buf, this.pos, false, 52, 8);
+    var value = readDouble(this.buf, this.pos);
     this.pos += 8;
     return value;
 };
@@ -464,6 +526,9 @@ var initBufferReader = function() {
     if (!util.Buffer)
         throw Error("Buffer is not supported");
     BufferReaderPrototype._slice = util.Buffer.prototype.slice;
+    readStringBuffer = util.Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
+        ? readStringBuffer_utf8Slice
+        : readStringBuffer_toString;
     initBufferReader = false;
 };
 
@@ -485,6 +550,7 @@ var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.protot
 
 BufferReaderPrototype.constructor = BufferReader;
 
+if (typeof Float32Array === 'undefined') // f32 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -496,6 +562,7 @@ BufferReaderPrototype.float = function read_float_buffer() {
     return value;
 };
 
+if (typeof Float64Array === 'undefined') // f64 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -507,17 +574,27 @@ BufferReaderPrototype.double = function read_double_buffer() {
     return value;
 };
 
+var readStringBuffer;
+
+function readStringBuffer_utf8Slice(buf, start, end) {
+    return buf.utf8Slice(start, end); // fastest
+}
+
+function readStringBuffer_toString(buf, start, end) {
+    return buf.toString("utf8", start, end); // 2nd, again assertions
+}
+
 /**
  * @override
  */
 BufferReaderPrototype.string = function read_string_buffer() {
     var length = this.int32() >>> 0,
-        start = this.pos,
-        end   = this.pos + length;
+        start  = this.pos,
+        end    = this.pos + length;
     if (end > this.len)
         throw indexOutOfRange(this, length);
     this.pos += length;
-    return this.buf.toString("utf8", start, end);
+    return readStringBuffer(this.buf, start, end);
 };
 
 /**

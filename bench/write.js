@@ -4,7 +4,7 @@ var protobuf = require("../src/index"),
 
 // This benchmark compares raw data type performance of Uint8Array and Buffer.
 
-/* var array  = new Uint8Array(8);
+var array  = new Uint8Array(8);
 var buffer = new Buffer(8);
 
 // raw fixed32 write speed
@@ -119,7 +119,6 @@ newSuite("bytes")
     source.copy(buffer, 0);
 })
 .run();
-*/
 
 function writeString(buf, pos, val) {
     for (var i = 0; i < val.length; ++i) {

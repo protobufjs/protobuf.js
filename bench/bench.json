@@ -14,7 +14,7 @@
         },
         "outer" : {
             "bool" : [ true, false, false, true, false, false, true ],
-            "double": 0.5
+            "double": 204.8
         }
     },
     "float": 0.25
