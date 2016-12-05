@@ -30,7 +30,7 @@
     "types": "jsdoc -c jsdoc.types.json && node scripts/types.js && tsc types/test.ts --lib es2015 --noEmit",
     "lint": "eslint src",
     "test": "tape tests/*.js | tap-spec",
-    "zuul": "zuul --ui tape --no-coverage --concurrency 1 -- tests/*.js",
+    "zuul": "zuul --ui tape --no-coverage --concurrency 4 -- tests/*.js",
     "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js",
     "bench": "node bench",
     "bench-read": "node bench/read",
