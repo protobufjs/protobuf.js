@@ -60,7 +60,6 @@ if (typeof define === 'function' && define.amd)
         if (Long) {
             protobuf.util.Long = Long;
             protobuf.Reader.configure();
-            protobuf.Writer.configure();
         }
         return protobuf;
     });

@@ -3,22 +3,10 @@ module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util     = require("./util/runtime"),
-    ieee754  = require("../lib/ieee754");
-var LongBits = util.LongBits,
-    ArrayImpl;
-
-/**
- * Configures the writer interface according to the environment.
- * @memberof Writer
- * @returns {undefined}
- */
-function configure() {
+var util      = require("./util/runtime"),
+    ieee754   = require("../lib/ieee754");
+var LongBits  = util.LongBits,
     ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
-    writeBytes = ArrayImpl.prototype.set && writeBytes_set || writeBytes_for;
-}
-
-Writer.configure = configure;
 
 /**
  * Constructs a new writer operation.
@@ -190,13 +178,14 @@ function writeVarint32(buf, pos, val) {
  */
 WriterPrototype.uint32 = function write_uint32(value) {
     value >>>= 0;
-    return this.push(writeVarint32,
-          value < 128       ? 1
-        : value < 16384     ? 2
-        : value < 2097152   ? 3
-        : value < 268435456 ? 4
-        :                     5
-    , value);
+    return value < 128
+        ? this.push(writeByte, 1, value)
+        : this.push(writeVarint32,
+              value < 16384     ? 2
+            : value < 2097152   ? 3
+            : value < 268435456 ? 4
+            :                     5
+        , value);
 };
 
 /**
@@ -222,10 +211,14 @@ WriterPrototype.sint32 = function write_sint32(value) {
 
 function writeVarint64(buf, pos, val) {
     // tends to deoptimize. stays optimized when using bits directly.
-    while (val.hi || val.lo > 127) {
+    while (val.hi) {
         buf[pos++] = val.lo & 127 | 128;
         val.lo = (val.lo >>> 7 | val.hi << 25) >>> 0;
         val.hi >>>= 7;
+    }
+    while (val.lo > 127) {
+        buf[pos++] = val.lo & 127 | 128;
+        val.lo = (val.lo >>> 7 | val.hi << 25) >>> 0;
     }
     buf[pos++] = val.lo;
 }
@@ -274,7 +267,7 @@ function writeFixed32(buf, pos, val) {
     buf[pos++] =  val         & 255;
     buf[pos++] =  val >>> 8   & 255;
     buf[pos++] =  val >>> 16  & 255;
-    buf[pos  ] =  val >>> 24  & 255;
+    buf[pos  ] =  val >>> 24;
 }
 
 /**
@@ -322,7 +315,7 @@ var writeFloat = typeof Float32Array !== 'undefined'
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
-        return !f8b[0] // already le?
+        return f8b[3] // already le?
             ? function writeFloat_array(buf, pos, val) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
@@ -357,7 +350,7 @@ var writeDouble = typeof Float64Array !== 'undefined'
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
-        return !f8b[0] // already le?
+        return f8b[7] // already le?
             ? function writeDouble_array(buf, pos, val) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
@@ -395,16 +388,14 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
-var writeBytes;
-
-function writeBytes_set(buf, pos, val) {
-    buf.set(val, pos);
-}
-
-function writeBytes_for(buf, pos, val) {
-    for (var i = 0; i < val.length; ++i)
-        buf[pos + i] = val[i];
-}
+var writeBytes = ArrayImpl.prototype.set
+    ? function writeBytes_set(buf, pos, val) {
+        buf.set(val, pos);
+    }
+    : function writeBytes_for(buf, pos, val) {
+        for (var i = 0; i < val.length; ++i)
+            buf[pos + i] = val[i];
+    };
 
 /**
  * Writes a sequence of bytes.
@@ -561,7 +552,7 @@ function writeFloatBuffer(buf, pos, val) {
     buf.writeFloatLE(val, pos, true);
 }
 
-if (typeof Float32Array === 'undefined') // non-buffer f32 is faster (node 6.9.1)
+if (typeof Float32Array === 'undefined') // f32 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -573,7 +564,7 @@ function writeDoubleBuffer(buf, pos, val) {
     buf.writeDoubleLE(val, pos, true);
 }
 
-if (typeof Float64Array === 'undefined') // non-buffer f64 is faster (node 6.9.1)
+if (typeof Float64Array === 'undefined') // f64 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -582,9 +573,12 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 };
 
 function writeBytesBuffer(buf, pos, val) {
-    val.copy(buf, pos, 0, val.length);
+    if (val.length)
+        val.copy(buf, pos, 0, val.length);
+    // This could probably be optimized just like writeStringBuffer, but most real use cases won't benefit much.
 }
 
+if (!(ArrayImpl.prototype.set && util.Buffer && util.Buffer.prototype.set)) // set is faster (node 6.9.1)
 /**
  * @override
  */
@@ -595,17 +589,29 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-function writeStringBuffer(buf, pos, val) {
-    if (val.length < 40) // plain js is faster for short strings
-        writeString(buf, pos, val);
-    else
-        buf.write(val, pos);
-}
+var writeStringBuffer = (function() {
+    return util.Buffer && util.Buffer.prototype.utf8Write // around forever, but not present in browser buffer
+        ? function(buf, pos, val) {
+            if (val.length < 40)
+                writeString(buf, pos, val);
+            else
+                buf.utf8Write(val, pos);
+        }
+        : function(buf, pos, val) {
+            if (val.length < 40)
+                writeString(buf, pos, val);
+            else
+                buf.write(val, pos);
+        };
+    // Note that the plain JS encoder is faster for short strings, probably because of redundant assertions.
+    // For a raw utf8Write, the breaking point is about 20 characters, for write it is around 40 characters.
+    // Unfortunately, this does not translate 1:1 to real use cases, hence the common "good enough" limit of 40.
+})();
 
 /**
  * @override
  */
-BufferWriterPrototype.string = function write_string_buffer(value) {		
+BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = value.length < 40
         ? byteLength(value)
         : util.Buffer.byteLength(value);
@@ -623,5 +629,3 @@ BufferWriterPrototype.finish = function finish_buffer() {
     this.reset();
     return finish_internal(head, buf);
 };
-
-configure();

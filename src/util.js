@@ -221,7 +221,10 @@ util.safeProp = function safeProp(prop) {
  * @returns {Uint8Array} Buffer
  */
 util.newBuffer = function newBuffer(size) {
-    return new (util.Buffer || typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size || 0);
+    size = size || 0; 
+    return util.Buffer
+        ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
+        : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
 };
 
 // Merge in runtime utility

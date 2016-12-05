@@ -3,10 +3,10 @@ module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util     = require("./util/runtime"),
-    ieee754  = require("../lib/ieee754");
-var LongBits = util.LongBits,
-    ArrayImpl;
+var util      = require("./util/runtime"),
+    ieee754   = require("../lib/ieee754");
+var LongBits  = util.LongBits,
+    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
@@ -18,9 +18,6 @@ function indexOutOfRange(reader, writeLength) {
  * @returns {undefined}
  */
 function configure() {
-    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
-    ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
-
     if (util.Long) {
         ReaderPrototype.int64 = read_int64_long;
         ReaderPrototype.uint64 = read_uint64_long;
@@ -70,6 +67,8 @@ function Reader(buffer) {
 
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
+
+ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
 
 /**
  * Tag read.

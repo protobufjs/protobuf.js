@@ -1,75 +1,197 @@
 var protobuf = require("../src/index"),
-    newSuite = require("./suite");
+    newSuite = require("./suite"),
+    ieee754  = require("../lib/ieee754");
 
 // This benchmark compares raw data type performance of Uint8Array and Buffer.
-// This uses internal finish machinery because overall difference is otherwise mainly caused by allocation.
 
-var array  = new Uint8Array(8);
+/* var array  = new Uint8Array(8);
 var buffer = new Buffer(8);
 
-// The following is a possible alternative to float / double writing - where supported. Quite a bit faster.
+// raw fixed32 write speed
+newSuite("fixed32")
+.add("shift array", function() {
+    var val = 0x7fffffff;
+    array[0] =  val         & 255;
+    array[1] =  val >>> 8   & 255;
+    array[2] =  val >>> 16  & 255;
+    array[3] =  val >>> 24;
+})
+.add("shift buffer", function() {
+    var val = 0x7fffffff;
+    buffer[0] =  val         & 255;
+    buffer[1] =  val >>> 8   & 255;
+    buffer[2] =  val >>> 16  & 255;
+    buffer[3] =  val >>> 24;
+})
+.add("writeUInt32LE buffer", function() {
+    var val = 0x7fffffff;
+    buffer.writeUInt32LE(val, 0, true);
+})
+.run();
 
-var f32 = new Float32Array(1);
-var i8 = new Uint8Array(f32.buffer);
-
-function writeF32Array(buf, pos, val) {
-    f32[0] = val;
-    for (var i = 0; i < 4; ++i)
-        buf[pos + i] = i8[i];
-}
+var f64 = new Float64Array(1);
+var f32 = new Float32Array(f64.buffer);
+var f8b = new Uint8Array(f64.buffer);
 
 // raw float write speed
 newSuite("float")
-.add("Writer#float", function() {
-    var writer = new protobuf.Writer();
-    writer.float(0.1);
-    writer._finish(writer.head, array);
+.add("ieee754 array", function() {
+    ieee754.write(array, 0.1, 0, false, 23, 4);
 })
-.add("Writer#writeF32Array", function() {
-    var writer = new protobuf.Writer();
-    writer.push(writeF32Array, 4, 0.1);
-    writer._finish(writer.head, array);
+.add("ieee754 buffer", function() {
+    ieee754.write(buffer, 0.1, 0, false, 23, 4);
 })
-.add("BufferWriter#float", function() {
-    var writer = new protobuf.BufferWriter();
-    writer.float(0.1);
-    writer._finish(writer.head, buffer);
+.add("f32 array", function() {
+    f32[0] = 0.1;
+    array[0]   = f8b[0];
+    array[0+1] = f8b[1];
+    array[0+2] = f8b[2];
+    array[0+3] = f8b[3];
 })
-.add("BufferWriter#writeF32Array", function() {
-    var writer = new protobuf.BufferWriter();
-    writer.push(writeF32Array, 4, 0.1);
-    writer._finish(writer.head, buffer);
+.add("f32 buffer", function() {
+    f32[0] = 0.1;
+    buffer[0]   = f8b[0];
+    buffer[0+1] = f8b[1];
+    buffer[0+2] = f8b[2];
+    buffer[0+3] = f8b[3];
+})
+.add("writeFloatLE buffer", function() {
+    buffer.writeFloatLE(0.1, 0, true);
 })
 .run();
 
 // raw double write speed
 newSuite("double")
-.add("Writer#double", function() {
-    var writer = new protobuf.Writer();
-    writer.double(0.1);
-    writer._finish(writer.head, array);
+.add("ieee754 array", function() {
+    ieee754.write(array, 0.1, 0, false, 52, 8);
 })
-.add("BufferWriter#double", function() {
-    var writer = new protobuf.BufferWriter();
-    writer.double(0.1);
-    writer._finish(writer.head, buffer);
+.add("ieee754 buffer", function() {
+    ieee754.write(buffer, 0.1, 0, false, 52, 8);
+})
+.add("f64 array", function() {
+    f64[0] = 0.1;
+    array[0]   = f8b[0];
+    array[0+1] = f8b[1];
+    array[0+2] = f8b[2];
+    array[0+3] = f8b[3];
+    array[0+4] = f8b[4];
+    array[0+5] = f8b[5];
+    array[0+6] = f8b[6];
+    array[0+7] = f8b[7];
+})
+.add("f64 buffer", function() {
+    f64[0]      = 0.1;
+    buffer[0]   = f8b[0];
+    buffer[0+1] = f8b[1];
+    buffer[0+2] = f8b[2];
+    buffer[0+3] = f8b[3];
+    buffer[0+4] = f8b[4];
+    buffer[0+5] = f8b[5];
+    buffer[0+6] = f8b[6];
+    buffer[0+7] = f8b[7];
+})
+.add("writeDoubleLE buffer", function() {
+    buffer.writeDoubleLE(0.1, 0, true);
 })
 .run();
 
-var arrayPlus1 = new Uint8Array(array.length + 1);
-var bufferPlus1 = new Buffer(buffer.length + 1);
+var source = Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+var array  = new Uint8Array(16);
+var buffer = new Buffer(16);
 
 // raw bytes write speed
-// interestingly, Uint8Array#set is faster than Buffer#copy, but only on actual Uint8Arrays.
 newSuite("bytes")
-.add("Writer#bytes", function() {
-    var writer = new protobuf.Writer();
-    writer.bytes(array);
-    writer._finish(writer.head, arrayPlus1);
+.add("set array", function() {
+    array.set(source, 0);
 })
-.add("BufferWriter#bytes", function() {
-    var writer = new protobuf.BufferWriter();
-    writer.bytes(buffer);
-    writer._finish(writer.head, bufferPlus1);
+.add("for array", function() {
+    for (var i = 0; i < source.length; ++i)
+        array[i] = source[i];
+})
+.add("set buffer", function() {
+    buffer.set(source, 0);
+})
+.add("for buffer", function() {
+    for (var i = 0; i < source.length; ++i)
+        buffer[i] = source[i];
+})
+.add("copy buffer", function() {
+    source.copy(buffer, 0);
 })
 .run();
+*/
+
+function writeString(buf, pos, val) {
+    for (var i = 0; i < val.length; ++i) {
+        var c1 = val.charCodeAt(i), c2;
+        if (c1 < 128) {
+            buf[pos++] = c1;
+        } else if (c1 < 2048) {
+            buf[pos++] = c1 >> 6       | 192;
+            buf[pos++] = c1       & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+            ++i;
+            buf[pos++] = c1 >> 18      | 240;
+            buf[pos++] = c1 >> 12 & 63 | 128;
+            buf[pos++] = c1 >> 6  & 63 | 128;
+            buf[pos++] = c1       & 63 | 128;
+        } else {
+            buf[pos++] = c1 >> 12      | 224;
+            buf[pos++] = c1 >> 6  & 63 | 128;
+            buf[pos++] = c1       & 63 | 128;
+        }
+    }
+}
+
+function byteLength(val) {
+    var strlen = val.length >>> 0;
+    var len = 0;
+    for (var i = 0; i < strlen; ++i) {
+        var c1 = val.charCodeAt(i);
+        if (c1 < 128)
+            len += 1;
+        else if (c1 < 2048)
+            len += 2;
+        else if ((c1 & 0xFC00) === 0xD800 && (val.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
+            ++i;
+            len += 4;
+        } else
+            len += 3;
+    }
+    return len;
+}
+
+var array = new Uint8Array(1000);
+var buffer = new Buffer(1000);
+
+[
+    "Lorem ipsu",
+    "Lorem ipsum dolo",
+    "Lorem ipsum dolor ",
+    "Lorem ipsum dolor s",
+    "Lorem ipsum dolor si",
+    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore ipsum."
+].forEach(function(str) {
+    // raw string write speed
+    newSuite("string[" + str.length + "]")
+    .add("writeString array", function() {
+        writeString(array, 0, str);
+    })
+    .add("writeString buffer", function() {
+        writeString(buffer, 0, str)
+    })
+    .add("write buffer", function() {
+        buffer.write(str, 0)
+    })
+    .add("utf8Write buffer", function() {
+        buffer.utf8Write(str, 0)
+    })
+    /* .add("byteLength array", function() {
+        byteLength(str)
+    })
+    .add("byteLength buffer", function() {
+        Buffer.byteLength(str)
+    }) */
+    .run();
+});
