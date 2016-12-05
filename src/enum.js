@@ -57,6 +57,13 @@ util.props(EnumPrototype, {
             return this._valuesById;
         }
     }
+
+    /**
+     * Gets this enum's values by id. This is an alias of {@link Enum#valuesById}'s getter for use within non-ES5 environments.
+     * @name Enum#getValuesById
+     * @function
+     * @returns {Object.<number.string>}
+     */
 });
 
 function clearCache(enm) {

@@ -13,7 +13,9 @@
             "sint32": -42
         },
         "outer" : {
-            "bool" : [ true, false, false, true, false, false, true ]
+            "bool" : [ true, false, false, true, false, false, true ],
+            "double": 0.5
         }
-    }
+    },
+    "float": 0.25
 }

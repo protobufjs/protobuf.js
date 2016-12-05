@@ -157,6 +157,12 @@ util.props(FieldPrototype, {
         }
     }
 
+    /**
+     * Determines whether this field is packed. This is an alias of {@link Field#packed}'s getter for use within non-ES5 environments.
+     * @name Field#isPacked
+     * @function
+     * @returns {boolean}
+     */
 });
 
 /**

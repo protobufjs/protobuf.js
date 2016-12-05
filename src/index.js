@@ -55,7 +55,6 @@ protobuf.common           = require("./common");
 protobuf.util             = require("./util");
 
 // Be nice to AMD
-/* eslint-disable no-undef */
 if (typeof define === 'function' && define.amd)
     define(["long"], function(Long) {
         if (Long) {
@@ -65,4 +64,3 @@ if (typeof define === 'function' && define.amd)
         }
         return protobuf;
     });
-/* eslint-enable no-undef */

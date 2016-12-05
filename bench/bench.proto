@@ -5,6 +5,7 @@ message Test {
     string  string = 1;
     uint32  uint32 = 2;
     Inner   inner  = 3;
+    float   float  = 4;
 
     message Inner {
 
@@ -33,4 +34,5 @@ message Test {
 message Outer {
 
     repeated bool bool = 1;
+    double double = 2;
 }

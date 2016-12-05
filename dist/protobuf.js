@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Sun, 04 Dec 2016 14:27:36 UTC
+ * Compiled Mon, 05 Dec 2016 00:17:18 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -682,6 +682,13 @@ util.props(EnumPrototype, {
             return this._valuesById;
         }
     }
+
+    /**
+     * Gets this enum's values by id. This is an alias of {@link Enum#valuesById}'s getter for use within non-ES5 environments.
+     * @name Enum#getValuesById
+     * @function
+     * @returns {Object.<number.string>}
+     */
 });
 
 function clearCache(enm) {
@@ -916,6 +923,12 @@ util.props(FieldPrototype, {
         }
     }
 
+    /**
+     * Determines whether this field is packed. This is an alias of {@link Field#packed}'s getter for use within non-ES5 environments.
+     * @name Field#isPacked
+     * @function
+     * @returns {boolean}
+     */
 });
 
 /**
@@ -5238,6 +5251,14 @@ function Op(fn, val, len) {
     this.next = null;
 }
 
+Op.apply = function(op, pos) {
+    while (op) {
+        op.fn(buf, pos, op.val);
+        pos += op.len;
+        op = op.next;
+    }
+}
+
 Writer.Op = Op;
 
 function noop() {} // eslint-disable-line no-empty-function
@@ -5248,10 +5269,11 @@ function noop() {} // eslint-disable-line no-empty-function
  * @memberof Writer
  * @constructor
  * @param {Writer} writer Writer to copy state from
+ * @param {State} next Next state entry
  * @private
  * @ignore
  */
-function State(writer) {
+function State(writer, next) {
 
     /**
      * Current head.
@@ -5270,6 +5292,12 @@ function State(writer) {
      * @type {number}
      */
     this.len = writer.len;
+
+    /**
+     * Next state.
+     * @type {?State}
+     */
+    this.next = next;
 }
 
 Writer.State = State;
@@ -5304,10 +5332,10 @@ function Writer() {
     this.tail = this.head;
 
     /**
-     * State stack.
-     * @type {Object[]}
+     * Linked forked states.
+     * @type {?Object}
      */
-    this.stack = [];
+    this.states = null;
 
     // When a value is written, the writer calculates its byte length and puts it into a linked
     // list of operations to perform when finish() is called. This both allows us to allocate
@@ -5490,9 +5518,30 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
     return this.push(writeFixed32, 4, bits.hi).push(writeFixed32, 4, bits.lo);
 };
 
-function writeFloat(buf, pos, val) {
-    ieee754.write(buf, val, pos, false, 23, 4);
-}
+var writeFloat = typeof Float32Array !== 'undefined'
+    ? (function() {
+        var f32 = new Float32Array(1),
+            f8b = new Uint8Array(f32.buffer);
+        f32[0] = -0;
+        return !f8b[0] // already le?
+            ? function writeFloat_array(buf, pos, val) {
+                f32[0] = val;
+                buf[pos++] = f8b[0];
+                buf[pos++] = f8b[1];
+                buf[pos++] = f8b[2];
+                buf[pos  ] = f8b[3];
+            }
+            : function writeFloat_array_le(buf, pos, val) {
+                f32[0] = val;
+                buf[pos++] = f8b[3];
+                buf[pos++] = f8b[2];
+                buf[pos++] = f8b[1];
+                buf[pos  ] = f8b[0];
+            };
+    })()
+    : function writeFloat_ieee754(buf, pos, val) {
+        ieee754.write(buf, val, pos, false, 23, 4);
+    };
 
 /**
  * Writes a float (32 bit).
@@ -5504,9 +5553,38 @@ WriterPrototype.float = function write_float(value) {
     return this.push(writeFloat, 4, value);
 };
 
-function writeDouble(buf, pos, val) {
-    ieee754.write(buf, val, pos, false, 52, 8);
-}
+var writeDouble = typeof Floa64Array !== 'undefined'
+    ? (function() {
+        var f64 = new Float64Array(1),
+            f8b = new Uint8Array(f64.buffer);
+        f32[0] = -0;
+        return !f8b[0] // already le?
+            ? function writeDouble_array(buf, pos, val) {
+                f32[0] = val;
+                buf[pos++] = f8b[0];
+                buf[pos++] = f8b[1];
+                buf[pos++] = f8b[2];
+                buf[pos++] = f8b[3];
+                buf[pos++] = f8b[4];
+                buf[pos++] = f8b[5];
+                buf[pos++] = f8b[6];
+                buf[pos  ] = f8b[7];
+            }
+            : function writeDouble_array_le(buf, pos, val) {
+                f32[0] = val;
+                buf[pos++] = f8b[7];
+                buf[pos++] = f8b[6];
+                buf[pos++] = f8b[5];
+                buf[pos++] = f8b[4];
+                buf[pos++] = f8b[3];
+                buf[pos++] = f8b[2];
+                buf[pos++] = f8b[1];
+                buf[pos  ] = f8b[0];
+            };
+    })()
+    : function writeDouble_ieee754(buf, pos, val) {
+        ieee754.write(buf, val, pos, false, 52, 8);
+    };
 
 /**
  * Writes a double (64 bit float).
@@ -5600,7 +5678,7 @@ WriterPrototype.string = function write_string(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {
-    this.stack.push(new State(this));
+    this.states = new State(this, this.states);
     this.head = this.tail = new Op(noop, 0, 0);
     this.len = 0;
     return this;
@@ -5611,11 +5689,11 @@ WriterPrototype.fork = function fork() {
  * @returns {Writer} `this`
  */
 WriterPrototype.reset = function reset() {
-    if (this.stack.length) {
-        var state = this.stack.pop();
-        this.head = state.head;
-        this.tail = state.tail;
-        this.len  = state.len;
+    if (this.states) {
+        this.head   = this.states.head;
+        this.tail   = this.states.tail;
+        this.len    = this.states.len;
+        this.states = this.states.next;
     } else {
         this.head = this.tail = new Op(noop, 0, 0);
         this.len  = 0;
@@ -5642,21 +5720,27 @@ WriterPrototype.ldelim = function ldelim(id) {
     return this;
 };
 
-/**
- * Finishes the current sequence of write operations and frees all resources.
- * @returns {Uint8Array} Finished buffer
- */
-WriterPrototype.finish = function finish() {
-    var head = this.head.next, // skip noop
-        buf  = new ArrayImpl(this.len),
-        pos  = 0;
-    this.reset();
+function finish_internal(head, buf) {
+    var pos = 0;
     while (head) {
         head.fn(buf, pos, head.val);
         pos += head.len;
         head = head.next;
     }
     return buf;
+}
+
+WriterPrototype._finish = finish_internal;
+
+/**
+ * Finishes the current sequence of write operations and frees all resources.
+ * @returns {Uint8Array} Finished buffer
+ */
+WriterPrototype.finish = function finish() {
+    var head = this.head.next, // skip noop
+        buf  = new ArrayImpl(this.len);
+    this.reset();
+    return finish_internal(head, buf);
 };
 
 /**
@@ -5678,6 +5762,7 @@ function writeFloatBuffer(buf, pos, val) {
     buf.writeFloatLE(val, pos, true);
 }
 
+if (typeof Float32Array === 'undefined') // non-buffer f32 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -5687,8 +5772,9 @@ BufferWriterPrototype.float = function write_float_buffer(value) {
 
 function writeDoubleBuffer(buf, pos, val) {
     buf.writeDoubleLE(val, pos, true);
-}
+};
 
+if (typeof Float64Array === 'undefined') // non-buffer f64 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -5697,8 +5783,7 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 };
 
 function writeBytesBuffer(buf, pos, val) {
-    if (val.length)
-        val.copy(buf, pos, 0, val.length);
+    val.copy(buf, pos, 0, val.length);
 }
 
 /**
@@ -5735,15 +5820,9 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
  */
 BufferWriterPrototype.finish = function finish_buffer() {
     var head = this.head.next, // skip noop
-        buf  = util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(this.len) || new util.Buffer(this.len),
-        pos  = 0;
+        buf  = util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(this.len) || new util.Buffer(this.len);
     this.reset();
-    while (head) {
-        head.fn(buf, pos, head.val);
-        pos += head.len;
-        head = head.next;
-    }
-    return buf;
+    return finish_internal(head, buf);
 };
 
 configure();
