@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.0.1 (c) 2016 Daniel Wirtz
- * Compiled Mon, 05 Dec 2016 16:22:47 UTC
+ * protobuf.js v6.0.2 (c) 2016 Daniel Wirtz
+ * Compiled Mon, 05 Dec 2016 19:04:43 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -687,7 +687,7 @@ util.props(EnumPrototype, {
      * Gets this enum's values by id. This is an alias of {@link Enum#valuesById}'s getter for use within non-ES5 environments.
      * @name Enum#getValuesById
      * @function
-     * @returns {Object.<number.string>}
+     * @returns {Object.<number,string>}
      */
 });
 

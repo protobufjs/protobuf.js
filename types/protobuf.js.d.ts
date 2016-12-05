@@ -2,8 +2,8 @@
 /// <reference types="long" />
 
 /*
- * protobuf.js v6.0.1 TypeScript definitions
- * Generated Sun, 04 Dec 2016 14:04:03 UTC
+ * protobuf.js v6.0.2 TypeScript definitions
+ * Generated Mon, 05 Dec 2016 19:04:50 UTC
  */
 declare module "protobufjs" {
 
@@ -101,6 +101,14 @@ declare module "protobufjs" {
        * @readonly
        */
       valuesById: { [k: number]: string };
+   
+      /**
+       * Gets this enum's values by id. This is an alias of {@link Enum#valuesById}'s getter for use within non-ES5 environments.
+       * @name Enum#getValuesById
+       * @function
+       * @returns {Object.<number,string>}
+       */
+      getValuesById(): { [k: number]: string };
    
       /**
        * Tests if the specified JSON object describes an enum.
@@ -263,6 +271,14 @@ declare module "protobufjs" {
        * @readonly
        */
       packed: boolean;
+   
+      /**
+       * Determines whether this field is packed. This is an alias of {@link Field#packed}'s getter for use within non-ES5 environments.
+       * @name Field#isPacked
+       * @function
+       * @returns {boolean}
+       */
+      isPacked(): boolean;
    
       /**
        * Tests if the specified JSON object describes a field.
@@ -1817,13 +1833,6 @@ declare module "protobufjs" {
       constructor();
    
       /**
-       * Configures the writer interface according to the environment.
-       * @memberof Writer
-       * @returns {undefined}
-       */
-      static configure(): undefined;
-   
-      /**
        * Current length.
        * @type {number}
        */
@@ -1842,10 +1851,10 @@ declare module "protobufjs" {
       tail: Object;
    
       /**
-       * State stack.
-       * @type {Object[]}
+       * Linked forked states.
+       * @type {?Object}
        */
-      stack: Object[];
+      states: Object;
    
       /**
        * Pushes a new operation to the queue.
