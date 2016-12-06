@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.2 (c) 2016 Daniel Wirtz
- * Compiled Mon, 05 Dec 2016 19:04:43 UTC
+ * Compiled Tue, 06 Dec 2016 00:28:40 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1351,8 +1351,8 @@ var _TypeError = util._TypeError;
  * @param {string|undefined} type Method type, usually `"rpc"`
  * @param {string} requestType Request message type
  * @param {string} responseType Response message type
- * @param {boolean} [requestStream] Whether the request is streamed
- * @param {boolean} [responseStream] Whether the response is streamed
+ * @param {boolean|Object} [requestStream] Whether the request is streamed
+ * @param {boolean|Object} [responseStream] Whether the response is streamed
  * @param {Object} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
@@ -1955,7 +1955,7 @@ var _TypeError = util._TypeError;
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
- * @param {string[]} [fieldNames] Field names
+ * @param {string[]|Object} [fieldNames] Field names
  * @param {Object} [options] Declared options
  */
 function OneOf(name, fieldNames, options) {
@@ -2763,14 +2763,14 @@ Reader.configure = configure;
 
 /**
  * Constructs a new reader using the specified buffer.
- * When called as a function, returns an appropriate reader for the specified buffer.
+ * When called as a function, returns an appropriate reader for the specified buffer. Use {@link Reader.create} instead in typed environments.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
-        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer)) && new BufferReader(buffer) || new Reader(buffer);
+        return util.Buffer && util.Buffer.isBuffer(buffer) && new BufferReader(buffer) || new Reader(buffer);
 
     /**
      * Read buffer.
@@ -2790,6 +2790,15 @@ function Reader(buffer) {
      */
     this.len = buffer.length;
 }
+
+/**
+ * Creates a new reader using the specified buffer.
+ * @param {Uint8Array} buffer Buffer to read from
+ * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+ */
+Reader.create = function create(buffer) {
+    return Reader(buffer);
+};
 
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
@@ -4286,13 +4295,13 @@ TypePrototype.remove = function remove(object) {
 
 /**
  * Creates a new message of this type using the specified properties.
- * @param {Object} [properties] Properties to set
+ * @param {Object|?Function} [properties] Properties to set
  * @param {?Function} [ctor] Constructor to use.
  * Defaults to use the internal constuctor.
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, ctor) {
-    if (typeof properties === 'function') {
+    if (!properties || typeof properties === 'function') {
         ctor = properties;
         properties = undefined;
     } else if (properties /* already */ instanceof Prototype)
@@ -4567,7 +4576,7 @@ util.toArray = function toArray(object) {
 /**
  * Creates a type error.
  * @param {string} name Argument name
- * @param {string} [description=a string] Expected argument descripotion
+ * @param {string} [description="a string"] Expected argument descripotion
  * @returns {TypeError} Created type error
  * @private
  */
@@ -4604,7 +4613,7 @@ util.asPromise = asPromise;
  * @memberof util
  * @param {string} path File path or url
  * @param {function(?Error, string=)} [callback] Node-style callback
- * @returns {Promise<string>|undefined} Promise if callback has been omitted 
+ * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted 
  */
 function fetch(path, callback) {
     if (!callback)
@@ -4710,18 +4719,13 @@ util.merge = function merge(dst, src, ifNotSet) {
     return dst;
 };
 
-// Reserved words, ref: https://msdn.microsoft.com/en-us/library/ttyab5c8.aspx
-// var reserved = "break,case,catch,class,const,continue,debugger,default,delete,do,else,export,extends,false,finally,for,function,if,import,in,instanceof,new,null,protected,return,super,switch,this,throw,true,try,typeof,var,while,with,abstract,boolean,byte,char,decimal,double,enum,final,float,get,implements,int,interface,internal,long,package,private,protected,public,sbyte,set,short,static,uint,ulong,ushort,void,assert,ensure,event,goto,invariant,namespace,native,require,synchronized,throws,transient,use,volatile".split(',');
-
 /**
  * Returns a safe property accessor for the specified properly name.
  * @param {string} prop Property name
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    // NOTE: While dot notation looks cleaner it doesn't seem to have a significant impact on performance.
-    // Hence, we can safe the extra bytes from providing the reserved keywords above for pre-ES5 envs.
-    return /* /^[a-z_$][a-z0-9_$]*$/i.test(prop) && !reserved.indexOf(prop) ? "." + prop : */ "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+    return "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
 };
 
 /**
@@ -5363,9 +5367,8 @@ Writer.State = State;
 
 /**
  * Constructs a new writer.
- * When called as a function, returns an appropriate writer for the current environment.
+ * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
  * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
- * @exports Writer
  * @constructor
  */
 function Writer() {
@@ -5402,6 +5405,14 @@ function Writer() {
     // to first calculating over objects and then encoding over objects. In our case, the encoding
     // part is just a linked list walk calling linked operations with already prepared values.
 }
+
+/**
+ * Creates a new writer.
+ * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
+ */
+Writer.create = function create() {
+    return Writer();
+};
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
@@ -5910,9 +5921,9 @@ var protobuf = global.protobuf = exports;
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
  * @param {string|string[]} filename One or multiple files to load
- * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
+ * @param {Root|function(?Error, Root=)} [root] Root namespace, defaults to create a new one if omitted.
  * @param {function(?Error, Root=)} [callback] Callback function
- * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise the protobuf namespace
+ * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
  * @throws {TypeError} If arguments are invalid
  */
 function load(filename, root, callback) {
@@ -5921,7 +5932,7 @@ function load(filename, root, callback) {
         root = new protobuf.Root();
     } else if (!root)
         root = new protobuf.Root();
-    return root.load(filename, callback) || protobuf;
+    return root.load(filename, callback);
 }
 
 protobuf.load = load;

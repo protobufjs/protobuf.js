@@ -19,8 +19,8 @@ var _TypeError = util._TypeError;
  * @param {string|undefined} type Method type, usually `"rpc"`
  * @param {string} requestType Request message type
  * @param {string} responseType Response message type
- * @param {boolean} [requestStream] Whether the request is streamed
- * @param {boolean} [responseStream] Whether the response is streamed
+ * @param {boolean|Object} [requestStream] Whether the request is streamed
+ * @param {boolean|Object} [responseStream] Whether the response is streamed
  * @param {Object} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {

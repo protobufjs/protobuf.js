@@ -91,9 +91,8 @@ Writer.State = State;
 
 /**
  * Constructs a new writer.
- * When called as a function, returns an appropriate writer for the current environment.
+ * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
  * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
- * @exports Writer
  * @constructor
  */
 function Writer() {
@@ -130,6 +129,14 @@ function Writer() {
     // to first calculating over objects and then encoding over objects. In our case, the encoding
     // part is just a linked list walk calling linked operations with already prepared values.
 }
+
+/**
+ * Creates a new writer.
+ * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
+ */
+Writer.create = function create() {
+    return Writer();
+};
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;

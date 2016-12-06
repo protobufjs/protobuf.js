@@ -16,7 +16,7 @@ var _TypeError = util._TypeError;
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Oneof name
- * @param {string[]} [fieldNames] Field names
+ * @param {string[]|Object} [fieldNames] Field names
  * @param {Object} [options] Declared options
  */
 function OneOf(name, fieldNames, options) {

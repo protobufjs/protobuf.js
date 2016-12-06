@@ -308,13 +308,13 @@ TypePrototype.remove = function remove(object) {
 
 /**
  * Creates a new message of this type using the specified properties.
- * @param {Object} [properties] Properties to set
+ * @param {Object|?Function} [properties] Properties to set
  * @param {?Function} [ctor] Constructor to use.
  * Defaults to use the internal constuctor.
  * @returns {Prototype} Message instance
  */
 TypePrototype.create = function create(properties, ctor) {
-    if (typeof properties === 'function') {
+    if (!properties || typeof properties === 'function') {
         ctor = properties;
         properties = undefined;
     } else if (properties /* already */ instanceof Prototype)

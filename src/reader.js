@@ -37,14 +37,14 @@ Reader.configure = configure;
 
 /**
  * Constructs a new reader using the specified buffer.
- * When called as a function, returns an appropriate reader for the specified buffer.
+ * When called as a function, returns an appropriate reader for the specified buffer. Use {@link Reader.create} instead in typed environments.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
     if (!(this instanceof Reader))
-        return util.Buffer && (!buffer || util.Buffer.isBuffer(buffer)) && new BufferReader(buffer) || new Reader(buffer);
+        return util.Buffer && util.Buffer.isBuffer(buffer) && new BufferReader(buffer) || new Reader(buffer);
 
     /**
      * Read buffer.
@@ -64,6 +64,15 @@ function Reader(buffer) {
      */
     this.len = buffer.length;
 }
+
+/**
+ * Creates a new reader using the specified buffer.
+ * @param {Uint8Array} buffer Buffer to read from
+ * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+ */
+Reader.create = function create(buffer) {
+    return Reader(buffer);
+};
 
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;

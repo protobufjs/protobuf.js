@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.2 TypeScript definitions
- * Generated Mon, 05 Dec 2016 19:04:50 UTC
+ * Generated Tue, 06 Dec 2016 00:28:45 UTC
  */
 declare module "protobufjs" {
 
@@ -317,12 +317,12 @@ declare module "protobufjs" {
    /**
     * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
     * @param {string|string[]} filename One or multiple files to load
-    * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
+    * @param {Root|function(?Error, Root=)} [root] Root namespace, defaults to create a new one if omitted.
     * @param {function(?Error, Root=)} [callback] Callback function
-    * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise the protobuf namespace
+    * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
     * @throws {TypeError} If arguments are invalid
     */
-   function load(filename: (string|string[]), root?: Root, callback?: any): (Promise<Root>|Object);
+   function load(filename: (string|string[]), root?: (Root|any), callback?: any): (Promise<Root>|undefined);
    
    /**
     * Options passed to {@link inherits}, modifying its behavior.
@@ -486,8 +486,8 @@ declare module "protobufjs" {
     * @param {string|undefined} type Method type, usually `"rpc"`
     * @param {string} requestType Request message type
     * @param {string} responseType Response message type
-    * @param {boolean} [requestStream] Whether the request is streamed
-    * @param {boolean} [responseStream] Whether the response is streamed
+    * @param {boolean|Object} [requestStream] Whether the request is streamed
+    * @param {boolean|Object} [responseStream] Whether the response is streamed
     * @param {Object} [options] Declared options
     */
    class Method extends ReflectionObject {
@@ -500,11 +500,11 @@ declare module "protobufjs" {
        * @param {string|undefined} type Method type, usually `"rpc"`
        * @param {string} requestType Request message type
        * @param {string} responseType Response message type
-       * @param {boolean} [requestStream] Whether the request is streamed
-       * @param {boolean} [responseStream] Whether the response is streamed
+       * @param {boolean|Object} [requestStream] Whether the request is streamed
+       * @param {boolean|Object} [responseStream] Whether the response is streamed
        * @param {Object} [options] Declared options
        */
-      constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: boolean, responseStream?: boolean, options?: Object);
+      constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|Object), responseStream?: (boolean|Object), options?: Object);
    
       /**
        * Method type.
@@ -802,7 +802,7 @@ declare module "protobufjs" {
     * @extends ReflectionObject
     * @constructor
     * @param {string} name Oneof name
-    * @param {string[]} [fieldNames] Field names
+    * @param {string[]|Object} [fieldNames] Field names
     * @param {Object} [options] Declared options
     */
    class OneOf extends ReflectionObject {
@@ -812,10 +812,10 @@ declare module "protobufjs" {
        * @extends ReflectionObject
        * @constructor
        * @param {string} name Oneof name
-       * @param {string[]} [fieldNames] Field names
+       * @param {string[]|Object} [fieldNames] Field names
        * @param {Object} [options] Declared options
        */
-      constructor(name: string, fieldNames?: string[], options?: Object);
+      constructor(name: string, fieldNames?: (string[]|Object), options?: Object);
    
       /**
        * Upper cased name for getter/setter calls.
@@ -937,7 +937,7 @@ declare module "protobufjs" {
    
    /**
     * Constructs a new reader using the specified buffer.
-    * When called as a function, returns an appropriate reader for the specified buffer.
+    * When called as a function, returns an appropriate reader for the specified buffer. Use {@link Reader.create} instead in typed environments.
     * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
     * @constructor
     * @param {Uint8Array} buffer Buffer to read from
@@ -945,7 +945,7 @@ declare module "protobufjs" {
    class Reader {
       /**
        * Constructs a new reader using the specified buffer.
-       * When called as a function, returns an appropriate reader for the specified buffer.
+       * When called as a function, returns an appropriate reader for the specified buffer. Use {@link Reader.create} instead in typed environments.
        * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
        * @constructor
        * @param {Uint8Array} buffer Buffer to read from
@@ -976,6 +976,13 @@ declare module "protobufjs" {
        * @type {number}
        */
       len: number;
+   
+      /**
+       * Creates a new reader using the specified buffer.
+       * @param {Uint8Array} buffer Buffer to read from
+       * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
+       */
+      static create(buffer: Uint8Array): (BufferReader|Reader);
    
       /**
        * Reads a tag.
@@ -1399,12 +1406,12 @@ declare module "protobufjs" {
    
       /**
        * Creates a new message of this type using the specified properties.
-       * @param {Object} [properties] Properties to set
+       * @param {Object|?Function} [properties] Properties to set
        * @param {?Function} [ctor] Constructor to use.
        * Defaults to use the internal constuctor.
        * @returns {Prototype} Message instance
        */
-      create(properties?: Object, ctor?: any): Prototype;
+      create(properties?: (Object|any), ctor?: any): Prototype;
    
       /**
        * Encodes a message of this type.
@@ -1739,7 +1746,7 @@ declare module "protobufjs" {
        * @memberof util
        * @param {string} path File path or url
        * @param {function(?Error, string=)} [callback] Node-style callback
-       * @returns {Promise<string>|undefined} Promise if callback has been omitted
+       * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
        */
       function fetch(path: string, callback?: any): (Promise<string>|undefined);
    
@@ -1817,17 +1824,15 @@ declare module "protobufjs" {
    
    /**
     * Constructs a new writer.
-    * When called as a function, returns an appropriate writer for the current environment.
+    * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
     * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
-    * @exports Writer
     * @constructor
     */
    class Writer {
       /**
        * Constructs a new writer.
-       * When called as a function, returns an appropriate writer for the current environment.
+       * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
        * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
-       * @exports Writer
        * @constructor
        */
       constructor();
@@ -1855,6 +1860,12 @@ declare module "protobufjs" {
        * @type {?Object}
        */
       states: Object;
+   
+      /**
+       * Creates a new writer.
+       * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
+       */
+      static create(): (BufferWriter|Writer);
    
       /**
        * Pushes a new operation to the queue.

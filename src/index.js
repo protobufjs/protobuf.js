@@ -4,9 +4,9 @@ var protobuf = global.protobuf = exports;
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
  * @param {string|string[]} filename One or multiple files to load
- * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
+ * @param {Root|function(?Error, Root=)} [root] Root namespace, defaults to create a new one if omitted.
  * @param {function(?Error, Root=)} [callback] Callback function
- * @returns {Promise<Root>|Object} A promise if callback has been omitted, otherwise the protobuf namespace
+ * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
  * @throws {TypeError} If arguments are invalid
  */
 function load(filename, root, callback) {
@@ -15,7 +15,7 @@ function load(filename, root, callback) {
         root = new protobuf.Root();
     } else if (!root)
         root = new protobuf.Root();
-    return root.load(filename, callback) || protobuf;
+    return root.load(filename, callback);
 }
 
 protobuf.load = load;

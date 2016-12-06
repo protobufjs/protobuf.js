@@ -1,3 +1,4 @@
+.vscode/
 *.log
 npm-debug.*
 node_modules/
