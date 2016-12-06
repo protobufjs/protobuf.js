@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.2 TypeScript definitions
- * Generated Tue, 06 Dec 2016 00:28:45 UTC
+ * Generated Tue, 06 Dec 2016 14:03:33 UTC
  */
 declare module "protobufjs" {
 
@@ -937,7 +937,6 @@ declare module "protobufjs" {
    
    /**
     * Constructs a new reader using the specified buffer.
-    * When called as a function, returns an appropriate reader for the specified buffer. Use {@link Reader.create} instead in typed environments.
     * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
     * @constructor
     * @param {Uint8Array} buffer Buffer to read from
@@ -945,7 +944,6 @@ declare module "protobufjs" {
    class Reader {
       /**
        * Constructs a new reader using the specified buffer.
-       * When called as a function, returns an appropriate reader for the specified buffer. Use {@link Reader.create} instead in typed environments.
        * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
        * @constructor
        * @param {Uint8Array} buffer Buffer to read from
@@ -1824,14 +1822,12 @@ declare module "protobufjs" {
    
    /**
     * Constructs a new writer.
-    * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
     * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
     * @constructor
     */
    class Writer {
       /**
        * Constructs a new writer.
-       * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
        * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
        * @constructor
        */

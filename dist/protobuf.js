@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.2 (c) 2016 Daniel Wirtz
- * Compiled Tue, 06 Dec 2016 00:28:40 UTC
+ * Compiled Tue, 06 Dec 2016 14:03:27 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -281,7 +281,7 @@ var Enum   = require(5),
 decoder.fallback = function fallback(reader, length) {
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
     var fields  = this.getFieldsById(),
-        reader  = reader instanceof Reader ? reader : Reader(reader),
+        reader  = reader instanceof Reader ? reader : Reader.create(reader),
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
@@ -352,7 +352,7 @@ decoder.generate = function generate(mtype) {
     var fields = mtype.getFieldsArray();    
     var gen = util.codegen("r", "l")
 
-    ("r instanceof Reader||(r=Reader(r))")
+    ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
         ("var t=r.tag()")
@@ -457,7 +457,7 @@ var Enum   = require(5),
 encoder.fallback = function fallback(message, writer) {
     /* eslint-disable block-scoped-var, no-redeclare */
     if (!writer)
-        writer = Writer();
+        writer = Writer.create();
     var fields = this.getFieldsArray(), fi = 0;
     while (fi < fields.length) {
         var field    = fields[fi++].resolve(),
@@ -535,7 +535,7 @@ encoder.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
     var gen = util.codegen("m", "w")
-    ("w||(w=Writer())");
+    ("w||(w=Writer.create())");
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
@@ -2763,15 +2763,12 @@ Reader.configure = configure;
 
 /**
  * Constructs a new reader using the specified buffer.
- * When called as a function, returns an appropriate reader for the specified buffer. Use {@link Reader.create} instead in typed environments.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
-    if (!(this instanceof Reader))
-        return util.Buffer && util.Buffer.isBuffer(buffer) && new BufferReader(buffer) || new Reader(buffer);
-
+    
     /**
      * Read buffer.
      * @type {Uint8Array}
@@ -2797,7 +2794,7 @@ function Reader(buffer) {
  * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  */
 Reader.create = function create(buffer) {
-    return Reader(buffer);
+    return new (util.Buffer && util.Buffer.isBuffer(buffer) && BufferReader || Reader)(buffer);
 };
 
 /** @alias Reader.prototype */
@@ -2832,21 +2829,37 @@ ReaderPrototype.tag = function read_tag() {
  * @returns {number} Value read
  */
 ReaderPrototype.int32 = function read_int32() {
-    var value = 0,
-        shift = 0,
-        octet = 0;
-    // A fast route could potentially be a thing here, but the benefits are minimal because
-    // of the assertions required (up to 10 bytes if negative, more is invalid).
-    do {
-        if (this.pos >= this.len)
-            throw indexOutOfRange(this);
+    // 1 byte
+    var octet = this.buf[this.pos++],
+        value = octet & 127;
+    if (octet > 127) { // false if octet is undefined (pos >= len)
+        // 2 bytes
         octet = this.buf[this.pos++];
-        if (shift < 29) // 0..28
-            value |= (octet & 127) << shift;
-        else if (shift > 63) // 35..63
-            throw Error("invalid varint encoding");
-        shift += 7;
-    } while (octet & 128);
+        value |= (octet & 127) << 7;
+        if (octet > 127) {
+            // 3 bytes
+            octet = this.buf[this.pos++];
+            value |= (octet & 127) << 14;
+            if (octet > 127) {
+                // 4 bytes
+                octet = this.buf[this.pos++];
+                value |= (octet & 127) << 21;
+                if (octet > 127) {
+                    // 5 bytes
+                    octet = this.buf[this.pos++];
+                    value |= octet << 28;
+                    if (octet > 127) {
+                        // 6..10 bytes (sign extended)
+                        this.pos += 5;
+                    }
+                }
+            }
+        }
+    }
+    if (this.pos > this.len) {
+        this.pos = this.len;
+        throw indexOutOfRange(this);
+    }
     return value;
 };
 
@@ -4364,7 +4377,7 @@ TypePrototype.decode = function decode(readerOrBuffer, length) {
  * @returns {Prototype} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-    readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);
+    readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
 };
 
@@ -5367,13 +5380,10 @@ Writer.State = State;
 
 /**
  * Constructs a new writer.
- * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
  * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  */
 function Writer() {
-    if (!(this instanceof Writer))
-        return util.Buffer && new BufferWriter() || new Writer();
 
     /**
      * Current length.
@@ -5411,7 +5421,7 @@ function Writer() {
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
 Writer.create = function create() {
-    return Writer();
+    return new (util.Buffer && BufferWriter || Writer);
 };
 
 /** @alias Writer.prototype */

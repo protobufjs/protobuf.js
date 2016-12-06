@@ -59,7 +59,7 @@
             var util = $runtime.util;
             var types; $lazyTypes.push(types = [null,null,null,null,null,"Package.Repository",null,null,null,null,null,null,null,null,null,null]);
             return function encode(m,w) {
-                w||(w=Writer())
+                w||(w=Writer.create())
                 if(m['name']!==undefined&&m['name']!=="")
                     w.tag(1,2).string(m['name'])
                 if(m['version']!==undefined&&m['version']!=="")
@@ -151,7 +151,7 @@
             var util = $runtime.util;
             var types; $lazyTypes.push(types = [null,null,null,null,null,"Package.Repository",null,null,null,null,null,null,null,null,null,null]);
             return function decode(r,l) {
-                r instanceof Reader||(r=Reader(r))
+                r instanceof Reader||(r=Reader.create(r))
                 var c=l===undefined?r.len:r.pos+l,m=new $root.Package
                 while(r.pos<c){
                     var t=r.tag()
@@ -286,7 +286,7 @@
          * @returns {Package} Package
          */
         Package.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-            readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);
+            readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
             return this.decode(readerOrBuffer, readerOrBuffer.uint32());
         };
 
@@ -340,7 +340,7 @@
                 var util = $runtime.util;
                 var types; $lazyTypes.push(types = [null,null]);
                 return function encode(m,w) {
-                    w||(w=Writer())
+                    w||(w=Writer.create())
                     if(m['type']!==undefined&&m['type']!=="")
                         w.tag(1,2).string(m['type'])
                     if(m['url']!==undefined&&m['url']!=="")
@@ -373,7 +373,7 @@
                 var util = $runtime.util;
                 var types; $lazyTypes.push(types = [null,null]);
                 return function decode(r,l) {
-                    r instanceof Reader||(r=Reader(r))
+                    r instanceof Reader||(r=Reader.create(r))
                     var c=l===undefined?r.len:r.pos+l,m=new $root.Package.Repository
                     while(r.pos<c){
                         var t=r.tag()
@@ -400,7 +400,7 @@
              * @returns {Package.Repository} Repository
              */
             Repository.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-                readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);
+                readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
                 return this.decode(readerOrBuffer, readerOrBuffer.uint32());
             };
 

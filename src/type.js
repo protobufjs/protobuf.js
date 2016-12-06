@@ -377,7 +377,7 @@ TypePrototype.decode = function decode(readerOrBuffer, length) {
  * @returns {Prototype} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-    readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);
+    readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
     return this.decode(readerOrBuffer, readerOrBuffer.uint32());
 };
 

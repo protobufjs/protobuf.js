@@ -91,13 +91,10 @@ Writer.State = State;
 
 /**
  * Constructs a new writer.
- * When called as a function, returns an appropriate writer for the current environment. Use {@link Writer.create} instead in typed environments.
  * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  */
 function Writer() {
-    if (!(this instanceof Writer))
-        return util.Buffer && new BufferWriter() || new Writer();
 
     /**
      * Current length.
@@ -135,7 +132,7 @@ function Writer() {
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
 Writer.create = function create() {
-    return Writer();
+    return new (util.Buffer && BufferWriter || Writer);
 };
 
 /** @alias Writer.prototype */

@@ -21,7 +21,7 @@ var Enum   = require("./enum"),
 encoder.fallback = function fallback(message, writer) {
     /* eslint-disable block-scoped-var, no-redeclare */
     if (!writer)
-        writer = Writer();
+        writer = Writer.create();
     var fields = this.getFieldsArray(), fi = 0;
     while (fi < fields.length) {
         var field    = fields[fi++].resolve(),
@@ -99,7 +99,7 @@ encoder.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
     var gen = util.codegen("m", "w")
-    ("w||(w=Writer())");
+    ("w||(w=Writer.create())");
 
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),

@@ -116,7 +116,7 @@
             var util = $runtime.util;
             var types; $lazyTypes.push(types = [null]);
             return function encode(m,w) {
-                w||(w=Writer())
+                w||(w=Writer.create())
                 if(m['path']!==undefined&&m['path']!=="")
                     w.tag(1,2).string(m['path'])
                 return w
@@ -147,7 +147,7 @@
             var util = $runtime.util;
             var types; $lazyTypes.push(types = [null]);
             return function decode(r,l) {
-                r instanceof Reader||(r=Reader(r))
+                r instanceof Reader||(r=Reader.create(r))
                 var c=l===undefined?r.len:r.pos+l,m=new $root.MyRequest
                 while(r.pos<c){
                     var t=r.tag()
@@ -171,7 +171,7 @@
          * @returns {MyRequest} MyRequest
          */
         MyRequest.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-            readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);
+            readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
             return this.decode(readerOrBuffer, readerOrBuffer.uint32());
         };
 
@@ -224,7 +224,7 @@
             var util = $runtime.util;
             var types; $lazyTypes.push(types = [null]);
             return function encode(m,w) {
-                w||(w=Writer())
+                w||(w=Writer.create())
                 if(m['status']!==undefined&&m['status']!==0)
                     w.tag(2,0).int32(m['status'])
                 return w
@@ -255,7 +255,7 @@
             var util = $runtime.util;
             var types; $lazyTypes.push(types = [null]);
             return function decode(r,l) {
-                r instanceof Reader||(r=Reader(r))
+                r instanceof Reader||(r=Reader.create(r))
                 var c=l===undefined?r.len:r.pos+l,m=new $root.MyResponse
                 while(r.pos<c){
                     var t=r.tag()
@@ -279,7 +279,7 @@
          * @returns {MyResponse} MyResponse
          */
         MyResponse.decodeDelimited = function decodeDelimited(readerOrBuffer) {
-            readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);
+            readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
             return this.decode(readerOrBuffer, readerOrBuffer.uint32());
         };
 

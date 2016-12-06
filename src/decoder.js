@@ -21,7 +21,7 @@ var Enum   = require("./enum"),
 decoder.fallback = function fallback(reader, length) {
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
     var fields  = this.getFieldsById(),
-        reader  = reader instanceof Reader ? reader : Reader(reader),
+        reader  = reader instanceof Reader ? reader : Reader.create(reader),
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
@@ -92,7 +92,7 @@ decoder.generate = function generate(mtype) {
     var fields = mtype.getFieldsArray();    
     var gen = util.codegen("r", "l")
 
-    ("r instanceof Reader||(r=Reader(r))")
+    ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
         ("var t=r.tag()")
