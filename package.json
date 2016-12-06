@@ -33,9 +33,7 @@
     "zuul": "zuul --ui tape --no-coverage --concurrency 4 -- tests/*.js",
     "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js",
     "bench": "node bench",
-    "bench-read": "node bench/read",
-    "bench-write": "node bench/write",
-    "all": "npm run lint && npm run test && npm run build && npm run types && npm run docs && npm run bench",
+    "prof": "node bench/prof",
     "prepublish": "node scripts/prepublish"
   },
   "optionalDependencies": {

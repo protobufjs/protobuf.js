@@ -563,7 +563,7 @@ function BufferWriter() {
 BufferWriter.alloc = function alloc_buffer(size) {
     BufferWriter.alloc = util.Buffer.allocUnsafe
         ? util.Buffer.allocUnsafe
-        : function allocUnsafe(size) { return new util.Buffer(size); };
+        : function allocUnsafeNew(size) { return new util.Buffer(size); };
     return BufferWriter.alloc(size);
 };
 

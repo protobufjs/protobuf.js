@@ -282,6 +282,22 @@ Documentation
 
 * [protobuf.js API Documentation](http://dcode.io/protobuf.js/)
 
+### Data type recommendations
+
+| Value type               | protobuf Type | Size / Notes
+|--------------------------|---------------|-----------------------------------------------------------------------------------
+| Unsigned 32 bit integers | uint32        | 1 to 5 bytes.
+| Signed 32 bit integers   | sint32        | 1 to 5 bytes. Do not use int32 (always encodes negative values as 10 bytes).
+| Unsigned 52 bit integers | uint64        | 1 to 10 bytes.
+| Signed 52 bit integers   | sint64        | 1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).
+| Unsigned 64 bit integers | uint64        | Use with long.js. 1 to 10 bytes.
+| Signed 64 bit integers   | sint64        | Use with long.js. 1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).
+| 32 bit precision floats  | float         | 4 bytes.
+| 64 bit precision floats  | double        | 8 bytes. Use float if 32 bits of precision are enough.
+| Boolean values           | bool          | 1 byte.
+| Strings                  | string        | 1 byte + utf8 byte length.
+| Buffers                  | bytes         | 1 byte + byte length.
+
 Command line
 ------------
 
