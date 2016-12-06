@@ -333,6 +333,8 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="BufferWriter.alloc"><a href="BufferWriter.html#.alloc">alloc</a></li>
+            
                 <li data-name="BufferWriter#bool"><a href="BufferWriter.html#bool">bool</a></li>
             
                 <li data-name="BufferWriter#bytes"><a href="BufferWriter.html#bytes">bytes</a></li>
@@ -1361,6 +1363,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="Writer.alloc"><a href="Writer.html#.alloc">alloc</a></li>
             
                 <li data-name="Writer.create"><a href="Writer.html#.create">create</a></li>
             
@@ -2417,6 +2421,198 @@
                     
             </td>
             <td class="description last">Parser result</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="pool">
+            
+            pool<span class="signature">(alloc, <span class="optional">size</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ function }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/pool.js">pool.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/pool.js#L11">line 11</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A drop-in buffer pool for Uint8Array, just like node uses for buffers.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>alloc</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Allocator</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    8192
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Slab size</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        function
+                        
+                    
+            </td>
+            <td class="description last">Pooled allocator</td>
         </tr>
     
     </tbody>
