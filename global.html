@@ -930,6 +930,8 @@
             
                 <li data-name="Reader.configure"><a href="Reader.html#.configure">configure</a></li>
             
+                <li data-name="Reader.create"><a href="Reader.html#.create">create</a></li>
+            
                 <li data-name="Reader#bool"><a href="Reader.html#bool">bool</a></li>
             
                 <li data-name="Reader#bytes"><a href="Reader.html#bytes">bytes</a></li>
@@ -1359,6 +1361,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="Writer.create"><a href="Writer.html#.create">create</a></li>
             
                 <li data-name="Writer#bool"><a href="Writer.html#bool">bool</a></li>
             
@@ -2002,7 +2006,7 @@
     <div class="nameContainer">
         <h4 class="name" id="load">
             
-            load<span class="signature">(filename, <span class="optional">root</span>, <span class="optional">callback</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Promise&lt;<a href="Root.html">Root</a>> | Object }</span>
+            load<span class="signature">(filename, <span class="optional">root</span>, <span class="optional">callback</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Promise&lt;<a href="Root.html">Root</a>> | undefined }</span>
         </h4>
     
         
@@ -2087,6 +2091,9 @@
             
                 
 <span class="param-type"><a href="Root.html">Root</a></span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -2225,11 +2232,11 @@
                         Promise.&lt;<a href="Root.html">Root</a>>
                          | 
                     
-                        Object
+                        undefined
                         
                     
             </td>
-            <td class="description last">A promise if callback has been omitted, otherwise the protobuf namespace</td>
+            <td class="description last">A promise if <code>callback</code> has been omitted</td>
         </tr>
     
     </tbody>
