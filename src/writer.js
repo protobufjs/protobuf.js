@@ -146,7 +146,7 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
-    Writer.alloc = require("./pool")(Writer.alloc);
+    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
@@ -563,7 +563,7 @@ function BufferWriter() {
 BufferWriter.alloc = function alloc_buffer(size) {
     BufferWriter.alloc = util.Buffer.allocUnsafe
         ? util.Buffer.allocUnsafe
-        : function alloc_buffer_new(size) { return new util.Buffer(size); };
+        : function allocUnsafe(size) { return new util.Buffer(size); };
     return BufferWriter.alloc(size);
 };
 

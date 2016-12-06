@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.2 TypeScript definitions
- * Generated Tue, 06 Dec 2016 16:05:33 UTC
+ * Generated Tue, 06 Dec 2016 17:00:05 UTC
  */
 declare module "protobufjs" {
 
@@ -889,16 +889,6 @@ declare module "protobufjs" {
    function parse(source: string, root?: Root): ParserResult;
    
    /**
-    * A drop-in buffer pool for Uint8Array, just like node uses for buffers.
-    * @exports pool
-    * @param {function(number):Uint8Array} alloc Allocator
-    * @param {number} [size=8192] Slab size
-    * @returns {function(number):Uint8Array} Pooled allocator
-    */
-   module pool {
-   }
-   
-   /**
     * Options passed to the {@link Prototype|prototype constructor}, modifying its behavior.
     * @typedef PrototypeOptions
     * @type {Object}
@@ -1647,6 +1637,17 @@ declare module "protobufjs" {
           length(): number;
    
       }
+   
+      /**
+       * A drop-in buffer pool, similar in functionality to what node uses for buffers.
+       * @memberof util
+       * @function
+       * @param {function(number):Uint8Array} alloc Allocator
+       * @param {function(number, number):Uint8Array} slice Slicer
+       * @param {number} [size=8192] Slab size
+       * @returns {function(number):Uint8Array} Pooled allocator
+       */
+      function pool(alloc: any, slice: any, size?: number): any;
    
       /**
        * Whether running within node or not.

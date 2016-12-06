@@ -4,6 +4,8 @@ var util = exports;
 
 var LongBits = util.LongBits = require("./longbits");
 
+util.pool = require("./pool");
+
 /**
  * Whether running within node or not.
  * @memberof util
