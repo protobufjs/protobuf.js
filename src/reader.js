@@ -74,7 +74,7 @@ Reader.create = function create(buffer) {
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-ReaderPrototype._slice = ArrayImpl.prototype.slice || ArrayImpl.prototype.subarray;
+ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
 /**
  * Tag read.

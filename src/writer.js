@@ -135,6 +135,19 @@ Writer.create = function create() {
     return new (util.Buffer && BufferWriter || Writer);
 };
 
+/**
+ * Allocates a buffer of the specified size.
+ * @param {number} size Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+Writer.alloc = function alloc(size) {
+    return new ArrayImpl(size);
+};
+
+// Use Uint8Array buffer pool in the browser, just like node does with buffers
+if (ArrayImpl !== Array)
+    Writer.alloc = require("./pool")(Writer.alloc);
+
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
 
@@ -514,7 +527,14 @@ WriterPrototype.ldelim = function ldelim(id) {
     return this;
 };
 
-function finish_internal(head, buf) {
+/**
+ * Finishes the current sequence of write operations and frees all resources.
+ * @returns {Uint8Array} Finished buffer
+ */
+WriterPrototype.finish = function finish() {
+    var head = this.head.next, // skip noop
+        buf  = this.constructor.alloc(this.len);
+    this.reset();
     var pos = 0;
     while (head) {
         head.fn(buf, pos, head.val);
@@ -522,19 +542,6 @@ function finish_internal(head, buf) {
         head = head.next;
     }
     return buf;
-}
-
-WriterPrototype._finish = finish_internal;
-
-/**
- * Finishes the current sequence of write operations and frees all resources.
- * @returns {Uint8Array} Finished buffer
- */
-WriterPrototype.finish = function finish() {
-    var head = this.head.next, // skip noop
-        buf  = new ArrayImpl(this.len);
-    this.reset();
-    return finish_internal(head, buf);
 };
 
 /**
@@ -547,6 +554,18 @@ WriterPrototype.finish = function finish() {
 function BufferWriter() {
     Writer.call(this);
 }
+
+/**
+ * Allocates a buffer of the specified size.
+ * @param {number} size Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+BufferWriter.alloc = function alloc_buffer(size) {
+    BufferWriter.alloc = util.Buffer.allocUnsafe
+        ? util.Buffer.allocUnsafe
+        : function alloc_buffer_new(size) { return new util.Buffer(size); };
+    return BufferWriter.alloc(size);
+};
 
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
@@ -622,14 +641,4 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return len
         ? this.uint32(len).push(writeStringBuffer, len, value)
         : this.push(writeByte, 1, 0);
-};
-
-/**
- * @override
- */
-BufferWriterPrototype.finish = function finish_buffer() {
-    var head = this.head.next, // skip noop
-        buf  = util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(this.len) || new util.Buffer(this.len);
-    this.reset();
-    return finish_internal(head, buf);
 };

@@ -52,6 +52,7 @@ protobuf.inherits         = require("./inherits");
 // Utility
 protobuf.types            = require("./types");
 protobuf.common           = require("./common");
+protobuf.pool             = require("./pool");
 protobuf.util             = require("./util");
 
 // Be nice to AMD
