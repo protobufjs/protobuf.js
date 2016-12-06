@@ -379,7 +379,7 @@ protobuf.js integrates into any browserify build-process. There are a few possib
 
 Performance
 -----------
-The package includes a [benchmark](https://github.com/dcodeIO/protobuf.js/tree/master/bench) that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:
+The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:
 
 ```
 benchmarking encoding performance ...
@@ -413,7 +413,7 @@ JSON to/from buffer x 89,593 ops/sec ±0.85% (87 runs sampled)
         JSON to/from buffer was 62.4% slower
 ```
 
-Note that JSON is a native binding nowadays and as such is *really* fast. So, how can protobuf.js be faster?
+Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?
 
 * The benchmark is [somewhat flawed](https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js).
 * Reader and writer interfaces configure themselves according to the environment to eliminate redundant conditionals.
@@ -425,7 +425,19 @@ Note that JSON is a native binding nowadays and as such is *really* fast. So, ho
 
 Note that code generation requires `new Function(...)` (basically `eval`) support and that an equivalent but slower fallback will be used where unsupported.
 
-Also note that as of this writing, the benchmark suite performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.
+You can also run [the benchmark](https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js) ...
+
+```
+$> npm run bench
+```
+
+and [the profiler](https://github.com/dcodeIO/protobuf.js/blob/master/bench/prof.js) yourself (the latter requires a recent version of node):
+
+```
+$> npm run prof <encode|decode|encode-browser|decode-browser> [iterations=10000000]
+```
+
+Note that as of this writing, the benchmark suite performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.
 
 Compatibility
 -------------
