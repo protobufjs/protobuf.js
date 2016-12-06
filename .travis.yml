@@ -14,5 +14,5 @@ matrix:
   include:
   - node_js: 6
     script: 
-      - npm run zuul
+      - travis_wait npm run zuul
       - sleep 3

@@ -1,4 +1,4 @@
-protobuf.js [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![donate][paypal-image]][paypal-url]
+protobuf.js [![travis][travis-image]][travis-url] [![npm][npm-dl-image]][npm-url] [![npm][npm-image]][npm-url] ![Apache-2.0][license-image] [![donate][paypal-image]][paypal-url]
 ===========
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
@@ -9,6 +9,8 @@ protobuf.js [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [
 [travis-url]: https://travis-ci.org/dcodeIO/protobuf.js
 [npm-image]: https://img.shields.io/npm/v/protobufjs.svg
 [npm-url]: https://npmjs.org/package/protobufjs
+[npm-dl-image]: https://img.shields.io/npm/dm/protobufjs.svg
+[license-image]: https://img.shields.io/npm/l/protobufjs.svg
 [paypal-image]: https://img.shields.io/badge/paypal-donate-yellow.svg
 [paypal-url]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dcode%40dcode.io&item_name=%3C3%20protobuf.js
 
