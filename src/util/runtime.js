@@ -110,3 +110,16 @@ util.prop = function prop(target, key, descriptor) {
     } else
         Object.defineProperty(target, key, descriptor);
 };
+
+/**
+ * An immuable empty array.
+ * @memberof util
+ * @type {Array.<*>}
+ */
+util.emptyArray = Object.freeze([]);
+
+/**
+ * An immutable empty object.
+ * @type {Object}
+ */
+util.emptyObject = Object.freeze({});

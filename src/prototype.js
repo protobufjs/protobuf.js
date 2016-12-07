@@ -2,37 +2,20 @@
 module.exports = Prototype;
 
 /**
- * Options passed to the {@link Prototype|prototype constructor}, modifying its behavior.
- * @typedef PrototypeOptions
- * @type {Object}
- * @property {boolean} [fieldsOnly=false] Sets only properties that reference a field
- */
-
-/**
  * Constructs a new prototype.
  * This method should be called from your custom constructors, i.e. `Prototype.call(this, properties)`.
  * @classdesc Runtime message prototype ready to be extended by custom classes or generated code.
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
- * @param {PrototypeOptions} [options] Prototype options
  * @abstract
  * @see {@link inherits}
  * @see {@link Class}
  */
-function Prototype(properties, options) {
-    if (!options)
-        options = {};
+function Prototype(properties) {
     if (properties) {
-        var fields = this.constructor.$type.fields,
-            keys   = Object.keys(properties);
-        for (var i = 0; i < keys.length; ++i) {
-            var field = fields[keys[i]];
-            if (field && field.partOf)
-                for (var j = 0; j < field.partOf.oneof.length; ++j)
-                    delete this[field.partOf.oneof[j]];
-            if (field || !options.fieldsOnly)
-                this[keys[i]] = properties[keys[i]];
-        }
+        var keys = Object.keys(properties);
+        for (var i = 0; i < keys.length; ++i)
+            this[keys[i]] = properties[keys[i]];
     }
 }
 

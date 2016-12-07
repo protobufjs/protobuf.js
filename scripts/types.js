@@ -14,19 +14,7 @@ var header = [
 ];
 
 var dts = fs.readFileSync(path.join(dir, "types.d.ts"), "utf8");
-
-// Fix generic promises
-dts = dts.replace(/Promise\./g, "Promise");
-
-// Fix multidimensional arrays
-var found;
-do {
-    found = false;
-    dts = dts.replace(/Array\.<([^>]+)>/g, function($0, $1) {
-        found = true;
-        return $1 + "[]";
-    });
-} while (found);
+fs.unlinkSync(path.join(dir, "types.d.ts"));
 
 // Remove declare statements and wrap everything in a module
 dts = dts.replace(/\bdeclare\s/g, "");
@@ -34,4 +22,3 @@ dts = dts.replace(/^/mg, "   ");
 dts = header.join('\n')+"\ndeclare module \"protobufjs\" {\n\n" + dts + "\n}\n";
 
 fs.writeFileSync(path.join(dir, "protobuf.js.d.ts"), dts);
-fs.unlinkSync(path.join(dir, "types.d.ts"));

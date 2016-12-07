@@ -9,7 +9,7 @@
     /* Global */ else
         global.root = factory(global.protobuf);
 
-})(this, function($runtime) {
+})(this, function($protobuf) {
     "use strict";
 
 %OUTPUT%

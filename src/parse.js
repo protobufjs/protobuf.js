@@ -1,16 +1,18 @@
 "use strict";
 module.exports = parse;
 
-var tokenize = require("./tokenize"),
-    Root     = require("./root"),
-    Type     = require("./type"),
-    Field    = require("./field"),
-    MapField = require("./mapfield"),
-    OneOf    = require("./oneof"),
-    Enum     = require("./enum"),
-    Service  = require("./service"),
-    Method   = require("./method"),
-    types    = require("./types");
+var tokenize  = require("./tokenize"),
+    Root      = require("./root"),
+    Type      = require("./type"),
+    Field     = require("./field"),
+    MapField  = require("./mapfield"),
+    OneOf     = require("./oneof"),
+    Enum      = require("./enum"),
+    Service   = require("./service"),
+    Method    = require("./method"),
+    types     = require("./types"),
+    util      = require("./util");
+var camelCase = util.camelCase;
 
 var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
@@ -18,12 +20,6 @@ var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
 
 function lower(token) {
     return token === null ? null : token.toLowerCase();
-}
-
-function camelCase(name) {
-    return name.substring(0,1)
-         + name.substring(1)
-               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
 }
 
 var s_required = "required",

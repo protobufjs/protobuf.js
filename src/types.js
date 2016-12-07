@@ -6,6 +6,8 @@
  */
 var types = exports;
 
+var util = require("./util");
+
 var s = [
     "double",   // 0
     "float",    // 1
@@ -72,7 +74,7 @@ types.defaults = bake([
     /* sfixed64 */ 0,
     /* bool     */ false,
     /* string   */ "",
-    /* bytes    */ []
+    /* bytes    */ util.emptyArray
 ]);
 
 /**

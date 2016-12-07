@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Wed, 07 Dec 2016 21:12:35 UTC
+ * Compiled Wed, 07 Dec 2016 22:34:10 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1418,9 +1418,11 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         field.resolve();
         // objects on the prototype must be immmutable. users must assign a new object instance and
         // cannot use Array#push on empty arrays on the prototype for example, as this would modify
-        // the non-encoded value on the prototype for ALL messages of this type.
-        prototype[field.name] = util.isObject(field.defaultValue)
-            ? Object.freeze(field.defaultValue)
+        // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
+        prototype[field.name] = Array.isArray(field.defaultValue)
+            ? util.emptyArray
+            : util.isObject(field.defaultValue)
+            ? util.emptyObject
             : field.defaultValue;
     });
 
@@ -2310,16 +2312,18 @@ OneOfPrototype.onRemove = function onRemove(parent) {
 "use strict";
 module.exports = parse;
 
-var tokenize = require(20),
-    Root     = require(18),
-    Type     = require(21),
-    Field    = require(8),
-    MapField = require(10),
-    OneOf    = require(14),
-    Enum     = require(7),
-    Service  = require(19),
-    Method   = require(11),
-    types    = require(22);
+var tokenize  = require(20),
+    Root      = require(18),
+    Type      = require(21),
+    Field     = require(8),
+    MapField  = require(10),
+    OneOf     = require(14),
+    Enum      = require(7),
+    Service   = require(19),
+    Method    = require(11),
+    types     = require(22),
+    util      = require(23);
+var camelCase = util.camelCase;
 
 var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
     typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
@@ -2327,12 +2331,6 @@ var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
 
 function lower(token) {
     return token === null ? null : token.toLowerCase();
-}
-
-function camelCase(name) {
-    return name.substring(0,1)
-         + name.substring(1)
-               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
 }
 
 var s_required = "required",
@@ -2866,16 +2864,9 @@ function parse(source, root) {
     };
 }
 
-},{"10":10,"11":11,"14":14,"18":18,"19":19,"20":20,"21":21,"22":22,"7":7,"8":8}],16:[function(require,module,exports){
+},{"10":10,"11":11,"14":14,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"7":7,"8":8}],16:[function(require,module,exports){
 "use strict";
 module.exports = Prototype;
-
-/**
- * Options passed to the {@link Prototype|prototype constructor}, modifying its behavior.
- * @typedef PrototypeOptions
- * @type {Object}
- * @property {boolean} [fieldsOnly=false] Sets only properties that reference a field
- */
 
 /**
  * Constructs a new prototype.
@@ -2883,25 +2874,15 @@ module.exports = Prototype;
  * @classdesc Runtime message prototype ready to be extended by custom classes or generated code.
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
- * @param {PrototypeOptions} [options] Prototype options
  * @abstract
  * @see {@link inherits}
  * @see {@link Class}
  */
-function Prototype(properties, options) {
-    if (!options)
-        options = {};
+function Prototype(properties) {
     if (properties) {
-        var fields = this.constructor.$type.fields,
-            keys   = Object.keys(properties);
-        for (var i = 0; i < keys.length; ++i) {
-            var field = fields[keys[i]];
-            if (field && field.partOf)
-                for (var j = 0; j < field.partOf.oneof.length; ++j)
-                    delete this[field.partOf.oneof[j]];
-            if (field || !options.fieldsOnly)
-                this[keys[i]] = properties[keys[i]];
-        }
+        var keys = Object.keys(properties);
+        for (var i = 0; i < keys.length; ++i)
+            this[keys[i]] = properties[keys[i]];
     }
 }
 
@@ -4656,6 +4637,8 @@ TypePrototype.verify = function verify(message) {
  */
 var types = exports;
 
+var util = require(23);
+
 var s = [
     "double",   // 0
     "float",    // 1
@@ -4722,7 +4705,7 @@ types.defaults = bake([
     /* sfixed64 */ 0,
     /* bool     */ false,
     /* string   */ "",
-    /* bytes    */ []
+    /* bytes    */ util.emptyArray
 ]);
 
 /**
@@ -4776,7 +4759,7 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{}],23:[function(require,module,exports){
+},{"23":23}],23:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4988,18 +4971,6 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Creates a new buffer of whatever type supported by the environment.
- * @param {number} [size=0] Buffer size
- * @returns {Uint8Array} Buffer
- */
-util.newBuffer = function newBuffer(size) {
-    size = size || 0; 
-    return util.Buffer
-        ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
-        : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
-};
-
-/**
  * Minimalistic sprintf.
  * @param {string} format Format string
  * @param {...*} args Replacements
@@ -5010,10 +4981,49 @@ util.sprintf = function sprintf(format) {
         index  = 0;
     return format.replace(/%([djs])/g, function($0, $1) {
         var param = params[index++];
-        return $1 === "j"
-            ? JSON.stringify(param)
-            : String(param);
+        switch ($1) {
+            case "j":
+                return JSON.stringify(param);
+            case "p":
+                return util.safeProp(param);
+            default:
+                return String(param);
+        }
     });
+};
+
+/**
+ * Converts a string to camel case notation.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.camelCase = function camelCase(str) {
+    return str.substring(0,1)
+         + str.substring(1)
+               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
+};
+
+/**
+ * Converts a string to underscore notation.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.underScore = function underScore(str) {
+    return str.substring(0,1)
+         + str.substring(1)
+               .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
+};
+
+/**
+ * Creates a new buffer of whatever type supported by the environment.
+ * @param {number} [size=0] Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+util.newBuffer = function newBuffer(size) {
+    size = size || 0; 
+    return util.Buffer
+        ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
+        : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
 };
 
 // Merge in runtime utility
@@ -5354,6 +5364,19 @@ util.prop = function prop(target, key, descriptor) {
     } else
         Object.defineProperty(target, key, descriptor);
 };
+
+/**
+ * An immuable empty array.
+ * @memberof util
+ * @type {Array.<*>}
+ */
+util.emptyArray = Object.freeze([]);
+
+/**
+ * An immutable empty object.
+ * @type {Object}
+ */
+util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 

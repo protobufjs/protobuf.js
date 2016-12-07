@@ -15,7 +15,8 @@ tape.test("oneofs", function(test) {
         });
         test.equal(message.num, 1, "should initialize the last value");
         test.equal(message.kind, "num", "should reference the last value");
-        test.notOk(message.hasOwnProperty('str'), "should not initialize other values");
+        message.setKind('num');
+        test.notOk(message.hasOwnProperty('str'), "should delete other values");
 
         message.str = "a";
         message.setKind('str'); // message.kind = 'str' if IE8 support isn't required

@@ -162,9 +162,11 @@ inherits.defineProperties = function defineProperties(prototype, type) {
         field.resolve();
         // objects on the prototype must be immmutable. users must assign a new object instance and
         // cannot use Array#push on empty arrays on the prototype for example, as this would modify
-        // the non-encoded value on the prototype for ALL messages of this type.
-        prototype[field.name] = util.isObject(field.defaultValue)
-            ? Object.freeze(field.defaultValue)
+        // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
+        prototype[field.name] = Array.isArray(field.defaultValue)
+            ? util.emptyArray
+            : util.isObject(field.defaultValue)
+            ? util.emptyObject
             : field.defaultValue;
     });
 

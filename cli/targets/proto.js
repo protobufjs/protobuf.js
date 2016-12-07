@@ -5,15 +5,16 @@ proto_target.private = true;
 
 var protobuf = require("../..");
 
-var Namespace = protobuf.Namespace,
-    Enum      = protobuf.Enum,
-    Type      = protobuf.Type,
-    Field     = protobuf.Field,
-    OneOf     = protobuf.OneOf,
-    Service   = protobuf.Service,
-    Method    = protobuf.Method,
-    types     = protobuf.types,
-    util      = protobuf.util;
+var Namespace  = protobuf.Namespace,
+    Enum       = protobuf.Enum,
+    Type       = protobuf.Type,
+    Field      = protobuf.Field,
+    OneOf      = protobuf.OneOf,
+    Service    = protobuf.Service,
+    Method     = protobuf.Method,
+    types      = protobuf.types,
+    util       = protobuf.util;
+var underScore = protobuf.util.underScore;
 
 var out = [];
 var indent = 0;
@@ -56,12 +57,6 @@ function push(line) {
     for (var i = 0; i < indent; ++i)
         ind += "    ";
     out.push(ind + line);
-}
-
-function under_score(name) {
-    return name.substring(0,1)
-         + name.substring(1)
-               .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
 }
 
 function escape(str) {
@@ -186,7 +181,7 @@ function buildField(field, passExtend) {
         sb.push(field.required && "required" || "optional", field.type);
     else
         sb.push(field.type);
-    sb.push(under_score(field.name), "=", field.id);
+    sb.push(underScore(field.name), "=", field.id);
     var opts = buildFieldOptions(field);
     if (opts)
         sb.push(opts);
@@ -252,14 +247,14 @@ function consolidateExtends(nested) {
 
 function buildOneOf(oneof) {
     push("");
-    push("oneof " + under_score(oneof.name) + " {");
+    push("oneof " + underScore(oneof.name) + " {");
     ++indent; first = true;
     oneof.oneof.forEach(function(fieldName) {
         var field = oneof.parent.get(fieldName);
         if (first)
             push(""), first = false;
         var opts = buildFieldOptions(field);
-        push(field.type + " " + under_score(field.name) + " = " + field.id + (opts ? " " + opts : "") + ";");
+        push(field.type + " " + underScore(field.name) + " = " + field.id + (opts ? " " + opts : "") + ";");
     });
     --indent;
     push("}");

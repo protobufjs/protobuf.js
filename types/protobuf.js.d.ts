@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Wed, 07 Dec 2016 21:12:41 UTC
+ * Generated Wed, 07 Dec 2016 22:34:16 UTC
  */
 declare module "protobufjs" {
 
@@ -42,7 +42,7 @@ declare module "protobufjs" {
     * @property {Object} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
     * @property {Object} google/protobuf/timestamp.proto Timestamp
     */
-   function common(name: string, json: Object): undefined;
+   function common(name: string, json: Object): void;
    
    /**
     * Constructs a new enum.
@@ -299,7 +299,7 @@ declare module "protobufjs" {
     * @returns {undefined}
     * @throws {TypeError} If arguments are invalid
     */
-   function load(filename: (string|string[]), root: Root, callback: (() => any)): undefined;
+   function load(filename: (string|string[]), root: Root, callback: (() => any)): void;
    
    /**
     * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
@@ -311,7 +311,7 @@ declare module "protobufjs" {
     * @throws {TypeError} If arguments are invalid
     * @variation 2
     */
-   function load(filename: (string|string[]), callback: (() => any)): undefined;
+   function load(filename: (string|string[]), callback: (() => any)): void;
    
    /**
     * Loads one or multiple .proto or preprocessed .json files into a common root namespace and returns a promise.
@@ -750,14 +750,14 @@ declare module "protobufjs" {
        * @param {ReflectionObject} parent Parent added to
        * @returns {undefined}
        */
-      onAdd(parent: ReflectionObject): undefined;
+      onAdd(parent: ReflectionObject): void;
    
       /**
        * Called when this object is removed from a parent.
        * @param {ReflectionObject} parent Parent removed from
        * @returns {undefined}
        */
-      onRemove(parent: ReflectionObject): undefined;
+      onRemove(parent: ReflectionObject): void;
    
       /**
        * Resolves this objects type references.
@@ -826,7 +826,7 @@ declare module "protobufjs" {
    
       /**
        * Field names that belong to this oneof.
-       * @type {string[]}
+       * @type {Array.<string>}
        */
       oneof: string[];
    
@@ -890,23 +890,11 @@ declare module "protobufjs" {
    function parse(source: string, root?: Root): ParserResult;
    
    /**
-    * Options passed to the {@link Prototype|prototype constructor}, modifying its behavior.
-    * @typedef PrototypeOptions
-    * @type {Object}
-    * @property {boolean} [fieldsOnly=false] Sets only properties that reference a field
-    */
-   interface PrototypeOptions {
-      fieldsOnly: boolean;
-   }
-   
-   
-   /**
     * Constructs a new prototype.
     * This method should be called from your custom constructors, i.e. `Prototype.call(this, properties)`.
     * @classdesc Runtime message prototype ready to be extended by custom classes or generated code.
     * @constructor
     * @param {Object.<string,*>} [properties] Properties to set
-    * @param {PrototypeOptions} [options] Prototype options
     * @abstract
     * @see {@link inherits}
     * @see {@link Class}
@@ -957,7 +945,7 @@ declare module "protobufjs" {
        * @memberof Reader
        * @returns {undefined}
        */
-      static configure(): undefined;
+      static configure(): void;
    
       /**
        * Read buffer.
@@ -1195,7 +1183,7 @@ declare module "protobufjs" {
        * @returns {undefined}
        * @throws {TypeError} If arguments are invalid
        */
-      load(filename: (string|string[]), callback: (() => any)): undefined;
+      load(filename: (string|string[]), callback: (() => any)): void;
    
       /**
        * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
@@ -1281,7 +1269,7 @@ declare module "protobufjs" {
     * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data
     * @returns {undefined}
     */
-   function RPCImpl(method: Method, requestData: Uint8Array, callback: (() => any)): undefined;
+   function RPCImpl(method: Method, requestData: Uint8Array, callback: (() => any)): void;
    
    /**
     * Handle object returned from {@link tokenize}.
@@ -1675,7 +1663,7 @@ declare module "protobufjs" {
        * @param {Object} descriptors Property descriptors
        * @returns {undefined}
        */
-      function props(target: Object, descriptors: Object): undefined;
+      function props(target: Object, descriptors: Object): void;
    
       /**
        * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
@@ -1684,7 +1672,20 @@ declare module "protobufjs" {
        * @param {Object} descriptor Property descriptor
        * @returns {undefined}
        */
-      function prop(target: Object, key: string, descriptor: Object): undefined;
+      function prop(target: Object, key: string, descriptor: Object): void;
+   
+      /**
+       * An immuable empty array.
+       * @memberof util
+       * @type {Array.<*>}
+       */
+      var emptyArray: any[];
+   
+      /**
+       * An immutable empty object.
+       * @type {Object}
+       */
+      var emptyObject: Object;
    
       /**
        * Tests if the specified value is a string.
@@ -1712,7 +1713,7 @@ declare module "protobufjs" {
       /**
        * Converts an object's values to an array.
        * @param {Object.<string,*>} object Object to convert
-       * @returns {*[]} Converted array
+       * @returns {Array.<*>} Converted array
        */
       function toArray(object: { [k: string]: any }): any[];
    
@@ -1777,19 +1778,33 @@ declare module "protobufjs" {
       function safeProp(prop: string): string;
    
       /**
-       * Creates a new buffer of whatever type supported by the environment.
-       * @param {number} [size=0] Buffer size
-       * @returns {Uint8Array} Buffer
-       */
-      function newBuffer(size?: number): Uint8Array;
-   
-      /**
        * Minimalistic sprintf.
        * @param {string} format Format string
        * @param {...*} args Replacements
        * @returns {string} Formatted string
        */
       function sprintf(format: string, args: any): string;
+   
+      /**
+       * Converts a string to camel case notation.
+       * @param {string} str String to convert
+       * @returns {string} Converted string
+       */
+      function camelCase(str: string): string;
+   
+      /**
+       * Converts a string to underscore notation.
+       * @param {string} str String to convert
+       * @returns {string} Converted string
+       */
+      function underScore(str: string): string;
+   
+      /**
+       * Creates a new buffer of whatever type supported by the environment.
+       * @param {number} [size=0] Buffer size
+       * @returns {Uint8Array} Buffer
+       */
+      function newBuffer(size?: number): Uint8Array;
    
    }
    

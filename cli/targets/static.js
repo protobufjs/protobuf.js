@@ -9,10 +9,8 @@ var Type      = protobuf.Type,
     Service   = protobuf.Service,
     Enum      = protobuf.Enum,
     Namespace = protobuf.Namespace,
-    encoder   = protobuf.encoder,
-    decoder   = protobuf.decoder,
-    verifier  = protobuf.verifier,
-    util      = protobuf.util;
+    util      = protobuf.util,
+    codegen   = protobuf.codegen;
 
 var out = [];
 var indent = 0;
@@ -168,12 +166,61 @@ function buildType(ref, type) {
         push("}");
         --indent;
     push("}");
-    push("");
+
+    // default values
     type.fieldsArray.forEach(function(field) {
         field.resolve();
-        if (typeof field.defaultValue === 'object' && field.defaultValue)
-            return;
-        push(name(type.name) + ".prototype." + name(field.name) + " = " +JSON.stringify(field.defaultValue) + ";");
+        var jsType;
+        switch (field.type) {
+            case "double":
+            case "float":
+            case "int32":
+            case "uint32":
+            case "sint32":
+            case "fixed32":
+            case "sfixed32":
+                jsType = "number";
+                break;
+            case "int64":
+            case "uint64":
+            case "sint64":
+            case "fixed64":
+            case "sfixed64":
+                jsType = "number|Long";
+                break;
+            case "bool":
+                jsType = "boolean";
+                break;
+            case "string":
+                jsType = "string";
+                break;
+            case "bytes":
+                jsType = "Uint8Array";
+                break;
+            default:
+                if (field.resolvedType instanceof Enum) {
+                    jsType = "number";
+                } else if (field.resolvedType instanceof Type) {
+                    jsType = field.resolvedType.fullName.substring(1);
+                } else {
+                    jsType = "*"; // should not happen
+                }
+                break;
+        }
+        if (field.repeated)
+            jsType = "Array.<" + jsType + ">";
+        push("");
+        pushComment([
+            field.name + ".",
+            "@name " + fullName + "#" + name(field.name),
+            "@type {" + jsType + "}"
+        ]);
+        if (Array.isArray(field.defaultValue)) {
+            push(name(type.name) + ".prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyArray;");
+        } else if (util.isObject(field.defaultValue))
+            push(name(type.name) + ".prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyObject;");
+        else
+            push(name(type.name) + ".prototype[" + JSON.stringify(field.name) + "] = " + JSON.stringify(field.defaultValue) + ";");
     });
     
     // #encode
@@ -185,9 +232,9 @@ function buildType(ref, type) {
         "@param {Writer} [writer] Writer to encode to",
         "@returns {Writer} Writer"
     ]);
-    buildFunction(type, "encode", encoder.generate(type), {
-        Writer : "$runtime.Writer",
-        util   : "$runtime.util"
+    buildFunction(type, "encode", codegen.encode.generate(type), {
+        Writer : "$protobuf.Writer",
+        util   : "$protobuf.util"
     });
 
     // #encodeDelimited
@@ -213,9 +260,9 @@ function buildType(ref, type) {
         "@param {number} [length] Message length if known beforehand",
         "@returns {" + fullName + "} " + type.name
     ]);
-    buildFunction(type, "decode", decoder.generate(type), {
-        Reader : "$runtime.Reader",
-        util   : "$runtime.util"
+    buildFunction(type, "decode", codegen.decode.generate(type), {
+        Reader : "$protobuf.Reader",
+        util   : "$protobuf.util"
     });
 
     // #decodeDelimited
@@ -239,7 +286,7 @@ function buildType(ref, type) {
         "@param {" + fullName + "|Object} message " + type.name + " or plain object to verify",
         "@returns {?string} `null` if valid, otherwise the reason why it is not"
     ]);
-    buildFunction(type, "verify", verifier.generate(type), {});
+    buildFunction(type, "verify", codegen.verify.generate(type), {});
 }
 
 function buildService(ref, service) {

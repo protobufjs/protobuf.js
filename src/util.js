@@ -209,18 +209,6 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Creates a new buffer of whatever type supported by the environment.
- * @param {number} [size=0] Buffer size
- * @returns {Uint8Array} Buffer
- */
-util.newBuffer = function newBuffer(size) {
-    size = size || 0; 
-    return util.Buffer
-        ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
-        : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
-};
-
-/**
  * Minimalistic sprintf.
  * @param {string} format Format string
  * @param {...*} args Replacements
@@ -231,10 +219,49 @@ util.sprintf = function sprintf(format) {
         index  = 0;
     return format.replace(/%([djs])/g, function($0, $1) {
         var param = params[index++];
-        return $1 === "j"
-            ? JSON.stringify(param)
-            : String(param);
+        switch ($1) {
+            case "j":
+                return JSON.stringify(param);
+            case "p":
+                return util.safeProp(param);
+            default:
+                return String(param);
+        }
     });
+};
+
+/**
+ * Converts a string to camel case notation.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.camelCase = function camelCase(str) {
+    return str.substring(0,1)
+         + str.substring(1)
+               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
+};
+
+/**
+ * Converts a string to underscore notation.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.underScore = function underScore(str) {
+    return str.substring(0,1)
+         + str.substring(1)
+               .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
+};
+
+/**
+ * Creates a new buffer of whatever type supported by the environment.
+ * @param {number} [size=0] Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+util.newBuffer = function newBuffer(size) {
+    size = size || 0; 
+    return util.Buffer
+        ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
+        : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
 };
 
 // Merge in runtime utility
