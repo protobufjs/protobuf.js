@@ -44,13 +44,20 @@ function Prototype(properties, options) {
  * @param {Function} [options.enum=Number] Enum value conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to the numeric ids.
+ * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
  * @returns {Object.<string,*>} JSON object
  */
 Prototype.prototype.asJSON = function asJSON(options) {
     var any    = !(options && options.fieldsOnly),
         fields = this.constructor.$type.fields,
         json   = {};
-    var keys   = Object.keys(this);
+    var keys;
+    if (options.defaults) {
+        keys = [];
+        for (var k in this)
+            keys.push(k);
+    } else
+        keys = Object.keys(this);
     for (var i = 0, key; i < keys.length; ++i) {
         var field = fields[key = keys[i]],
             value = this[key];

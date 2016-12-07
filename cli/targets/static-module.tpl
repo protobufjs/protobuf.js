@@ -12,26 +12,7 @@
 })(this, function($runtime) {
     "use strict";
 
-    // Lazily resolved type references
-    var $lazyTypes = [];
-
-    // Exported root namespace
-    var $root = {};
-
 %OUTPUT%
-
-    // Resolve lazy types
-    $lazyTypes.forEach(function(types) {
-        types.forEach(function(path, i) {
-            if (!path)
-                return;
-            path = path.split('.');
-            var ptr = $root;
-            while (path.length)
-                ptr = ptr[path.shift()];
-            types[i] = ptr;
-        });
-    });
 
     return $root;
 });

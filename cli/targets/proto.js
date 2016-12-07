@@ -21,7 +21,6 @@ var first = false;
 var syntax = 3; 
 
 function proto_target(root, options, callback) {
-
     if (options) {
         switch (options.syntax) {
             case undefined:
@@ -46,8 +45,8 @@ function proto_target(root, options, callback) {
         callback(err);
     } finally {
         out = [];
+        syntax = 3;
     }
-
 }
 
 function push(line) {

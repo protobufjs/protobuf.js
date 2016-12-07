@@ -14,5 +14,5 @@ function json_modulee(root, options, callback) {
     else
         options.wrap = path.join(__dirname, "json-module.tpl");
     var wrap = fs.readFileSync(options.wrap).toString("utf8");
-    callback(null, wrap.replace(/%OUTPUT%/, JSON.stringify(root, null, 2)));    
+    callback(null, wrap.replace(/%OUTPUT%/, JSON.stringify(root, null, 2).replace(/^(?!$)/mg, "    ").trim()));    
 }

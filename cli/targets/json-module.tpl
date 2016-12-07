@@ -9,8 +9,6 @@
     /* Global */ else
         global.root = factory(global.protobuf);
 
-})(this, function(protobuf) { return protobuf.Root.fromJSON(
-
-%OUTPUT%
-
-);});
+})(this, function(protobuf) {
+    return protobuf.Root.fromJSON(%OUTPUT%);
+});
