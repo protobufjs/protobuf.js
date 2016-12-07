@@ -98,7 +98,7 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, util, path);
-    var fs; try { fs = require("fs"); } catch (e) {} // eslint-disable-line no-empty
+    var fs; try { fs = Function('r', 'return r("fs")')(require); } catch (e) { } // eslint-disable-line no-new-func, no-empty
     if (fs && fs.readFile)
         return fs.readFile(path, "utf8", callback);
     var xhr = new XMLHttpRequest();
