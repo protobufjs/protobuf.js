@@ -169,20 +169,18 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     type.getOneofsArray().forEach(function(oneof) {
         util.prop(prototype, oneof.resolve().name, {
             get: function getVirtual() {
-                var keys = oneof.oneof;
-                for (var i = 0; i < keys.length; ++i) {
-                    var field = oneof.parent.fields[keys[i]];
-                    if (this[keys[i]] != field.defaultValue) // eslint-disable-line eqeqeq
+                // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
+                var keys = Object.keys(this);
+                for (var i = keys.length - 1; i > -1; --i)
+                    if (oneof.oneof.indexOf(keys[i]) > -1)
                         return keys[i];
-                }
                 return undefined;
             },
             set: function setVirtual(value) {
                 var keys = oneof.oneof;
-                for (var i = 0; i < keys.length; ++i) {
+                for (var i = 0; i < keys.length; ++i)
                     if (keys[i] !== value)
                         delete this[keys[i]];
-                }
             }
         });
     });

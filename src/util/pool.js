@@ -27,4 +27,4 @@ function pool(alloc, slice, size) {
             offset = (offset | 7) + 1;
         return buf;
     };
-};
+}
