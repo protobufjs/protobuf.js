@@ -69,3 +69,9 @@ exports.require = function(name, version) {
     }
     return require(name);
 };
+
+exports.pad = function(str, len, l) {
+    while (str.length < len)
+        str = l ? str + " " : " " + str;
+    return str;
+};

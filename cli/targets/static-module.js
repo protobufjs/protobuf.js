@@ -24,11 +24,13 @@ var Type      = protobuf.Type,
 var out = [];
 var indent = 0;
 
+static_target.description = "Static code without reflection as a module (AMD, CommonJS, global)";
+
 function static_target(root, options, callback) {
     if (options.wrap)
         options.wrap = path.resolve(process.cwd(), options.wrap);
     else
-        options.wrap = path.join(__dirname, "static.tpl");
+        options.wrap = path.join(__dirname, "static-module.tpl");
     try {
         var wrap = fs.readFileSync(options.wrap).toString("utf8");
         ++indent;

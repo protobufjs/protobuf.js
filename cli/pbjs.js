@@ -30,19 +30,23 @@ exports.main = function(args) {
         paths  = typeof argv.path === 'string' ? [ argv.path ] : argv.path || [];
 
     if (!files.length) {
+        var descriptions = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
+            return "                  " + util.pad(key, 14, true) + targets[key].description;
+        });
         console.log([
             "protobuf.js v" + pkg.version + " cli",
             "",
             "Consolidates imports and converts between file formats.",
             "",
-            "  -t, --target    Specifies the target format. [" + Object.keys(targets).filter(function(key) { return !targets[key].private; }).join(', ') + "]",
-            "                  Also accepts a path to require a custom target.",
+            "  -t, --target    Specifies the target format. Also accepts a path to require a custom target.",
+            "",
+            descriptions.join('\n'),
             "",
             "  -p, --path      Adds a directory to the include path.",
             "",
             "  -o, --out       Saves to a file instead of writing to stdout.",
             "",
-            "  -w, --wrap      Specifies an alternative wrapper for the static target.",
+            "  -w, --wrap      Specifies an alternative wrapper for any *-module target.",
             "",
             "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.proto file2.json ..."
         ].join("\n"));

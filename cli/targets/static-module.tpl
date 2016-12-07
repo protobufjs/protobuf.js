@@ -1,4 +1,4 @@
-;(function(global, factory) {
+!(function(global, factory) {
 
     /* AMD */ if (typeof define === 'function' && define.amd)
         define(["protobuf"], factory);
