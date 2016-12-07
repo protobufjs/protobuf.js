@@ -18,7 +18,7 @@ var Namespace = protobuf.Namespace,
 var out = [];
 var indent = 0;
 var first = false;
-var syntax = 3;
+var syntax = 3; 
 
 function proto_target(root, options, callback) {
 
