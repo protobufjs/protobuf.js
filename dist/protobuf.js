@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Wed, 07 Dec 2016 19:26:31 UTC
+ * Compiled Wed, 07 Dec 2016 21:12:35 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -261,15 +261,15 @@ var Enum    = require(7),
 
 /**
  * Decodes a message of `this` message's type.
- * @param {Reader} reader Reader to decode from
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Prototype} Populated runtime message
  * @this Type
  */
-decode.fallback = function decode_fallback(reader, length) {
+decode.fallback = function decode_fallback(readerOrBuffer, length) {
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
     var fields  = this.getFieldsById(),
-        reader  = reader instanceof Reader ? reader : Reader.create(reader),
+        reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer),
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
@@ -333,7 +333,7 @@ decode.fallback = function decode_fallback(reader, length) {
 /**
  * Generates a decoder specific to the specified message type, with an identical signature to {@link codegen.decode.fallback}.
  * @param {Type} mtype Message type
- * @returns {function(string, ...*):string} {@link codegen} instance
+ * @returns {CodegenInstance} {@link codegen|Codegen} instance
  */
 decode.generate = function decode_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -519,7 +519,7 @@ encode.fallback = function encode_fallback(message, writer) {
 /**
  * Generates an encoder specific to the specified message type, with an identical signature to {@link codegen.encode.fallback}.
  * @param {Type} mtype Message type
- * @returns {function(string, ...*):string} {@link codegen} instance
+ * @returns {CodegenInstance} {@link codegen|Codegen} instance
  */
 encode.generate = function encode_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -661,7 +661,7 @@ verify.fallback = function verify_fallback(message) {
 /**
  * Generates a verifier specific to the specified message type, with an identical signature to {@link codegen.verify.fallback}.
  * @param {Type} mtype Message type
- * @returns {function(string, ...*):string} {@link codegen} instance
+ * @returns {CodegenInstance} {@link codegen|Codegen} instance
  */
 verify.generate = function verify_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -1003,8 +1003,8 @@ var _TypeError = util._TypeError;
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
  * @param {string} type Value type
- * @param {string} [rule=optional] Field rule
- * @param {string} [extend] Extended type if different from parent
+ * @param {string|Object} [rule="optional"] Field rule
+ * @param {string|Object} [extend] Extended type if different from parent
  * @param {Object} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
@@ -2894,8 +2894,7 @@ function Prototype(properties, options) {
     if (properties) {
         var fields = this.constructor.$type.fields,
             keys   = Object.keys(properties);
-        var i;
-        for (i = 0; i < keys.length; ++i) {
+        for (var i = 0; i < keys.length; ++i) {
             var field = fields[keys[i]];
             if (field && field.partOf)
                 for (var j = 0; j < field.partOf.oneof.length; ++j)
@@ -2903,10 +2902,6 @@ function Prototype(properties, options) {
             if (field || !options.fieldsOnly)
                 this[keys[i]] = properties[keys[i]];
         }
-        /* fields = this.constructor.$type.repeatedFieldsArray;
-        for (i = 0; i < fields.length; ++i)
-            if (!this[fields[i].name])
-                this[fields[i].name] = []; */
     }
 }
 
@@ -3644,10 +3639,10 @@ Root.fromJSON = function fromJSON(json, root) {
 RootPrototype.resolvePath = util.resolvePath;
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into this root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {function(?Error, Root=)} [callback] Node-style callback function
- * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
+ * @param {function(?Error, Root=)} callback Node-style callback function
+ * @returns {undefined}
  * @throws {TypeError} If arguments are invalid
  */
 RootPrototype.load = function load(filename, callback) {
@@ -3744,6 +3739,18 @@ RootPrototype.load = function load(filename, callback) {
         finish(null);
     return undefined;
 };
+// function load(filename:string, callback:function):undefined
+
+/**
+ * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
+ * @name Root#load
+ * @function
+ * @param {string|string[]} filename Names of one or multiple files to load
+ * @returns {Promise<Root>} Promise
+ * @throws {TypeError} If arguments are invalid
+ * @variation 2
+ */
+// function load(filename:string):Promise<Root>
 
 /**
  * Handles a deferred declaring extension field by creating a sister field to represent it within its extended type.
@@ -6002,7 +6009,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
 var protobuf = global.protobuf = exports;
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} root Root namespace, defaults to create a new one if omitted.
  * @param {function(?Error, Root=)} callback Callback function
@@ -6017,9 +6024,10 @@ function load(filename, root, callback) {
         root = new protobuf.Root();
     return root.load(filename, callback);
 }
+// function load(filename:string, root:Root, callback:function):undefined
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
  * @name load
  * @function
  * @param {string|string[]} filename One or multiple files to load
@@ -6028,19 +6036,19 @@ function load(filename, root, callback) {
  * @throws {TypeError} If arguments are invalid
  * @variation 2
  */
-// function load(filename, callback)
+// function load(filename:string, callback:function):undefined
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace and returns a promise.
  * @name load
  * @function
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
- * @returns {Promise<Root>} A promise
+ * @returns {Promise<Root>} Promise
  * @throws {TypeError} If arguments are invalid
  * @variation 3
  */
-// function load(filename, [root]):Promise
+// function load(filename:string, [root:Root]):Promise<Root>
 
 protobuf.load = load;
 

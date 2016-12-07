@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Wed, 07 Dec 2016 19:27:57 UTC
+ * Generated Wed, 07 Dec 2016 21:12:41 UTC
  */
 declare module "protobufjs" {
 
@@ -132,8 +132,8 @@ declare module "protobufjs" {
     * @param {string} name Unique name within its namespace
     * @param {number} id Unique id within its namespace
     * @param {string} type Value type
-    * @param {string} [rule=optional] Field rule
-    * @param {string} [extend] Extended type if different from parent
+    * @param {string|Object} [rule="optional"] Field rule
+    * @param {string|Object} [extend] Extended type if different from parent
     * @param {Object} [options] Declared options
     */
    class Field extends ReflectionObject {
@@ -145,11 +145,11 @@ declare module "protobufjs" {
        * @param {string} name Unique name within its namespace
        * @param {number} id Unique id within its namespace
        * @param {string} type Value type
-       * @param {string} [rule=optional] Field rule
-       * @param {string} [extend] Extended type if different from parent
+       * @param {string|Object} [rule="optional"] Field rule
+       * @param {string|Object} [extend] Extended type if different from parent
        * @param {Object} [options] Declared options
        */
-      constructor(name: string, id: number, type: string, rule?: string, extend?: string, options?: Object);
+      constructor(name: string, id: number, type: string, rule?: (string|Object), extend?: (string|Object), options?: Object);
    
       /**
        * Field rule, if any.
@@ -292,7 +292,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+    * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
     * @param {string|string[]} filename One or multiple files to load
     * @param {Root} root Root namespace, defaults to create a new one if omitted.
     * @param {function(?Error, Root=)} callback Callback function
@@ -302,7 +302,7 @@ declare module "protobufjs" {
    function load(filename: (string|string[]), root: Root, callback: (() => any)): undefined;
    
    /**
-    * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+    * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
     * @name load
     * @function
     * @param {string|string[]} filename One or multiple files to load
@@ -314,12 +314,12 @@ declare module "protobufjs" {
    function load(filename: (string|string[]), callback: (() => any)): undefined;
    
    /**
-    * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+    * Loads one or multiple .proto or preprocessed .json files into a common root namespace and returns a promise.
     * @name load
     * @function
     * @param {string|string[]} filename One or multiple files to load
     * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
-    * @returns {Promise<Root>} A promise
+    * @returns {Promise<Root>} Promise
     * @throws {TypeError} If arguments are invalid
     * @variation 3
     */
@@ -1189,13 +1189,24 @@ declare module "protobufjs" {
       resolvePath(origin: string, target: string): string;
    
       /**
-       * Loads one or multiple .proto or preprocessed .json files into this root namespace.
+       * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
        * @param {string|string[]} filename Names of one or multiple files to load
-       * @param {function(?Error, Root=)} [callback] Node-style callback function
-       * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
+       * @param {function(?Error, Root=)} callback Node-style callback function
+       * @returns {undefined}
        * @throws {TypeError} If arguments are invalid
        */
-      load(filename: (string|string[]), callback?: (() => any)): (Promise<Root>|undefined);
+      load(filename: (string|string[]), callback: (() => any)): undefined;
+   
+      /**
+       * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
+       * @name Root#load
+       * @function
+       * @param {string|string[]} filename Names of one or multiple files to load
+       * @returns {Promise<Root>} Promise
+       * @throws {TypeError} If arguments are invalid
+       * @variation 2
+       */
+      load(filename: (string|string[])): Promise<Root>;
    
    }
    

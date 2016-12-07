@@ -46,7 +46,7 @@ verify.fallback = function verify_fallback(message) {
 /**
  * Generates a verifier specific to the specified message type, with an identical signature to {@link codegen.verify.fallback}.
  * @param {Type} mtype Message type
- * @returns {function(string, ...*):string} {@link codegen} instance
+ * @returns {CodegenInstance} {@link codegen|Codegen} instance
  */
 verify.generate = function verify_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */

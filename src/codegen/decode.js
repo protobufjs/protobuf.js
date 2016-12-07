@@ -15,15 +15,15 @@ var Enum    = require("../enum"),
 
 /**
  * Decodes a message of `this` message's type.
- * @param {Reader} reader Reader to decode from
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Prototype} Populated runtime message
  * @this Type
  */
-decode.fallback = function decode_fallback(reader, length) {
+decode.fallback = function decode_fallback(readerOrBuffer, length) {
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
     var fields  = this.getFieldsById(),
-        reader  = reader instanceof Reader ? reader : Reader.create(reader),
+        reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer),
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
@@ -87,7 +87,7 @@ decode.fallback = function decode_fallback(reader, length) {
 /**
  * Generates a decoder specific to the specified message type, with an identical signature to {@link codegen.decode.fallback}.
  * @param {Type} mtype Message type
- * @returns {function(string, ...*):string} {@link codegen} instance
+ * @returns {CodegenInstance} {@link codegen|Codegen} instance
  */
 decode.generate = function decode_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */

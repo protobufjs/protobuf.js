@@ -2,7 +2,7 @@
 var protobuf = global.protobuf = exports;
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} root Root namespace, defaults to create a new one if omitted.
  * @param {function(?Error, Root=)} callback Callback function
@@ -17,9 +17,10 @@ function load(filename, root, callback) {
         root = new protobuf.Root();
     return root.load(filename, callback);
 }
+// function load(filename:string, root:Root, callback:function):undefined
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
  * @name load
  * @function
  * @param {string|string[]} filename One or multiple files to load
@@ -28,19 +29,19 @@ function load(filename, root, callback) {
  * @throws {TypeError} If arguments are invalid
  * @variation 2
  */
-// function load(filename, callback)
+// function load(filename:string, callback:function):undefined
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into a common root namespace and returns a promise.
  * @name load
  * @function
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
- * @returns {Promise<Root>} A promise
+ * @returns {Promise<Root>} Promise
  * @throws {TypeError} If arguments are invalid
  * @variation 3
  */
-// function load(filename, [root]):Promise
+// function load(filename:string, [root:Root]):Promise<Root>
 
 protobuf.load = load;
 

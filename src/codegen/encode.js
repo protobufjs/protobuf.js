@@ -95,7 +95,7 @@ encode.fallback = function encode_fallback(message, writer) {
 /**
  * Generates an encoder specific to the specified message type, with an identical signature to {@link codegen.encode.fallback}.
  * @param {Type} mtype Message type
- * @returns {function(string, ...*):string} {@link codegen} instance
+ * @returns {CodegenInstance} {@link codegen|Codegen} instance
  */
 encode.generate = function encode_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */

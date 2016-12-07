@@ -55,10 +55,10 @@ Root.fromJSON = function fromJSON(json, root) {
 RootPrototype.resolvePath = util.resolvePath;
 
 /**
- * Loads one or multiple .proto or preprocessed .json files into this root namespace.
+ * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {function(?Error, Root=)} [callback] Node-style callback function
- * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
+ * @param {function(?Error, Root=)} callback Node-style callback function
+ * @returns {undefined}
  * @throws {TypeError} If arguments are invalid
  */
 RootPrototype.load = function load(filename, callback) {
@@ -155,6 +155,18 @@ RootPrototype.load = function load(filename, callback) {
         finish(null);
     return undefined;
 };
+// function load(filename:string, callback:function):undefined
+
+/**
+ * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
+ * @name Root#load
+ * @function
+ * @param {string|string[]} filename Names of one or multiple files to load
+ * @returns {Promise<Root>} Promise
+ * @throws {TypeError} If arguments are invalid
+ * @variation 2
+ */
+// function load(filename:string):Promise<Root>
 
 /**
  * Handles a deferred declaring extension field by creating a sister field to represent it within its extended type.

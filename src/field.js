@@ -21,8 +21,8 @@ var _TypeError = util._TypeError;
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
  * @param {string} type Value type
- * @param {string} [rule=optional] Field rule
- * @param {string} [extend] Extended type if different from parent
+ * @param {string|Object} [rule="optional"] Field rule
+ * @param {string|Object} [extend] Extended type if different from parent
  * @param {Object} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
