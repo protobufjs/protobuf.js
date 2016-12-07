@@ -306,14 +306,20 @@ The `pbjs` command line utility can be used to bundle and translate between .pro
 ```
 Consolidates imports and converts between file formats.
 
-  -t, --target    Specifies the target format. [json, proto2, proto3, static]
-                  Also accepts a path to require a custom target.
+  -t, --target    Specifies the target format. Also accepts a path to require a custom target.
+
+                  json-module   JSON representation as a module (AMD, CommonJS, global)
+                  json          JSON representation
+                  proto2        Protocol Buffers, Version 2
+                  proto3        Protocol Buffers, Version 3
+                  static-module Static code without reflection as a module (AMD, CommonJS, global)
+                  static        Static code without reflection
 
   -p, --path      Adds a directory to the include path.
 
   -o, --out       Saves to a file instead of writing to stdout.
 
-  -w, --wrap      Specifies an alternative wrapper for the static target.
+  -w, --wrap      Specifies an alternative wrapper for any *-module target.
 
 usage: pbjs [options] file1.proto file2.json ...
 ```

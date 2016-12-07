@@ -3,7 +3,7 @@
 
 /*
  * protobuf.js v6.0.2 TypeScript definitions
- * Generated Tue, 06 Dec 2016 17:00:05 UTC
+ * Generated Wed, 07 Dec 2016 12:23:58 UTC
  */
 declare module "protobufjs" {
 
@@ -929,6 +929,7 @@ declare module "protobufjs" {
        * @param {Function} [options.enum=Number] Enum value conversion type.
        * Valid values are `String` and `Number` (the global types).
        * Defaults to the numeric ids.
+       * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
        * @returns {Object.<string,*>} JSON object
        */
       asJSON(options?: { [k: string]: any }): { [k: string]: any };

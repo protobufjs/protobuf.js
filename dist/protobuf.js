@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.0.2 (c) 2016 Daniel Wirtz
- * Compiled Tue, 06 Dec 2016 16:59:41 UTC
+ * Compiled Wed, 07 Dec 2016 12:23:53 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1209,20 +1209,18 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     type.getOneofsArray().forEach(function(oneof) {
         util.prop(prototype, oneof.resolve().name, {
             get: function getVirtual() {
-                var keys = oneof.oneof;
-                for (var i = 0; i < keys.length; ++i) {
-                    var field = oneof.parent.fields[keys[i]];
-                    if (this[keys[i]] != field.defaultValue) // eslint-disable-line eqeqeq
+                // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
+                var keys = Object.keys(this);
+                for (var i = keys.length - 1; i > -1; --i)
+                    if (oneof.oneof.indexOf(keys[i]) > -1)
                         return keys[i];
-                }
                 return undefined;
             },
             set: function setVirtual(value) {
                 var keys = oneof.oneof;
-                for (var i = 0; i < keys.length; ++i) {
+                for (var i = 0; i < keys.length; ++i)
                     if (keys[i] !== value)
                         delete this[keys[i]];
-                }
             }
         });
     });
@@ -2485,7 +2483,6 @@ function parse(source, root) {
                 else
                     parseOptionValue(parent, name);
             }
-            skip(s_semi, true);
         } else
             setOption(parent, name, readValue(true));
         // Does not enforce a delimiter to be universal
@@ -2697,13 +2694,20 @@ function Prototype(properties, options) {
  * @param {Function} [options.enum=Number] Enum value conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to the numeric ids.
+ * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
  * @returns {Object.<string,*>} JSON object
  */
 Prototype.prototype.asJSON = function asJSON(options) {
     var any    = !(options && options.fieldsOnly),
         fields = this.constructor.$type.fields,
         json   = {};
-    var keys   = Object.keys(this);
+    var keys;
+    if (options.defaults) {
+        keys = [];
+        for (var k in this)
+            keys.push(k);
+    } else
+        keys = Object.keys(this);
     for (var i = 0, key; i < keys.length; ++i) {
         var field = fields[key = keys[i]],
             value = this[key];
@@ -5110,7 +5114,7 @@ function pool(alloc, slice, size) {
             offset = (offset | 7) + 1;
         return buf;
     };
-};
+}
 
 },{}],25:[function(require,module,exports){
 (function (global){
@@ -5886,7 +5890,7 @@ function BufferWriter() {
 BufferWriter.alloc = function alloc_buffer(size) {
     BufferWriter.alloc = util.Buffer.allocUnsafe
         ? util.Buffer.allocUnsafe
-        : function allocUnsafe(size) { return new util.Buffer(size); };
+        : function allocUnsafeNew(size) { return new util.Buffer(size); };
     return BufferWriter.alloc(size);
 };
 
