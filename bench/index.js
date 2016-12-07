@@ -22,7 +22,7 @@ var protobuf  = require("../src/index"),
 protobuf.load(require.resolve("./bench.proto"), function onload(err, root) {
     var Test = root.lookup("Test");
 
-    protobuf.util.codegen.verbose = true;
+    protobuf.codegen.verbose = true;
 
     var buf = Test.encode(data).finish();
 

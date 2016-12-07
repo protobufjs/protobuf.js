@@ -20,15 +20,17 @@ module.exports = Prototype;
  * @see {@link Class}
  */
 function Prototype(properties, options) {
+    if (!options)
+        options = {};
     if (properties) {
-        var any    = !(options && options.fieldsOnly),
-            fields = this.constructor.$type.fields,
+        var fields = this.constructor.$type.fields,
             keys   = Object.keys(properties);
         for (var i = 0; i < keys.length; ++i) {
             var field = fields[keys[i]];
             if (field && field.partOf)
-                this['set' + field.partOf.ucName](field.name);
-            if (field || any)
+                for (var j = 0; j < field.partOf.oneof.length; ++j)
+                    delete this[field.partOf.oneof[j]];
+            if (field || !options.fieldsOnly)
                 this[keys[i]] = properties[keys[i]];
         }
     }
@@ -38,10 +40,10 @@ function Prototype(properties, options) {
  * Converts a runtime message to a JSON object.
  * @param {Object.<string,*>} [options] Conversion options
  * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
- * @param {Function} [options.long] Long conversion type. Only relevant with a long library.
+ * @param {*} [options.long] Long conversion type. Only relevant with a long library.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to a possibly unsafe number without, and a `Long` with a long library.
- * @param {Function} [options.enum=Number] Enum value conversion type.
+ * @param {*} [options.enum=Number] Enum value conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to the numeric ids.
  * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
@@ -52,9 +54,9 @@ Prototype.prototype.asJSON = function asJSON(options) {
         fields = this.constructor.$type.fields,
         json   = {};
     var keys;
-    if (options.defaults) {
+    if (options && options.defaults) {
         keys = [];
-        for (var k in this)
+        for (var k in this) // eslint-disable-line guard-for-in
             keys.push(k);
     } else
         keys = Object.keys(this);

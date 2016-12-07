@@ -1,15 +1,17 @@
 "use strict";
 
 /**
- * Wire format decoder using code generation on top of reflection.
+ * Wire format decoder using code generation on top of reflection that also provides a fallback.
+ * @exports codegen.decode
  * @namespace
  */
-var decoder = exports;
+var decode = exports;
 
-var Enum   = require("./enum"),
-    Reader = require("./reader"),
-    types  = require("./types"),
-    util   = require("./util");
+var Enum    = require("../enum"),
+    Reader  = require("../reader"),
+    types   = require("../types"),
+    util    = require("../util"),
+    codegen = require("../codegen");
 
 /**
  * Decodes a message of `this` message's type.
@@ -18,7 +20,7 @@ var Enum   = require("./enum"),
  * @returns {Prototype} Populated runtime message
  * @this Type
  */
-decoder.fallback = function fallback(reader, length) {
+decode.fallback = function decode_fallback(reader, length) {
     /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
     var fields  = this.getFieldsById(),
         reader  = reader instanceof Reader ? reader : Reader.create(reader),
@@ -54,7 +56,7 @@ decoder.fallback = function fallback(reader, length) {
 
             // Repeated fields
             } else if (field.repeated) {
-                var values = message[field.name] || (message[field.name] = []);
+                var values = message[field.name] && message[field.name].length ? message[field.name] : message[field.name] = [];
 
                 // Packed
                 if (field.packed && types.packed[type] !== undefined && tag.wireType === 2) {
@@ -65,7 +67,7 @@ decoder.fallback = function fallback(reader, length) {
                 // Non-packed
                 } else if (types.basic[type] !== undefined)
                     values[values.length] = reader[type]();
-                  else
+                else
                     values[values.length] = field.resolvedType.decode(reader, reader.uint32());
 
             // Non-repeated
@@ -83,14 +85,14 @@ decoder.fallback = function fallback(reader, length) {
 };
 
 /**
- * Generates a decoder specific to the specified message type.
+ * Generates a decoder specific to the specified message type, with an identical signature to {@link codegen.decode.fallback}.
  * @param {Type} mtype Message type
- * @returns {util.CodegenAppender} Unscoped codegen instance
+ * @returns {function(string, ...*):string} {@link codegen} instance
  */
-decoder.generate = function generate(mtype) {
+decode.generate = function decode_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();    
-    var gen = util.codegen("r", "l")
+    var gen = codegen("r", "l")
 
     ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
@@ -134,7 +136,7 @@ decoder.generate = function generate(mtype) {
 
         } else if (field.repeated) { gen
 
-                ("m%s||(m%s=[])", prop, prop);
+                ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
 
             if (field.packed && types.packed[type] !== undefined) { gen
 

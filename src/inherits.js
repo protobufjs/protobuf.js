@@ -17,7 +17,7 @@ var _TypeError = util._TypeError;
 
 /**
  * Inherits a custom class from the message prototype of the specified message type.
- * @param {Function} clazz Inheriting class
+ * @param {*} clazz Inheriting class constructor
  * @param {Type} type Inherited message type
  * @param {InheritanceOptions} [options] Inheritance options
  * @returns {Prototype} Created prototype
@@ -160,9 +160,12 @@ inherits.defineProperties = function defineProperties(prototype, type) {
     // Initialize default values
     type.getFieldsArray().forEach(function(field) {
         field.resolve();
-        if (!util.isObject(field.defaultValue))
-            // objects are mutable (i.e. would modify the array on the prototype, not the instance)
-            prototype[field.name] = field.defaultValue;
+        // objects on the prototype must be immmutable. users must assign a new object instance and
+        // cannot use Array#push on empty arrays on the prototype for example, as this would modify
+        // the non-encoded value on the prototype for ALL messages of this type.
+        prototype[field.name] = util.isObject(field.defaultValue)
+            ? Object.freeze(field.defaultValue)
+            : field.defaultValue;
     });
 
     // Define each oneof with a non-enumerable getter and setter for the present field

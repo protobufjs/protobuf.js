@@ -89,7 +89,7 @@ util.props(ReflectionObjectPrototype, {
 /**
  * Lets the specified constructor extend this class.
  * @memberof ReflectionObject
- * @param {Function} constructor Extending constructor
+ * @param {*} constructor Extending constructor
  * @returns {Object} Prototype
  * @this ReflectionObject
  */

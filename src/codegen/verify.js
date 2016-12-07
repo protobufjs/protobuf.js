@@ -1,14 +1,16 @@
 "use strict";
 
 /**
- * Runtime message verifier using code generation on top of reflection.
+ * Runtime message verifier using code generation on top of reflection that also provides a fallback.
+ * @exports codegen.verify
  * @namespace
  */
-var verifier = exports;
+var verify = exports;
 
-var Enum = require("./enum"),
-    Type = require("./type"),
-    util = require("./util");
+var Enum    = require("../enum"),
+    Type    = require("../type"),
+    util    = require("../util"),
+    codegen = require("../codegen");
 
 /**
  * Verifies a runtime message of `this` message type.
@@ -16,7 +18,7 @@ var Enum = require("./enum"),
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  * @this {Type}
  */
-verifier.fallback = function fallback(message) {
+verify.fallback = function verify_fallback(message) {
     var fields = this.getFieldsArray(),
         i = 0;
     while (i < fields.length) {
@@ -42,14 +44,14 @@ verifier.fallback = function fallback(message) {
 };
 
 /**
- * Generates a verifier specific to the specified message type.
+ * Generates a verifier specific to the specified message type, with an identical signature to {@link codegen.verify.fallback}.
  * @param {Type} mtype Message type
- * @returns {util.CodegenAppender} Unscoped codegen instance
+ * @returns {function(string, ...*):string} {@link codegen} instance
  */
-verifier.generate = function generate(mtype) {
+verify.generate = function verify_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
-    var gen = util.codegen("m");
+    var gen = codegen("m");
     var hasReasonVar = false;
 
     for (var i = 0; i < fields.length; ++i) {

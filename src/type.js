@@ -14,13 +14,9 @@ var Enum      = require("./enum"),
     Prototype = require("./prototype"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
-    encoder   = require("./encoder"),
-    decoder   = require("./decoder"),
-    verifier  = require("./verifier"),
     inherits  = require("./inherits"),
-    util      = require("./util");
-
-var codegen   = util.codegen;
+    util      = require("./util"),
+    codegen   = require("./codegen");
 
 /**
  * Constructs a new message type.
@@ -72,6 +68,13 @@ function Type(name, options) {
     this._fieldsArray = null;
 
     /**
+     * Cached repeated fields as an array.
+     * @type {?Field[]}
+     * @private
+     */
+    this._repeatedFieldsArray = null;
+
+    /**
      * Cached oneofs as an array.
      * @type {?OneOf[]}
      * @private
@@ -80,7 +83,7 @@ function Type(name, options) {
 
     /**
      * Cached constructor.
-     * @type {?Function}
+     * @type {*}
      * @private
      */
     this._ctor = null;
@@ -118,8 +121,20 @@ util.props(TypePrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: TypePrototype.getFieldsArray = function getFieldsArray() {
+        get: function getFieldsArray() {
             return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
+        }
+    },
+
+    /**
+     * Repeated fields of this message as an array for iteration.
+     * @name Type#repeatedFieldsArray
+     * @type {Field[]}
+     * @readonly
+     */
+    repeatedFieldsArray: {
+        get: function getRepeatedFieldsArray() {
+            return this._repeatedFieldsArray || (this._repeatedFieldsArray = this.getFieldsArray().filter(function(field) { return field.repeated; }));
         }
     },
 
@@ -130,7 +145,7 @@ util.props(TypePrototype, {
      * @readonly
      */
     oneofsArray: {
-        get: TypePrototype.getOneofsArray = function getOneofsArray() {
+        get: function getOneofsArray() {
             return this._oneofsArray || (this._oneofsArray = util.toArray(this.oneofs));
         }
     },
@@ -141,7 +156,7 @@ util.props(TypePrototype, {
      * @type {Prototype}
      */
     ctor: {
-        get: TypePrototype.getCtor = function getCtor() {
+        get: function getCtor() {
             if (this._ctor)
                 return this._ctor;
             var ctor;
@@ -157,7 +172,7 @@ util.props(TypePrototype, {
             this._ctor = ctor;
             return ctor;
         },
-        set: TypePrototype.setCtor = function setCtor(ctor) {
+        set: function setCtor(ctor) {
             if (ctor && !(ctor.prototype instanceof Prototype))
                 throw util._TypeError("ctor", "a constructor inheriting from Prototype");
             this._ctor = ctor;
@@ -308,8 +323,8 @@ TypePrototype.remove = function remove(object) {
 
 /**
  * Creates a new message of this type using the specified properties.
- * @param {Object|?Function} [properties] Properties to set
- * @param {?Function} [ctor] Constructor to use.
+ * @param {Object|*} [properties] Properties to set
+ * @param {*} [ctor] Constructor to use.
  * Defaults to use the internal constuctor.
  * @returns {Prototype} Message instance
  */
@@ -335,12 +350,12 @@ TypePrototype.create = function create(properties, ctor) {
  */
 TypePrototype.encode = function encode(message, writer) {
     return (this.encode = codegen.supported
-        ? encoder.generate(this).eof(this.getFullName() + "$encode", {
+        ? codegen.encode.generate(this).eof(this.getFullName() + "$encode", {
               Writer : Writer,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
-        : encoder.fallback
+        : codegen.encode.fallback
     ).call(this, message, writer);
 };
 
@@ -362,12 +377,12 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  */
 TypePrototype.decode = function decode(readerOrBuffer, length) {
     return (this.decode = codegen.supported
-        ? decoder.generate(this).eof(this.getFullName() + "$decode", {
+        ? codegen.decode.generate(this).eof(this.getFullName() + "$decode", {
               Reader : Reader,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
-        : decoder.fallback
+        : codegen.decode.fallback
     ).call(this, readerOrBuffer, length);
 };
 
@@ -388,9 +403,9 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  */
 TypePrototype.verify = function verify(message) {
     return (this.verify = codegen.supported
-        ? verifier.generate(this).eof(this.getFullName() + "$verify", {
+        ? codegen.verify.generate(this).eof(this.getFullName() + "$verify", {
               types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; })
           })
-        : verifier.fallback
+        : codegen.verify.fallback
     ).call(this, message);
 };

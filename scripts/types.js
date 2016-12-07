@@ -18,9 +18,6 @@ var dts = fs.readFileSync(path.join(dir, "types.d.ts"), "utf8");
 // Fix generic promises
 dts = dts.replace(/Promise\./g, "Promise");
 
-// Fix classes
-dts = dts.replace(/\(\(\) => any\)/g, "any");
-
 // Fix multidimensional arrays
 var found;
 do {

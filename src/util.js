@@ -6,8 +6,6 @@
  */
 var util = exports;
 
-util.codegen  = require("./util/codegen");
-
 /**
  * Tests if the specified value is a string.
  * @memberof util
@@ -220,6 +218,23 @@ util.newBuffer = function newBuffer(size) {
     return util.Buffer
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
         : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
+};
+
+/**
+ * Minimalistic sprintf.
+ * @param {string} format Format string
+ * @param {...*} args Replacements
+ * @returns {string} Formatted string
+ */
+util.sprintf = function sprintf(format) {
+    var params = Array.prototype.slice.call(arguments, 1),
+        index  = 0;
+    return format.replace(/%([djs])/g, function($0, $1) {
+        var param = params[index++];
+        return $1 === "j"
+            ? JSON.stringify(param)
+            : String(param);
+    });
 };
 
 // Merge in runtime utility

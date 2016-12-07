@@ -2,11 +2,34 @@
 /// <reference types="long" />
 
 /*
- * protobuf.js v6.0.2 TypeScript definitions
- * Generated Wed, 07 Dec 2016 12:23:58 UTC
+ * protobuf.js v6.1.0 TypeScript definitions
+ * Generated Wed, 07 Dec 2016 19:27:57 UTC
  */
 declare module "protobufjs" {
 
+   /**
+    * A closure for generating functions programmatically.
+    * @namespace
+    * @function
+    * @param {...string} params Function parameter names
+    * @returns {CodegenInstance} Codegen instance
+    * @property {boolean} supported Whether code generation is supported by the environment.
+    * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+    */
+   function codegen(params: string): CodegenInstance;
+   
+   /**
+    * A codegen instance as returned by {@link codegen}, that also is a {@link util.sprintf|sprintf}-like appender function.
+    * @typedef CodegenInstance
+    * @type {function}
+    * @param {string} format Format string
+    * @param {...*} args Replacements
+    * @returns {CodegenInstance} Itself
+    * @property {function(string=):string} str Stringifies the so far generated function source.
+    * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
+    */
+   type CodegenInstance = (format: string, args: any) => CodegenInstance;
+   
    /**
     * Provides common type definitions.
     * Can also be used to provide additional google types or your own custom types.
@@ -20,52 +43,6 @@ declare module "protobufjs" {
     * @property {Object} google/protobuf/timestamp.proto Timestamp
     */
    function common(name: string, json: Object): undefined;
-   
-   /**
-    * Wire format decoder using code generation on top of reflection.
-    * @namespace
-    */
-   module decoder {
-      /**
-       * Decodes a message of `this` message's type.
-       * @param {Reader} reader Reader to decode from
-       * @param {number} [length] Length of the message, if known beforehand
-       * @returns {Prototype} Populated runtime message
-       * @this Type
-       */
-      function fallback(reader: Reader, length?: number): Prototype;
-   
-      /**
-       * Generates a decoder specific to the specified message type.
-       * @param {Type} mtype Message type
-       * @returns {util.CodegenAppender} Unscoped codegen instance
-       */
-      function generate(mtype: Type): util.CodegenAppender;
-   
-   }
-   
-   /**
-    * Wire format encoder using code generation on top of reflection.
-    * @namespace
-    */
-   module encoder {
-      /**
-       * Encodes a message of `this` message's type.
-       * @param {Prototype|Object} message Runtime message or plain object to encode
-       * @param {Writer} [writer] Writer to encode to
-       * @returns {Writer} writer
-       * @this Type
-       */
-      function fallback(message: (Prototype|Object), writer?: Writer): Writer;
-   
-      /**
-       * Generates an encoder specific to the specified message type.
-       * @param {Type} mtype Message type
-       * @returns {util.CodegenAppender} Unscoped codegen instance
-       */
-      function generate(mtype: Type): util.CodegenAppender;
-   
-   }
    
    /**
     * Constructs a new enum.
@@ -317,12 +294,36 @@ declare module "protobufjs" {
    /**
     * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
     * @param {string|string[]} filename One or multiple files to load
-    * @param {Root|function(?Error, Root=)} [root] Root namespace, defaults to create a new one if omitted.
-    * @param {function(?Error, Root=)} [callback] Callback function
-    * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
+    * @param {Root} root Root namespace, defaults to create a new one if omitted.
+    * @param {function(?Error, Root=)} callback Callback function
+    * @returns {undefined}
     * @throws {TypeError} If arguments are invalid
     */
-   function load(filename: (string|string[]), root?: (Root|any), callback?: any): (Promise<Root>|undefined);
+   function load(filename: (string|string[]), root: Root, callback: (() => any)): undefined;
+   
+   /**
+    * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+    * @name load
+    * @function
+    * @param {string|string[]} filename One or multiple files to load
+    * @param {function(?Error, Root=)} callback Callback function
+    * @returns {undefined}
+    * @throws {TypeError} If arguments are invalid
+    * @variation 2
+    */
+   function load(filename: (string|string[]), callback: (() => any)): undefined;
+   
+   /**
+    * Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+    * @name load
+    * @function
+    * @param {string|string[]} filename One or multiple files to load
+    * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
+    * @returns {Promise<Root>} A promise
+    * @throws {TypeError} If arguments are invalid
+    * @variation 3
+    */
+   function load(filename: (string|string[]), root?: Root): Promise<Root>;
    
    /**
     * Options passed to {@link inherits}, modifying its behavior.
@@ -339,7 +340,7 @@ declare module "protobufjs" {
    
    /**
     * Inherits a custom class from the message prototype of the specified message type.
-    * @param {Function} clazz Inheriting class
+    * @param {*} clazz Inheriting class constructor
     * @param {Type} type Inherited message type
     * @param {InheritanceOptions} [options] Inheritance options
     * @returns {Prototype} Created prototype
@@ -731,7 +732,7 @@ declare module "protobufjs" {
       /**
        * Lets the specified constructor extend this class.
        * @memberof ReflectionObject
-       * @param {Function} constructor Extending constructor
+       * @param {*} constructor Extending constructor
        * @returns {Object} Prototype
        * @this ReflectionObject
        */
@@ -923,10 +924,10 @@ declare module "protobufjs" {
        * Converts a runtime message to a JSON object.
        * @param {Object.<string,*>} [options] Conversion options
        * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
-       * @param {Function} [options.long] Long conversion type. Only relevant with a long library.
+       * @param {*} [options.long] Long conversion type. Only relevant with a long library.
        * Valid values are `String` and `Number` (the global types).
        * Defaults to a possibly unsafe number without, and a `Long` with a long library.
-       * @param {Function} [options.enum=Number] Enum value conversion type.
+       * @param {*} [options.enum=Number] Enum value conversion type.
        * Valid values are `String` and `Number` (the global types).
        * Defaults to the numeric ids.
        * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
@@ -1194,7 +1195,7 @@ declare module "protobufjs" {
        * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
        * @throws {TypeError} If arguments are invalid
        */
-      load(filename: (string|string[]), callback?: any): (Promise<Root>|undefined);
+      load(filename: (string|string[]), callback?: (() => any)): (Promise<Root>|undefined);
    
    }
    
@@ -1256,7 +1257,7 @@ declare module "protobufjs" {
        * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
        * @returns {Object} Runtime service
        */
-      create(rpc: any, requestDelimited?: boolean, responseDelimited?: boolean): Object;
+      create(rpc: (() => any), requestDelimited?: boolean, responseDelimited?: boolean): Object;
    
    }
    
@@ -1269,7 +1270,7 @@ declare module "protobufjs" {
     * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data
     * @returns {undefined}
     */
-   function RPCImpl(method: Method, requestData: Uint8Array, callback: any): undefined;
+   function RPCImpl(method: Method, requestData: Uint8Array, callback: (() => any)): undefined;
    
    /**
     * Handle object returned from {@link tokenize}.
@@ -1281,11 +1282,11 @@ declare module "protobufjs" {
     * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
     */
    interface TokenizerHandle {
-      line: any;
-      next: any;
-      peek: any;
-      push: any;
-      skip: any;
+      line: (() => any);
+      next: (() => any);
+      peek: (() => any);
+      push: (() => any);
+      skip: (() => any);
    }
    
    
@@ -1356,6 +1357,14 @@ declare module "protobufjs" {
       fieldsArray: Field[];
    
       /**
+       * Repeated fields of this message as an array for iteration.
+       * @name Type#repeatedFieldsArray
+       * @type {Field[]}
+       * @readonly
+       */
+      repeatedFieldsArray: Field[];
+   
+      /**
        * Oneofs of this message as an array for iteration.
        * @name Type#oneofsArray
        * @type {OneOf[]}
@@ -1405,8 +1414,8 @@ declare module "protobufjs" {
    
       /**
        * Creates a new message of this type using the specified properties.
-       * @param {Object|?Function} [properties] Properties to set
-       * @param {?Function} [ctor] Constructor to use.
+       * @param {Object|*} [properties] Properties to set
+       * @param {*} [ctor] Constructor to use.
        * Defaults to use the internal constuctor.
        * @returns {Prototype} Message instance
        */
@@ -1494,51 +1503,6 @@ declare module "protobufjs" {
     * @namespace
     */
    module util {
-      /**
-       * Programmatically generates a function.
-       * @memberof util
-       * @param {...string} params Function parameter names
-       * @returns {util.CodegenAppender} Printf-like appender function
-       * @property {boolean} supported Whether code generation is supported by the environment.
-       * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
-       */
-      function codegen(params: string): util.CodegenAppender;
-   
-      /**
-       * Appends a printf-like formatted line to the generated source. Returned when calling {@link util.codegen}.
-       * @typedef CodegenAppender
-       * @memberof util
-       * @type {function}
-       * @param {string} format A printf-like format string
-       * @param {...*} params Format replacements
-       * @returns {util.CodegenAppender} Itself
-       * @property {util.CodegenStringer} str
-       * @property {util.CodegenEnder} eof
-       * @see {@link https://nodejs.org/docs/latest/api/util.html#util_util_format_format_args}
-       */
-      type CodegenAppender = (format: string, params: any) => util.CodegenAppender;
-   
-      /**
-       * Stringifies the so far generated function source.
-       * @typedef CodegenStringer
-       * @memberof util
-       * @type {function}
-       * @param {string} [name] Function name, defaults to generate an anonymous function
-       * @returns {string} Function source using tabs for indentation
-       */
-      type CodegenStringer = (name?: string) => string;
-   
-      /**
-       * Ends generation and builds the function.
-       * @typedef CodegenEnder
-       * @memberof util
-       * @type {function}
-       * @param {string} [name] Function name, defaults to generate an anonymous function
-       * @param {Object|string[]} [scope] Function scope
-       * @returns {function} A function to apply the scope manually when `scope` is an array, otherwise the generated function with scope applied
-       */
-      type CodegenEnder = (name?: string, scope?: (Object|string[])) => any;
-   
       /**
        * Constructs new long bits.
        * @classdesc Helper class for working with the low and high bits of a 64 bit value.
@@ -1648,7 +1612,7 @@ declare module "protobufjs" {
        * @param {number} [size=8192] Slab size
        * @returns {function(number):Uint8Array} Pooled allocator
        */
-      function pool(alloc: any, slice: any, size?: number): any;
+      function pool(alloc: (() => any), slice: (() => any), size?: number): (() => any);
    
       /**
        * Whether running within node or not.
@@ -1660,14 +1624,14 @@ declare module "protobufjs" {
       /**
        * Optional buffer class to use.
        * If you assign any compatible buffer implementation to this property, the library will use it.
-       * @type {?Function}
+       * @type {*}
        */
       var Buffer: any;
    
       /**
        * Optional Long class to use.
        * If you assign any compatible long implementation to this property, the library will use it.
-       * @type {?Function}
+       * @type {*}
        */
       var Long: any;
    
@@ -1749,7 +1713,7 @@ declare module "protobufjs" {
        * @param {...*} params Function arguments
        * @returns {Promise<*>} Promisified function
        */
-      function asPromise(fn: any, ctx: Object, params: any): Promise<any>;
+      function asPromise(fn: (() => any), ctx: Object, params: any): Promise<any>;
    
       /**
        * Fetches the contents of a file.
@@ -1758,7 +1722,7 @@ declare module "protobufjs" {
        * @param {function(?Error, string=)} [callback] Node-style callback
        * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
        */
-      function fetch(path: string, callback?: any): (Promise<string>|undefined);
+      function fetch(path: string, callback?: (() => any)): (Promise<string>|undefined);
    
       /**
        * Tests if the specified path is absolute.
@@ -1808,27 +1772,13 @@ declare module "protobufjs" {
        */
       function newBuffer(size?: number): Uint8Array;
    
-   }
-   
-   /**
-    * Runtime message verifier using code generation on top of reflection.
-    * @namespace
-    */
-   module verifier {
       /**
-       * Verifies a runtime message of `this` message type.
-       * @param {Prototype|Object} message Runtime message or plain object to verify
-       * @returns {?string} `null` if valid, otherwise the reason why it is not
-       * @this {Type}
+       * Minimalistic sprintf.
+       * @param {string} format Format string
+       * @param {...*} args Replacements
+       * @returns {string} Formatted string
        */
-      function fallback(message: (Prototype|Object)): string;
-   
-      /**
-       * Generates a verifier specific to the specified message type.
-       * @param {Type} mtype Message type
-       * @returns {util.CodegenAppender} Unscoped codegen instance
-       */
-      function generate(mtype: Type): util.CodegenAppender;
+      function sprintf(format: string, args: any): string;
    
    }
    
@@ -1889,7 +1839,7 @@ declare module "protobufjs" {
        * @param {number} val Value to write
        * @returns {Writer} `this`
        */
-      push(fn: any, len: number, val: number): Writer;
+      push(fn: (() => any), len: number, val: number): Writer;
    
       /**
        * Writes a tag.

@@ -1,15 +1,17 @@
 "use strict";
 
 /**
- * Wire format encoder using code generation on top of reflection.
+ * Wire format encoder using code generation on top of reflection that also provides a fallback.
+ * @exports codegen.encode
  * @namespace
  */
-var encoder = exports;
+var encode = exports;
 
-var Enum   = require("./enum"),
-    Writer = require("./writer"),
-    types  = require("./types"),
-    util   = require("./util");
+var Enum    = require("../enum"),
+    Writer  = require("../writer"),
+    types   = require("../types"),
+    util    = require("../util"),
+    codegen = require("../codegen");
 
 /**
  * Encodes a message of `this` message's type.
@@ -18,7 +20,7 @@ var Enum   = require("./enum"),
  * @returns {Writer} writer
  * @this Type
  */
-encoder.fallback = function fallback(message, writer) {
+encode.fallback = function encode_fallback(message, writer) {
     /* eslint-disable block-scoped-var, no-redeclare */
     if (!writer)
         writer = Writer.create();
@@ -91,14 +93,14 @@ encoder.fallback = function fallback(message, writer) {
 };
 
 /**
- * Generates an encoder specific to the specified message type.
+ * Generates an encoder specific to the specified message type, with an identical signature to {@link codegen.encode.fallback}.
  * @param {Type} mtype Message type
- * @returns {util.CodegenAppender} Unscoped codegen instance
+ * @returns {function(string, ...*):string} {@link codegen} instance
  */
-encoder.generate = function generate(mtype) {
+encode.generate = function encode_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
-    var gen = util.codegen("m", "w")
+    var gen = codegen("m", "w")
     ("w||(w=Writer.create())");
 
     for (var i = 0; i < fields.length; ++i) {

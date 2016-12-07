@@ -16,7 +16,7 @@ var isNode = util.isNode = Boolean(global.process && global.process.versions && 
 /**
  * Optional buffer class to use.
  * If you assign any compatible buffer implementation to this property, the library will use it.
- * @type {?Function}
+ * @type {*}
  */
 util.Buffer = null;
 
@@ -26,7 +26,7 @@ if (isNode)
 /**
  * Optional Long class to use.
  * If you assign any compatible long implementation to this property, the library will use it.
- * @type {?Function}
+ * @type {*}
  */
 util.Long = global.dcodeIO && global.dcodeIO.Long || null;
 
