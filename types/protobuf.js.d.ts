@@ -322,7 +322,10 @@ declare module "protobufjs" {
     * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
     * @throws {TypeError} If arguments are invalid
     */
-   function load(filename: (string|string[]), root?: (Root|any), callback?: any): (Promise<Root>|undefined);
+   function load(filename: (string|string[])): Promise<Root>;
+   function load(filename: (string|string[]), callback: (err: any, root: Root) => any): Object;
+   function load(filename: (string|string[]), root: Root): Promise<Root>;
+   function load(filename: (string|string[]), root: Root, callback: (err: any, root: Root) => any): Object;
    
    /**
     * Options passed to {@link inherits}, modifying its behavior.
@@ -1194,7 +1197,8 @@ declare module "protobufjs" {
        * @returns {Promise<Root>|undefined} A promise if `callback` has been omitted
        * @throws {TypeError} If arguments are invalid
        */
-      load(filename: (string|string[]), callback?: any): (Promise<Root>|undefined);
+      load(filename: (string|string[])): Promise<Root>;
+      load(filename: (string|string[]), callback: (err: any, root: Root): void;
    
    }
    
