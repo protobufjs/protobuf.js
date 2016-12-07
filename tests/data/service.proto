@@ -1,0 +1,16 @@
+syntax = "proto3";
+package myservice;
+
+message DoSomethingRequest {
+}
+
+message DoSomethingResponse {
+}
+
+service MyService {
+  rpc DoSomething(DoSomethingRequest) returns (DoSomethingResponse) {
+    option (google.api.http) = {
+      get: "/v1/dosomething"
+    };
+  };
+}

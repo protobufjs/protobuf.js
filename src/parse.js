@@ -393,7 +393,6 @@ function parse(source, root) {
                 else
                     parseOptionValue(parent, name);
             }
-            skip(s_semi, true);
         } else
             setOption(parent, name, readValue(true));
         // Does not enforce a delimiter to be universal
