@@ -36,13 +36,13 @@ function OneOf(name, fieldNames, options) {
 
     /**
      * Field names that belong to this oneof.
-     * @type {Array.<string>}
+     * @type {string[]}
      */
     this.oneof = fieldNames || []; // toJSON, marker
 
     /**
      * Fields that belong to this oneof and are possibly not yet added to its parent.
-     * @type {Array.<Field>}
+     * @type {Field[]}
      * @private
      */
     this._fields = [];
