@@ -1,14 +1,14 @@
 "use strict";
-module.exports = json_modulee;
+module.exports = json_module;
 
 var path = require("path"),
     fs   = require("fs");
 
 var protobuf = require("../..");
 
-json_modulee.description = "JSON representation as a module (AMD, CommonJS, global)"
+json_module.description = "JSON representation as a module (AMD, CommonJS, global)"
 
-function json_modulee(root, options, callback) {
+function json_module(root, options, callback) {
     if (options.wrap)
         options.wrap = path.resolve(process.cwd(), options.wrap);
     else

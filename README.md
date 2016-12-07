@@ -69,12 +69,12 @@ var protobuf = require("protobufjs");
 
 Development:
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.1/dist/protobuf.js"></script>
+<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.js"></script>
 ```
 
 Production:
 ```
-<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.0.1/dist/protobuf.min.js"></script>
+<script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.min.js"></script>
 ```
 
 The `protobuf` namespace will be available globally.

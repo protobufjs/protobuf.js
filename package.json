@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "description": "Protocol Buffers for JavaScript.",
   "author": "Daniel Wirtz",
   "license": "Apache-2.0",

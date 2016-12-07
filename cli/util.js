@@ -4,9 +4,23 @@ var fs            = require("fs"),
 
 var protobuf = require("..");
 
+function basenameCompare(a, b) {
+    var aa = String(a).replace(/\.\w+$/, "").split(/(-?\d*\.?\d+)/g),
+        bb = String(b).replace(/\.\w+$/, "").split(/(-?\d*\.?\d+)/g);
+    for (var i = 0, k = Math.min(aa.length, bb.length); i < k; i++) {
+        var x = parseFloat(aa[i]) || aa[i].toLowerCase(),
+            y = parseFloat(bb[i]) || bb[i].toLowerCase();
+        if (x < y)
+            return -1;
+        if (x > y)
+            return 1;
+    }
+    return a.length < b.length ? -1 : 0;
+};
+
 exports.requireAll = function requireAll(dirname) {
     dirname   = path.join(__dirname, dirname);
-    var files = fs.readdirSync(dirname),
+    var files = fs.readdirSync(dirname).sort(basenameCompare),
         all = {};
     files.forEach(function(file) {
         var basename = path.basename(file, ".js"),
