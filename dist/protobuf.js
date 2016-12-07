@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Wed, 07 Dec 2016 22:34:10 UTC
+ * Compiled Wed, 07 Dec 2016 23:23:40 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1582,7 +1582,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         options = responseStream;
         responseStream = undefined;
     }
-    if (!util.isString(type))
+    if (type && !util.isString(type))
         throw _TypeError("type");
     if (!util.isString(requestType))
         throw _TypeError("requestType");
@@ -2194,13 +2194,13 @@ function OneOf(name, fieldNames, options) {
 
     /**
      * Field names that belong to this oneof.
-     * @type {Array.<string>}
+     * @type {string[]}
      */
     this.oneof = fieldNames || []; // toJSON, marker
 
     /**
      * Fields that belong to this oneof and are possibly not yet added to its parent.
-     * @type {Array.<Field>}
+     * @type {Field[]}
      * @private
      */
     this._fields = [];
