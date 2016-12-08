@@ -165,6 +165,44 @@ var message = new AwesomeMessage({ awesomeField: "AwesomeString" });
 
 Custom classes are automatically populated with static `encode`, `encodeDelimited`, `decode`, `decodeDelimited` and `verify` methods and reference their reflected type via the `$type` property. Note that there are no methods (just `$type`) on instances by default as method names might conflict with field names.
 
+### Using services
+
+```protobuf
+// greeter.proto
+service Greeter {
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloReply {
+    string message = 1;
+}
+```
+
+```js
+...
+var Greeter = root.lookup("Greeter");
+var greeter = Greeter.create(rpcImpl);
+
+greeter.sayHello({ name: 'you' }, function(err, response) {
+    console.log('Greeting:', response.message);
+});
+```
+
+To make this work, all you have to do is provide an `rpcImpl`, which is is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:
+
+```js
+function rpcImpl(method, requestData, callback) {
+    // perform the request using an HTTP request or a WebSocket for example
+    var responseData = ...;
+    // and call the callback with the binary response afterwards:
+    callback(null, responseData);
+}
+```
+
 ### Usage with TypeScript
 
 ```ts

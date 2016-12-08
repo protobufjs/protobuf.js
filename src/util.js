@@ -98,7 +98,11 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, util, path);
-    try { return eval(['req','uire'].join(''))("fs").readFile(path, "utf8", callback); } catch (e) { } // eslint-disable-line no-empty, no-eval
+    try {
+        // Hide this from webpack. There is probably another, better way.
+        return eval(['req','uire'].join(''))("fs") // eslint-disable-line no-eval
+              .readFile(path, "utf8", callback);
+    } catch (e) { } // eslint-disable-line no-empty
     var xhr = new XMLHttpRequest();
     function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)
