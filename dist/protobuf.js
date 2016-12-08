@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 08 Dec 2016 18:49:06 UTC
+ * Compiled Thu, 08 Dec 2016 19:14:46 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3620,6 +3620,9 @@ Root.fromJSON = function fromJSON(json, root) {
  */
 RootPrototype.resolvePath = util.resolvePath;
 
+// A symbol-like function to safely signal synchronous loading
+function SYNC() {}
+
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
@@ -3639,6 +3642,8 @@ RootPrototype.load = function load(filename, callback) {
         callback = null;
         cb(err, root);
     }
+
+    var sync = callback === SYNC; // undocumented
 
     // Processes a single file
     function process(filename, source) {
@@ -3662,11 +3667,9 @@ RootPrototype.load = function load(filename, callback) {
             finish(err);
             return;
         }
-        if (!queued)
+        if (!sync && !queued)
             finish(null, self);
     }
-
-    var sync = arguments[2] === true; // undocumented
 
     // Fetches a single file
     function fetch(filename, weak) {
@@ -3686,9 +3689,9 @@ RootPrototype.load = function load(filename, callback) {
 
         // Shortcut bundled definitions
         if (filename in common) {
-            if (sync) {
+            if (sync)
                 process(filename, common[filename]);
-            } else {
+            else {
                 ++queued;
                 setTimeout(function() {
                     --queued;
@@ -3734,6 +3737,8 @@ RootPrototype.load = function load(filename, callback) {
         fetch(self.resolvePath("", filename));
     });
 
+    if (sync)
+        return self;
     if (!queued)
         finish(null, self);
     return undefined;
@@ -3757,13 +3762,7 @@ RootPrototype.load = function load(filename, callback) {
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */
 RootPrototype.loadSync = function loadSync(filename) {
-    var ret;
-    this.load(filename, function(err, root) {
-        if (err)
-            throw err;
-        ret = root;
-    }, /* undocumented */ true);
-    return ret;
+    return this.load(filename, SYNC);
 };
 
 /**

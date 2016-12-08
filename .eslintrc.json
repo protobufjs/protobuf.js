@@ -109,7 +109,7 @@
         "no-process-env": 1,
         "no-process-exit": 1,
         "no-restricted-modules": 1,
-        "no-sync": 1,
+        "no-sync": 0,                       // for loadSync
 
         // Stylistic Issues
         "semi": 1,                          // maybe next time

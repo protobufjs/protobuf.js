@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Thu, 08 Dec 2016 18:49:15 UTC
+ * Generated Thu, 08 Dec 2016 19:14:58 UTC
  */
 declare module "protobufjs" {
 
