@@ -160,10 +160,11 @@ ServicePrototype.remove = function remove(object) {
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl);
     this.getMethodsArray().forEach(function(method) {
-        var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
-        rpcService[lcName] = function(request, callback) {
+        rpcService[method.name.substring(0, 1).toLowerCase() + method.name.substring(1)] = function callVirtual(request, /* optional */ callback) {
             if (!rpcService.$rpc) // already ended?
                 return;
+            if (!request)
+                throw util._TypeError("request", "not null");
             method.resolve();
             var requestData;
             try {
