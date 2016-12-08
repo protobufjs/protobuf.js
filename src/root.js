@@ -59,7 +59,6 @@ RootPrototype.resolvePath = util.resolvePath;
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {function(?Error, Root=)} callback Node-style callback function
  * @returns {undefined}
- * @throws {TypeError} If arguments are invalid
  */
 RootPrototype.load = function load(filename, callback) {
     var self = this;
@@ -101,6 +100,8 @@ RootPrototype.load = function load(filename, callback) {
             finish(null, self);
     }
 
+    var sync = arguments[2] === true; // undocumented
+
     // Fetches a single file
     function fetch(filename, weak) {
 
@@ -119,27 +120,43 @@ RootPrototype.load = function load(filename, callback) {
 
         // Shortcut bundled definitions
         if (filename in common) {
-            ++queued;
-            setTimeout(function() {
-                --queued;
+            if (sync) {
                 process(filename, common[filename]);
-            });
+            } else {
+                ++queued;
+                setTimeout(function() {
+                    --queued;
+                    process(filename, common[filename]);
+                });
+            }
             return;
         }
 
         // Otherwise fetch from disk or network
-        ++queued;
-        util.fetch(filename, function(err, source) {
-            --queued;
-            if (!callback)
-                return; // terminated meanwhile
-            if (err) {
+        if (sync) {
+            var source;
+            try {
+                source = util.fs.readFileSync(filename).toString("utf8");
+            } catch (err) {
                 if (!weak)
                     finish(err);
                 return;
             }
             process(filename, source);
-        });
+        } else {
+            ++queued;
+            util.fetch(filename, function(err, source) {
+                --queued;
+                if (!callback)
+                    return; // terminated meanwhile
+                if (err) {
+                    if (!weak)
+                        finish(err);
+                    return;
+                }
+                process(filename, source);
+            });
+        }
     }
     var queued = 0;
 
@@ -152,7 +169,7 @@ RootPrototype.load = function load(filename, callback) {
     });
 
     if (!queued)
-        finish(null);
+        finish(null, self);
     return undefined;
 };
 // function load(filename:string, callback:function):undefined
@@ -163,10 +180,25 @@ RootPrototype.load = function load(filename, callback) {
  * @function
  * @param {string|string[]} filename Names of one or multiple files to load
  * @returns {Promise<Root>} Promise
- * @throws {TypeError} If arguments are invalid
  * @variation 2
  */
 // function load(filename:string):Promise<Root>
+
+/**
+ * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
+ * @param {string|string[]} filename Names of one or multiple files to load
+ * @returns {Root} Root namespace
+ * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ */
+RootPrototype.loadSync = function loadSync(filename) {
+    var ret;
+    this.load(filename, function(err, root) {
+        if (err)
+            throw err;
+        ret = root;
+    }, /* undocumented */ true);
+    return ret;
+};
 
 /**
  * Handles a deferred declaring extension field by creating a sister field to represent it within its extended type.

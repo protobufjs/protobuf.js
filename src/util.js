@@ -89,6 +89,16 @@ function asPromise(fn, ctx/*, varargs */) {
 util.asPromise = asPromise;
 
 /**
+ * Filesystem, if available.
+ * @memberof util
+ * @type {?Object}
+ */
+var fs = null; // Hide this from webpack. There is probably another, better way.
+try { fs = eval(['req','uire'].join(''))("fs"); } catch (e) {} // eslint-disable-line no-eval, no-empty
+
+util.fs = fs;
+
+/**
  * Fetches the contents of a file.
  * @memberof util
  * @param {string} path File path or url
@@ -98,11 +108,8 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, util, path);
-    try {
-        // Hide this from webpack. There is probably another, better way.
-        return eval(['req','uire'].join(''))("fs") // eslint-disable-line no-eval
-              .readFile(path, "utf8", callback);
-    } catch (e) { } // eslint-disable-line no-empty
+    if (fs && fs.readFile)
+        return fs.readFile(path, "utf8", callback);
     var xhr = new XMLHttpRequest();
     function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)

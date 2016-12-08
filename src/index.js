@@ -7,7 +7,6 @@ var protobuf = global.protobuf = exports;
  * @param {Root} root Root namespace, defaults to create a new one if omitted.
  * @param {function(?Error, Root=)} callback Callback function
  * @returns {undefined}
- * @throws {TypeError} If arguments are invalid
  */
 function load(filename, root, callback) {
     if (typeof root === 'function') {
@@ -26,7 +25,6 @@ function load(filename, root, callback) {
  * @param {string|string[]} filename One or multiple files to load
  * @param {function(?Error, Root=)} callback Callback function
  * @returns {undefined}
- * @throws {TypeError} If arguments are invalid
  * @variation 2
  */
 // function load(filename:string, callback:function):undefined
@@ -38,12 +36,26 @@ function load(filename, root, callback) {
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Promise<Root>} Promise
- * @throws {TypeError} If arguments are invalid
  * @variation 3
  */
 // function load(filename:string, [root:Root]):Promise<Root>
 
 protobuf.load = load;
+
+/**
+ * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * @param {string|string[]} filename One or multiple files to load
+ * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
+ * @returns {Root} Root namespace
+ * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ */
+function loadSync(filename, root) {
+    if (!root)
+        root = new protobuf.Root();
+    return root.loadSync(filename);
+}
+
+protobuf.loadSync = loadSync;
 
 // Parser
 protobuf.tokenize         = require("./tokenize");

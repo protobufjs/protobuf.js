@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 08 Dec 2016 17:23:20 UTC
+ * Compiled Thu, 08 Dec 2016 18:49:06 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3625,7 +3625,6 @@ RootPrototype.resolvePath = util.resolvePath;
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {function(?Error, Root=)} callback Node-style callback function
  * @returns {undefined}
- * @throws {TypeError} If arguments are invalid
  */
 RootPrototype.load = function load(filename, callback) {
     var self = this;
@@ -3667,6 +3666,8 @@ RootPrototype.load = function load(filename, callback) {
             finish(null, self);
     }
 
+    var sync = arguments[2] === true; // undocumented
+
     // Fetches a single file
     function fetch(filename, weak) {
 
@@ -3685,27 +3686,43 @@ RootPrototype.load = function load(filename, callback) {
 
         // Shortcut bundled definitions
         if (filename in common) {
-            ++queued;
-            setTimeout(function() {
-                --queued;
+            if (sync) {
                 process(filename, common[filename]);
-            });
+            } else {
+                ++queued;
+                setTimeout(function() {
+                    --queued;
+                    process(filename, common[filename]);
+                });
+            }
             return;
         }
 
         // Otherwise fetch from disk or network
-        ++queued;
-        util.fetch(filename, function(err, source) {
-            --queued;
-            if (!callback)
-                return; // terminated meanwhile
-            if (err) {
+        if (sync) {
+            var source;
+            try {
+                source = util.fs.readFileSync(filename).toString("utf8");
+            } catch (err) {
                 if (!weak)
                     finish(err);
                 return;
             }
             process(filename, source);
-        });
+        } else {
+            ++queued;
+            util.fetch(filename, function(err, source) {
+                --queued;
+                if (!callback)
+                    return; // terminated meanwhile
+                if (err) {
+                    if (!weak)
+                        finish(err);
+                    return;
+                }
+                process(filename, source);
+            });
+        }
     }
     var queued = 0;
 
@@ -3718,7 +3735,7 @@ RootPrototype.load = function load(filename, callback) {
     });
 
     if (!queued)
-        finish(null);
+        finish(null, self);
     return undefined;
 };
 // function load(filename:string, callback:function):undefined
@@ -3729,10 +3746,25 @@ RootPrototype.load = function load(filename, callback) {
  * @function
  * @param {string|string[]} filename Names of one or multiple files to load
  * @returns {Promise<Root>} Promise
- * @throws {TypeError} If arguments are invalid
  * @variation 2
  */
 // function load(filename:string):Promise<Root>
+
+/**
+ * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
+ * @param {string|string[]} filename Names of one or multiple files to load
+ * @returns {Root} Root namespace
+ * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ */
+RootPrototype.loadSync = function loadSync(filename) {
+    var ret;
+    this.load(filename, function(err, root) {
+        if (err)
+            throw err;
+        ret = root;
+    }, /* undocumented */ true);
+    return ret;
+};
 
 /**
  * Handles a deferred declaring extension field by creating a sister field to represent it within its extended type.
@@ -4030,10 +4062,11 @@ ServicePrototype.remove = function remove(object) {
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl);
     this.getMethodsArray().forEach(function(method) {
-        var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
-        rpcService[lcName] = function(request, callback) {
+        rpcService[method.name.substring(0, 1).toLowerCase() + method.name.substring(1)] = function callVirtual(request, /* optional */ callback) {
             if (!rpcService.$rpc) // already ended?
                 return;
+            if (!request)
+                throw util._TypeError("request", "not null");
             method.resolve();
             var requestData;
             try {
@@ -4911,6 +4944,16 @@ function asPromise(fn, ctx/*, varargs */) {
 util.asPromise = asPromise;
 
 /**
+ * Filesystem, if available.
+ * @memberof util
+ * @type {?Object}
+ */
+var fs = null; // Hide this from webpack. There is probably another, better way.
+try { fs = eval(['req','uire'].join(''))("fs"); } catch (e) {} // eslint-disable-line no-eval, no-empty
+
+util.fs = fs;
+
+/**
  * Fetches the contents of a file.
  * @memberof util
  * @param {string} path File path or url
@@ -4920,11 +4963,8 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, util, path);
-    try {
-        // Hide this from webpack. There is probably another, better way.
-        return eval(['req','uire'].join(''))("fs") // eslint-disable-line no-eval
-              .readFile(path, "utf8", callback);
-    } catch (e) { } // eslint-disable-line no-empty
+    if (fs && fs.readFile)
+        return fs.readFile(path, "utf8", callback);
     var xhr = new XMLHttpRequest();
     function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)
@@ -6188,7 +6228,6 @@ var protobuf = global.protobuf = exports;
  * @param {Root} root Root namespace, defaults to create a new one if omitted.
  * @param {function(?Error, Root=)} callback Callback function
  * @returns {undefined}
- * @throws {TypeError} If arguments are invalid
  */
 function load(filename, root, callback) {
     if (typeof root === 'function') {
@@ -6207,7 +6246,6 @@ function load(filename, root, callback) {
  * @param {string|string[]} filename One or multiple files to load
  * @param {function(?Error, Root=)} callback Callback function
  * @returns {undefined}
- * @throws {TypeError} If arguments are invalid
  * @variation 2
  */
 // function load(filename:string, callback:function):undefined
@@ -6219,12 +6257,26 @@ function load(filename, root, callback) {
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Promise<Root>} Promise
- * @throws {TypeError} If arguments are invalid
  * @variation 3
  */
 // function load(filename:string, [root:Root]):Promise<Root>
 
 protobuf.load = load;
+
+/**
+ * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * @param {string|string[]} filename One or multiple files to load
+ * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
+ * @returns {Root} Root namespace
+ * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ */
+function loadSync(filename, root) {
+    if (!root)
+        root = new protobuf.Root();
+    return root.loadSync(filename);
+}
+
+protobuf.loadSync = loadSync;
 
 // Parser
 protobuf.tokenize         = require(22);

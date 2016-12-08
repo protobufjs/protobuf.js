@@ -85,11 +85,12 @@ greeter.sayHello({ name: 'protocol' });
 greeter.sayHello({ name: 'buffers' });
 greeter.sayHello(Hello.create({ name: 'for' })); // or use runtime messages
 
-// Listen to and emit your own events if you want:
+// Listen to and emit your own events if you like:
 
 greeter.on("status", function(code, text) {
     console.log("status:", code, text);
 });
+
 greeter.emit("status", 200, "OK");
 
 // And, if applicable, end the service when you are done:

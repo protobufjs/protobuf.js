@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Thu, 08 Dec 2016 16:52:18 UTC
+ * Generated Thu, 08 Dec 2016 18:49:15 UTC
  */
 declare module "protobufjs" {
 
@@ -294,7 +294,6 @@ declare module "protobufjs" {
     * @param {Root} root Root namespace, defaults to create a new one if omitted.
     * @param {function(?Error, Root=)} callback Callback function
     * @returns {undefined}
-    * @throws {TypeError} If arguments are invalid
     */
    function load(filename: (string|string[]), root: Root, callback: (() => any)): void;
    
@@ -305,7 +304,6 @@ declare module "protobufjs" {
     * @param {string|string[]} filename One or multiple files to load
     * @param {function(?Error, Root=)} callback Callback function
     * @returns {undefined}
-    * @throws {TypeError} If arguments are invalid
     * @variation 2
     */
    function load(filename: (string|string[]), callback: (() => any)): void;
@@ -317,10 +315,18 @@ declare module "protobufjs" {
     * @param {string|string[]} filename One or multiple files to load
     * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
     * @returns {Promise<Root>} Promise
-    * @throws {TypeError} If arguments are invalid
     * @variation 3
     */
    function load(filename: (string|string[]), root?: Root): Promise<Root>;
+   
+   /**
+    * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace.
+    * @param {string|string[]} filename One or multiple files to load
+    * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
+    * @returns {Root} Root namespace
+    * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+    */
+   function loadSync(filename: (string|string[]), root?: Root): Root;
    
    /**
     * Options passed to {@link inherits}, modifying its behavior.
@@ -1178,7 +1184,6 @@ declare module "protobufjs" {
        * @param {string|string[]} filename Names of one or multiple files to load
        * @param {function(?Error, Root=)} callback Node-style callback function
        * @returns {undefined}
-       * @throws {TypeError} If arguments are invalid
        */
       load(filename: (string|string[]), callback: (() => any)): void;
    
@@ -1188,10 +1193,17 @@ declare module "protobufjs" {
        * @function
        * @param {string|string[]} filename Names of one or multiple files to load
        * @returns {Promise<Root>} Promise
-       * @throws {TypeError} If arguments are invalid
        * @variation 2
        */
       load(filename: (string|string[])): Promise<Root>;
+   
+      /**
+       * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
+       * @param {string|string[]} filename Names of one or multiple files to load
+       * @returns {Root} Root namespace
+       * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+       */
+      loadSync(filename: (string|string[])): Root;
    
    }
    
@@ -1220,16 +1232,17 @@ declare module "protobufjs" {
           constructor(rpcImpl: RPCImpl);
    
           /**
-           * RPC implementation.
-           * @type {RPCImpl}
+           * RPC implementation. Becomes `null` when the service is ended.
+           * @type {?RPCImpl}
            */
           $rpc: RPCImpl;
    
           /**
            * Ends this service and emits the `end` event.
+           * @param {boolean} [endedByRPC=false] Whether the service has been ended by the RPC implementation.
            * @returns {rpc.Service} `this`
            */
-          end(): rpc.Service;
+          end(endedByRPC?: boolean): rpc.Service;
    
       }
    
@@ -1587,7 +1600,7 @@ declare module "protobufjs" {
           off(evt?: string, fn?: (() => any)): util.EventEmitter;
    
           /**
-           * Emits an event.
+           * Emits an event by calling its listeners with the specified arguments.
            * @param {string} evt Event name
            * @param {...*} args Arguments
            * @returns {util.EventEmitter} `this`
@@ -1820,6 +1833,13 @@ declare module "protobufjs" {
        * @returns {Promise<*>} Promisified function
        */
       function asPromise(fn: (() => any), ctx: Object, params: any): Promise<any>;
+   
+      /**
+       * Filesystem, if available.
+       * @memberof util
+       * @type {?Object}
+       */
+      var fs: Object;
    
       /**
        * Fetches the contents of a file.
