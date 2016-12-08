@@ -1,5 +1,5 @@
-var fs       = require("fs"),
-    path     = require("path");
+var fs   = require("fs"),
+    path = require("path");
 
 // A profiling stub to measure encoding / decoding performance using benchmark data.
 
@@ -14,7 +14,7 @@ if (process.execArgv.indexOf("--prof") < 0) {
     console.log("cleaning up old logs ...");
     var child_process = require("child_process");
     var logRe = /^isolate\-[0-9A-F]+\-v8\.log$/;
-    fs.readdirSync(process.cwd()).forEach(function(file) {
+    fs.readdirSync(process.cwd()).forEach(function readdirSync_it(file) {
         if (logRe.test(file))
             fs.unlink(file);
     });
@@ -24,13 +24,13 @@ if (process.execArgv.indexOf("--prof") < 0) {
         stdio: 'inherit'
     });
     console.log("processing profile ...");
-    fs.readdirSync(process.cwd()).forEach(function(file) {
+    fs.readdirSync(process.cwd()).forEach(function readdirSync_it(file) {
         if (logRe.test(file)) {
             child_process.execSync("node --prof-process " + file, {
                 cwd: process.cwd(),
                 stdio: 'inherit'
             });
-            fs.unlink(file);
+            // fs.unlink(file);
         }
     });
     console.log("done.");

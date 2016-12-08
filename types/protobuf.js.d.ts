@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Thu, 08 Dec 2016 13:22:46 UTC
+ * Generated Thu, 08 Dec 2016 16:19:16 UTC
  */
 declare module "protobufjs" {
 
@@ -1196,6 +1196,68 @@ declare module "protobufjs" {
    }
    
    /**
+    * RPC helpers.
+    * @namespace
+    */
+   module rpc {
+      /**
+       * Constructs a new RPC service.
+       * @classdesc An RPC service as returned by {@link Service#create}.
+       * @memberof rpc
+       * @constructor
+       * @param {RPCImpl} rpcImpl RPC implementation
+       */
+      class Service {
+          /**
+           * Constructs a new RPC service.
+           * @classdesc An RPC service as returned by {@link Service#create}.
+           * @memberof rpc
+           * @constructor
+           * @param {RPCImpl} rpcImpl RPC implementation
+           */
+          constructor(rpcImpl: RPCImpl);
+   
+          /**
+           * RPC implementation.
+           * @type {RPCImpl}
+           */
+          $rpc: RPCImpl;
+   
+          /**
+           * Registers an event listener.
+           * @param {string} evt Event name, one of `"data"`, `"error"`, `"end"`
+           * @param {function} cb Listener
+           * @returns {rpc.Service} `this`
+           */
+          on(evt: string, cb: (() => any)): rpc.Service;
+   
+          /**
+           * Removes an event listener.
+           * @param {string} [evt] Event name. Removes all listeners if omitted.
+           * @param {function} [cb] Listener to remove. Removes all listeners of `evt` if omitted.
+           * @returns {rpc.Service} `this`
+           */
+          off(evt?: string, cb?: (() => any)): rpc.Service;
+   
+          /**
+           * Emits an event.
+           * @param {string} evt Event name
+           * @param {...*} args Arguments
+           * @returns {rpc.Service} `this`
+           */
+          emit(evt: string, args: any): rpc.Service;
+   
+          /**
+           * Ends this service and emits the `end` event.
+           * @returns {rpc.Service} `this`
+           */
+          end(): rpc.Service;
+   
+      }
+   
+   }
+   
+   /**
     * Constructs a new service.
     * @classdesc Reflected service.
     * @extends Namespace
@@ -1248,25 +1310,25 @@ declare module "protobufjs" {
    
       /**
        * Creates a runtime service using the specified rpc implementation.
-       * @param {function(Method, Uint8Array, function)} rpc RPC implementation ({@link RPCImpl|see})
+       * @param {function(Method, Uint8Array, function)} rpcImpl RPC implementation ({@link RPCImpl|see})
        * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
        * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
-       * @returns {Object} Runtime service
+       * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.
        */
-      create(rpc: (() => any), requestDelimited?: boolean, responseDelimited?: boolean): Object;
+      create(rpcImpl: (() => any), requestDelimited?: boolean, responseDelimited?: boolean): rpc.Service;
    
    }
    
    /**
     * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
     * @typedef RPCImpl
-    * @function
+    * @type {function}
     * @param {Method} method Reflected method being called
     * @param {Uint8Array} requestData Request data
-    * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data
+    * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data. `null` as response data signals an ended stream.
     * @returns {undefined}
     */
-   function RPCImpl(method: Method, requestData: Uint8Array, callback: (() => any)): void;
+   type RPCImpl = (method: Method, requestData: Uint8Array, callback: (() => any)) => void;
    
    /**
     * Handle object returned from {@link tokenize}.
@@ -2003,7 +2065,7 @@ declare module "protobufjs" {
    
       /**
        * Forks this writer's state by pushing it to a stack.
-       * Calling {@link Writer#ldelim}, {@link Writer#reset} or {@link Writer#finish} resets the writer to the previous state.
+       * Calling {@link Writer#}, {@link Writer#reset} or {@link Writer#finish} resets the writer to the previous state.
        * @returns {Writer} `this`
        */
       fork(): Writer;
@@ -2016,7 +2078,7 @@ declare module "protobufjs" {
    
       /**
        * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
-       * @param {number} [id] Id with wire type 2 to prepend where applicable
+       * @param {number} [id] Id with wire type 2 to prepend as a tag where applicable
        * @returns {Writer} `this`
        */
       ldelim(id?: number): Writer;

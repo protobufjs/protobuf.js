@@ -8,7 +8,8 @@ var NamespacePrototype = Namespace.prototype;
 var ServicePrototype = Namespace.extend(Service);
 
 var Method = require("./method"),
-    util   = require("./util");
+    util   = require("./util"),
+    rpc    = require("./rpc");
 
 /**
  * Constructs a new service.
@@ -142,25 +143,22 @@ ServicePrototype.remove = function remove(object) {
 /**
  * RPC implementation passed to {@link Service#create} performing a service request on network level, i.e. by utilizing http requests or websockets.
  * @typedef RPCImpl
- * @function
+ * @type {function}
  * @param {Method} method Reflected method being called
  * @param {Uint8Array} requestData Request data
- * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data
+ * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data. `null` as response data signals an ended stream.
  * @returns {undefined}
  */
 
 /**
  * Creates a runtime service using the specified rpc implementation.
- * @param {function(Method, Uint8Array, function)} rpc RPC implementation ({@link RPCImpl|see})
+ * @param {function(Method, Uint8Array, function)} rpcImpl RPC implementation ({@link RPCImpl|see})
  * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
- * @returns {Object} Runtime service
+ * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.
  */
-ServicePrototype.create = function create(rpc, requestDelimited, responseDelimited) {
-    var rpcService = {};
-    util.prop(rpcService, "$rpc", {
-        value: rpc
-    });
+ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
+    var rpcService = new rpc.Service(rpcImpl);
     this.getMethodsArray().forEach(function(method) {
         var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
         rpcService[lcName] = function(request, callback) {
@@ -174,19 +172,24 @@ ServicePrototype.create = function create(rpc, requestDelimited, responseDelimit
             }
             // Calls the custom RPC implementation with the reflected method and binary request data
             // and expects the rpc implementation to call its callback with the binary response data.
-            rpc(method, requestData, function(err, responseData) {
+            rpcImpl(method, requestData, function(err, responseData) {
                 if (err) {
-                    callback(err);
-                    return;
+                    rpcService.emit('error', err);
+                    return callback ? callback(err) : undefined;
+                }
+                if (responseData === null) {
+                    rpcService.emit('end');
+                    return undefined;
                 }
                 var response;
                 try {
                     response = responseDelimited && method.resolvedResponseType.decodeDelimited(responseData) || method.resolvedResponseType.decode(responseData);
                 } catch (err2) {
-                    callback(err2);
-                    return;
+                    rpcService.emit('error', err2);
+                    return callback ? callback('error', err2) : undefined;
                 }
-                callback(null, response);
+                rpcService.emit('data', response);
+                return callback ? callback(null, response) : undefined;
             });
         };
     });

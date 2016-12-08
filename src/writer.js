@@ -235,7 +235,7 @@ function writeVarint64(buf, pos, val) {
     }
     while (val.lo > 127) {
         buf[pos++] = val.lo & 127 | 128;
-        val.lo = (val.lo >>> 7 | val.hi << 25) >>> 0;
+        val.lo = val.lo >>> 7;
     }
     buf[pos++] = val.lo;
 }
@@ -481,7 +481,7 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack.
- * Calling {@link Writer#ldelim}, {@link Writer#reset} or {@link Writer#finish} resets the writer to the previous state.
+ * Calling {@link Writer#}, {@link Writer#reset} or {@link Writer#finish} resets the writer to the previous state.
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {
@@ -510,7 +510,7 @@ WriterPrototype.reset = function reset() {
 
 /**
  * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
- * @param {number} [id] Id with wire type 2 to prepend where applicable
+ * @param {number} [id] Id with wire type 2 to prepend as a tag where applicable
  * @returns {Writer} `this`
  */
 WriterPrototype.ldelim = function ldelim(id) {

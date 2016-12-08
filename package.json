@@ -24,24 +24,22 @@
   },
   "types": "types/protobuf.js.d.ts",
   "scripts": {
+    "bench": "node bench",
     "build": "gulp",
     "docs": "jsdoc -c jsdoc.docs.json -R README.md",
-    "pages": "node scripts/pages",
-    "types": "jsdoc -c jsdoc.types.json && node scripts/types.js && tsc types/test.ts --lib es2015 --noEmit",
     "lint": "eslint src",
-    "test": "tape tests/*.js | tap-spec",
-    "zuul": "zuul --ui tape --no-coverage --concurrency 4 -- tests/*.js",
-    "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js",
-    "bench": "node bench",
+    "pages": "node scripts/pages",
+    "prepublish": "node scripts/prepublish",
     "prof": "node bench/prof",
-    "prepublish": "node scripts/prepublish"
+    "test": "tape tests/*.js | tap-spec",
+    "types": "jsdoc -c jsdoc.types.json && node scripts/types.js && tsc types/test.ts --lib es2015 --noEmit",
+    "zuul": "zuul --ui tape --no-coverage --concurrency 4 -- tests/*.js",
+    "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js"
   },
   "optionalDependencies": {
     "long": "^3.2.0"
   },
   "devDependencies": {
-    "@types/long": "^3.0.31",
-    "@types/node": "0.0.1",
     "benchmark": "^2.1.2",
     "browserify": "^13.1.1",
     "bundle-collapser": "^1.2.1",

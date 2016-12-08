@@ -33,11 +33,12 @@ function Prototype(properties) {
  * @returns {Object.<string,*>} JSON object
  */
 Prototype.prototype.asJSON = function asJSON(options) {
-    var any    = !(options && options.fieldsOnly),
-        fields = this.constructor.$type.fields,
+    if (!options)
+        options = {};
+    var fields = this.constructor.$type.fields,
         json   = {};
     var keys;
-    if (options && options.defaults) {
+    if (options.defaults) {
         keys = [];
         for (var k in this) // eslint-disable-line guard-for-in
             keys.push(k);
@@ -56,7 +57,7 @@ Prototype.prototype.asJSON = function asJSON(options) {
                 }
             } else
                 json[key] = field.jsonConvert(value, options);
-        } else if (any)
+        } else if (!options.fieldsOnly)
             json[key] = value;
     }
     return json;
