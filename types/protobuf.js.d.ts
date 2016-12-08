@@ -1,9 +1,6 @@
-/// <reference types="node" />
-/// <reference types="long" />
-
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Wed, 07 Dec 2016 22:34:16 UTC
+ * Generated Thu, 08 Dec 2016 13:22:46 UTC
  */
 declare module "protobufjs" {
 
@@ -826,7 +823,7 @@ declare module "protobufjs" {
    
       /**
        * Field names that belong to this oneof.
-       * @type {Array.<string>}
+       * @type {string[]}
        */
       oneof: string[];
    
@@ -1496,6 +1493,21 @@ declare module "protobufjs" {
       var packed: { [k: string]: number };
    
    }
+   
+   /**
+    * Any compatible Long instance.
+    * @typedef Long
+    * @type {Object}
+    * @property {number} low Low bits
+    * @property {number} high High bits
+    * @property {boolean} unsigned Whether unsigned or not
+    */
+   interface Long {
+      low: number;
+      high: number;
+      unsigned: boolean;
+   }
+   
    
    /**
     * Utility functions.

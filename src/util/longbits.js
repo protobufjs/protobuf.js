@@ -5,6 +5,15 @@ module.exports = LongBits;
 var util = require("../util");
 
 /**
+ * Any compatible Long instance.
+ * @typedef Long
+ * @type {Object}
+ * @property {number} low Low bits
+ * @property {number} high High bits
+ * @property {boolean} unsigned Whether unsigned or not
+ */
+
+/**
  * Constructs new long bits.
  * @classdesc Helper class for working with the low and high bits of a 64 bit value.
  * @memberof util

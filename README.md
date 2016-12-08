@@ -185,7 +185,7 @@ message HelloReply {
 ```js
 ...
 var Greeter = root.lookup("Greeter");
-var greeter = Greeter.create(rpcImpl);
+var greeter = Greeter.create(rpcImpl, false, false); // rpcImpl (see below), requestDelimited?, responseDelimited?
 
 greeter.sayHello({ name: 'you' }, function(err, response) {
     console.log('Greeting:', response.message);

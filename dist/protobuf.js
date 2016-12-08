@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 08 Dec 2016 11:48:34 UTC
+ * Compiled Thu, 08 Dec 2016 13:23:47 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4860,7 +4860,11 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, util, path);
-    try { return eval(['req','uire'].join(''))("fs").readFile(path, "utf8", callback); } catch (e) { } // eslint-disable-line no-empty, no-eval
+    try {
+        // Hide this from webpack. There is probably another, better way.
+        return eval(['req','uire'].join(''))("fs") // eslint-disable-line no-eval
+              .readFile(path, "utf8", callback);
+    } catch (e) { } // eslint-disable-line no-empty
     var xhr = new XMLHttpRequest();
     function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)
@@ -5033,6 +5037,15 @@ util.merge(util, require(26));
 module.exports = LongBits;
 
 var util = require(23);
+
+/**
+ * Any compatible Long instance.
+ * @typedef Long
+ * @type {Object}
+ * @property {number} low Low bits
+ * @property {number} high High bits
+ * @property {boolean} unsigned Whether unsigned or not
+ */
 
 /**
  * Constructs new long bits.

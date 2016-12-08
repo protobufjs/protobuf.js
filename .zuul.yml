@@ -17,7 +17,7 @@ browsers:
   - name: iphone
     version: [8.1, 9.0, latest]
 scripts:
-  - scripts/polyfill.js
+  - lib/polyfill.js
   - node_modules/long/dist/long.js
 tunnel:
   type: ngrok
