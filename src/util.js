@@ -98,9 +98,7 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, util, path);
-    var fs; try { fs = Function('r', 'return r("fs")')(require); } catch (e) { } // eslint-disable-line no-new-func, no-empty
-    if (fs && fs.readFile)
-        return fs.readFile(path, "utf8", callback);
+    try { return eval(['req','uire'].join(''))("fs").readFile(path, "utf8", callback); } catch (e) { } // eslint-disable-line no-empty, no-eval
     var xhr = new XMLHttpRequest();
     function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)

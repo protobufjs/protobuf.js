@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Wed, 07 Dec 2016 23:23:40 UTC
+ * Compiled Thu, 08 Dec 2016 11:48:34 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4860,9 +4860,7 @@ util.asPromise = asPromise;
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, util, path);
-    var fs; try { fs = require("fs"); } catch (e) {} // eslint-disable-line no-empty
-    if (fs && fs.readFile)
-        return fs.readFile(path, "utf8", callback);
+    try { return eval(['req','uire'].join(''))("fs").readFile(path, "utf8", callback); } catch (e) { } // eslint-disable-line no-empty, no-eval
     var xhr = new XMLHttpRequest();
     function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)
@@ -5029,7 +5027,7 @@ util.newBuffer = function newBuffer(size) {
 // Merge in runtime utility
 util.merge(util, require(26));
 
-},{"26":26,"undefined":undefined}],24:[function(require,module,exports){
+},{"26":26}],24:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
