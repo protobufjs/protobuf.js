@@ -131,6 +131,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="rpc">
+            <span class="title">
+                <a href="rpc.html">rpc</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="types">
             <span class="title">
                 <a href="types.html">types</a>
@@ -1116,6 +1137,39 @@
             </ul>
         </li>
     
+        <li class="item" data-name="rpc.Service">
+            <span class="title">
+                <a href="rpc.Service.html">rpc.Service</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="rpc.Service#$rpc"><a href="rpc.Service.html#$rpc">$rpc</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="rpc.Service#emit"><a href="rpc.Service.html#emit">emit</a></li>
+            
+                <li data-name="rpc.Service#end"><a href="rpc.Service.html#end">end</a></li>
+            
+                <li data-name="rpc.Service#off"><a href="rpc.Service.html#off">off</a></li>
+            
+                <li data-name="rpc.Service#on"><a href="rpc.Service.html#on">on</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Service">
             <span class="title">
                 <a href="Service.html">Service</a>
@@ -1291,6 +1345,33 @@
                 <li data-name="Type#toString"><a href="Type.html#toString">toString</a></li>
             
                 <li data-name="Type#verify"><a href="Type.html#verify">verify</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="util.EventEmitter">
+            <span class="title">
+                <a href="util.EventEmitter.html">util.EventEmitter</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.EventEmitter#emit"><a href="util.EventEmitter.html#emit">emit</a></li>
+            
+                <li data-name="util.EventEmitter#off"><a href="util.EventEmitter.html#off">off</a></li>
+            
+                <li data-name="util.EventEmitter#on"><a href="util.EventEmitter.html#on">on</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -3064,197 +3145,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="RPCImpl">
-            
-            RPCImpl<span class="signature">(method, requestData, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L142">line 142</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>RPC implementation passed to <a href="Service.html#create">Service#create</a> performing a service request on network level, i.e. by utilizing http requests or websockets.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>method</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Method.html">Method</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Reflected method being called</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>requestData</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Uint8Array</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Request data</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Node-style callback called with the error, if any, and the response data</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        undefined
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="tokenize">
             
             tokenize<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#TokenizerHandle">TokenizerHandle</a> }</span>
@@ -3811,6 +3701,148 @@
                 
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="Long">Long <span class="type-signature type">{ Object }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Any compatible Long instance.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>low</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Low bits</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>high</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>High bits</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>unsigned</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Whether unsigned or not</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="ParserResult">ParserResult <span class="type-signature type">{ Object }</span></h4>
     </div>
     
@@ -4003,6 +4035,197 @@
     
 </dl>
 
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="RPCImpl">
+            
+            RPCImpl<span class="signature">(method, requestData, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L143">line 143</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>RPC implementation passed to <a href="Service.html#create">Service#create</a> performing a service request on network level, i.e. by utilizing http requests or websockets.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Method.html">Method</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Reflected method being called</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>requestData</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Uint8Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Request data</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Node-style callback called with the error, if any, and the response data. <code>null</code> as response data signals an ended stream.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        undefined
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
     
     
 </dd>

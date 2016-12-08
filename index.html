@@ -131,6 +131,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="rpc">
+            <span class="title">
+                <a href="rpc.html">rpc</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="types">
             <span class="title">
                 <a href="types.html">types</a>
@@ -1116,6 +1137,39 @@
             </ul>
         </li>
     
+        <li class="item" data-name="rpc.Service">
+            <span class="title">
+                <a href="rpc.Service.html">rpc.Service</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="rpc.Service#$rpc"><a href="rpc.Service.html#$rpc">$rpc</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="rpc.Service#emit"><a href="rpc.Service.html#emit">emit</a></li>
+            
+                <li data-name="rpc.Service#end"><a href="rpc.Service.html#end">end</a></li>
+            
+                <li data-name="rpc.Service#off"><a href="rpc.Service.html#off">off</a></li>
+            
+                <li data-name="rpc.Service#on"><a href="rpc.Service.html#on">on</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Service">
             <span class="title">
                 <a href="Service.html">Service</a>
@@ -1291,6 +1345,33 @@
                 <li data-name="Type#toString"><a href="Type.html#toString">toString</a></li>
             
                 <li data-name="Type#verify"><a href="Type.html#verify">verify</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="util.EventEmitter">
+            <span class="title">
+                <a href="util.EventEmitter.html">util.EventEmitter</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.EventEmitter#emit"><a href="util.EventEmitter.html#emit">emit</a></li>
+            
+                <li data-name="util.EventEmitter#off"><a href="util.EventEmitter.html#off">off</a></li>
+            
+                <li data-name="util.EventEmitter#on"><a href="util.EventEmitter.html#on">on</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1540,7 +1621,30 @@ protobuf.inherits(AwesomeMessage, root.lookup(&quot;awesomepackage.AwesomeMessag
 var message = new AwesomeMessage({ awesomeField: &quot;AwesomeString&quot; });
 
 // Continue at &quot;Encode a message&quot; above</code></pre><p>Custom classes are automatically populated with static <code>encode</code>, <code>encodeDelimited</code>, <code>decode</code>, <code>decodeDelimited</code> and <code>verify</code> methods and reference their reflected type via the <code>$type</code> property. Note that there are no methods (just <code>$type</code>) on instances by default as method names might conflict with field names.</p>
-<h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
+<h3>Using services</h3><pre class="prettyprint source lang-protobuf"><code>// greeter.proto
+service Greeter {
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloReply {
+    string message = 1;
+}</code></pre><pre class="prettyprint source lang-js"><code>...
+var Greeter = root.lookup(&quot;Greeter&quot;);
+var greeter = Greeter.create(rpcImpl, false, false); // rpcImpl (see below), requestDelimited?, responseDelimited?
+
+greeter.sayHello({ name: 'you' }, function(err, response) {
+    console.log('Greeting:', response.message);
+});</code></pre><p>To make this work, all you have to do is provide an <code>rpcImpl</code>, which is is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:</p>
+<pre class="prettyprint source lang-js"><code>function rpcImpl(method, requestData, callback) {
+    // perform the request using an HTTP request or a WebSocket for example
+    var responseData = ...;
+    // and call the callback with the binary response afterwards:
+    callback(null, responseData);
+}</code></pre><h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
 
 import * as protobuf from &quot;protobufjs&quot;;
 ...</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
@@ -1630,42 +1734,42 @@ import * as protobuf from &quot;protobufjs&quot;;
 </thead>
 <tbody>
 <tr>
-<td>Unsigned 32 bit integers</td>
+<td>Unsigned 32 bit int</td>
 <td>uint32</td>
 <td>1 to 5 bytes.</td>
 </tr>
 <tr>
-<td>Signed 32 bit integers</td>
+<td>Signed 32 bit int</td>
 <td>sint32</td>
 <td>1 to 5 bytes. Do not use int32 (always encodes negative values as 10 bytes).</td>
 </tr>
 <tr>
-<td>Unsigned 52 bit integers</td>
+<td>Unsigned 52 bit int</td>
 <td>uint64</td>
 <td>1 to 10 bytes.</td>
 </tr>
 <tr>
-<td>Signed 52 bit integers</td>
+<td>Signed 52 bit int</td>
 <td>sint64</td>
 <td>1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).</td>
 </tr>
 <tr>
-<td>Unsigned 64 bit integers</td>
+<td>Unsigned 64 bit int</td>
 <td>uint64</td>
 <td>Use with long.js. 1 to 10 bytes.</td>
 </tr>
 <tr>
-<td>Signed 64 bit integers</td>
+<td>Signed 64 bit int</td>
 <td>sint64</td>
 <td>Use with long.js. 1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).</td>
 </tr>
 <tr>
-<td>32 bit precision floats</td>
+<td>32 bit float</td>
 <td>float</td>
 <td>4 bytes.</td>
 </tr>
 <tr>
-<td>64 bit precision floats</td>
+<td>64 bit float</td>
 <td>double</td>
 <td>8 bytes. Use float if 32 bits of precision are enough.</td>
 </tr>
@@ -1677,12 +1781,12 @@ import * as protobuf from &quot;protobufjs&quot;;
 <tr>
 <td>Strings</td>
 <td>string</td>
-<td>1 byte + utf8 byte length.</td>
+<td>1 to 5 bytes + utf8 byte length.</td>
 </tr>
 <tr>
 <td>Buffers</td>
 <td>bytes</td>
-<td>1 byte + byte length.</td>
+<td>1 to 5 bytes + byte length.</td>
 </tr>
 </tbody>
 </table>
