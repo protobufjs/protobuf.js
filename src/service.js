@@ -174,21 +174,21 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
             // and expects the rpc implementation to call its callback with the binary response data.
             rpcImpl(method, requestData, function(err, responseData) {
                 if (err) {
-                    rpcService.emit('error', err);
+                    rpcService.emit('error', err, method);
                     return callback ? callback(err) : undefined;
                 }
                 if (responseData === null) {
-                    rpcService.emit('end');
+                    rpcService.emit('end', method);
                     return undefined;
                 }
                 var response;
                 try {
                     response = responseDelimited && method.resolvedResponseType.decodeDelimited(responseData) || method.resolvedResponseType.decode(responseData);
                 } catch (err2) {
-                    rpcService.emit('error', err2);
+                    rpcService.emit('error', err2, method);
                     return callback ? callback('error', err2) : undefined;
                 }
-                rpcService.emit('data', response);
+                rpcService.emit('data', response, method);
                 return callback ? callback(null, response) : undefined;
             });
         };

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 08 Dec 2016 16:19:10 UTC
+ * Compiled Thu, 08 Dec 2016 16:52:13 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -432,7 +432,7 @@ decode.generate = function decode_generate(mtype) {
 var encode = exports;
 
 var Enum    = require(7),
-    Writer  = require(29),
+    Writer  = require(30),
     types   = require(24),
     util    = require(25),
     codegen = require(2);
@@ -612,7 +612,7 @@ encode.generate = function encode_generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"2":2,"24":24,"25":25,"29":29,"7":7}],5:[function(require,module,exports){
+},{"2":2,"24":24,"25":25,"30":30,"7":7}],5:[function(require,module,exports){
 "use strict";
 
 /**
@@ -2936,7 +2936,7 @@ module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util      = require(28),
+var util      = require(29),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
@@ -3563,7 +3563,7 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
 
 configure();
 
-},{"1":1,"28":28}],18:[function(require,module,exports){
+},{"1":1,"29":29}],18:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
@@ -3828,76 +3828,29 @@ rpc.Service = require(20);
 "use strict";
 module.exports = Service;
 
+var EventEmitter = require(26);
+
 /**
  * Constructs a new RPC service.
  * @classdesc An RPC service as returned by {@link Service#create}.
  * @memberof rpc
+ * @extends util.EventEmitter
  * @constructor
  * @param {RPCImpl} rpcImpl RPC implementation
  */
 function Service(rpcImpl) {
+    EventEmitter.call(this);
 
     /**
      * RPC implementation.
      * @type {RPCImpl}
      */
     this.$rpc = rpcImpl;
-
-    /**
-     * Service listeners.
-     * @type {Object.<string,function[]>}
-     * @private
-     */
-    this._listeners = {};
 }
 
 /** @alias rpc.Service.prototype */
-var ServicePrototype = Service.prototype;
-
-/**
- * Registers an event listener.
- * @param {string} evt Event name, one of `"data"`, `"error"`, `"end"`
- * @param {function} cb Listener
- * @returns {rpc.Service} `this`
- */
-ServicePrototype.on = function on(evt, cb) {
-    (this._listeners[evt] || (this._listeners[evt] = [])).push(cb);
-    return this;
-};
-
-/**
- * Removes an event listener.
- * @param {string} [evt] Event name. Removes all listeners if omitted.
- * @param {function} [cb] Listener to remove. Removes all listeners of `evt` if omitted.
- * @returns {rpc.Service} `this`
- */
-ServicePrototype.off = function off(evt, cb) {
-    if (evt) {
-        if (cb) {
-            var p = (this._listeners[evt] || []).indexOf(cb);
-            if (p > -1)
-                this._listeners[evt].splice(p, 1);
-        } else
-            this._listeners[evt] = [];
-    } else
-        this._listeners = {};
-    return this;
-};
-
-/**
- * Emits an event.
- * @param {string} evt Event name
- * @param {...*} args Arguments
- * @returns {rpc.Service} `this`
- */
-ServicePrototype.emit = function emit(evt) {
-    if (this._listeners[evt]) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        for (var i = 0; i < this._listeners[evt].length; ++i)
-            this._listeners[evt][i].apply(this, args);
-    }
-    return this;
-};
+var ServicePrototype = Service.prototype = Object.create(EventEmitter.prototype);
+ServicePrototype.constructor = Service;
 
 /**
  * Ends this service and emits the `end` event.
@@ -3907,7 +3860,7 @@ ServicePrototype.end = function end() {
     return this.emit('end').off();
 };
 
-},{}],21:[function(require,module,exports){
+},{"26":26}],21:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
@@ -4084,21 +4037,21 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
             // and expects the rpc implementation to call its callback with the binary response data.
             rpcImpl(method, requestData, function(err, responseData) {
                 if (err) {
-                    rpcService.emit('error', err);
+                    rpcService.emit('error', err, method);
                     return callback ? callback(err) : undefined;
                 }
                 if (responseData === null) {
-                    rpcService.emit('end');
+                    rpcService.emit('end', method);
                     return undefined;
                 }
                 var response;
                 try {
                     response = responseDelimited && method.resolvedResponseType.decodeDelimited(responseData) || method.resolvedResponseType.decode(responseData);
                 } catch (err2) {
-                    rpcService.emit('error', err2);
+                    rpcService.emit('error', err2, method);
                     return callback ? callback('error', err2) : undefined;
                 }
-                rpcService.emit('data', response);
+                rpcService.emit('data', response, method);
                 return callback ? callback(null, response) : undefined;
             });
         };
@@ -4329,7 +4282,7 @@ var Enum      = require(7),
     Service   = require(21),
     Prototype = require(16),
     Reader    = require(17),
-    Writer    = require(29),
+    Writer    = require(30),
     inherits  = require(9),
     util      = require(25),
     codegen   = require(2);
@@ -4726,7 +4679,7 @@ TypePrototype.verify = function verify(message) {
     ).call(this, message);
 };
 
-},{"12":12,"14":14,"16":16,"17":17,"2":2,"21":21,"25":25,"29":29,"7":7,"8":8,"9":9}],24:[function(require,module,exports){
+},{"12":12,"14":14,"16":16,"17":17,"2":2,"21":21,"25":25,"30":30,"7":7,"8":8,"9":9}],24:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5126,10 +5079,90 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
 };
 
-// Merge in runtime utility
-util.merge(util, require(28));
+util.EventEmitter = require(26);
 
-},{"28":28}],26:[function(require,module,exports){
+// Merge in runtime utility
+util.merge(util, require(29));
+
+},{"26":26,"29":29}],26:[function(require,module,exports){
+"use strict";
+module.exports = EventEmitter;
+
+/**
+ * Constructs a new event emitter.
+ * @classdesc A minimal event emitter.
+ * @memberof util
+ * @constructor
+ */
+function EventEmitter() {
+
+    /**
+     * Registered listeners.
+     * @type {Object.<string,*>}
+     * @private
+     */
+    this._listeners = {};
+}
+
+/** @alias util.EventEmitter.prototype */
+var EventEmitterPrototype = EventEmitter.prototype;
+
+/**
+ * Registers an event listener.
+ * @param {string} evt Event name
+ * @param {function} fn Listener
+ * @param {Object} [ctx] Listener context
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.on = function on(evt, fn, ctx) {
+    (this._listeners[evt] || (this._listeners[evt] = [])).push({
+        fn  : fn,
+        ctx : ctx || this
+    });
+    return this;
+};
+
+/**
+ * Removes an event listener.
+ * @param {string} [evt] Event name. Removes all listeners if omitted.
+ * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.off = function off(evt, fn) {
+    if (evt === undefined)
+        this._listeners = {};
+    else {
+        if (fn === undefined)
+            this._listeners[evt] = [];
+        else {
+            var listeners = this._listeners[evt];
+            for (var i = 0; i < listeners.length;)
+                if (listeners[i].fn === fn)
+                    listeners.splice(i, 1);
+                else
+                    ++i;
+        }
+    }
+    return this;
+};
+
+/**
+ * Emits an event.
+ * @param {string} evt Event name
+ * @param {...*} args Arguments
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.emit = function emit(evt) {
+    var listeners = this._listeners[evt];
+    if (listeners) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0; i < listeners.length; ++i)
+            listeners[i].fn.apply(listeners[i].ctx, args);
+    }
+    return this;
+};
+
+},{}],27:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
@@ -5327,7 +5360,7 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"25":25}],27:[function(require,module,exports){
+},{"25":25}],28:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -5359,15 +5392,15 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-var LongBits = util.LongBits = require(26);
+var LongBits = util.LongBits = require(27);
 
-util.pool = require(27);
+util.pool = require(28);
 
 /**
  * Whether running within node or not.
@@ -5489,13 +5522,13 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"26":26,"27":27,"buffer":"buffer","long":"long"}],29:[function(require,module,exports){
+},{"27":27,"28":28,"buffer":"buffer","long":"long"}],30:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util      = require(28),
+var util      = require(29),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
@@ -6135,7 +6168,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"28":28}],30:[function(require,module,exports){
+},{"1":1,"29":29}],31:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6189,7 +6222,7 @@ protobuf.tokenize         = require(22);
 protobuf.parse            = require(15);
 
 // Serialization
-protobuf.Writer           = require(29);
+protobuf.Writer           = require(30);
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
 protobuf.Reader           = require(17);
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
@@ -6229,7 +6262,7 @@ if (typeof define === 'function' && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"21":21,"22":22,"23":23,"24":24,"25":25,"29":29,"6":6,"7":7,"8":8,"9":9}]},{},[30])
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"21":21,"22":22,"23":23,"24":24,"25":25,"30":30,"6":6,"7":7,"8":8,"9":9}]},{},[31])
 
 
 //# sourceMappingURL=protobuf.js.map

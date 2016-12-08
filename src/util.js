@@ -266,5 +266,7 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
 };
 
+util.EventEmitter = require("./util/eventemitter");
+
 // Merge in runtime utility
 util.merge(util, require("./util/runtime"));

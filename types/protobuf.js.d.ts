@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Thu, 08 Dec 2016 16:19:16 UTC
+ * Generated Thu, 08 Dec 2016 16:52:18 UTC
  */
 declare module "protobufjs" {
 
@@ -1204,14 +1204,16 @@ declare module "protobufjs" {
        * Constructs a new RPC service.
        * @classdesc An RPC service as returned by {@link Service#create}.
        * @memberof rpc
+       * @extends util.EventEmitter
        * @constructor
        * @param {RPCImpl} rpcImpl RPC implementation
        */
-      class Service {
+      class Service extends util.EventEmitter {
           /**
            * Constructs a new RPC service.
            * @classdesc An RPC service as returned by {@link Service#create}.
            * @memberof rpc
+           * @extends util.EventEmitter
            * @constructor
            * @param {RPCImpl} rpcImpl RPC implementation
            */
@@ -1222,30 +1224,6 @@ declare module "protobufjs" {
            * @type {RPCImpl}
            */
           $rpc: RPCImpl;
-   
-          /**
-           * Registers an event listener.
-           * @param {string} evt Event name, one of `"data"`, `"error"`, `"end"`
-           * @param {function} cb Listener
-           * @returns {rpc.Service} `this`
-           */
-          on(evt: string, cb: (() => any)): rpc.Service;
-   
-          /**
-           * Removes an event listener.
-           * @param {string} [evt] Event name. Removes all listeners if omitted.
-           * @param {function} [cb] Listener to remove. Removes all listeners of `evt` if omitted.
-           * @returns {rpc.Service} `this`
-           */
-          off(evt?: string, cb?: (() => any)): rpc.Service;
-   
-          /**
-           * Emits an event.
-           * @param {string} evt Event name
-           * @param {...*} args Arguments
-           * @returns {rpc.Service} `this`
-           */
-          emit(evt: string, args: any): rpc.Service;
    
           /**
            * Ends this service and emits the `end` event.
@@ -1576,6 +1554,48 @@ declare module "protobufjs" {
     * @namespace
     */
    module util {
+      /**
+       * Constructs a new event emitter.
+       * @classdesc A minimal event emitter.
+       * @memberof util
+       * @constructor
+       */
+      class EventEmitter {
+          /**
+           * Constructs a new event emitter.
+           * @classdesc A minimal event emitter.
+           * @memberof util
+           * @constructor
+           */
+          constructor();
+   
+          /**
+           * Registers an event listener.
+           * @param {string} evt Event name
+           * @param {function} fn Listener
+           * @param {Object} [ctx] Listener context
+           * @returns {util.EventEmitter} `this`
+           */
+          on(evt: string, fn: (() => any), ctx?: Object): util.EventEmitter;
+   
+          /**
+           * Removes an event listener.
+           * @param {string} [evt] Event name. Removes all listeners if omitted.
+           * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+           * @returns {util.EventEmitter} `this`
+           */
+          off(evt?: string, fn?: (() => any)): util.EventEmitter;
+   
+          /**
+           * Emits an event.
+           * @param {string} evt Event name
+           * @param {...*} args Arguments
+           * @returns {util.EventEmitter} `this`
+           */
+          emit(evt: string, args: any): util.EventEmitter;
+   
+      }
+   
       /**
        * Constructs new long bits.
        * @classdesc Helper class for working with the low and high bits of a 64 bit value.

@@ -51,15 +51,15 @@ function rpcImpl(method, requestData, callback) {
 
 var greeter = Greeter.create(rpcImpl, true, true);
 
-greeter.on("data", function(response) {
+greeter.on("data", function(response, method) {
     console.log("data:", response.message);
 });
 
-greeter.on("end", function() {
+greeter.on("end", function(method) {
     console.log("ended.");
 });
 
-greeter.on("error", function(err) {
+greeter.on("error", function(err, method) {
     console.log("error:", err);
 });
 
