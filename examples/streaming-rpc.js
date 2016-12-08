@@ -35,7 +35,17 @@ var Greeter = root.lookup("Greeter"),
     Hello   = root.lookup("Hello"),
     World   = root.lookup("World");
 
+var ended = false;
+
+// Implement: Stream-aware RPC implementation
 function rpcImpl(method, requestData, callback) {
+    if (ended)
+        return;
+    if (!requestData) {
+        console.log("rpc ended client-side.");
+        ended = true;
+        return;
+    }
     setTimeout(function() {
         try {
             // <exemplary server side code>
@@ -63,12 +73,14 @@ greeter.on("error", function(err, method) {
     console.log("error:", err);
 });
 
-greeter.sayHello({ name: 'node' });
-greeter.sayHello({ name: 'protobuf' });
-greeter.sayHello({ name: 'paralin' });
+greeter.sayHello({ name: 'protocol' });
+greeter.sayHello({ name: 'buffers' });
+greeter.sayHello({ name: 'for' });
 
 setTimeout(function() {
     greeter.end();
-    greeter.sayHello({ name: 'dcode' }); // does nothing
+    // ^ Signals rpcImpl that the service has been ended client-side by calling it with a null buffer.
+    //   Likewise, rpcImpl can end the stream by calling its callback with an explicit null buffer.
+
+    greeter.sayHello({ name: 'javascript' }); // does nothing
 }, 1000);
-// Likewise, the RPC impl can end the stream by calling its callback with an explicit null message

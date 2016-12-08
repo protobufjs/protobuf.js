@@ -162,6 +162,8 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     this.getMethodsArray().forEach(function(method) {
         var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
         rpcService[lcName] = function(request, callback) {
+            if (!rpcService.$rpc) // already ended?
+                return;
             method.resolve();
             var requestData;
             try {
@@ -178,7 +180,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                     return callback ? callback(err) : undefined;
                 }
                 if (responseData === null) {
-                    rpcService.emit('end', method);
+                    rpcService.end(/* endedByRPC */ true);
                     return undefined;
                 }
                 var response;

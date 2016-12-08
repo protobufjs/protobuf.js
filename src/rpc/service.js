@@ -15,8 +15,8 @@ function Service(rpcImpl) {
     EventEmitter.call(this);
 
     /**
-     * RPC implementation.
-     * @type {RPCImpl}
+     * RPC implementation. Becomes `null` when the service is ended.
+     * @type {?RPCImpl}
      */
     this.$rpc = rpcImpl;
 }
@@ -27,8 +27,15 @@ ServicePrototype.constructor = Service;
 
 /**
  * Ends this service and emits the `end` event.
+ * @param {boolean} [endedByRPC=false] Whether the service has been ended by the RPC implementation.
  * @returns {rpc.Service} `this`
  */
-ServicePrototype.end = function end() {
-    return this.emit('end').off();
+ServicePrototype.end = function end(endedByRPC) {
+    if (this.$rpc) {
+        if (!endedByRPC) // signal end to rpcImpl
+            this.$rpc(null, null, null);
+        this.$rpc = null;
+        this.emit('end').off();
+    }
+    return this;
 };

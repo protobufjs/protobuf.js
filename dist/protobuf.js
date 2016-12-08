@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 08 Dec 2016 16:52:13 UTC
+ * Compiled Thu, 08 Dec 2016 17:23:20 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3842,8 +3842,8 @@ function Service(rpcImpl) {
     EventEmitter.call(this);
 
     /**
-     * RPC implementation.
-     * @type {RPCImpl}
+     * RPC implementation. Becomes `null` when the service is ended.
+     * @type {?RPCImpl}
      */
     this.$rpc = rpcImpl;
 }
@@ -3854,10 +3854,17 @@ ServicePrototype.constructor = Service;
 
 /**
  * Ends this service and emits the `end` event.
+ * @param {boolean} [endedByRPC=false] Whether the service has been ended by the RPC implementation.
  * @returns {rpc.Service} `this`
  */
-ServicePrototype.end = function end() {
-    return this.emit('end').off();
+ServicePrototype.end = function end(endedByRPC) {
+    if (this.$rpc) {
+        if (!endedByRPC) // signal end to rpcImpl
+            this.$rpc(null, null, null);
+        this.$rpc = null;
+        this.emit('end').off();
+    }
+    return this;
 };
 
 },{"26":26}],21:[function(require,module,exports){
@@ -4025,6 +4032,8 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     this.getMethodsArray().forEach(function(method) {
         var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
         rpcService[lcName] = function(request, callback) {
+            if (!rpcService.$rpc) // already ended?
+                return;
             method.resolve();
             var requestData;
             try {
@@ -4041,7 +4050,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                     return callback ? callback(err) : undefined;
                 }
                 if (responseData === null) {
-                    rpcService.emit('end', method);
+                    rpcService.end(/* endedByRPC */ true);
                     return undefined;
                 }
                 var response;
@@ -5147,7 +5156,7 @@ EventEmitterPrototype.off = function off(evt, fn) {
 };
 
 /**
- * Emits an event.
+ * Emits an event by calling its listeners with the specified arguments.
  * @param {string} evt Event name
  * @param {...*} args Arguments
  * @returns {util.EventEmitter} `this`

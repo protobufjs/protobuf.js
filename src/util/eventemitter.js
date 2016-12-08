@@ -60,7 +60,7 @@ EventEmitterPrototype.off = function off(evt, fn) {
 };
 
 /**
- * Emits an event.
+ * Emits an event by calling its listeners with the specified arguments.
  * @param {string} evt Event name
  * @param {...*} args Arguments
  * @returns {util.EventEmitter} `this`
