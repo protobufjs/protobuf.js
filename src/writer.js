@@ -313,7 +313,7 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
     var bits = LongBits.from(value);
-    return this.push(writeFixed32, 4, bits.hi).push(writeFixed32, 4, bits.lo);
+    return this.push(writeFixed32, 4, bits.lo).push(writeFixed32, 4, bits.hi);
 };
 
 /**

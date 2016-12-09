@@ -73,6 +73,7 @@ protobuf.parse            = require("./parse");
 // Serialization
 protobuf.Writer           = require("./writer");
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
+               var Reader =
 protobuf.Reader           = require("./reader");
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
 protobuf.codegen          = require("./codegen");
@@ -97,14 +98,25 @@ protobuf.Message          = require("./message");
 protobuf.types            = require("./types");
 protobuf.common           = require("./common");
 protobuf.rpc              = require("./rpc");
+                 var util =
 protobuf.util             = require("./util");
+protobuf.configure        = configure;
+
+/**
+ * Reconfigures the library according to the environment.
+ * @returns {undefined}
+ */
+function configure() {
+    util._configure();
+    Reader._configure();
+}
 
 // Be nice to AMD
 if (typeof define === 'function' && define.amd)
     define(["long"], function(Long) {
         if (Long) {
             protobuf.util.Long = Long;
-            protobuf.Reader.configure();
+            configure();
         }
         return protobuf;
     });

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Fri, 09 Dec 2016 18:46:40 UTC
+ * Compiled Fri, 09 Dec 2016 22:46:45 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3178,29 +3178,6 @@ function indexOutOfRange(reader, writeLength) {
 }
 
 /**
- * Configures the Reader interface according to the environment.
- * @memberof Reader
- * @returns {undefined}
- */
-function configure() {
-    if (util.Long) {
-        ReaderPrototype.int64 = read_int64_long;
-        ReaderPrototype.uint64 = read_uint64_long;
-        ReaderPrototype.sint64 = read_sint64_long;
-        ReaderPrototype.fixed64 = read_fixed64_long;
-        ReaderPrototype.sfixed64 = read_sfixed64_long;
-    } else {
-        ReaderPrototype.int64 = read_int64_number;
-        ReaderPrototype.uint64 = read_uint64_number;
-        ReaderPrototype.sint64 = read_sint64_number;
-        ReaderPrototype.fixed64 = read_fixed64_number;
-        ReaderPrototype.sfixed64 = read_sfixed64_number;
-    }
-}
-
-Reader.configure = configure;
-
-/**
  * Constructs a new reader instance using the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
@@ -3792,6 +3769,24 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
     this.reset(buffer);
     return remain;
 };
+
+function configure() {
+    if (util.Long) {
+        ReaderPrototype.int64 = read_int64_long;
+        ReaderPrototype.uint64 = read_uint64_long;
+        ReaderPrototype.sint64 = read_sint64_long;
+        ReaderPrototype.fixed64 = read_fixed64_long;
+        ReaderPrototype.sfixed64 = read_sfixed64_long;
+    } else {
+        ReaderPrototype.int64 = read_int64_number;
+        ReaderPrototype.uint64 = read_uint64_number;
+        ReaderPrototype.sint64 = read_sint64_number;
+        ReaderPrototype.fixed64 = read_fixed64_number;
+        ReaderPrototype.sfixed64 = read_sfixed64_number;
+    }
+}
+
+Reader._configure = configure;
 
 configure();
 
@@ -5322,10 +5317,16 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
 };
 
+var runtime = require(29);
+
 util.EventEmitter = require(26);
 
 // Merge in runtime utility
-util.merge(util, require(29));
+util.merge(util, runtime);
+
+util._configure = function configure() {
+    runtime.Long = util.Long;
+};
 
 },{"26":26,"29":29}],26:[function(require,module,exports){
 "use strict";
@@ -5486,14 +5487,17 @@ LongBits.fromNumber = function fromNumber(value) {
  * Constructs new long bits from a number, long or string.
  * @param {Long|number|string} value Value
  * @returns {util.LongBits} Instance
- * @throws {TypeError} If `value` is a string and no long library is present.
  */
 LongBits.from = function from(value) {
     switch (typeof value) { // eslint-disable-line default-case
         case 'number':
             return LongBits.fromNumber(value);
         case 'string':
-            value = util.Long.fromString(value); // throws without a long lib
+            if (util.Long)
+                value = util.Long.fromString(value);
+                // fallthrough
+            else
+                return LongBits.fromNumber(parseInt(value, 10));
     }
     return (value.low || value.high) && new LongBits(value.low >>> 0, value.high >>> 0) || zero;
 };
@@ -5520,7 +5524,9 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
  * @returns {Long} Long
  */
 LongBitsPrototype.toLong = function toLong(unsigned) {
-    return new util.Long(this.lo, this.hi, unsigned);
+    return util.Long
+        ? new util.Long(this.lo, this.hi, unsigned)
+        : { low: this.lo, high: this.hi, unsigned: Boolean(unsigned) };
 };
 
 var charCodeAt = String.prototype.charCodeAt;
@@ -6109,7 +6115,7 @@ WriterPrototype.sfixed32 = function write_sfixed32(value) {
  */
 WriterPrototype.fixed64 = function write_fixed64(value) {
     var bits = LongBits.from(value);
-    return this.push(writeFixed32, 4, bits.hi).push(writeFixed32, 4, bits.lo);
+    return this.push(writeFixed32, 4, bits.lo).push(writeFixed32, 4, bits.hi);
 };
 
 /**
@@ -6516,6 +6522,7 @@ protobuf.parse            = require(16);
 // Serialization
 protobuf.Writer           = require(30);
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
+               var Reader =
 protobuf.Reader           = require(17);
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
 protobuf.codegen          = require(3);
@@ -6540,14 +6547,25 @@ protobuf.Message          = require(11);
 protobuf.types            = require(24);
 protobuf.common           = require(7);
 protobuf.rpc              = require(19);
+                 var util =
 protobuf.util             = require(25);
+protobuf.configure        = configure;
+
+/**
+ * Reconfigures the library according to the environment.
+ * @returns {undefined}
+ */
+function configure() {
+    util._configure();
+    Reader._configure();
+};
 
 // Be nice to AMD
 if (typeof define === 'function' && define.amd)
     define(["long"], function(Long) {
         if (Long) {
             protobuf.util.Long = Long;
-            protobuf.Reader.configure();
+            configure();
         }
         return protobuf;
     });

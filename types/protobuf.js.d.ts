@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Fri, 09 Dec 2016 18:46:45 UTC
+ * Generated Fri, 09 Dec 2016 22:46:53 UTC
  */
 declare module "protobufjs" {
 
@@ -434,6 +434,12 @@ declare module "protobufjs" {
     * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
     */
    function loadSync(filename: (string|string[]), root?: Root): Root;
+   
+   /**
+    * Reconfigures the library according to the environment.
+    * @returns {undefined}
+    */
+   function configure(): void;
    
    /**
     * Constructs a new map field instance.
@@ -1003,13 +1009,6 @@ declare module "protobufjs" {
        * @param {Uint8Array} buffer Buffer to read from
        */
       constructor(buffer: Uint8Array);
-   
-      /**
-       * Configures the Reader interface according to the environment.
-       * @memberof Reader
-       * @returns {undefined}
-       */
-      static configure(): void;
    
       /**
        * Read buffer.
@@ -1727,7 +1726,6 @@ declare module "protobufjs" {
            * Constructs new long bits from a number, long or string.
            * @param {Long|number|string} value Value
            * @returns {util.LongBits} Instance
-           * @throws {TypeError} If `value` is a string and no long library is present.
            */
           static from(value: (Long|number|string)): util.LongBits;
    

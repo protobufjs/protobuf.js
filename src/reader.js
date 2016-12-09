@@ -13,29 +13,6 @@ function indexOutOfRange(reader, writeLength) {
 }
 
 /**
- * Configures the Reader interface according to the environment.
- * @memberof Reader
- * @returns {undefined}
- */
-function configure() {
-    if (util.Long) {
-        ReaderPrototype.int64 = read_int64_long;
-        ReaderPrototype.uint64 = read_uint64_long;
-        ReaderPrototype.sint64 = read_sint64_long;
-        ReaderPrototype.fixed64 = read_fixed64_long;
-        ReaderPrototype.sfixed64 = read_sfixed64_long;
-    } else {
-        ReaderPrototype.int64 = read_int64_number;
-        ReaderPrototype.uint64 = read_uint64_number;
-        ReaderPrototype.sint64 = read_sint64_number;
-        ReaderPrototype.fixed64 = read_fixed64_number;
-        ReaderPrototype.sfixed64 = read_sfixed64_number;
-    }
-}
-
-Reader.configure = configure;
-
-/**
  * Constructs a new reader instance using the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
@@ -627,5 +604,23 @@ BufferReaderPrototype.finish = function finish_buffer(buffer) {
     this.reset(buffer);
     return remain;
 };
+
+function configure() {
+    if (util.Long) {
+        ReaderPrototype.int64 = read_int64_long;
+        ReaderPrototype.uint64 = read_uint64_long;
+        ReaderPrototype.sint64 = read_sint64_long;
+        ReaderPrototype.fixed64 = read_fixed64_long;
+        ReaderPrototype.sfixed64 = read_sfixed64_long;
+    } else {
+        ReaderPrototype.int64 = read_int64_number;
+        ReaderPrototype.uint64 = read_uint64_number;
+        ReaderPrototype.sint64 = read_sint64_number;
+        ReaderPrototype.fixed64 = read_fixed64_number;
+        ReaderPrototype.sfixed64 = read_sfixed64_number;
+    }
+}
+
+Reader._configure = configure;
 
 configure();

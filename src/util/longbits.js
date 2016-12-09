@@ -78,14 +78,17 @@ LongBits.fromNumber = function fromNumber(value) {
  * Constructs new long bits from a number, long or string.
  * @param {Long|number|string} value Value
  * @returns {util.LongBits} Instance
- * @throws {TypeError} If `value` is a string and no long library is present.
  */
 LongBits.from = function from(value) {
     switch (typeof value) { // eslint-disable-line default-case
         case 'number':
             return LongBits.fromNumber(value);
         case 'string':
-            value = util.Long.fromString(value); // throws without a long lib
+            if (util.Long)
+                value = util.Long.fromString(value);
+                // fallthrough
+            else
+                return LongBits.fromNumber(parseInt(value, 10));
     }
     return (value.low || value.high) && new LongBits(value.low >>> 0, value.high >>> 0) || zero;
 };
@@ -112,7 +115,9 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
  * @returns {Long} Long
  */
 LongBitsPrototype.toLong = function toLong(unsigned) {
-    return new util.Long(this.lo, this.hi, unsigned);
+    return util.Long
+        ? new util.Long(this.lo, this.hi, unsigned)
+        : { low: this.lo, high: this.hi, unsigned: Boolean(unsigned) };
 };
 
 var charCodeAt = String.prototype.charCodeAt;
