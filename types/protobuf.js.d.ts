@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Fri, 09 Dec 2016 01:15:41 UTC
+ * Generated Fri, 09 Dec 2016 13:31:56 UTC
  */
 declare module "protobufjs" {
 
@@ -1759,6 +1759,21 @@ declare module "protobufjs" {
       var Long: any;
    
       /**
+       * Tests if the specified value is an integer.
+       * @function
+       * @param {*} value Value to test
+       * @returns {boolean} `true` if the value is an integer
+       */
+      function isInteger(value: any): boolean;
+   
+      /**
+       * Tests if the specified value is a string.
+       * @param {*} value Value to test
+       * @returns {boolean} `true` if the value is a string
+       */
+      function isString(value: any): boolean;
+   
+      /**
        * Converts a number or long to an 8 characters long hash string.
        * @param {Long|number} value Value to convert
        * @returns {string} Hash
@@ -1812,27 +1827,11 @@ declare module "protobufjs" {
       var emptyObject: Object;
    
       /**
-       * Tests if the specified value is a string.
-       * @memberof util
-       * @param {*} value Value to test
-       * @returns {boolean} `true` if the value is a string
-       */
-      function isString(value: any): boolean;
-   
-      /**
        * Tests if the specified value is a non-null object.
        * @param {*} value Value to test
        * @returns {boolean} `true` if the value is a non-null object
        */
       function isObject(value: any): boolean;
-   
-      /**
-       * Tests if the specified value is an integer.
-       * @function
-       * @param {*} value Value to test
-       * @returns {boolean} `true` if the value is an integer
-       */
-      function isInteger(value: any): boolean;
    
       /**
        * Converts an object's values to an array.

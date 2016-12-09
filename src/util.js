@@ -7,34 +7,12 @@
 var util = exports;
 
 /**
- * Tests if the specified value is a string.
- * @memberof util
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is a string
- */
-function isString(value) {
-    return typeof value === 'string' || value instanceof String;
-}
-
-util.isString = isString;
-
-/**
  * Tests if the specified value is a non-null object.
  * @param {*} value Value to test
  * @returns {boolean} `true` if the value is a non-null object
  */
 util.isObject = function isObject(value) {
     return Boolean(value && typeof value === 'object');
-};
-
-/**
- * Tests if the specified value is an integer.
- * @function
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is an integer
- */
-util.isInteger = Number.isInteger || function isInteger(value) {
-    return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 };
 
 /**
@@ -114,7 +92,7 @@ function fetch(path, callback) {
     function onload() {
         if (xhr.status !== 0 && xhr.status !== 200)
             return callback(Error("status " + xhr.status));
-        if (isString(xhr.responseText))
+        if (util.isString(xhr.responseText))
             return callback(null, xhr.responseText);
         return callback(Error("request failed"));
     }

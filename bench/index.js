@@ -31,6 +31,8 @@ for (var i = 0; i < 500000; ++i)
     Test.encode(data).finish();
 for (var i = 0; i < 1000000; ++i)
     Test.decode(buf);
+for (var i = 0; i < 500000; ++i)
+    Test.verify(data);
 console.log("");
 
 // give the optimizer some time to do its job
@@ -52,7 +54,7 @@ setTimeout(function() {
 
     newSuite("decoding")
     .add("Type.decode from buffer", function() {
-        Test.decode(buf);
+        Test.decode(buf); // no allocation overhead, if you wondered
     })
     .add("JSON.parse from string", function() {
         JSON.parse(str);
@@ -71,6 +73,14 @@ setTimeout(function() {
     })
     .add("JSON to/from buffer", function() {
         JSON.parse(new Buffer(JSON.stringify(data), "utf8").toString("utf8"));
+    })
+    .run();
+
+    newSuite("verifying")
+    .add("Type.verify", function() {
+        var r = Test.verify(data);
+        if (r)
+            throw Error(r);
     })
     .run();
 

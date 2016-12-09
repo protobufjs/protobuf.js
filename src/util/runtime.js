@@ -34,6 +34,25 @@ if (!util.Long && isNode)
     try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
 
 /**
+ * Tests if the specified value is an integer.
+ * @function
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is an integer
+ */
+util.isInteger = Number.isInteger || function isInteger(value) {
+    return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+};
+
+/**
+ * Tests if the specified value is a string.
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a string
+ */
+util.isString = function isString(value) {
+    return typeof value === 'string' || value instanceof String;
+};
+
+/**
  * Converts a number or long to an 8 characters long hash string.
  * @param {Long|number} value Value to convert
  * @returns {string} Hash

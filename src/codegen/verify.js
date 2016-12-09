@@ -7,10 +7,64 @@
  */
 var verify = exports;
 
-var Enum    = require("../enum"),
-    Type    = require("../type"),
-    util    = require("../util"),
-    codegen = require("../codegen");
+var Enum      = require("../enum"),
+    Type      = require("../type"),
+    util      = require("../util"),
+    codegen   = require("../codegen");
+var isInteger = util.isInteger;
+
+function invalid(field, expected) {
+    return "invalid value for field " + field.getFullName() + " (" + expected + " expected)";
+}
+
+function verifyValue(field, value) {
+    switch (field.type) {
+        case "double":
+        case "float":
+            if (typeof value !== 'number')
+                return invalid(field, "number");
+            break;
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32":
+            if (!isInteger(value))
+                return invalid(field, "integer");
+            break;
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64":
+            if (!(isInteger(value) || value && isInteger(value.low) && isInteger(value.high)))
+                return invalid(field, "integer|Long");
+            break;
+        case "bool":
+            if (typeof value !== 'boolean')
+                return invalid(field, "boolean");
+            break;
+        case "string":
+            if (!util.isString(value))
+                return invalid(field, "string");
+            break;
+        case "bytes":
+            if (!value || typeof value.length !== 'number')
+                return invalid(field, "buffer");
+            break;
+        default:
+            if (field.resolvedType instanceof Enum) {
+                if (typeof field.resolvedType.getValuesById()[value] !== 'number')
+                    return invalid(field, "enum value");
+            } else if (field.resolvedType instanceof Type) {
+                var reason = field.resolvedType.verify(value);
+                if (reason)
+                    return reason;
+            }
+            break;
+    }
+    return null;
+}
 
 /**
  * Verifies a runtime message of `this` message type.
@@ -20,28 +74,87 @@ var Enum    = require("../enum"),
  */
 verify.fallback = function verify_fallback(message) {
     var fields = this.getFieldsArray(),
-        i = 0;
+        i = 0,
+        reason;
     while (i < fields.length) {
         var field = fields[i++].resolve(),
             value = message[field.name];
 
-        if (value === undefined) {
-            if (field.required)
-                return "missing required field " + field.name + " in " + this.getFullName();
+        // repeated fields
+        if (field.repeated) {
 
-        } else if (field.resolvedType instanceof Enum && field.resolvedType.getValuesById()[value] === undefined) {
-            return "invalid enum value " + field.name + " = " + value + " in " + this.getFullName();
+            if (value !== undefined) {
+                if (!Array.isArray(value))
+                    return invalid(field, "array");
+                for (var j = 0; j < value.length; ++j)
+                    if (reason = verifyValue(field, value[j]))
+                        return reason;
+            }
 
-        } else if (field.resolvedType instanceof Type) {
-            if (!value && field.required)
-                return "missing required field " + field.name + " in " + this.getFullName();
-            var reason;
-            if ((reason = field.resolvedType.verify(value)) !== null)
+        // required or present fields
+        } else if (field.required || value !== undefined) {
+            
+            if (reason = verifyValue(field, value))
                 return reason;
         }
+
     }
     return null;
 };
+
+function genVerifyValue(gen, field, fieldIndex, ref) {
+    switch (field.type) {
+        case "double":
+        case "float": gen
+            ("if(typeof %s!=='number')", ref)
+                ("return %j", invalid(field, "number"));
+            break;
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32": gen
+            ("if(!util.isInteger(%s))", ref)
+                ("return %j", invalid(field, "integer"));
+            break;
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64": gen
+            ("if(!(util.isInteger(%s)||%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+                ("return %j", invalid(field, "integer|Long"));
+            break;
+        case "bool": gen
+            ("if(typeof %s!=='boolean')", ref)
+                ("return %j", invalid(field, "boolean"));
+            break;
+        case "string": gen
+            ("if(!util.isString(%s))", ref)
+                ("return %j", invalid(field, "string"));
+            break;
+        case "bytes": gen
+            ("if (!%s||typeof %s.length!=='number')", ref, ref)
+                ("return %j", invalid(field, "buffer"));
+            break;
+        default:
+            if (field.resolvedType instanceof Enum) { gen
+                ("switch(%s){", ref)
+                    ("default:")
+                        ("return %j", invalid(field, "enum value"));
+                var values = util.toArray(field.resolvedType.values);
+                for (var j = 0; j < values.length; ++j) gen
+                    ("case %d:", values[j]);
+                gen
+                ("}");
+            } else if (field.resolvedType instanceof Type) { gen
+                ("var r;")
+                ("if(r=types[%d].verify(%s))", fieldIndex, ref)
+                    ("return r");
+            }
+            break;
+    }
+}
 
 /**
  * Generates a verifier specific to the specified message type, with an identical signature to {@link codegen.verify.fallback}.
@@ -52,37 +165,28 @@ verify.generate = function verify_generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
     var gen = codegen("m");
-    var hasReasonVar = false;
 
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             prop  = util.safeProp(field.name);
-        if (field.required) { gen
 
-            ("if(m%s===undefined)", prop)
-                ("return 'missing required field %s in %s'", field.name, mtype.getFullName());
-
-        } else if (field.resolvedType instanceof Enum) {
-            var values = util.toArray(field.resolvedType.values); gen
-
-            ("switch(m%s){", prop)
-                ("default:")
-                    ("return 'invalid enum value %s = '+m%s+' in %s'", field.name, prop, mtype.getFullName());
-
-            for (var j = 0, l = values.length; j < l; ++j) gen
-                ("case %d:", values[j]); gen
+        // repeated fields
+        if (field.repeated) { gen
+            ("if(m%s!==undefined){", prop)
+                ("if(!Array.isArray(m%s))", prop)
+                    ("return %j", invalid(field, "array"))
+                ("for(var i=0;i<m%s.length;++i){", prop);
+                    genVerifyValue(gen, field, i, "m" + prop + "[i]"); gen
+                ("}")
             ("}");
 
-        } else if (field.resolvedType instanceof Type) {
-            if (field.required) gen
-
-            ("if(!m%s)", prop)
-                ("return 'missing required field %s in %s'", field.name, mtype.getFullName());
-
-            if (!hasReasonVar) { gen("var r"); hasReasonVar = true; } gen
-
-            ("if((r=types[%d].verify(m%s))!==null)", i, prop)
-                ("return r");
+        // required or present fields
+        } else {
+            if (!field.required) gen
+            ("if(m%s!==undefined){", prop);
+                genVerifyValue(gen, field, i, "m" + prop);
+            if (!field.required) gen
+            ("}");
         }
     }
     return gen

@@ -191,7 +191,7 @@ greeter.sayHello({ name: 'you' }, function(err, response) {
 });
 ```
 
-To make this work, all you have to do is provide an `rpcImpl`, which is is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:
+To make this work, all you have to do is provide an `rpcImpl`, which is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:
 
 ```js
 function rpcImpl(method, requestData, callback) {
@@ -219,7 +219,7 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 ### Parser
 
-* **load(filename: `string|Array`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise|undefined`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
+* **load(filename: `string|string[]`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise|undefined`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
   Loads one or multiple .proto or preprocessed .json files into a common root namespace.
 
 * **loadSync(filename: `string|string[]`, [root: `Root`]): `Root`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
@@ -234,10 +234,10 @@ The library exports a flat `protobuf` namespace with the following members, orde
   * **package: `string|undefined`**<br />
     The package name, if declared.
 
-  * **imports: `Array|undefined`**<br />
+  * **imports: `string[]|undefined`**<br />
     File names of imported files, if any.
 
-  * **weakImports: `Array|undefined`**<br />
+  * **weakImports: `string[]|undefined`**<br />
     File names of weakly imported files, if any.
 
   * **syntax: `string|undefined`**<br />
@@ -413,33 +413,33 @@ The package includes a benchmark that tries to compare performance to native JSO
 ```
 benchmarking encoding performance ...
 
-Type.encode to buffer x 471,717 ops/sec ±1.30% (91 runs sampled)
-JSON.stringify to string x 310,406 ops/sec ±1.00% (90 runs sampled)
-JSON.stringify to buffer x 172,766 ops/sec ±1.20% (84 runs sampled)
+Type.encode to buffer x 479,876 ops/sec ±0.64% (92 runs sampled)
+JSON.stringify to string x 311,489 ops/sec ±0.84% (87 runs sampled)
+JSON.stringify to buffer x 175,079 ops/sec ±1.48% (82 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 34.0% slower
-   JSON.stringify to buffer was 63.3% slower
+   JSON.stringify to string was 35.2% slower
+   JSON.stringify to buffer was 63.8% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,285,867 ops/sec ±0.70% (90 runs sampled)
-JSON.parse from string x 292,106 ops/sec ±1.00% (89 runs sampled)
-JSON.parse from buffer x 259,361 ops/sec ±0.92% (90 runs sampled)
+Type.decode from buffer x 1,267,612 ops/sec ±1.18% (90 runs sampled)
+JSON.parse from string x 291,707 ops/sec ±1.12% (92 runs sampled)
+JSON.parse from buffer x 262,640 ops/sec ±0.77% (89 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 77.4% slower
-     JSON.parse from buffer was 79.9% slower
+     JSON.parse from string was 77.0% slower
+     JSON.parse from buffer was 79.2% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 238,382 ops/sec ±0.96% (89 runs sampled)
-JSON to/from string x 127,352 ops/sec ±0.73% (93 runs sampled)
-JSON to/from buffer x 89,593 ops/sec ±0.85% (87 runs sampled)
+Type to/from buffer x 248,897 ops/sec ±0.89% (90 runs sampled)
+JSON to/from string x 126,848 ops/sec ±0.75% (92 runs sampled)
+JSON to/from buffer x 89,854 ops/sec ±0.79% (93 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 46.5% slower
-        JSON to/from buffer was 62.4% slower
+        JSON to/from string was 49.0% slower
+        JSON to/from buffer was 63.9% slower
 ```
 
 Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?

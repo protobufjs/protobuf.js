@@ -379,7 +379,8 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
 TypePrototype.verify = function verify(message) {
     return (this.verify = codegen.supported
         ? codegen.verify.generate(this).eof(this.getFullName() + "$verify", {
-              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; })
+              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util  : util
           })
         : codegen.verify.fallback
     ).call(this, message);
