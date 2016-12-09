@@ -286,7 +286,9 @@ function buildType(ref, type) {
         "@param {" + fullName + "|Object} message " + type.name + " or plain object to verify",
         "@returns {?string} `null` if valid, otherwise the reason why it is not"
     ]);
-    buildFunction(type, "verify", codegen.verify.generate(type), {});
+    buildFunction(type, "verify", codegen.verify.generate(type), {
+        util : "$protobuf.util"
+    });
 }
 
 function buildService(ref, service) {

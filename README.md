@@ -440,6 +440,12 @@ JSON to/from buffer x 89,854 ops/sec ±0.79% (93 runs sampled)
         Type to/from buffer was fastest
         JSON to/from string was 49.0% slower
         JSON to/from buffer was 63.9% slower
+
+benchmarking verifying performance ...
+
+Type.verify x 5,941,014 ops/sec ±0.96% (90 runs sampled)
+
+                Type.verify was fastest
 ```
 
 Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?

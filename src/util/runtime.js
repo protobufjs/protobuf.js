@@ -53,6 +53,15 @@ util.isString = function isString(value) {
 };
 
 /**
+ * Tests if the specified value is a non-null object.
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a non-null object
+ */
+util.isObject = function isObject(value) {
+    return Boolean(value && typeof value === 'object');
+};
+
+/**
  * Converts a number or long to an 8 characters long hash string.
  * @param {Long|number} value Value to convert
  * @returns {string} Hash

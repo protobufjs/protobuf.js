@@ -7,15 +7,6 @@
 var util = exports;
 
 /**
- * Tests if the specified value is a non-null object.
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is a non-null object
- */
-util.isObject = function isObject(value) {
-    return Boolean(value && typeof value === 'object');
-};
-
-/**
  * Converts an object's values to an array.
  * @param {Object.<string,*>} object Object to convert
  * @returns {Array.<*>} Converted array

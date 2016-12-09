@@ -14,7 +14,7 @@ var Enum      = require("../enum"),
 var isInteger = util.isInteger;
 
 function invalid(field, expected) {
-    return "invalid value for field " + field.getFullName() + " (" + expected + " expected)";
+    return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
 }
 
 function verifyValue(field, value) {
@@ -49,7 +49,7 @@ function verifyValue(field, value) {
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!value || typeof value.length !== 'number')
+            if (!(value && typeof value.length === 'number'))
                 return invalid(field, "buffer");
             break;
         default:
@@ -66,6 +66,32 @@ function verifyValue(field, value) {
     return null;
 }
 
+function verifyKey(field, value) {
+    switch (field.keyType) { // eslint-disable-line default-case
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64":
+            if (/^[\x00-\xff]{8}$/.test(value)) // eslint-disable-line no-control-regex
+                return null;
+            // fallthrough
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32":
+            if (/^-?(?:0|[1-9]\d*)$/.test(value))
+                return invalid(field, "integer key");
+            break;
+        case "bool":
+            if (/^true|false|0|1$/.test(value))
+                return invalid(field, "boolean key");
+            break;
+    }
+    return null;
+}
+
 /**
  * Verifies a runtime message of `this` message type.
  * @param {Message|Object} message Runtime message or plain object to verify
@@ -73,6 +99,7 @@ function verifyValue(field, value) {
  * @this {Type}
  */
 verify.fallback = function verify_fallback(message) {
+    /* eslint-disable block-scoped-var, no-redeclare */
     var fields = this.getFieldsArray(),
         i = 0,
         reason;
@@ -80,34 +107,51 @@ verify.fallback = function verify_fallback(message) {
         var field = fields[i++].resolve(),
             value = message[field.name];
 
+        // map fields
+        if (field.map) {
+
+            if (value !== undefined) {
+                if (!util.isObject(value))
+                    return invalid(field, "object");
+                var keys = Object.keys(value);
+                for (var j = 0; j < keys.length; ++j) {
+                    if (reason = verifyKey(field, keys[j])) // eslint-disable-line no-cond-assign
+                        return reason;
+                    if (reason = verifyValue(field, value[keys[j]])) // eslint-disable-line no-cond-assign
+                        return reason;
+                }
+            }
+
         // repeated fields
-        if (field.repeated) {
+        } else if (field.repeated) {
 
             if (value !== undefined) {
                 if (!Array.isArray(value))
                     return invalid(field, "array");
                 for (var j = 0; j < value.length; ++j)
-                    if (reason = verifyValue(field, value[j]))
+                    if (reason = verifyValue(field, value[j])) // eslint-disable-line no-cond-assign
                         return reason;
             }
 
         // required or present fields
         } else if (field.required || value !== undefined) {
             
-            if (reason = verifyValue(field, value))
+            if (reason = verifyValue(field, value)) // eslint-disable-line no-cond-assign
                 return reason;
         }
 
     }
     return null;
+    /* eslint-enable block-scoped-var, no-redeclare */
 };
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
+    /* eslint-disable no-unexpected-multiline */
     switch (field.type) {
         case "double":
         case "float": gen
             ("if(typeof %s!=='number')", ref)
-                ("return %j", invalid(field, "number"));
+                ("return%j", invalid(field, "number"));
             break;
         case "int32":
         case "uint32":
@@ -115,7 +159,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
         case "fixed32":
         case "sfixed32": gen
             ("if(!util.isInteger(%s))", ref)
-                ("return %j", invalid(field, "integer"));
+                ("return%j", invalid(field, "integer"));
             break;
         case "int64":
         case "uint64":
@@ -123,25 +167,25 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
         case "fixed64":
         case "sfixed64": gen
             ("if(!(util.isInteger(%s)||%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-                ("return %j", invalid(field, "integer|Long"));
+                ("return%j", invalid(field, "integer|Long"));
             break;
         case "bool": gen
             ("if(typeof %s!=='boolean')", ref)
-                ("return %j", invalid(field, "boolean"));
+                ("return%j", invalid(field, "boolean"));
             break;
         case "string": gen
             ("if(!util.isString(%s))", ref)
-                ("return %j", invalid(field, "string"));
+                ("return%j", invalid(field, "string"));
             break;
         case "bytes": gen
-            ("if (!%s||typeof %s.length!=='number')", ref, ref)
-                ("return %j", invalid(field, "buffer"));
+            ("if(!(%s&&typeof %s.length==='number'))", ref, ref)
+                ("return%j", invalid(field, "buffer"));
             break;
         default:
             if (field.resolvedType instanceof Enum) { gen
                 ("switch(%s){", ref)
                     ("default:")
-                        ("return %j", invalid(field, "enum value"));
+                        ("return%j", invalid(field, "enum value"));
                 var values = util.toArray(field.resolvedType.values);
                 for (var j = 0; j < values.length; ++j) gen
                     ("case %d:", values[j]);
@@ -154,6 +198,34 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             }
             break;
     }
+    /* eslint-enable no-unexpected-multiline */
+}
+
+function genVerifyKey(gen, field, ref) {
+    /* eslint-disable no-unexpected-multiline */
+    switch (field.keyType) { // eslint-disable-line default-case
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64": gen
+            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer|Long key"));
+            break;
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32":
+            ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer key"));
+            break;
+        case "bool":
+            ("if(!/^true|false|0|1$/.test(%s))", ref)
+                ("return%j", invalid(field, "boolean key"));
+            break;
+    }
+    /* eslint-enable no-unexpected-multiline */
 }
 
 /**
@@ -170,11 +242,24 @@ verify.generate = function verify_generate(mtype) {
         var field = fields[i].resolve(),
             prop  = util.safeProp(field.name);
 
+        // map fields
+        if (field.map) { gen
+            ("if(m%s!==undefined){", prop)
+                ("if(!util.isObject(m%s))", prop)
+                    ("return%j", invalid(field, "object"))
+                ("var k=Object.keys(m%s)", prop)
+                ("for(var i=0;i<k.length;++i){");
+                    genVerifyKey(gen, field, "k[i]");
+                    genVerifyValue(gen, field, i, "m" + prop + "[k[i]]");
+                gen
+                ("}")
+            ("}");
+
         // repeated fields
-        if (field.repeated) { gen
+        } else if (field.repeated) { gen
             ("if(m%s!==undefined){", prop)
                 ("if(!Array.isArray(m%s))", prop)
-                    ("return %j", invalid(field, "array"))
+                    ("return%j", invalid(field, "array"))
                 ("for(var i=0;i<m%s.length;++i){", prop);
                     genVerifyValue(gen, field, i, "m" + prop + "[i]"); gen
                 ("}")
