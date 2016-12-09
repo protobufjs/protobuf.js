@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+message A {
+    required uint32 a = 1;
+}
+
+message B {
+    required string b = 1;
+}

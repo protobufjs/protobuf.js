@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Fri, 09 Dec 2016 15:19:29 UTC
+ * Compiled Fri, 09 Dec 2016 15:42:49 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4853,7 +4853,7 @@ TypePrototype.encode = function encode(message, writer) {
  * @returns {Writer} writer
  */
 TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
-    return this.encode(message, writer && writer.fork() || writer).ldelim();
+    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
 };
 
 /**

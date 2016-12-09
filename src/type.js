@@ -341,7 +341,7 @@ TypePrototype.encode = function encode(message, writer) {
  * @returns {Writer} writer
  */
 TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
-    return this.encode(message, writer && writer.fork() || writer).ldelim();
+    return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
 };
 
 /**
