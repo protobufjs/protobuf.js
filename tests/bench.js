@@ -9,11 +9,12 @@ tape.test("bench.proto and bench.json", function(test) {
             return test.fail(err.message);
         
         var Test = root.lookup("Test");
+        
         var data = require("../bench/bench.json");
 
         test.equal(Test.verify(data), null, "should verify our test data");
-        var writer = Test.encode(data);
-        var decoded = Test.decode(writer.finish());
+
+        var decoded = Test.decode(Test.encode(data).finish());
         test.deepEqual(decoded, data, "should reproduce the original data when encoded and decoded again");
 
         test.deepEqual(decoded.asJSON(), data, "should reproduce the original data asJSON");

@@ -9,12 +9,15 @@ tape.test("oneofs", function(test) {
             return test.fail(err.message);
 
         var Message = root.lookup("Message");
+
         var message = Message.create({
             str: "a",
             num: 1
         });
+
         test.equal(message.num, 1, "should initialize the last value");
         test.equal(message.getKind(), "num", "should reference the last value");
+        
         message.setKind('num');
         test.notOk(message.hasOwnProperty('str'), "should delete other values");
 

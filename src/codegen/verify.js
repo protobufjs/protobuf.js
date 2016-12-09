@@ -190,6 +190,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 for (var j = 0; j < values.length; ++j) gen
                     ("case %d:", values[j]);
                 gen
+                        ("break")
                 ("}");
             } else if (field.resolvedType instanceof Type) { gen
                 ("var r;")

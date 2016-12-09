@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Fri, 09 Dec 2016 15:42:49 UTC
+ * Compiled Fri, 09 Dec 2016 16:06:35 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -944,6 +944,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 for (var j = 0; j < values.length; ++j) gen
                     ("case %d:", values[j]);
                 gen
+                        ("break")
                 ("}");
             } else if (field.resolvedType instanceof Type) { gen
                 ("var r;")

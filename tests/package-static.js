@@ -7,8 +7,9 @@ tape.test("package.json (static)", function(test) {
 
     var root = require("./data/package.js");
 
-    var Package = root.Package;
-    var Repository = root.Package.Repository;
+    var Package = root.Package,
+        Repository = root.Package.Repository;
+
     var myPackage = new Package(pkg);
 
     test.test("runtime message", function(test) {
@@ -21,9 +22,7 @@ tape.test("package.json (static)", function(test) {
 
     test.test("decoded message", function(test) {
 
-        var writer = Package.encode(myPackage);
-        var buf = writer.finish();
-        var decoded = Package.decode(buf);
+        var decoded = Package.decode(Package.encode(myPackage).finish());
 
         test.ok(decoded instanceof Package, "should extend Package");
         test.ok(decoded.repository instanceof Repository, "submessage should extend Repository");
