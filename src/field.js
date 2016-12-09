@@ -193,7 +193,7 @@ Field.testJSON = function testJSON(json) {
 Field.fromJSON = function fromJSON(name, json) {
     if (json.keyType !== undefined)
         return MapField.fromJSON(name, json);
-    return new Field(name, json.id, json.type, json.role, json.extend, json.options);
+    return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
 };
 
 /**
