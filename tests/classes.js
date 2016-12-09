@@ -1,18 +1,21 @@
 var tape = require("tape");
 
-var protobuf  = require(".."),
-    Prototype = protobuf.Prototype,
-    inherits  = protobuf.inherits;
+var protobuf = require(".."),
+    Class    = protobuf.Class,
+    Message  = protobuf.Message;
 
 tape.test("google.protobuf.Any class", function(test) {
+
+    test.equal(Message, Class.prototype, "requires that prototypes are class instances");
+
     protobuf.load("tests/data/common.proto", function(err, root) {
         if (err)
             return test.fail(err.message);
 
         function Any(properties) {
-            Prototype.call(this, properties);
+            Message.call(this, properties);
         }
-        inherits(Any, root.lookup("google.protobuf.Any"));
+        Any.prototype = Class.create(root.lookup("google.protobuf.Any"), Any);
 
         var valueBuffer = protobuf.util.newBuffer(0);
         var any = new Any({
@@ -22,7 +25,7 @@ tape.test("google.protobuf.Any class", function(test) {
 
         test.test("instances", function(test) {
 
-            test.ok(any instanceof protobuf.Prototype, "should extend Prototype");
+            test.ok(any instanceof protobuf.Message, "should extend Message");
             test.ok(any instanceof Any, "should extend the custom class");
             test.deepEqual(any, {
                 type_url: "some.type",

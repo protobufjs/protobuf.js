@@ -36,7 +36,7 @@ function configure() {
 Reader.configure = configure;
 
 /**
- * Constructs a new reader using the specified buffer.
+ * Constructs a new reader instance using the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
@@ -555,7 +555,7 @@ var initBufferReader = function() {
 };
 
 /**
- * Constructs a new buffer reader.
+ * Constructs a new buffer reader instance.
  * @classdesc Wire format reader using node buffers.
  * @extends Reader
  * @constructor

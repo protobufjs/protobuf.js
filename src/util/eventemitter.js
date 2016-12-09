@@ -2,7 +2,7 @@
 module.exports = EventEmitter;
 
 /**
- * Constructs a new event emitter.
+ * Constructs a new event emitter instance.
  * @classdesc A minimal event emitter.
  * @memberof util
  * @constructor

@@ -9,7 +9,7 @@ var LongBits  = util.LongBits,
     ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
- * Constructs a new writer operation.
+ * Constructs a new writer operation instance.
  * @classdesc Scheduled writer operation.
  * @memberof Writer
  * @constructor
@@ -51,7 +51,7 @@ Writer.Op = Op;
 function noop() {} // eslint-disable-line no-empty-function
 
 /**
- * Constructs a new writer state.
+ * Constructs a new writer state instance.
  * @classdesc Copied writer state.
  * @memberof Writer
  * @constructor
@@ -90,7 +90,7 @@ function State(writer, next) {
 Writer.State = State;
 
 /**
- * Constructs a new writer.
+ * Constructs a new writer instance.
  * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  */
@@ -545,7 +545,7 @@ WriterPrototype.finish = function finish() {
 };
 
 /**
- * Constructs a new buffer writer.
+ * Constructs a new buffer writer instance.
  * @classdesc Wire format writer using node buffers.
  * @exports BufferWriter
  * @extends Writer

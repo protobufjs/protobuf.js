@@ -151,12 +151,11 @@ var root = new Root().define("awesomepackage").add(AwesomeMessage);
 
 ```js
 ...
-var Prototype = protobuf.Prototype;
 
 function AwesomeMessage(properties) {
-    Prototype.call(this, properties);
+    protobuf.Message.call(this, properties);
 }
-protobuf.inherits(AwesomeMessage, root.lookup("awesomepackage.AwesomeMessage") /* or use reflection */);
+protobuf.Class.create(root.lookup("awesomepackage.AwesomeMessage") /* or use reflection */, AwesomeMessage);
 
 var message = new AwesomeMessage({ awesomeField: "AwesomeString" });
 
@@ -203,6 +202,8 @@ function rpcImpl(method, requestData, callback) {
 }
 ```
 
+There is also an [example for streaming RPC](https://github.com/dcodeIO/protobuf.js/blob/master/examples/streaming-rpc.js).
+
 ### Usage with TypeScript
 
 ```ts
@@ -218,8 +219,11 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 ### Parser
 
-* **load(filename: `string|Array`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
-  Loads one or multiple .proto files into the specified root or creates a new one when omitted.
+* **load(filename: `string|Array`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise|undefined`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
+  Loads one or multiple .proto or preprocessed .json files into a common root namespace.
+
+* **loadSync(filename: `string|string[]`, [root: `Root`]): `Root`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
+  Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
 
 * **tokenize(source: `string`): `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/tokenize.js)]<br />
   Tokenizes the given .proto source and returns an object with useful utility functions.
@@ -256,14 +260,8 @@ The library exports a flat `protobuf` namespace with the following members, orde
 * **BufferReader** _extends **Reader**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
   Wire format reader using node buffers.
 
-* **Encoder** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/encoder.js)]<br />
-  Wire format encoder using code generation on top of reflection.
-
-* **Decoder** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js)]<br />
-  Wire format decoder using code generation on top of reflection.
-
-* **Verifier** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js)]<br />
-  Runtime message verifier using code generation on top of reflection.
+* **codegen** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js)]<br />
+  A closure for generating functions programmatically.
 
 ### Reflection
 
@@ -296,22 +294,25 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 ### Runtime
 
-* **inherits(clazz: `Function`, type: `Type`, [options: `Object.<string,*>`]): `Prototype`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/inherits.js)]<br />
-  Inherits a custom class from the message prototype of the specified message type.
+* **Class** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js)]<br />
+  Runtime class providing the tools to create your own custom classes.
 
-* **Prototype** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/prototype.js)]<br />
-  Runtime message prototype ready to be extended by custom classes or generated code.
+* **Message** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js)]<br />
+  Abstract runtime message.
 
 ### Utility
 
-* **util: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
-  Utility functions.
+* **types: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js)]<br />
+  Common type constants.
 
 * **common(name: `string`, json: `Object`)** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js)]<br />
   Provides common type definitions.
 
-* **types: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js)]<br />
-  Common type constants.
+* **rpc: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js)]<br />
+  Streaming RPC helpers.
+
+* **util: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
+  Various utility functions.
 
 Documentation
 -------------
@@ -319,22 +320,6 @@ Documentation
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
 
 * [protobuf.js API Documentation](http://dcode.io/protobuf.js/)
-
-### Data type recommendations
-
-| Value type          | protobuf Type | Size / Notes
-|---------------------|---------------|-----------------------------------------------------------------------------------
-| Unsigned 32 bit int | uint32        | 1 to 5 bytes.
-| Signed 32 bit int   | sint32        | 1 to 5 bytes. Do not use int32 (always encodes negative values as 10 bytes).
-| Unsigned 52 bit int | uint64        | 1 to 10 bytes.
-| Signed 52 bit int   | sint64        | 1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).
-| Unsigned 64 bit int | uint64        | Use with long.js. 1 to 10 bytes.
-| Signed 64 bit int   | sint64        | Use with long.js. 1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).
-| 32 bit float        | float         | 4 bytes.
-| 64 bit float        | double        | 8 bytes. Use float if 32 bits of precision are enough.
-| Boolean values      | bool          | 1 byte.
-| Strings             | string        | 1 to 5 bytes + utf8 byte length.
-| Buffers             | bytes         | 1 to 5 bytes + byte length.
 
 Command line
 ------------

@@ -17,7 +17,7 @@ var Enum    = require("../enum"),
  * Decodes a message of `this` message's type.
  * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
- * @returns {Prototype} Populated runtime message
+ * @returns {Message} Populated runtime message
  * @this Type
  */
 decode.fallback = function decode_fallback(readerOrBuffer, length) {

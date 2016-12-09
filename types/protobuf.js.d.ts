@@ -1,9 +1,74 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Thu, 08 Dec 2016 19:14:58 UTC
+ * Generated Fri, 09 Dec 2016 01:15:41 UTC
  */
 declare module "protobufjs" {
 
+   /**
+    * Constructs a class instance, which is also a message prototype.
+    * @classdesc Runtime class providing the tools to create your own custom classes.
+    * @constructor
+    * @param {Type} type Reflected type
+    * @abstract
+    */
+   abstract class Class {
+      /**
+       * Constructs a new message prototype for the specified reflected type and sets up its constructor.
+       * @param {Type} type Reflected message type
+       * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
+       * @returns {Message} Message prototype
+       */
+      static create(type: Type, ctor?: any): Message;
+   
+      /**
+       * Encodes a message of this type.
+       * @name Class#encode
+       * @function
+       * @param {Message|Object} message Message to encode
+       * @param {Writer} [writer] Writer to use
+       * @returns {Writer} Writer
+       */
+      encode(message: (Message|Object), writer?: Writer): Writer;
+   
+      /**
+       * Encodes a message of this type preceeded by its length as a varint.
+       * @name Class#encodeDelimited
+       * @function
+       * @param {Message|Object} message Message to encode
+       * @param {Writer} [writer] Writer to use
+       * @returns {Writer} Writer
+       */
+      encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+   
+      /**
+       * Decodes a message of this type.
+       * @name Class#decode
+       * @function
+       * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+       * @returns {Message} Decoded message
+       */
+      decode(readerOrBuffer: (Reader|Uint8Array)): Message;
+   
+      /**
+       * Decodes a message of this type preceeded by its length as a varint.
+       * @name Class#decodeDelimited
+       * @function
+       * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+       * @returns {Message} Decoded message
+       */
+      decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Message;
+   
+      /**
+       * Verifies a message of this type.
+       * @name Class#verify
+       * @function
+       * @param {Message|Object} message Message or plain object to verify
+       * @returns {?string} `null` if valid, otherwise the reason why it is not
+       */
+      verify(message: (Message|Object)): string;
+   
+   }
+   
    /**
     * A closure for generating functions programmatically.
     * @namespace
@@ -42,7 +107,7 @@ declare module "protobufjs" {
    function common(name: string, json: Object): void;
    
    /**
-    * Constructs a new enum.
+    * Constructs a new enum instance.
     * @classdesc Reflected enum.
     * @extends ReflectionObject
     * @constructor
@@ -52,7 +117,7 @@ declare module "protobufjs" {
     */
    class Enum extends ReflectionObject {
       /**
-       * Constructs a new enum.
+       * Constructs a new enum instance.
        * @classdesc Reflected enum.
        * @extends ReflectionObject
        * @constructor
@@ -122,7 +187,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new message field. Note that {@link MapField|map fields} have their own class.
+    * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
     * @classdesc Reflected message field.
     * @extends ReflectionObject
     * @constructor
@@ -135,7 +200,7 @@ declare module "protobufjs" {
     */
    class Field extends ReflectionObject {
       /**
-       * Constructs a new message field. Note that {@link MapField|map fields} have their own class.
+       * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
        * @classdesc Reflected message field.
        * @extends ReflectionObject
        * @constructor
@@ -282,7 +347,7 @@ declare module "protobufjs" {
        * @param {*} value Field value
        * @param {Object.<string,*>} [options] Conversion options
        * @returns {*} Converted value
-       * @see {@link Prototype#asJSON}
+       * @see {@link Message#asJSON}
        */
       jsonConvert(value: any, options?: { [k: string]: any }): any;
    
@@ -320,7 +385,7 @@ declare module "protobufjs" {
    function load(filename: (string|string[]), root?: Root): Promise<Root>;
    
    /**
-    * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace.
+    * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
     * @param {string|string[]} filename One or multiple files to load
     * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
     * @returns {Root} Root namespace
@@ -329,105 +394,7 @@ declare module "protobufjs" {
    function loadSync(filename: (string|string[]), root?: Root): Root;
    
    /**
-    * Options passed to {@link inherits}, modifying its behavior.
-    * @typedef InheritanceOptions
-    * @type {Object}
-    * @property {boolean} [noStatics=false] Skips adding the default static methods on top of the constructor
-    * @property {boolean} [noRegister=false] Skips registering the constructor with the reflected type
-    */
-   interface InheritanceOptions {
-      noStatics: boolean;
-      noRegister: boolean;
-   }
-   
-   
-   /**
-    * Inherits a custom class from the message prototype of the specified message type.
-    * @param {*} clazz Inheriting class constructor
-    * @param {Type} type Inherited message type
-    * @param {InheritanceOptions} [options] Inheritance options
-    * @returns {Prototype} Created prototype
-    */
-   function inherits(clazz: any, type: Type, options?: InheritanceOptions): Prototype;
-   
-   /**
-    * This is not an actual type but stands as a reference for any constructor of a custom message class that you pass to the library.
-    * @name Class
-    * @extends Prototype
-    * @constructor
-    * @param {Object.<string,*>} [properties] Properties to set on the message
-    * @see {@link inherits}
-    */
-   class Class extends Prototype {
-      /**
-       * This is not an actual type but stands as a reference for any constructor of a custom message class that you pass to the library.
-       * @name Class
-       * @extends Prototype
-       * @constructor
-       * @param {Object.<string,*>} [properties] Properties to set on the message
-       * @see {@link inherits}
-       */
-      constructor(properties?: { [k: string]: any });
-   
-      /**
-       * Reference to the reflected type.
-       * @name Class.$type
-       * @type {Type}
-       * @readonly
-       */
-      static $type: Type;
-   
-      /**
-       * Encodes a message of this type to a buffer.
-       * @name Class.encode
-       * @function
-       * @param {Prototype|Object} message Message to encode
-       * @param {Writer} [writer] Writer to use
-       * @returns {Writer} Writer
-       */
-      static encode(message: (Prototype|Object), writer?: Writer): Writer;
-   
-      /**
-       * Encodes a message of this type preceeded by its length as a varint to a buffer.
-       * @name Class.encodeDelimited
-       * @function
-       * @param {Prototype|Object} message Message to encode
-       * @param {Writer} [writer] Writer to use
-       * @returns {Writer} Writer
-       */
-      static encodeDelimited(message: (Prototype|Object), writer?: Writer): Writer;
-   
-      /**
-       * Decodes a message of this type from a buffer.
-       * @name Class.decode
-       * @function
-       * @param {Uint8Array} buffer Buffer to decode
-       * @returns {Prototype} Decoded message
-       */
-      static decode(buffer: Uint8Array): Prototype;
-   
-      /**
-       * Decodes a message of this type preceeded by its length as a varint from a buffer.
-       * @name Class.decodeDelimited
-       * @function
-       * @param {Uint8Array} buffer Buffer to decode
-       * @returns {Prototype} Decoded message
-       */
-      static decodeDelimited(buffer: Uint8Array): Prototype;
-   
-      /**
-       * Verifies a message of this type.
-       * @name Class.verify
-       * @function
-       * @param {Prototype|Object} message Message or plain object to verify
-       * @returns {?string} `null` if valid, otherwise the reason why it is not
-       */
-      static verify(message: (Prototype|Object)): string;
-   
-   }
-   
-   /**
-    * Constructs a new map field.
+    * Constructs a new map field instance.
     * @classdesc Reflected map field.
     * @extends Field
     * @constructor
@@ -439,7 +406,7 @@ declare module "protobufjs" {
     */
    class MapField extends Field {
       /**
-       * Constructs a new map field.
+       * Constructs a new map field instance.
        * @classdesc Reflected map field.
        * @extends Field
        * @constructor
@@ -482,7 +449,95 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new service method.
+    * Constructs a new message instance.
+    *
+    * This method should be called from your custom constructors, i.e. `Message.call(this, properties)`.
+    * @classdesc Abstract runtime message.
+    * @extends {Object}
+    * @constructor
+    * @param {Object.<string,*>} [properties] Properties to set
+    * @abstract
+    * @see {@link Class.create}
+    */
+   abstract class Message extends Object {
+      /**
+       * Converts this message to a JSON object.
+       * @param {Object.<string,*>} [options] Conversion options
+       * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
+       * @param {*} [options.long] Long conversion type. Only relevant with a long library.
+       * Valid values are `String` and `Number` (the global types).
+       * Defaults to a possibly unsafe number without, and a `Long` with a long library.
+       * @param {*} [options.enum=Number] Enum value conversion type.
+       * Valid values are `String` and `Number` (the global types).
+       * Defaults to the numeric ids.
+       * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
+       * @returns {Object.<string,*>} JSON object
+       */
+      asJSON(options?: { [k: string]: any }): { [k: string]: any };
+   
+      /**
+       * Reference to the reflected type.
+       * @name Message.$type
+       * @type {Type}
+       * @readonly
+       */
+      static $type: Type;
+   
+      /**
+       * Reference to the reflected type.
+       * @name Message#$type
+       * @type {Type}
+       * @readonly
+       */
+      $type: Type;
+   
+      /**
+       * Encodes a message of this type.
+       * @param {Message|Object} message Message to encode
+       * @param {Writer} [writer] Writer to use
+       * @returns {Writer} Writer
+       */
+      static encode(message: (Message|Object), writer?: Writer): Writer;
+   
+      /**
+       * Encodes a message of this type preceeded by its length as a varint.
+       * @param {Message|Object} message Message to encode
+       * @param {Writer} [writer] Writer to use
+       * @returns {Writer} Writer
+       */
+      static encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
+   
+      /**
+       * Decodes a message of this type.
+       * @name Message.decode
+       * @function
+       * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+       * @returns {Message} Decoded message
+       */
+      static decode(readerOrBuffer: (Reader|Uint8Array)): Message;
+   
+      /**
+       * Decodes a message of this type preceeded by its length as a varint.
+       * @name Message.decodeDelimited
+       * @function
+       * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+       * @returns {Message} Decoded message
+       */
+      static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Message;
+   
+      /**
+       * Verifies a message of this type.
+       * @name Message.verify
+       * @function
+       * @param {Message|Object} message Message or plain object to verify
+       * @returns {?string} `null` if valid, otherwise the reason why it is not
+       */
+      static verify(message: (Message|Object)): string;
+   
+   }
+   
+   /**
+    * Constructs a new service method instance.
     * @classdesc Reflected service method.
     * @extends ReflectionObject
     * @constructor
@@ -496,7 +551,7 @@ declare module "protobufjs" {
     */
    class Method extends ReflectionObject {
       /**
-       * Constructs a new service method.
+       * Constructs a new service method instance.
        * @classdesc Reflected service method.
        * @extends ReflectionObject
        * @constructor
@@ -571,7 +626,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new namespace.
+    * Constructs a new namespace instance.
     * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
     * @extends ReflectionObject
     * @constructor
@@ -580,7 +635,7 @@ declare module "protobufjs" {
     */
    class Namespace extends ReflectionObject {
       /**
-       * Constructs a new namespace.
+       * Constructs a new namespace instance.
        * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
        * @extends ReflectionObject
        * @constructor
@@ -684,7 +739,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new reflection object.
+    * Constructs a new reflection object instance.
     * @classdesc Base class of all reflection objects.
     * @constructor
     * @param {string} name Object name
@@ -736,7 +791,7 @@ declare module "protobufjs" {
        * Lets the specified constructor extend this class.
        * @memberof ReflectionObject
        * @param {*} constructor Extending constructor
-       * @returns {Object} Prototype
+       * @returns {Object} Constructor prototype
        * @this ReflectionObject
        */
       static extend(constructor: any): Object;
@@ -801,7 +856,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new oneof.
+    * Constructs a new oneof instance.
     * @classdesc Reflected oneof.
     * @extends ReflectionObject
     * @constructor
@@ -811,7 +866,7 @@ declare module "protobufjs" {
     */
    class OneOf extends ReflectionObject {
       /**
-       * Constructs a new oneof.
+       * Constructs a new oneof instance.
        * @classdesc Reflected oneof.
        * @extends ReflectionObject
        * @constructor
@@ -893,50 +948,14 @@ declare module "protobufjs" {
    function parse(source: string, root?: Root): ParserResult;
    
    /**
-    * Constructs a new prototype.
-    * This method should be called from your custom constructors, i.e. `Prototype.call(this, properties)`.
-    * @classdesc Runtime message prototype ready to be extended by custom classes or generated code.
-    * @constructor
-    * @param {Object.<string,*>} [properties] Properties to set
-    * @abstract
-    * @see {@link inherits}
-    * @see {@link Class}
-    */
-   abstract class Prototype {
-      /**
-       * Reference to the reflected type.
-       * @name Prototype#$type
-       * @type {Type}
-       * @readonly
-       */
-      $type: Type;
-   
-      /**
-       * Converts a runtime message to a JSON object.
-       * @param {Object.<string,*>} [options] Conversion options
-       * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
-       * @param {*} [options.long] Long conversion type. Only relevant with a long library.
-       * Valid values are `String` and `Number` (the global types).
-       * Defaults to a possibly unsafe number without, and a `Long` with a long library.
-       * @param {*} [options.enum=Number] Enum value conversion type.
-       * Valid values are `String` and `Number` (the global types).
-       * Defaults to the numeric ids.
-       * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
-       * @returns {Object.<string,*>} JSON object
-       */
-      asJSON(options?: { [k: string]: any }): { [k: string]: any };
-   
-   }
-   
-   /**
-    * Constructs a new reader using the specified buffer.
+    * Constructs a new reader instance using the specified buffer.
     * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
     * @constructor
     * @param {Uint8Array} buffer Buffer to read from
     */
    class Reader {
       /**
-       * Constructs a new reader using the specified buffer.
+       * Constructs a new reader instance using the specified buffer.
        * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
        * @constructor
        * @param {Uint8Array} buffer Buffer to read from
@@ -1114,7 +1133,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new buffer reader.
+    * Constructs a new buffer reader instance.
     * @classdesc Wire format reader using node buffers.
     * @extends Reader
     * @constructor
@@ -1122,7 +1141,7 @@ declare module "protobufjs" {
     */
    class BufferReader extends Reader {
       /**
-       * Constructs a new buffer reader.
+       * Constructs a new buffer reader instance.
        * @classdesc Wire format reader using node buffers.
        * @extends Reader
        * @constructor
@@ -1133,7 +1152,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new root namespace.
+    * Constructs a new root namespace instance.
     * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
     * @extends Namespace
     * @constructor
@@ -1141,7 +1160,7 @@ declare module "protobufjs" {
     */
    class Root extends Namespace {
       /**
-       * Constructs a new root namespace.
+       * Constructs a new root namespace instance.
        * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
        * @extends Namespace
        * @constructor
@@ -1208,12 +1227,12 @@ declare module "protobufjs" {
    }
    
    /**
-    * RPC helpers.
+    * Streaming RPC helpers.
     * @namespace
     */
    module rpc {
       /**
-       * Constructs a new RPC service.
+       * Constructs a new RPC service instance.
        * @classdesc An RPC service as returned by {@link Service#create}.
        * @memberof rpc
        * @extends util.EventEmitter
@@ -1222,7 +1241,7 @@ declare module "protobufjs" {
        */
       class Service extends util.EventEmitter {
           /**
-           * Constructs a new RPC service.
+           * Constructs a new RPC service instance.
            * @classdesc An RPC service as returned by {@link Service#create}.
            * @memberof rpc
            * @extends util.EventEmitter
@@ -1249,7 +1268,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new service.
+    * Constructs a new service instance.
     * @classdesc Reflected service.
     * @extends Namespace
     * @constructor
@@ -1259,7 +1278,7 @@ declare module "protobufjs" {
     */
    class Service extends Namespace {
       /**
-       * Constructs a new service.
+       * Constructs a new service instance.
        * @classdesc Reflected service.
        * @extends Namespace
        * @constructor
@@ -1347,7 +1366,7 @@ declare module "protobufjs" {
    function tokenize(source: string): TokenizerHandle;
    
    /**
-    * Constructs a new message type.
+    * Constructs a new reflected message type instance.
     * @classdesc Reflected message type.
     * @extends Namespace
     * @constructor
@@ -1356,7 +1375,7 @@ declare module "protobufjs" {
     */
    class Type extends Namespace {
       /**
-       * Constructs a new message type.
+       * Constructs a new reflected message type instance.
        * @classdesc Reflected message type.
        * @extends Namespace
        * @constructor
@@ -1424,9 +1443,9 @@ declare module "protobufjs" {
       /**
        * The registered constructor, if any registered, otherwise a generic constructor.
        * @name Type#ctor
-       * @type {Prototype}
+       * @type {Class}
        */
-      ctor: Prototype;
+      ctor: Class;
    
       /**
        * Tests if the specified JSON object describes a message type.
@@ -1464,49 +1483,47 @@ declare module "protobufjs" {
       /**
        * Creates a new message of this type using the specified properties.
        * @param {Object|*} [properties] Properties to set
-       * @param {*} [ctor] Constructor to use.
-       * Defaults to use the internal constuctor.
-       * @returns {Prototype} Message instance
+       * @returns {Message} Runtime message
        */
-      create(properties?: (Object|any), ctor?: any): Prototype;
+      create(properties?: (Object|any)): Message;
    
       /**
        * Encodes a message of this type.
-       * @param {Prototype|Object} message Message instance or plain object
+       * @param {Message|Object} message Message instance or plain object
        * @param {Writer} [writer] Writer to encode to
        * @returns {Writer} writer
        */
-      encode(message: (Prototype|Object), writer?: Writer): Writer;
+      encode(message: (Message|Object), writer?: Writer): Writer;
    
       /**
        * Encodes a message of this type preceeded by its byte length as a varint.
-       * @param {Prototype|Object} message Message instance or plain object
+       * @param {Message|Object} message Message instance or plain object
        * @param {Writer} [writer] Writer to encode to
        * @returns {Writer} writer
        */
-      encodeDelimited(message: (Prototype|Object), writer?: Writer): Writer;
+      encodeDelimited(message: (Message|Object), writer?: Writer): Writer;
    
       /**
        * Decodes a message of this type.
        * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
        * @param {number} [length] Length of the message, if known beforehand
-       * @returns {Prototype} Decoded message
+       * @returns {Message} Decoded message
        */
-      decode(readerOrBuffer: (Reader|Uint8Array), length?: number): Prototype;
+      decode(readerOrBuffer: (Reader|Uint8Array), length?: number): Message;
    
       /**
        * Decodes a message of this type preceeded by its byte length as a varint.
        * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
-       * @returns {Prototype} Decoded message
+       * @returns {Message} Decoded message
        */
-      decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Prototype;
+      decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): Message;
    
       /**
        * Verifies that enum values are valid and that any required fields are present.
-       * @param {Prototype|Object} message Message to verify
+       * @param {Message|Object} message Message to verify
        * @returns {?string} `null` if valid, otherwise the reason why it is not
        */
-      verify(message: (Prototype|Object)): string;
+      verify(message: (Message|Object)): string;
    
    }
    
@@ -1563,19 +1580,19 @@ declare module "protobufjs" {
    
    
    /**
-    * Utility functions.
+    * Various utility functions.
     * @namespace
     */
    module util {
       /**
-       * Constructs a new event emitter.
+       * Constructs a new event emitter instance.
        * @classdesc A minimal event emitter.
        * @memberof util
        * @constructor
        */
       class EventEmitter {
           /**
-           * Constructs a new event emitter.
+           * Constructs a new event emitter instance.
            * @classdesc A minimal event emitter.
            * @memberof util
            * @constructor
@@ -1923,13 +1940,13 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new writer.
+    * Constructs a new writer instance.
     * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
     * @constructor
     */
    class Writer {
       /**
-       * Constructs a new writer.
+       * Constructs a new writer instance.
        * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
        * @constructor
        */
@@ -2132,7 +2149,7 @@ declare module "protobufjs" {
    }
    
    /**
-    * Constructs a new buffer writer.
+    * Constructs a new buffer writer instance.
     * @classdesc Wire format writer using node buffers.
     * @exports BufferWriter
     * @extends Writer
@@ -2140,7 +2157,7 @@ declare module "protobufjs" {
     */
    class BufferWriter extends Writer {
       /**
-       * Constructs a new buffer writer.
+       * Constructs a new buffer writer instance.
        * @classdesc Wire format writer using node buffers.
        * @exports BufferWriter
        * @extends Writer

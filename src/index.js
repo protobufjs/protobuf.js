@@ -43,7 +43,7 @@ function load(filename, root, callback) {
 protobuf.load = load;
 
 /**
- * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Root} Root namespace
@@ -81,8 +81,8 @@ protobuf.Service          = require("./service");
 protobuf.Method           = require("./method");
 
 // Runtime
-protobuf.Prototype        = require("./prototype");
-protobuf.inherits         = require("./inherits");
+protobuf.Class            = require("./class");
+protobuf.Message          = require("./message");
 
 // Utility
 protobuf.types            = require("./types");

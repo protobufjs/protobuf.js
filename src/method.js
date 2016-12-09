@@ -11,7 +11,7 @@ var Type = require("./type"),
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new service method.
+ * Constructs a new service method instance.
  * @classdesc Reflected service method.
  * @extends ReflectionObject
  * @constructor

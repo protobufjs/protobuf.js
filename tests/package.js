@@ -17,7 +17,7 @@ tape.test("package.json", function(test) {
 
             test.test("runtime message", function(test) {
 
-                test.ok(myPackage instanceof protobuf.Prototype, "should extend Prototype");
+                test.ok(myPackage instanceof protobuf.Message, "should extend Message");
                 test.equal(myPackage.$type, Package, "should reference Package as its reflected type");
                 test.deepEqual(myPackage, pkg, "should have equal contents");
 
@@ -30,9 +30,9 @@ tape.test("package.json", function(test) {
                 var buf = writer.finish();
                 var decoded = Package.decode(buf);
 
-                test.ok(decoded instanceof protobuf.Prototype, "should extend Prototype");
+                test.ok(decoded instanceof protobuf.Message, "should extend Message");
                 test.equal(decoded.$type, Package, "should reference Package as its reflected type");
-                test.ok(decoded.repository instanceof protobuf.Prototype, "submessages should also extend Prototype");
+                test.ok(decoded.repository instanceof protobuf.Message, "submessages should also extend Message");
                 test.equal(decoded.repository.$type, Repository, "repository submessage should reference Repository as its reflected type");
                 test.deepEqual(decoded, pkg, "should have equal contents");
 

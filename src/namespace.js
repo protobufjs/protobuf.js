@@ -17,7 +17,7 @@ var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
 
 /**
- * Constructs a new namespace.
+ * Constructs a new namespace instance.
  * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
  * @extends ReflectionObject
  * @constructor

@@ -19,7 +19,7 @@ tape.test("google.protobuf.Any type", function(test) {
 
         test.test("instances", function(test) {
 
-            test.ok(any instanceof protobuf.Prototype, "should extend Prototype");
+            test.ok(any instanceof protobuf.Message, "should extend Message");
             test.deepEqual(any, {
                 type_url: "some.type",
                 value: valueBuffer

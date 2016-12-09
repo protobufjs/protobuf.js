@@ -1,4 +1,5 @@
 /// <reference path="./protobuf.js.d.ts" />
+/// <reference path="../node_modules/@types/long/index.d.ts" />
 
 import * as protobuf from "protobufjs";
 
@@ -6,10 +7,21 @@ export const proto = {"nested":{"Hello":{"fields":{"value":{"rule":"required","t
 
 const root = protobuf.Root.fromJSON(proto);
 
-export class Hello {
-    constructor (properties: any) {
-        protobuf.Prototype.call(this, properties);
+export class Hello extends protobuf.Message {
+    constructor (properties?: any) {
+        super(properties);
+    }
+
+    foo() {
+        this["value"] = "hi";
+        return this;
     }
 }
+protobuf.Class.create(root.lookup("Hello") as protobuf.Type, Hello);
 
-protobuf.inherits(Hello, root.lookup("Hello") as protobuf.Type);
+var hello = new Hello();
+
+var buf = Hello.encode(hello.foo()).finish();
+
+var hello2 = Hello.decode(buf) as Hello;
+console.log(hello2.foo().asJSON());

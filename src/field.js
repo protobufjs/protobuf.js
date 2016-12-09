@@ -14,7 +14,7 @@ var Type      = require("./type"),
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new message field. Note that {@link MapField|map fields} have their own class.
+ * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
  * @classdesc Reflected message field.
  * @extends ReflectionObject
  * @constructor
@@ -255,7 +255,7 @@ FieldPrototype.resolve = function resolve() {
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
  * @returns {*} Converted value
- * @see {@link Prototype#asJSON}
+ * @see {@link Message#asJSON}
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (options) {

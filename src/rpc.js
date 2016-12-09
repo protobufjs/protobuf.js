@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * RPC helpers.
+ * Streaming RPC helpers.
  * @namespace
  */
 var rpc = exports;

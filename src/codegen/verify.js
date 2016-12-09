@@ -14,7 +14,7 @@ var Enum    = require("../enum"),
 
 /**
  * Verifies a runtime message of `this` message type.
- * @param {Prototype|Object} message Runtime message or plain object to verify
+ * @param {Message|Object} message Runtime message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  * @this {Type}
  */

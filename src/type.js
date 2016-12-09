@@ -11,15 +11,15 @@ var Enum      = require("./enum"),
     OneOf     = require("./oneof"),
     Field     = require("./field"),
     Service   = require("./service"),
-    Prototype = require("./prototype"),
+    Class     = require("./class"),
+    Message   = require("./message"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
-    inherits  = require("./inherits"),
     util      = require("./util"),
     codegen   = require("./codegen");
 
 /**
- * Constructs a new message type.
+ * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
  * @extends Namespace
  * @constructor
@@ -153,28 +153,15 @@ util.props(TypePrototype, {
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
      * @name Type#ctor
-     * @type {Prototype}
+     * @type {Class}
      */
     ctor: {
         get: function getCtor() {
-            if (this._ctor)
-                return this._ctor;
-            var ctor;
-            if (codegen.supported)
-                ctor = codegen("p")("P.call(this,p)").eof(this.getFullName() + "$ctor", {
-                    P: Prototype
-                });
-            else
-                ctor = function GenericMessage(properties) {
-                    Prototype.call(this, properties);
-                };
-            ctor.prototype = inherits(ctor, this);
-            this._ctor = ctor;
-            return ctor;
+            return this._ctor || (this._ctor = Class.create(this).constructor);
         },
         set: function setCtor(ctor) {
-            if (ctor && !(ctor.prototype instanceof Prototype))
-                throw util._TypeError("ctor", "a constructor inheriting from Prototype");
+            if (ctor && !(ctor.prototype instanceof Message))
+                throw util._TypeError("ctor", "a constructor inheriting from Message");
             this._ctor = ctor;
         }
     }
@@ -324,27 +311,15 @@ TypePrototype.remove = function remove(object) {
 /**
  * Creates a new message of this type using the specified properties.
  * @param {Object|*} [properties] Properties to set
- * @param {*} [ctor] Constructor to use.
- * Defaults to use the internal constuctor.
- * @returns {Prototype} Message instance
+ * @returns {Message} Runtime message
  */
-TypePrototype.create = function create(properties, ctor) {
-    if (!properties || typeof properties === 'function') {
-        ctor = properties;
-        properties = undefined;
-    } else if (properties /* already */ instanceof Prototype)
-        return properties;
-    if (ctor) {
-        if (!(ctor.prototype instanceof Prototype))
-            throw util._TypeError("ctor", "a constructor inheriting from Prototype");
-    } else
-        ctor = this.getCtor();
-    return new ctor(properties);
+TypePrototype.create = function create(properties) {
+    return new (this.getCtor())(properties);
 };
 
 /**
  * Encodes a message of this type.
- * @param {Prototype|Object} message Message instance or plain object
+ * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -361,7 +336,7 @@ TypePrototype.encode = function encode(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint.
- * @param {Prototype|Object} message Message instance or plain object
+ * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -373,7 +348,7 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
- * @returns {Prototype} Decoded message
+ * @returns {Message} Decoded message
  */
 TypePrototype.decode = function decode(readerOrBuffer, length) {
     return (this.decode = codegen.supported
@@ -389,7 +364,7 @@ TypePrototype.decode = function decode(readerOrBuffer, length) {
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
- * @returns {Prototype} Decoded message
+ * @returns {Message} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
     readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
@@ -398,7 +373,7 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
 
 /**
  * Verifies that enum values are valid and that any required fields are present.
- * @param {Prototype|Object} message Message to verify
+ * @param {Message|Object} message Message to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 TypePrototype.verify = function verify(message) {

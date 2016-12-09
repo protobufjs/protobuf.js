@@ -15,7 +15,7 @@ var Enum    = require("../enum"),
 
 /**
  * Encodes a message of `this` message's type.
- * @param {Prototype|Object} message Runtime message or plain object to encode
+ * @param {Message|Object} message Runtime message or plain object to encode
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  * @this Type

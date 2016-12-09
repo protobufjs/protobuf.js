@@ -12,7 +12,7 @@ var Enum    = require("./enum"),
     util    = require("./util");
 
 /**
- * Constructs a new map field.
+ * Constructs a new map field instance.
  * @classdesc Reflected map field.
  * @extends Field
  * @constructor

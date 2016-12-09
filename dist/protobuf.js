@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 08 Dec 2016 19:14:46 UTC
+ * Compiled Fri, 09 Dec 2016 01:15:36 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -126,6 +126,145 @@ exports.write = function writeIEEE754(buffer, value, offset, isBE, mLen, nBytes)
 
 },{}],2:[function(require,module,exports){
 "use strict";
+module.exports = Class;
+
+var Message = require(11),
+    Type    = require(23),
+    util    = require(25);
+
+var _TypeError = util._TypeError;
+
+/**
+ * Constructs a class instance, which is also a message prototype.
+ * @classdesc Runtime class providing the tools to create your own custom classes.
+ * @constructor
+ * @param {Type} type Reflected type
+ * @abstract
+ */
+function Class(type) {
+    return Class.create(type);
+}
+
+/**
+ * Constructs a new message prototype for the specified reflected type and sets up its constructor.
+ * @param {Type} type Reflected message type
+ * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
+ * @returns {Message} Message prototype
+ */
+Class.create = function create(type, ctor) {
+    if (!(type instanceof Type))
+        throw _TypeError("type", "a Type");
+    var clazz = ctor;
+    if (clazz) {
+        if (typeof clazz !== 'function')
+            throw _TypeError("ctor", "a function");
+    } else
+        clazz = (function(MessageCtor) { // eslint-disable-line wrap-iife
+            return function Message(properties) {
+                MessageCtor.call(this, properties);
+            };
+        })(Message);
+
+    // Let's pretend...
+    clazz.constructor = Class;
+    
+    // new Class() -> Message.prototype
+    var prototype = clazz.prototype = new Message();
+    prototype.constructor = clazz;
+
+    // Static methods on Message are instance methods on Class and vice-versa.
+    util.merge(clazz, Message, true);
+
+    // Classes and messages reference their reflected type
+    clazz.$type = type;
+    prototype.$type = type;
+
+    // Messages have non-enumerable default values on their prototype
+    type.getFieldsArray().forEach(function(field) {
+        field.resolve();
+        // objects on the prototype must be immmutable. users must assign a new object instance and
+        // cannot use Array#push on empty arrays on the prototype for example, as this would modify
+        // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
+        prototype[field.name] = Array.isArray(field.defaultValue)
+            ? util.emptyArray
+            : util.isObject(field.defaultValue)
+            ? util.emptyObject
+            : field.defaultValue;
+    });
+
+    // Runtime messages have non-enumerable getters and setters for each virtual oneof field
+    type.getOneofsArray().forEach(function(oneof) {
+        util.prop(prototype, oneof.resolve().name, {
+            get: function getVirtual() {
+                // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
+                var keys = Object.keys(this);
+                for (var i = keys.length - 1; i > -1; --i)
+                    if (oneof.oneof.indexOf(keys[i]) > -1)
+                        return keys[i];
+                return undefined;
+            },
+            set: function setVirtual(value) {
+                var keys = oneof.oneof;
+                for (var i = 0; i < keys.length; ++i)
+                    if (keys[i] !== value)
+                        delete this[keys[i]];
+            }
+        });
+    });
+
+    // Register
+    type.ctor = clazz;
+
+    return prototype;
+};
+
+// Static methods on Message are instance methods on Class and vice-versa.
+Class.prototype = Message;
+
+/**
+ * Encodes a message of this type.
+ * @name Class#encode
+ * @function
+ * @param {Message|Object} message Message to encode
+ * @param {Writer} [writer] Writer to use
+ * @returns {Writer} Writer
+ */
+
+/**
+ * Encodes a message of this type preceeded by its length as a varint.
+ * @name Class#encodeDelimited
+ * @function
+ * @param {Message|Object} message Message to encode
+ * @param {Writer} [writer] Writer to use
+ * @returns {Writer} Writer
+ */
+
+/**
+ * Decodes a message of this type.
+ * @name Class#decode
+ * @function
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @returns {Message} Decoded message
+ */
+
+/**
+ * Decodes a message of this type preceeded by its length as a varint.
+ * @name Class#decodeDelimited
+ * @function
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @returns {Message} Decoded message
+ */
+
+/**
+ * Verifies a message of this type.
+ * @name Class#verify
+ * @function
+ * @param {Message|Object} message Message or plain object to verify
+ * @returns {?string} `null` if valid, otherwise the reason why it is not
+ */
+
+},{"11":11,"23":23,"25":25}],3:[function(require,module,exports){
+"use strict";
 module.exports = codegen;
 
 var util = require(25);
@@ -239,11 +378,11 @@ function codegen() {
 codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
 codegen.verbose   = false;
 
-codegen.encode = require(4);
-codegen.decode = require(3);
-codegen.verify = require(5);
+codegen.encode = require(5);
+codegen.decode = require(4);
+codegen.verify = require(6);
 
-},{"25":25,"3":3,"4":4,"5":5}],3:[function(require,module,exports){
+},{"25":25,"4":4,"5":5,"6":6}],4:[function(require,module,exports){
 "use strict";
 
 /**
@@ -253,17 +392,17 @@ codegen.verify = require(5);
  */
 var decode = exports;
 
-var Enum    = require(7),
+var Enum    = require(8),
     Reader  = require(17),
     types   = require(24),
     util    = require(25),
-    codegen = require(2);
+    codegen = require(3);
 
 /**
  * Decodes a message of `this` message's type.
  * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
- * @returns {Prototype} Populated runtime message
+ * @returns {Message} Populated runtime message
  * @this Type
  */
 decode.fallback = function decode_fallback(readerOrBuffer, length) {
@@ -421,7 +560,7 @@ decode.generate = function decode_generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"17":17,"2":2,"24":24,"25":25,"7":7}],4:[function(require,module,exports){
+},{"17":17,"24":24,"25":25,"3":3,"8":8}],5:[function(require,module,exports){
 "use strict";
 
 /**
@@ -431,15 +570,15 @@ decode.generate = function decode_generate(mtype) {
  */
 var encode = exports;
 
-var Enum    = require(7),
+var Enum    = require(8),
     Writer  = require(30),
     types   = require(24),
     util    = require(25),
-    codegen = require(2);
+    codegen = require(3);
 
 /**
  * Encodes a message of `this` message's type.
- * @param {Prototype|Object} message Runtime message or plain object to encode
+ * @param {Message|Object} message Runtime message or plain object to encode
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  * @this Type
@@ -612,7 +751,7 @@ encode.generate = function encode_generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"2":2,"24":24,"25":25,"30":30,"7":7}],5:[function(require,module,exports){
+},{"24":24,"25":25,"3":3,"30":30,"8":8}],6:[function(require,module,exports){
 "use strict";
 
 /**
@@ -622,14 +761,14 @@ encode.generate = function encode_generate(mtype) {
  */
 var verify = exports;
 
-var Enum    = require(7),
+var Enum    = require(8),
     Type    = require(23),
     util    = require(25),
-    codegen = require(2);
+    codegen = require(3);
 
 /**
  * Verifies a runtime message of `this` message type.
- * @param {Prototype|Object} message Runtime message or plain object to verify
+ * @param {Message|Object} message Runtime message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  * @this {Type}
  */
@@ -705,7 +844,7 @@ verify.generate = function verify_generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"2":2,"23":23,"25":25,"7":7}],6:[function(require,module,exports){
+},{"23":23,"25":25,"3":3,"8":8}],7:[function(require,module,exports){
 "use strict";
 
 module.exports = common;
@@ -838,11 +977,11 @@ common("struct", {
     }
 });
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
-var ReflectionObject = require(13);
+var ReflectionObject = require(14);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
 
@@ -851,7 +990,7 @@ var util = require(25);
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new enum.
+ * Constructs a new enum instance.
  * @classdesc Reflected enum.
  * @extends ReflectionObject
  * @constructor
@@ -979,16 +1118,16 @@ EnumPrototype.remove = function(name) {
     return clearCache(this);
 };
 
-},{"13":13,"25":25}],8:[function(require,module,exports){
+},{"14":14,"25":25}],9:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
-var ReflectionObject = require(13);
+var ReflectionObject = require(14);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
 var Type      = require(23),
-    Enum      = require(7),
+    Enum      = require(8),
     MapField  = require(10),
     types     = require(24),
     util      = require(25);
@@ -996,7 +1135,7 @@ var Type      = require(23),
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new message field. Note that {@link MapField|map fields} have their own class.
+ * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
  * @classdesc Reflected message field.
  * @extends ReflectionObject
  * @constructor
@@ -1237,7 +1376,7 @@ FieldPrototype.resolve = function resolve() {
  * @param {*} value Field value
  * @param {Object.<string,*>} [options] Conversion options
  * @returns {*} Converted value
- * @see {@link Prototype#asJSON}
+ * @see {@link Message#asJSON}
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (options) {
@@ -1253,219 +1392,22 @@ FieldPrototype.jsonConvert = function(value, options) {
     return value;
 };
 
-},{"10":10,"13":13,"23":23,"24":24,"25":25,"7":7}],9:[function(require,module,exports){
-"use strict";
-module.exports = inherits;
-
-var Prototype = require(16),
-    Type      = require(23),
-    util      = require(25);
-
-var _TypeError = util._TypeError;
-
-/**
- * Options passed to {@link inherits}, modifying its behavior.
- * @typedef InheritanceOptions
- * @type {Object}
- * @property {boolean} [noStatics=false] Skips adding the default static methods on top of the constructor
- * @property {boolean} [noRegister=false] Skips registering the constructor with the reflected type
- */
-
-/**
- * Inherits a custom class from the message prototype of the specified message type.
- * @param {*} clazz Inheriting class constructor
- * @param {Type} type Inherited message type
- * @param {InheritanceOptions} [options] Inheritance options
- * @returns {Prototype} Created prototype
- */
-function inherits(clazz, type, options) {
-    if (typeof clazz !== 'function')
-        throw _TypeError("clazz", "a function");
-    if (!(type instanceof Type))
-        throw _TypeError("type", "a Type");
-    if (!options)
-        options = {};
-
-    /**
-     * This is not an actual type but stands as a reference for any constructor of a custom message class that you pass to the library.
-     * @name Class
-     * @extends Prototype
-     * @constructor
-     * @param {Object.<string,*>} [properties] Properties to set on the message
-     * @see {@link inherits}
-     */
-
-    var classProperties = {
-
-        /**
-         * Reference to the reflected type.
-         * @name Class.$type
-         * @type {Type}
-         * @readonly
-         */
-        $type: {
-            value: type
-        }
-    };
-
-    if (!options.noStatics)
-        util.merge(classProperties, {
-
-            /**
-             * Encodes a message of this type to a buffer.
-             * @name Class.encode
-             * @function
-             * @param {Prototype|Object} message Message to encode
-             * @param {Writer} [writer] Writer to use
-             * @returns {Writer} Writer
-             */
-            encode: {
-                value: function encode(message, writer) {
-                    return this.$type.encode(message, writer);
-                }
-            },
-
-            /**
-             * Encodes a message of this type preceeded by its length as a varint to a buffer.
-             * @name Class.encodeDelimited
-             * @function
-             * @param {Prototype|Object} message Message to encode
-             * @param {Writer} [writer] Writer to use
-             * @returns {Writer} Writer
-             */
-            encodeDelimited: {
-                value: function encodeDelimited(message, writer) {
-                    return this.$type.encodeDelimited(message, writer);
-                }
-            },
-
-            /**
-             * Decodes a message of this type from a buffer.
-             * @name Class.decode
-             * @function
-             * @param {Uint8Array} buffer Buffer to decode
-             * @returns {Prototype} Decoded message
-             */
-            decode: {
-                value: function decode(buffer) {
-                    return this.$type.decode(buffer);
-                }
-            },
-
-            /**
-             * Decodes a message of this type preceeded by its length as a varint from a buffer.
-             * @name Class.decodeDelimited
-             * @function
-             * @param {Uint8Array} buffer Buffer to decode
-             * @returns {Prototype} Decoded message
-             */
-            decodeDelimited: {
-                value: function decodeDelimited(buffer) {
-                    return this.$type.decodeDelimited(buffer);
-                }
-            },
-
-            /**
-             * Verifies a message of this type.
-             * @name Class.verify
-             * @function
-             * @param {Prototype|Object} message Message or plain object to verify
-             * @returns {?string} `null` if valid, otherwise the reason why it is not
-             */
-            verify: {
-                value: function verify(message) {
-                    return this.$type.verify(message);
-                }
-            }
-
-        }, true);
-
-    util.props(clazz, classProperties);
-    var prototype = inherits.defineProperties(new Prototype(), type);
-    clazz.prototype = prototype;
-    prototype.constructor = clazz;
-
-    if (!options.noRegister)
-        type.setCtor(clazz);
-
-    return prototype;
-}
-
-/**
- * Defines the reflected type's default values and virtual oneof properties on the specified prototype.
- * @memberof inherits
- * @param {Prototype} prototype Prototype to define properties upon
- * @param {Type} type Reflected message type
- * @returns {Prototype} The specified prototype
- */
-inherits.defineProperties = function defineProperties(prototype, type) {
-
-    var prototypeProperties = {
-
-        /**
-         * Reference to the reflected type.
-         * @name Prototype#$type
-         * @type {Type}
-         * @readonly
-         */
-        $type: {
-            value: type
-        }
-    };
-
-    // Initialize default values
-    type.getFieldsArray().forEach(function(field) {
-        field.resolve();
-        // objects on the prototype must be immmutable. users must assign a new object instance and
-        // cannot use Array#push on empty arrays on the prototype for example, as this would modify
-        // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
-        prototype[field.name] = Array.isArray(field.defaultValue)
-            ? util.emptyArray
-            : util.isObject(field.defaultValue)
-            ? util.emptyObject
-            : field.defaultValue;
-    });
-
-    // Define each oneof with a non-enumerable getter and setter for the present field
-    type.getOneofsArray().forEach(function(oneof) {
-        util.prop(prototype, oneof.resolve().name, {
-            get: function getVirtual() {
-                // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
-                var keys = Object.keys(this);
-                for (var i = keys.length - 1; i > -1; --i)
-                    if (oneof.oneof.indexOf(keys[i]) > -1)
-                        return keys[i];
-                return undefined;
-            },
-            set: function setVirtual(value) {
-                var keys = oneof.oneof;
-                for (var i = 0; i < keys.length; ++i)
-                    if (keys[i] !== value)
-                        delete this[keys[i]];
-            }
-        });
-    });
-
-    util.props(prototype, prototypeProperties);
-    return prototype;
-};
-
-},{"16":16,"23":23,"25":25}],10:[function(require,module,exports){
+},{"10":10,"14":14,"23":23,"24":24,"25":25,"8":8}],10:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
-var Field = require(8);
+var Field = require(9);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField);
 
-var Enum    = require(7),
+var Enum    = require(8),
     types   = require(24),
     util    = require(25);
 
 /**
- * Constructs a new map field.
+ * Constructs a new map field instance.
  * @classdesc Reflected map field.
  * @extends Field
  * @constructor
@@ -1548,11 +1490,148 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"24":24,"25":25,"7":7,"8":8}],11:[function(require,module,exports){
+},{"24":24,"25":25,"8":8,"9":9}],11:[function(require,module,exports){
+"use strict";
+module.exports = Message;
+
+/**
+ * Constructs a new message instance.
+ * 
+ * This method should be called from your custom constructors, i.e. `Message.call(this, properties)`.
+ * @classdesc Abstract runtime message.
+ * @extends {Object}
+ * @constructor
+ * @param {Object.<string,*>} [properties] Properties to set
+ * @abstract
+ * @see {@link Class.create}
+ */
+function Message(properties) {
+    if (properties) {
+        var keys = Object.keys(properties);
+        for (var i = 0; i < keys.length; ++i)
+            this[keys[i]] = properties[keys[i]];
+    }
+}
+
+/** @alias Message.prototype */
+var MessagePrototype = Message.prototype;
+
+/**
+ * Converts this message to a JSON object.
+ * @param {Object.<string,*>} [options] Conversion options
+ * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
+ * @param {*} [options.long] Long conversion type. Only relevant with a long library.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to a possibly unsafe number without, and a `Long` with a long library.
+ * @param {*} [options.enum=Number] Enum value conversion type.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to the numeric ids.
+ * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
+ * @returns {Object.<string,*>} JSON object
+ */
+MessagePrototype.asJSON = function asJSON(options) {
+    if (!options)
+        options = {};
+    var fields = this.$type.fields,
+        json   = {};
+    var keys;
+    if (options.defaults) {
+        keys = [];
+        for (var k in this) // eslint-disable-line guard-for-in
+            keys.push(k);
+    } else
+        keys = Object.keys(this);
+    for (var i = 0, key; i < keys.length; ++i) {
+        var field = fields[key = keys[i]],
+            value = this[key];
+        if (field) {
+            if (field.repeated) {
+                if (value && value.length) {
+                    var array = new Array(value.length);
+                    for (var j = 0, l = value.length; j < l; ++j)
+                        array[j] = field.jsonConvert(value[j], options);
+                    json[key] = array;
+                }
+            } else
+                json[key] = field.jsonConvert(value, options);
+        } else if (!options.fieldsOnly)
+            json[key] = value;
+    }
+    return json;
+};
+
+/**
+ * Reference to the reflected type.
+ * @name Message.$type
+ * @type {Type}
+ * @readonly
+ */
+
+/**
+ * Reference to the reflected type.
+ * @name Message#$type
+ * @type {Type}
+ * @readonly
+ */
+
+/**
+ * Encodes a message of this type.
+ * @param {Message|Object} message Message to encode
+ * @param {Writer} [writer] Writer to use
+ * @returns {Writer} Writer
+ */
+Message.encode = function encode(message, writer) {
+    return this.$type.encode(message, writer);
+};
+
+/**
+ * Encodes a message of this type preceeded by its length as a varint.
+ * @param {Message|Object} message Message to encode
+ * @param {Writer} [writer] Writer to use
+ * @returns {Writer} Writer
+ */
+Message.encodeDelimited = function encodeDelimited(message, writer) {
+    return this.$type.encodeDelimited(message, writer);
+};
+
+/**
+ * Decodes a message of this type.
+ * @name Message.decode
+ * @function
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @returns {Message} Decoded message
+ */
+Message.decode = function decode(readerOrBuffer) {
+    return this.$type.decode(readerOrBuffer);
+};
+
+/**
+ * Decodes a message of this type preceeded by its length as a varint.
+ * @name Message.decodeDelimited
+ * @function
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode
+ * @returns {Message} Decoded message
+ */
+Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
+    return this.$type.decodeDelimited(readerOrBuffer);
+};
+
+/**
+ * Verifies a message of this type.
+ * @name Message.verify
+ * @function
+ * @param {Message|Object} message Message or plain object to verify
+ * @returns {?string} `null` if valid, otherwise the reason why it is not
+ */
+Message.verify = function verify(message) {
+    return this.$type.verify(message);
+};
+
+},{}],12:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
-var ReflectionObject = require(13);
+var ReflectionObject = require(14);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
 
@@ -1562,7 +1641,7 @@ var Type = require(23),
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new service method.
+ * Constructs a new service method instance.
  * @classdesc Reflected service method.
  * @extends ReflectionObject
  * @constructor
@@ -1685,17 +1764,17 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"13":13,"23":23,"25":25}],12:[function(require,module,exports){
+},{"14":14,"23":23,"25":25}],13:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
-var ReflectionObject = require(13);
+var ReflectionObject = require(14);
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
-var Enum    = require(7),
+var Enum    = require(8),
     Type    = require(23),
-    Field   = require(8),
+    Field   = require(9),
     Service = require(21),
     util    = require(25);
 
@@ -1705,7 +1784,7 @@ var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
 
 /**
- * Constructs a new namespace.
+ * Constructs a new namespace instance.
  * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
  * @extends ReflectionObject
  * @constructor
@@ -1956,7 +2035,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     return this.parent.lookup(path);
 };
 
-},{"13":13,"21":21,"23":23,"25":25,"7":7,"8":8}],13:[function(require,module,exports){
+},{"14":14,"21":21,"23":23,"25":25,"8":8,"9":9}],14:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
@@ -1968,7 +2047,7 @@ var Root = require(18),
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new reflection object.
+ * Constructs a new reflection object instance.
  * @classdesc Base class of all reflection objects.
  * @constructor
  * @param {string} name Object name
@@ -2049,14 +2128,14 @@ util.props(ReflectionObjectPrototype, {
  * Lets the specified constructor extend this class.
  * @memberof ReflectionObject
  * @param {*} constructor Extending constructor
- * @returns {Object} Prototype
+ * @returns {Object} Constructor prototype
  * @this ReflectionObject
  */
 function extend(constructor) {
-    var proto = constructor.prototype = Object.create(this.prototype);
-    proto.constructor = constructor;
+    var prototype = constructor.prototype = Object.create(this.prototype);
+    prototype.constructor = constructor;
     constructor.extend = extend;
-    return proto;
+    return prototype;
 }
 
 /**
@@ -2155,21 +2234,21 @@ ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.getFullName();
 };
 
-},{"18":18,"25":25}],14:[function(require,module,exports){
+},{"18":18,"25":25}],15:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
-var ReflectionObject = require(13);
+var ReflectionObject = require(14);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
-var Field = require(8),
+var Field = require(9),
     util  = require(25);
 
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new oneof.
+ * Constructs a new oneof instance.
  * @classdesc Reflected oneof.
  * @extends ReflectionObject
  * @constructor
@@ -2308,19 +2387,19 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"13":13,"25":25,"8":8}],15:[function(require,module,exports){
+},{"14":14,"25":25,"9":9}],16:[function(require,module,exports){
 "use strict";
 module.exports = parse;
 
 var tokenize  = require(22),
     Root      = require(18),
     Type      = require(23),
-    Field     = require(8),
+    Field     = require(9),
     MapField  = require(10),
-    OneOf     = require(14),
-    Enum      = require(7),
+    OneOf     = require(15),
+    Enum      = require(8),
     Service   = require(21),
-    Method    = require(11),
+    Method    = require(12),
     types     = require(24),
     util      = require(25);
 var camelCase = util.camelCase;
@@ -2864,73 +2943,7 @@ function parse(source, root) {
     };
 }
 
-},{"10":10,"11":11,"14":14,"18":18,"21":21,"22":22,"23":23,"24":24,"25":25,"7":7,"8":8}],16:[function(require,module,exports){
-"use strict";
-module.exports = Prototype;
-
-/**
- * Constructs a new prototype.
- * This method should be called from your custom constructors, i.e. `Prototype.call(this, properties)`.
- * @classdesc Runtime message prototype ready to be extended by custom classes or generated code.
- * @constructor
- * @param {Object.<string,*>} [properties] Properties to set
- * @abstract
- * @see {@link inherits}
- * @see {@link Class}
- */
-function Prototype(properties) {
-    if (properties) {
-        var keys = Object.keys(properties);
-        for (var i = 0; i < keys.length; ++i)
-            this[keys[i]] = properties[keys[i]];
-    }
-}
-
-/**
- * Converts a runtime message to a JSON object.
- * @param {Object.<string,*>} [options] Conversion options
- * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
- * @param {*} [options.long] Long conversion type. Only relevant with a long library.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to a possibly unsafe number without, and a `Long` with a long library.
- * @param {*} [options.enum=Number] Enum value conversion type.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to the numeric ids.
- * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
- * @returns {Object.<string,*>} JSON object
- */
-Prototype.prototype.asJSON = function asJSON(options) {
-    if (!options)
-        options = {};
-    var fields = this.constructor.$type.fields,
-        json   = {};
-    var keys;
-    if (options.defaults) {
-        keys = [];
-        for (var k in this) // eslint-disable-line guard-for-in
-            keys.push(k);
-    } else
-        keys = Object.keys(this);
-    for (var i = 0, key; i < keys.length; ++i) {
-        var field = fields[key = keys[i]],
-            value = this[key];
-        if (field) {
-            if (field.repeated) {
-                if (value && value.length) {
-                    var array = new Array(value.length);
-                    for (var j = 0, l = value.length; j < l; ++j)
-                        array[j] = field.jsonConvert(value[j], options);
-                    json[key] = array;
-                }
-            } else
-                json[key] = field.jsonConvert(value, options);
-        } else if (!options.fieldsOnly)
-            json[key] = value;
-    }
-    return json;
-};
-
-},{}],17:[function(require,module,exports){
+},{"10":10,"12":12,"15":15,"18":18,"21":21,"22":22,"23":23,"24":24,"25":25,"8":8,"9":9}],17:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -2969,7 +2982,7 @@ function configure() {
 Reader.configure = configure;
 
 /**
- * Constructs a new reader using the specified buffer.
+ * Constructs a new reader instance using the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  * @param {Uint8Array} buffer Buffer to read from
@@ -3488,7 +3501,7 @@ var initBufferReader = function() {
 };
 
 /**
- * Constructs a new buffer reader.
+ * Constructs a new buffer reader instance.
  * @classdesc Wire format reader using node buffers.
  * @extends Reader
  * @constructor
@@ -3567,16 +3580,16 @@ configure();
 "use strict";
 module.exports = Root;
 
-var Namespace = require(12);
+var Namespace = require(13);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
 
-var Field  = require(8),
+var Field  = require(9),
     util   = require(25),
-    common = require(6);
+    common = require(7);
 
 /**
- * Constructs a new root namespace.
+ * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
  * @extends Namespace
  * @constructor
@@ -3621,7 +3634,7 @@ Root.fromJSON = function fromJSON(json, root) {
 RootPrototype.resolvePath = util.resolvePath;
 
 // A symbol-like function to safely signal synchronous loading
-function SYNC() {}
+function SYNC() {} // eslint-disable-line no-empty-function
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
@@ -3653,7 +3666,7 @@ RootPrototype.load = function load(filename, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require(15)(source, self);
+                var parsed = require(16)(source, self);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -3844,11 +3857,11 @@ RootPrototype.toString = function toString() {
     return this.constructor.name;
 };
 
-},{"12":12,"15":15,"25":25,"6":6,"8":8}],19:[function(require,module,exports){
+},{"13":13,"16":16,"25":25,"7":7,"9":9}],19:[function(require,module,exports){
 "use strict";
 
 /**
- * RPC helpers.
+ * Streaming RPC helpers.
  * @namespace
  */
 var rpc = exports;
@@ -3862,7 +3875,7 @@ module.exports = Service;
 var EventEmitter = require(26);
 
 /**
- * Constructs a new RPC service.
+ * Constructs a new RPC service instance.
  * @classdesc An RPC service as returned by {@link Service#create}.
  * @memberof rpc
  * @extends util.EventEmitter
@@ -3902,18 +3915,18 @@ ServicePrototype.end = function end(endedByRPC) {
 "use strict";
 module.exports = Service;
 
-var Namespace = require(12);
+var Namespace = require(13);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service);
 
-var Method = require(11),
+var Method = require(12),
     util   = require(25),
     rpc    = require(19);
 
 /**
- * Constructs a new service.
+ * Constructs a new service instance.
  * @classdesc Reflected service.
  * @extends Namespace
  * @constructor
@@ -4100,7 +4113,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     return rpcService;
 };
 
-},{"11":11,"12":12,"19":19,"25":25}],22:[function(require,module,exports){
+},{"12":12,"13":13,"19":19,"25":25}],22:[function(require,module,exports){
 "use strict";
 module.exports = tokenize;
 
@@ -4311,25 +4324,25 @@ function tokenize(source) {
 "use strict";
 module.exports = Type; 
 
-var Namespace = require(12);
+var Namespace = require(13);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
 var TypePrototype = Namespace.extend(Type);
 
-var Enum      = require(7),
-    OneOf     = require(14),
-    Field     = require(8),
+var Enum      = require(8),
+    OneOf     = require(15),
+    Field     = require(9),
     Service   = require(21),
-    Prototype = require(16),
+    Class     = require(2),
+    Message   = require(11),
     Reader    = require(17),
     Writer    = require(30),
-    inherits  = require(9),
     util      = require(25),
-    codegen   = require(2);
+    codegen   = require(3);
 
 /**
- * Constructs a new message type.
+ * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
  * @extends Namespace
  * @constructor
@@ -4463,28 +4476,15 @@ util.props(TypePrototype, {
     /**
      * The registered constructor, if any registered, otherwise a generic constructor.
      * @name Type#ctor
-     * @type {Prototype}
+     * @type {Class}
      */
     ctor: {
         get: function getCtor() {
-            if (this._ctor)
-                return this._ctor;
-            var ctor;
-            if (codegen.supported)
-                ctor = codegen("p")("P.call(this,p)").eof(this.getFullName() + "$ctor", {
-                    P: Prototype
-                });
-            else
-                ctor = function GenericMessage(properties) {
-                    Prototype.call(this, properties);
-                };
-            ctor.prototype = inherits(ctor, this);
-            this._ctor = ctor;
-            return ctor;
+            return this._ctor || (this._ctor = Class.create(this).constructor);
         },
         set: function setCtor(ctor) {
-            if (ctor && !(ctor.prototype instanceof Prototype))
-                throw util._TypeError("ctor", "a constructor inheriting from Prototype");
+            if (ctor && !(ctor.prototype instanceof Message))
+                throw util._TypeError("ctor", "a constructor inheriting from Message");
             this._ctor = ctor;
         }
     }
@@ -4634,27 +4634,15 @@ TypePrototype.remove = function remove(object) {
 /**
  * Creates a new message of this type using the specified properties.
  * @param {Object|*} [properties] Properties to set
- * @param {*} [ctor] Constructor to use.
- * Defaults to use the internal constuctor.
- * @returns {Prototype} Message instance
+ * @returns {Message} Runtime message
  */
-TypePrototype.create = function create(properties, ctor) {
-    if (!properties || typeof properties === 'function') {
-        ctor = properties;
-        properties = undefined;
-    } else if (properties /* already */ instanceof Prototype)
-        return properties;
-    if (ctor) {
-        if (!(ctor.prototype instanceof Prototype))
-            throw util._TypeError("ctor", "a constructor inheriting from Prototype");
-    } else
-        ctor = this.getCtor();
-    return new ctor(properties);
+TypePrototype.create = function create(properties) {
+    return new (this.getCtor())(properties);
 };
 
 /**
  * Encodes a message of this type.
- * @param {Prototype|Object} message Message instance or plain object
+ * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -4671,7 +4659,7 @@ TypePrototype.encode = function encode(message, writer) {
 
 /**
  * Encodes a message of this type preceeded by its byte length as a varint.
- * @param {Prototype|Object} message Message instance or plain object
+ * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
@@ -4683,7 +4671,7 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * Decodes a message of this type.
  * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
  * @param {number} [length] Length of the message, if known beforehand
- * @returns {Prototype} Decoded message
+ * @returns {Message} Decoded message
  */
 TypePrototype.decode = function decode(readerOrBuffer, length) {
     return (this.decode = codegen.supported
@@ -4699,7 +4687,7 @@ TypePrototype.decode = function decode(readerOrBuffer, length) {
 /**
  * Decodes a message of this type preceeded by its byte length as a varint.
  * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
- * @returns {Prototype} Decoded message
+ * @returns {Message} Decoded message
  */
 TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
     readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer);
@@ -4708,7 +4696,7 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
 
 /**
  * Verifies that enum values are valid and that any required fields are present.
- * @param {Prototype|Object} message Message to verify
+ * @param {Message|Object} message Message to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 TypePrototype.verify = function verify(message) {
@@ -4720,7 +4708,7 @@ TypePrototype.verify = function verify(message) {
     ).call(this, message);
 };
 
-},{"12":12,"14":14,"16":16,"17":17,"2":2,"21":21,"25":25,"30":30,"7":7,"8":8,"9":9}],24:[function(require,module,exports){
+},{"11":11,"13":13,"15":15,"17":17,"2":2,"21":21,"25":25,"3":3,"30":30,"8":8,"9":9}],24:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4855,7 +4843,7 @@ types.packed = bake([
 "use strict";
 
 /**
- * Utility functions.
+ * Various utility functions.
  * @namespace
  */
 var util = exports;
@@ -5137,7 +5125,7 @@ util.merge(util, require(29));
 module.exports = EventEmitter;
 
 /**
- * Constructs a new event emitter.
+ * Constructs a new event emitter instance.
  * @classdesc A minimal event emitter.
  * @memberof util
  * @constructor
@@ -5582,7 +5570,7 @@ var LongBits  = util.LongBits,
     ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
- * Constructs a new writer operation.
+ * Constructs a new writer operation instance.
  * @classdesc Scheduled writer operation.
  * @memberof Writer
  * @constructor
@@ -5624,7 +5612,7 @@ Writer.Op = Op;
 function noop() {} // eslint-disable-line no-empty-function
 
 /**
- * Constructs a new writer state.
+ * Constructs a new writer state instance.
  * @classdesc Copied writer state.
  * @memberof Writer
  * @constructor
@@ -5663,7 +5651,7 @@ function State(writer, next) {
 Writer.State = State;
 
 /**
- * Constructs a new writer.
+ * Constructs a new writer instance.
  * @classdesc Wire format writer using `Uint8Array` if available, otherwise `Array`.
  * @constructor
  */
@@ -6118,7 +6106,7 @@ WriterPrototype.finish = function finish() {
 };
 
 /**
- * Constructs a new buffer writer.
+ * Constructs a new buffer writer instance.
  * @classdesc Wire format writer using node buffers.
  * @exports BufferWriter
  * @extends Writer
@@ -6263,7 +6251,7 @@ function load(filename, root, callback) {
 protobuf.load = load;
 
 /**
- * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace.
+ * Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Root} Root namespace
@@ -6279,34 +6267,34 @@ protobuf.loadSync = loadSync;
 
 // Parser
 protobuf.tokenize         = require(22);
-protobuf.parse            = require(15);
+protobuf.parse            = require(16);
 
 // Serialization
 protobuf.Writer           = require(30);
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
 protobuf.Reader           = require(17);
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
-protobuf.codegen          = require(2);
+protobuf.codegen          = require(3);
 
 // Reflection
-protobuf.ReflectionObject = require(13);
-protobuf.Namespace        = require(12);
+protobuf.ReflectionObject = require(14);
+protobuf.Namespace        = require(13);
 protobuf.Root             = require(18);
-protobuf.Enum             = require(7);
+protobuf.Enum             = require(8);
 protobuf.Type             = require(23);
-protobuf.Field            = require(8);
-protobuf.OneOf            = require(14);
+protobuf.Field            = require(9);
+protobuf.OneOf            = require(15);
 protobuf.MapField         = require(10);
 protobuf.Service          = require(21);
-protobuf.Method           = require(11);
+protobuf.Method           = require(12);
 
 // Runtime
-protobuf.Prototype        = require(16);
-protobuf.inherits         = require(9);
+protobuf.Class            = require(2);
+protobuf.Message          = require(11);
 
 // Utility
 protobuf.types            = require(24);
-protobuf.common           = require(6);
+protobuf.common           = require(7);
 protobuf.rpc              = require(19);
 protobuf.util             = require(25);
 
@@ -6322,7 +6310,7 @@ if (typeof define === 'function' && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"21":21,"22":22,"23":23,"24":24,"25":25,"30":30,"6":6,"7":7,"8":8,"9":9}]},{},[31])
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"21":21,"22":22,"23":23,"24":24,"25":25,"3":3,"30":30,"7":7,"8":8,"9":9}]},{},[31])
 
 
 //# sourceMappingURL=protobuf.js.map

@@ -10,7 +10,7 @@ var util = require("./util");
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new enum.
+ * Constructs a new enum instance.
  * @classdesc Reflected enum.
  * @extends ReflectionObject
  * @constructor

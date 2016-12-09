@@ -4,7 +4,7 @@ module.exports = Service;
 var EventEmitter = require("../util/eventemitter");
 
 /**
- * Constructs a new RPC service.
+ * Constructs a new RPC service instance.
  * @classdesc An RPC service as returned by {@link Service#create}.
  * @memberof rpc
  * @extends util.EventEmitter

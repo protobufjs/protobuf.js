@@ -12,7 +12,7 @@ var Method = require("./method"),
     rpc    = require("./rpc");
 
 /**
- * Constructs a new service.
+ * Constructs a new service instance.
  * @classdesc Reflected service.
  * @extends Namespace
  * @constructor

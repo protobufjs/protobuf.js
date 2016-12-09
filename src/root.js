@@ -10,7 +10,7 @@ var Field  = require("./field"),
     common = require("./common");
 
 /**
- * Constructs a new root namespace.
+ * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
  * @extends Namespace
  * @constructor
@@ -55,7 +55,7 @@ Root.fromJSON = function fromJSON(json, root) {
 RootPrototype.resolvePath = util.resolvePath;
 
 // A symbol-like function to safely signal synchronous loading
-function SYNC() {}
+function SYNC() {} // eslint-disable-line no-empty-function
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.

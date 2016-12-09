@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Utility functions.
+ * Various utility functions.
  * @namespace
  */
 var util = exports;

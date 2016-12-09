@@ -9,7 +9,7 @@ var Root = require("./root"),
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new reflection object.
+ * Constructs a new reflection object instance.
  * @classdesc Base class of all reflection objects.
  * @constructor
  * @param {string} name Object name
@@ -90,14 +90,14 @@ util.props(ReflectionObjectPrototype, {
  * Lets the specified constructor extend this class.
  * @memberof ReflectionObject
  * @param {*} constructor Extending constructor
- * @returns {Object} Prototype
+ * @returns {Object} Constructor prototype
  * @this ReflectionObject
  */
 function extend(constructor) {
-    var proto = constructor.prototype = Object.create(this.prototype);
-    proto.constructor = constructor;
+    var prototype = constructor.prototype = Object.create(this.prototype);
+    prototype.constructor = constructor;
     constructor.extend = extend;
-    return proto;
+    return prototype;
 }
 
 /**

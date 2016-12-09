@@ -11,7 +11,7 @@ var Field = require("./field"),
 var _TypeError = util._TypeError;
 
 /**
- * Constructs a new oneof.
+ * Constructs a new oneof instance.
  * @classdesc Reflected oneof.
  * @extends ReflectionObject
  * @constructor
