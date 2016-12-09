@@ -331,12 +331,12 @@ Consolidates imports and converts between file formats.
 
   -t, --target    Specifies the target format. Also accepts a path to require a custom target.
 
-                  json-module   JSON representation as a module (AMD, CommonJS, global)
                   json          JSON representation
+                  json-module   JSON representation as a module (AMD, CommonJS, global)
                   proto2        Protocol Buffers, Version 2
                   proto3        Protocol Buffers, Version 3
-                  static-module Static code without reflection as a module (AMD, CommonJS, global)
                   static        Static code without reflection
+                  static-module Static code without reflection as a module (AMD, CommonJS, global)
 
   -p, --path      Adds a directory to the include path.
 
@@ -403,7 +403,7 @@ protobuf.js integrates into any browserify build-process. There are a few possib
 
 * If performance is a concern or IE8 support is required, you should make sure to exclude the browserified `buffer` module and let protobuf.js do its thing with Uint8Array/Array instead.
 * If you do not need int64 support, you can exclude the `long` module.
-* If your application does not rely on the following modules and/or package size is a concern, you can also exclude `process` , `_process` and `fs`.
+* If your application does not rely on the following modules and package size is a concern, you can also exclude `process` , `_process` and `fs`.
 * If you have any special requirements, there is [the bundler](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js) as a reference.
 
 Performance

@@ -2,10 +2,19 @@
 var protobuf = global.protobuf = exports;
 
 /**
+ * A node-style callback as used by {@link load} and {@link Root#load}.
+ * @typedef LoadCallback
+ * @type {function}
+ * @param {?Error} error Error, if any, otherwise `null`
+ * @param {Root} [root] Root, if there hasn't been an error
+ * @returns {undefined}
+ */
+
+/**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} root Root namespace, defaults to create a new one if omitted.
- * @param {function(?Error, Root=)} callback Callback function
+ * @param {LoadCallback} callback Callback function
  * @returns {undefined}
  */
 function load(filename, root, callback) {
@@ -16,18 +25,18 @@ function load(filename, root, callback) {
         root = new protobuf.Root();
     return root.load(filename, callback);
 }
-// function load(filename:string, root:Root, callback:function):undefined
+// function load(filename:string, root:Root, callback:LoadCallback):undefined
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace and calls the callback.
  * @name load
  * @function
  * @param {string|string[]} filename One or multiple files to load
- * @param {function(?Error, Root=)} callback Callback function
+ * @param {LoadCallback} callback Callback function
  * @returns {undefined}
  * @variation 2
  */
-// function load(filename:string, callback:function):undefined
+// function load(filename:string, callback:LoadCallback):undefined
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into a common root namespace and returns a promise.

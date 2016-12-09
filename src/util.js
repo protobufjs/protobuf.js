@@ -68,10 +68,19 @@ try { fs = eval(['req','uire'].join(''))("fs"); } catch (e) {} // eslint-disable
 util.fs = fs;
 
 /**
+ * Node-style callback as used by {@link util.fetch}.
+ * @typedef FetchCallback
+ * @type {function}
+ * @param {?Error} error Error, if any, otherwise `null`
+ * @param {string} [contents] File contents, if there hasn't been an error
+ * @returns {undefined}
+ */
+
+/**
  * Fetches the contents of a file.
  * @memberof util
  * @param {string} path File path or url
- * @param {function(?Error, string=)} [callback] Node-style callback
+ * @param {FetchCallback} [callback] Callback function
  * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted 
  */
 function fetch(path, callback) {

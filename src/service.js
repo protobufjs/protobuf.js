@@ -146,7 +146,16 @@ ServicePrototype.remove = function remove(object) {
  * @type {function}
  * @param {Method} method Reflected method being called
  * @param {Uint8Array} requestData Request data
- * @param {function(?Error, Uint8Array=)} callback Node-style callback called with the error, if any, and the response data. `null` as response data signals an ended stream.
+ * @param {RPCCallback} callback Callback function
+ * @returns {undefined}
+ */
+
+/**
+ * Node-style callback as used by {@link RPCImpl}.
+ * @typedef RPCCallback
+ * @type {function}
+ * @param {?Error} error Error, if any, otherwise `null`
+ * @param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error
  * @returns {undefined}
  */
 

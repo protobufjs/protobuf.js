@@ -60,7 +60,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {function(?Error, Root=)} callback Node-style callback function
+ * @param {LoadCallback} callback Callback function
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, callback) {
@@ -177,7 +177,7 @@ RootPrototype.load = function load(filename, callback) {
         finish(null, self);
     return undefined;
 };
-// function load(filename:string, callback:function):undefined
+// function load(filename:string, callback:LoadCallback):undefined
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
