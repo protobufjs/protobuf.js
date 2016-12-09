@@ -202,6 +202,8 @@
             
                 <li data-name="util.emptyObject"><a href="util.html#.emptyObject">emptyObject</a></li>
             
+                <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
+            
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
@@ -413,12 +415,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
-            
-                <li data-name="Class#$type"><a href="Class.html#$type">$type</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -427,17 +423,17 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Class.decode"><a href="Class.html#.decode">decode</a></li>
+                <li data-name="Class.create"><a href="Class.html#.create">create</a></li>
             
-                <li data-name="Class.decodeDelimited"><a href="Class.html#.decodeDelimited">decodeDelimited</a></li>
+                <li data-name="Class#decode"><a href="Class.html#decode">decode</a></li>
             
-                <li data-name="Class.encode"><a href="Class.html#.encode">encode</a></li>
+                <li data-name="Class#decodeDelimited"><a href="Class.html#decodeDelimited">decodeDelimited</a></li>
             
-                <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
+                <li data-name="Class#encode"><a href="Class.html#encode">encode</a></li>
             
-                <li data-name="Class.verify"><a href="Class.html#.verify">verify</a></li>
+                <li data-name="Class#encodeDelimited"><a href="Class.html#encodeDelimited">encodeDelimited</a></li>
             
-                <li data-name="Class#asJSON"><a href="Class.html#asJSON">asJSON</a></li>
+                <li data-name="Class#verify"><a href="Class.html#verify">verify</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -696,6 +692,45 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Message">
+            <span class="title">
+                <a href="Message.html">Message</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Message.$type"><a href="Message.html#.$type">$type</a></li>
+            
+                <li data-name="Message#$type"><a href="Message.html#$type">$type</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
+            
+                <li data-name="Message.decodeDelimited"><a href="Message.html#.decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
+            
+                <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
+            
+                <li data-name="Message#asJSON"><a href="Message.html#asJSON">asJSON</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Method">
             <span class="title">
                 <a href="Method.html">Method</a>
@@ -903,33 +938,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="Prototype">
-            <span class="title">
-                <a href="Prototype.html">Prototype</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Prototype#asJSON"><a href="Prototype.html#asJSON">asJSON</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="Reader">
             <span class="title">
                 <a href="Reader.html">Reader</a>
@@ -1108,6 +1116,8 @@
                 <li data-name="Root#load"><a href="Root.html#load">load</a></li>
             
                 <li data-name="Root#load(2)"><a href="Root.html#load2">load</a></li>
+            
+                <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
             
@@ -1526,7 +1536,7 @@
     
     
         
-            <div class="description"><p>Utility functions.</p></div>
+            <div class="description"><p>Various utility functions.</p></div>
         
         
         
@@ -1685,6 +1695,51 @@
     
     <div class="description">
         <p>An immutable empty object.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".fs">util.fs <span class="type-signature ">nullable</span><span class="type-signature type">{ Object }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Filesystem, if available.</p>
     </div>
     
     
@@ -2032,7 +2087,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L240">line 240</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L247">line 247</a>
         </div>
         
     </div>
@@ -2177,7 +2232,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L98">line 98</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L108">line 108</a>
         </div>
         
     </div>
@@ -2360,7 +2415,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L131">line 131</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L138">line 138</a>
         </div>
         
     </div>
@@ -3457,7 +3512,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L194">line 194</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L201">line 201</a>
         </div>
         
     </div>
@@ -3681,7 +3736,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L262">line 262</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L269">line 269</a>
         </div>
         
     </div>
@@ -3841,7 +3896,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L143">line 143</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L150">line 150</a>
         </div>
         
     </div>
@@ -4569,7 +4624,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L176">line 176</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L183">line 183</a>
         </div>
         
     </div>
@@ -4777,7 +4832,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L209">line 209</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L216">line 216</a>
         </div>
         
     </div>
@@ -4922,7 +4977,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L219">line 219</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L226">line 226</a>
         </div>
         
     </div>
@@ -5247,7 +5302,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L251">line 251</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L258">line 258</a>
         </div>
         
     </div>

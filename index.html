@@ -202,6 +202,8 @@
             
                 <li data-name="util.emptyObject"><a href="util.html#.emptyObject">emptyObject</a></li>
             
+                <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
+            
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
@@ -413,12 +415,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
-            
-                <li data-name="Class#$type"><a href="Class.html#$type">$type</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -427,17 +423,17 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Class.decode"><a href="Class.html#.decode">decode</a></li>
+                <li data-name="Class.create"><a href="Class.html#.create">create</a></li>
             
-                <li data-name="Class.decodeDelimited"><a href="Class.html#.decodeDelimited">decodeDelimited</a></li>
+                <li data-name="Class#decode"><a href="Class.html#decode">decode</a></li>
             
-                <li data-name="Class.encode"><a href="Class.html#.encode">encode</a></li>
+                <li data-name="Class#decodeDelimited"><a href="Class.html#decodeDelimited">decodeDelimited</a></li>
             
-                <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
+                <li data-name="Class#encode"><a href="Class.html#encode">encode</a></li>
             
-                <li data-name="Class.verify"><a href="Class.html#.verify">verify</a></li>
+                <li data-name="Class#encodeDelimited"><a href="Class.html#encodeDelimited">encodeDelimited</a></li>
             
-                <li data-name="Class#asJSON"><a href="Class.html#asJSON">asJSON</a></li>
+                <li data-name="Class#verify"><a href="Class.html#verify">verify</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -696,6 +692,45 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Message">
+            <span class="title">
+                <a href="Message.html">Message</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Message.$type"><a href="Message.html#.$type">$type</a></li>
+            
+                <li data-name="Message#$type"><a href="Message.html#$type">$type</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
+            
+                <li data-name="Message.decodeDelimited"><a href="Message.html#.decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
+            
+                <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
+            
+                <li data-name="Message#asJSON"><a href="Message.html#asJSON">asJSON</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Method">
             <span class="title">
                 <a href="Method.html">Method</a>
@@ -903,33 +938,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="Prototype">
-            <span class="title">
-                <a href="Prototype.html">Prototype</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Prototype#asJSON"><a href="Prototype.html#asJSON">asJSON</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="Reader">
             <span class="title">
                 <a href="Reader.html">Reader</a>
@@ -1108,6 +1116,8 @@
                 <li data-name="Root#load"><a href="Root.html#load">load</a></li>
             
                 <li data-name="Root#load(2)"><a href="Root.html#load2">load</a></li>
+            
+                <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
             
@@ -1611,12 +1621,11 @@ var root = new Root().define(&quot;awesomepackage&quot;).add(AwesomeMessage);
 
 // Continue at &quot;Create a new message&quot; above
 ...</code></pre><h3>Using custom classes</h3><pre class="prettyprint source lang-js"><code>...
-var Prototype = protobuf.Prototype;
 
 function AwesomeMessage(properties) {
-    Prototype.call(this, properties);
+    protobuf.Message.call(this, properties);
 }
-protobuf.inherits(AwesomeMessage, root.lookup(&quot;awesomepackage.AwesomeMessage&quot;) /* or use reflection */);
+protobuf.Class.create(root.lookup(&quot;awesomepackage.AwesomeMessage&quot;) /* or use reflection */, AwesomeMessage);
 
 var message = new AwesomeMessage({ awesomeField: &quot;AwesomeString&quot; });
 
@@ -1644,12 +1653,15 @@ greeter.sayHello({ name: 'you' }, function(err, response) {
     var responseData = ...;
     // and call the callback with the binary response afterwards:
     callback(null, responseData);
-}</code></pre><h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
+}</code></pre><p>There is also an <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/examples/streaming-rpc.js">example for streaming RPC</a>.</p>
+<h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
 
 import * as protobuf from &quot;protobufjs&quot;;
 ...</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
 <h3>Parser</h3><ul>
-<li><p><strong>load(filename: <code>string|Array</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto files into the specified root or creates a new one when omitted.</p>
+<li><p><strong>load(filename: <code>string|Array</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise|undefined</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto or preprocessed .json files into a common root namespace.</p>
+</li>
+<li><p><strong>loadSync(filename: <code>string|string[]</code>, [root: <code>Root</code>]): <code>Root</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).</p>
 </li>
 <li><p><strong>tokenize(source: <code>string</code>): <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/tokenize.js">source</a>]<br /><br>Tokenizes the given .proto source and returns an object with useful utility functions.</p>
 </li>
@@ -1677,11 +1689,7 @@ import * as protobuf from &quot;protobufjs&quot;;
 </li>
 <li><p><strong>BufferReader</strong> <em>extends <strong>Reader</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">source</a>]<br /><br>Wire format reader using node buffers.</p>
 </li>
-<li><p><strong>Encoder</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encoder.js">source</a>]<br /><br>Wire format encoder using code generation on top of reflection.</p>
-</li>
-<li><p><strong>Decoder</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">source</a>]<br /><br>Wire format decoder using code generation on top of reflection.</p>
-</li>
-<li><p><strong>Verifier</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js">source</a>]<br /><br>Runtime message verifier using code generation on top of reflection.</p>
+<li><p><strong>codegen</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js">source</a>]<br /><br>A closure for generating functions programmatically.</p>
 </li>
 </ul>
 <h3>Reflection</h3><ul>
@@ -1705,17 +1713,19 @@ import * as protobuf from &quot;protobufjs&quot;;
 </li>
 </ul>
 <h3>Runtime</h3><ul>
-<li><p><strong>inherits(clazz: <code>Function</code>, type: <code>Type</code>, [options: <code>Object.&lt;string,*&gt;</code>]): <code>Prototype</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/inherits.js">source</a>]<br /><br>Inherits a custom class from the message prototype of the specified message type.</p>
+<li><p><strong>Class</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">source</a>]<br /><br>Runtime class providing the tools to create your own custom classes.</p>
 </li>
-<li><p><strong>Prototype</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/prototype.js">source</a>]<br /><br>Runtime message prototype ready to be extended by custom classes or generated code.</p>
+<li><p><strong>Message</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">source</a>]<br /><br>Abstract runtime message.</p>
 </li>
 </ul>
 <h3>Utility</h3><ul>
-<li><p><strong>util: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">source</a>]<br /><br>Utility functions.</p>
+<li><p><strong>types: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js">source</a>]<br /><br>Common type constants.</p>
 </li>
 <li><p><strong>common(name: <code>string</code>, json: <code>Object</code>)</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">source</a>]<br /><br>Provides common type definitions.</p>
 </li>
-<li><p><strong>types: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js">source</a>]<br /><br>Common type constants.</p>
+<li><p><strong>rpc: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js">source</a>]<br /><br>Streaming RPC helpers.</p>
+</li>
+<li><p><strong>util: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">source</a>]<br /><br>Various utility functions.</p>
 </li>
 </ul>
 <h2>Documentation</h2><ul>
@@ -1724,72 +1734,6 @@ import * as protobuf from &quot;protobufjs&quot;;
 <li><p><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a></p>
 </li>
 </ul>
-<h3>Data type recommendations</h3><table>
-<thead>
-<tr>
-<th>Value type</th>
-<th>protobuf Type</th>
-<th>Size / Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Unsigned 32 bit int</td>
-<td>uint32</td>
-<td>1 to 5 bytes.</td>
-</tr>
-<tr>
-<td>Signed 32 bit int</td>
-<td>sint32</td>
-<td>1 to 5 bytes. Do not use int32 (always encodes negative values as 10 bytes).</td>
-</tr>
-<tr>
-<td>Unsigned 52 bit int</td>
-<td>uint64</td>
-<td>1 to 10 bytes.</td>
-</tr>
-<tr>
-<td>Signed 52 bit int</td>
-<td>sint64</td>
-<td>1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).</td>
-</tr>
-<tr>
-<td>Unsigned 64 bit int</td>
-<td>uint64</td>
-<td>Use with long.js. 1 to 10 bytes.</td>
-</tr>
-<tr>
-<td>Signed 64 bit int</td>
-<td>sint64</td>
-<td>Use with long.js. 1 to 10 bytes. Do not use int64 (always encodes negative values as 10 bytes).</td>
-</tr>
-<tr>
-<td>32 bit float</td>
-<td>float</td>
-<td>4 bytes.</td>
-</tr>
-<tr>
-<td>64 bit float</td>
-<td>double</td>
-<td>8 bytes. Use float if 32 bits of precision are enough.</td>
-</tr>
-<tr>
-<td>Boolean values</td>
-<td>bool</td>
-<td>1 byte.</td>
-</tr>
-<tr>
-<td>Strings</td>
-<td>string</td>
-<td>1 to 5 bytes + utf8 byte length.</td>
-</tr>
-<tr>
-<td>Buffers</td>
-<td>bytes</td>
-<td>1 to 5 bytes + byte length.</td>
-</tr>
-</tbody>
-</table>
 <h2>Command line</h2><p>The <code>pbjs</code> command line utility can be used to bundle and translate between .proto and .json files.</p>
 <pre class="prettyprint source"><code>Consolidates imports and converts between file formats.
 

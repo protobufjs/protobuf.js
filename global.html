@@ -202,6 +202,8 @@
             
                 <li data-name="util.emptyObject"><a href="util.html#.emptyObject">emptyObject</a></li>
             
+                <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
+            
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
@@ -413,12 +415,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Class.$type"><a href="Class.html#.$type">$type</a></li>
-            
-                <li data-name="Class#$type"><a href="Class.html#$type">$type</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -427,17 +423,17 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Class.decode"><a href="Class.html#.decode">decode</a></li>
+                <li data-name="Class.create"><a href="Class.html#.create">create</a></li>
             
-                <li data-name="Class.decodeDelimited"><a href="Class.html#.decodeDelimited">decodeDelimited</a></li>
+                <li data-name="Class#decode"><a href="Class.html#decode">decode</a></li>
             
-                <li data-name="Class.encode"><a href="Class.html#.encode">encode</a></li>
+                <li data-name="Class#decodeDelimited"><a href="Class.html#decodeDelimited">decodeDelimited</a></li>
             
-                <li data-name="Class.encodeDelimited"><a href="Class.html#.encodeDelimited">encodeDelimited</a></li>
+                <li data-name="Class#encode"><a href="Class.html#encode">encode</a></li>
             
-                <li data-name="Class.verify"><a href="Class.html#.verify">verify</a></li>
+                <li data-name="Class#encodeDelimited"><a href="Class.html#encodeDelimited">encodeDelimited</a></li>
             
-                <li data-name="Class#asJSON"><a href="Class.html#asJSON">asJSON</a></li>
+                <li data-name="Class#verify"><a href="Class.html#verify">verify</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -696,6 +692,45 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Message">
+            <span class="title">
+                <a href="Message.html">Message</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Message.$type"><a href="Message.html#.$type">$type</a></li>
+            
+                <li data-name="Message#$type"><a href="Message.html#$type">$type</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
+            
+                <li data-name="Message.decodeDelimited"><a href="Message.html#.decodeDelimited">decodeDelimited</a></li>
+            
+                <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
+            
+                <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
+            
+                <li data-name="Message#asJSON"><a href="Message.html#asJSON">asJSON</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="Method">
             <span class="title">
                 <a href="Method.html">Method</a>
@@ -903,33 +938,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="Prototype">
-            <span class="title">
-                <a href="Prototype.html">Prototype</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="Prototype#$type"><a href="Prototype.html#$type">$type</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="Prototype#asJSON"><a href="Prototype.html#asJSON">asJSON</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="Reader">
             <span class="title">
                 <a href="Reader.html">Reader</a>
@@ -1108,6 +1116,8 @@
                 <li data-name="Root#load"><a href="Root.html#load">load</a></li>
             
                 <li data-name="Root#load(2)"><a href="Root.html#load2">load</a></li>
+            
+                <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
             
@@ -2125,214 +2135,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="inherits">
-            
-            inherits<span class="signature">(clazz, type, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Prototype.html">Prototype</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/inherits.js">inherits.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/inherits.js#L25">line 25</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Inherits a custom class from the message prototype of the specified message type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>clazz</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Inheriting class constructor</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Inherited message type</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#InheritanceOptions">InheritanceOptions</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Inheritance options</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Prototype.html">Prototype</a>
-                        
-                    
-            </td>
-            <td class="description last">Created prototype</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="load">
             
             load<span class="signature">(filename, root, callback)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
@@ -2340,7 +2142,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L12">line 12</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L11">line 11</a>
         </div>
         
     </div>
@@ -2488,34 +2290,6 @@
     
     
     
-    <h5>Throws:</h5>
-    
-            
-
-<table class="params">
-    <thead>
-	<tr>
-		<th>Type</th>	
-		<th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td class="type">
-            
-<span class="param-type">TypeError</span>
-
-
-        </td>
-        <td class="description last">
-            <p>If arguments are invalid</p>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-
-        
     
     
     <h5>Returns:</h5>
@@ -2562,7 +2336,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L22">line 22</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L21">line 21</a>
         </div>
         
     </div>
@@ -2687,34 +2461,6 @@
     
     
     
-    <h5>Throws:</h5>
-    
-            
-
-<table class="params">
-    <thead>
-	<tr>
-		<th>Type</th>	
-		<th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td class="type">
-            
-<span class="param-type">TypeError</span>
-
-
-        </td>
-        <td class="description last">
-            <p>If arguments are invalid</p>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-
-        
     
     
     <h5>Returns:</h5>
@@ -2761,7 +2507,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L34">line 34</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L32">line 32</a>
         </div>
         
     </div>
@@ -2898,6 +2644,189 @@
     
     
     
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Promise.&lt;<a href="Root.html">Root</a>>
+                        
+                    
+            </td>
+            <td class="description last">Promise</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="loadSync">
+            
+            loadSync<span class="signature">(filename, <span class="optional">root</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Root.html">Root</a> }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L52">line 52</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>One or multiple files to load</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>root</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Root.html">Root</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Root namespace, defaults to create a new one if omitted.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
     <h5>Throws:</h5>
     
             
@@ -2913,12 +2842,12 @@
     <tr>
         <td class="type">
             
-<span class="param-type">TypeError</span>
+<span class="param-type">Error</span>
 
 
         </td>
         <td class="description last">
-            <p>If arguments are invalid</p>
+            <p>If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid</p>
         </td>
     </tr>
     </tbody>
@@ -2946,11 +2875,11 @@
             
             <td class="type">
             
-                        Promise.&lt;<a href="Root.html">Root</a>>
+                        <a href="Root.html">Root</a>
                         
                     
             </td>
-            <td class="description last">Promise</td>
+            <td class="description last">Root namespace</td>
         </tr>
     
     </tbody>
@@ -3542,157 +3471,6 @@
 </table>
 
     
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="InheritanceOptions">InheritanceOptions <span class="type-signature type">{ Object }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Options passed to <a href="global.html#inherits">inherits</a>, modifying its behavior.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>noStatics</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last"><p>Skips adding the default static methods on top of the constructor</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>noRegister</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last"><p>Skips registering the constructor with the reflected type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
     
     
 </dd>
