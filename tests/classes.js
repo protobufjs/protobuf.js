@@ -15,7 +15,7 @@ tape.test("google.protobuf.Any class", function(test) {
         function Any(properties) {
             Message.call(this, properties);
         }
-        Any.prototype = Class.create(root.lookup("google.protobuf.Any"), Any);
+        /* Any.prototype = */ Class.create(root.lookup("google.protobuf.Any"), Any);
 
         var valueBuffer = protobuf.util.newBuffer(0);
         var any = new Any({

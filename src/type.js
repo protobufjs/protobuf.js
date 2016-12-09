@@ -161,7 +161,7 @@ util.props(TypePrototype, {
         },
         set: function setCtor(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
-                throw util._TypeError("ctor", "a constructor inheriting from Message");
+                throw util._TypeError("ctor", "a Message constructor");
             this._ctor = ctor;
         }
     }

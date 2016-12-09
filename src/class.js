@@ -45,7 +45,7 @@ Class.create = function create(type, ctor) {
     var prototype = clazz.prototype = new Message();
     prototype.constructor = clazz;
 
-    // Static methods on Message are instance methods on Class and vice-versa.
+    // Static methods on Message are instance methods on Class and vice versa.
     util.merge(clazz, Message, true);
 
     // Classes and messages reference their reflected type
@@ -65,7 +65,7 @@ Class.create = function create(type, ctor) {
             : field.defaultValue;
     });
 
-    // Runtime messages have non-enumerable getters and setters for each virtual oneof field
+    // Messages have non-enumerable getters and setters for each virtual oneof field
     type.getOneofsArray().forEach(function(oneof) {
         util.prop(prototype, oneof.resolve().name, {
             get: function getVirtual() {
@@ -86,12 +86,12 @@ Class.create = function create(type, ctor) {
     });
 
     // Register
-    type.ctor = clazz;
+    type.setCtor(clazz);
 
     return prototype;
 };
 
-// Static methods on Message are instance methods on Class and vice-versa.
+// Static methods on Message are instance methods on Class and vice versa.
 Class.prototype = Message;
 
 /**

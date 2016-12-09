@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Fri, 09 Dec 2016 01:15:36 UTC
+ * Compiled Fri, 09 Dec 2016 01:25:52 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -172,7 +172,7 @@ Class.create = function create(type, ctor) {
     var prototype = clazz.prototype = new Message();
     prototype.constructor = clazz;
 
-    // Static methods on Message are instance methods on Class and vice-versa.
+    // Static methods on Message are instance methods on Class and vice versa.
     util.merge(clazz, Message, true);
 
     // Classes and messages reference their reflected type
@@ -192,7 +192,7 @@ Class.create = function create(type, ctor) {
             : field.defaultValue;
     });
 
-    // Runtime messages have non-enumerable getters and setters for each virtual oneof field
+    // Messages have non-enumerable getters and setters for each virtual oneof field
     type.getOneofsArray().forEach(function(oneof) {
         util.prop(prototype, oneof.resolve().name, {
             get: function getVirtual() {
@@ -213,12 +213,12 @@ Class.create = function create(type, ctor) {
     });
 
     // Register
-    type.ctor = clazz;
+    type.setCtor(clazz);
 
     return prototype;
 };
 
-// Static methods on Message are instance methods on Class and vice-versa.
+// Static methods on Message are instance methods on Class and vice versa.
 Class.prototype = Message;
 
 /**
@@ -4484,7 +4484,7 @@ util.props(TypePrototype, {
         },
         set: function setCtor(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
-                throw util._TypeError("ctor", "a constructor inheriting from Message");
+                throw util._TypeError("ctor", "a Message constructor");
             this._ctor = ctor;
         }
     }
