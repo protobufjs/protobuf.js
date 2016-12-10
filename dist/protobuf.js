@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sat, 10 Dec 2016 23:00:12 UTC
+ * Compiled Sat, 10 Dec 2016 23:38:36 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4867,17 +4867,17 @@ var base64 = exports;
 
 /**
  * Calculates the base64 byte length of a string.
- * @param {string} str Base64 encoded string
+ * @param {string} string Base64 encoded string
  * @returns {number} Byte length
  */
-base64.length = function length(str) {
-    var p = str.length;
+base64.length = function length(string) {
+    var p = string.length;
     if (!p)
         return 0;
     var n = 0;
-    while (--p % 4 > 1 && str.charAt(p) === '=')
+    while (--p % 4 > 1 && string.charAt(p) === '=')
         ++n;
-    return Math.ceil(str.length * 3) / 4 - n;
+    return Math.ceil(string.length * 3) / 4 - n;
 };
 
 // Base64 encoding table
@@ -4896,7 +4896,7 @@ var b64 = [
  * @returns {string} Base64 encoded string
  */
 base64.encode = function encode(buffer, start, end) {
-    var str = new Array(Math.ceil((end - start) / 3) * 4);
+    var string = new Array(Math.ceil((end - start) / 3) * 4);
     var i = 0, // output index
         j = 0, // goto index
         t;     // temporary
@@ -4904,29 +4904,29 @@ base64.encode = function encode(buffer, start, end) {
         var b = buffer[start++];
         switch (j) {
             case 0:
-                str[i++] = b64[b >> 2];
+                string[i++] = b64[b >> 2];
                 t = (b & 3) << 4;
                 j = 1;
                 break;
             case 1:
-                str[i++] = b64[t | b >> 4];
+                string[i++] = b64[t | b >> 4];
                 t = (b & 15) << 2;
                 j = 2;
                 break;
             case 2:
-                str[i++] = b64[t | b >> 6];
-                str[i++] = b64[b & 63];
+                string[i++] = b64[t | b >> 6];
+                string[i++] = b64[b & 63];
                 j = 0;
                 break;
         }
     }
     if (j) {
-        str[i++] = b64[t];
-        str[i  ] = 61;
+        string[i++] = b64[t];
+        string[i  ] = 61;
         if (j === 1)
-            str[i + 1] = 61;
+            string[i + 1] = 61;
     }
-    return String.fromCharCode.apply(String, str);
+    return String.fromCharCode.apply(String, string);
 };
 
 // Base64 decoding table
@@ -4935,18 +4935,18 @@ var invalidEncoding = "invalid encoding";
 
 /**
  * Decodes a base64 encoded string to a buffer.
- * @param {string} src Source string
+ * @param {string} string Source string
  * @param {Uint8Array} buffer Destination buffer
  * @param {number} offset Destination offset
  * @returns {number} Number of bytes written
  * @throws {Error} If encoding is invalid
  */
-base64.decode = function decode(src, buffer, offset) {
+base64.decode = function decode(string, buffer, offset) {
     var start = offset;
     var j = 0, // goto index
         t;     // temporary
-    for (var i = 0; i < src.length;) {
-        var c = src.charCodeAt(i++);
+    for (var i = 0; i < string.length;) {
+        var c = string.charCodeAt(i++);
         if (c === 61 && j > 1)
             break;
         if ((c = s64[c]) === undefined)
@@ -5608,20 +5608,20 @@ var utf8 = exports;
 
 /**
  * Calculates the UTF8 byte length of a string.
- * @param {string} str String
+ * @param {string} string String
  * @returns {number} Byte length
  */
-utf8.length = function length(str) {
-    var strlen = str.length >>> 0;
+utf8.length = function length(string) {
+    var strlen = string.length >>> 0;
     var len = 0,
         c = 0;
     for (var i = 0; i < strlen; ++i) {
-        c = str.charCodeAt(i);
+        c = string.charCodeAt(i);
         if (c < 128)
             len += 1;
         else if (c < 2048)
             len += 2;
-        else if ((c & 0xFC00) === 0xD800 && (str.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
+        else if ((c & 0xFC00) === 0xD800 && (string.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
             ++i;
             len += 4;
         } else
@@ -5631,65 +5631,68 @@ utf8.length = function length(str) {
 };
 
 /**
- * Writes a string as UTF8 bytes.
- * @param {Uint8Array} buf Destination buffer
- * @param {number} pos Destination offset
- * @param {string} str Source string
- * @returns {number} Bytes written
+ * Reads UTF8 bytes as a string.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} String read
  */
-utf8.write = function(buf, pos, str) {
-    var start = pos;
-    for (var i = 0; i < str.length; ++i) {
-        var c1 = str.charCodeAt(i), c2;
-        if (c1 < 128) {
-            buf[pos++] = c1;
-        } else if (c1 < 2048) {
-            buf[pos++] = c1 >> 6       | 192;
-            buf[pos++] = c1       & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = str.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
-            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
-            ++i;
-            buf[pos++] = c1 >> 18      | 240;
-            buf[pos++] = c1 >> 12 & 63 | 128;
-            buf[pos++] = c1 >> 6  & 63 | 128;
-            buf[pos++] = c1       & 63 | 128;
-        } else {
-            buf[pos++] = c1 >> 12      | 224;
-            buf[pos++] = c1 >> 6  & 63 | 128;
-            buf[pos++] = c1       & 63 | 128;
+utf8.read = function(buffer, start, end) {
+    var len = end - start;
+    if (len > 0) {
+        var string = [],
+            i = 0, // char offset
+            t;     // temporary
+        while (start < end) {
+            t = buffer[start++];
+            if (t < 128)
+                string[i++] = t;
+            else if (t > 191 && t < 224)
+                string[i++] = (t & 31) << 6 | buffer[start++] & 63;
+            else if (t > 239 && t < 365) {
+                t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
+                string[i++] = 0xD800 + (t >> 10);
+                string[i++] = 0xDC00 + (t & 1023);
+            } else
+                string[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
         }
+        return String.fromCharCode.apply(String, string.slice(0, i));
     }
-    return pos - start;
+    return "";
 };
 
 /**
- * Reads UTF8 bytes as a string.
- * @param {Uint8Array} buf Source buffer
- * @param {number} pos Source offset
- * @param {number} len Source length
- * @returns {string} String read
+ * Writes a string as UTF8 bytes.
+ * @param {string} string Source string
+ * @param {Uint8Array} buffer Destination buffer
+ * @param {number} offset Destination offset
+ * @returns {number} Bytes written
  */
-utf8.read = function(buf, pos, len) {
-    if (len) {
-        var out = [],
-            i = 0, // char offset
-            t;     // temporary
-        while (pos < len) {
-            t = buf[pos++];
-            if (t < 128)
-                out[i++] = t;
-            else if (t > 191 && t < 224)
-                out[i++] = (t & 31) << 6 | buf[pos++] & 63;
-            else if (t > 239 && t < 365) {
-                t = ((t & 7) << 18 | (buf[pos++] & 63) << 12 | (buf[pos++] & 63) << 6 | buf[pos++] & 63) - 0x10000;
-                out[i++] = 0xD800 + (t >> 10);
-                out[i++] = 0xDC00 + (t & 1023);
-            } else
-                out[i++] = (t & 15) << 12 | (buf[pos++] & 63) << 6 | buf[pos++] & 63;
+utf8.write = function(string, buffer, offset) {
+    var start = offset,
+        c1, // character 1
+        c2; // character 2
+    for (var i = 0; i < string.length; ++i) {
+        c1 = string.charCodeAt(i);
+        if (c1 < 128) {
+            buffer[offset++] = c1;
+        } else if (c1 < 2048) {
+            buffer[offset++] = c1 >> 6       | 192;
+            buffer[offset++] = c1       & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = string.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+            ++i;
+            buffer[offset++] = c1 >> 18      | 240;
+            buffer[offset++] = c1 >> 12 & 63 | 128;
+            buffer[offset++] = c1 >> 6  & 63 | 128;
+            buffer[offset++] = c1       & 63 | 128;
+        } else {
+            buffer[offset++] = c1 >> 12      | 224;
+            buffer[offset++] = c1 >> 6  & 63 | 128;
+            buffer[offset++] = c1       & 63 | 128;
         }
-        return String.fromCharCode.apply(String, out.slice(0, i));
     }
-    return "";
+    return offset - start;
 };
 
 },{}],31:[function(require,module,exports){
@@ -5990,7 +5993,7 @@ var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
  * @classdesc Scheduled writer operation.
  * @memberof Writer
  * @constructor
- * @param {function(Uint8Array, number, *)} fn Function to call
+ * @param {function(*, Uint8Array, number)} fn Function to call
  * @param {*} val Value to write
  * @param {number} len Value byte length
  * @private
@@ -6143,7 +6146,7 @@ WriterPrototype.push = function push(fn, len, val) {
     return this;
 };
 
-function writeByte(buf, pos, val) {
+function writeByte(val, buf, pos) {
     buf[pos] = val & 255;
 }
 
@@ -6157,7 +6160,7 @@ WriterPrototype.tag = function write_tag(id, wireType) {
     return this.push(writeByte, 1, id << 3 | wireType & 7);
 };
 
-function writeVarint32(buf, pos, val) {
+function writeVarint32(val, buf, pos) {
     while (val > 127) {
         buf[pos++] = val & 127 | 128;
         val >>>= 7;
@@ -6203,7 +6206,7 @@ WriterPrototype.sint32 = function write_sint32(value) {
     return this.uint32(value << 1 ^ value >> 31);
 };
 
-function writeVarint64(buf, pos, val) {
+function writeVarint64(val, buf, pos) {
     // tends to deoptimize. stays optimized when using bits directly.
     while (val.hi) {
         buf[pos++] = val.lo & 127 | 128;
@@ -6257,7 +6260,7 @@ WriterPrototype.bool = function write_bool(value) {
     return this.push(writeByte, 1, value ? 1 : 0);
 };
 
-function writeFixed32(buf, pos, val) {
+function writeFixed32(val, buf, pos) {
     buf[pos++] =  val         & 255;
     buf[pos++] =  val >>> 8   & 255;
     buf[pos++] =  val >>> 16  & 255;
@@ -6310,14 +6313,14 @@ var writeFloat = typeof Float32Array !== 'undefined'
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
         return f8b[3] // already le?
-            ? function writeFloat_f32(buf, pos, val) {
+            ? function writeFloat_f32(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
                 buf[pos++] = f8b[1];
                 buf[pos++] = f8b[2];
                 buf[pos  ] = f8b[3];
             }
-            : function writeFloat_f32_le(buf, pos, val) {
+            : function writeFloat_f32_le(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[3];
                 buf[pos++] = f8b[2];
@@ -6325,7 +6328,7 @@ var writeFloat = typeof Float32Array !== 'undefined'
                 buf[pos  ] = f8b[0];
             };
     })()
-    : function writeFloat_ieee754(buf, pos, val) {
+    : function writeFloat_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 23, 4);
     };
 
@@ -6345,7 +6348,7 @@ var writeDouble = typeof Float64Array !== 'undefined'
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
         return f8b[7] // already le?
-            ? function writeDouble_f64(buf, pos, val) {
+            ? function writeDouble_f64(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
                 buf[pos++] = f8b[1];
@@ -6356,7 +6359,7 @@ var writeDouble = typeof Float64Array !== 'undefined'
                 buf[pos++] = f8b[6];
                 buf[pos  ] = f8b[7];
             }
-            : function writeDouble_f64_le(buf, pos, val) {
+            : function writeDouble_f64_le(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[7];
                 buf[pos++] = f8b[6];
@@ -6368,7 +6371,7 @@ var writeDouble = typeof Float64Array !== 'undefined'
                 buf[pos  ] = f8b[0];
             };
     })()
-    : function writeDouble_ieee754(buf, pos, val) {
+    : function writeDouble_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 52, 8);
     };
 
@@ -6382,13 +6385,11 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
-function writeBytes_set(buf, pos, val) {
-    buf.set(val, pos);
-}
-
 var writeBytes = ArrayImpl.prototype.set
-    ? writeBytes_set
-    : function writeBytes_for(buf, pos, val) {
+    ? function writeBytes_set(val, buf, pos) {
+        buf.set(val, pos);
+    }
+    : function writeBytes_for(val, buf, pos) {
         for (var i = 0; i < val.length; ++i)
             buf[pos + i] = val[i];
     };
@@ -6480,7 +6481,7 @@ WriterPrototype.finish = function finish() {
     this.reset();
     var pos = 0;
     while (head) {
-        head.fn(buf, pos, head.val);
+        head.fn(head.val, buf, pos);
         pos += head.len;
         head = head.next;
     }
@@ -6514,7 +6515,7 @@ BufferWriter.alloc = function alloc_buffer(size) {
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-function writeFloatBuffer(buf, pos, val) {
+function writeFloatBuffer(val, buf, pos) {
     buf.writeFloatLE(val, pos, true);
 }
 
@@ -6526,7 +6527,7 @@ BufferWriterPrototype.float = function write_float_buffer(value) {
     return this.push(writeFloatBuffer, 4, value);
 };
 
-function writeDoubleBuffer(buf, pos, val) {
+function writeDoubleBuffer(val, buf, pos) {
     buf.writeDoubleLE(val, pos, true);
 }
 
@@ -6538,7 +6539,7 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
     return this.push(writeDoubleBuffer, 8, value);
 };
 
-function writeBytesBuffer(buf, pos, val) {
+function writeBytesBuffer(val, buf, pos) {
     if (val.length)
         val.copy(buf, pos, 0, val.length);
 }
@@ -6557,15 +6558,15 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 
 var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
     return util.Buffer && util.Buffer.prototype.utf8Write // around forever, but not present in browser buffer
-        ? function writeString_buffer_utf8Write(buf, pos, val) {
+        ? function writeString_buffer_utf8Write(val, buf, pos) {
             if (val.length < 40)
-                utf8.write(buf, pos, val);
+                utf8.write(val, buf, pos);
             else
                 buf.utf8Write(val, pos);
         }
-        : function writeString_buffer_write(buf, pos, val) {
+        : function writeString_buffer_write(val, buf, pos) {
             if (val.length < 40)
-                utf8.write(buf, pos, val);
+                utf8.write(val, buf, pos);
             else
                 buf.write(val, pos);
         };

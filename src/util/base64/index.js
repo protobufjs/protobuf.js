@@ -9,17 +9,17 @@ var base64 = exports;
 
 /**
  * Calculates the base64 byte length of a string.
- * @param {string} str Base64 encoded string
+ * @param {string} string Base64 encoded string
  * @returns {number} Byte length
  */
-base64.length = function length(str) {
-    var p = str.length;
+base64.length = function length(string) {
+    var p = string.length;
     if (!p)
         return 0;
     var n = 0;
-    while (--p % 4 > 1 && str.charAt(p) === '=')
+    while (--p % 4 > 1 && string.charAt(p) === '=')
         ++n;
-    return Math.ceil(str.length * 3) / 4 - n;
+    return Math.ceil(string.length * 3) / 4 - n;
 };
 
 // Base64 encoding table
@@ -38,7 +38,7 @@ var b64 = [
  * @returns {string} Base64 encoded string
  */
 base64.encode = function encode(buffer, start, end) {
-    var str = new Array(Math.ceil((end - start) / 3) * 4);
+    var string = new Array(Math.ceil((end - start) / 3) * 4);
     var i = 0, // output index
         j = 0, // goto index
         t;     // temporary
@@ -46,29 +46,29 @@ base64.encode = function encode(buffer, start, end) {
         var b = buffer[start++];
         switch (j) {
             case 0:
-                str[i++] = b64[b >> 2];
+                string[i++] = b64[b >> 2];
                 t = (b & 3) << 4;
                 j = 1;
                 break;
             case 1:
-                str[i++] = b64[t | b >> 4];
+                string[i++] = b64[t | b >> 4];
                 t = (b & 15) << 2;
                 j = 2;
                 break;
             case 2:
-                str[i++] = b64[t | b >> 6];
-                str[i++] = b64[b & 63];
+                string[i++] = b64[t | b >> 6];
+                string[i++] = b64[b & 63];
                 j = 0;
                 break;
         }
     }
     if (j) {
-        str[i++] = b64[t];
-        str[i  ] = 61;
+        string[i++] = b64[t];
+        string[i  ] = 61;
         if (j === 1)
-            str[i + 1] = 61;
+            string[i + 1] = 61;
     }
-    return String.fromCharCode.apply(String, str);
+    return String.fromCharCode.apply(String, string);
 };
 
 // Base64 decoding table
@@ -77,18 +77,18 @@ var invalidEncoding = "invalid encoding";
 
 /**
  * Decodes a base64 encoded string to a buffer.
- * @param {string} src Source string
+ * @param {string} string Source string
  * @param {Uint8Array} buffer Destination buffer
  * @param {number} offset Destination offset
  * @returns {number} Number of bytes written
  * @throws {Error} If encoding is invalid
  */
-base64.decode = function decode(src, buffer, offset) {
+base64.decode = function decode(string, buffer, offset) {
     var start = offset;
     var j = 0, // goto index
         t;     // temporary
-    for (var i = 0; i < src.length;) {
-        var c = src.charCodeAt(i++);
+    for (var i = 0; i < string.length;) {
+        var c = string.charCodeAt(i++);
         if (c === 61 && j > 1)
             break;
         if ((c = s64[c]) === undefined)

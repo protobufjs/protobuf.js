@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Sat, 10 Dec 2016 23:00:30 UTC
+ * Generated Sat, 10 Dec 2016 23:38:42 UTC
  */
 declare module "protobufjs" {
 
@@ -1658,10 +1658,10 @@ declare module "protobufjs" {
       module base64 {
           /**
            * Calculates the base64 byte length of a string.
-           * @param {string} str Base64 encoded string
+           * @param {string} string Base64 encoded string
            * @returns {number} Byte length
            */
-          function length(str: string): number;
+          function length(string: string): number;
    
           /**
            * Encodes a buffer to a base64 encoded string.
@@ -1674,13 +1674,13 @@ declare module "protobufjs" {
    
           /**
            * Decodes a base64 encoded string to a buffer.
-           * @param {string} src Source string
+           * @param {string} string Source string
            * @param {Uint8Array} buffer Destination buffer
            * @param {number} offset Destination offset
            * @returns {number} Number of bytes written
            * @throws {Error} If encoding is invalid
            */
-          function decode(src: string, buffer: Uint8Array, offset: number): number;
+          function decode(string: string, buffer: Uint8Array, offset: number): number;
    
       }
    
@@ -1952,28 +1952,28 @@ declare module "protobufjs" {
       module utf8 {
           /**
            * Calculates the UTF8 byte length of a string.
-           * @param {string} str String
+           * @param {string} string String
            * @returns {number} Byte length
            */
-          function length(str: string): number;
-   
-          /**
-           * Writes a string as UTF8 bytes.
-           * @param {Uint8Array} buf Destination buffer
-           * @param {number} pos Destination offset
-           * @param {string} str Source string
-           * @returns {number} Bytes written
-           */
-          function write(buf: Uint8Array, pos: number, str: string): number;
+          function length(string: string): number;
    
           /**
            * Reads UTF8 bytes as a string.
-           * @param {Uint8Array} buf Source buffer
-           * @param {number} pos Source offset
-           * @param {number} len Source length
+           * @param {Uint8Array} buffer Source buffer
+           * @param {number} start Source start
+           * @param {number} end Source end
            * @returns {string} String read
            */
-          function read(buf: Uint8Array, pos: number, len: number): string;
+          function read(buffer: Uint8Array, start: number, end: number): string;
+   
+          /**
+           * Writes a string as UTF8 bytes.
+           * @param {string} string Source string
+           * @param {Uint8Array} buffer Destination buffer
+           * @param {number} offset Destination offset
+           * @returns {number} Bytes written
+           */
+          function write(string: string, buffer: Uint8Array, offset: number): number;
    
       }
    
