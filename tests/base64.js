@@ -16,17 +16,17 @@ tape.test("base64", function(test) {
     Object.keys(strings).forEach(function(str) {
         var enc = strings[str];
 
-        var len = protobuf.util.length64(enc);
+        var len = protobuf.util.base64.length(enc);
         test.equal(len, str.length, "should calculate '" + enc + "' as " + str.length + " bytes");
 
         var buf = protobuf.util.newBuffer(len);
-        var len2 = protobuf.util.decode64(enc, buf, 0);
+        var len2 = protobuf.util.base64.decode(enc, buf, 0);
         test.equal(len2, len, "should decode '" + enc + "' to " + len + " bytes");
 
         if (protobuf.util.isNode && protobuf.util.Buffer)
             test.equal(buf.toString("utf8"), str, "should decode '" + enc + "' to '" + str + "'");
 
-        var enc2 = protobuf.util.encode64(buf, 0, buf.length);
+        var enc2 = protobuf.util.base64.encode(buf, 0, buf.length);
         test.equal(enc2, enc, "should encode '" + str + "' to '" + enc + "'");
 
         var writer = protobuf.Writer.create();

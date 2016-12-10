@@ -6,7 +6,8 @@ Reader.BufferReader = BufferReader;
 var util      = require("./util/runtime"),
     ieee754   = require("../lib/ieee754");
 var LongBits  = util.LongBits,
-    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+    utf8      = util.utf8;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
@@ -415,27 +416,8 @@ ReaderPrototype.bytes = function read_bytes() {
  * @returns {string} Value read
  */
 ReaderPrototype.string = function read_string() {
-    // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
-    var bytes = this.bytes(),
-        len = bytes.length;
-    if (len) {
-        var out = new Array(len), p = 0, c = 0;
-        while (p < len) {
-            var c1 = bytes[p++];
-            if (c1 < 128)
-                out[c++] = c1;
-            else if (c1 > 191 && c1 < 224)
-                out[c++] = (c1 & 31) << 6 | bytes[p++] & 63;
-            else if (c1 > 239 && c1 < 365) {
-                var u = ((c1 & 7) << 18 | (bytes[p++] & 63) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63) - 0x10000;
-                out[c++] = 0xD800 + (u >> 10);
-                out[c++] = 0xDC00 + (u & 1023);
-            } else
-                out[c++] = (c1 & 15) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63;
-        }
-        return String.fromCharCode.apply(String, out.slice(0, c));
-    }
-    return "";
+    var bytes = this.bytes();
+    return utf8.read(bytes, 0, bytes.length);
 };
 
 /**

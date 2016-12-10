@@ -15,7 +15,7 @@ function Service(rpcImpl) {
     EventEmitter.call(this);
 
     /**
-     * RPC implementation. Becomes `null` when the service is ended.
+     * RPC implementation. Becomes `null` once the service is ended.
      * @type {?RPCImpl}
      */
     this.$rpc = rpcImpl;

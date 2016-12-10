@@ -1,8 +1,6 @@
 "use strict";
 module.exports = codegen;
 
-var util = require("./util");
-
 var blockOpenRe  = /[{[]$/,
     blockCloseRe = /^[}\]]/,
     casingRe     = /:$/,
@@ -11,6 +9,7 @@ var blockOpenRe  = /[{[]$/,
 
 /**
  * A closure for generating functions programmatically.
+ * @memberof util
  * @namespace
  * @function
  * @param {...string} params Function parameter names
@@ -25,7 +24,7 @@ function codegen() {
         inCase = false;
 
     /**
-     * A codegen instance as returned by {@link codegen}, that also is a {@link util.sprintf|sprintf}-like appender function.
+     * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
      * @typedef Codegen
      * @type {function}
      * @param {string} format Format string
@@ -36,7 +35,7 @@ function codegen() {
      */
     /**/
     function gen() {
-        var line = util.sprintf.apply(null, arguments);
+        var line = sprintf.apply(null, arguments);
         var level = indent;
         if (src.length) {
             var prev = src[src.length - 1];
@@ -109,9 +108,19 @@ function codegen() {
     return gen;
 }
 
+function sprintf(format) {
+    var params = Array.prototype.slice.call(arguments, 1),
+        index  = 0;
+    return format.replace(/%([djs])/g, function($0, $1) {
+        var param = params[index++];
+        switch ($1) {
+            case "j":
+                return JSON.stringify(param);
+            default:
+                return String(param);
+        }
+    });
+}
+
 codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
 codegen.verbose   = false;
-
-codegen.encode = require("./codegen/encode");
-codegen.decode = require("./codegen/decode");
-codegen.verify = require("./codegen/verify");

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sat, 10 Dec 2016 13:31:00 UTC
+ * Compiled Sat, 10 Dec 2016 23:00:12 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -128,9 +128,9 @@ exports.write = function writeIEEE754(buffer, value, offset, isBE, mLen, nBytes)
 "use strict";
 module.exports = Class;
 
-var Message = require(11),
-    Type    = require(23),
-    util    = require(25);
+var Message = require(9),
+    Type    = require(21),
+    util    = require(23);
 
 var _TypeError = util._TypeError;
 
@@ -263,807 +263,7 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-},{"11":11,"23":23,"25":25}],3:[function(require,module,exports){
-"use strict";
-module.exports = codegen;
-
-var util = require(25);
-
-var blockOpenRe  = /[{[]$/,
-    blockCloseRe = /^[}\]]/,
-    casingRe     = /:$/,
-    branchRe     = /^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/,
-    breakRe      = /\b(?:break|continue);?$|^\s*return\b/;
-
-/**
- * A closure for generating functions programmatically.
- * @namespace
- * @function
- * @param {...string} params Function parameter names
- * @returns {Codegen} Codegen instance
- * @property {boolean} supported Whether code generation is supported by the environment.
- * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
- */
-function codegen() {
-    var args   = Array.prototype.slice.call(arguments),
-        src    = ['\t"use strict"'],
-        indent = 1,
-        inCase = false;
-
-    /**
-     * A codegen instance as returned by {@link codegen}, that also is a {@link util.sprintf|sprintf}-like appender function.
-     * @typedef Codegen
-     * @type {function}
-     * @param {string} format Format string
-     * @param {...*} args Replacements
-     * @returns {Codegen} Itself
-     * @property {function(string=):string} str Stringifies the so far generated function source.
-     * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
-     */
-    /**/
-    function gen() {
-        var line = util.sprintf.apply(null, arguments);
-        var level = indent;
-        if (src.length) {
-            var prev = src[src.length - 1];
-
-            // block open or one time branch
-            if (blockOpenRe.test(prev))
-                level = ++indent; // keep
-            else if (branchRe.test(prev))
-                ++level; // once
-            
-            // casing
-            if (casingRe.test(prev) && !casingRe.test(line)) {
-                level = ++indent;
-                inCase = true;
-            } else if (inCase && breakRe.test(prev)) {
-                level = --indent;
-                inCase = false;
-            }
-
-            // block close
-            if (blockCloseRe.test(line))
-                level = --indent;
-        }
-        for (var index = 0; index < level; ++index)
-            line = "\t" + line;
-        src.push(line);
-        return gen;
-    }
-
-    /**
-     * Stringifies the so far generated function source.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @returns {string} Function source using tabs for indentation
-     * @inner
-     */
-    function str(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
-    }
-
-    gen.str = str;
-
-    /**
-     * Ends generation and builds the function whilst applying a scope.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @param {Object} [scope] Function scope
-     * @returns {function} The generated function, with scope applied if specified
-     * @inner
-     */
-    function eof(name, scope) {
-        if (typeof name === 'object') {
-            scope = name;
-            name = undefined;
-        }
-        var source = gen.str(name);
-        if (codegen.verbose)
-            console.log("--- codegen ---\n" + source.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
-        var keys = Object.keys(scope || (scope = {}));
-        return Function.apply(null, keys.concat("return " + source)).apply(null, keys.map(function(key) { return scope[key]; })); // eslint-disable-line no-new-func
-        //     ^ Creates a wrapper function with the scoped variable names as its parameters,
-        //       calls it with the respective scoped variable values ^
-        //       and returns our brand-new properly scoped function.
-        //
-        // This works because "Invoking the Function constructor as a function (without using the
-        // new operator) has the same effect as invoking it as a constructor."
-        // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Function
-    }
-
-    gen.eof = eof;
-
-    return gen;
-}
-
-codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
-codegen.verbose   = false;
-
-codegen.encode = require(5);
-codegen.decode = require(4);
-codegen.verify = require(6);
-
-},{"25":25,"4":4,"5":5,"6":6}],4:[function(require,module,exports){
-"use strict";
-
-/**
- * Wire format decoder using code generation on top of reflection that also provides a fallback.
- * @exports codegen.decode
- * @namespace
- */
-var decode = exports;
-
-var Enum    = require(8),
-    Reader  = require(17),
-    types   = require(24),
-    util    = require(25),
-    codegen = require(3);
-
-/**
- * A message decoder as generated by {@link codegen.decode.generate}.
- * @typedef Decoder
- * @type {function}
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
- * @param {number} [length] Length of the message, if known beforehand
- * @returns {Message} Populated runtime message
- * @this Type
- */
-
-/**
- * Fallback {@link Decoder|decoder}.
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
- * @param {number} [length] Length of the message, if known beforehand
- * @returns {Message} Populated runtime message
- * @this Type
- */
-decode.fallback = function decode_fallback(readerOrBuffer, length) {
-    /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
-    var fields  = this.getFieldsById(),
-        reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer),
-        limit   = length === undefined ? reader.len : reader.pos + length,
-        message = new (this.getCtor())();
-    while (reader.pos < limit) {
-        var tag      = reader.tag(),
-            field    = fields[tag.id].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
-        
-        // Known fields
-        if (field) {
-
-            // Map fields
-            if (field.map) {
-                var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-                    length  = reader.uint32();
-                var map = message[field.name] = {};
-                if (length) {
-                    length += reader.pos;
-                    var ks = [], vs = [];
-                    while (reader.pos < length) {
-                        if (reader.tag().id === 1)
-                            ks[ks.length] = reader[keyType]();
-                        else if (types.basic[type] !== undefined)
-                            vs[vs.length] = reader[type]();
-                        else
-                            vs[vs.length] = field.resolvedType.decode(reader, reader.uint32());
-                    }
-                    for (var i = 0; i < ks.length; ++i)
-                        map[typeof ks[i] === 'object' ? util.longToHash(ks[i]) : ks[i]] = vs[i];
-                }
-
-            // Repeated fields
-            } else if (field.repeated) {
-                var values = message[field.name] && message[field.name].length ? message[field.name] : message[field.name] = [];
-
-                // Packed
-                if (field.packed && types.packed[type] !== undefined && tag.wireType === 2) {
-                    var plimit = reader.uint32() + reader.pos;
-                    while (reader.pos < plimit)
-                        values[values.length] = reader[type]();
-
-                // Non-packed
-                } else if (types.basic[type] !== undefined)
-                    values[values.length] = reader[type]();
-                else
-                    values[values.length] = field.resolvedType.decode(reader, reader.uint32());
-
-            // Non-repeated
-            } else if (types.basic[type] !== undefined)
-                message[field.name] = reader[type]();
-              else
-                message[field.name] = field.resolvedType.decode(reader, reader.uint32());
-
-        // Unknown fields
-        } else
-            reader.skipType(tag.wireType);
-    }
-    return message;
-    /* eslint-enable no-invalid-this, block-scoped-var, no-redeclare */
-};
-
-/**
- * Generates a {@link Decoder|decoder} specific to the specified message type.
- * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
- */
-decode.generate = function decode_generate(mtype) {
-    /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();    
-    var gen = codegen("r", "l")
-
-    ("r instanceof Reader||(r=Reader.create(r))")
-    ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
-    ("while(r.pos<c){")
-        ("var t=r.tag()")
-        ("switch(t.id){");
-    
-    for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(),
-            type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            prop  = util.safeProp(field.name);
-        gen
-            ("case %d:", field.id);
-
-        if (field.map) {
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            gen
-                ("var n=r.uint32(),o={}")
-                ("if(n){")
-                    ("n+=r.pos")
-                    ("var k=[],v=[]")
-                    ("while(r.pos<n){")
-                        ("if(r.tag().id===1)")
-                            ("k[k.length]=r.%s()", keyType);
-
-                        if (types.basic[type] !== undefined) gen
-
-                        ("else")
-                            ("v[v.length]=r.%s()", type);
-
-                        else gen
-
-                        ("else")
-                            ("v[v.length]=types[%d].decode(r,r.uint32())", i, i);
-                    gen
-                    ("}")
-                    ("for(var i=0;i<k.length;++i)")
-                        ("o[typeof(k[i])==='object'?util.longToHash(k[i]):k[i]]=v[i]")
-                ("}")
-                ("m%s=o", prop);
-
-        } else if (field.repeated) { gen
-
-                ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
-
-            if (field.packed && types.packed[type] !== undefined) { gen
-
-                ("if(t.wireType===2){")
-                    ("var e=r.uint32()+r.pos")
-                    ("while(r.pos<e)")
-                        ("m%s[m%s.length]=r.%s()", prop, prop, type)
-                ("}else");
-            }
-
-            if (types.basic[type] !== undefined) gen
-
-                    ("m%s[m%s.length]=r.%s()", prop, prop, type);
-
-            else gen
-
-                    ("m%s[m%s.length]=types[%d].decode(r,r.uint32())", prop, prop, i, i);
-
-        } else if (types.basic[type] !== undefined) { gen
-
-                ("m%s=r.%s()", prop, type);
-
-        } else { gen
-
-                ("m%s=types[%d].decode(r,r.uint32())", prop, i, i);
-
-        } gen
-                ("break");
-    } return gen
-            ("default:")
-                ("r.skipType(t.wireType)")
-                ("break")
-        ("}")
-    ("}")
-    ("return m");
-    /* eslint-enable no-unexpected-multiline */
-};
-
-},{"17":17,"24":24,"25":25,"3":3,"8":8}],5:[function(require,module,exports){
-"use strict";
-
-/**
- * Wire format encoder using code generation on top of reflection that also provides a fallback.
- * @exports codegen.encode
- * @namespace
- */
-var encode = exports;
-
-var Enum    = require(8),
-    Writer  = require(30),
-    types   = require(24),
-    util    = require(25),
-    codegen = require(3);
-
-/**
- * A message encoder as generated by {@link codegen.encode.generate}.
- * @typedef Encoder
- * @type {function}
- * @param {Message|Object} message Runtime message or plain object to encode
- * @param {Writer} [writer] Writer to encode to
- * @returns {Writer} writer
- * @this Type
- */
-
-/**
- * Fallback {@link Encoder|encoder}.
- * @param {Message|Object} message Runtime message or plain object to encode
- * @param {Writer} [writer] Writer to encode to
- * @returns {Writer} writer
- * @this Type
- */
-encode.fallback = function encode_fallback(message, writer) {
-    /* eslint-disable block-scoped-var, no-redeclare */
-    if (!writer)
-        writer = Writer.create();
-    var fields = this.getFieldsArray(), fi = 0;
-    while (fi < fields.length) {
-        var field    = fields[fi++].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.basic[type];
-
-        // Map fields
-        if (field.map) {
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            var value, keys;
-            if ((value = message[field.name]) && (keys = Object.keys(value)).length) {
-                writer.fork();
-                for (var i = 0; i < keys.length; ++i) {
-                    writer.tag(1, types.mapKey[keyType])[keyType](keys[i]);
-                    if (wireType !== undefined)
-                        writer.tag(2, wireType)[type](value[keys[i]]);
-                    else
-                        field.resolvedType.encode(value[keys[i]], writer.tag(2,2).fork()).ldelim();
-                }
-                writer.ldelim(field.id);
-            }
-
-        // Repeated fields
-        } else if (field.repeated) {
-            var values = message[field.name];
-            if (values && values.length) {
-
-                // Packed repeated
-                if (field.packed && types.packed[type] !== undefined) {
-                    writer.fork();
-                    var i = 0;
-                    while (i < values.length)
-                        writer[type](values[i++]);
-                    writer.ldelim(field.id);
-
-                // Non-packed
-                } else {
-                    var i = 0;
-                    if (wireType !== undefined)
-                        while (i < values.length)
-                            writer.tag(field.id, wireType)[type](values[i++]);
-                    else
-                        while (i < values.length)
-                            field.resolvedType.encode(values[i++], writer.tag(field.id,2).fork()).ldelim();
-                }
-
-            }
-
-        // Non-repeated
-        } else {
-            var value = message[field.name];
-            if (field.required || value !== undefined && field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue) {
-                if (wireType !== undefined)
-                    writer.tag(field.id, wireType)[type](value);
-                else {
-                    field.resolvedType.encode(value, writer.fork());
-                    if (writer.len || field.required)
-                        writer.ldelim(field.id);
-                    else
-                        writer.reset();
-                }
-            }
-        }
-    }
-    return writer;
-    /* eslint-enable block-scoped-var, no-redeclare */
-};
-
-/**
- * Generates an {@link Encoder|encoder} specific to the specified message type.
- * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
- */
-encode.generate = function encode_generate(mtype) {
-    /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();
-    var gen = codegen("m", "w")
-    ("w||(w=Writer.create())");
-
-    for (var i = 0; i < fields.length; ++i) {
-        var field    = fields[i].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.basic[type],
-            prop     = util.safeProp(field.name);
-        
-        // Map fields
-        if (field.map) {
-            var keyType     = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-                keyWireType = types.mapKey[keyType];
-            gen
-
-    ("if(m%s){", prop)
-        ("w.fork()")
-        ("for(var i=0,ks=Object.keys(m%s);i<ks.length;++i){", prop)
-            ("w.tag(1,%d).%s(ks[i])", keyWireType, keyType);
-
-            if (wireType !== undefined) gen
-
-            ("w.tag(2,%d).%s(m%s[ks[i]])", wireType, type, prop);
-
-            else gen
-            
-            ("types[%d].encode(m%s[ks[i]],w.tag(2,2).fork()).ldelim()", i, prop);
-
-            gen
-        ("}")
-        ("w.len&&w.ldelim(%d)||w.reset()", field.id)
-    ("}");
-
-        // Repeated fields
-        } else if (field.repeated) {
-
-            // Packed repeated
-            if (field.packed && types.packed[type] !== undefined) { gen
-
-    ("if(m%s&&m%s.length){", prop, prop)
-        ("w.fork()")
-        ("for(var i=0;i<m%s.length;++i)", prop)
-            ("w.%s(m%s[i])", type, prop)
-        ("w.ldelim(%d)", field.id)
-    ("}");
-
-            // Non-packed
-            } else { gen
-
-    ("if(m%s)", prop)
-        ("for(var i=0;i<m%s.length;++i)", prop);
-                if (wireType !== undefined) gen
-            ("w.tag(%d,%d).%s(m%s[i])", field.id, wireType, type, prop);
-                else gen
-            ("types[%d].encode(m%s[i],w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
-
-            }
-
-        // Non-repeated
-        } else {
-            if (!field.required) {
-
-                if (field.long) gen
-    ("if(m%s!==undefined&&util.longNeq(m%s,%j))", prop, prop, field.defaultValue);
-                else gen
-    ("if(m%s!==undefined&&m%s!==%j)", prop, prop, field.defaultValue);
-
-            }
-
-            if (wireType !== undefined) gen
-
-        ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
-
-            else if (field.required) gen
-            
-        ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
-        
-            else gen
-
-        ("types[%d].encode(m%s,w.fork()).len&&w.ldelim(%d)||w.reset()", i, prop, field.id);
-    
-        }
-    }
-    return gen
-    ("return w");
-    /* eslint-enable no-unexpected-multiline */
-};
-
-},{"24":24,"25":25,"3":3,"30":30,"8":8}],6:[function(require,module,exports){
-"use strict";
-
-/**
- * Runtime message verifier using code generation on top of reflection that also provides a fallback.
- * @exports codegen.verify
- * @namespace
- */
-var verify = exports;
-
-var Enum      = require(8),
-    Type      = require(23),
-    util      = require(25),
-    codegen   = require(3);
-var isInteger = util.isInteger;
-
-/**
- * A message verifier as generated by {@link codegen.verify.generate}.
- * @typedef Verifier
- * @type {function}
- * @param {Message|Object} message Runtime message or plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
- * @this {Type}
- */
-
-function invalid(field, expected) {
-    return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
-}
-
-function verifyValue(field, value) {
-    switch (field.type) {
-        case "double":
-        case "float":
-            if (typeof value !== 'number')
-                return invalid(field, "number");
-            break;
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32":
-            if (!isInteger(value))
-                return invalid(field, "integer");
-            break;
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64":
-            if (!(isInteger(value) || value && isInteger(value.low) && isInteger(value.high)))
-                return invalid(field, "integer|Long");
-            break;
-        case "bool":
-            if (typeof value !== 'boolean')
-                return invalid(field, "boolean");
-            break;
-        case "string":
-            if (!util.isString(value))
-                return invalid(field, "string");
-            break;
-        case "bytes":
-            if (!(value && typeof value.length === 'number' || util.isString(value)))
-                return invalid(field, "buffer");
-            break;
-        default:
-            if (field.resolvedType instanceof Enum) {
-                if (typeof field.resolvedType.getValuesById()[value] !== 'number')
-                    return invalid(field, "enum value");
-            } else if (field.resolvedType instanceof Type) {
-                var reason = field.resolvedType.verify(value);
-                if (reason)
-                    return reason;
-            }
-            break;
-    }
-    return null;
-}
-
-function verifyKey(field, value) {
-    switch (field.keyType) {
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64":
-            if (/^[\x00-\xff]{8}$/.test(value)) // eslint-disable-line no-control-regex
-                return null;
-            // fallthrough
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32":
-            if (/^-?(?:0|[1-9]\d*)$/.test(value))
-                return invalid(field, "integer key");
-            break;
-        case "bool":
-            if (/^true|false|0|1$/.test(value))
-                return invalid(field, "boolean key");
-            break;
-    }
-    return null;
-}
-
-/**
- * Fallback {@link Verifier|verifier}.
- * @param {Message|Object} message Runtime message or plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
- * @this {Type}
- */
-verify.fallback = function verify_fallback(message) {
-    /* eslint-disable block-scoped-var, no-redeclare */
-    var fields = this.getFieldsArray(),
-        i = 0,
-        reason;
-    while (i < fields.length) {
-        var field = fields[i++].resolve(),
-            value = message[field.name];
-
-        // map fields
-        if (field.map) {
-
-            if (value !== undefined) {
-                if (!util.isObject(value))
-                    return invalid(field, "object");
-                var keys = Object.keys(value);
-                for (var j = 0; j < keys.length; ++j) {
-                    if (reason = verifyKey(field, keys[j])) // eslint-disable-line no-cond-assign
-                        return reason;
-                    if (reason = verifyValue(field, value[keys[j]])) // eslint-disable-line no-cond-assign
-                        return reason;
-                }
-            }
-
-        // repeated fields
-        } else if (field.repeated) {
-
-            if (value !== undefined) {
-                if (!Array.isArray(value))
-                    return invalid(field, "array");
-                for (var j = 0; j < value.length; ++j)
-                    if (reason = verifyValue(field, value[j])) // eslint-disable-line no-cond-assign
-                        return reason;
-            }
-
-        // required or present fields
-        } else if (field.required || value !== undefined) {
-            
-            if (reason = verifyValue(field, value)) // eslint-disable-line no-cond-assign
-                return reason;
-        }
-
-    }
-    return null;
-    /* eslint-enable block-scoped-var, no-redeclare */
-};
-
-function genVerifyValue(gen, field, fieldIndex, ref) {
-    /* eslint-disable no-unexpected-multiline */
-    switch (field.type) {
-        case "double":
-        case "float": gen
-            ("if(typeof %s!=='number')", ref)
-                ("return%j", invalid(field, "number"));
-            break;
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32": gen
-            ("if(!util.isInteger(%s))", ref)
-                ("return%j", invalid(field, "integer"));
-            break;
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64": gen
-            ("if(!(util.isInteger(%s)||%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-                ("return%j", invalid(field, "integer|Long"));
-            break;
-        case "bool": gen
-            ("if(typeof %s!=='boolean')", ref)
-                ("return%j", invalid(field, "boolean"));
-            break;
-        case "string": gen
-            ("if(!util.isString(%s))", ref)
-                ("return%j", invalid(field, "string"));
-            break;
-        case "bytes": gen
-            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s))", ref, ref, ref)
-                ("return%j", invalid(field, "buffer"));
-            break;
-        default:
-            if (field.resolvedType instanceof Enum) { gen
-                ("switch(%s){", ref)
-                    ("default:")
-                        ("return%j", invalid(field, "enum value"));
-                var values = util.toArray(field.resolvedType.values);
-                for (var j = 0; j < values.length; ++j) gen
-                    ("case %d:", values[j]);
-                gen
-                        ("break")
-                ("}");
-            } else if (field.resolvedType instanceof Type) { gen
-                ("var r;")
-                ("if(r=types[%d].verify(%s))", fieldIndex, ref)
-                    ("return r");
-            }
-            break;
-    }
-    /* eslint-enable no-unexpected-multiline */
-}
-
-function genVerifyKey(gen, field, ref) {
-    /* eslint-disable no-unexpected-multiline */
-    switch (field.keyType) {
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64": gen
-            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
-                ("return%j", invalid(field, "integer|Long key"));
-            break;
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32":
-            ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
-                ("return%j", invalid(field, "integer key"));
-            break;
-        case "bool":
-            ("if(!/^true|false|0|1$/.test(%s))", ref)
-                ("return%j", invalid(field, "boolean key"));
-            break;
-    }
-    /* eslint-enable no-unexpected-multiline */
-}
-
-/**
- * Generates a {@link Verifier|verifier} specific to the specified message type.
- * @param {Type} mtype Message type
- * @returns {Codegen} Codegen instance
- */
-verify.generate = function verify_generate(mtype) {
-    /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();
-    var gen = codegen("m");
-
-    for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(),
-            prop  = util.safeProp(field.name);
-
-        // map fields
-        if (field.map) { gen
-            ("if(m%s!==undefined){", prop)
-                ("if(!util.isObject(m%s))", prop)
-                    ("return%j", invalid(field, "object"))
-                ("var k=Object.keys(m%s)", prop)
-                ("for(var i=0;i<k.length;++i){");
-                    genVerifyKey(gen, field, "k[i]");
-                    genVerifyValue(gen, field, i, "m" + prop + "[k[i]]");
-                gen
-                ("}")
-            ("}");
-
-        // repeated fields
-        } else if (field.repeated) { gen
-            ("if(m%s!==undefined){", prop)
-                ("if(!Array.isArray(m%s))", prop)
-                    ("return%j", invalid(field, "array"))
-                ("for(var i=0;i<m%s.length;++i){", prop);
-                    genVerifyValue(gen, field, i, "m" + prop + "[i]"); gen
-                ("}")
-            ("}");
-
-        // required or present fields
-        } else {
-            if (!field.required) gen
-            ("if(m%s!==undefined){", prop);
-                genVerifyValue(gen, field, i, "m" + prop);
-            if (!field.required) gen
-            ("}");
-        }
-    }
-    return gen
-    ("return null");
-    /* eslint-enable no-unexpected-multiline */
-};
-
-},{"23":23,"25":25,"3":3,"8":8}],7:[function(require,module,exports){
+},{"21":21,"23":23,"9":9}],3:[function(require,module,exports){
 "use strict";
 
 module.exports = common;
@@ -1196,15 +396,378 @@ common("struct", {
     }
 });
 
-},{}],8:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+"use strict";
+module.exports = decode;
+
+var Enum    = require(6),
+    Reader  = require(15),
+    types   = require(22),
+    util    = require(23);
+
+/**
+ * General purpose message decoder.
+ * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+ * @param {number} [length] Length of the message, if known beforehand
+ * @returns {Message} Populated runtime message
+ * @this Type
+ * @property {GenerateDecoder} generate Generates a type specific decoder
+ */
+function decode(readerOrBuffer, length) {
+    /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
+    var fields  = this.getFieldsById(),
+        reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer),
+        limit   = length === undefined ? reader.len : reader.pos + length,
+        message = new (this.getCtor())();
+    while (reader.pos < limit) {
+        var tag      = reader.tag(),
+            field    = fields[tag.id].resolve(),
+            type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
+        
+        // Known fields
+        if (field) {
+
+            // Map fields
+            if (field.map) {
+                var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
+                    length  = reader.uint32();
+                var map = message[field.name] = {};
+                if (length) {
+                    length += reader.pos;
+                    var ks = [], vs = [];
+                    while (reader.pos < length) {
+                        if (reader.tag().id === 1)
+                            ks[ks.length] = reader[keyType]();
+                        else if (types.basic[type] !== undefined)
+                            vs[vs.length] = reader[type]();
+                        else
+                            vs[vs.length] = field.resolvedType.decode(reader, reader.uint32());
+                    }
+                    for (var i = 0; i < ks.length; ++i)
+                        map[typeof ks[i] === 'object' ? util.longToHash(ks[i]) : ks[i]] = vs[i];
+                }
+
+            // Repeated fields
+            } else if (field.repeated) {
+                var values = message[field.name] && message[field.name].length ? message[field.name] : message[field.name] = [];
+
+                // Packed
+                if (field.packed && types.packed[type] !== undefined && tag.wireType === 2) {
+                    var plimit = reader.uint32() + reader.pos;
+                    while (reader.pos < plimit)
+                        values[values.length] = reader[type]();
+
+                // Non-packed
+                } else if (types.basic[type] !== undefined)
+                    values[values.length] = reader[type]();
+                else
+                    values[values.length] = field.resolvedType.decode(reader, reader.uint32());
+
+            // Non-repeated
+            } else if (types.basic[type] !== undefined)
+                message[field.name] = reader[type]();
+              else
+                message[field.name] = field.resolvedType.decode(reader, reader.uint32());
+
+        // Unknown fields
+        } else
+            reader.skipType(tag.wireType);
+    }
+    return message;
+    /* eslint-enable no-invalid-this, block-scoped-var, no-redeclare */
+}
+
+/**
+ * Generates a decoder specific to the specified message type.
+ * @typedef GenerateDecoder
+ * @type {function}
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
+/**/
+decode.generate = function generate(mtype) {
+    /* eslint-disable no-unexpected-multiline */
+    var fields = mtype.getFieldsArray();    
+    var gen = util.codegen("r", "l")
+
+    ("r instanceof Reader||(r=Reader.create(r))")
+    ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
+    ("while(r.pos<c){")
+        ("var t=r.tag()")
+        ("switch(t.id){");
+    
+    for (var i = 0; i < fields.length; ++i) {
+        var field = fields[i].resolve(),
+            type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            prop  = util.safeProp(field.name);
+        gen
+            ("case %d:", field.id);
+
+        if (field.map) {
+            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
+            gen
+                ("var n=r.uint32(),o={}")
+                ("if(n){")
+                    ("n+=r.pos")
+                    ("var k=[],v=[]")
+                    ("while(r.pos<n){")
+                        ("if(r.tag().id===1)")
+                            ("k[k.length]=r.%s()", keyType);
+
+                        if (types.basic[type] !== undefined) gen
+
+                        ("else")
+                            ("v[v.length]=r.%s()", type);
+
+                        else gen
+
+                        ("else")
+                            ("v[v.length]=types[%d].decode(r,r.uint32())", i, i);
+                    gen
+                    ("}")
+                    ("for(var i=0;i<k.length;++i)")
+                        ("o[typeof(k[i])==='object'?util.longToHash(k[i]):k[i]]=v[i]")
+                ("}")
+                ("m%s=o", prop);
+
+        } else if (field.repeated) { gen
+
+                ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
+
+            if (field.packed && types.packed[type] !== undefined) { gen
+
+                ("if(t.wireType===2){")
+                    ("var e=r.uint32()+r.pos")
+                    ("while(r.pos<e)")
+                        ("m%s[m%s.length]=r.%s()", prop, prop, type)
+                ("}else");
+            }
+
+            if (types.basic[type] !== undefined) gen
+
+                    ("m%s[m%s.length]=r.%s()", prop, prop, type);
+
+            else gen
+
+                    ("m%s[m%s.length]=types[%d].decode(r,r.uint32())", prop, prop, i, i);
+
+        } else if (types.basic[type] !== undefined) { gen
+
+                ("m%s=r.%s()", prop, type);
+
+        } else { gen
+
+                ("m%s=types[%d].decode(r,r.uint32())", prop, i, i);
+
+        } gen
+                ("break");
+    } return gen
+            ("default:")
+                ("r.skipType(t.wireType)")
+                ("break")
+        ("}")
+    ("}")
+    ("return m");
+    /* eslint-enable no-unexpected-multiline */
+};
+
+},{"15":15,"22":22,"23":23,"6":6}],5:[function(require,module,exports){
+"use strict";
+module.exports = encode;
+
+var Enum    = require(6),
+    Writer  = require(32),
+    types   = require(22),
+    util    = require(23);
+
+/**
+ * General purpose message encoder.
+ * @param {Message|Object} message Runtime message or plain object to encode
+ * @param {Writer} [writer] Writer to encode to
+ * @returns {Writer} writer
+ * @this Type
+ * @property {GenerateEncoder} generate Generates a type specific encoder
+ */
+function encode(message, writer) {
+    /* eslint-disable block-scoped-var, no-redeclare */
+    if (!writer)
+        writer = Writer.create();
+    var fields = this.getFieldsArray(), fi = 0;
+    while (fi < fields.length) {
+        var field    = fields[fi++].resolve(),
+            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            wireType = types.basic[type];
+
+        // Map fields
+        if (field.map) {
+            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
+            var value, keys;
+            if ((value = message[field.name]) && (keys = Object.keys(value)).length) {
+                writer.fork();
+                for (var i = 0; i < keys.length; ++i) {
+                    writer.tag(1, types.mapKey[keyType])[keyType](keys[i]);
+                    if (wireType !== undefined)
+                        writer.tag(2, wireType)[type](value[keys[i]]);
+                    else
+                        field.resolvedType.encode(value[keys[i]], writer.tag(2,2).fork()).ldelim();
+                }
+                writer.ldelim(field.id);
+            }
+
+        // Repeated fields
+        } else if (field.repeated) {
+            var values = message[field.name];
+            if (values && values.length) {
+
+                // Packed repeated
+                if (field.packed && types.packed[type] !== undefined) {
+                    writer.fork();
+                    var i = 0;
+                    while (i < values.length)
+                        writer[type](values[i++]);
+                    writer.ldelim(field.id);
+
+                // Non-packed
+                } else {
+                    var i = 0;
+                    if (wireType !== undefined)
+                        while (i < values.length)
+                            writer.tag(field.id, wireType)[type](values[i++]);
+                    else
+                        while (i < values.length)
+                            field.resolvedType.encode(values[i++], writer.tag(field.id,2).fork()).ldelim();
+                }
+
+            }
+
+        // Non-repeated
+        } else {
+            var value = message[field.name];
+            if (field.required || value !== undefined && field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue) {
+                if (wireType !== undefined)
+                    writer.tag(field.id, wireType)[type](value);
+                else {
+                    field.resolvedType.encode(value, writer.fork());
+                    if (writer.len || field.required)
+                        writer.ldelim(field.id);
+                    else
+                        writer.reset();
+                }
+            }
+        }
+    }
+    return writer;
+    /* eslint-enable block-scoped-var, no-redeclare */
+}
+
+/**
+ * Generates an {@link Encoder|encoder} specific to the specified message type.
+ * @typedef GenerateEncoder
+ * @type {function}
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
+/**/
+encode.generate = function generate(mtype) {
+    /* eslint-disable no-unexpected-multiline */
+    var fields = mtype.getFieldsArray();
+    var gen = util.codegen("m", "w")
+    ("w||(w=Writer.create())");
+
+    for (var i = 0; i < fields.length; ++i) {
+        var field    = fields[i].resolve(),
+            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            wireType = types.basic[type],
+            prop     = util.safeProp(field.name);
+        
+        // Map fields
+        if (field.map) {
+            var keyType     = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
+                keyWireType = types.mapKey[keyType];
+            gen
+
+    ("if(m%s){", prop)
+        ("w.fork()")
+        ("for(var i=0,ks=Object.keys(m%s);i<ks.length;++i){", prop)
+            ("w.tag(1,%d).%s(ks[i])", keyWireType, keyType);
+
+            if (wireType !== undefined) gen
+
+            ("w.tag(2,%d).%s(m%s[ks[i]])", wireType, type, prop);
+
+            else gen
+            
+            ("types[%d].encode(m%s[ks[i]],w.tag(2,2).fork()).ldelim()", i, prop);
+
+            gen
+        ("}")
+        ("w.len&&w.ldelim(%d)||w.reset()", field.id)
+    ("}");
+
+        // Repeated fields
+        } else if (field.repeated) {
+
+            // Packed repeated
+            if (field.packed && types.packed[type] !== undefined) { gen
+
+    ("if(m%s&&m%s.length){", prop, prop)
+        ("w.fork()")
+        ("for(var i=0;i<m%s.length;++i)", prop)
+            ("w.%s(m%s[i])", type, prop)
+        ("w.ldelim(%d)", field.id)
+    ("}");
+
+            // Non-packed
+            } else { gen
+
+    ("if(m%s)", prop)
+        ("for(var i=0;i<m%s.length;++i)", prop);
+                if (wireType !== undefined) gen
+            ("w.tag(%d,%d).%s(m%s[i])", field.id, wireType, type, prop);
+                else gen
+            ("types[%d].encode(m%s[i],w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
+
+            }
+
+        // Non-repeated
+        } else {
+            if (!field.required) {
+
+                if (field.long) gen
+    ("if(m%s!==undefined&&util.longNeq(m%s,%j))", prop, prop, field.defaultValue);
+                else gen
+    ("if(m%s!==undefined&&m%s!==%j)", prop, prop, field.defaultValue);
+
+            }
+
+            if (wireType !== undefined) gen
+
+        ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
+
+            else if (field.required) gen
+            
+        ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
+        
+            else gen
+
+        ("types[%d].encode(m%s,w.fork()).len&&w.ldelim(%d)||w.reset()", i, prop, field.id);
+    
+        }
+    }
+    return gen
+    ("return w");
+    /* eslint-enable no-unexpected-multiline */
+};
+
+},{"22":22,"23":23,"32":32,"6":6}],6:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
-var ReflectionObject = require(14);
+var ReflectionObject = require(12);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
 
-var util = require(25);
+var util = require(23);
 
 var _TypeError = util._TypeError;
 
@@ -1337,19 +900,19 @@ EnumPrototype.remove = function(name) {
     return clearCache(this);
 };
 
-},{"14":14,"25":25}],9:[function(require,module,exports){
+},{"12":12,"23":23}],7:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
-var ReflectionObject = require(14);
+var ReflectionObject = require(12);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Type      = require(23),
-    Enum      = require(8),
-    MapField  = require(10),
-    types     = require(24),
-    util      = require(25);
+var Type      = require(21),
+    Enum      = require(6),
+    MapField  = require(8),
+    types     = require(22),
+    util      = require(23);
 
 var _TypeError = util._TypeError;
 
@@ -1611,19 +1174,19 @@ FieldPrototype.jsonConvert = function(value, options) {
     return value;
 };
 
-},{"10":10,"14":14,"23":23,"24":24,"25":25,"8":8}],10:[function(require,module,exports){
+},{"12":12,"21":21,"22":22,"23":23,"6":6,"8":8}],8:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
-var Field = require(9);
+var Field = require(7);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField);
 
-var Enum    = require(8),
-    types   = require(24),
-    util    = require(25);
+var Enum    = require(6),
+    types   = require(22),
+    util    = require(23);
 
 /**
  * Constructs a new map field instance.
@@ -1709,7 +1272,7 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"24":24,"25":25,"8":8,"9":9}],11:[function(require,module,exports){
+},{"22":22,"23":23,"6":6,"7":7}],9:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 
@@ -1846,16 +1409,16 @@ Message.verify = function verify(message) {
     return this.$type.verify(message);
 };
 
-},{}],12:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
-var ReflectionObject = require(14);
+var ReflectionObject = require(12);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
 
-var Type = require(23),
-    util = require(25);
+var Type = require(21),
+    util = require(23);
 
 var _TypeError = util._TypeError;
 
@@ -1983,19 +1546,19 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"14":14,"23":23,"25":25}],13:[function(require,module,exports){
+},{"12":12,"21":21,"23":23}],11:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
-var ReflectionObject = require(14);
+var ReflectionObject = require(12);
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
-var Enum    = require(8),
-    Type    = require(23),
-    Field   = require(9),
-    Service = require(21),
-    util    = require(25);
+var Enum    = require(6),
+    Type    = require(21),
+    Field   = require(7),
+    Service = require(19),
+    util    = require(23);
 
 var _TypeError = util._TypeError;
 
@@ -2254,14 +1817,14 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     return this.parent.lookup(path);
 };
 
-},{"14":14,"21":21,"23":23,"25":25,"8":8,"9":9}],14:[function(require,module,exports){
+},{"12":12,"19":19,"21":21,"23":23,"6":6,"7":7}],12:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
 
-var Root = require(18),
-    util = require(25);
+var Root = require(16),
+    util = require(23);
 
 var _TypeError = util._TypeError;
 
@@ -2453,16 +2016,16 @@ ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.getFullName();
 };
 
-},{"18":18,"25":25}],15:[function(require,module,exports){
+},{"16":16,"23":23}],13:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
-var ReflectionObject = require(14);
+var ReflectionObject = require(12);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
-var Field = require(9),
-    util  = require(25);
+var Field = require(7),
+    util  = require(23);
 
 var _TypeError = util._TypeError;
 
@@ -2606,21 +2169,21 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"14":14,"25":25,"9":9}],16:[function(require,module,exports){
+},{"12":12,"23":23,"7":7}],14:[function(require,module,exports){
 "use strict";
 module.exports = parse;
 
-var tokenize  = require(22),
-    Root      = require(18),
-    Type      = require(23),
-    Field     = require(9),
-    MapField  = require(10),
-    OneOf     = require(15),
-    Enum      = require(8),
-    Service   = require(21),
-    Method    = require(12),
-    types     = require(24),
-    util      = require(25);
+var tokenize  = require(20),
+    Root      = require(16),
+    Type      = require(21),
+    Field     = require(7),
+    MapField  = require(8),
+    OneOf     = require(13),
+    Enum      = require(6),
+    Service   = require(19),
+    Method    = require(10),
+    types     = require(22),
+    util      = require(23);
 var camelCase = util.camelCase;
 
 var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
@@ -3162,7 +2725,7 @@ function parse(source, root) {
     };
 }
 
-},{"10":10,"12":12,"15":15,"18":18,"21":21,"22":22,"23":23,"24":24,"25":25,"8":8,"9":9}],17:[function(require,module,exports){
+},{"10":10,"13":13,"16":16,"19":19,"20":20,"21":21,"22":22,"23":23,"6":6,"7":7,"8":8}],15:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -3171,7 +2734,8 @@ Reader.BufferReader = BufferReader;
 var util      = require(29),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
-    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+    utf8      = util.utf8;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
@@ -3580,27 +3144,8 @@ ReaderPrototype.bytes = function read_bytes() {
  * @returns {string} Value read
  */
 ReaderPrototype.string = function read_string() {
-    // ref: https://github.com/google/closure-library/blob/master/closure/goog/crypt/crypt.js
-    var bytes = this.bytes(),
-        len = bytes.length;
-    if (len) {
-        var out = new Array(len), p = 0, c = 0;
-        while (p < len) {
-            var c1 = bytes[p++];
-            if (c1 < 128)
-                out[c++] = c1;
-            else if (c1 > 191 && c1 < 224)
-                out[c++] = (c1 & 31) << 6 | bytes[p++] & 63;
-            else if (c1 > 239 && c1 < 365) {
-                var u = ((c1 & 7) << 18 | (bytes[p++] & 63) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63) - 0x10000;
-                out[c++] = 0xD800 + (u >> 10);
-                out[c++] = 0xDC00 + (u & 1023);
-            } else
-                out[c++] = (c1 & 15) << 12 | (bytes[p++] & 63) << 6 | bytes[p++] & 63;
-        }
-        return String.fromCharCode.apply(String, out.slice(0, c));
-    }
-    return "";
+    var bytes = this.bytes();
+    return utf8.read(bytes, 0, bytes.length);
 };
 
 /**
@@ -3790,17 +3335,17 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"29":29}],18:[function(require,module,exports){
+},{"1":1,"29":29}],16:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
-var Namespace = require(13);
+var Namespace = require(11);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
 
-var Field  = require(9),
-    util   = require(25),
-    common = require(7);
+var Field  = require(7),
+    util   = require(23),
+    common = require(3);
 
 /**
  * Constructs a new root namespace instance.
@@ -3880,7 +3425,7 @@ RootPrototype.load = function load(filename, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require(16)(source, self);
+                var parsed = require(14)(source, self);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -4071,7 +3616,7 @@ RootPrototype.toString = function toString() {
     return this.constructor.name;
 };
 
-},{"13":13,"16":16,"25":25,"7":7,"9":9}],19:[function(require,module,exports){
+},{"11":11,"14":14,"23":23,"3":3,"7":7}],17:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4080,9 +3625,9 @@ RootPrototype.toString = function toString() {
  */
 var rpc = exports;
 
-rpc.Service = require(20);
+rpc.Service = require(18);
 
-},{"20":20}],20:[function(require,module,exports){
+},{"18":18}],18:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
@@ -4100,7 +3645,7 @@ function Service(rpcImpl) {
     EventEmitter.call(this);
 
     /**
-     * RPC implementation. Becomes `null` when the service is ended.
+     * RPC implementation. Becomes `null` once the service is ended.
      * @type {?RPCImpl}
      */
     this.$rpc = rpcImpl;
@@ -4125,19 +3670,19 @@ ServicePrototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"26":26}],21:[function(require,module,exports){
+},{"26":26}],19:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var Namespace = require(13);
+var Namespace = require(11);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service);
 
-var Method = require(12),
-    util   = require(25),
-    rpc    = require(19);
+var Method = require(10),
+    util   = require(23),
+    rpc    = require(17);
 
 /**
  * Constructs a new service instance.
@@ -4336,7 +3881,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     return rpcService;
 };
 
-},{"12":12,"13":13,"19":19,"25":25}],22:[function(require,module,exports){
+},{"10":10,"11":11,"17":17,"23":23}],20:[function(require,module,exports){
 "use strict";
 module.exports = tokenize;
 
@@ -4543,26 +4088,28 @@ function tokenize(source) {
     };
     /* eslint-enable callback-return */
 }
-},{}],23:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 module.exports = Type; 
 
-var Namespace = require(13);
+var Namespace = require(11);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
 var TypePrototype = Namespace.extend(Type);
 
-var Enum      = require(8),
-    OneOf     = require(15),
-    Field     = require(9),
-    Service   = require(21),
+var Enum      = require(6),
+    OneOf     = require(13),
+    Field     = require(7),
+    Service   = require(19),
     Class     = require(2),
-    Message   = require(11),
-    Reader    = require(17),
-    Writer    = require(30),
-    util      = require(25),
-    codegen   = require(3);
+    Message   = require(9),
+    Reader    = require(15),
+    Writer    = require(32),
+    util      = require(23);
+var encode    = require(5),
+    decode    = require(4),
+    verify    = require(31);
 
 /**
  * Constructs a new reflected message type instance.
@@ -4869,14 +4416,14 @@ TypePrototype.create = function create(properties) {
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
-TypePrototype.encode = function encode(message, writer) {
-    return (this.encode = codegen.supported
-        ? codegen.encode.generate(this).eof(this.getFullName() + "$encode", {
+TypePrototype.encode = function encode_setup(message, writer) {
+    return (this.encode = util.codegen.supported
+        ? encode.generate(this).eof(this.getFullName() + "$encode", {
               Writer : Writer,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
-        : codegen.encode.fallback
+        : encode
     ).call(this, message, writer);
 };
 
@@ -4896,14 +4443,14 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Message} Decoded message
  */
-TypePrototype.decode = function decode(readerOrBuffer, length) {
-    return (this.decode = codegen.supported
-        ? codegen.decode.generate(this).eof(this.getFullName() + "$decode", {
+TypePrototype.decode = function decode_setup(readerOrBuffer, length) {
+    return (this.decode = util.codegen.supported
+        ? decode.generate(this).eof(this.getFullName() + "$decode", {
               Reader : Reader,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
-        : codegen.decode.fallback
+        : decode
     ).call(this, readerOrBuffer, length);
 };
 
@@ -4922,17 +4469,17 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  * @param {Message|Object} message Message to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
-TypePrototype.verify = function verify(message) {
-    return (this.verify = codegen.supported
-        ? codegen.verify.generate(this).eof(this.getFullName() + "$verify", {
+TypePrototype.verify = function verify_setup(message) {
+    return (this.verify = util.codegen.supported
+        ? verify.generate(this).eof(this.getFullName() + "$verify", {
               types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util  : util
           })
-        : codegen.verify.fallback
+        : verify
     ).call(this, message);
 };
 
-},{"11":11,"13":13,"15":15,"17":17,"2":2,"21":21,"25":25,"3":3,"30":30,"8":8,"9":9}],24:[function(require,module,exports){
+},{"11":11,"13":13,"15":15,"19":19,"2":2,"23":23,"31":31,"32":32,"4":4,"5":5,"6":6,"7":7,"9":9}],22:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4941,7 +4488,7 @@ TypePrototype.verify = function verify(message) {
  */
 var types = exports;
 
-var util = require(25);
+var util = require(23);
 
 var s = [
     "double",   // 0
@@ -5063,7 +4610,7 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"25":25}],25:[function(require,module,exports){
+},{"23":23}],23:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5071,6 +4618,8 @@ types.packed = bake([
  * @namespace
  */
 var util = exports;
+
+util.codegen = require(25);
 
 /**
  * Converts an object's values to an array.
@@ -5262,28 +4811,6 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Minimalistic sprintf.
- * @param {string} format Format string
- * @param {...*} args Replacements
- * @returns {string} Formatted string
- */
-util.sprintf = function sprintf(format) {
-    var params = Array.prototype.slice.call(arguments, 1),
-        index  = 0;
-    return format.replace(/%([djs])/g, function($0, $1) {
-        var param = params[index++];
-        switch ($1) {
-            case "j":
-                return JSON.stringify(param);
-            case "p":
-                return util.safeProp(param);
-            default:
-                return String(param);
-        }
-    });
-};
-
-/**
  * Converts a string to camel case notation.
  * @param {string} str String to convert
  * @returns {string} Converted string
@@ -5311,7 +4838,7 @@ util.underScore = function underScore(str) {
  * @returns {Uint8Array} Buffer
  */
 util.newBuffer = function newBuffer(size) {
-    size = size || 0; 
+    size = size || 0;
     return util.Buffer
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
         : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
@@ -5328,7 +4855,257 @@ util._configure = function configure() {
     runtime.Long = util.Long;
 };
 
-},{"26":26,"29":29}],26:[function(require,module,exports){
+},{"25":25,"26":26,"29":29}],24:[function(require,module,exports){
+"use strict";
+
+/**
+ * A minimal base64 implementation for number arrays.
+ * @memberof util
+ * @namespace
+ */
+var base64 = exports;
+
+/**
+ * Calculates the base64 byte length of a string.
+ * @param {string} str Base64 encoded string
+ * @returns {number} Byte length
+ */
+base64.length = function length(str) {
+    var p = str.length;
+    if (!p)
+        return 0;
+    var n = 0;
+    while (--p % 4 > 1 && str.charAt(p) === '=')
+        ++n;
+    return Math.ceil(str.length * 3) / 4 - n;
+};
+
+// Base64 encoding table
+var b64 = [
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102,
+    103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118,
+    119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 43, 47
+];
+
+/**
+ * Encodes a buffer to a base64 encoded string.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} Base64 encoded string
+ */
+base64.encode = function encode(buffer, start, end) {
+    var str = new Array(Math.ceil((end - start) / 3) * 4);
+    var i = 0, // output index
+        j = 0, // goto index
+        t;     // temporary
+    while (start < end) {
+        var b = buffer[start++];
+        switch (j) {
+            case 0:
+                str[i++] = b64[b >> 2];
+                t = (b & 3) << 4;
+                j = 1;
+                break;
+            case 1:
+                str[i++] = b64[t | b >> 4];
+                t = (b & 15) << 2;
+                j = 2;
+                break;
+            case 2:
+                str[i++] = b64[t | b >> 6];
+                str[i++] = b64[b & 63];
+                j = 0;
+                break;
+        }
+    }
+    if (j) {
+        str[i++] = b64[t];
+        str[i  ] = 61;
+        if (j === 1)
+            str[i + 1] = 61;
+    }
+    return String.fromCharCode.apply(String, str);
+};
+
+// Base64 decoding table
+var s64 = []; for (var i = 0; i < b64.length; ++i) s64[b64[i]] = i;
+var invalidEncoding = "invalid encoding";
+
+/**
+ * Decodes a base64 encoded string to a buffer.
+ * @param {string} src Source string
+ * @param {Uint8Array} buffer Destination buffer
+ * @param {number} offset Destination offset
+ * @returns {number} Number of bytes written
+ * @throws {Error} If encoding is invalid
+ */
+base64.decode = function decode(src, buffer, offset) {
+    var start = offset;
+    var j = 0, // goto index
+        t;     // temporary
+    for (var i = 0; i < src.length;) {
+        var c = src.charCodeAt(i++);
+        if (c === 61 && j > 1)
+            break;
+        if ((c = s64[c]) === undefined)
+            throw Error(invalidEncoding);
+        switch (j) {
+            case 0:
+                t = c;
+                j = 1;
+                break;
+            case 1:
+                buffer[offset++] = t << 2 | (c & 48) >> 4;
+                t = c;
+                j = 2;
+                break;
+            case 2:
+                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
+                t = c;
+                j = 3;
+                break;
+            case 3:
+                buffer[offset++] = (t & 3) << 6 | c;
+                j = 0;
+                break;
+        }
+    }
+    if (j === 1)
+        throw Error(invalidEncoding);
+    return offset - start;
+};
+
+},{}],25:[function(require,module,exports){
+"use strict";
+module.exports = codegen;
+
+var blockOpenRe  = /[{[]$/,
+    blockCloseRe = /^[}\]]/,
+    casingRe     = /:$/,
+    branchRe     = /^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/,
+    breakRe      = /\b(?:break|continue);?$|^\s*return\b/;
+
+/**
+ * A closure for generating functions programmatically.
+ * @memberof util
+ * @namespace
+ * @function
+ * @param {...string} params Function parameter names
+ * @returns {Codegen} Codegen instance
+ * @property {boolean} supported Whether code generation is supported by the environment.
+ * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+ */
+function codegen() {
+    var args   = Array.prototype.slice.call(arguments),
+        src    = ['\t"use strict"'],
+        indent = 1,
+        inCase = false;
+
+    /**
+     * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
+     * @typedef Codegen
+     * @type {function}
+     * @param {string} format Format string
+     * @param {...*} args Replacements
+     * @returns {Codegen} Itself
+     * @property {function(string=):string} str Stringifies the so far generated function source.
+     * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
+     */
+    /**/
+    function gen() {
+        var line = sprintf.apply(null, arguments);
+        var level = indent;
+        if (src.length) {
+            var prev = src[src.length - 1];
+
+            // block open or one time branch
+            if (blockOpenRe.test(prev))
+                level = ++indent; // keep
+            else if (branchRe.test(prev))
+                ++level; // once
+            
+            // casing
+            if (casingRe.test(prev) && !casingRe.test(line)) {
+                level = ++indent;
+                inCase = true;
+            } else if (inCase && breakRe.test(prev)) {
+                level = --indent;
+                inCase = false;
+            }
+
+            // block close
+            if (blockCloseRe.test(line))
+                level = --indent;
+        }
+        for (var index = 0; index < level; ++index)
+            line = "\t" + line;
+        src.push(line);
+        return gen;
+    }
+
+    /**
+     * Stringifies the so far generated function source.
+     * @param {string} [name] Function name, defaults to generate an anonymous function
+     * @returns {string} Function source using tabs for indentation
+     * @inner
+     */
+    function str(name) {
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+    }
+
+    gen.str = str;
+
+    /**
+     * Ends generation and builds the function whilst applying a scope.
+     * @param {string} [name] Function name, defaults to generate an anonymous function
+     * @param {Object} [scope] Function scope
+     * @returns {function} The generated function, with scope applied if specified
+     * @inner
+     */
+    function eof(name, scope) {
+        if (typeof name === 'object') {
+            scope = name;
+            name = undefined;
+        }
+        var source = gen.str(name);
+        if (codegen.verbose)
+            console.log("--- codegen ---\n" + source.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
+        var keys = Object.keys(scope || (scope = {}));
+        return Function.apply(null, keys.concat("return " + source)).apply(null, keys.map(function(key) { return scope[key]; })); // eslint-disable-line no-new-func
+        //     ^ Creates a wrapper function with the scoped variable names as its parameters,
+        //       calls it with the respective scoped variable values ^
+        //       and returns our brand-new properly scoped function.
+        //
+        // This works because "Invoking the Function constructor as a function (without using the
+        // new operator) has the same effect as invoking it as a constructor."
+        // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Function
+    }
+
+    gen.eof = eof;
+
+    return gen;
+}
+
+function sprintf(format) {
+    var params = Array.prototype.slice.call(arguments, 1),
+        index  = 0;
+    return format.replace(/%([djs])/g, function($0, $1) {
+        var param = params[index++];
+        switch ($1) {
+            case "j":
+                return JSON.stringify(param);
+            default:
+                return String(param);
+        }
+    });
+}
+
+codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
+codegen.verbose   = false;
+
+},{}],26:[function(require,module,exports){
 "use strict";
 module.exports = EventEmitter;
 
@@ -5411,7 +5188,7 @@ EventEmitterPrototype.emit = function emit(evt) {
 
 module.exports = LongBits;
 
-var util = require(25);
+var util = require(23);
 
 /**
  * Any compatible Long instance.
@@ -5609,18 +5386,36 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"25":25}],28:[function(require,module,exports){
+},{"23":23}],28:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
 /**
- * A drop-in buffer pool, similar in functionality to what node uses for buffers.
+ * An allocator as used by {@link util.pool}.
+ * @typedef PoolAllocator
+ * @type {function}
+ * @param {number} size Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+
+/**
+ * A slicer as used by {@link util.pool}.
+ * @typedef PoolSlicer
+ * @type {function}
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Buffer slice
+ * @this {Uint8Array}
+ */
+
+/**
+ * A general purpose buffer pool.
  * @memberof util
  * @function
- * @param {function(number):Uint8Array} alloc Allocator
- * @param {function(number, number):Uint8Array} slice Slicer
+ * @param {PoolAllocator} alloc Allocator
+ * @param {PoolSlicer} slice Slicer
  * @param {number} [size=8192] Slab size
- * @returns {function(number):Uint8Array} Pooled allocator
+ * @returns {PoolAllocator} Pooled allocator
  */
 function pool(alloc, slice, size) {
     var SIZE   = size || 8192;
@@ -5649,7 +5444,9 @@ var util = exports;
 
 var LongBits = util.LongBits = require(27);
 
-util.pool = require(28);
+util.base64 = require(24);
+util.utf8   = require(30);
+util.pool   = require(28);
 
 /**
  * Whether running within node or not.
@@ -5797,125 +5594,385 @@ util.emptyArray = Object.freeze([]);
  */
 util.emptyObject = Object.freeze({});
 
-/**
- * Calculates the byte length of a base64 encoded string.
- * @param {string} str Base64 encoded string
- * @returns {number} Byte length
- */
-util.length64 = function length64(str) {
-    var p = str.length;
-    var n = 0;
-    if (p)
-        while (--p % 4 > 1 && str.charAt(p) === '=')
-            ++n;
-    return Math.ceil(str.length * 3) / 4 - n;
-};
-
-// Base64 encoding table
-var b64 = [
-    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102,
-    103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118,
-    119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 43, 47
-];
-
-/**
- * Encodes a buffer to a base64 encoded string.
- * @param {Uint8Array} buffer Source buffer
- * @param {number} start Source start
- * @param {number} end Source end
- * @returns {string} Base64 encoded string
- */
-util.encode64 = function encode64(buffer, start, end) {
-    var dst = new Array(Math.ceil((end - start) / 3) * 4);
-    var i = 0, // output index
-        j = 0, // goto index
-        t;     // temporary
-    while (start < end) {
-        var b = buffer[start++];
-        switch (j) {
-            case 0:
-                dst[i++] = b64[b >> 2];
-                t = (b & 3) << 4;
-                j = 1;
-                break;
-            case 1:
-                dst[i++] = b64[t | b >> 4];
-                t = (b & 15) << 2;
-                j = 2;
-                break;
-            case 2:
-                dst[i++] = b64[t | b >> 6];
-                dst[i++] = b64[b & 63];
-                j = 0;
-                break;
-        }
-    }
-    switch (j) {
-        case 1:
-            dst[i++] = b64[t];
-            dst[i++] = 61;
-            dst[i  ] = 61;
-            break;
-        case 2:
-            dst[i++] = b64[t];
-            dst[i  ] = 61;
-            break;
-    }
-    return String.fromCharCode.apply(String, dst);
-};
-
-// Base64 decoding table
-var s64 = []; for (var i = 0; i < b64.length; ++i) s64[b64[i]] = i;
-var invalidEncoding = "invalid encoding";
-
-/**
- * Decodes a base64 encoded string to a buffer.
- * @param {string} src Source string
- * @param {Uint8Array} buffer Destination buffer
- * @param {number} offset Destination offset
- * @returns {number} Number of bytes written
- * @throws {Error} If encoding is invalid
- */
-util.decode64 = function decode64(src, buffer, offset) {
-    var start = offset;
-    var j = 0, // goto index
-        t;     // temporary
-    for (var i = 0; i < src.length;) {
-        var c = src.charCodeAt(i++);
-        if (c === 61 && j > 1)
-            break;
-        if ((c = s64[c]) === undefined)
-            throw Error(invalidEncoding);
-        switch (j) {
-            case 0:
-                t = c;
-                j = 1;
-                break;
-            case 1:
-                buffer[offset++] = t << 2 | (c & 48) >> 4;
-                t = c;
-                j = 2;
-                break;
-            case 2:
-                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
-                t = c;
-                j = 3;
-                break;
-            case 3:
-                buffer[offset++] = (t & 3) << 6 | c;
-                j = 0;
-                break;
-        }
-    }
-    if (j === 1)
-        throw Error(invalidEncoding);
-    return offset - start;
-};
-
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"27":27,"28":28,"buffer":"buffer","long":"long"}],30:[function(require,module,exports){
+},{"24":24,"27":27,"28":28,"30":30,"buffer":"buffer","long":"long"}],30:[function(require,module,exports){
+"use strict";
+
+/**
+ * A minimal UTF8 implementation for number arrays.
+ * @memberof util
+ * @namespace
+ */
+var utf8 = exports;
+
+/**
+ * Calculates the UTF8 byte length of a string.
+ * @param {string} str String
+ * @returns {number} Byte length
+ */
+utf8.length = function length(str) {
+    var strlen = str.length >>> 0;
+    var len = 0,
+        c = 0;
+    for (var i = 0; i < strlen; ++i) {
+        c = str.charCodeAt(i);
+        if (c < 128)
+            len += 1;
+        else if (c < 2048)
+            len += 2;
+        else if ((c & 0xFC00) === 0xD800 && (str.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
+            ++i;
+            len += 4;
+        } else
+            len += 3;
+    }
+    return len;
+};
+
+/**
+ * Writes a string as UTF8 bytes.
+ * @param {Uint8Array} buf Destination buffer
+ * @param {number} pos Destination offset
+ * @param {string} str Source string
+ * @returns {number} Bytes written
+ */
+utf8.write = function(buf, pos, str) {
+    var start = pos;
+    for (var i = 0; i < str.length; ++i) {
+        var c1 = str.charCodeAt(i), c2;
+        if (c1 < 128) {
+            buf[pos++] = c1;
+        } else if (c1 < 2048) {
+            buf[pos++] = c1 >> 6       | 192;
+            buf[pos++] = c1       & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = str.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+            ++i;
+            buf[pos++] = c1 >> 18      | 240;
+            buf[pos++] = c1 >> 12 & 63 | 128;
+            buf[pos++] = c1 >> 6  & 63 | 128;
+            buf[pos++] = c1       & 63 | 128;
+        } else {
+            buf[pos++] = c1 >> 12      | 224;
+            buf[pos++] = c1 >> 6  & 63 | 128;
+            buf[pos++] = c1       & 63 | 128;
+        }
+    }
+    return pos - start;
+};
+
+/**
+ * Reads UTF8 bytes as a string.
+ * @param {Uint8Array} buf Source buffer
+ * @param {number} pos Source offset
+ * @param {number} len Source length
+ * @returns {string} String read
+ */
+utf8.read = function(buf, pos, len) {
+    if (len) {
+        var out = [],
+            i = 0, // char offset
+            t;     // temporary
+        while (pos < len) {
+            t = buf[pos++];
+            if (t < 128)
+                out[i++] = t;
+            else if (t > 191 && t < 224)
+                out[i++] = (t & 31) << 6 | buf[pos++] & 63;
+            else if (t > 239 && t < 365) {
+                t = ((t & 7) << 18 | (buf[pos++] & 63) << 12 | (buf[pos++] & 63) << 6 | buf[pos++] & 63) - 0x10000;
+                out[i++] = 0xD800 + (t >> 10);
+                out[i++] = 0xDC00 + (t & 1023);
+            } else
+                out[i++] = (t & 15) << 12 | (buf[pos++] & 63) << 6 | buf[pos++] & 63;
+        }
+        return String.fromCharCode.apply(String, out.slice(0, i));
+    }
+    return "";
+};
+
+},{}],31:[function(require,module,exports){
+"use strict";
+module.exports = verify;
+
+var Enum      = require(6),
+    Type      = require(21),
+    util      = require(23);
+var isInteger = util.isInteger;
+
+function invalid(field, expected) {
+    return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
+}
+
+function verifyValue(field, value) {
+    switch (field.type) {
+        case "double":
+        case "float":
+            if (typeof value !== 'number')
+                return invalid(field, "number");
+            break;
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32":
+            if (!isInteger(value))
+                return invalid(field, "integer");
+            break;
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64":
+            if (!(isInteger(value) || value && isInteger(value.low) && isInteger(value.high)))
+                return invalid(field, "integer|Long");
+            break;
+        case "bool":
+            if (typeof value !== 'boolean')
+                return invalid(field, "boolean");
+            break;
+        case "string":
+            if (!util.isString(value))
+                return invalid(field, "string");
+            break;
+        case "bytes":
+            if (!(value && typeof value.length === 'number' || util.isString(value)))
+                return invalid(field, "buffer");
+            break;
+        default:
+            if (field.resolvedType instanceof Enum) {
+                if (typeof field.resolvedType.getValuesById()[value] !== 'number')
+                    return invalid(field, "enum value");
+            } else if (field.resolvedType instanceof Type) {
+                var reason = field.resolvedType.verify(value);
+                if (reason)
+                    return reason;
+            }
+            break;
+    }
+    return null;
+}
+
+function verifyKey(field, value) {
+    switch (field.keyType) {
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64":
+            if (/^[\x00-\xff]{8}$/.test(value)) // eslint-disable-line no-control-regex
+                return null;
+            // fallthrough
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32":
+            if (/^-?(?:0|[1-9]\d*)$/.test(value))
+                return invalid(field, "integer key");
+            break;
+        case "bool":
+            if (/^true|false|0|1$/.test(value))
+                return invalid(field, "boolean key");
+            break;
+    }
+    return null;
+}
+
+/**
+ * General purpose message verifier.
+ * @param {Message|Object} message Runtime message or plain object to verify
+ * @returns {?string} `null` if valid, otherwise the reason why it is not
+ * @this {Type}
+ * @property {GenerateVerifier} generate Generates a type specific verifier
+ */
+function verify(message) {
+    /* eslint-disable block-scoped-var, no-redeclare */
+    var fields = this.getFieldsArray(),
+        i = 0,
+        reason;
+    while (i < fields.length) {
+        var field = fields[i++].resolve(),
+            value = message[field.name];
+
+        // map fields
+        if (field.map) {
+
+            if (value !== undefined) {
+                if (!util.isObject(value))
+                    return invalid(field, "object");
+                var keys = Object.keys(value);
+                for (var j = 0; j < keys.length; ++j) {
+                    if (reason = verifyKey(field, keys[j])) // eslint-disable-line no-cond-assign
+                        return reason;
+                    if (reason = verifyValue(field, value[keys[j]])) // eslint-disable-line no-cond-assign
+                        return reason;
+                }
+            }
+
+        // repeated fields
+        } else if (field.repeated) {
+
+            if (value !== undefined) {
+                if (!Array.isArray(value))
+                    return invalid(field, "array");
+                for (var j = 0; j < value.length; ++j)
+                    if (reason = verifyValue(field, value[j])) // eslint-disable-line no-cond-assign
+                        return reason;
+            }
+
+        // required or present fields
+        } else if (field.required || value !== undefined) {
+            
+            if (reason = verifyValue(field, value)) // eslint-disable-line no-cond-assign
+                return reason;
+        }
+
+    }
+    return null;
+    /* eslint-enable block-scoped-var, no-redeclare */
+}
+
+function genVerifyValue(gen, field, fieldIndex, ref) {
+    /* eslint-disable no-unexpected-multiline */
+    switch (field.type) {
+        case "double":
+        case "float": gen
+            ("if(typeof %s!=='number')", ref)
+                ("return%j", invalid(field, "number"));
+            break;
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32": gen
+            ("if(!util.isInteger(%s))", ref)
+                ("return%j", invalid(field, "integer"));
+            break;
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64": gen
+            ("if(!(util.isInteger(%s)||%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+                ("return%j", invalid(field, "integer|Long"));
+            break;
+        case "bool": gen
+            ("if(typeof %s!=='boolean')", ref)
+                ("return%j", invalid(field, "boolean"));
+            break;
+        case "string": gen
+            ("if(!util.isString(%s))", ref)
+                ("return%j", invalid(field, "string"));
+            break;
+        case "bytes": gen
+            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s))", ref, ref, ref)
+                ("return%j", invalid(field, "buffer"));
+            break;
+        default:
+            if (field.resolvedType instanceof Enum) { gen
+                ("switch(%s){", ref)
+                    ("default:")
+                        ("return%j", invalid(field, "enum value"));
+                var values = util.toArray(field.resolvedType.values);
+                for (var j = 0; j < values.length; ++j) gen
+                    ("case %d:", values[j]);
+                gen
+                        ("break")
+                ("}");
+            } else if (field.resolvedType instanceof Type) { gen
+                ("var r;")
+                ("if(r=types[%d].verify(%s))", fieldIndex, ref)
+                    ("return r");
+            }
+            break;
+    }
+    /* eslint-enable no-unexpected-multiline */
+}
+
+function genVerifyKey(gen, field, ref) {
+    /* eslint-disable no-unexpected-multiline */
+    switch (field.keyType) {
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64": gen
+            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer|Long key"));
+            break;
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32":
+            ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer key"));
+            break;
+        case "bool":
+            ("if(!/^true|false|0|1$/.test(%s))", ref)
+                ("return%j", invalid(field, "boolean key"));
+            break;
+    }
+    /* eslint-enable no-unexpected-multiline */
+}
+
+/**
+ * Generates a verifier specific to the specified message type.
+ * @typedef GenerateVerifier
+ * @type {function}
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
+/**/
+verify.generate = function generate(mtype) {
+    /* eslint-disable no-unexpected-multiline */
+    var fields = mtype.getFieldsArray();
+    var gen = util.codegen("m");
+
+    for (var i = 0; i < fields.length; ++i) {
+        var field = fields[i].resolve(),
+            prop  = util.safeProp(field.name);
+
+        // map fields
+        if (field.map) { gen
+            ("if(m%s!==undefined){", prop)
+                ("if(!util.isObject(m%s))", prop)
+                    ("return%j", invalid(field, "object"))
+                ("var k=Object.keys(m%s)", prop)
+                ("for(var i=0;i<k.length;++i){");
+                    genVerifyKey(gen, field, "k[i]");
+                    genVerifyValue(gen, field, i, "m" + prop + "[k[i]]");
+                gen
+                ("}")
+            ("}");
+
+        // repeated fields
+        } else if (field.repeated) { gen
+            ("if(m%s!==undefined){", prop)
+                ("if(!Array.isArray(m%s))", prop)
+                    ("return%j", invalid(field, "array"))
+                ("for(var i=0;i<m%s.length;++i){", prop);
+                    genVerifyValue(gen, field, i, "m" + prop + "[i]"); gen
+                ("}")
+            ("}");
+
+        // required or present fields
+        } else {
+            if (!field.required) gen
+            ("if(m%s!==undefined){", prop);
+                genVerifyValue(gen, field, i, "m" + prop);
+            if (!field.required) gen
+            ("}");
+        }
+    }
+    return gen
+    ("return null");
+    /* eslint-enable no-unexpected-multiline */
+};
+
+},{"21":21,"23":23,"6":6}],32:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -5924,7 +5981,9 @@ Writer.BufferWriter = BufferWriter;
 var util      = require(29),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
-    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+    base64    = util.base64,
+    utf8      = util.utf8;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
  * Constructs a new writer operation instance.
@@ -6342,8 +6401,8 @@ var writeBytes = ArrayImpl.prototype.set
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
     if (typeof value === 'string' && len) {
-        var buf = Writer.alloc(len = util.length64(value));
-        util.decode64(value, buf, 0);
+        var buf = Writer.alloc(len = base64.length(value));
+        base64.decode(value, buf, 0);
         value = buf;
     }
     return len
@@ -6351,56 +6410,15 @@ WriterPrototype.bytes = function write_bytes(value) {
         : this.push(writeByte, 1, 0);
 };
 
-function writeString(buf, pos, val) {
-    for (var i = 0; i < val.length; ++i) {
-        var c1 = val.charCodeAt(i), c2;
-        if (c1 < 128) {
-            buf[pos++] = c1;
-        } else if (c1 < 2048) {
-            buf[pos++] = c1 >> 6       | 192;
-            buf[pos++] = c1       & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
-            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
-            ++i;
-            buf[pos++] = c1 >> 18      | 240;
-            buf[pos++] = c1 >> 12 & 63 | 128;
-            buf[pos++] = c1 >> 6  & 63 | 128;
-            buf[pos++] = c1       & 63 | 128;
-        } else {
-            buf[pos++] = c1 >> 12      | 224;
-            buf[pos++] = c1 >> 6  & 63 | 128;
-            buf[pos++] = c1       & 63 | 128;
-        }
-    }
-}
-
-function byteLength(val) {
-    var strlen = val.length >>> 0;
-    var len = 0;
-    for (var i = 0; i < strlen; ++i) {
-        var c1 = val.charCodeAt(i);
-        if (c1 < 128)
-            len += 1;
-        else if (c1 < 2048)
-            len += 2;
-        else if ((c1 & 0xFC00) === 0xD800 && (val.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
-            ++i;
-            len += 4;
-        } else
-            len += 3;
-    }
-    return len;
-}
-
 /**
  * Writes a string.
  * @param {string} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.string = function write_string(value) {
-    var len = byteLength(value);
+    var len = utf8.length(value);
     return len
-        ? this.uint32(len).push(writeString, len, value)
+        ? this.uint32(len).push(utf8.write, len, value)
         : this.push(writeByte, 1, 0);
 };
 
@@ -6523,7 +6541,7 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 function writeBytesBuffer(buf, pos, val) {
     if (val.length)
         val.copy(buf, pos, 0, val.length);
-};
+}
 
 /**
  * @override
@@ -6541,13 +6559,13 @@ var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
     return util.Buffer && util.Buffer.prototype.utf8Write // around forever, but not present in browser buffer
         ? function writeString_buffer_utf8Write(buf, pos, val) {
             if (val.length < 40)
-                writeString(buf, pos, val);
+                utf8.write(buf, pos, val);
             else
                 buf.utf8Write(val, pos);
         }
         : function writeString_buffer_write(buf, pos, val) {
             if (val.length < 40)
-                writeString(buf, pos, val);
+                utf8.write(buf, pos, val);
             else
                 buf.write(val, pos);
         };
@@ -6561,14 +6579,14 @@ var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = value.length < 40
-        ? byteLength(value)
+        ? utf8.length(value)
         : util.Buffer.byteLength(value);
     return len
         ? this.uint32(len).push(writeStringBuffer, len, value)
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"29":29}],31:[function(require,module,exports){
+},{"1":1,"29":29}],33:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6639,39 +6657,41 @@ function loadSync(filename, root) {
 protobuf.loadSync = loadSync;
 
 // Parser
-protobuf.tokenize         = require(22);
-protobuf.parse            = require(16);
+protobuf.tokenize         = require(20);
+protobuf.parse            = require(14);
 
 // Serialization
-protobuf.Writer           = require(30);
+protobuf.Writer           = require(32);
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
                var Reader =
-protobuf.Reader           = require(17);
+protobuf.Reader           = require(15);
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
-protobuf.codegen          = require(3);
+protobuf.encode           = require(5);
+protobuf.decode           = require(4);
+protobuf.verify           = require(31);
 
 // Reflection
-protobuf.ReflectionObject = require(14);
-protobuf.Namespace        = require(13);
-protobuf.Root             = require(18);
-protobuf.Enum             = require(8);
-protobuf.Type             = require(23);
-protobuf.Field            = require(9);
-protobuf.OneOf            = require(15);
-protobuf.MapField         = require(10);
-protobuf.Service          = require(21);
-protobuf.Method           = require(12);
+protobuf.ReflectionObject = require(12);
+protobuf.Namespace        = require(11);
+protobuf.Root             = require(16);
+protobuf.Enum             = require(6);
+protobuf.Type             = require(21);
+protobuf.Field            = require(7);
+protobuf.OneOf            = require(13);
+protobuf.MapField         = require(8);
+protobuf.Service          = require(19);
+protobuf.Method           = require(10);
 
 // Runtime
 protobuf.Class            = require(2);
-protobuf.Message          = require(11);
+protobuf.Message          = require(9);
 
 // Utility
-protobuf.types            = require(24);
-protobuf.common           = require(7);
-protobuf.rpc              = require(19);
+protobuf.types            = require(22);
+protobuf.common           = require(3);
+protobuf.rpc              = require(17);
                  var util =
-protobuf.util             = require(25);
+protobuf.util             = require(23);
 protobuf.configure        = configure;
 
 /**
@@ -6695,7 +6715,7 @@ if (typeof define === 'function' && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"2":2,"21":21,"22":22,"23":23,"24":24,"25":25,"3":3,"30":30,"7":7,"8":8,"9":9}]},{},[31])
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"19":19,"2":2,"20":20,"21":21,"22":22,"23":23,"3":3,"31":31,"32":32,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}]},{},[33])
 
 
 //# sourceMappingURL=protobuf.js.map

@@ -6,6 +6,8 @@
  */
 var util = exports;
 
+util.codegen = require("./util/codegen");
+
 /**
  * Converts an object's values to an array.
  * @param {Object.<string,*>} object Object to convert
@@ -196,28 +198,6 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Minimalistic sprintf.
- * @param {string} format Format string
- * @param {...*} args Replacements
- * @returns {string} Formatted string
- */
-util.sprintf = function sprintf(format) {
-    var params = Array.prototype.slice.call(arguments, 1),
-        index  = 0;
-    return format.replace(/%([djs])/g, function($0, $1) {
-        var param = params[index++];
-        switch ($1) {
-            case "j":
-                return JSON.stringify(param);
-            case "p":
-                return util.safeProp(param);
-            default:
-                return String(param);
-        }
-    });
-};
-
-/**
  * Converts a string to camel case notation.
  * @param {string} str String to convert
  * @returns {string} Converted string
@@ -245,7 +225,7 @@ util.underScore = function underScore(str) {
  * @returns {Uint8Array} Buffer
  */
 util.newBuffer = function newBuffer(size) {
-    size = size || 0; 
+    size = size || 0;
     return util.Buffer
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
         : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);

@@ -6,7 +6,9 @@ Writer.BufferWriter = BufferWriter;
 var util      = require("./util/runtime"),
     ieee754   = require("../lib/ieee754");
 var LongBits  = util.LongBits,
-    ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+    base64    = util.base64,
+    utf8      = util.utf8;
+var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 /**
  * Constructs a new writer operation instance.
@@ -424,8 +426,8 @@ var writeBytes = ArrayImpl.prototype.set
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
     if (typeof value === 'string' && len) {
-        var buf = Writer.alloc(len = util.length64(value));
-        util.decode64(value, buf, 0);
+        var buf = Writer.alloc(len = base64.length(value));
+        base64.decode(value, buf, 0);
         value = buf;
     }
     return len
@@ -433,56 +435,15 @@ WriterPrototype.bytes = function write_bytes(value) {
         : this.push(writeByte, 1, 0);
 };
 
-function writeString(buf, pos, val) {
-    for (var i = 0; i < val.length; ++i) {
-        var c1 = val.charCodeAt(i), c2;
-        if (c1 < 128) {
-            buf[pos++] = c1;
-        } else if (c1 < 2048) {
-            buf[pos++] = c1 >> 6       | 192;
-            buf[pos++] = c1       & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = val.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
-            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
-            ++i;
-            buf[pos++] = c1 >> 18      | 240;
-            buf[pos++] = c1 >> 12 & 63 | 128;
-            buf[pos++] = c1 >> 6  & 63 | 128;
-            buf[pos++] = c1       & 63 | 128;
-        } else {
-            buf[pos++] = c1 >> 12      | 224;
-            buf[pos++] = c1 >> 6  & 63 | 128;
-            buf[pos++] = c1       & 63 | 128;
-        }
-    }
-}
-
-function byteLength(val) {
-    var strlen = val.length >>> 0;
-    var len = 0;
-    for (var i = 0; i < strlen; ++i) {
-        var c1 = val.charCodeAt(i);
-        if (c1 < 128)
-            len += 1;
-        else if (c1 < 2048)
-            len += 2;
-        else if ((c1 & 0xFC00) === 0xD800 && (val.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
-            ++i;
-            len += 4;
-        } else
-            len += 3;
-    }
-    return len;
-}
-
 /**
  * Writes a string.
  * @param {string} value Value to write
  * @returns {Writer} `this`
  */
 WriterPrototype.string = function write_string(value) {
-    var len = byteLength(value);
+    var len = utf8.length(value);
     return len
-        ? this.uint32(len).push(writeString, len, value)
+        ? this.uint32(len).push(utf8.write, len, value)
         : this.push(writeByte, 1, 0);
 };
 
@@ -605,7 +566,7 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
 function writeBytesBuffer(buf, pos, val) {
     if (val.length)
         val.copy(buf, pos, 0, val.length);
-};
+}
 
 /**
  * @override
@@ -623,13 +584,13 @@ var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
     return util.Buffer && util.Buffer.prototype.utf8Write // around forever, but not present in browser buffer
         ? function writeString_buffer_utf8Write(buf, pos, val) {
             if (val.length < 40)
-                writeString(buf, pos, val);
+                utf8.write(buf, pos, val);
             else
                 buf.utf8Write(val, pos);
         }
         : function writeString_buffer_write(buf, pos, val) {
             if (val.length < 40)
-                writeString(buf, pos, val);
+                utf8.write(buf, pos, val);
             else
                 buf.write(val, pos);
         };
@@ -643,7 +604,7 @@ var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
  */
 BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = value.length < 40
-        ? byteLength(value)
+        ? utf8.length(value)
         : util.Buffer.byteLength(value);
     return len
         ? this.uint32(len).push(writeStringBuffer, len, value)

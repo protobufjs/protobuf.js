@@ -15,8 +15,10 @@ var Enum      = require("./enum"),
     Message   = require("./message"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
-    util      = require("./util"),
-    codegen   = require("./codegen");
+    util      = require("./util");
+var encode    = require("./encode"),
+    decode    = require("./decode"),
+    verify    = require("./verify");
 
 /**
  * Constructs a new reflected message type instance.
@@ -323,14 +325,14 @@ TypePrototype.create = function create(properties) {
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
-TypePrototype.encode = function encode(message, writer) {
-    return (this.encode = codegen.supported
-        ? codegen.encode.generate(this).eof(this.getFullName() + "$encode", {
+TypePrototype.encode = function encode_setup(message, writer) {
+    return (this.encode = util.codegen.supported
+        ? encode.generate(this).eof(this.getFullName() + "$encode", {
               Writer : Writer,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
-        : codegen.encode.fallback
+        : encode
     ).call(this, message, writer);
 };
 
@@ -350,14 +352,14 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @param {number} [length] Length of the message, if known beforehand
  * @returns {Message} Decoded message
  */
-TypePrototype.decode = function decode(readerOrBuffer, length) {
-    return (this.decode = codegen.supported
-        ? codegen.decode.generate(this).eof(this.getFullName() + "$decode", {
+TypePrototype.decode = function decode_setup(readerOrBuffer, length) {
+    return (this.decode = util.codegen.supported
+        ? decode.generate(this).eof(this.getFullName() + "$decode", {
               Reader : Reader,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
-        : codegen.decode.fallback
+        : decode
     ).call(this, readerOrBuffer, length);
 };
 
@@ -376,12 +378,12 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  * @param {Message|Object} message Message to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
-TypePrototype.verify = function verify(message) {
-    return (this.verify = codegen.supported
-        ? codegen.verify.generate(this).eof(this.getFullName() + "$verify", {
+TypePrototype.verify = function verify_setup(message) {
+    return (this.verify = util.codegen.supported
+        ? verify.generate(this).eof(this.getFullName() + "$verify", {
               types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util  : util
           })
-        : codegen.verify.fallback
+        : verify
     ).call(this, message);
 };

@@ -2,13 +2,31 @@
 module.exports = pool;
 
 /**
- * A drop-in buffer pool, similar in functionality to what node uses for buffers.
+ * An allocator as used by {@link util.pool}.
+ * @typedef PoolAllocator
+ * @type {function}
+ * @param {number} size Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+
+/**
+ * A slicer as used by {@link util.pool}.
+ * @typedef PoolSlicer
+ * @type {function}
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Buffer slice
+ * @this {Uint8Array}
+ */
+
+/**
+ * A general purpose buffer pool.
  * @memberof util
  * @function
- * @param {function(number):Uint8Array} alloc Allocator
- * @param {function(number, number):Uint8Array} slice Slicer
+ * @param {PoolAllocator} alloc Allocator
+ * @param {PoolSlicer} slice Slicer
  * @param {number} [size=8192] Slab size
- * @returns {function(number):Uint8Array} Pooled allocator
+ * @returns {PoolAllocator} Pooled allocator
  */
 function pool(alloc, slice, size) {
     var SIZE   = size || 8192;

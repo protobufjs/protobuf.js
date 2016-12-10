@@ -76,7 +76,9 @@ protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
                var Reader =
 protobuf.Reader           = require("./reader");
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
-protobuf.codegen          = require("./codegen");
+protobuf.encode           = require("./encode");
+protobuf.decode           = require("./decode");
+protobuf.verify           = require("./verify");
 
 // Reflection
 protobuf.ReflectionObject = require("./object");
