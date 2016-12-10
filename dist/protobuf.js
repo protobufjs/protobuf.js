@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sat, 10 Dec 2016 12:51:37 UTC
+ * Compiled Sat, 10 Dec 2016 13:31:00 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -6520,12 +6520,10 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
     return this.push(writeDoubleBuffer, 8, value);
 };
 
-var writeBytesBuffer = util.Buffer && util.Buffer.prototype.set // set is faster (node 6.9.1)
-    ? writeBytes_set
-    : function writeBytes_copy(buf, pos, val) {
-        if (val.length)
-            val.copy(buf, pos, 0, val.length);
-    };
+function writeBytesBuffer(buf, pos, val) {
+    if (val.length)
+        val.copy(buf, pos, 0, val.length);
+};
 
 /**
  * @override
