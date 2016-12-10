@@ -58,7 +58,7 @@ function verifyValue(field, value) {
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!(value && typeof value.length === 'number'))
+            if (!(value && typeof value.length === 'number' || util.isString(value)))
                 return invalid(field, "buffer");
             break;
         default:
@@ -187,7 +187,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "string"));
             break;
         case "bytes": gen
-            ("if(!(%s&&typeof %s.length==='number'))", ref, ref)
+            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s))", ref, ref, ref)
                 ("return%j", invalid(field, "buffer"));
             break;
         default:

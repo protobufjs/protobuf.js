@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sat, 10 Dec 2016 12:37:44 UTC
+ * Compiled Sat, 10 Dec 2016 12:42:57 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -832,7 +832,7 @@ function verifyValue(field, value) {
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!(value && typeof value.length === 'number'))
+            if (!(value && typeof value.length === 'number' || util.isString(value)))
                 return invalid(field, "buffer");
             break;
         default:
@@ -961,7 +961,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "string"));
             break;
         case "bytes": gen
-            ("if(!(%s&&typeof %s.length==='number'))", ref, ref)
+            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s))", ref, ref, ref)
                 ("return%j", invalid(field, "buffer"));
             break;
         default:
