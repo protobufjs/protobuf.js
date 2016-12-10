@@ -54,7 +54,7 @@ var s_open     = "{",
  * @returns {ParserResult} Parser result
  */
 function parse(source, root) {
-    /* eslint-disable default-case, callback-return */
+    /* eslint-disable callback-return */
     if (!root)
         root = new Root();
 

@@ -39,7 +39,7 @@ function unescape(str) {
  * @returns {TokenizerHandle} Tokenizer handle
  */
 function tokenize(source) {
-    /* eslint-disable default-case, callback-return */
+    /* eslint-disable callback-return */
     source = source.toString();
     
     var offset = 0,
@@ -202,5 +202,5 @@ function tokenize(source) {
         push: push,
         skip: skip
     };
-    /* eslint-enable default-case, callback-return */
+    /* eslint-enable callback-return */
 }

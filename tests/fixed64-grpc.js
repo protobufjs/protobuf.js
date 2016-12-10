@@ -2,7 +2,7 @@ var tape = require("tape");
 
 var protobuf = require("..");
 
-tape.test("fixed64", function(test) {
+tape.test("fixed64 for grpc", function(test) {
 
     var root = protobuf.Root.fromJSON({
         nested: {

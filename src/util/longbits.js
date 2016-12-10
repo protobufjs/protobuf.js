@@ -80,7 +80,7 @@ LongBits.fromNumber = function fromNumber(value) {
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    switch (typeof value) { // eslint-disable-line default-case
+    switch (typeof value) {
         case 'number':
             return LongBits.fromNumber(value);
         case 'string':

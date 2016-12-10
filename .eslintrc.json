@@ -32,7 +32,7 @@
         "complexity": 0,                    // is sometimes necessary
         "consistent-return": 1,
         "curly": 0,                         // sometimes more braces than code
-        "default-case": 1,
+        "default-case": 0,                  // just forces unnecessary code
         "dot-location": 0,                  // looks nicer for chainables
         "dot-notation": 1,
         "eqeqeq": 1,

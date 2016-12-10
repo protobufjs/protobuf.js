@@ -405,10 +405,12 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
+function writeBytes_set(buf, pos, val) {
+    buf.set(val, pos);
+}
+
 var writeBytes = ArrayImpl.prototype.set
-    ? function writeBytes_set(buf, pos, val) {
-        buf.set(val, pos);
-    }
+    ? writeBytes_set
     : function writeBytes_for(buf, pos, val) {
         for (var i = 0; i < val.length; ++i)
             buf[pos + i] = val[i];
@@ -416,11 +418,16 @@ var writeBytes = ArrayImpl.prototype.set
 
 /**
  * Writes a sequence of bytes.
- * @param {Uint8Array} value Value to write
+ * @param {Uint8Array|string} value Buffer or base64 encoded string to write
  * @returns {Writer} `this`
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
+    if (typeof value === 'string' && len) {
+        var buf = Writer.alloc(len = util.length64(value));
+        util.decode64(value, buf, 0);
+        value = buf;
+    }
     return len
         ? this.uint32(len).push(writeBytes, len, value)
         : this.push(writeByte, 1, 0);
@@ -595,17 +602,19 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
     return this.push(writeDoubleBuffer, 8, value);
 };
 
-function writeBytesBuffer(buf, pos, val) {
-    if (val.length)
-        val.copy(buf, pos, 0, val.length);
-    // This could probably be optimized just like writeStringBuffer, but most real use cases won't benefit much.
-}
+var writeBytesBuffer = util.Buffer && util.Buffer.prototype.set // set is faster (node 6.9.1)
+    ? writeBytes_set
+    : function writeBytes_copy(buf, pos, val) {
+        if (val.length)
+            val.copy(buf, pos, 0, val.length);
+    };
 
-if (!(ArrayImpl.prototype.set && util.Buffer && util.Buffer.prototype.set)) // set is faster (node 6.9.1)
 /**
  * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
+    if (typeof value === 'string')
+        value = util.Buffer.from && util.Buffer.from(value, "base64") || new util.Buffer(value, "base64");
     var len = value.length >>> 0;
     return len
         ? this.uint32(len).push(writeBytesBuffer, len, value)

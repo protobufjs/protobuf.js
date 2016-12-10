@@ -76,7 +76,7 @@ function verifyValue(field, value) {
 }
 
 function verifyKey(field, value) {
-    switch (field.keyType) { // eslint-disable-line default-case
+    switch (field.keyType) {
         case "int64":
         case "uint64":
         case "sint64":
@@ -213,7 +213,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
 
 function genVerifyKey(gen, field, ref) {
     /* eslint-disable no-unexpected-multiline */
-    switch (field.keyType) { // eslint-disable-line default-case
+    switch (field.keyType) {
         case "int64":
         case "uint64":
         case "sint64":

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Fri, 09 Dec 2016 22:46:45 UTC
+ * Compiled Sat, 10 Dec 2016 12:37:44 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -850,7 +850,7 @@ function verifyValue(field, value) {
 }
 
 function verifyKey(field, value) {
-    switch (field.keyType) { // eslint-disable-line default-case
+    switch (field.keyType) {
         case "int64":
         case "uint64":
         case "sint64":
@@ -987,7 +987,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
 
 function genVerifyKey(gen, field, ref) {
     /* eslint-disable no-unexpected-multiline */
-    switch (field.keyType) { // eslint-disable-line default-case
+    switch (field.keyType) {
         case "int64":
         case "uint64":
         case "sint64":
@@ -2663,7 +2663,7 @@ var s_open     = "{",
  * @returns {ParserResult} Parser result
  */
 function parse(source, root) {
-    /* eslint-disable default-case, callback-return */
+    /* eslint-disable callback-return */
     if (!root)
         root = new Root();
 
@@ -4378,7 +4378,7 @@ function unescape(str) {
  * @returns {TokenizerHandle} Tokenizer handle
  */
 function tokenize(source) {
-    /* eslint-disable default-case, callback-return */
+    /* eslint-disable callback-return */
     source = source.toString();
     
     var offset = 0,
@@ -4541,7 +4541,7 @@ function tokenize(source) {
         push: push,
         skip: skip
     };
-    /* eslint-enable default-case, callback-return */
+    /* eslint-enable callback-return */
 }
 },{}],23:[function(require,module,exports){
 "use strict";
@@ -5489,7 +5489,7 @@ LongBits.fromNumber = function fromNumber(value) {
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    switch (typeof value) { // eslint-disable-line default-case
+    switch (typeof value) {
         case 'number':
             return LongBits.fromNumber(value);
         case 'string':
@@ -5796,6 +5796,122 @@ util.emptyArray = Object.freeze([]);
  * @type {Object}
  */
 util.emptyObject = Object.freeze({});
+
+/**
+ * Calculates the byte length of a base64 encoded string.
+ * @param {string} str Base64 encoded string
+ * @returns {number} Byte length
+ */
+util.length64 = function length64(str) {
+    var p = str.length;
+    var n = 0;
+    if (p)
+        while (--p % 4 > 1 && str.charAt(p) === '=')
+            ++n;
+    return Math.ceil(str.length * 3) / 4 - n;
+};
+
+// Base64 encoding table
+var b64 = [
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102,
+    103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118,
+    119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 43, 47
+];
+
+/**
+ * Encodes a buffer to a base64 encoded string.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} Base64 encoded string
+ */
+util.encode64 = function encode64(buffer, start, end) {
+    var dst = new Array(Math.ceil((end - start) / 3) * 4);
+    var i = 0, // output index
+        j = 0, // goto index
+        t;     // temporary
+    while (start < end) {
+        var b = buffer[start++];
+        switch (j) {
+            case 0:
+                dst[i++] = b64[b >> 2];
+                t = (b & 3) << 4;
+                j = 1;
+                break;
+            case 1:
+                dst[i++] = b64[t | b >> 4];
+                t = (b & 15) << 2;
+                j = 2;
+                break;
+            case 2:
+                dst[i++] = b64[t | b >> 6];
+                dst[i++] = b64[b & 63];
+                j = 0;
+                break;
+        }
+    }
+    switch (j) {
+        case 1:
+            dst[i++] = b64[t];
+            dst[i++] = 61;
+            dst[i  ] = 61;
+            break;
+        case 2:
+            dst[i++] = b64[t];
+            dst[i  ] = 61;
+            break;
+    }
+    return String.fromCharCode.apply(String, dst);
+};
+
+// Base64 decoding table
+var s64 = []; for (var i = 0; i < b64.length; ++i) s64[b64[i]] = i;
+var invalidEncoding = "invalid encoding";
+
+/**
+ * Decodes a base64 encoded string to a buffer.
+ * @param {string} src Source string
+ * @param {Uint8Array} buffer Destination buffer
+ * @param {number} offset Destination offset
+ * @returns {number} Number of bytes written
+ * @throws {Error} If encoding is invalid
+ */
+util.decode64 = function decode64(src, buffer, offset) {
+    var start = offset;
+    var j = 0, // goto index
+        t;     // temporary
+    for (var i = 0; i < src.length;) {
+        var c = src.charCodeAt(i++);
+        if (c === 61 && j > 1)
+            break;
+        if ((c = s64[c]) === undefined)
+            throw Error(invalidEncoding);
+        switch (j) {
+            case 0:
+                t = c;
+                j = 1;
+                break;
+            case 1:
+                buffer[offset++] = t << 2 | (c & 48) >> 4;
+                t = c;
+                j = 2;
+                break;
+            case 2:
+                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
+                t = c;
+                j = 3;
+                break;
+            case 3:
+                buffer[offset++] = (t & 3) << 6 | c;
+                j = 0;
+                break;
+        }
+    }
+    if (j === 1)
+        throw Error(invalidEncoding);
+    return offset - start;
+};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
@@ -6207,10 +6323,12 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
+function writeBytes_set(buf, pos, val) {
+    buf.set(val, pos);
+}
+
 var writeBytes = ArrayImpl.prototype.set
-    ? function writeBytes_set(buf, pos, val) {
-        buf.set(val, pos);
-    }
+    ? writeBytes_set
     : function writeBytes_for(buf, pos, val) {
         for (var i = 0; i < val.length; ++i)
             buf[pos + i] = val[i];
@@ -6218,11 +6336,16 @@ var writeBytes = ArrayImpl.prototype.set
 
 /**
  * Writes a sequence of bytes.
- * @param {Uint8Array} value Value to write
+ * @param {Uint8Array|string} value Buffer or base64 encoded string to write
  * @returns {Writer} `this`
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
+    if (typeof value === 'string' && len) {
+        var buf = Writer.alloc(len = util.length64(value));
+        util.decode64(value, buf, 0);
+        value = buf;
+    }
     return len
         ? this.uint32(len).push(writeBytes, len, value)
         : this.push(writeByte, 1, 0);
@@ -6397,17 +6520,19 @@ BufferWriterPrototype.double = function write_double_buffer(value) {
     return this.push(writeDoubleBuffer, 8, value);
 };
 
-function writeBytesBuffer(buf, pos, val) {
-    if (val.length)
-        val.copy(buf, pos, 0, val.length);
-    // This could probably be optimized just like writeStringBuffer, but most real use cases won't benefit much.
-}
+var writeBytesBuffer = util.Buffer && util.Buffer.prototype.set // set is faster (node 6.9.1)
+    ? writeBytes_set
+    : function writeBytes_copy(buf, pos, val) {
+        if (val.length)
+            val.copy(buf, pos, 0, val.length);
+    };
 
-if (!(ArrayImpl.prototype.set && util.Buffer && util.Buffer.prototype.set)) // set is faster (node 6.9.1)
 /**
  * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
+    if (typeof value === 'string')
+        value = util.Buffer.from && util.Buffer.from(value, "base64") || new util.Buffer(value, "base64");
     var len = value.length >>> 0;
     return len
         ? this.uint32(len).push(writeBytesBuffer, len, value)
@@ -6558,7 +6683,7 @@ protobuf.configure        = configure;
 function configure() {
     util._configure();
     Reader._configure();
-};
+}
 
 // Be nice to AMD
 if (typeof define === 'function' && define.amd)
