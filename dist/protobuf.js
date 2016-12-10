@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sat, 10 Dec 2016 12:42:57 UTC
+ * Compiled Sat, 10 Dec 2016 12:51:37 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -6242,7 +6242,7 @@ WriterPrototype.fixed64 = function write_fixed64(value) {
  */
 WriterPrototype.sfixed64 = function write_sfixed64(value) {
     var bits = LongBits.from(value).zzEncode();
-    return this.push(writeFixed32, 4, bits.hi).push(writeFixed32, 4, bits.lo);
+    return this.push(writeFixed32, 4, bits.lo).push(writeFixed32, 4, bits.hi);
 };
 
 var writeFloat = typeof Float32Array !== 'undefined'
