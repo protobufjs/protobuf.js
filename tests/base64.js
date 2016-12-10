@@ -23,10 +23,8 @@ tape.test("base64", function(test) {
         var len2 = protobuf.util.decode64(enc, buf, 0);
         test.equal(len2, len, "should decode '" + enc + "' to " + len + " bytes");
 
-        if (protobuf.util.isNode) {
-            var comp = global.Buffer.from(buf).toString("utf8");
-            test.equal(comp, str, "should decode '" + enc + "' to '" + str + "'");
-        }
+        if (protobuf.util.isNode && protobuf.util.Buffer)
+            test.equal(buf.toString("utf8"), str, "should decode '" + enc + "' to '" + str + "'");
 
         var enc2 = protobuf.util.encode64(buf, 0, buf.length);
         test.equal(enc2, enc, "should encode '" + str + "' to '" + enc + "'");
