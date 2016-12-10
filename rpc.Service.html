@@ -50,87 +50,6 @@
             </span>
         </li>
     
-        <li class="item" data-name="codegen.decode">
-            <span class="title">
-                <a href="codegen.decode.html">codegen.decode</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="codegen.decode.fallback"><a href="codegen.decode.html#.fallback">fallback</a></li>
-            
-                <li data-name="codegen.decode.generate"><a href="codegen.decode.html#.generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="codegen.encode">
-            <span class="title">
-                <a href="codegen.encode.html">codegen.encode</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="codegen.encode.fallback"><a href="codegen.encode.html#.fallback">fallback</a></li>
-            
-                <li data-name="codegen.encode.generate"><a href="codegen.encode.html#.generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="codegen.verify">
-            <span class="title">
-                <a href="codegen.verify.html">codegen.verify</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="codegen.verify.fallback"><a href="codegen.verify.html#.fallback">fallback</a></li>
-            
-                <li data-name="codegen.verify.generate"><a href="codegen.verify.html#.generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="rpc">
             <span class="title">
                 <a href="rpc.html">rpc</a>
@@ -220,6 +139,8 @@
             
                 <li data-name="util.camelCase"><a href="util.html#.camelCase">camelCase</a></li>
             
+                <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
+            
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
                 <li data-name="util.isAbsolutePath"><a href="util.html#.isAbsolutePath">isAbsolutePath</a></li>
@@ -252,11 +173,67 @@
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
             
-                <li data-name="util.sprintf"><a href="util.html#.sprintf">sprintf</a></li>
-            
                 <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
             
                 <li data-name="util.underScore"><a href="util.html#.underScore">underScore</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="util.base64">
+            <span class="title">
+                <a href="util.base64.html">util.base64</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.base64.decode"><a href="util.base64.html#.decode">decode</a></li>
+            
+                <li data-name="util.base64.encode"><a href="util.base64.html#.encode">encode</a></li>
+            
+                <li data-name="util.base64.length"><a href="util.base64.html#.length">length</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="util.utf8">
+            <span class="title">
+                <a href="util.utf8.html">util.utf8</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.utf8.length"><a href="util.utf8.html#.length">length</a></li>
+            
+                <li data-name="util.utf8.read"><a href="util.utf8.html#.read">read</a></li>
+            
+                <li data-name="util.utf8.write"><a href="util.utf8.html#.write">write</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -960,8 +937,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="Reader.configure"><a href="Reader.html#.configure">configure</a></li>
             
                 <li data-name="Reader.create"><a href="Reader.html#.create">create</a></li>
             
@@ -1688,7 +1663,7 @@
 <dd>
     
     <div class="description">
-        <p>RPC implementation. Becomes <code>null</code> when the service is ended.</p>
+        <p>RPC implementation. Becomes <code>null</code> once the service is ended.</p>
     </div>
     
     
@@ -1740,7 +1715,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter.js">util/eventemitter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter.js#L68">line 68</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter/index.js">util/eventemitter/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter/index.js#L68">line 68</a>
         </div>
         
     </div>
@@ -2082,7 +2057,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter.js">util/eventemitter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter.js#L44">line 44</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter/index.js">util/eventemitter/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter/index.js#L44">line 44</a>
         </div>
         
     </div>
@@ -2266,7 +2241,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter.js">util/eventemitter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter.js#L30">line 30</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter/index.js">util/eventemitter/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/eventemitter/index.js#L30">line 30</a>
         </div>
         
     </div>

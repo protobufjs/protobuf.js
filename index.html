@@ -50,87 +50,6 @@
             </span>
         </li>
     
-        <li class="item" data-name="codegen.decode">
-            <span class="title">
-                <a href="codegen.decode.html">codegen.decode</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="codegen.decode.fallback"><a href="codegen.decode.html#.fallback">fallback</a></li>
-            
-                <li data-name="codegen.decode.generate"><a href="codegen.decode.html#.generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="codegen.encode">
-            <span class="title">
-                <a href="codegen.encode.html">codegen.encode</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="codegen.encode.fallback"><a href="codegen.encode.html#.fallback">fallback</a></li>
-            
-                <li data-name="codegen.encode.generate"><a href="codegen.encode.html#.generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="codegen.verify">
-            <span class="title">
-                <a href="codegen.verify.html">codegen.verify</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="codegen.verify.fallback"><a href="codegen.verify.html#.fallback">fallback</a></li>
-            
-                <li data-name="codegen.verify.generate"><a href="codegen.verify.html#.generate">generate</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="rpc">
             <span class="title">
                 <a href="rpc.html">rpc</a>
@@ -220,6 +139,8 @@
             
                 <li data-name="util.camelCase"><a href="util.html#.camelCase">camelCase</a></li>
             
+                <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
+            
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
                 <li data-name="util.isAbsolutePath"><a href="util.html#.isAbsolutePath">isAbsolutePath</a></li>
@@ -252,11 +173,67 @@
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
             
-                <li data-name="util.sprintf"><a href="util.html#.sprintf">sprintf</a></li>
-            
                 <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
             
                 <li data-name="util.underScore"><a href="util.html#.underScore">underScore</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="util.base64">
+            <span class="title">
+                <a href="util.base64.html">util.base64</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.base64.decode"><a href="util.base64.html#.decode">decode</a></li>
+            
+                <li data-name="util.base64.encode"><a href="util.base64.html#.encode">encode</a></li>
+            
+                <li data-name="util.base64.length"><a href="util.base64.html#.length">length</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="util.utf8">
+            <span class="title">
+                <a href="util.utf8.html">util.utf8</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.utf8.length"><a href="util.utf8.html#.length">length</a></li>
+            
+                <li data-name="util.utf8.read"><a href="util.utf8.html#.read">read</a></li>
+            
+                <li data-name="util.utf8.write"><a href="util.utf8.html#.write">write</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -961,8 +938,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Reader.configure"><a href="Reader.html#.configure">configure</a></li>
-            
                 <li data-name="Reader.create"><a href="Reader.html#.create">create</a></li>
             
                 <li data-name="Reader#bool"><a href="Reader.html#bool">bool</a></li>
@@ -1647,7 +1622,7 @@ var greeter = Greeter.create(rpcImpl, false, false); // rpcImpl (see below), req
 
 greeter.sayHello({ name: 'you' }, function(err, response) {
     console.log('Greeting:', response.message);
-});</code></pre><p>To make this work, all you have to do is provide an <code>rpcImpl</code>, which is is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:</p>
+});</code></pre><p>To make this work, all you have to do is provide an <code>rpcImpl</code>, which is an asynchronous function that takes the reflected service method, the binary HelloRequest and a node-style callback as its parameters. For example:</p>
 <pre class="prettyprint source lang-js"><code>function rpcImpl(method, requestData, callback) {
     // perform the request using an HTTP request or a WebSocket for example
     var responseData = ...;
@@ -1659,7 +1634,7 @@ greeter.sayHello({ name: 'you' }, function(err, response) {
 import * as protobuf from &quot;protobufjs&quot;;
 ...</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
 <h3>Parser</h3><ul>
-<li><p><strong>load(filename: <code>string|Array</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise|undefined</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto or preprocessed .json files into a common root namespace.</p>
+<li><p><strong>load(filename: <code>string|string[]</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise|undefined</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto or preprocessed .json files into a common root namespace.</p>
 </li>
 <li><p><strong>loadSync(filename: <code>string|string[]</code>, [root: <code>Root</code>]): <code>Root</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).</p>
 </li>
@@ -1669,9 +1644,9 @@ import * as protobuf from &quot;protobufjs&quot;;
 <ul>
 <li><p><strong>package: <code>string|undefined</code></strong><br /><br>The package name, if declared.</p>
 </li>
-<li><p><strong>imports: <code>Array|undefined</code></strong><br /><br>File names of imported files, if any.</p>
+<li><p><strong>imports: <code>string[]|undefined</code></strong><br /><br>File names of imported files, if any.</p>
 </li>
-<li><p><strong>weakImports: <code>Array|undefined</code></strong><br /><br>File names of weakly imported files, if any.</p>
+<li><p><strong>weakImports: <code>string[]|undefined</code></strong><br /><br>File names of weakly imported files, if any.</p>
 </li>
 <li><p><strong>syntax: <code>string|undefined</code></strong><br /><br>Source syntax, if defined.</p>
 </li>
@@ -1739,12 +1714,12 @@ import * as protobuf from &quot;protobufjs&quot;;
 
   -t, --target    Specifies the target format. Also accepts a path to require a custom target.
 
-                  json-module   JSON representation as a module (AMD, CommonJS, global)
                   json          JSON representation
+                  json-module   JSON representation as a module (AMD, CommonJS, global)
                   proto2        Protocol Buffers, Version 2
                   proto3        Protocol Buffers, Version 3
-                  static-module Static code without reflection as a module (AMD, CommonJS, global)
                   static        Static code without reflection
+                  static-module Static code without reflection as a module (AMD, CommonJS, global)
 
   -p, --path      Adds a directory to the include path.
 
@@ -1767,39 +1742,45 @@ $> npm install --dev</code></pre><p>Building the development and production vers
 <ul>
 <li>If performance is a concern or IE8 support is required, you should make sure to exclude the browserified <code>buffer</code> module and let protobuf.js do its thing with Uint8Array/Array instead.</li>
 <li>If you do not need int64 support, you can exclude the <code>long</code> module.</li>
-<li>If your application does not rely on the following modules and/or package size is a concern, you can also exclude <code>process</code> , <code>_process</code> and <code>fs</code>.</li>
+<li>If your application does not rely on the following modules and package size is a concern, you can also exclude <code>process</code> , <code>_process</code> and <code>fs</code>.</li>
 <li>If you have any special requirements, there is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js">the bundler</a> as a reference.</li>
 </ul>
 <h2>Performance</h2><p>The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
-Type.encode to buffer x 471,717 ops/sec ±1.30% (91 runs sampled)
-JSON.stringify to string x 310,406 ops/sec ±1.00% (90 runs sampled)
-JSON.stringify to buffer x 172,766 ops/sec ±1.20% (84 runs sampled)
+Type.encode to buffer x 479,876 ops/sec ±0.64% (92 runs sampled)
+JSON.stringify to string x 311,489 ops/sec ±0.84% (87 runs sampled)
+JSON.stringify to buffer x 175,079 ops/sec ±1.48% (82 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 34.0% slower
-   JSON.stringify to buffer was 63.3% slower
+   JSON.stringify to string was 35.2% slower
+   JSON.stringify to buffer was 63.8% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,285,867 ops/sec ±0.70% (90 runs sampled)
-JSON.parse from string x 292,106 ops/sec ±1.00% (89 runs sampled)
-JSON.parse from buffer x 259,361 ops/sec ±0.92% (90 runs sampled)
+Type.decode from buffer x 1,267,612 ops/sec ±1.18% (90 runs sampled)
+JSON.parse from string x 291,707 ops/sec ±1.12% (92 runs sampled)
+JSON.parse from buffer x 262,640 ops/sec ±0.77% (89 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 77.4% slower
-     JSON.parse from buffer was 79.9% slower
+     JSON.parse from string was 77.0% slower
+     JSON.parse from buffer was 79.2% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 238,382 ops/sec ±0.96% (89 runs sampled)
-JSON to/from string x 127,352 ops/sec ±0.73% (93 runs sampled)
-JSON to/from buffer x 89,593 ops/sec ±0.85% (87 runs sampled)
+Type to/from buffer x 248,897 ops/sec ±0.89% (90 runs sampled)
+JSON to/from string x 126,848 ops/sec ±0.75% (92 runs sampled)
+JSON to/from buffer x 89,854 ops/sec ±0.79% (93 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 46.5% slower
-        JSON to/from buffer was 62.4% slower</code></pre><p>Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?</p>
+        JSON to/from string was 49.0% slower
+        JSON to/from buffer was 63.9% slower
+
+benchmarking verifying performance ...
+
+Type.verify x 5,941,014 ops/sec ±0.96% (90 runs sampled)
+
+                Type.verify was fastest</code></pre><p>Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?</p>
 <ul>
 <li>The benchmark is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js">somewhat flawed</a>.</li>
 <li>Reader and writer interfaces configure themselves according to the environment to eliminate redundant conditionals.</li>
