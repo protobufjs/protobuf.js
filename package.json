@@ -37,7 +37,7 @@
     "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js"
   },
   "dependencies": {
-    "@protobufjs/base64": "1.0.1",
+    "@protobufjs/base64": "1.0.2",
     "@protobufjs/codegen": "1.0.1",
     "@protobufjs/eventemitter": "1.0.1",
     "@protobufjs/pool": "1.0.1",

@@ -1,10 +1,11 @@
 "use strict";
 module.exports = encode;
 
-var Enum    = require("./enum"),
-    Writer  = require("./writer"),
-    types   = require("./types"),
-    util    = require("./util");
+var Enum     = require("./enum"),
+    Writer   = require("./writer"),
+    types    = require("./types"),
+    util     = require("./util");
+var safeProp = util.safeProp;
 
 /**
  * General purpose message encoder.
@@ -99,17 +100,18 @@ function encode(message, writer) {
  */
 /**/
 encode.generate = function generate(mtype) {
-    /* eslint-disable no-unexpected-multiline */
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.getFieldsArray();
     var oneofs = mtype.getOneofsArray();
     var gen = util.codegen("m", "w")
     ("w||(w=Writer.create())");
 
+    var i;
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type],
-            prop     = util.safeProp(field.name);
+            prop     = safeProp(field.name);
         
         // Map fields
         if (field.map) {
@@ -185,9 +187,9 @@ encode.generate = function generate(mtype) {
     
         }
     }
-    for (var i = 0; i < oneofs.length; ++i) { gen
+    for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i],
-            prop  = util.safeProp(oneof.name);
+            prop  = safeProp(oneof.name);
         gen
         ("switch(m%s){", prop);
         var oneofFields = oneof.getFieldsArray();
@@ -195,7 +197,7 @@ encode.generate = function generate(mtype) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type],
-                prop     = util.safeProp(field.name);
+                prop     = safeProp(field.name);
             gen
             ("case%j:", field.name);
 
@@ -219,5 +221,5 @@ encode.generate = function generate(mtype) {
 
     return gen
     ("return w");
-    /* eslint-enable no-unexpected-multiline */
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
