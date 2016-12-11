@@ -2,7 +2,7 @@
   "name": "@protobufjs/base64",
   "description": "A minimal base64 implementation for number arrays.",
   "version": "1.0.0",
-  "author": "Daniel Wirtz <dcode@dcode.io>",
+  "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
     "url": "https://github.com/dcodeIO/protobuf.js.git"

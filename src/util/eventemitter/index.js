@@ -36,7 +36,7 @@ EventEmitterPrototype.on = function on(evt, fn, ctx) {
 };
 
 /**
- * Removes an event listener.
+ * Removes an event listener or any matching listeners if arguments are omitted.
  * @param {string} [evt] Event name. Removes all listeners if omitted.
  * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
  * @returns {util.EventEmitter} `this`

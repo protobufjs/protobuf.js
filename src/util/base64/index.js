@@ -8,7 +8,7 @@
 var base64 = exports;
 
 /**
- * Calculates the base64 byte length of a string.
+ * Calculates the byte length of a base64 encoded string.
  * @param {string} string Base64 encoded string
  * @returns {number} Byte length
  */

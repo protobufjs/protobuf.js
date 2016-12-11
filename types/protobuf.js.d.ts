@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Sat, 10 Dec 2016 23:38:42 UTC
+ * Generated Sun, 11 Dec 2016 00:46:04 UTC
  */
 declare module "protobufjs" {
 
@@ -1657,7 +1657,7 @@ declare module "protobufjs" {
        */
       module base64 {
           /**
-           * Calculates the base64 byte length of a string.
+           * Calculates the byte length of a base64 encoded string.
            * @param {string} string Base64 encoded string
            * @returns {number} Byte length
            */
@@ -1721,7 +1721,7 @@ declare module "protobufjs" {
           on(evt: string, fn: (() => any), ctx?: Object): util.EventEmitter;
    
           /**
-           * Removes an event listener.
+           * Removes an event listener or any matching listeners if arguments are omitted.
            * @param {string} [evt] Event name. Removes all listeners if omitted.
            * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
            * @returns {util.EventEmitter} `this`

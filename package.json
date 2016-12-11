@@ -2,7 +2,7 @@
   "name": "protobufjs",
   "version": "6.1.0",
   "description": "Protocol Buffers for JavaScript.",
-  "author": "Daniel Wirtz",
+  "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

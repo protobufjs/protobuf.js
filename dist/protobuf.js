@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sat, 10 Dec 2016 23:38:36 UTC
+ * Compiled Sun, 11 Dec 2016 00:45:58 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4866,7 +4866,7 @@ util._configure = function configure() {
 var base64 = exports;
 
 /**
- * Calculates the base64 byte length of a string.
+ * Calculates the byte length of a base64 encoded string.
  * @param {string} string Base64 encoded string
  * @returns {number} Byte length
  */
@@ -5144,7 +5144,7 @@ EventEmitterPrototype.on = function on(evt, fn, ctx) {
 };
 
 /**
- * Removes an event listener.
+ * Removes an event listener or any matching listeners if arguments are omitted.
  * @param {string} [evt] Event name. Removes all listeners if omitted.
  * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
  * @returns {util.EventEmitter} `this`
