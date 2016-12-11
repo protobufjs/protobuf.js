@@ -84,6 +84,24 @@ exports.require = function(name, version) {
     return require(name);
 };
 
+exports.wrap = function(name, OUTPUT, ROOT) {
+    if (!ROOT)
+        ROOT = "default";
+    var wrap;
+    try {
+        // try built-in wrappers first
+        wrap = fs.readFileSync(path.join(__dirname, "wrappers", name + ".js")).toString("utf8");
+    } catch (e) {
+        // otherwise fetch the custom one
+        wrap = fs.readFileSync(path.resolve(process.cwd(), name)).toString("utf8");
+    }
+    wrap = wrap.replace(/%ROOT%/g, JSON.stringify(ROOT));
+    wrap = wrap.replace(/( *)%OUTPUT%/, function($0, $1) {
+        return $1.length ? OUTPUT.replace(/^/mg, $1) : OUTPUT;
+    });
+    return wrap;
+};
+
 exports.pad = function(str, len, l) {
     while (str.length < len)
         str = l ? str + " " : " " + str;

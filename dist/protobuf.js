@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 11 Dec 2016 01:03:34 UTC
+ * Compiled Sun, 11 Dec 2016 12:37:52 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -5828,7 +5828,7 @@ function verify(message) {
 
         // required or present fields
         } else if (field.required || value !== undefined) {
-            
+
             if (reason = verifyValue(field, value)) // eslint-disable-line no-cond-assign
                 return reason;
         }
@@ -5871,7 +5871,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "string"));
             break;
         case "bytes": gen
-            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s))", ref, ref, ref)
+            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s)))", ref, ref, ref)
                 ("return%j", invalid(field, "buffer"));
             break;
         default:
@@ -6657,6 +6657,13 @@ function loadSync(filename, root) {
 }
 
 protobuf.loadSync = loadSync;
+
+/**
+ * Named roots.
+ * @name roots
+ * @type {Object.<string,Root>}
+ */
+protobuf.roots = {};
 
 // Parser
 protobuf.tokenize         = require(25);

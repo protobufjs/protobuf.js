@@ -273,7 +273,7 @@ function buildType(ref, type) {
     ]);
     push(name(type.name) + ".decodeDelimited = function decodeDelimited(readerOrBuffer) {");
     ++indent;
-    push("readerOrBuffer = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader(readerOrBuffer);");
+    push("readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);");
     push("return this.decode(readerOrBuffer, readerOrBuffer.uint32());");
     --indent;
     push("};");

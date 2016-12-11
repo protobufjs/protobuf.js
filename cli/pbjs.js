@@ -17,9 +17,10 @@ exports.main = function(args) {
             target : "t",
             out    : "o",
             path   : "p",
-            wrap   : "w"
+            wrap   : "w",
+            root   : "r"
         },
-        string: [ "target", "out", "path", "wrap" ],
+        string: [ "target", "out", "path", "wrap", "root" ],
         default: {
             target: "json"
         }
@@ -46,7 +47,9 @@ exports.main = function(args) {
             "",
             "  -o, --out       Saves to a file instead of writing to stdout.",
             "",
-            "  -w, --wrap      Specifies an alternative wrapper for any *-module target.",
+            "  -w, --wrap      Specifies an alternative wrapper for *-module targets.",
+            "",
+            "  -r, --root      Specifies an alternative root name for *-module targets.",
             "",
             "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.proto file2.json ..."
         ].join("\n"));

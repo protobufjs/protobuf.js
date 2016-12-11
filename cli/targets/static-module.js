@@ -7,25 +7,23 @@ module.exports = static_module_target;
 // - AMD and global scope depend on the full library for now.
 
 var path = require("path"),
-    fs   = require("fs");
+    fs   = require("fs"),
+    util = require("../util");
 
 var protobuf = require("../..");
 
 static_module_target.description = "Static code without reflection as a module (AMD, CommonJS, global)";
 
 function static_module_target(root, options, callback) {
-    if (options.wrap)
-        options.wrap = path.resolve(process.cwd(), options.wrap);
-    else
-        options.wrap = path.join(__dirname, "static-module.tpl");
-    try {
-        var wrap = fs.readFileSync(options.wrap).toString("utf8");
-        require("./static")(root, options, function(err, output) {
-            if (err)
-                return callback(err);
-            callback(null, wrap.replace(/%OUTPUT%/, output.replace(/^(?!$)/mg, "    ")));
-        });
-    } catch (err) {
-        callback(err);
-    }
+    require("./static")(root, options, function(err, output) {
+        if (err)
+            return callback(err);
+        try {
+            output = util.wrap(options.wrap || "static-module", output, options.root);
+        } catch (e) {
+            callback(e);
+            return;
+        }
+        callback(null, output);
+    });
 }

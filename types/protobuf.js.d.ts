@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Sun, 11 Dec 2016 01:04:40 UTC
+ * Generated Sun, 11 Dec 2016 12:37:58 UTC
  */
 declare module "protobufjs" {
 
@@ -417,6 +417,13 @@ declare module "protobufjs" {
     * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
     */
    function loadSync(filename: (string|string[]), root?: Root): Root;
+   
+   /**
+    * Named roots.
+    * @name roots
+    * @type {Object.<string,Root>}
+    */
+   var roots: { [k: string]: Root };
    
    /**
     * Reconfigures the library according to the environment.

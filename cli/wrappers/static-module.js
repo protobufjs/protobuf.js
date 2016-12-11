@@ -1,18 +1,19 @@
-!(function(global, factory) {
+(function(global, factory) {
+    /* eslint-disable no-undef */
 
     /* AMD */ if (typeof define === 'function' && define.amd)
         define(["protobuf"], factory);
     
     /* CommonJS */ else if (typeof require === 'function' && typeof module === 'object' && module && module.exports)
         module.exports = factory(require("protobufjs/runtime"));
-    
-    /* Global */ else
-        global.root = factory(global.protobuf);
 
+    /* eslint-enable no-undef */
 })(this, function($protobuf) {
-    "use strict";
+    "use strict"; // eslint-disable-line strict
 
-%OUTPUT%
+    %OUTPUT%
+
+    $protobuf.roots[%ROOT%] = $root;
 
     return $root;
 });

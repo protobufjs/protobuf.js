@@ -66,6 +66,13 @@ function loadSync(filename, root) {
 
 protobuf.loadSync = loadSync;
 
+/**
+ * Named roots.
+ * @name roots
+ * @type {Object.<string,Root>}
+ */
+protobuf.roots = {};
+
 // Parser
 protobuf.tokenize         = require("./tokenize");
 protobuf.parse            = require("./parse");
