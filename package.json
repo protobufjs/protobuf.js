@@ -62,7 +62,6 @@
     "gulp-uglify": "^2.0.0",
     "jaguarjs-jsdoc": "dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^3.4.2",
-    "long": "^3.2.0",
     "minimist": "^1.2.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
