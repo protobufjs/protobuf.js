@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Sun, 11 Dec 2016 12:37:58 UTC
+ * Generated Sun, 11 Dec 2016 23:22:51 UTC
  */
 declare module "protobufjs" {
 
@@ -774,6 +774,24 @@ declare module "protobufjs" {
        */
       lookup(path: (string|string[]), parentAlreadyChecked?: boolean): ReflectionObject;
    
+      /**
+       * Looks up the {@link Type|type} at the specified path, relative to this namespace.
+       * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+       * @param {string|string[]} path Path to look up
+       * @returns {Type} Looked up type
+       * @throws {Error} If `path` does not point to a type
+       */
+      lookupType(path: (string|string[])): Type;
+   
+      /**
+       * Looks up the {@link Service|service} at the specified path, relative to this namespace.
+       * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+       * @param {string|string[]} path Path to look up
+       * @returns {Service} Looked up service
+       * @throws {Error} If `path` does not point to a service
+       */
+      lookupService(path: (string|string[])): Service;
+   
    }
    
    /**
@@ -925,6 +943,14 @@ declare module "protobufjs" {
        * @type {string[]}
        */
       oneof: string[];
+   
+      /**
+       * Fields that belong to this oneof as an array for iteration.
+       * @name OneOf#fieldsArray
+       * @type {Field[]}
+       * @readonly
+       */
+      fieldsArray: Field[];
    
       /**
        * Tests if the specified JSON object describes a oneof.
@@ -1743,6 +1769,14 @@ declare module "protobufjs" {
            */
           emit(evt: string, args: any): util.EventEmitter;
    
+      }
+   
+      /**
+       * Fast 64 bit floats for buffers.
+       * @memberof util
+       * @namespace
+       */
+      module f64 {
       }
    
       /**

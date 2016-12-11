@@ -7,7 +7,7 @@ var path = require("path"),
 
 var protobuf = require("../..");
 
-json_module.description = "JSON representation as a module (AMD, CommonJS, global)"
+json_module.description = "JSON representation as a module"
 
 function json_module(root, options, callback) {
 

@@ -12,7 +12,7 @@ var path = require("path"),
 
 var protobuf = require("../..");
 
-static_module_target.description = "Static code without reflection as a module (AMD, CommonJS, global)";
+static_module_target.description = "Static code without reflection as a module";
 
 function static_module_target(root, options, callback) {
     require("./static")(root, options, function(err, output) {

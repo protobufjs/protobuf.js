@@ -267,3 +267,31 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
         return null;
     return this.parent.lookup(path);
 };
+
+/**
+ * Looks up the {@link Type|type} at the specified path, relative to this namespace.
+ * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * @param {string|string[]} path Path to look up
+ * @returns {Type} Looked up type
+ * @throws {Error} If `path` does not point to a type
+ */
+NamespacePrototype.lookupType = function lookupType(path) {
+    var found = this.lookup(path);
+    if (!(found instanceof Type))
+        throw Error("no such type");
+    return found;
+};
+
+/**
+ * Looks up the {@link Service|service} at the specified path, relative to this namespace.
+ * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * @param {string|string[]} path Path to look up
+ * @returns {Service} Looked up service
+ * @throws {Error} If `path` does not point to a service
+ */
+NamespacePrototype.lookupService = function lookupService(path) {
+    var found = this.lookup(path);
+    if (!(found instanceof Service))
+        throw Error("no such service");
+    return found;
+};
