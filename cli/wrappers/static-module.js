@@ -13,6 +13,7 @@
 
     %OUTPUT%
 
+    $protobuf.roots = {};
     $protobuf.roots[%ROOT%] = $root;
 
     return $root;
