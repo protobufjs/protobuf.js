@@ -342,7 +342,13 @@ Consolidates imports and converts between file formats.
 
   -o, --out       Saves to a file instead of writing to stdout.
 
-  -w, --wrap      Specifies an alternative wrapper for any *-module target.
+  -w, --wrap      Specifies the wrapper to use for *-module targets. Also accepts a path.
+
+                  default   Default wrapper supporting both CommonJS and AMD
+                  commonjs  CommonJS only wrapper
+                  amd       AMD only wrapper
+
+  -r, --root      Specifies an alternative protobuf.roots name for *-module targets.
 
 usage: pbjs [options] file1.proto file2.json ...
 ```

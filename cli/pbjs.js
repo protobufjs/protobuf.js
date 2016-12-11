@@ -31,7 +31,7 @@ exports.main = function(args) {
         paths  = typeof argv.path === 'string' ? [ argv.path ] : argv.path || [];
 
     if (!files.length) {
-        var descriptions = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
+        var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
             return "                  " + util.pad(key, 14, true) + targets[key].description;
         });
         console.log([
@@ -41,13 +41,17 @@ exports.main = function(args) {
             "",
             "  -t, --target    Specifies the target format. Also accepts a path to require a custom target.",
             "",
-            descriptions.join('\n'),
+            descs.join('\n'),
             "",
             "  -p, --path      Adds a directory to the include path.",
             "",
             "  -o, --out       Saves to a file instead of writing to stdout.",
             "",
-            "  -w, --wrap      Specifies an alternative wrapper for *-module targets.",
+            "  -w, --wrap      Specifies the wrapper to use for *-module targets. Also accepts a path.",
+            "",
+            "                  default   Default wrapper supporting both CommonJS and AMD",
+            "                  commonjs  CommonJS only wrapper",
+            "                  amd       AMD only wrapper",
             "",
             "  -r, --root      Specifies an alternative protobuf.roots name for *-module targets.",
             "",

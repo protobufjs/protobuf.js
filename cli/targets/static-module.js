@@ -19,7 +19,7 @@ function static_module_target(root, options, callback) {
         if (err)
             return callback(err);
         try {
-            output = util.wrap(options.wrap || "static-module", output, options.root);
+            output = util.wrap(options.wrap || "default", output, options.root);
         } catch (e) {
             callback(e);
             return;
