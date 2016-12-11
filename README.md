@@ -99,7 +99,7 @@ message AwesomeMessage {
 ```js
 protobuf.load("awesome.proto", function(err, root) {
     if (err) throw err;
-    
+
     // Obtain a message type
     var AwesomeMessage = root.lookup("awesomepackage.AwesomeMessage");
 
@@ -118,7 +118,7 @@ protobuf.load("awesome.proto", function(err, root) {
     var message = AwesomeMessage.decode(buffer);
     // ... do something with message
 
-    // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited. 
+    // If your application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.
 });
 ```
 
@@ -129,7 +129,7 @@ protobuf.load("awesome.proto")
     .then(function(root) {
        ...
     });
-``` 
+```
 
 ### Using reflection only
 
@@ -139,7 +139,7 @@ var Root  = protobuf.Root,
     Type  = protobuf.Type,
     Field = protobuf.Field;
 
-var AwesomeMessage = new Type("AwesomeMessage").add(new Field(1, "awesomeField", "string"));
+var AwesomeMessage = new Type("AwesomeMessage").add(new Field("awesomeField", 1, "string"));
 
 var root = new Root().define("awesomepackage").add(AwesomeMessage);
 
@@ -230,7 +230,7 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 * **parse(source: `string`): `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js)]<br />
   Parses the given .proto source and returns an object with the parsed contents.
-  
+
   * **package: `string|undefined`**<br />
     The package name, if declared.
 
@@ -242,7 +242,7 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
   * **syntax: `string|undefined`**<br />
     Source syntax, if defined.
- 
+
   * **root: `Root`**<br />
     The root namespace.
 
