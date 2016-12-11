@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 11 Dec 2016 00:45:58 UTC
+ * Compiled Sun, 11 Dec 2016 01:03:34 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -126,11 +126,488 @@ exports.write = function writeIEEE754(buffer, value, offset, isBE, mLen, nBytes)
 
 },{}],2:[function(require,module,exports){
 "use strict";
+
+/**
+ * A minimal base64 implementation for number arrays.
+ * @memberof util
+ * @namespace
+ */
+var base64 = exports;
+
+/**
+ * Calculates the byte length of a base64 encoded string.
+ * @param {string} string Base64 encoded string
+ * @returns {number} Byte length
+ */
+base64.length = function length(string) {
+    var p = string.length;
+    if (!p)
+        return 0;
+    var n = 0;
+    while (--p % 4 > 1 && string.charAt(p) === '=')
+        ++n;
+    return Math.ceil(string.length * 3) / 4 - n;
+};
+
+// Base64 encoding table
+var b64 = [
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102,
+    103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118,
+    119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 43, 47
+];
+
+/**
+ * Encodes a buffer to a base64 encoded string.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} Base64 encoded string
+ */
+base64.encode = function encode(buffer, start, end) {
+    var string = new Array(Math.ceil((end - start) / 3) * 4);
+    var i = 0, // output index
+        j = 0, // goto index
+        t;     // temporary
+    while (start < end) {
+        var b = buffer[start++];
+        switch (j) {
+            case 0:
+                string[i++] = b64[b >> 2];
+                t = (b & 3) << 4;
+                j = 1;
+                break;
+            case 1:
+                string[i++] = b64[t | b >> 4];
+                t = (b & 15) << 2;
+                j = 2;
+                break;
+            case 2:
+                string[i++] = b64[t | b >> 6];
+                string[i++] = b64[b & 63];
+                j = 0;
+                break;
+        }
+    }
+    if (j) {
+        string[i++] = b64[t];
+        string[i  ] = 61;
+        if (j === 1)
+            string[i + 1] = 61;
+    }
+    return String.fromCharCode.apply(String, string);
+};
+
+// Base64 decoding table
+var s64 = []; for (var i = 0; i < b64.length; ++i) s64[b64[i]] = i;
+var invalidEncoding = "invalid encoding";
+
+/**
+ * Decodes a base64 encoded string to a buffer.
+ * @param {string} string Source string
+ * @param {Uint8Array} buffer Destination buffer
+ * @param {number} offset Destination offset
+ * @returns {number} Number of bytes written
+ * @throws {Error} If encoding is invalid
+ */
+base64.decode = function decode(string, buffer, offset) {
+    var start = offset;
+    var j = 0, // goto index
+        t;     // temporary
+    for (var i = 0; i < string.length;) {
+        var c = string.charCodeAt(i++);
+        if (c === 61 && j > 1)
+            break;
+        if ((c = s64[c]) === undefined)
+            throw Error(invalidEncoding);
+        switch (j) {
+            case 0:
+                t = c;
+                j = 1;
+                break;
+            case 1:
+                buffer[offset++] = t << 2 | (c & 48) >> 4;
+                t = c;
+                j = 2;
+                break;
+            case 2:
+                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
+                t = c;
+                j = 3;
+                break;
+            case 3:
+                buffer[offset++] = (t & 3) << 6 | c;
+                j = 0;
+                break;
+        }
+    }
+    if (j === 1)
+        throw Error(invalidEncoding);
+    return offset - start;
+};
+
+},{}],3:[function(require,module,exports){
+"use strict";
+module.exports = codegen;
+
+var blockOpenRe  = /[{[]$/,
+    blockCloseRe = /^[}\]]/,
+    casingRe     = /:$/,
+    branchRe     = /^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/,
+    breakRe      = /\b(?:break|continue);?$|^\s*return\b/;
+
+/**
+ * A closure for generating functions programmatically.
+ * @memberof util
+ * @namespace
+ * @function
+ * @param {...string} params Function parameter names
+ * @returns {Codegen} Codegen instance
+ * @property {boolean} supported Whether code generation is supported by the environment.
+ * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+ */
+function codegen() {
+    var args   = Array.prototype.slice.call(arguments),
+        src    = ['\t"use strict"'],
+        indent = 1,
+        inCase = false;
+
+    /**
+     * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
+     * @typedef Codegen
+     * @type {function}
+     * @param {string} format Format string
+     * @param {...*} args Replacements
+     * @returns {Codegen} Itself
+     * @property {function(string=):string} str Stringifies the so far generated function source.
+     * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
+     */
+    /**/
+    function gen() {
+        var line = sprintf.apply(null, arguments);
+        var level = indent;
+        if (src.length) {
+            var prev = src[src.length - 1];
+
+            // block open or one time branch
+            if (blockOpenRe.test(prev))
+                level = ++indent; // keep
+            else if (branchRe.test(prev))
+                ++level; // once
+            
+            // casing
+            if (casingRe.test(prev) && !casingRe.test(line)) {
+                level = ++indent;
+                inCase = true;
+            } else if (inCase && breakRe.test(prev)) {
+                level = --indent;
+                inCase = false;
+            }
+
+            // block close
+            if (blockCloseRe.test(line))
+                level = --indent;
+        }
+        for (var index = 0; index < level; ++index)
+            line = "\t" + line;
+        src.push(line);
+        return gen;
+    }
+
+    /**
+     * Stringifies the so far generated function source.
+     * @param {string} [name] Function name, defaults to generate an anonymous function
+     * @returns {string} Function source using tabs for indentation
+     * @inner
+     */
+    function str(name) {
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+    }
+
+    gen.str = str;
+
+    /**
+     * Ends generation and builds the function whilst applying a scope.
+     * @param {string} [name] Function name, defaults to generate an anonymous function
+     * @param {Object} [scope] Function scope
+     * @returns {function} The generated function, with scope applied if specified
+     * @inner
+     */
+    function eof(name, scope) {
+        if (typeof name === 'object') {
+            scope = name;
+            name = undefined;
+        }
+        var source = gen.str(name);
+        if (codegen.verbose)
+            console.log("--- codegen ---\n" + source.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
+        var keys = Object.keys(scope || (scope = {}));
+        return Function.apply(null, keys.concat("return " + source)).apply(null, keys.map(function(key) { return scope[key]; })); // eslint-disable-line no-new-func
+        //     ^ Creates a wrapper function with the scoped variable names as its parameters,
+        //       calls it with the respective scoped variable values ^
+        //       and returns our brand-new properly scoped function.
+        //
+        // This works because "Invoking the Function constructor as a function (without using the
+        // new operator) has the same effect as invoking it as a constructor."
+        // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Function
+    }
+
+    gen.eof = eof;
+
+    return gen;
+}
+
+function sprintf(format) {
+    var params = Array.prototype.slice.call(arguments, 1),
+        index  = 0;
+    return format.replace(/%([djs])/g, function($0, $1) {
+        var param = params[index++];
+        switch ($1) {
+            case "j":
+                return JSON.stringify(param);
+            default:
+                return String(param);
+        }
+    });
+}
+
+codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
+codegen.verbose   = false;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+module.exports = EventEmitter;
+
+/**
+ * Constructs a new event emitter instance.
+ * @classdesc A minimal event emitter.
+ * @memberof util
+ * @constructor
+ */
+function EventEmitter() {
+
+    /**
+     * Registered listeners.
+     * @type {Object.<string,*>}
+     * @private
+     */
+    this._listeners = {};
+}
+
+/** @alias util.EventEmitter.prototype */
+var EventEmitterPrototype = EventEmitter.prototype;
+
+/**
+ * Registers an event listener.
+ * @param {string} evt Event name
+ * @param {function} fn Listener
+ * @param {Object} [ctx] Listener context
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.on = function on(evt, fn, ctx) {
+    (this._listeners[evt] || (this._listeners[evt] = [])).push({
+        fn  : fn,
+        ctx : ctx || this
+    });
+    return this;
+};
+
+/**
+ * Removes an event listener or any matching listeners if arguments are omitted.
+ * @param {string} [evt] Event name. Removes all listeners if omitted.
+ * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.off = function off(evt, fn) {
+    if (evt === undefined)
+        this._listeners = {};
+    else {
+        if (fn === undefined)
+            this._listeners[evt] = [];
+        else {
+            var listeners = this._listeners[evt];
+            for (var i = 0; i < listeners.length;)
+                if (listeners[i].fn === fn)
+                    listeners.splice(i, 1);
+                else
+                    ++i;
+        }
+    }
+    return this;
+};
+
+/**
+ * Emits an event by calling its listeners with the specified arguments.
+ * @param {string} evt Event name
+ * @param {...*} args Arguments
+ * @returns {util.EventEmitter} `this`
+ */
+EventEmitterPrototype.emit = function emit(evt) {
+    var listeners = this._listeners[evt];
+    if (listeners) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0; i < listeners.length; ++i)
+            listeners[i].fn.apply(listeners[i].ctx, args);
+    }
+    return this;
+};
+
+},{}],5:[function(require,module,exports){
+"use strict";
+module.exports = pool;
+
+/**
+ * An allocator as used by {@link util.pool}.
+ * @typedef PoolAllocator
+ * @type {function}
+ * @param {number} size Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+
+/**
+ * A slicer as used by {@link util.pool}.
+ * @typedef PoolSlicer
+ * @type {function}
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Buffer slice
+ * @this {Uint8Array}
+ */
+
+/**
+ * A general purpose buffer pool.
+ * @memberof util
+ * @function
+ * @param {PoolAllocator} alloc Allocator
+ * @param {PoolSlicer} slice Slicer
+ * @param {number} [size=8192] Slab size
+ * @returns {PoolAllocator} Pooled allocator
+ */
+function pool(alloc, slice, size) {
+    var SIZE   = size || 8192;
+    var MAX    = SIZE >>> 1;
+    var slab   = null;
+    var offset = SIZE;
+    return function pool_alloc(size) {
+        if (size > MAX)
+            return alloc(size);
+        if (offset + size > SIZE) {
+            slab = alloc(SIZE);
+            offset = 0;
+        }
+        var buf = slice.call(slab, offset, offset += size);
+        if (offset & 7) // align to 32 bit
+            offset = (offset | 7) + 1;
+        return buf;
+    };
+}
+
+},{}],6:[function(require,module,exports){
+"use strict";
+
+/**
+ * A minimal UTF8 implementation for number arrays.
+ * @memberof util
+ * @namespace
+ */
+var utf8 = exports;
+
+/**
+ * Calculates the UTF8 byte length of a string.
+ * @param {string} string String
+ * @returns {number} Byte length
+ */
+utf8.length = function length(string) {
+    var strlen = string.length >>> 0;
+    var len = 0,
+        c = 0;
+    for (var i = 0; i < strlen; ++i) {
+        c = string.charCodeAt(i);
+        if (c < 128)
+            len += 1;
+        else if (c < 2048)
+            len += 2;
+        else if ((c & 0xFC00) === 0xD800 && (string.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
+            ++i;
+            len += 4;
+        } else
+            len += 3;
+    }
+    return len;
+};
+
+/**
+ * Reads UTF8 bytes as a string.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} String read
+ */
+utf8.read = function(buffer, start, end) {
+    var len = end - start;
+    if (len > 0) {
+        var string = [],
+            i = 0, // char offset
+            t;     // temporary
+        while (start < end) {
+            t = buffer[start++];
+            if (t < 128)
+                string[i++] = t;
+            else if (t > 191 && t < 224)
+                string[i++] = (t & 31) << 6 | buffer[start++] & 63;
+            else if (t > 239 && t < 365) {
+                t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
+                string[i++] = 0xD800 + (t >> 10);
+                string[i++] = 0xDC00 + (t & 1023);
+            } else
+                string[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
+        }
+        return String.fromCharCode.apply(String, string.slice(0, i));
+    }
+    return "";
+};
+
+/**
+ * Writes a string as UTF8 bytes.
+ * @param {string} string Source string
+ * @param {Uint8Array} buffer Destination buffer
+ * @param {number} offset Destination offset
+ * @returns {number} Bytes written
+ */
+utf8.write = function(string, buffer, offset) {
+    var start = offset,
+        c1, // character 1
+        c2; // character 2
+    for (var i = 0; i < string.length; ++i) {
+        c1 = string.charCodeAt(i);
+        if (c1 < 128) {
+            buffer[offset++] = c1;
+        } else if (c1 < 2048) {
+            buffer[offset++] = c1 >> 6       | 192;
+            buffer[offset++] = c1       & 63 | 128;
+        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = string.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
+            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
+            ++i;
+            buffer[offset++] = c1 >> 18      | 240;
+            buffer[offset++] = c1 >> 12 & 63 | 128;
+            buffer[offset++] = c1 >> 6  & 63 | 128;
+            buffer[offset++] = c1       & 63 | 128;
+        } else {
+            buffer[offset++] = c1 >> 12      | 224;
+            buffer[offset++] = c1 >> 6  & 63 | 128;
+            buffer[offset++] = c1       & 63 | 128;
+        }
+    }
+    return offset - start;
+};
+
+},{}],7:[function(require,module,exports){
+"use strict";
 module.exports = Class;
 
-var Message = require(9),
-    Type    = require(21),
-    util    = require(23);
+var Message = require(14),
+    Type    = require(26),
+    util    = require(28);
 
 var _TypeError = util._TypeError;
 
@@ -263,7 +740,7 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-},{"21":21,"23":23,"9":9}],3:[function(require,module,exports){
+},{"14":14,"26":26,"28":28}],8:[function(require,module,exports){
 "use strict";
 
 module.exports = common;
@@ -396,14 +873,14 @@ common("struct", {
     }
 });
 
-},{}],4:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 module.exports = decode;
 
-var Enum    = require(6),
-    Reader  = require(15),
-    types   = require(22),
-    util    = require(23);
+var Enum    = require(11),
+    Reader  = require(20),
+    types   = require(27),
+    util    = require(28);
 
 /**
  * General purpose message decoder.
@@ -571,14 +1048,14 @@ decode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"15":15,"22":22,"23":23,"6":6}],5:[function(require,module,exports){
+},{"11":11,"20":20,"27":27,"28":28}],10:[function(require,module,exports){
 "use strict";
 module.exports = encode;
 
-var Enum    = require(6),
+var Enum    = require(11),
     Writer  = require(32),
-    types   = require(22),
-    util    = require(23);
+    types   = require(27),
+    util    = require(28);
 
 /**
  * General purpose message encoder.
@@ -759,15 +1236,15 @@ encode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"22":22,"23":23,"32":32,"6":6}],6:[function(require,module,exports){
+},{"11":11,"27":27,"28":28,"32":32}],11:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
-var ReflectionObject = require(12);
+var ReflectionObject = require(17);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
 
-var util = require(23);
+var util = require(28);
 
 var _TypeError = util._TypeError;
 
@@ -900,19 +1377,19 @@ EnumPrototype.remove = function(name) {
     return clearCache(this);
 };
 
-},{"12":12,"23":23}],7:[function(require,module,exports){
+},{"17":17,"28":28}],12:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
-var ReflectionObject = require(12);
+var ReflectionObject = require(17);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Type      = require(21),
-    Enum      = require(6),
-    MapField  = require(8),
-    types     = require(22),
-    util      = require(23);
+var Type      = require(26),
+    Enum      = require(11),
+    MapField  = require(13),
+    types     = require(27),
+    util      = require(28);
 
 var _TypeError = util._TypeError;
 
@@ -1174,19 +1651,19 @@ FieldPrototype.jsonConvert = function(value, options) {
     return value;
 };
 
-},{"12":12,"21":21,"22":22,"23":23,"6":6,"8":8}],8:[function(require,module,exports){
+},{"11":11,"13":13,"17":17,"26":26,"27":27,"28":28}],13:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
-var Field = require(7);
+var Field = require(12);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField);
 
-var Enum    = require(6),
-    types   = require(22),
-    util    = require(23);
+var Enum    = require(11),
+    types   = require(27),
+    util    = require(28);
 
 /**
  * Constructs a new map field instance.
@@ -1272,7 +1749,7 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"22":22,"23":23,"6":6,"7":7}],9:[function(require,module,exports){
+},{"11":11,"12":12,"27":27,"28":28}],14:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 
@@ -1409,16 +1886,16 @@ Message.verify = function verify(message) {
     return this.$type.verify(message);
 };
 
-},{}],10:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
-var ReflectionObject = require(12);
+var ReflectionObject = require(17);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
 
-var Type = require(21),
-    util = require(23);
+var Type = require(26),
+    util = require(28);
 
 var _TypeError = util._TypeError;
 
@@ -1546,19 +2023,19 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"12":12,"21":21,"23":23}],11:[function(require,module,exports){
+},{"17":17,"26":26,"28":28}],16:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
-var ReflectionObject = require(12);
+var ReflectionObject = require(17);
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
-var Enum    = require(6),
-    Type    = require(21),
-    Field   = require(7),
-    Service = require(19),
-    util    = require(23);
+var Enum    = require(11),
+    Type    = require(26),
+    Field   = require(12),
+    Service = require(24),
+    util    = require(28);
 
 var _TypeError = util._TypeError;
 
@@ -1817,14 +2294,14 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     return this.parent.lookup(path);
 };
 
-},{"12":12,"19":19,"21":21,"23":23,"6":6,"7":7}],12:[function(require,module,exports){
+},{"11":11,"12":12,"17":17,"24":24,"26":26,"28":28}],17:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
 
-var Root = require(16),
-    util = require(23);
+var Root = require(21),
+    util = require(28);
 
 var _TypeError = util._TypeError;
 
@@ -2016,16 +2493,16 @@ ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.getFullName();
 };
 
-},{"16":16,"23":23}],13:[function(require,module,exports){
+},{"21":21,"28":28}],18:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
-var ReflectionObject = require(12);
+var ReflectionObject = require(17);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
-var Field = require(7),
-    util  = require(23);
+var Field = require(12),
+    util  = require(28);
 
 var _TypeError = util._TypeError;
 
@@ -2169,21 +2646,21 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"12":12,"23":23,"7":7}],14:[function(require,module,exports){
+},{"12":12,"17":17,"28":28}],19:[function(require,module,exports){
 "use strict";
 module.exports = parse;
 
-var tokenize  = require(20),
-    Root      = require(16),
-    Type      = require(21),
-    Field     = require(7),
-    MapField  = require(8),
-    OneOf     = require(13),
-    Enum      = require(6),
-    Service   = require(19),
-    Method    = require(10),
-    types     = require(22),
-    util      = require(23);
+var tokenize  = require(25),
+    Root      = require(21),
+    Type      = require(26),
+    Field     = require(12),
+    MapField  = require(13),
+    OneOf     = require(18),
+    Enum      = require(11),
+    Service   = require(24),
+    Method    = require(15),
+    types     = require(27),
+    util      = require(28);
 var camelCase = util.camelCase;
 
 var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
@@ -2725,13 +3202,13 @@ function parse(source, root) {
     };
 }
 
-},{"10":10,"13":13,"16":16,"19":19,"20":20,"21":21,"22":22,"23":23,"6":6,"7":7,"8":8}],15:[function(require,module,exports){
+},{"11":11,"12":12,"13":13,"15":15,"18":18,"21":21,"24":24,"25":25,"26":26,"27":27,"28":28}],20:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util      = require(29),
+var util      = require(30),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
@@ -3335,17 +3812,17 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"29":29}],16:[function(require,module,exports){
+},{"1":1,"30":30}],21:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
-var Namespace = require(11);
+var Namespace = require(16);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
 
-var Field  = require(7),
-    util   = require(23),
-    common = require(3);
+var Field  = require(12),
+    util   = require(28),
+    common = require(8);
 
 /**
  * Constructs a new root namespace instance.
@@ -3425,7 +3902,7 @@ RootPrototype.load = function load(filename, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require(14)(source, self);
+                var parsed = require(19)(source, self);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -3616,7 +4093,7 @@ RootPrototype.toString = function toString() {
     return this.constructor.name;
 };
 
-},{"11":11,"14":14,"23":23,"3":3,"7":7}],17:[function(require,module,exports){
+},{"12":12,"16":16,"19":19,"28":28,"8":8}],22:[function(require,module,exports){
 "use strict";
 
 /**
@@ -3625,13 +4102,14 @@ RootPrototype.toString = function toString() {
  */
 var rpc = exports;
 
-rpc.Service = require(18);
+rpc.Service = require(23);
 
-},{"18":18}],18:[function(require,module,exports){
+},{"23":23}],23:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var EventEmitter = require(26);
+var util         = require(28);
+var EventEmitter = util.EventEmitter;
 
 /**
  * Constructs a new RPC service instance.
@@ -3670,19 +4148,19 @@ ServicePrototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"26":26}],19:[function(require,module,exports){
+},{"28":28}],24:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var Namespace = require(11);
+var Namespace = require(16);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service);
 
-var Method = require(10),
-    util   = require(23),
-    rpc    = require(17);
+var Method = require(15),
+    util   = require(28),
+    rpc    = require(22);
 
 /**
  * Constructs a new service instance.
@@ -3881,7 +4359,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     return rpcService;
 };
 
-},{"10":10,"11":11,"17":17,"23":23}],20:[function(require,module,exports){
+},{"15":15,"16":16,"22":22,"28":28}],25:[function(require,module,exports){
 "use strict";
 module.exports = tokenize;
 
@@ -4088,27 +4566,27 @@ function tokenize(source) {
     };
     /* eslint-enable callback-return */
 }
-},{}],21:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 "use strict";
 module.exports = Type; 
 
-var Namespace = require(11);
+var Namespace = require(16);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
 var TypePrototype = Namespace.extend(Type);
 
-var Enum      = require(6),
-    OneOf     = require(13),
-    Field     = require(7),
-    Service   = require(19),
-    Class     = require(2),
-    Message   = require(9),
-    Reader    = require(15),
+var Enum      = require(11),
+    OneOf     = require(18),
+    Field     = require(12),
+    Service   = require(24),
+    Class     = require(7),
+    Message   = require(14),
+    Reader    = require(20),
     Writer    = require(32),
-    util      = require(23);
-var encode    = require(5),
-    decode    = require(4),
+    util      = require(28);
+var encode    = require(10),
+    decode    = require(9),
     verify    = require(31);
 
 /**
@@ -4479,7 +4957,7 @@ TypePrototype.verify = function verify_setup(message) {
     ).call(this, message);
 };
 
-},{"11":11,"13":13,"15":15,"19":19,"2":2,"23":23,"31":31,"32":32,"4":4,"5":5,"6":6,"7":7,"9":9}],22:[function(require,module,exports){
+},{"10":10,"11":11,"12":12,"14":14,"16":16,"18":18,"20":20,"24":24,"28":28,"31":31,"32":32,"7":7,"9":9}],27:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4488,7 +4966,7 @@ TypePrototype.verify = function verify_setup(message) {
  */
 var types = exports;
 
-var util = require(23);
+var util = require(28);
 
 var s = [
     "double",   // 0
@@ -4610,7 +5088,7 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"23":23}],23:[function(require,module,exports){
+},{"28":28}],28:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4619,7 +5097,7 @@ types.packed = bake([
  */
 var util = exports;
 
-util.codegen = require(25);
+util.codegen = require(3);
 
 /**
  * Converts an object's values to an array.
@@ -4844,9 +5322,9 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
 };
 
-var runtime = require(29);
+var runtime = require(30);
 
-util.EventEmitter = require(26);
+util.EventEmitter = require(4);
 
 // Merge in runtime utility
 util.merge(util, runtime);
@@ -4855,340 +5333,12 @@ util._configure = function configure() {
     runtime.Long = util.Long;
 };
 
-},{"25":25,"26":26,"29":29}],24:[function(require,module,exports){
-"use strict";
-
-/**
- * A minimal base64 implementation for number arrays.
- * @memberof util
- * @namespace
- */
-var base64 = exports;
-
-/**
- * Calculates the byte length of a base64 encoded string.
- * @param {string} string Base64 encoded string
- * @returns {number} Byte length
- */
-base64.length = function length(string) {
-    var p = string.length;
-    if (!p)
-        return 0;
-    var n = 0;
-    while (--p % 4 > 1 && string.charAt(p) === '=')
-        ++n;
-    return Math.ceil(string.length * 3) / 4 - n;
-};
-
-// Base64 encoding table
-var b64 = [
-    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102,
-    103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118,
-    119, 120, 121, 122, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 43, 47
-];
-
-/**
- * Encodes a buffer to a base64 encoded string.
- * @param {Uint8Array} buffer Source buffer
- * @param {number} start Source start
- * @param {number} end Source end
- * @returns {string} Base64 encoded string
- */
-base64.encode = function encode(buffer, start, end) {
-    var string = new Array(Math.ceil((end - start) / 3) * 4);
-    var i = 0, // output index
-        j = 0, // goto index
-        t;     // temporary
-    while (start < end) {
-        var b = buffer[start++];
-        switch (j) {
-            case 0:
-                string[i++] = b64[b >> 2];
-                t = (b & 3) << 4;
-                j = 1;
-                break;
-            case 1:
-                string[i++] = b64[t | b >> 4];
-                t = (b & 15) << 2;
-                j = 2;
-                break;
-            case 2:
-                string[i++] = b64[t | b >> 6];
-                string[i++] = b64[b & 63];
-                j = 0;
-                break;
-        }
-    }
-    if (j) {
-        string[i++] = b64[t];
-        string[i  ] = 61;
-        if (j === 1)
-            string[i + 1] = 61;
-    }
-    return String.fromCharCode.apply(String, string);
-};
-
-// Base64 decoding table
-var s64 = []; for (var i = 0; i < b64.length; ++i) s64[b64[i]] = i;
-var invalidEncoding = "invalid encoding";
-
-/**
- * Decodes a base64 encoded string to a buffer.
- * @param {string} string Source string
- * @param {Uint8Array} buffer Destination buffer
- * @param {number} offset Destination offset
- * @returns {number} Number of bytes written
- * @throws {Error} If encoding is invalid
- */
-base64.decode = function decode(string, buffer, offset) {
-    var start = offset;
-    var j = 0, // goto index
-        t;     // temporary
-    for (var i = 0; i < string.length;) {
-        var c = string.charCodeAt(i++);
-        if (c === 61 && j > 1)
-            break;
-        if ((c = s64[c]) === undefined)
-            throw Error(invalidEncoding);
-        switch (j) {
-            case 0:
-                t = c;
-                j = 1;
-                break;
-            case 1:
-                buffer[offset++] = t << 2 | (c & 48) >> 4;
-                t = c;
-                j = 2;
-                break;
-            case 2:
-                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
-                t = c;
-                j = 3;
-                break;
-            case 3:
-                buffer[offset++] = (t & 3) << 6 | c;
-                j = 0;
-                break;
-        }
-    }
-    if (j === 1)
-        throw Error(invalidEncoding);
-    return offset - start;
-};
-
-},{}],25:[function(require,module,exports){
-"use strict";
-module.exports = codegen;
-
-var blockOpenRe  = /[{[]$/,
-    blockCloseRe = /^[}\]]/,
-    casingRe     = /:$/,
-    branchRe     = /^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/,
-    breakRe      = /\b(?:break|continue);?$|^\s*return\b/;
-
-/**
- * A closure for generating functions programmatically.
- * @memberof util
- * @namespace
- * @function
- * @param {...string} params Function parameter names
- * @returns {Codegen} Codegen instance
- * @property {boolean} supported Whether code generation is supported by the environment.
- * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
- */
-function codegen() {
-    var args   = Array.prototype.slice.call(arguments),
-        src    = ['\t"use strict"'],
-        indent = 1,
-        inCase = false;
-
-    /**
-     * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
-     * @typedef Codegen
-     * @type {function}
-     * @param {string} format Format string
-     * @param {...*} args Replacements
-     * @returns {Codegen} Itself
-     * @property {function(string=):string} str Stringifies the so far generated function source.
-     * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
-     */
-    /**/
-    function gen() {
-        var line = sprintf.apply(null, arguments);
-        var level = indent;
-        if (src.length) {
-            var prev = src[src.length - 1];
-
-            // block open or one time branch
-            if (blockOpenRe.test(prev))
-                level = ++indent; // keep
-            else if (branchRe.test(prev))
-                ++level; // once
-            
-            // casing
-            if (casingRe.test(prev) && !casingRe.test(line)) {
-                level = ++indent;
-                inCase = true;
-            } else if (inCase && breakRe.test(prev)) {
-                level = --indent;
-                inCase = false;
-            }
-
-            // block close
-            if (blockCloseRe.test(line))
-                level = --indent;
-        }
-        for (var index = 0; index < level; ++index)
-            line = "\t" + line;
-        src.push(line);
-        return gen;
-    }
-
-    /**
-     * Stringifies the so far generated function source.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @returns {string} Function source using tabs for indentation
-     * @inner
-     */
-    function str(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
-    }
-
-    gen.str = str;
-
-    /**
-     * Ends generation and builds the function whilst applying a scope.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @param {Object} [scope] Function scope
-     * @returns {function} The generated function, with scope applied if specified
-     * @inner
-     */
-    function eof(name, scope) {
-        if (typeof name === 'object') {
-            scope = name;
-            name = undefined;
-        }
-        var source = gen.str(name);
-        if (codegen.verbose)
-            console.log("--- codegen ---\n" + source.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
-        var keys = Object.keys(scope || (scope = {}));
-        return Function.apply(null, keys.concat("return " + source)).apply(null, keys.map(function(key) { return scope[key]; })); // eslint-disable-line no-new-func
-        //     ^ Creates a wrapper function with the scoped variable names as its parameters,
-        //       calls it with the respective scoped variable values ^
-        //       and returns our brand-new properly scoped function.
-        //
-        // This works because "Invoking the Function constructor as a function (without using the
-        // new operator) has the same effect as invoking it as a constructor."
-        // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Function
-    }
-
-    gen.eof = eof;
-
-    return gen;
-}
-
-function sprintf(format) {
-    var params = Array.prototype.slice.call(arguments, 1),
-        index  = 0;
-    return format.replace(/%([djs])/g, function($0, $1) {
-        var param = params[index++];
-        switch ($1) {
-            case "j":
-                return JSON.stringify(param);
-            default:
-                return String(param);
-        }
-    });
-}
-
-codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
-codegen.verbose   = false;
-
-},{}],26:[function(require,module,exports){
-"use strict";
-module.exports = EventEmitter;
-
-/**
- * Constructs a new event emitter instance.
- * @classdesc A minimal event emitter.
- * @memberof util
- * @constructor
- */
-function EventEmitter() {
-
-    /**
-     * Registered listeners.
-     * @type {Object.<string,*>}
-     * @private
-     */
-    this._listeners = {};
-}
-
-/** @alias util.EventEmitter.prototype */
-var EventEmitterPrototype = EventEmitter.prototype;
-
-/**
- * Registers an event listener.
- * @param {string} evt Event name
- * @param {function} fn Listener
- * @param {Object} [ctx] Listener context
- * @returns {util.EventEmitter} `this`
- */
-EventEmitterPrototype.on = function on(evt, fn, ctx) {
-    (this._listeners[evt] || (this._listeners[evt] = [])).push({
-        fn  : fn,
-        ctx : ctx || this
-    });
-    return this;
-};
-
-/**
- * Removes an event listener or any matching listeners if arguments are omitted.
- * @param {string} [evt] Event name. Removes all listeners if omitted.
- * @param {function} [fn] Listener to remove. Removes all listeners of `evt` if omitted.
- * @returns {util.EventEmitter} `this`
- */
-EventEmitterPrototype.off = function off(evt, fn) {
-    if (evt === undefined)
-        this._listeners = {};
-    else {
-        if (fn === undefined)
-            this._listeners[evt] = [];
-        else {
-            var listeners = this._listeners[evt];
-            for (var i = 0; i < listeners.length;)
-                if (listeners[i].fn === fn)
-                    listeners.splice(i, 1);
-                else
-                    ++i;
-        }
-    }
-    return this;
-};
-
-/**
- * Emits an event by calling its listeners with the specified arguments.
- * @param {string} evt Event name
- * @param {...*} args Arguments
- * @returns {util.EventEmitter} `this`
- */
-EventEmitterPrototype.emit = function emit(evt) {
-    var listeners = this._listeners[evt];
-    if (listeners) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        for (var i = 0; i < listeners.length; ++i)
-            listeners[i].fn.apply(listeners[i].ctx, args);
-    }
-    return this;
-};
-
-},{}],27:[function(require,module,exports){
+},{"3":3,"30":30,"4":4}],29:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(23);
+var util = require(28);
 
 /**
  * Any compatible Long instance.
@@ -5386,67 +5536,17 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"23":23}],28:[function(require,module,exports){
-"use strict";
-module.exports = pool;
-
-/**
- * An allocator as used by {@link util.pool}.
- * @typedef PoolAllocator
- * @type {function}
- * @param {number} size Buffer size
- * @returns {Uint8Array} Buffer
- */
-
-/**
- * A slicer as used by {@link util.pool}.
- * @typedef PoolSlicer
- * @type {function}
- * @param {number} start Start offset
- * @param {number} end End offset
- * @returns {Uint8Array} Buffer slice
- * @this {Uint8Array}
- */
-
-/**
- * A general purpose buffer pool.
- * @memberof util
- * @function
- * @param {PoolAllocator} alloc Allocator
- * @param {PoolSlicer} slice Slicer
- * @param {number} [size=8192] Slab size
- * @returns {PoolAllocator} Pooled allocator
- */
-function pool(alloc, slice, size) {
-    var SIZE   = size || 8192;
-    var MAX    = SIZE >>> 1;
-    var slab   = null;
-    var offset = SIZE;
-    return function pool_alloc(size) {
-        if (size > MAX)
-            return alloc(size);
-        if (offset + size > SIZE) {
-            slab = alloc(SIZE);
-            offset = 0;
-        }
-        var buf = slice.call(slab, offset, offset += size);
-        if (offset & 7) // align to 32 bit
-            offset = (offset | 7) + 1;
-        return buf;
-    };
-}
-
-},{}],29:[function(require,module,exports){
+},{"28":28}],30:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-var LongBits = util.LongBits = require(27);
+var LongBits = util.LongBits = require(29);
 
-util.base64 = require(24);
-util.utf8   = require(30);
-util.pool   = require(28);
+util.base64 = require(2);
+util.utf8   = require(6);
+util.pool   = require(5);
 
 /**
  * Whether running within node or not.
@@ -5596,112 +5696,13 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"24":24,"27":27,"28":28,"30":30,"buffer":"buffer","long":"long"}],30:[function(require,module,exports){
-"use strict";
-
-/**
- * A minimal UTF8 implementation for number arrays.
- * @memberof util
- * @namespace
- */
-var utf8 = exports;
-
-/**
- * Calculates the UTF8 byte length of a string.
- * @param {string} string String
- * @returns {number} Byte length
- */
-utf8.length = function length(string) {
-    var strlen = string.length >>> 0;
-    var len = 0,
-        c = 0;
-    for (var i = 0; i < strlen; ++i) {
-        c = string.charCodeAt(i);
-        if (c < 128)
-            len += 1;
-        else if (c < 2048)
-            len += 2;
-        else if ((c & 0xFC00) === 0xD800 && (string.charCodeAt(i + 1) & 0xFC00) === 0xDC00) {
-            ++i;
-            len += 4;
-        } else
-            len += 3;
-    }
-    return len;
-};
-
-/**
- * Reads UTF8 bytes as a string.
- * @param {Uint8Array} buffer Source buffer
- * @param {number} start Source start
- * @param {number} end Source end
- * @returns {string} String read
- */
-utf8.read = function(buffer, start, end) {
-    var len = end - start;
-    if (len > 0) {
-        var string = [],
-            i = 0, // char offset
-            t;     // temporary
-        while (start < end) {
-            t = buffer[start++];
-            if (t < 128)
-                string[i++] = t;
-            else if (t > 191 && t < 224)
-                string[i++] = (t & 31) << 6 | buffer[start++] & 63;
-            else if (t > 239 && t < 365) {
-                t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
-                string[i++] = 0xD800 + (t >> 10);
-                string[i++] = 0xDC00 + (t & 1023);
-            } else
-                string[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
-        }
-        return String.fromCharCode.apply(String, string.slice(0, i));
-    }
-    return "";
-};
-
-/**
- * Writes a string as UTF8 bytes.
- * @param {string} string Source string
- * @param {Uint8Array} buffer Destination buffer
- * @param {number} offset Destination offset
- * @returns {number} Bytes written
- */
-utf8.write = function(string, buffer, offset) {
-    var start = offset,
-        c1, // character 1
-        c2; // character 2
-    for (var i = 0; i < string.length; ++i) {
-        c1 = string.charCodeAt(i);
-        if (c1 < 128) {
-            buffer[offset++] = c1;
-        } else if (c1 < 2048) {
-            buffer[offset++] = c1 >> 6       | 192;
-            buffer[offset++] = c1       & 63 | 128;
-        } else if ((c1 & 0xFC00) === 0xD800 && ((c2 = string.charCodeAt(i + 1)) & 0xFC00) === 0xDC00) {
-            c1 = 0x10000 + ((c1 & 0x03FF) << 10) + (c2 & 0x03FF);
-            ++i;
-            buffer[offset++] = c1 >> 18      | 240;
-            buffer[offset++] = c1 >> 12 & 63 | 128;
-            buffer[offset++] = c1 >> 6  & 63 | 128;
-            buffer[offset++] = c1       & 63 | 128;
-        } else {
-            buffer[offset++] = c1 >> 12      | 224;
-            buffer[offset++] = c1 >> 6  & 63 | 128;
-            buffer[offset++] = c1       & 63 | 128;
-        }
-    }
-    return offset - start;
-};
-
-},{}],31:[function(require,module,exports){
+},{"2":2,"29":29,"5":5,"6":6,"buffer":"buffer","long":"long"}],31:[function(require,module,exports){
 "use strict";
 module.exports = verify;
 
-var Enum      = require(6),
-    Type      = require(21),
-    util      = require(23);
+var Enum      = require(11),
+    Type      = require(26),
+    util      = require(28);
 var isInteger = util.isInteger;
 
 function invalid(field, expected) {
@@ -5975,13 +5976,13 @@ verify.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"21":21,"23":23,"6":6}],32:[function(require,module,exports){
+},{"11":11,"26":26,"28":28}],32:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util      = require(29),
+var util      = require(30),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     base64    = util.base64,
@@ -6587,7 +6588,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"29":29}],33:[function(require,module,exports){
+},{"1":1,"30":30}],33:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6658,41 +6659,41 @@ function loadSync(filename, root) {
 protobuf.loadSync = loadSync;
 
 // Parser
-protobuf.tokenize         = require(20);
-protobuf.parse            = require(14);
+protobuf.tokenize         = require(25);
+protobuf.parse            = require(19);
 
 // Serialization
 protobuf.Writer           = require(32);
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
                var Reader =
-protobuf.Reader           = require(15);
+protobuf.Reader           = require(20);
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
-protobuf.encode           = require(5);
-protobuf.decode           = require(4);
+protobuf.encode           = require(10);
+protobuf.decode           = require(9);
 protobuf.verify           = require(31);
 
 // Reflection
-protobuf.ReflectionObject = require(12);
-protobuf.Namespace        = require(11);
-protobuf.Root             = require(16);
-protobuf.Enum             = require(6);
-protobuf.Type             = require(21);
-protobuf.Field            = require(7);
-protobuf.OneOf            = require(13);
-protobuf.MapField         = require(8);
-protobuf.Service          = require(19);
-protobuf.Method           = require(10);
+protobuf.ReflectionObject = require(17);
+protobuf.Namespace        = require(16);
+protobuf.Root             = require(21);
+protobuf.Enum             = require(11);
+protobuf.Type             = require(26);
+protobuf.Field            = require(12);
+protobuf.OneOf            = require(18);
+protobuf.MapField         = require(13);
+protobuf.Service          = require(24);
+protobuf.Method           = require(15);
 
 // Runtime
-protobuf.Class            = require(2);
-protobuf.Message          = require(9);
+protobuf.Class            = require(7);
+protobuf.Message          = require(14);
 
 // Utility
-protobuf.types            = require(22);
-protobuf.common           = require(3);
-protobuf.rpc              = require(17);
+protobuf.types            = require(27);
+protobuf.common           = require(8);
+protobuf.rpc              = require(22);
                  var util =
-protobuf.util             = require(23);
+protobuf.util             = require(28);
 protobuf.configure        = configure;
 
 /**
@@ -6716,7 +6717,7 @@ if (typeof define === 'function' && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"19":19,"2":2,"20":20,"21":21,"22":22,"23":23,"3":3,"31":31,"32":32,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}]},{},[33])
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"24":24,"25":25,"26":26,"27":27,"28":28,"31":31,"32":32,"7":7,"8":8,"9":9}]},{},[33])
 
 
 //# sourceMappingURL=protobuf.js.map

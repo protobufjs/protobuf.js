@@ -1,7 +1,8 @@
 "use strict";
 module.exports = Service;
 
-var EventEmitter = require("../util/eventemitter");
+var util         = require("../util");
+var EventEmitter = util.EventEmitter;
 
 /**
  * Constructs a new RPC service instance.

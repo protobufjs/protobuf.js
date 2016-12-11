@@ -6,7 +6,7 @@
  */
 var util = exports;
 
-util.codegen = require("./util/codegen");
+util.codegen = require("@protobufjs/codegen");
 
 /**
  * Converts an object's values to an array.
@@ -233,7 +233,7 @@ util.newBuffer = function newBuffer(size) {
 
 var runtime = require("./util/runtime");
 
-util.EventEmitter = require("./util/eventemitter");
+util.EventEmitter = require("@protobufjs/eventemitter");
 
 // Merge in runtime utility
 util.merge(util, runtime);
