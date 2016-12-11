@@ -166,6 +166,10 @@ function buildType(ref, type) {
         --indent;
     push("}");
 
+    push("");
+    push("/** @alias " + fullName + ".prototype */");
+    push("var $prototype = " + name(type.name) + ".prototype;");
+
     // default values
     type.fieldsArray.forEach(function(field) {
         field.resolve();
@@ -210,16 +214,52 @@ function buildType(ref, type) {
             jsType = "Array.<" + jsType + ">";
         push("");
         pushComment([
-            field.name + ".",
+            type.name + " " + field.name + ".",
             "@name " + fullName + "#" + name(field.name),
             "@type {" + jsType + "}"
         ]);
         if (Array.isArray(field.defaultValue)) {
-            push(name(type.name) + ".prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyArray;");
+            push("$prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyArray;");
         } else if (util.isObject(field.defaultValue))
-            push(name(type.name) + ".prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyObject;");
+            push("$prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyObject;");
         else
-            push(name(type.name) + ".prototype[" + JSON.stringify(field.name) + "] = " + JSON.stringify(field.defaultValue) + ";");
+            push("$prototype[" + JSON.stringify(field.name) + "] = " + JSON.stringify(field.defaultValue) + ";");
+    });
+
+    // virtual oneof fields
+    type.oneofsArray.forEach(function(oneof) {
+        oneof.resolve();
+        push("");
+        pushComment([
+            type.name + " " + oneof.name + ".",
+            "@name " + fullName + "#" + name(oneof.name),
+            "@type {string|undefined}"
+        ]);
+        push("$protobuf.util.prop($prototype, " + JSON.stringify(oneof.name) +", {");
+        ++indent;
+            push("get: function getVirtual() {");
+            ++indent;
+            oneof.oneof.forEach(function(name) {
+                push("if (this[" + JSON.stringify(name) + "] !== undefined)");
+                ++indent;
+                    push("return " + JSON.stringify(name) + ";");
+                --indent;
+            });
+            push("return undefined;");
+            --indent;
+            push("},");
+            push("set: function setVirtual(value) {");
+            ++indent;
+            oneof.oneof.forEach(function(name) {
+                push("if (value !== " + JSON.stringify(name) + ")");
+                ++indent;
+                    push("delete this[" + JSON.stringify(name) + "];");
+                --indent;
+            });
+            --indent;
+            push("}");
+        --indent;
+        push("});");
     });
     
     // #encode

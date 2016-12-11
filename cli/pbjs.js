@@ -49,7 +49,7 @@ exports.main = function(args) {
             "",
             "  -w, --wrap      Specifies an alternative wrapper for *-module targets.",
             "",
-            "  -r, --root      Specifies an alternative root name for *-module targets.",
+            "  -r, --root      Specifies an alternative protobuf.roots name for *-module targets.",
             "",
             "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.proto file2.json ..."
         ].join("\n"));
