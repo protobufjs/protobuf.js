@@ -166,9 +166,11 @@ function buildType(ref, type) {
         --indent;
     push("}");
 
-    push("");
-    push("/** @alias " + fullName + ".prototype */");
-    push("var $prototype = " + name(type.name) + ".prototype;");
+    if (type.fieldsArray.length || type.oneofsArray.length) {
+        push("");
+        push("/** @alias " + fullName + ".prototype */");
+        push("var $prototype = " + name(type.name) + ".prototype;");
+    }
 
     // default values
     type.fieldsArray.forEach(function(field) {

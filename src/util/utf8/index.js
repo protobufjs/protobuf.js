@@ -13,10 +13,9 @@ var utf8 = exports;
  * @returns {number} Byte length
  */
 utf8.length = function length(string) {
-    var strlen = string.length >>> 0;
     var len = 0,
         c = 0;
-    for (var i = 0; i < strlen; ++i) {
+    for (var i = 0; i < string.length; ++i) {
         c = string.charCodeAt(i);
         if (c < 128)
             len += 1;
@@ -40,26 +39,25 @@ utf8.length = function length(string) {
  */
 utf8.read = function(buffer, start, end) {
     var len = end - start;
-    if (len > 0) {
-        var string = [],
-            i = 0, // char offset
-            t;     // temporary
-        while (start < end) {
-            t = buffer[start++];
-            if (t < 128)
-                string[i++] = t;
-            else if (t > 191 && t < 224)
-                string[i++] = (t & 31) << 6 | buffer[start++] & 63;
-            else if (t > 239 && t < 365) {
-                t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
-                string[i++] = 0xD800 + (t >> 10);
-                string[i++] = 0xDC00 + (t & 1023);
-            } else
-                string[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
-        }
-        return String.fromCharCode.apply(String, string.slice(0, i));
+    if (len < 1)
+        return "";
+    var string = [],
+        i = 0, // char offset
+        t;     // temporary
+    while (start < end) {
+        t = buffer[start++];
+        if (t < 128)
+            string[i++] = t;
+        else if (t > 191 && t < 224)
+            string[i++] = (t & 31) << 6 | buffer[start++] & 63;
+        else if (t > 239 && t < 365) {
+            t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
+            string[i++] = 0xD800 + (t >> 10);
+            string[i++] = 0xDC00 + (t & 1023);
+        } else
+            string[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
     }
-    return "";
+    return String.fromCharCode.apply(String, string.slice(0, i));
 };
 
 /**

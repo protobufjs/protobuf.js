@@ -27,38 +27,36 @@ function Class(type) {
 Class.create = function create(type, ctor) {
     if (!(type instanceof Type))
         throw _TypeError("type", "a Type");
-    var clazz = ctor;
-    if (clazz) {
-        if (typeof clazz !== 'function')
+    if (ctor) {
+        if (typeof ctor !== 'function')
             throw _TypeError("ctor", "a function");
     } else
-        clazz = (function(MessageCtor) { // eslint-disable-line wrap-iife
+        ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife
             return function Message(properties) {
                 MessageCtor.call(this, properties);
             };
         })(Message);
 
     // Let's pretend...
-    clazz.constructor = Class;
+    ctor.constructor = Class;
     
     // new Class() -> Message.prototype
-    var prototype = clazz.prototype = new Message();
-    prototype.constructor = clazz;
+    var prototype = ctor.prototype = new Message();
+    prototype.constructor = ctor;
 
     // Static methods on Message are instance methods on Class and vice versa.
-    util.merge(clazz, Message, true);
+    util.merge(ctor, Message, true);
 
     // Classes and messages reference their reflected type
-    clazz.$type = type;
+    ctor.$type = type;
     prototype.$type = type;
 
     // Messages have non-enumerable default values on their prototype
     type.getFieldsArray().forEach(function(field) {
-        field.resolve();
         // objects on the prototype must be immmutable. users must assign a new object instance and
         // cannot use Array#push on empty arrays on the prototype for example, as this would modify
         // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
-        prototype[field.name] = Array.isArray(field.defaultValue)
+        prototype[field.name] = Array.isArray(field.resolve().defaultValue)
             ? util.emptyArray
             : util.isObject(field.defaultValue)
             ? util.emptyObject
@@ -70,15 +68,13 @@ Class.create = function create(type, ctor) {
         util.prop(prototype, oneof.resolve().name, {
             get: function getVirtual() {
                 // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
-                var keys = Object.keys(this);
-                for (var i = keys.length - 1; i > -1; --i)
+                for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
                     if (oneof.oneof.indexOf(keys[i]) > -1)
                         return keys[i];
                 return undefined;
             },
             set: function setVirtual(value) {
-                var keys = oneof.oneof;
-                for (var i = 0; i < keys.length; ++i)
+                for (var keys = oneof.oneof, i = 0; i < keys.length; ++i)
                     if (keys[i] !== value)
                         delete this[keys[i]];
             }
@@ -86,7 +82,7 @@ Class.create = function create(type, ctor) {
     });
 
     // Register
-    type.setCtor(clazz);
+    type.setCtor(ctor);
 
     return prototype;
 };

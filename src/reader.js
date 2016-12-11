@@ -238,6 +238,13 @@ ReaderPrototype.bool = function read_bool() {
     return this.int32() !== 0;
 };
 
+function readFixed32(buf, end) {
+    return buf[end - 4]
+         | buf[end - 3] << 8
+         | buf[end - 2] << 16
+         | buf[end - 1] << 24;
+}
+
 /**
  * Reads fixed 32 bits as a number.
  * @returns {number} Value read
@@ -245,11 +252,7 @@ ReaderPrototype.bool = function read_bool() {
 ReaderPrototype.fixed32 = function read_fixed32() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
-    this.pos += 4;
-    return this.buf[this.pos - 4]
-         | this.buf[this.pos - 3] << 8
-         | this.buf[this.pos - 2] << 16
-         | this.buf[this.pos - 1] << 24;
+    return readFixed32(this.buf, this.pos += 4);
 };
 
 /**
@@ -263,36 +266,26 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 
 /* eslint-disable no-invalid-this */
 
-function readLongFixed() {
+function readFixed64(/* this: Reader */) {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
-    return new LongBits(
-      ( this.buf[this.pos++]
-      | this.buf[this.pos++] << 8
-      | this.buf[this.pos++] << 16
-      | this.buf[this.pos++] << 24 ) >>> 0
-    ,
-      ( this.buf[this.pos++]
-      | this.buf[this.pos++] << 8
-      | this.buf[this.pos++] << 16
-      | this.buf[this.pos++] << 24 ) >>> 0
-    );
+    return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
 }
 
 function read_fixed64_long() {
-    return readLongFixed.call(this).toLong(true);
+    return readFixed64.call(this).toLong(true);
 }
 
 function read_fixed64_number() {
-    return readLongFixed.call(this).toNumber(true);
+    return readFixed64.call(this).toNumber(true);
 }
 
 function read_sfixed64_long() {
-    return readLongFixed.call(this).zzDecode().toLong();
+    return readFixed64.call(this).zzDecode().toLong();
 }
 
 function read_sfixed64_number() {
-    return readLongFixed.call(this).zzDecode().toNumber();
+    return readFixed64.call(this).zzDecode().toNumber();
 }
 
 /* eslint-enable no-invalid-this */
@@ -318,17 +311,17 @@ var readFloat = typeof Float32Array !== 'undefined'
         f32[0] = -0;
         return f8b[3] // already le?
             ? function readFloat_f32(buf, pos) {
-                f8b[0] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[3] = buf[pos  ];
+                f8b[0] = buf[pos    ];
+                f8b[1] = buf[pos + 1];
+                f8b[2] = buf[pos + 2];
+                f8b[3] = buf[pos + 3];
                 return f32[0];
             }
             : function readFloat_f32_le(buf, pos) {
-                f8b[3] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[0] = buf[pos  ];
+                f8b[3] = buf[pos    ];
+                f8b[2] = buf[pos + 1];
+                f8b[1] = buf[pos + 2];
+                f8b[0] = buf[pos + 3];
                 return f32[0];
             };
     })()
@@ -356,25 +349,25 @@ var readDouble = typeof Float64Array !== 'undefined'
         f64[0] = -0;
         return f8b[7] // already le?
             ? function readDouble_f64(buf, pos) {
-                f8b[0] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[3] = buf[pos++];
-                f8b[4] = buf[pos++];
-                f8b[5] = buf[pos++];
-                f8b[6] = buf[pos++];
-                f8b[7] = buf[pos  ];
+                f8b[0] = buf[pos    ];
+                f8b[1] = buf[pos + 1];
+                f8b[2] = buf[pos + 2];
+                f8b[3] = buf[pos + 3];
+                f8b[4] = buf[pos + 4];
+                f8b[5] = buf[pos + 5];
+                f8b[6] = buf[pos + 6];
+                f8b[7] = buf[pos + 7];
                 return f64[0];
             }
             : function readDouble_f64_le(buf, pos) {
-                f8b[7] = buf[pos++];
-                f8b[6] = buf[pos++];
-                f8b[5] = buf[pos++];
-                f8b[4] = buf[pos++];
-                f8b[3] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[0] = buf[pos  ];
+                f8b[7] = buf[pos    ];
+                f8b[6] = buf[pos + 1];
+                f8b[5] = buf[pos + 2];
+                f8b[4] = buf[pos + 3];
+                f8b[3] = buf[pos + 4];
+                f8b[2] = buf[pos + 5];
+                f8b[1] = buf[pos + 6];
+                f8b[0] = buf[pos + 7];
                 return f64[0];
             };
     })()

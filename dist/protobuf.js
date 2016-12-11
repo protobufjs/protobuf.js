@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 11 Dec 2016 16:07:39 UTC
+ * Compiled Sun, 11 Dec 2016 22:52:15 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -631,38 +631,36 @@ function Class(type) {
 Class.create = function create(type, ctor) {
     if (!(type instanceof Type))
         throw _TypeError("type", "a Type");
-    var clazz = ctor;
-    if (clazz) {
-        if (typeof clazz !== 'function')
+    if (ctor) {
+        if (typeof ctor !== 'function')
             throw _TypeError("ctor", "a function");
     } else
-        clazz = (function(MessageCtor) { // eslint-disable-line wrap-iife
+        ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife
             return function Message(properties) {
                 MessageCtor.call(this, properties);
             };
         })(Message);
 
     // Let's pretend...
-    clazz.constructor = Class;
+    ctor.constructor = Class;
     
     // new Class() -> Message.prototype
-    var prototype = clazz.prototype = new Message();
-    prototype.constructor = clazz;
+    var prototype = ctor.prototype = new Message();
+    prototype.constructor = ctor;
 
     // Static methods on Message are instance methods on Class and vice versa.
-    util.merge(clazz, Message, true);
+    util.merge(ctor, Message, true);
 
     // Classes and messages reference their reflected type
-    clazz.$type = type;
+    ctor.$type = type;
     prototype.$type = type;
 
     // Messages have non-enumerable default values on their prototype
     type.getFieldsArray().forEach(function(field) {
-        field.resolve();
         // objects on the prototype must be immmutable. users must assign a new object instance and
         // cannot use Array#push on empty arrays on the prototype for example, as this would modify
         // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
-        prototype[field.name] = Array.isArray(field.defaultValue)
+        prototype[field.name] = Array.isArray(field.resolve().defaultValue)
             ? util.emptyArray
             : util.isObject(field.defaultValue)
             ? util.emptyObject
@@ -674,15 +672,13 @@ Class.create = function create(type, ctor) {
         util.prop(prototype, oneof.resolve().name, {
             get: function getVirtual() {
                 // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
-                var keys = Object.keys(this);
-                for (var i = keys.length - 1; i > -1; --i)
+                for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
                     if (oneof.oneof.indexOf(keys[i]) > -1)
                         return keys[i];
                 return undefined;
             },
             set: function setVirtual(value) {
-                var keys = oneof.oneof;
-                for (var i = 0; i < keys.length; ++i)
+                for (var keys = oneof.oneof, i = 0; i < keys.length; ++i)
                     if (keys[i] !== value)
                         delete this[keys[i]];
             }
@@ -690,7 +686,7 @@ Class.create = function create(type, ctor) {
     });
 
     // Register
-    type.setCtor(clazz);
+    type.setCtor(ctor);
 
     return prototype;
 };
@@ -3494,6 +3490,13 @@ ReaderPrototype.bool = function read_bool() {
     return this.int32() !== 0;
 };
 
+function readFixed32(buf, end) {
+    return buf[end - 4]
+         | buf[end - 3] << 8
+         | buf[end - 2] << 16
+         | buf[end - 1] << 24;
+}
+
 /**
  * Reads fixed 32 bits as a number.
  * @returns {number} Value read
@@ -3501,11 +3504,7 @@ ReaderPrototype.bool = function read_bool() {
 ReaderPrototype.fixed32 = function read_fixed32() {
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
-    this.pos += 4;
-    return this.buf[this.pos - 4]
-         | this.buf[this.pos - 3] << 8
-         | this.buf[this.pos - 2] << 16
-         | this.buf[this.pos - 1] << 24;
+    return readFixed32(this.buf, this.pos += 4);
 };
 
 /**
@@ -3519,36 +3518,26 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 
 /* eslint-disable no-invalid-this */
 
-function readLongFixed() {
+function readFixed64(/* this: Reader */) {
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
-    return new LongBits(
-      ( this.buf[this.pos++]
-      | this.buf[this.pos++] << 8
-      | this.buf[this.pos++] << 16
-      | this.buf[this.pos++] << 24 ) >>> 0
-    ,
-      ( this.buf[this.pos++]
-      | this.buf[this.pos++] << 8
-      | this.buf[this.pos++] << 16
-      | this.buf[this.pos++] << 24 ) >>> 0
-    );
+    return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
 }
 
 function read_fixed64_long() {
-    return readLongFixed.call(this).toLong(true);
+    return readFixed64.call(this).toLong(true);
 }
 
 function read_fixed64_number() {
-    return readLongFixed.call(this).toNumber(true);
+    return readFixed64.call(this).toNumber(true);
 }
 
 function read_sfixed64_long() {
-    return readLongFixed.call(this).zzDecode().toLong();
+    return readFixed64.call(this).zzDecode().toLong();
 }
 
 function read_sfixed64_number() {
-    return readLongFixed.call(this).zzDecode().toNumber();
+    return readFixed64.call(this).zzDecode().toNumber();
 }
 
 /* eslint-enable no-invalid-this */
@@ -3574,17 +3563,17 @@ var readFloat = typeof Float32Array !== 'undefined'
         f32[0] = -0;
         return f8b[3] // already le?
             ? function readFloat_f32(buf, pos) {
-                f8b[0] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[3] = buf[pos  ];
+                f8b[0] = buf[pos    ];
+                f8b[1] = buf[pos + 1];
+                f8b[2] = buf[pos + 2];
+                f8b[3] = buf[pos + 3];
                 return f32[0];
             }
             : function readFloat_f32_le(buf, pos) {
-                f8b[3] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[0] = buf[pos  ];
+                f8b[3] = buf[pos    ];
+                f8b[2] = buf[pos + 1];
+                f8b[1] = buf[pos + 2];
+                f8b[0] = buf[pos + 3];
                 return f32[0];
             };
     })()
@@ -3612,25 +3601,25 @@ var readDouble = typeof Float64Array !== 'undefined'
         f64[0] = -0;
         return f8b[7] // already le?
             ? function readDouble_f64(buf, pos) {
-                f8b[0] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[3] = buf[pos++];
-                f8b[4] = buf[pos++];
-                f8b[5] = buf[pos++];
-                f8b[6] = buf[pos++];
-                f8b[7] = buf[pos  ];
+                f8b[0] = buf[pos    ];
+                f8b[1] = buf[pos + 1];
+                f8b[2] = buf[pos + 2];
+                f8b[3] = buf[pos + 3];
+                f8b[4] = buf[pos + 4];
+                f8b[5] = buf[pos + 5];
+                f8b[6] = buf[pos + 6];
+                f8b[7] = buf[pos + 7];
                 return f64[0];
             }
             : function readDouble_f64_le(buf, pos) {
-                f8b[7] = buf[pos++];
-                f8b[6] = buf[pos++];
-                f8b[5] = buf[pos++];
-                f8b[4] = buf[pos++];
-                f8b[3] = buf[pos++];
-                f8b[2] = buf[pos++];
-                f8b[1] = buf[pos++];
-                f8b[0] = buf[pos  ];
+                f8b[7] = buf[pos    ];
+                f8b[6] = buf[pos + 1];
+                f8b[5] = buf[pos + 2];
+                f8b[4] = buf[pos + 3];
+                f8b[3] = buf[pos + 4];
+                f8b[2] = buf[pos + 5];
+                f8b[1] = buf[pos + 6];
+                f8b[0] = buf[pos + 7];
                 return f64[0];
             };
     })()
