@@ -129,7 +129,7 @@ function verify(message) {
 
         // required or present fields
         } else if (field.required || value !== undefined) {
-            
+
             if (reason = verifyValue(field, value)) // eslint-disable-line no-cond-assign
                 return reason;
         }
@@ -172,7 +172,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "string"));
             break;
         case "bytes": gen
-            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s))", ref, ref, ref)
+            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s)))", ref, ref, ref)
                 ("return%j", invalid(field, "buffer"));
             break;
         default:
