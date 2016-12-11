@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 11 Dec 2016 12:37:52 UTC
+ * Compiled Sun, 11 Dec 2016 14:06:50 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1120,7 +1120,11 @@ function encode(message, writer) {
         // Non-repeated
         } else {
             var value = message[field.name];
-            if (field.required || value !== undefined && field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue) {
+            if (
+                field.partOf && message[field.partOf.name] === field.name
+                ||
+                (field.required || value !== undefined) && (field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue)
+            ) {
                 if (wireType !== undefined)
                     writer.tag(field.id, wireType)[type](value);
                 else {
@@ -1148,6 +1152,7 @@ function encode(message, writer) {
 encode.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
+    var oneofs = mtype.getOneofsArray();
     var gen = util.codegen("m", "w")
     ("w||(w=Writer.create())");
 
@@ -1207,7 +1212,7 @@ encode.generate = function generate(mtype) {
             }
 
         // Non-repeated
-        } else {
+        } else if (!field.partOf) {
             if (!field.required) {
 
                 if (field.long) gen
@@ -1231,6 +1236,38 @@ encode.generate = function generate(mtype) {
     
         }
     }
+    for (var i = 0; i < oneofs.length; ++i) { gen
+        var oneof = oneofs[i],
+            prop  = util.safeProp(oneof.name);
+        gen
+        ("switch(m%s){", prop);
+        var oneofFields = oneof.getFieldsArray();
+        for (var j = 0; j < oneofFields.length; ++j) {
+            var field    = oneofFields[j],
+                type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+                wireType = types.basic[type],
+                prop     = util.safeProp(field.name);
+            gen
+            ("case%j:", field.name);
+
+            if (wireType !== undefined) gen
+
+                ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
+
+            else if (field.required) gen
+            
+                ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", fields.indexOf(field), prop, field.id);
+        
+            else gen
+
+                ("types[%d].encode(m%s,w.fork()).len&&w.ldelim(%d)||w.reset()", fields.indexOf(field), prop, field.id);
+            gen
+                ("break;");
+
+        } gen
+        ("}");        
+    }
+
     return gen
     ("return w");
     /* eslint-enable no-unexpected-multiline */
@@ -2541,8 +2578,20 @@ function OneOf(name, fieldNames, options) {
      * @type {Field[]}
      * @private
      */
-    this._fields = [];
+    this._fieldsArray = [];
 }
+
+/**
+ * Fields that belong to this oneof as an array for iteration.
+ * @name OneOf#fieldsArray
+ * @type {Field[]}
+ * @readonly
+ */
+util.prop(OneOfPrototype, "fieldsArray", {
+    get: function getFieldsArray() {
+        return this._fieldsArray;
+    }
+});
 
 /**
  * Tests if the specified JSON object describes a oneof.
@@ -2583,7 +2632,7 @@ OneOfPrototype.toJSON = function toJSON() {
  */
 function addFieldsToParent(oneof) {
     if (oneof.parent)
-        oneof._fields.forEach(function(field) {
+        oneof._fieldsArray.forEach(function(field) {
             if (!field.parent)
                 oneof.parent.add(field);
         });
@@ -2600,7 +2649,7 @@ OneOfPrototype.add = function add(field) {
     if (field.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
-    this._fields.push(field);
+    this._fieldsArray.push(field);
     field.partOf = this; // field.parent remains null
     addFieldsToParent(this);
     return this;
@@ -2614,10 +2663,10 @@ OneOfPrototype.add = function add(field) {
 OneOfPrototype.remove = function remove(field) {
     if (!(field instanceof Field))
         throw _TypeError("field", "a Field");
-    var index = this._fields.indexOf(field);
+    var index = this._fieldsArray.indexOf(field);
     if (index < 0)
         throw Error(field + " is not a member of " + this);
-    this._fields.splice(index, 1);
+    this._fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
     if (index > -1)
         this.oneof.splice(index, 1);
@@ -2639,7 +2688,7 @@ OneOfPrototype.onAdd = function onAdd(parent) {
  * @override
  */
 OneOfPrototype.onRemove = function onRemove(parent) {
-    this._fields.forEach(function(field) {
+    this._fieldsArray.forEach(function(field) {
         if (field.parent)
             field.parent.remove(field);
     });

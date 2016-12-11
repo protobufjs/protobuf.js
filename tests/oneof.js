@@ -27,7 +27,24 @@ tape.test("oneofs", function(test) {
         test.notOk(message.hasOwnProperty('num'), "should delete the previous value");
         test.equal(message.str, "a", "should set the new value");
         test.equal(message.kind, "str", "should reference the new value");
-        
+
+        message.num = 0; // default
+        message.setKind('num');
+        test.notOk(message.hasOwnProperty('str'), "should delete the previous value");
+        test.equal(message.num, 0, "should set the new value");
+        test.equal(message.kind, "num", "should reference the new value");
+        test.equal(message.hasOwnProperty("num"), true, "should have the new value on the instance, not just the prototype");
+
+        var buf = Message.encode(message).finish();
+        test.equal(buf.length, 2, "should write a total of 2 bytes");
+        test.equal(buf[0], 16, "should write id 1, wireType 0");
+        test.equal(buf[1], 0, "should write a value of 0");
+
+        buf = protobuf.encode.call(Message, message).finish();
+        test.equal(buf.length, 2, "should write a total of 2 bytes (fallback)");
+        test.equal(buf[0], 16, "should write id 1, wireType 0 (fallback)");
+        test.equal(buf[1], 0, "should write a value of 0 (fallback)");
+
         test.end();
     });
 

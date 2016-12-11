@@ -69,7 +69,11 @@ function encode(message, writer) {
         // Non-repeated
         } else {
             var value = message[field.name];
-            if (field.required || value !== undefined && field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue) {
+            if (
+                field.partOf && message[field.partOf.name] === field.name
+                ||
+                (field.required || value !== undefined) && (field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue)
+            ) {
                 if (wireType !== undefined)
                     writer.tag(field.id, wireType)[type](value);
                 else {
@@ -97,6 +101,7 @@ function encode(message, writer) {
 encode.generate = function generate(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
+    var oneofs = mtype.getOneofsArray();
     var gen = util.codegen("m", "w")
     ("w||(w=Writer.create())");
 
@@ -156,7 +161,7 @@ encode.generate = function generate(mtype) {
             }
 
         // Non-repeated
-        } else {
+        } else if (!field.partOf) {
             if (!field.required) {
 
                 if (field.long) gen
@@ -180,6 +185,38 @@ encode.generate = function generate(mtype) {
     
         }
     }
+    for (var i = 0; i < oneofs.length; ++i) { gen
+        var oneof = oneofs[i],
+            prop  = util.safeProp(oneof.name);
+        gen
+        ("switch(m%s){", prop);
+        var oneofFields = oneof.getFieldsArray();
+        for (var j = 0; j < oneofFields.length; ++j) {
+            var field    = oneofFields[j],
+                type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
+                wireType = types.basic[type],
+                prop     = util.safeProp(field.name);
+            gen
+            ("case%j:", field.name);
+
+            if (wireType !== undefined) gen
+
+                ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
+
+            else if (field.required) gen
+            
+                ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", fields.indexOf(field), prop, field.id);
+        
+            else gen
+
+                ("types[%d].encode(m%s,w.fork()).len&&w.ldelim(%d)||w.reset()", fields.indexOf(field), prop, field.id);
+            gen
+                ("break;");
+
+        } gen
+        ("}");        
+    }
+
     return gen
     ("return w");
     /* eslint-enable no-unexpected-multiline */

@@ -45,8 +45,20 @@ function OneOf(name, fieldNames, options) {
      * @type {Field[]}
      * @private
      */
-    this._fields = [];
+    this._fieldsArray = [];
 }
+
+/**
+ * Fields that belong to this oneof as an array for iteration.
+ * @name OneOf#fieldsArray
+ * @type {Field[]}
+ * @readonly
+ */
+util.prop(OneOfPrototype, "fieldsArray", {
+    get: function getFieldsArray() {
+        return this._fieldsArray;
+    }
+});
 
 /**
  * Tests if the specified JSON object describes a oneof.
@@ -87,7 +99,7 @@ OneOfPrototype.toJSON = function toJSON() {
  */
 function addFieldsToParent(oneof) {
     if (oneof.parent)
-        oneof._fields.forEach(function(field) {
+        oneof._fieldsArray.forEach(function(field) {
             if (!field.parent)
                 oneof.parent.add(field);
         });
@@ -104,7 +116,7 @@ OneOfPrototype.add = function add(field) {
     if (field.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
-    this._fields.push(field);
+    this._fieldsArray.push(field);
     field.partOf = this; // field.parent remains null
     addFieldsToParent(this);
     return this;
@@ -118,10 +130,10 @@ OneOfPrototype.add = function add(field) {
 OneOfPrototype.remove = function remove(field) {
     if (!(field instanceof Field))
         throw _TypeError("field", "a Field");
-    var index = this._fields.indexOf(field);
+    var index = this._fieldsArray.indexOf(field);
     if (index < 0)
         throw Error(field + " is not a member of " + this);
-    this._fields.splice(index, 1);
+    this._fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
     if (index > -1)
         this.oneof.splice(index, 1);
@@ -143,7 +155,7 @@ OneOfPrototype.onAdd = function onAdd(parent) {
  * @override
  */
 OneOfPrototype.onRemove = function onRemove(parent) {
-    this._fields.forEach(function(field) {
+    this._fieldsArray.forEach(function(field) {
         if (field.parent)
             field.parent.remove(field);
     });
