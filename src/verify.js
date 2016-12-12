@@ -211,11 +211,11 @@ function genVerifyKey(gen, field, ref) {
         case "uint32":
         case "sint32":
         case "fixed32":
-        case "sfixed32":
+        case "sfixed32": gen
             ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
                 ("return%j", invalid(field, "integer key"));
             break;
-        case "bool":
+        case "bool": gen
             ("if(!/^true|false|0|1$/.test(%s))", ref)
                 ("return%j", invalid(field, "boolean key"));
             break;

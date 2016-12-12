@@ -215,7 +215,7 @@ import * as protobuf from "protobufjs";
 
 Module Structure
 ----------------
-The library exports a flat `protobuf` namespace with the following members, ordered by category:
+The library exports a flat `protobuf` namespace including but not restricted to the following members, ordered by category:
 
 ### Parser
 
@@ -225,48 +225,18 @@ The library exports a flat `protobuf` namespace with the following members, orde
 * **loadSync(filename: `string|string[]`, [root: `Root`]): `Root`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
   Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
 
-* **tokenize(source: `string`): `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/tokenize.js)]<br />
-  Tokenizes the given .proto source and returns an object with useful utility functions.
-
 * **parse(source: `string`): `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js)]<br />
   Parses the given .proto source and returns an object with the parsed contents.
-
-  * **package: `string|undefined`**<br />
-    The package name, if declared.
-
-  * **imports: `string[]|undefined`**<br />
-    File names of imported files, if any.
-
-  * **weakImports: `string[]|undefined`**<br />
-    File names of weakly imported files, if any.
-
-  * **syntax: `string|undefined`**<br />
-    Source syntax, if defined.
-
-  * **root: `Root`**<br />
-    The root namespace.
 
 ### Serialization
 
 * **Writer** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js)]<br />
   Wire format writer using `Uint8Array` if available, otherwise `Array`.
 
-* **BufferWriter** _extends **Writer**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js)]<br />
-  Wire format writer using node buffers.
-
 * **Reader** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
   Wire format reader using `Uint8Array` if available, otherwise `Array`.
 
-* **BufferReader** _extends **Reader**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
-  Wire format reader using node buffers.
-
-* **codegen** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js)]<br />
-  A closure for generating functions programmatically.
-
 ### Reflection
-
-* **ReflectionObject** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js)]<br />
-  Base class of all reflection objects.
 
 * **Namespace** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js)]<br />
   Base class of all reflection objects containing nested objects.
@@ -302,17 +272,10 @@ The library exports a flat `protobuf` namespace with the following members, orde
 
 ### Utility
 
-* **types: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js)]<br />
-  Common type constants.
-
-* **common(name: `string`, json: `Object`)** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js)]<br />
-  Provides common type definitions.
-
-* **rpc: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js)]<br />
-  Streaming RPC helpers.
-
-* **util: `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
+* **util** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
   Various utility functions.
+
+For less common members, see the API documentation.
 
 Documentation
 -------------

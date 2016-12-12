@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 11 Dec 2016 23:22:39 UTC
+ * Compiled Mon, 12 Dec 2016 00:28:16 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -5978,11 +5978,11 @@ function genVerifyKey(gen, field, ref) {
         case "uint32":
         case "sint32":
         case "fixed32":
-        case "sfixed32":
+        case "sfixed32": gen
             ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
                 ("return%j", invalid(field, "integer key"));
             break;
-        case "bool":
+        case "bool": gen
             ("if(!/^true|false|0|1$/.test(%s))", ref)
                 ("return%j", invalid(field, "boolean key"));
             break;
