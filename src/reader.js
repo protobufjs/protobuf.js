@@ -7,7 +7,7 @@ var util      = require("./util/runtime"),
     ieee754   = require("../lib/ieee754");
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
@@ -304,7 +304,7 @@ function read_sfixed64_number() {
  * @returns {Long|number} Value read
  */
 
-var readFloat = typeof Float32Array !== 'undefined'
+var readFloat = typeof Float32Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
@@ -342,7 +342,7 @@ ReaderPrototype.float = function read_float() {
     return value;
 };
 
-var readDouble = typeof Float64Array !== 'undefined'
+var readDouble = typeof Float64Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
@@ -524,7 +524,7 @@ var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.protot
 
 BufferReaderPrototype.constructor = BufferReader;
 
-if (typeof Float32Array === 'undefined') // f32 is faster (node 6.9.1)
+if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -536,7 +536,7 @@ BufferReaderPrototype.float = function read_float_buffer() {
     return value;
 };
 
-if (typeof Float64Array === 'undefined') // f64 is faster (node 6.9.1)
+if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
 /**
  * @override
  */

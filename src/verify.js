@@ -14,7 +14,7 @@ function verifyValue(field, value) {
     switch (field.type) {
         case "double":
         case "float":
-            if (typeof value !== 'number')
+            if (typeof value !== "number")
                 return invalid(field, "number");
             break;
         case "int32":
@@ -34,7 +34,7 @@ function verifyValue(field, value) {
                 return invalid(field, "integer|Long");
             break;
         case "bool":
-            if (typeof value !== 'boolean')
+            if (typeof value !== "boolean")
                 return invalid(field, "boolean");
             break;
         case "string":
@@ -42,12 +42,12 @@ function verifyValue(field, value) {
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!(value && typeof value.length === 'number' || util.isString(value)))
+            if (!(value && typeof value.length === "number" || util.isString(value)))
                 return invalid(field, "buffer");
             break;
         default:
             if (field.resolvedType instanceof Enum) {
-                if (typeof field.resolvedType.getValuesById()[value] !== 'number')
+                if (typeof field.resolvedType.getValuesById()[value] !== "number")
                     return invalid(field, "enum value");
             } else if (field.resolvedType instanceof Type) {
                 var reason = field.resolvedType.verify(value);
@@ -144,7 +144,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
     switch (field.type) {
         case "double":
         case "float": gen
-            ("if(typeof %s!=='number')", ref)
+            ("if(typeof %s!==\"number\")", ref)
                 ("return%j", invalid(field, "number"));
             break;
         case "int32":
@@ -164,7 +164,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "integer|Long"));
             break;
         case "bool": gen
-            ("if(typeof %s!=='boolean')", ref)
+            ("if(typeof %s!==\"boolean\")", ref)
                 ("return%j", invalid(field, "boolean"));
             break;
         case "string": gen
@@ -172,7 +172,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "string"));
             break;
         case "bytes": gen
-            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s)))", ref, ref, ref)
+            ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
                 ("return%j", invalid(field, "buffer"));
             break;
         default:

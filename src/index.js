@@ -18,7 +18,7 @@ var protobuf = global.protobuf = exports;
  * @returns {undefined}
  */
 function load(filename, root, callback) {
-    if (typeof root === 'function') {
+    if (typeof root === "function") {
         callback = root;
         root = new protobuf.Root();
     } else if (!root)
@@ -121,7 +121,7 @@ function configure() {
 }
 
 // Be nice to AMD
-if (typeof define === 'function' && define.amd)
+if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
         if (Long) {
             protobuf.util.Long = Long;

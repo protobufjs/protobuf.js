@@ -45,7 +45,7 @@ function decode(readerOrBuffer, length) {
                             vs[vs.length] = field.resolvedType.decode(reader, reader.uint32());
                     }
                     for (var i = 0; i < ks.length; ++i)
-                        map[typeof ks[i] === 'object' ? util.longToHash(ks[i]) : ks[i]] = vs[i];
+                        map[typeof ks[i] === "object" ? util.longToHash(ks[i]) : ks[i]] = vs[i];
                 }
 
             // Repeated fields
@@ -127,7 +127,7 @@ decode.generate = function generate(mtype) {
                     gen
                     ("}")
                     ("for(var i=0;i<k.length;++i)")
-                        ("o[typeof(k[i])==='object'?util.longToHash(k[i]):k[i]]=v[i]")
+                        ("o[typeof(k[i])===\"object\"?util.longToHash(k[i]):k[i]]=v[i]")
                 ("}")
                 ("m%s=o", prop);
 

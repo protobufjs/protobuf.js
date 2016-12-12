@@ -6,8 +6,11 @@ types/types.d.ts
 bench.txt
 docs/
 examples/
+src/util/aspromise/
 src/util/base64/
 src/util/codegen/
 src/util/eventemitter/
+src/util/fetch/
+src/util/fs/
 src/util/pool/
 src/util/utf8/

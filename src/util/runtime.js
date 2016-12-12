@@ -42,7 +42,7 @@ if (!util.Long && isNode)
  * @returns {boolean} `true` if the value is an integer
  */
 util.isInteger = Number.isInteger || function isInteger(value) {
-    return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
 };
 
 /**
@@ -51,7 +51,7 @@ util.isInteger = Number.isInteger || function isInteger(value) {
  * @returns {boolean} `true` if the value is a string
  */
 util.isString = function isString(value) {
-    return typeof value === 'string' || value instanceof String;
+    return typeof value === "string" || value instanceof String;
 };
 
 /**
@@ -60,7 +60,7 @@ util.isString = function isString(value) {
  * @returns {boolean} `true` if the value is a non-null object
  */
 util.isObject = function isObject(value) {
-    return Boolean(value && typeof value === 'object');
+    return Boolean(value && typeof value === "object");
 };
 
 /**
@@ -71,7 +71,7 @@ util.isObject = function isObject(value) {
 util.longToHash = function longToHash(value) {
     return value
         ? LongBits.from(value).toHash()
-        : '\0\0\0\0\0\0\0\0';
+        : "\0\0\0\0\0\0\0\0";
 };
 
 /**
@@ -94,11 +94,11 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @returns {boolean} `true` if not equal
  */
 util.longNeq = function longNeq(a, b) {
-    return typeof a === 'number'
-         ? typeof b === 'number'
+    return typeof a === "number"
+         ? typeof b === "number"
             ? a !== b
             : (a = LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
-         : typeof b === 'number'
+         : typeof b === "number"
             ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
 };
@@ -126,9 +126,9 @@ util.prop = function prop(target, key, descriptor) {
     var ie8 = !-[1,];
     var ucKey = key.substring(0, 1).toUpperCase() + key.substring(1);
     if (descriptor.get)
-        target['get' + ucKey] = descriptor.get;
+        target["get" + ucKey] = descriptor.get;
     if (descriptor.set)
-        target['set' + ucKey] = ie8
+        target["set" + ucKey] = ie8
             ? function(value) {
                   descriptor.set.call(this, value);
                   this[key] = value;

@@ -68,9 +68,12 @@ EventEmitterPrototype.off = function off(evt, fn) {
 EventEmitterPrototype.emit = function emit(evt) {
     var listeners = this._listeners[evt];
     if (listeners) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        for (var i = 0; i < listeners.length; ++i)
-            listeners[i].fn.apply(listeners[i].ctx, args);
+        var args = [],
+            i = 0;
+        for (; i < arguments.length;)
+            args.push(arguments[i++]);
+        for (i = 0; i < listeners.length;)
+            listeners[i].fn.apply(listeners[i++].ctx, args);
     }
     return this;
 };

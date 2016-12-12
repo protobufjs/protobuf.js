@@ -81,9 +81,9 @@ LongBits.fromNumber = function fromNumber(value) {
  */
 LongBits.from = function from(value) {
     switch (typeof value) {
-        case 'number':
+        case "number":
             return LongBits.fromNumber(value);
-        case 'string':
+        case "string":
             if (util.Long)
                 value = util.Long.fromString(value);
                 // fallthrough

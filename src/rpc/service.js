@@ -36,7 +36,7 @@ ServicePrototype.end = function end(endedByRPC) {
         if (!endedByRPC) // signal end to rpcImpl
             this.$rpc(null, null, null);
         this.$rpc = null;
-        this.emit('end').off();
+        this.emit("end").off();
     }
     return this;
 };

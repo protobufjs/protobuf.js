@@ -5,20 +5,6 @@ var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
 
-/**
- * Handle object returned from {@link tokenize}.
- * @typedef {Object} TokenizerHandle
- * @property {function():number} line Gets the current line number
- * @property {function():?string} next Gets the next token and advances (`null` on eof)
- * @property {function():?string} peek Peeks for the next token (`null` on eof)
- * @property {function(string)} push Pushes a token back to the stack
- * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- */
-
-var s_nl = "\n",
-    s_sl = '/',
-    s_as = '*';
-
 function unescape(str) {
     return str.replace(/\\(.?)/g, function($0, $1) {
         switch ($1) {
@@ -32,6 +18,17 @@ function unescape(str) {
         }
     });
 }
+
+/**
+ * Handle object returned from {@link tokenize}.
+ * @typedef {Object} TokenizerHandle
+ * @property {function():number} line Gets the current line number
+ * @property {function():?string} next Gets the next token and advances (`null` on eof)
+ * @property {function():?string} peek Peeks for the next token (`null` on eof)
+ * @property {function(string)} push Pushes a token back to the stack
+ * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
+ */
+/**/
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
@@ -66,7 +63,7 @@ function tokenize(source) {
      * @inner
      */
     function readString() {
-        var re = stringDelim === '"' ? stringDoubleRe : stringSingleRe;
+        var re = stringDelim === "'" ? stringSingleRe : stringDoubleRe;
         re.lastIndex = offset - 1;
         var match = re.exec(source);
         if (!match)
@@ -105,34 +102,34 @@ function tokenize(source) {
                 return null;
             repeat = false;
             while (/\s/.test(curr = charAt(offset))) {
-                if (curr === s_nl)
+                if (curr === "\n")
                     ++line;
                 if (++offset === length)
                     return null;
             }
-            if (charAt(offset) === s_sl) {
+            if (charAt(offset) === "/") {
                 if (++offset === length)
                     throw illegal("comment");
-                if (charAt(offset) === s_sl) { // Line
-                    while (charAt(++offset) !== s_nl)
+                if (charAt(offset) === "/") { // Line
+                    while (charAt(++offset) !== "\n")
                         if (offset === length)
                             return null;
                     ++offset;
                     ++line;
                     repeat = true;
-                } else if ((curr = charAt(offset)) === s_as) { /* Block */
+                } else if ((curr = charAt(offset)) === "*") { /* Block */
                     do {
-                        if (curr === s_nl)
+                        if (curr === "\n")
                             ++line;
                         if (++offset === length)
                             return null;
                         prev = curr;
                         curr = charAt(offset);
-                    } while (prev !== s_as || curr !== s_sl);
+                    } while (prev !== "*" || curr !== "/");
                     ++offset;
                     repeat = true;
                 } else
-                    return s_sl;
+                    return "/";
             }
         } while (repeat);
 
@@ -145,7 +142,7 @@ function tokenize(source) {
             while (end < length && !delimRe.test(charAt(end)))
                 ++end;
         var token = source.substring(offset, offset = end);
-        if (token === '"' || token === "'")
+        if (token === "\"" || token === "'")
             stringDelim = token;
         return token;
     }

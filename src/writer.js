@@ -8,7 +8,7 @@ var util      = require("./util/runtime"),
 var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 /**
  * Constructs a new writer operation instance.
@@ -329,7 +329,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
     return this.push(writeFixed32, 4, bits.lo).push(writeFixed32, 4, bits.hi);
 };
 
-var writeFloat = typeof Float32Array !== 'undefined'
+var writeFloat = typeof Float32Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
@@ -364,7 +364,7 @@ WriterPrototype.float = function write_float(value) {
     return this.push(writeFloat, 4, value);
 };
 
-var writeDouble = typeof Float64Array !== 'undefined'
+var writeDouble = typeof Float64Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
@@ -423,7 +423,7 @@ var writeBytes = ArrayImpl.prototype.set
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
-    if (typeof value === 'string' && len) {
+    if (typeof value === "string" && len) {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
@@ -541,7 +541,7 @@ function writeFloatBuffer(val, buf, pos) {
     buf.writeFloatLE(val, pos, true);
 }
 
-if (typeof Float32Array === 'undefined') // f32 is faster (node 6.9.1)
+if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -553,7 +553,7 @@ function writeDoubleBuffer(val, buf, pos) {
     buf.writeDoubleLE(val, pos, true);
 }
 
-if (typeof Float64Array === 'undefined') // f64 is faster (node 6.9.1)
+if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -570,7 +570,7 @@ function writeBytesBuffer(val, buf, pos) {
  * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
-    if (typeof value === 'string')
+    if (typeof value === "string")
         value = util.Buffer.from && util.Buffer.from(value, "base64") || new util.Buffer(value, "base64");
     var len = value.length >>> 0;
     return len

@@ -267,7 +267,7 @@ TypePrototype.get = function get(name) {
  */
 TypePrototype.add = function add(object) {
     if (this.get(object.name))
-        throw Error("duplicate name '" + object.name + '" in ' + this);
+        throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Field && object.extend === undefined) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended

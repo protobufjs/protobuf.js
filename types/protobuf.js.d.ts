@@ -1,6 +1,6 @@
 /*
  * protobuf.js v6.1.0 TypeScript definitions
- * Generated Mon, 12 Dec 2016 00:01:07 UTC
+ * Generated Mon, 12 Dec 2016 22:50:39 UTC
  */
 declare module "protobufjs" {
 
@@ -1644,6 +1644,16 @@ declare module "protobufjs" {
    type Codegen = (format: string, args: any) => Codegen;
    
    /**
+    * Node-style callback as used by {@link util.fetch}.
+    * @typedef FetchCallback
+    * @type {function}
+    * @param {?Error} error Error, if any, otherwise `null`
+    * @param {string} [contents] File contents, if there hasn't been an error
+    * @returns {undefined}
+    */
+   type FetchCallback = (error?: Error, contents?: string) => void;
+   
+   /**
     * Any compatible Long instance.
     * @typedef Long
     * @type {Object}
@@ -1683,6 +1693,16 @@ declare module "protobufjs" {
     * @namespace
     */
    module util {
+      /**
+       * Returns a promise from a node-style callback function.
+       * @memberof util
+       * @param {function(?Error, ...*)} fn Function to call
+       * @param {Object} ctx Function context
+       * @param {...*} params Function arguments
+       * @returns {Promise<*>} Promisified function
+       */
+      function asPromise(fn: (() => any), ctx: Object, params: any): Promise<any>;
+   
       /**
        * A minimal base64 implementation for number arrays.
        * @memberof util
@@ -1772,12 +1792,21 @@ declare module "protobufjs" {
       }
    
       /**
-       * Fast 64 bit floats for buffers.
+       * Fetches the contents of a file.
        * @memberof util
-       * @namespace
+       * @param {string} path File path or url
+       * @param {FetchCallback} [callback] Callback function
+       * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
        */
-      module f64 {
-      }
+      function fetch(path: string, callback?: FetchCallback): (Promise<string>|undefined);
+   
+      /**
+       * Node's fs module if available.
+       * @name fs
+       * @memberof util
+       * @type {Object}
+       */
+      var fs: Object;
    
       /**
        * Constructs new long bits.
@@ -2026,32 +2055,6 @@ declare module "protobufjs" {
       function toArray(object: { [k: string]: any }): any[];
    
       /**
-       * Returns a promise from a node-style function.
-       * @memberof util
-       * @param {function(Error, ...*)} fn Function to call
-       * @param {Object} ctx Function context
-       * @param {...*} params Function arguments
-       * @returns {Promise<*>} Promisified function
-       */
-      function asPromise(fn: (() => any), ctx: Object, params: any): Promise<any>;
-   
-      /**
-       * Filesystem, if available.
-       * @memberof util
-       * @type {?Object}
-       */
-      var fs: Object;
-   
-      /**
-       * Fetches the contents of a file.
-       * @memberof util
-       * @param {string} path File path or url
-       * @param {FetchCallback} [callback] Callback function
-       * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
-       */
-      function fetch(path: string, callback?: FetchCallback): (Promise<string>|undefined);
-   
-      /**
        * Tests if the specified path is absolute.
        * @memberof util
        * @param {string} path Path to test
@@ -2114,16 +2117,6 @@ declare module "protobufjs" {
       function newBuffer(size?: number): Uint8Array;
    
    }
-   
-   /**
-    * Node-style callback as used by {@link util.fetch}.
-    * @typedef FetchCallback
-    * @type {function}
-    * @param {?Error} error Error, if any, otherwise `null`
-    * @param {string} [contents] File contents, if there hasn't been an error
-    * @returns {undefined}
-    */
-   type FetchCallback = (error?: Error, contents?: string) => void;
    
    /**
     * General purpose message verifier.

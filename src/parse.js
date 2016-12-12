@@ -22,20 +22,6 @@ function lower(token) {
     return token === null ? null : token.toLowerCase();
 }
 
-var s_required = "required",
-    s_repeated = "repeated",
-    s_optional = "optional",
-    s_option   = "option",
-    s_name     = "name",
-    s_type     = "type";
-var s_open     = "{",
-    s_close    = "}",
-    s_bopen    = '(',
-    s_bclose   = ')',
-    s_semi     = ";",
-    s_dq       = '"',
-    s_sq       = "'";
-
 /**
  * Result object returned from {@link parse}.
  * @typedef ParserResult
@@ -46,6 +32,7 @@ var s_open     = "{",
  * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
  * @property {Root} root Populated root instance
  */
+/**/
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
@@ -77,27 +64,27 @@ function parse(source, root) {
     var ptr = root;
 
     function illegal(token, name) {
-        return Error("illegal " + (name || "token") + " '" + token + "' (line " + tn.line() + s_bclose);
+        return Error("illegal " + (name || "token") + " '" + token + "' (line " + tn.line() + ")");
     }
 
     function readString() {
         var values = [],
             token;
         do {
-            if ((token = next()) !== s_dq && token !== s_sq)
+            if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
             values.push(next());
             skip(token);
             token = peek();
-        } while (token === s_dq || token === s_sq);
-        return values.join('');
+        } while (token === "\"" || token === "'");
+        return values.join("");
     }
 
     function readValue(acceptTypeRef) {
         var token = next();
         switch (lower(token)) {
-            case s_sq:
-            case s_dq:
+            case "'":
+            case "\"":
                 push(token);
                 return readString();
             case "true":
@@ -119,13 +106,13 @@ function parse(source, root) {
         var end = start;
         if (skip("to", true))
             end = parseId(next());
-        skip(s_semi);
+        skip(";");
         return [ start, end ];
     }
 
     function parseNumber(token) {
         var sign = 1;
-        if (token.charAt(0) === '-') {
+        if (token.charAt(0) === "-") {
             sign = -1;
             token = token.substring(1);
         }
@@ -143,7 +130,7 @@ function parse(source, root) {
             return sign * parseInt(token, 8);
         if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
-        throw illegal(token, 'number');
+        throw illegal(token, "number");
     }
 
     function parseId(token, acceptNegative) {
@@ -153,7 +140,7 @@ function parse(source, root) {
             case "max": return 0x1FFFFFFF;
             case "0": return 0;
         }
-        if (token.charAt(0) === '-' && !acceptNegative)
+        if (token.charAt(0) === "-" && !acceptNegative)
             throw illegal(token, "id");
         if (/^-?[1-9][0-9]*$/.test(token))
             return parseInt(token, 10);
@@ -169,9 +156,9 @@ function parse(source, root) {
             throw illegal("package");
         pkg = next();
         if (!typeRefRe.test(pkg))
-            throw illegal(pkg, s_name);
+            throw illegal(pkg, "name");
         ptr = ptr.define(pkg);
-        skip(s_semi);
+        skip(";");
     }
 
     function parseImport() {
@@ -190,7 +177,7 @@ function parse(source, root) {
                 break;
         }
         token = readString();
-        skip(s_semi);
+        skip(";");
         whichImports.push(token);
     }
 
@@ -201,15 +188,15 @@ function parse(source, root) {
         if ([ "proto2", p3 = "proto3" ].indexOf(syntax) < 0)
             throw illegal(syntax, "syntax");
         isProto3 = syntax === p3;
-        skip(s_semi);
+        skip(";");
     }
 
     function parseCommon(parent, token) {
         switch (token) {
 
-            case s_option:
+            case "option":
                 parseOption(parent, token);
-                skip(s_semi);
+                skip(";");
                 return true;
 
             case "message":
@@ -236,8 +223,8 @@ function parse(source, root) {
         if (!nameRe.test(name))
             throw illegal(name, "type name");
         var type = new Type(name);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 if (parseCommon(type, token))
                     continue;
@@ -245,9 +232,9 @@ function parse(source, root) {
                     case "map":
                         parseMapField(type, tokenLower);
                         break;
-                    case s_required:
-                    case s_optional:
-                    case s_repeated:
+                    case "required":
+                    case "optional":
+                    case "repeated":
                         parseField(type, tokenLower);
                         break;
                     case "oneof":
@@ -263,23 +250,23 @@ function parse(source, root) {
                         if (!isProto3 || !typeRefRe.test(token))
                             throw illegal(token);
                         push(token);
-                        parseField(type, s_optional);
+                        parseField(type, "optional");
                         break;
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(type);
     }
 
     function parseField(parent, rule, extend) {
         var type = next();
         if (!typeRefRe.test(type))
-            throw illegal(type, s_type);
+            throw illegal(type, "type");
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         name = camelCase(name);
         skip("=");
         var id = parseId(next());
@@ -293,15 +280,15 @@ function parse(source, root) {
         skip("<");
         var keyType = next();
         if (types.mapKey[keyType] === undefined)
-            throw illegal(keyType, s_type);
+            throw illegal(keyType, "type");
         skip(",");
         var valueType = next();
         if (!typeRefRe.test(valueType))
-            throw illegal(valueType, s_type);
+            throw illegal(valueType, "type");
         skip(">");
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         name = camelCase(name);
         skip("=");
         var id = parseId(next());
@@ -312,47 +299,47 @@ function parse(source, root) {
     function parseOneOf(parent, token) {
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         name = camelCase(name);
         var oneof = new OneOf(name);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
-                if (token === s_option) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
+                if (token === "option") {
                     parseOption(oneof, token);
-                    skip(s_semi);
+                    skip(";");
                 } else {
                     push(token);
-                    parseField(oneof, s_optional);
+                    parseField(oneof, "optional");
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(oneof);
     }
 
     function parseEnum(parent, token) {
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         var values = {};
         var enm = new Enum(name, values);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
-                if (lower(token) === s_option)
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
+                if (lower(token) === "option")
                     parseOption(enm);
                 else
                     parseEnumField(enm, token);
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(enm);
     }
 
     function parseEnumField(parent, token) {
         if (!nameRe.test(token))
-            throw illegal(token, s_name);
+            throw illegal(token, "name");
         var name = token;
         skip("=");
         var value = parseId(next(), true);
@@ -361,13 +348,13 @@ function parse(source, root) {
     }
 
     function parseOption(parent, token) {
-        var custom = skip(s_bopen, true);
+        var custom = skip("(", true);
         var name = next();
         if (!typeRefRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         if (custom) {
-            skip(s_bclose);
-            name = s_bopen + name + s_bclose;
+            skip(")");
+            name = "(" + name + ")";
             token = peek();
             if (fqTypeRefRe.test(token)) {
                 name += token;
@@ -379,10 +366,10 @@ function parse(source, root) {
     }
 
     function parseOptionValue(parent, name) {
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 if (!nameRe.test(token))
-                    throw illegal(token, s_name);
+                    throw illegal(token, "name");
                 name = name + "." + token;
                 if (skip(":", true))
                     setOption(parent, name, readValue(true));
@@ -404,11 +391,11 @@ function parse(source, root) {
     function parseInlineOptions(parent) {
         if (skip("[", true)) {
             do {
-                parseOption(parent, s_option);
+                parseOption(parent, "option");
             } while (skip(",", true));
             skip("]");
         }
-        skip(s_semi);
+        skip(";");
         return parent;
     }
 
@@ -418,13 +405,13 @@ function parse(source, root) {
             throw illegal(token, "service name");
         var name = token;
         var service = new Service(name);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 switch (tokenLower) {
-                    case s_option:
+                    case "option":
                         parseOption(service, tokenLower);
-                        skip(s_semi);
+                        skip(";");
                         break;
                     case "rpc":
                         parseMethod(service, tokenLower);
@@ -433,9 +420,9 @@ function parse(source, root) {
                         throw illegal(token);
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(service);
     }
 
@@ -443,39 +430,39 @@ function parse(source, root) {
         var type = token;
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         var requestType, requestStream,
             responseType, responseStream;
-        skip(s_bopen);
+        skip("(");
         var st;
         if (skip(st = "stream", true))
             requestStream = true;
         if (!typeRefRe.test(token = next()))
             throw illegal(token);
         requestType = token;
-        skip(s_bclose); skip("returns"); skip(s_bopen);
+        skip(")"); skip("returns"); skip("(");
         if (skip(st, true))
             responseStream = true;
         if (!typeRefRe.test(token = next()))
             throw illegal(token);
         responseType = token;
-        skip(s_bclose);
+        skip(")");
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 switch (tokenLower) {
-                    case s_option:
+                    case "option":
                         parseOption(method, tokenLower);
-                        skip(s_semi);
+                        skip(";");
                         break;
                     default:
                         throw illegal(token);
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(method);
     }
 
@@ -483,26 +470,26 @@ function parse(source, root) {
         var reference = next();
         if (!typeRefRe.test(reference))
             throw illegal(reference, "reference");
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 switch (tokenLower) {
-                    case s_required:
-                    case s_repeated:
-                    case s_optional:
+                    case "required":
+                    case "repeated":
+                    case "optional":
                         parseField(parent, tokenLower, reference);
                         break;
                     default:
                         if (!isProto3 || !typeRefRe.test(token))
                             throw illegal(token);
                         push(token);
-                        parseField(parent, s_optional, reference);
+                        parseField(parent, "optional", reference);
                         break;
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
     }
 
     var token;
@@ -528,11 +515,11 @@ function parse(source, root) {
                 parseSyntax();
                 break;
 
-            case s_option:
+            case "option":
                 if (!head)
                     throw illegal(token);
                 parseOption(ptr, token);
-                skip(s_semi);
+                skip(";");
                 break;
 
             default:
@@ -545,10 +532,10 @@ function parse(source, root) {
     }
 
     return {
-        'package'     : pkg,
-        'imports'     : imports,
-        'weakImports' : weakImports,
-        'syntax'      : syntax,
-        'root'        : root
+        "package"     : pkg,
+        "imports"     : imports,
+         weakImports  : weakImports,
+         syntax       : syntax,
+         root         : root
     };
 }

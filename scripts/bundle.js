@@ -42,7 +42,9 @@ function bundle(compress) {
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(
-                gulpif(compress, uglify({ mangleProperties: { regex: /^_/ } }))
+                gulpif(compress, uglify({
+                    mangleProperties: { regex: /^_/ }
+                }))
             )
             .pipe(header(license, {
                 date: (new Date()).toUTCString().replace('GMT', 'UTC'),

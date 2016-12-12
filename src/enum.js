@@ -115,7 +115,7 @@ EnumPrototype.add = function(name, id) {
     if (!util.isInteger(id) || id < 0)
         throw _TypeError("id", "a non-negative integer");
     if (this.values[name] !== undefined)
-        throw Error('duplicate name "' + name + '" in ' + this);
+        throw Error("duplicate name '" + name + "' in " + this);
     if (this.getValuesById()[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
     this.values[name] = id;
@@ -133,7 +133,7 @@ EnumPrototype.remove = function(name) {
     if (!util.isString(name))
         throw _TypeError("name");
     if (this.values[name] === undefined)
-        throw Error('"' + name + '" is not a name of ' + this);
+        throw Error("'" + name + "' is not a name of " + this);
     delete this.values[name];
     return clearCache(this);
 };

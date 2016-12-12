@@ -6,7 +6,10 @@
  */
 var util = exports;
 
-util.codegen = require("@protobufjs/codegen");
+util.asPromise = require("@protobufjs/aspromise");
+util.codegen   = require("@protobufjs/codegen");
+util.fetch     = require("@protobufjs/fetch");
+util.fs        = require("@protobufjs/fs");
 
 /**
  * Converts an object's values to an array.
@@ -36,80 +39,6 @@ util._TypeError = function(name, description) {
 };
 
 /**
- * Returns a promise from a node-style function.
- * @memberof util
- * @param {function(Error, ...*)} fn Function to call
- * @param {Object} ctx Function context
- * @param {...*} params Function arguments
- * @returns {Promise<*>} Promisified function
- */
-function asPromise(fn, ctx/*, varargs */) {
-    var args = [];
-    for (var i = 2; i < arguments.length; ++i)
-        args.push(arguments[i]);
-    return new Promise(function(resolve, reject) {
-        fn.apply(ctx, args.concat(
-            function(err/*, varargs */) {
-                if (err) reject(err);
-                else resolve.apply(null, Array.prototype.slice.call(arguments, 1));
-            }
-        ));
-    });
-}
-
-util.asPromise = asPromise;
-
-/**
- * Filesystem, if available.
- * @memberof util
- * @type {?Object}
- */
-var fs = null; // Hide this from webpack. There is probably another, better way.
-try { fs = eval(['req','uire'].join(''))("fs"); } catch (e) {} // eslint-disable-line no-eval, no-empty
-
-util.fs = fs;
-
-/**
- * Node-style callback as used by {@link util.fetch}.
- * @typedef FetchCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {string} [contents] File contents, if there hasn't been an error
- * @returns {undefined}
- */
-
-/**
- * Fetches the contents of a file.
- * @memberof util
- * @param {string} path File path or url
- * @param {FetchCallback} [callback] Callback function
- * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted 
- */
-function fetch(path, callback) {
-    if (!callback)
-        return asPromise(fetch, util, path);
-    if (fs && fs.readFile)
-        return fs.readFile(path, "utf8", callback);
-    var xhr = new XMLHttpRequest();
-    function onload() {
-        if (xhr.status !== 0 && xhr.status !== 200)
-            return callback(Error("status " + xhr.status));
-        if (util.isString(xhr.responseText))
-            return callback(null, xhr.responseText);
-        return callback(Error("request failed"));
-    }
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4)
-            onload();
-    };
-    xhr.open("GET", path, true);
-    xhr.send();
-    return undefined;
-}
-
-util.fetch = fetch;
-
-/**
  * Tests if the specified path is absolute.
  * @memberof util
  * @param {string} path Path to test
@@ -128,27 +57,27 @@ util.isAbsolutePath = isAbsolutePath;
  * @returns {string} Normalized path
  */
 function normalizePath(path) {
-    path = path.replace(/\\/g, '/')
-               .replace(/\/{2,}/g, '/');
-    var parts = path.split('/');
+    path = path.replace(/\\/g, "/")
+               .replace(/\/{2,}/g, "/");
+    var parts = path.split("/");
     var abs = isAbsolutePath(path);
     var prefix = "";
     if (abs)
-        prefix = parts.shift() + '/';
+        prefix = parts.shift() + "/";
     for (var i = 0; i < parts.length;) {
-        if (parts[i] === '..') {
+        if (parts[i] === "..") {
             if (i > 0)
                 parts.splice(--i, 2);
             else if (abs)
                 parts.splice(i, 1);
             else
                 ++i;
-        } else if (parts[i] === '.')
+        } else if (parts[i] === ".")
             parts.splice(i, 1);
         else
             ++i;
     }
-    return prefix + parts.join('/');
+    return prefix + parts.join("/");
 }
 
 util.normalizePath = normalizePath;
@@ -167,8 +96,8 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
         return importPath;
     if (!alreadyNormalized)
         originPath = normalizePath(originPath);
-    originPath = originPath.replace(/(?:\/|^)[^/]+$/, '');
-    return originPath.length ? normalizePath(originPath + '/' + importPath) : importPath;
+    originPath = originPath.replace(/(?:\/|^)[^/]+$/, "");
+    return originPath.length ? normalizePath(originPath + "/" + importPath) : importPath;
 };
 
 /**
@@ -194,7 +123,7 @@ util.merge = function merge(dst, src, ifNotSet) {
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    return "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+    return "[\"" + prop.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"]";
 };
 
 /**
@@ -228,7 +157,7 @@ util.newBuffer = function newBuffer(size) {
     size = size || 0;
     return util.Buffer
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
-        : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
+        : new (typeof Uint8Array !== "undefined" && Uint8Array || Array)(size);
 };
 
 var runtime = require("./util/runtime");

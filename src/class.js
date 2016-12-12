@@ -28,7 +28,7 @@ Class.create = function create(type, ctor) {
     if (!(type instanceof Type))
         throw _TypeError("type", "a Type");
     if (ctor) {
-        if (typeof ctor !== 'function')
+        if (typeof ctor !== "function")
             throw _TypeError("ctor", "a function");
     } else
         ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife

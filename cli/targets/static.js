@@ -128,8 +128,6 @@ function buildFunction(type, functionName, gen, scope) {
     }).join(',') + "]);");
     push("return " + lines[0]);
     lines.slice(1).forEach(function(line) {
-        if (line === '\t"use strict"')
-            return;
         var prev = indent;
         var i = 0;
         while (line.charAt(i++) === "\t")

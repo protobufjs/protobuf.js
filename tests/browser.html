@@ -1,5 +1,18 @@
+<!DOCTYPE html>
 <html>
-<head>
-<script src="../dist/protobuf.js"></script>
-</head>
+<head><script src="../dist/protobuf.js"></script></head>
+<body>
+<script>
+protobuf.util.fetch("browser.html")
+.then(function(source) {
+    var pre = document.createElement("pre");
+    pre.innerText = source;
+    document.body.appendChild(pre);
+    console.log("success");
+})
+.catch(function(err) {
+    console.log("error", err);
+});
+</script>
+</body>
 </html>

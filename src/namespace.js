@@ -14,7 +14,7 @@ var Enum    = require("./enum"),
 var _TypeError = util._TypeError;
 
 var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
-    nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
+    nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 
 /**
  * Constructs a new namespace instance.
@@ -207,7 +207,7 @@ NamespacePrototype.remove = function remove(object) {
  */
 NamespacePrototype.define = function define(path, json) {
     if (util.isString(path))
-        path = path.split('.');
+        path = path.split(".");
     else if (!Array.isArray(path)) {
         json = path;
         path = undefined;
@@ -252,7 +252,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     if (util.isString(path)) {
         if (!path.length)
             return null;
-        path = path.split('.');
+        path = path.split(".");
     } else if (!path.length)
         return null;
     // Start at root if path is absolute

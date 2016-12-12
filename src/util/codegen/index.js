@@ -18,10 +18,12 @@ var blockOpenRe  = /[{[]$/,
  * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
  */
 function codegen() {
-    var args   = Array.prototype.slice.call(arguments),
-        src    = ['\t"use strict"'],
+    var params = [],
+        src    = [],
         indent = 1,
         inCase = false;
+    for (var i = 0; i < arguments.length;)
+        params.push(arguments[i++]);
 
     /**
      * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
@@ -35,7 +37,11 @@ function codegen() {
      */
     /**/
     function gen() {
-        var line = sprintf.apply(null, arguments);
+        var args = [],
+            i = 0;
+        for (; i < arguments.length;)
+            args.push(arguments[i++]);
+        var line = sprintf.apply(null, args);
         var level = indent;
         if (src.length) {
             var prev = src[src.length - 1];
@@ -59,7 +65,7 @@ function codegen() {
             if (blockCloseRe.test(line))
                 level = --indent;
         }
-        for (var index = 0; index < level; ++index)
+        for (i = 0; i < level; ++i)
             line = "\t" + line;
         src.push(line);
         return gen;
@@ -72,7 +78,7 @@ function codegen() {
      * @inner
      */
     function str(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(", ") + ") {\n" + src.join("\n") + "\n}";
     }
 
     gen.str = str;
@@ -85,7 +91,7 @@ function codegen() {
      * @inner
      */
     function eof(name, scope) {
-        if (typeof name === 'object') {
+        if (typeof name === "object") {
             scope = name;
             name = undefined;
         }
@@ -109,15 +115,18 @@ function codegen() {
 }
 
 function sprintf(format) {
-    var params = Array.prototype.slice.call(arguments, 1),
-        index  = 0;
+    var args = [],
+        i = 1;
+    for (; i < arguments.length;)
+        args.push(arguments[i++]);
+    i = 0;
     return format.replace(/%([djs])/g, function($0, $1) {
-        var param = params[index++];
+        var arg = args[i++];
         switch ($1) {
             case "j":
-                return JSON.stringify(param);
+                return JSON.stringify(arg);
             default:
-                return String(param);
+                return String(arg);
         }
     });
 }

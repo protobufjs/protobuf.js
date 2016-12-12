@@ -81,7 +81,7 @@ util.props(ReflectionObjectPrototype, {
                 path.unshift(ptr.name);
                 ptr = ptr.parent;
             }
-            return path.join('.');
+            return path.join(".");
         }
     }
 });

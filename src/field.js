@@ -47,7 +47,7 @@ function Field(name, id, type, rule, extend, options) {
      * Field rule, if any.
      * @type {string|undefined}
      */
-    this.rule = rule && rule !== 'optional' ? rule : undefined; // toJSON
+    this.rule = rule && rule !== "optional" ? rule : undefined; // toJSON
 
     /**
      * Field type.
@@ -239,7 +239,7 @@ FieldPrototype.resolve = function resolve() {
         this.defaultValue = {};
     else if (this.repeated)
         this.defaultValue = [];
-    else if (this.options && (optionDefault = this.options['default']) !== undefined) // eslint-disable-line dot-notation
+    else if (this.options && (optionDefault = this.options["default"]) !== undefined) // eslint-disable-line dot-notation
         this.defaultValue = optionDefault;
     else
         this.defaultValue = typeDefault;
@@ -259,14 +259,14 @@ FieldPrototype.resolve = function resolve() {
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (options) {
-        if (this.resolvedType instanceof Enum && options['enum'] === String) // eslint-disable-line dot-notation
+        if (this.resolvedType instanceof Enum && options["enum"] === String) // eslint-disable-line dot-notation
             return this.resolvedType.getValuesById()[value];
         else if (this.long && options.long)
             return options.long === Number
-                ? typeof value === 'number'
+                ? typeof value === "number"
                 ? value
                 : util.Long.fromValue(value).toNumber()
-                : util.Long.fromValue(value, this.type.charAt(0) === 'u').toString();
+                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
     }
     return value;
 };

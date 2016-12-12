@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 12 Dec 2016 00:28:16 UTC
+ * Compiled Mon, 12 Dec 2016 22:50:33 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -126,6 +126,48 @@ exports.write = function writeIEEE754(buffer, value, offset, isBE, mLen, nBytes)
 
 },{}],2:[function(require,module,exports){
 "use strict";
+module.exports = asPromise;
+
+/**
+ * Returns a promise from a node-style callback function.
+ * @memberof util
+ * @param {function(?Error, ...*)} fn Function to call
+ * @param {Object} ctx Function context
+ * @param {...*} params Function arguments
+ * @returns {Promise<*>} Promisified function
+ */
+function asPromise(fn, ctx/*, varargs */) {
+    var params = [];
+    for (var i = 2; i < arguments.length;)
+        params.push(arguments[i++]);
+    var pending = true;
+    return new Promise(function asPromiseExecutor(resolve, reject) {
+        params.push(function asPromiseCallback(err/*, varargs */) {
+            if (pending) {
+                pending = false;
+                if (err)
+                    reject(err);
+                else {
+                    var args = [];
+                    for (var i = 1; i < arguments.length;)
+                        args.push(arguments[i++]);
+                    resolve.apply(null, args);
+                }
+            }
+        });
+        try {
+            fn.apply(ctx || this, params); // eslint-disable-line no-invalid-this
+        } catch (err) {
+            if (pending) {
+                pending = false;
+                reject(err);
+            }
+        }
+    });
+}
+
+},{}],3:[function(require,module,exports){
+"use strict";
 
 /**
  * A minimal base64 implementation for number arrays.
@@ -246,7 +288,7 @@ base64.decode = function decode(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 module.exports = codegen;
 
@@ -267,10 +309,12 @@ var blockOpenRe  = /[{[]$/,
  * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
  */
 function codegen() {
-    var args   = Array.prototype.slice.call(arguments),
-        src    = ['\t"use strict"'],
+    var params = [],
+        src    = [],
         indent = 1,
         inCase = false;
+    for (var i = 0; i < arguments.length;)
+        params.push(arguments[i++]);
 
     /**
      * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
@@ -284,7 +328,11 @@ function codegen() {
      */
     /**/
     function gen() {
-        var line = sprintf.apply(null, arguments);
+        var args = [],
+            i = 0;
+        for (; i < arguments.length;)
+            args.push(arguments[i++]);
+        var line = sprintf.apply(null, args);
         var level = indent;
         if (src.length) {
             var prev = src[src.length - 1];
@@ -308,7 +356,7 @@ function codegen() {
             if (blockCloseRe.test(line))
                 level = --indent;
         }
-        for (var index = 0; index < level; ++index)
+        for (i = 0; i < level; ++i)
             line = "\t" + line;
         src.push(line);
         return gen;
@@ -321,7 +369,7 @@ function codegen() {
      * @inner
      */
     function str(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + args.join(", ") + ") {\n" + src.join("\n") + "\n}";
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(", ") + ") {\n" + src.join("\n") + "\n}";
     }
 
     gen.str = str;
@@ -334,7 +382,7 @@ function codegen() {
      * @inner
      */
     function eof(name, scope) {
-        if (typeof name === 'object') {
+        if (typeof name === "object") {
             scope = name;
             name = undefined;
         }
@@ -358,15 +406,18 @@ function codegen() {
 }
 
 function sprintf(format) {
-    var params = Array.prototype.slice.call(arguments, 1),
-        index  = 0;
+    var args = [],
+        i = 1;
+    for (; i < arguments.length;)
+        args.push(arguments[i++]);
+    i = 0;
     return format.replace(/%([djs])/g, function($0, $1) {
-        var param = params[index++];
+        var arg = args[i++];
         switch ($1) {
             case "j":
-                return JSON.stringify(param);
+                return JSON.stringify(arg);
             default:
-                return String(param);
+                return String(arg);
         }
     });
 }
@@ -374,7 +425,7 @@ function sprintf(format) {
 codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
 codegen.verbose   = false;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 module.exports = EventEmitter;
 
@@ -445,14 +496,80 @@ EventEmitterPrototype.off = function off(evt, fn) {
 EventEmitterPrototype.emit = function emit(evt) {
     var listeners = this._listeners[evt];
     if (listeners) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        for (var i = 0; i < listeners.length; ++i)
-            listeners[i].fn.apply(listeners[i].ctx, args);
+        var args = [],
+            i = 0;
+        for (; i < arguments.length;)
+            args.push(arguments[i++]);
+        for (i = 0; i < listeners.length;)
+            listeners[i].fn.apply(listeners[i++].ctx, args);
     }
     return this;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+"use strict";
+module.exports = fetch;
+
+var asPromise = require(2);
+var fs        = require(7);
+
+/**
+ * Node-style callback as used by {@link util.fetch}.
+ * @typedef FetchCallback
+ * @type {function}
+ * @param {?Error} error Error, if any, otherwise `null`
+ * @param {string} [contents] File contents, if there hasn't been an error
+ * @returns {undefined}
+ */
+
+/**
+ * Fetches the contents of a file.
+ * @memberof util
+ * @param {string} path File path or url
+ * @param {FetchCallback} [callback] Callback function
+ * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted 
+ */
+function fetch(path, callback) {
+    if (!callback)
+        return asPromise(fetch, this, path); // eslint-disable-line no-invalid-this
+    if (fs.readFile)
+        return fs.readFile(path, "utf8", function fetchReadFileCallback(err, contents) {
+            return err && typeof XMLHttpRequest !== "undefined"
+                ? fetch_xhr(path, callback)
+                : callback(err, contents);
+        });
+    return fetch_xhr(path, callback);
+}
+
+function fetch_xhr(path, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange /* works everywhere */ = function fetchOnReadyStateChange() {
+        return xhr.readyState === 4
+            ? xhr.status === 0 || xhr.status === 200
+            ? callback(null, xhr.responseText)
+            : callback(Error("status " + xhr.status))
+            : undefined;
+        // local cors security errors return status 0 / empty string, too. afaik this cannot be
+        // reliably distinguished from an actually empty file for security reasons. feel free
+        // to send a pull request if you are aware of a solution.
+    };
+    xhr.open("GET", path);
+    xhr.send();
+}
+
+},{"2":2,"7":7}],7:[function(require,module,exports){
+"use strict";
+
+/**
+ * Node's fs module if available.
+ * @name fs
+ * @memberof util
+ * @type {Object}
+ */
+/**/
+try { module.exports = eval(["req","uire"].join(""))("fs"); } catch (e) {} // eslint-disable-line no-eval, no-empty
+
+},{}],8:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -502,7 +619,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 /**
@@ -518,10 +635,9 @@ var utf8 = exports;
  * @returns {number} Byte length
  */
 utf8.length = function length(string) {
-    var strlen = string.length >>> 0;
     var len = 0,
         c = 0;
-    for (var i = 0; i < strlen; ++i) {
+    for (var i = 0; i < string.length; ++i) {
         c = string.charCodeAt(i);
         if (c < 128)
             len += 1;
@@ -545,26 +661,25 @@ utf8.length = function length(string) {
  */
 utf8.read = function(buffer, start, end) {
     var len = end - start;
-    if (len > 0) {
-        var string = [],
-            i = 0, // char offset
-            t;     // temporary
-        while (start < end) {
-            t = buffer[start++];
-            if (t < 128)
-                string[i++] = t;
-            else if (t > 191 && t < 224)
-                string[i++] = (t & 31) << 6 | buffer[start++] & 63;
-            else if (t > 239 && t < 365) {
-                t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
-                string[i++] = 0xD800 + (t >> 10);
-                string[i++] = 0xDC00 + (t & 1023);
-            } else
-                string[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
-        }
-        return String.fromCharCode.apply(String, string.slice(0, i));
+    if (len < 1)
+        return "";
+    var string = [],
+        i = 0, // char offset
+        t;     // temporary
+    while (start < end) {
+        t = buffer[start++];
+        if (t < 128)
+            string[i++] = t;
+        else if (t > 191 && t < 224)
+            string[i++] = (t & 31) << 6 | buffer[start++] & 63;
+        else if (t > 239 && t < 365) {
+            t = ((t & 7) << 18 | (buffer[start++] & 63) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63) - 0x10000;
+            string[i++] = 0xD800 + (t >> 10);
+            string[i++] = 0xDC00 + (t & 1023);
+        } else
+            string[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
     }
-    return "";
+    return String.fromCharCode.apply(String, string.slice(0, i));
 };
 
 /**
@@ -601,13 +716,13 @@ utf8.write = function(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 module.exports = Class;
 
-var Message = require(14),
-    Type    = require(26),
-    util    = require(28);
+var Message = require(17),
+    Type    = require(29),
+    util    = require(31);
 
 var _TypeError = util._TypeError;
 
@@ -632,7 +747,7 @@ Class.create = function create(type, ctor) {
     if (!(type instanceof Type))
         throw _TypeError("type", "a Type");
     if (ctor) {
-        if (typeof ctor !== 'function')
+        if (typeof ctor !== "function")
             throw _TypeError("ctor", "a function");
     } else
         ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife
@@ -736,7 +851,7 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-},{"14":14,"26":26,"28":28}],8:[function(require,module,exports){
+},{"17":17,"29":29,"31":31}],11:[function(require,module,exports){
 "use strict";
 
 module.exports = common;
@@ -869,14 +984,14 @@ common("struct", {
     }
 });
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 module.exports = decode;
 
-var Enum    = require(11),
-    Reader  = require(20),
-    types   = require(27),
-    util    = require(28);
+var Enum    = require(14),
+    Reader  = require(23),
+    types   = require(30),
+    util    = require(31);
 
 /**
  * General purpose message decoder.
@@ -917,7 +1032,7 @@ function decode(readerOrBuffer, length) {
                             vs[vs.length] = field.resolvedType.decode(reader, reader.uint32());
                     }
                     for (var i = 0; i < ks.length; ++i)
-                        map[typeof ks[i] === 'object' ? util.longToHash(ks[i]) : ks[i]] = vs[i];
+                        map[typeof ks[i] === "object" ? util.longToHash(ks[i]) : ks[i]] = vs[i];
                 }
 
             // Repeated fields
@@ -999,7 +1114,7 @@ decode.generate = function generate(mtype) {
                     gen
                     ("}")
                     ("for(var i=0;i<k.length;++i)")
-                        ("o[typeof(k[i])==='object'?util.longToHash(k[i]):k[i]]=v[i]")
+                        ("o[typeof(k[i])===\"object\"?util.longToHash(k[i]):k[i]]=v[i]")
                 ("}")
                 ("m%s=o", prop);
 
@@ -1044,14 +1159,14 @@ decode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"11":11,"20":20,"27":27,"28":28}],10:[function(require,module,exports){
+},{"14":14,"23":23,"30":30,"31":31}],13:[function(require,module,exports){
 "use strict";
 module.exports = encode;
 
-var Enum     = require(11),
-    Writer   = require(32),
-    types    = require(27),
-    util     = require(28);
+var Enum     = require(14),
+    Writer   = require(35),
+    types    = require(30),
+    util     = require(31);
 var safeProp = util.safeProp;
 
 /**
@@ -1271,15 +1386,15 @@ encode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"11":11,"27":27,"28":28,"32":32}],11:[function(require,module,exports){
+},{"14":14,"30":30,"31":31,"35":35}],14:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
-var ReflectionObject = require(17);
+var ReflectionObject = require(20);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
 
-var util = require(28);
+var util = require(31);
 
 var _TypeError = util._TypeError;
 
@@ -1389,7 +1504,7 @@ EnumPrototype.add = function(name, id) {
     if (!util.isInteger(id) || id < 0)
         throw _TypeError("id", "a non-negative integer");
     if (this.values[name] !== undefined)
-        throw Error('duplicate name "' + name + '" in ' + this);
+        throw Error("duplicate name '" + name + "' in " + this);
     if (this.getValuesById()[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
     this.values[name] = id;
@@ -1407,24 +1522,24 @@ EnumPrototype.remove = function(name) {
     if (!util.isString(name))
         throw _TypeError("name");
     if (this.values[name] === undefined)
-        throw Error('"' + name + '" is not a name of ' + this);
+        throw Error("'" + name + "' is not a name of " + this);
     delete this.values[name];
     return clearCache(this);
 };
 
-},{"17":17,"28":28}],12:[function(require,module,exports){
+},{"20":20,"31":31}],15:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
-var ReflectionObject = require(17);
+var ReflectionObject = require(20);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Type      = require(26),
-    Enum      = require(11),
-    MapField  = require(13),
-    types     = require(27),
-    util      = require(28);
+var Type      = require(29),
+    Enum      = require(14),
+    MapField  = require(16),
+    types     = require(30),
+    util      = require(31);
 
 var _TypeError = util._TypeError;
 
@@ -1462,7 +1577,7 @@ function Field(name, id, type, rule, extend, options) {
      * Field rule, if any.
      * @type {string|undefined}
      */
-    this.rule = rule && rule !== 'optional' ? rule : undefined; // toJSON
+    this.rule = rule && rule !== "optional" ? rule : undefined; // toJSON
 
     /**
      * Field type.
@@ -1654,7 +1769,7 @@ FieldPrototype.resolve = function resolve() {
         this.defaultValue = {};
     else if (this.repeated)
         this.defaultValue = [];
-    else if (this.options && (optionDefault = this.options['default']) !== undefined) // eslint-disable-line dot-notation
+    else if (this.options && (optionDefault = this.options["default"]) !== undefined) // eslint-disable-line dot-notation
         this.defaultValue = optionDefault;
     else
         this.defaultValue = typeDefault;
@@ -1674,31 +1789,31 @@ FieldPrototype.resolve = function resolve() {
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (options) {
-        if (this.resolvedType instanceof Enum && options['enum'] === String) // eslint-disable-line dot-notation
+        if (this.resolvedType instanceof Enum && options["enum"] === String) // eslint-disable-line dot-notation
             return this.resolvedType.getValuesById()[value];
         else if (this.long && options.long)
             return options.long === Number
-                ? typeof value === 'number'
+                ? typeof value === "number"
                 ? value
                 : util.Long.fromValue(value).toNumber()
-                : util.Long.fromValue(value, this.type.charAt(0) === 'u').toString();
+                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
     }
     return value;
 };
 
-},{"11":11,"13":13,"17":17,"26":26,"27":27,"28":28}],13:[function(require,module,exports){
+},{"14":14,"16":16,"20":20,"29":29,"30":30,"31":31}],16:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
-var Field = require(12);
+var Field = require(15);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField);
 
-var Enum    = require(11),
-    types   = require(27),
-    util    = require(28);
+var Enum    = require(14),
+    types   = require(30),
+    util    = require(31);
 
 /**
  * Constructs a new map field instance.
@@ -1784,7 +1899,7 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"11":11,"12":12,"27":27,"28":28}],14:[function(require,module,exports){
+},{"14":14,"15":15,"30":30,"31":31}],17:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 
@@ -1921,16 +2036,16 @@ Message.verify = function verify(message) {
     return this.$type.verify(message);
 };
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
-var ReflectionObject = require(17);
+var ReflectionObject = require(20);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
 
-var Type = require(26),
-    util = require(28);
+var Type = require(29),
+    util = require(31);
 
 var _TypeError = util._TypeError;
 
@@ -2058,24 +2173,24 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"17":17,"26":26,"28":28}],16:[function(require,module,exports){
+},{"20":20,"29":29,"31":31}],19:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
-var ReflectionObject = require(17);
+var ReflectionObject = require(20);
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
-var Enum    = require(11),
-    Type    = require(26),
-    Field   = require(12),
-    Service = require(24),
-    util    = require(28);
+var Enum    = require(14),
+    Type    = require(29),
+    Field   = require(15),
+    Service = require(27),
+    util    = require(31);
 
 var _TypeError = util._TypeError;
 
 var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
-    nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(', ');
+    nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 
 /**
  * Constructs a new namespace instance.
@@ -2268,7 +2383,7 @@ NamespacePrototype.remove = function remove(object) {
  */
 NamespacePrototype.define = function define(path, json) {
     if (util.isString(path))
-        path = path.split('.');
+        path = path.split(".");
     else if (!Array.isArray(path)) {
         json = path;
         path = undefined;
@@ -2313,7 +2428,7 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     if (util.isString(path)) {
         if (!path.length)
             return null;
-        path = path.split('.');
+        path = path.split(".");
     } else if (!path.length)
         return null;
     // Start at root if path is absolute
@@ -2357,14 +2472,14 @@ NamespacePrototype.lookupService = function lookupService(path) {
     return found;
 };
 
-},{"11":11,"12":12,"17":17,"24":24,"26":26,"28":28}],17:[function(require,module,exports){
+},{"14":14,"15":15,"20":20,"27":27,"29":29,"31":31}],20:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
 ReflectionObject.extend = extend;
 
-var Root = require(21),
-    util = require(28);
+var Root = require(24),
+    util = require(31);
 
 var _TypeError = util._TypeError;
 
@@ -2441,7 +2556,7 @@ util.props(ReflectionObjectPrototype, {
                 path.unshift(ptr.name);
                 ptr = ptr.parent;
             }
-            return path.join('.');
+            return path.join(".");
         }
     }
 });
@@ -2556,16 +2671,16 @@ ReflectionObjectPrototype.toString = function toString() {
     return this.constructor.name + " " + this.getFullName();
 };
 
-},{"21":21,"28":28}],18:[function(require,module,exports){
+},{"24":24,"31":31}],21:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
-var ReflectionObject = require(17);
+var ReflectionObject = require(20);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
-var Field = require(12),
-    util  = require(28);
+var Field = require(15),
+    util  = require(31);
 
 var _TypeError = util._TypeError;
 
@@ -2721,21 +2836,21 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"12":12,"17":17,"28":28}],19:[function(require,module,exports){
+},{"15":15,"20":20,"31":31}],22:[function(require,module,exports){
 "use strict";
 module.exports = parse;
 
-var tokenize  = require(25),
-    Root      = require(21),
-    Type      = require(26),
-    Field     = require(12),
-    MapField  = require(13),
-    OneOf     = require(18),
-    Enum      = require(11),
-    Service   = require(24),
-    Method    = require(15),
-    types     = require(27),
-    util      = require(28);
+var tokenize  = require(28),
+    Root      = require(24),
+    Type      = require(29),
+    Field     = require(15),
+    MapField  = require(16),
+    OneOf     = require(21),
+    Enum      = require(14),
+    Service   = require(27),
+    Method    = require(18),
+    types     = require(30),
+    util      = require(31);
 var camelCase = util.camelCase;
 
 var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
@@ -2745,20 +2860,6 @@ var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
 function lower(token) {
     return token === null ? null : token.toLowerCase();
 }
-
-var s_required = "required",
-    s_repeated = "repeated",
-    s_optional = "optional",
-    s_option   = "option",
-    s_name     = "name",
-    s_type     = "type";
-var s_open     = "{",
-    s_close    = "}",
-    s_bopen    = '(',
-    s_bclose   = ')',
-    s_semi     = ";",
-    s_dq       = '"',
-    s_sq       = "'";
 
 /**
  * Result object returned from {@link parse}.
@@ -2770,6 +2871,7 @@ var s_open     = "{",
  * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
  * @property {Root} root Populated root instance
  */
+/**/
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
@@ -2801,27 +2903,27 @@ function parse(source, root) {
     var ptr = root;
 
     function illegal(token, name) {
-        return Error("illegal " + (name || "token") + " '" + token + "' (line " + tn.line() + s_bclose);
+        return Error("illegal " + (name || "token") + " '" + token + "' (line " + tn.line() + ")");
     }
 
     function readString() {
         var values = [],
             token;
         do {
-            if ((token = next()) !== s_dq && token !== s_sq)
+            if ((token = next()) !== "\"" && token !== "'")
                 throw illegal(token);
             values.push(next());
             skip(token);
             token = peek();
-        } while (token === s_dq || token === s_sq);
-        return values.join('');
+        } while (token === "\"" || token === "'");
+        return values.join("");
     }
 
     function readValue(acceptTypeRef) {
         var token = next();
         switch (lower(token)) {
-            case s_sq:
-            case s_dq:
+            case "'":
+            case "\"":
                 push(token);
                 return readString();
             case "true":
@@ -2843,13 +2945,13 @@ function parse(source, root) {
         var end = start;
         if (skip("to", true))
             end = parseId(next());
-        skip(s_semi);
+        skip(";");
         return [ start, end ];
     }
 
     function parseNumber(token) {
         var sign = 1;
-        if (token.charAt(0) === '-') {
+        if (token.charAt(0) === "-") {
             sign = -1;
             token = token.substring(1);
         }
@@ -2867,7 +2969,7 @@ function parse(source, root) {
             return sign * parseInt(token, 8);
         if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
             return sign * parseFloat(token);
-        throw illegal(token, 'number');
+        throw illegal(token, "number");
     }
 
     function parseId(token, acceptNegative) {
@@ -2877,7 +2979,7 @@ function parse(source, root) {
             case "max": return 0x1FFFFFFF;
             case "0": return 0;
         }
-        if (token.charAt(0) === '-' && !acceptNegative)
+        if (token.charAt(0) === "-" && !acceptNegative)
             throw illegal(token, "id");
         if (/^-?[1-9][0-9]*$/.test(token))
             return parseInt(token, 10);
@@ -2893,9 +2995,9 @@ function parse(source, root) {
             throw illegal("package");
         pkg = next();
         if (!typeRefRe.test(pkg))
-            throw illegal(pkg, s_name);
+            throw illegal(pkg, "name");
         ptr = ptr.define(pkg);
-        skip(s_semi);
+        skip(";");
     }
 
     function parseImport() {
@@ -2914,7 +3016,7 @@ function parse(source, root) {
                 break;
         }
         token = readString();
-        skip(s_semi);
+        skip(";");
         whichImports.push(token);
     }
 
@@ -2925,15 +3027,15 @@ function parse(source, root) {
         if ([ "proto2", p3 = "proto3" ].indexOf(syntax) < 0)
             throw illegal(syntax, "syntax");
         isProto3 = syntax === p3;
-        skip(s_semi);
+        skip(";");
     }
 
     function parseCommon(parent, token) {
         switch (token) {
 
-            case s_option:
+            case "option":
                 parseOption(parent, token);
-                skip(s_semi);
+                skip(";");
                 return true;
 
             case "message":
@@ -2960,8 +3062,8 @@ function parse(source, root) {
         if (!nameRe.test(name))
             throw illegal(name, "type name");
         var type = new Type(name);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 if (parseCommon(type, token))
                     continue;
@@ -2969,9 +3071,9 @@ function parse(source, root) {
                     case "map":
                         parseMapField(type, tokenLower);
                         break;
-                    case s_required:
-                    case s_optional:
-                    case s_repeated:
+                    case "required":
+                    case "optional":
+                    case "repeated":
                         parseField(type, tokenLower);
                         break;
                     case "oneof":
@@ -2987,23 +3089,23 @@ function parse(source, root) {
                         if (!isProto3 || !typeRefRe.test(token))
                             throw illegal(token);
                         push(token);
-                        parseField(type, s_optional);
+                        parseField(type, "optional");
                         break;
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(type);
     }
 
     function parseField(parent, rule, extend) {
         var type = next();
         if (!typeRefRe.test(type))
-            throw illegal(type, s_type);
+            throw illegal(type, "type");
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         name = camelCase(name);
         skip("=");
         var id = parseId(next());
@@ -3017,15 +3119,15 @@ function parse(source, root) {
         skip("<");
         var keyType = next();
         if (types.mapKey[keyType] === undefined)
-            throw illegal(keyType, s_type);
+            throw illegal(keyType, "type");
         skip(",");
         var valueType = next();
         if (!typeRefRe.test(valueType))
-            throw illegal(valueType, s_type);
+            throw illegal(valueType, "type");
         skip(">");
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         name = camelCase(name);
         skip("=");
         var id = parseId(next());
@@ -3036,47 +3138,47 @@ function parse(source, root) {
     function parseOneOf(parent, token) {
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         name = camelCase(name);
         var oneof = new OneOf(name);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
-                if (token === s_option) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
+                if (token === "option") {
                     parseOption(oneof, token);
-                    skip(s_semi);
+                    skip(";");
                 } else {
                     push(token);
-                    parseField(oneof, s_optional);
+                    parseField(oneof, "optional");
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(oneof);
     }
 
     function parseEnum(parent, token) {
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         var values = {};
         var enm = new Enum(name, values);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
-                if (lower(token) === s_option)
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
+                if (lower(token) === "option")
                     parseOption(enm);
                 else
                     parseEnumField(enm, token);
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(enm);
     }
 
     function parseEnumField(parent, token) {
         if (!nameRe.test(token))
-            throw illegal(token, s_name);
+            throw illegal(token, "name");
         var name = token;
         skip("=");
         var value = parseId(next(), true);
@@ -3085,13 +3187,13 @@ function parse(source, root) {
     }
 
     function parseOption(parent, token) {
-        var custom = skip(s_bopen, true);
+        var custom = skip("(", true);
         var name = next();
         if (!typeRefRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         if (custom) {
-            skip(s_bclose);
-            name = s_bopen + name + s_bclose;
+            skip(")");
+            name = "(" + name + ")";
             token = peek();
             if (fqTypeRefRe.test(token)) {
                 name += token;
@@ -3103,10 +3205,10 @@ function parse(source, root) {
     }
 
     function parseOptionValue(parent, name) {
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 if (!nameRe.test(token))
-                    throw illegal(token, s_name);
+                    throw illegal(token, "name");
                 name = name + "." + token;
                 if (skip(":", true))
                     setOption(parent, name, readValue(true));
@@ -3128,11 +3230,11 @@ function parse(source, root) {
     function parseInlineOptions(parent) {
         if (skip("[", true)) {
             do {
-                parseOption(parent, s_option);
+                parseOption(parent, "option");
             } while (skip(",", true));
             skip("]");
         }
-        skip(s_semi);
+        skip(";");
         return parent;
     }
 
@@ -3142,13 +3244,13 @@ function parse(source, root) {
             throw illegal(token, "service name");
         var name = token;
         var service = new Service(name);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 switch (tokenLower) {
-                    case s_option:
+                    case "option":
                         parseOption(service, tokenLower);
-                        skip(s_semi);
+                        skip(";");
                         break;
                     case "rpc":
                         parseMethod(service, tokenLower);
@@ -3157,9 +3259,9 @@ function parse(source, root) {
                         throw illegal(token);
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(service);
     }
 
@@ -3167,39 +3269,39 @@ function parse(source, root) {
         var type = token;
         var name = next();
         if (!nameRe.test(name))
-            throw illegal(name, s_name);
+            throw illegal(name, "name");
         var requestType, requestStream,
             responseType, responseStream;
-        skip(s_bopen);
+        skip("(");
         var st;
         if (skip(st = "stream", true))
             requestStream = true;
         if (!typeRefRe.test(token = next()))
             throw illegal(token);
         requestType = token;
-        skip(s_bclose); skip("returns"); skip(s_bopen);
+        skip(")"); skip("returns"); skip("(");
         if (skip(st, true))
             responseStream = true;
         if (!typeRefRe.test(token = next()))
             throw illegal(token);
         responseType = token;
-        skip(s_bclose);
+        skip(")");
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 switch (tokenLower) {
-                    case s_option:
+                    case "option":
                         parseOption(method, tokenLower);
-                        skip(s_semi);
+                        skip(";");
                         break;
                     default:
                         throw illegal(token);
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
         parent.add(method);
     }
 
@@ -3207,26 +3309,26 @@ function parse(source, root) {
         var reference = next();
         if (!typeRefRe.test(reference))
             throw illegal(reference, "reference");
-        if (skip(s_open, true)) {
-            while ((token = next()) !== s_close) {
+        if (skip("{", true)) {
+            while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
                 switch (tokenLower) {
-                    case s_required:
-                    case s_repeated:
-                    case s_optional:
+                    case "required":
+                    case "repeated":
+                    case "optional":
                         parseField(parent, tokenLower, reference);
                         break;
                     default:
                         if (!isProto3 || !typeRefRe.test(token))
                             throw illegal(token);
                         push(token);
-                        parseField(parent, s_optional, reference);
+                        parseField(parent, "optional", reference);
                         break;
                 }
             }
-            skip(s_semi, true);
+            skip(";", true);
         } else
-            skip(s_semi);
+            skip(";");
     }
 
     var token;
@@ -3252,11 +3354,11 @@ function parse(source, root) {
                 parseSyntax();
                 break;
 
-            case s_option:
+            case "option":
                 if (!head)
                     throw illegal(token);
                 parseOption(ptr, token);
-                skip(s_semi);
+                skip(";");
                 break;
 
             default:
@@ -3269,25 +3371,25 @@ function parse(source, root) {
     }
 
     return {
-        'package'     : pkg,
-        'imports'     : imports,
-        'weakImports' : weakImports,
-        'syntax'      : syntax,
-        'root'        : root
+        "package"     : pkg,
+        "imports"     : imports,
+         weakImports  : weakImports,
+         syntax       : syntax,
+         root         : root
     };
 }
 
-},{"11":11,"12":12,"13":13,"15":15,"18":18,"21":21,"24":24,"25":25,"26":26,"27":27,"28":28}],20:[function(require,module,exports){
+},{"14":14,"15":15,"16":16,"18":18,"21":21,"24":24,"27":27,"28":28,"29":29,"30":30,"31":31}],23:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util      = require(30),
+var util      = require(33),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
@@ -3584,7 +3686,7 @@ function read_sfixed64_number() {
  * @returns {Long|number} Value read
  */
 
-var readFloat = typeof Float32Array !== 'undefined'
+var readFloat = typeof Float32Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
@@ -3622,7 +3724,7 @@ ReaderPrototype.float = function read_float() {
     return value;
 };
 
-var readDouble = typeof Float64Array !== 'undefined'
+var readDouble = typeof Float64Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
@@ -3804,7 +3906,7 @@ var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.protot
 
 BufferReaderPrototype.constructor = BufferReader;
 
-if (typeof Float32Array === 'undefined') // f32 is faster (node 6.9.1)
+if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -3816,7 +3918,7 @@ BufferReaderPrototype.float = function read_float_buffer() {
     return value;
 };
 
-if (typeof Float64Array === 'undefined') // f64 is faster (node 6.9.1)
+if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -3880,17 +3982,17 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"30":30}],21:[function(require,module,exports){
+},{"1":1,"33":33}],24:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
-var Namespace = require(16);
+var Namespace = require(19);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
 
-var Field  = require(12),
-    util   = require(28),
-    common = require(8);
+var Field  = require(15),
+    util   = require(31),
+    common = require(11);
 
 /**
  * Constructs a new root namespace instance.
@@ -3970,7 +4072,7 @@ RootPrototype.load = function load(filename, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require(19)(source, self);
+                var parsed = require(22)(source, self);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -4161,7 +4263,7 @@ RootPrototype.toString = function toString() {
     return this.constructor.name;
 };
 
-},{"12":12,"16":16,"19":19,"28":28,"8":8}],22:[function(require,module,exports){
+},{"11":11,"15":15,"19":19,"22":22,"31":31}],25:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4170,13 +4272,13 @@ RootPrototype.toString = function toString() {
  */
 var rpc = exports;
 
-rpc.Service = require(23);
+rpc.Service = require(26);
 
-},{"23":23}],23:[function(require,module,exports){
+},{"26":26}],26:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var util         = require(28);
+var util         = require(31);
 var EventEmitter = util.EventEmitter;
 
 /**
@@ -4211,24 +4313,24 @@ ServicePrototype.end = function end(endedByRPC) {
         if (!endedByRPC) // signal end to rpcImpl
             this.$rpc(null, null, null);
         this.$rpc = null;
-        this.emit('end').off();
+        this.emit("end").off();
     }
     return this;
 };
 
-},{"28":28}],24:[function(require,module,exports){
+},{"31":31}],27:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var Namespace = require(16);
+var Namespace = require(19);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service);
 
-var Method = require(15),
-    util   = require(28),
-    rpc    = require(22);
+var Method = require(18),
+    util   = require(31),
+    rpc    = require(25);
 
 /**
  * Constructs a new service instance.
@@ -4336,7 +4438,7 @@ ServicePrototype.resolveAll = function resolve() {
  */
 ServicePrototype.add = function add(object) {
     if (this.get(object.name))
-        throw Error("duplicate name '" + object.name + '" in ' + this);
+        throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Method) {
         this.methods[object.name] = object;
         object.parent = this;
@@ -4398,14 +4500,14 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
             try {
                 requestData = (requestDelimited && method.resolvedRequestType.encodeDelimited(request) || method.resolvedRequestType.encode(request)).finish();
             } catch (err) {
-                (typeof setImmediate === 'function' && setImmediate || setTimeout)(function() { callback(err); });
+                (typeof setImmediate === "function" && setImmediate || setTimeout)(function() { callback(err); });
                 return;
             }
             // Calls the custom RPC implementation with the reflected method and binary request data
             // and expects the rpc implementation to call its callback with the binary response data.
             rpcImpl(method, requestData, function(err, responseData) {
                 if (err) {
-                    rpcService.emit('error', err, method);
+                    rpcService.emit("error", err, method);
                     return callback ? callback(err) : undefined;
                 }
                 if (responseData === null) {
@@ -4416,10 +4518,10 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                 try {
                     response = responseDelimited && method.resolvedResponseType.decodeDelimited(responseData) || method.resolvedResponseType.decode(responseData);
                 } catch (err2) {
-                    rpcService.emit('error', err2, method);
-                    return callback ? callback('error', err2) : undefined;
+                    rpcService.emit("error", err2, method);
+                    return callback ? callback("error", err2) : undefined;
                 }
-                rpcService.emit('data', response, method);
+                rpcService.emit("data", response, method);
                 return callback ? callback(null, response) : undefined;
             });
         };
@@ -4427,27 +4529,13 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     return rpcService;
 };
 
-},{"15":15,"16":16,"22":22,"28":28}],25:[function(require,module,exports){
+},{"18":18,"19":19,"25":25,"31":31}],28:[function(require,module,exports){
 "use strict";
 module.exports = tokenize;
 
 var delimRe        = /[\s{}=;:[\],'"()<>]/g,
     stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
     stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
-
-/**
- * Handle object returned from {@link tokenize}.
- * @typedef {Object} TokenizerHandle
- * @property {function():number} line Gets the current line number
- * @property {function():?string} next Gets the next token and advances (`null` on eof)
- * @property {function():?string} peek Peeks for the next token (`null` on eof)
- * @property {function(string)} push Pushes a token back to the stack
- * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- */
-
-var s_nl = "\n",
-    s_sl = '/',
-    s_as = '*';
 
 function unescape(str) {
     return str.replace(/\\(.?)/g, function($0, $1) {
@@ -4462,6 +4550,17 @@ function unescape(str) {
         }
     });
 }
+
+/**
+ * Handle object returned from {@link tokenize}.
+ * @typedef {Object} TokenizerHandle
+ * @property {function():number} line Gets the current line number
+ * @property {function():?string} next Gets the next token and advances (`null` on eof)
+ * @property {function():?string} peek Peeks for the next token (`null` on eof)
+ * @property {function(string)} push Pushes a token back to the stack
+ * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
+ */
+/**/
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
@@ -4496,7 +4595,7 @@ function tokenize(source) {
      * @inner
      */
     function readString() {
-        var re = stringDelim === '"' ? stringDoubleRe : stringSingleRe;
+        var re = stringDelim === "'" ? stringSingleRe : stringDoubleRe;
         re.lastIndex = offset - 1;
         var match = re.exec(source);
         if (!match)
@@ -4535,34 +4634,34 @@ function tokenize(source) {
                 return null;
             repeat = false;
             while (/\s/.test(curr = charAt(offset))) {
-                if (curr === s_nl)
+                if (curr === "\n")
                     ++line;
                 if (++offset === length)
                     return null;
             }
-            if (charAt(offset) === s_sl) {
+            if (charAt(offset) === "/") {
                 if (++offset === length)
                     throw illegal("comment");
-                if (charAt(offset) === s_sl) { // Line
-                    while (charAt(++offset) !== s_nl)
+                if (charAt(offset) === "/") { // Line
+                    while (charAt(++offset) !== "\n")
                         if (offset === length)
                             return null;
                     ++offset;
                     ++line;
                     repeat = true;
-                } else if ((curr = charAt(offset)) === s_as) { /* Block */
+                } else if ((curr = charAt(offset)) === "*") { /* Block */
                     do {
-                        if (curr === s_nl)
+                        if (curr === "\n")
                             ++line;
                         if (++offset === length)
                             return null;
                         prev = curr;
                         curr = charAt(offset);
-                    } while (prev !== s_as || curr !== s_sl);
+                    } while (prev !== "*" || curr !== "/");
                     ++offset;
                     repeat = true;
                 } else
-                    return s_sl;
+                    return "/";
             }
         } while (repeat);
 
@@ -4575,7 +4674,7 @@ function tokenize(source) {
             while (end < length && !delimRe.test(charAt(end)))
                 ++end;
         var token = source.substring(offset, offset = end);
-        if (token === '"' || token === "'")
+        if (token === "\"" || token === "'")
             stringDelim = token;
         return token;
     }
@@ -4634,28 +4733,28 @@ function tokenize(source) {
     };
     /* eslint-enable callback-return */
 }
-},{}],26:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 module.exports = Type; 
 
-var Namespace = require(16);
+var Namespace = require(19);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
 var TypePrototype = Namespace.extend(Type);
 
-var Enum      = require(11),
-    OneOf     = require(18),
-    Field     = require(12),
-    Service   = require(24),
-    Class     = require(7),
-    Message   = require(14),
-    Reader    = require(20),
-    Writer    = require(32),
-    util      = require(28);
-var encode    = require(10),
-    decode    = require(9),
-    verify    = require(31);
+var Enum      = require(14),
+    OneOf     = require(21),
+    Field     = require(15),
+    Service   = require(27),
+    Class     = require(10),
+    Message   = require(17),
+    Reader    = require(23),
+    Writer    = require(35),
+    util      = require(31);
+var encode    = require(13),
+    decode    = require(12),
+    verify    = require(34);
 
 /**
  * Constructs a new reflected message type instance.
@@ -4904,7 +5003,7 @@ TypePrototype.get = function get(name) {
  */
 TypePrototype.add = function add(object) {
     if (this.get(object.name))
-        throw Error("duplicate name '" + object.name + '" in ' + this);
+        throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Field && object.extend === undefined) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
@@ -5025,7 +5124,7 @@ TypePrototype.verify = function verify_setup(message) {
     ).call(this, message);
 };
 
-},{"10":10,"11":11,"12":12,"14":14,"16":16,"18":18,"20":20,"24":24,"28":28,"31":31,"32":32,"7":7,"9":9}],27:[function(require,module,exports){
+},{"10":10,"12":12,"13":13,"14":14,"15":15,"17":17,"19":19,"21":21,"23":23,"27":27,"31":31,"34":34,"35":35}],30:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5034,7 +5133,7 @@ TypePrototype.verify = function verify_setup(message) {
  */
 var types = exports;
 
-var util = require(28);
+var util = require(31);
 
 var s = [
     "double",   // 0
@@ -5156,7 +5255,7 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"28":28}],28:[function(require,module,exports){
+},{"31":31}],31:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5165,7 +5264,10 @@ types.packed = bake([
  */
 var util = exports;
 
-util.codegen = require(3);
+util.asPromise = require(2);
+util.codegen   = require(4);
+util.fetch     = require(6);
+util.fs        = require(7);
 
 /**
  * Converts an object's values to an array.
@@ -5195,80 +5297,6 @@ util._TypeError = function(name, description) {
 };
 
 /**
- * Returns a promise from a node-style function.
- * @memberof util
- * @param {function(Error, ...*)} fn Function to call
- * @param {Object} ctx Function context
- * @param {...*} params Function arguments
- * @returns {Promise<*>} Promisified function
- */
-function asPromise(fn, ctx/*, varargs */) {
-    var args = [];
-    for (var i = 2; i < arguments.length; ++i)
-        args.push(arguments[i]);
-    return new Promise(function(resolve, reject) {
-        fn.apply(ctx, args.concat(
-            function(err/*, varargs */) {
-                if (err) reject(err);
-                else resolve.apply(null, Array.prototype.slice.call(arguments, 1));
-            }
-        ));
-    });
-}
-
-util.asPromise = asPromise;
-
-/**
- * Filesystem, if available.
- * @memberof util
- * @type {?Object}
- */
-var fs = null; // Hide this from webpack. There is probably another, better way.
-try { fs = eval(['req','uire'].join(''))("fs"); } catch (e) {} // eslint-disable-line no-eval, no-empty
-
-util.fs = fs;
-
-/**
- * Node-style callback as used by {@link util.fetch}.
- * @typedef FetchCallback
- * @type {function}
- * @param {?Error} error Error, if any, otherwise `null`
- * @param {string} [contents] File contents, if there hasn't been an error
- * @returns {undefined}
- */
-
-/**
- * Fetches the contents of a file.
- * @memberof util
- * @param {string} path File path or url
- * @param {FetchCallback} [callback] Callback function
- * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted 
- */
-function fetch(path, callback) {
-    if (!callback)
-        return asPromise(fetch, util, path);
-    if (fs && fs.readFile)
-        return fs.readFile(path, "utf8", callback);
-    var xhr = new XMLHttpRequest();
-    function onload() {
-        if (xhr.status !== 0 && xhr.status !== 200)
-            return callback(Error("status " + xhr.status));
-        if (util.isString(xhr.responseText))
-            return callback(null, xhr.responseText);
-        return callback(Error("request failed"));
-    }
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4)
-            onload();
-    };
-    xhr.open("GET", path, true);
-    xhr.send();
-    return undefined;
-}
-
-util.fetch = fetch;
-
-/**
  * Tests if the specified path is absolute.
  * @memberof util
  * @param {string} path Path to test
@@ -5287,27 +5315,27 @@ util.isAbsolutePath = isAbsolutePath;
  * @returns {string} Normalized path
  */
 function normalizePath(path) {
-    path = path.replace(/\\/g, '/')
-               .replace(/\/{2,}/g, '/');
-    var parts = path.split('/');
+    path = path.replace(/\\/g, "/")
+               .replace(/\/{2,}/g, "/");
+    var parts = path.split("/");
     var abs = isAbsolutePath(path);
     var prefix = "";
     if (abs)
-        prefix = parts.shift() + '/';
+        prefix = parts.shift() + "/";
     for (var i = 0; i < parts.length;) {
-        if (parts[i] === '..') {
+        if (parts[i] === "..") {
             if (i > 0)
                 parts.splice(--i, 2);
             else if (abs)
                 parts.splice(i, 1);
             else
                 ++i;
-        } else if (parts[i] === '.')
+        } else if (parts[i] === ".")
             parts.splice(i, 1);
         else
             ++i;
     }
-    return prefix + parts.join('/');
+    return prefix + parts.join("/");
 }
 
 util.normalizePath = normalizePath;
@@ -5326,8 +5354,8 @@ util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalize
         return importPath;
     if (!alreadyNormalized)
         originPath = normalizePath(originPath);
-    originPath = originPath.replace(/(?:\/|^)[^/]+$/, '');
-    return originPath.length ? normalizePath(originPath + '/' + importPath) : importPath;
+    originPath = originPath.replace(/(?:\/|^)[^/]+$/, "");
+    return originPath.length ? normalizePath(originPath + "/" + importPath) : importPath;
 };
 
 /**
@@ -5353,7 +5381,7 @@ util.merge = function merge(dst, src, ifNotSet) {
  * @returns {string} Safe accessor
  */
 util.safeProp = function safeProp(prop) {
-    return "['" + prop.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "']";
+    return "[\"" + prop.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"]";
 };
 
 /**
@@ -5387,12 +5415,12 @@ util.newBuffer = function newBuffer(size) {
     size = size || 0;
     return util.Buffer
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
-        : new (typeof Uint8Array !== 'undefined' && Uint8Array || Array)(size);
+        : new (typeof Uint8Array !== "undefined" && Uint8Array || Array)(size);
 };
 
-var runtime = require(30);
+var runtime = require(33);
 
-util.EventEmitter = require(4);
+util.EventEmitter = require(5);
 
 // Merge in runtime utility
 util.merge(util, runtime);
@@ -5401,12 +5429,12 @@ util._configure = function configure() {
     runtime.Long = util.Long;
 };
 
-},{"3":3,"30":30,"4":4}],29:[function(require,module,exports){
+},{"2":2,"33":33,"4":4,"5":5,"6":6,"7":7}],32:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(28);
+var util = require(31);
 
 /**
  * Any compatible Long instance.
@@ -5485,9 +5513,9 @@ LongBits.fromNumber = function fromNumber(value) {
  */
 LongBits.from = function from(value) {
     switch (typeof value) {
-        case 'number':
+        case "number":
             return LongBits.fromNumber(value);
-        case 'string':
+        case "string":
             if (util.Long)
                 value = util.Long.fromString(value);
                 // fallthrough
@@ -5604,17 +5632,17 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"28":28}],30:[function(require,module,exports){
+},{"31":31}],33:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-var LongBits = util.LongBits = require(29);
+var LongBits = util.LongBits = require(32);
 
-util.base64 = require(2);
-util.utf8   = require(6);
-util.pool   = require(5);
+util.base64 = require(3);
+util.utf8   = require(9);
+util.pool   = require(8);
 
 /**
  * Whether running within node or not.
@@ -5650,7 +5678,7 @@ if (!util.Long && isNode)
  * @returns {boolean} `true` if the value is an integer
  */
 util.isInteger = Number.isInteger || function isInteger(value) {
-    return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
 };
 
 /**
@@ -5659,7 +5687,7 @@ util.isInteger = Number.isInteger || function isInteger(value) {
  * @returns {boolean} `true` if the value is a string
  */
 util.isString = function isString(value) {
-    return typeof value === 'string' || value instanceof String;
+    return typeof value === "string" || value instanceof String;
 };
 
 /**
@@ -5668,7 +5696,7 @@ util.isString = function isString(value) {
  * @returns {boolean} `true` if the value is a non-null object
  */
 util.isObject = function isObject(value) {
-    return Boolean(value && typeof value === 'object');
+    return Boolean(value && typeof value === "object");
 };
 
 /**
@@ -5679,7 +5707,7 @@ util.isObject = function isObject(value) {
 util.longToHash = function longToHash(value) {
     return value
         ? LongBits.from(value).toHash()
-        : '\0\0\0\0\0\0\0\0';
+        : "\0\0\0\0\0\0\0\0";
 };
 
 /**
@@ -5702,11 +5730,11 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @returns {boolean} `true` if not equal
  */
 util.longNeq = function longNeq(a, b) {
-    return typeof a === 'number'
-         ? typeof b === 'number'
+    return typeof a === "number"
+         ? typeof b === "number"
             ? a !== b
             : (a = LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
-         : typeof b === 'number'
+         : typeof b === "number"
             ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
 };
@@ -5734,9 +5762,9 @@ util.prop = function prop(target, key, descriptor) {
     var ie8 = !-[1,];
     var ucKey = key.substring(0, 1).toUpperCase() + key.substring(1);
     if (descriptor.get)
-        target['get' + ucKey] = descriptor.get;
+        target["get" + ucKey] = descriptor.get;
     if (descriptor.set)
-        target['set' + ucKey] = ie8
+        target["set" + ucKey] = ie8
             ? function(value) {
                   descriptor.set.call(this, value);
                   this[key] = value;
@@ -5764,13 +5792,13 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"2":2,"29":29,"5":5,"6":6,"buffer":"buffer","long":"long"}],31:[function(require,module,exports){
+},{"3":3,"32":32,"8":8,"9":9,"buffer":"buffer","long":"long"}],34:[function(require,module,exports){
 "use strict";
 module.exports = verify;
 
-var Enum      = require(11),
-    Type      = require(26),
-    util      = require(28);
+var Enum      = require(14),
+    Type      = require(29),
+    util      = require(31);
 var isInteger = util.isInteger;
 
 function invalid(field, expected) {
@@ -5781,7 +5809,7 @@ function verifyValue(field, value) {
     switch (field.type) {
         case "double":
         case "float":
-            if (typeof value !== 'number')
+            if (typeof value !== "number")
                 return invalid(field, "number");
             break;
         case "int32":
@@ -5801,7 +5829,7 @@ function verifyValue(field, value) {
                 return invalid(field, "integer|Long");
             break;
         case "bool":
-            if (typeof value !== 'boolean')
+            if (typeof value !== "boolean")
                 return invalid(field, "boolean");
             break;
         case "string":
@@ -5809,12 +5837,12 @@ function verifyValue(field, value) {
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!(value && typeof value.length === 'number' || util.isString(value)))
+            if (!(value && typeof value.length === "number" || util.isString(value)))
                 return invalid(field, "buffer");
             break;
         default:
             if (field.resolvedType instanceof Enum) {
-                if (typeof field.resolvedType.getValuesById()[value] !== 'number')
+                if (typeof field.resolvedType.getValuesById()[value] !== "number")
                     return invalid(field, "enum value");
             } else if (field.resolvedType instanceof Type) {
                 var reason = field.resolvedType.verify(value);
@@ -5911,7 +5939,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
     switch (field.type) {
         case "double":
         case "float": gen
-            ("if(typeof %s!=='number')", ref)
+            ("if(typeof %s!==\"number\")", ref)
                 ("return%j", invalid(field, "number"));
             break;
         case "int32":
@@ -5931,7 +5959,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "integer|Long"));
             break;
         case "bool": gen
-            ("if(typeof %s!=='boolean')", ref)
+            ("if(typeof %s!==\"boolean\")", ref)
                 ("return%j", invalid(field, "boolean"));
             break;
         case "string": gen
@@ -5939,7 +5967,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 ("return%j", invalid(field, "string"));
             break;
         case "bytes": gen
-            ("if(!(%s&&typeof %s.length==='number'||util.isString(%s)))", ref, ref, ref)
+            ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
                 ("return%j", invalid(field, "buffer"));
             break;
         default:
@@ -6044,18 +6072,18 @@ verify.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"11":11,"26":26,"28":28}],32:[function(require,module,exports){
+},{"14":14,"29":29,"31":31}],35:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util      = require(30),
+var util      = require(33),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
-var ArrayImpl = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
+var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 /**
  * Constructs a new writer operation instance.
@@ -6376,7 +6404,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
     return this.push(writeFixed32, 4, bits.lo).push(writeFixed32, 4, bits.hi);
 };
 
-var writeFloat = typeof Float32Array !== 'undefined'
+var writeFloat = typeof Float32Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
@@ -6411,7 +6439,7 @@ WriterPrototype.float = function write_float(value) {
     return this.push(writeFloat, 4, value);
 };
 
-var writeDouble = typeof Float64Array !== 'undefined'
+var writeDouble = typeof Float64Array !== "undefined"
     ? (function() { // eslint-disable-line wrap-iife
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
@@ -6470,7 +6498,7 @@ var writeBytes = ArrayImpl.prototype.set
  */
 WriterPrototype.bytes = function write_bytes(value) {
     var len = value.length >>> 0;
-    if (typeof value === 'string' && len) {
+    if (typeof value === "string" && len) {
         var buf = Writer.alloc(len = base64.length(value));
         base64.decode(value, buf, 0);
         value = buf;
@@ -6588,7 +6616,7 @@ function writeFloatBuffer(val, buf, pos) {
     buf.writeFloatLE(val, pos, true);
 }
 
-if (typeof Float32Array === 'undefined') // f32 is faster (node 6.9.1)
+if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -6600,7 +6628,7 @@ function writeDoubleBuffer(val, buf, pos) {
     buf.writeDoubleLE(val, pos, true);
 }
 
-if (typeof Float64Array === 'undefined') // f64 is faster (node 6.9.1)
+if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
 /**
  * @override
  */
@@ -6617,7 +6645,7 @@ function writeBytesBuffer(val, buf, pos) {
  * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
-    if (typeof value === 'string')
+    if (typeof value === "string")
         value = util.Buffer.from && util.Buffer.from(value, "base64") || new util.Buffer(value, "base64");
     var len = value.length >>> 0;
     return len
@@ -6656,7 +6684,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"30":30}],33:[function(require,module,exports){
+},{"1":1,"33":33}],36:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6678,7 +6706,7 @@ var protobuf = global.protobuf = exports;
  * @returns {undefined}
  */
 function load(filename, root, callback) {
-    if (typeof root === 'function') {
+    if (typeof root === "function") {
         callback = root;
         root = new protobuf.Root();
     } else if (!root)
@@ -6734,41 +6762,41 @@ protobuf.loadSync = loadSync;
 protobuf.roots = {};
 
 // Parser
-protobuf.tokenize         = require(25);
-protobuf.parse            = require(19);
+protobuf.tokenize         = require(28);
+protobuf.parse            = require(22);
 
 // Serialization
-protobuf.Writer           = require(32);
+protobuf.Writer           = require(35);
 protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
                var Reader =
-protobuf.Reader           = require(20);
+protobuf.Reader           = require(23);
 protobuf.BufferReader     = protobuf.Reader.BufferReader;
-protobuf.encode           = require(10);
-protobuf.decode           = require(9);
-protobuf.verify           = require(31);
+protobuf.encode           = require(13);
+protobuf.decode           = require(12);
+protobuf.verify           = require(34);
 
 // Reflection
-protobuf.ReflectionObject = require(17);
-protobuf.Namespace        = require(16);
-protobuf.Root             = require(21);
-protobuf.Enum             = require(11);
-protobuf.Type             = require(26);
-protobuf.Field            = require(12);
-protobuf.OneOf            = require(18);
-protobuf.MapField         = require(13);
-protobuf.Service          = require(24);
-protobuf.Method           = require(15);
+protobuf.ReflectionObject = require(20);
+protobuf.Namespace        = require(19);
+protobuf.Root             = require(24);
+protobuf.Enum             = require(14);
+protobuf.Type             = require(29);
+protobuf.Field            = require(15);
+protobuf.OneOf            = require(21);
+protobuf.MapField         = require(16);
+protobuf.Service          = require(27);
+protobuf.Method           = require(18);
 
 // Runtime
-protobuf.Class            = require(7);
-protobuf.Message          = require(14);
+protobuf.Class            = require(10);
+protobuf.Message          = require(17);
 
 // Utility
-protobuf.types            = require(27);
-protobuf.common           = require(8);
-protobuf.rpc              = require(22);
+protobuf.types            = require(30);
+protobuf.common           = require(11);
+protobuf.rpc              = require(25);
                  var util =
-protobuf.util             = require(28);
+protobuf.util             = require(31);
 protobuf.configure        = configure;
 
 /**
@@ -6781,7 +6809,7 @@ function configure() {
 }
 
 // Be nice to AMD
-if (typeof define === 'function' && define.amd)
+if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {
         if (Long) {
             protobuf.util.Long = Long;
@@ -6792,7 +6820,7 @@ if (typeof define === 'function' && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"24":24,"25":25,"26":26,"27":27,"28":28,"31":31,"32":32,"7":7,"8":8,"9":9}]},{},[33])
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"27":27,"28":28,"29":29,"30":30,"31":31,"34":34,"35":35}]},{},[36])
 
 
 //# sourceMappingURL=protobuf.js.map

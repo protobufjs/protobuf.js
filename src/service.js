@@ -117,7 +117,7 @@ ServicePrototype.resolveAll = function resolve() {
  */
 ServicePrototype.add = function add(object) {
     if (this.get(object.name))
-        throw Error("duplicate name '" + object.name + '" in ' + this);
+        throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Method) {
         this.methods[object.name] = object;
         object.parent = this;
@@ -179,14 +179,14 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
             try {
                 requestData = (requestDelimited && method.resolvedRequestType.encodeDelimited(request) || method.resolvedRequestType.encode(request)).finish();
             } catch (err) {
-                (typeof setImmediate === 'function' && setImmediate || setTimeout)(function() { callback(err); });
+                (typeof setImmediate === "function" && setImmediate || setTimeout)(function() { callback(err); });
                 return;
             }
             // Calls the custom RPC implementation with the reflected method and binary request data
             // and expects the rpc implementation to call its callback with the binary response data.
             rpcImpl(method, requestData, function(err, responseData) {
                 if (err) {
-                    rpcService.emit('error', err, method);
+                    rpcService.emit("error", err, method);
                     return callback ? callback(err) : undefined;
                 }
                 if (responseData === null) {
@@ -197,10 +197,10 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                 try {
                     response = responseDelimited && method.resolvedResponseType.decodeDelimited(responseData) || method.resolvedResponseType.decode(responseData);
                 } catch (err2) {
-                    rpcService.emit('error', err2, method);
-                    return callback ? callback('error', err2) : undefined;
+                    rpcService.emit("error", err2, method);
+                    return callback ? callback("error", err2) : undefined;
                 }
-                rpcService.emit('data', response, method);
+                rpcService.emit("data", response, method);
                 return callback ? callback(null, response) : undefined;
             });
         };
