@@ -33,6 +33,9 @@ var MessagePrototype = Message.prototype;
  * @param {*} [options.enum=Number] Enum value conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to the numeric ids.
+ * @param {*} [options.bytes] Bytes value conversion type.
+ * Valid values are `Array` and `String` (the global types).
+ * Defaults to return the underlying buffer type.
  * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
  * @returns {Object.<string,*>} JSON object
  */

@@ -50,6 +50,8 @@
     "long": "^3.2.0"
   },
   "devDependencies": {
+    "@types/long": "^3.0.31",
+    "@types/node": "0.0.3",
     "benchmark": "^2.1.2",
     "browserify": "^13.1.1",
     "bundle-collapser": "^1.2.1",
@@ -69,7 +71,7 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "tsd-jsdoc": "dcodeIO/tsd-jsdoc",
-    "typescript": "^2.2.0-dev.20161202",
+    "typescript": "^2.2.0-dev.20161212",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
     "vinyl-source-stream": "^1.1.0",

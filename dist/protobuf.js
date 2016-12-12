@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 12 Dec 2016 22:50:33 UTC
+ * Compiled Mon, 12 Dec 2016 23:19:05 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1796,7 +1796,11 @@ FieldPrototype.jsonConvert = function(value, options) {
                 ? typeof value === "number"
                 ? value
                 : util.Long.fromValue(value).toNumber()
-                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
+                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString()
+        else if (options.bytes && this.type === "bytes")
+            return options.bytes === Array
+                ? Array.prototype.slice.call(value)
+                : util.base64.encode(value, 0, value.length);
     }
     return value;
 };
@@ -1935,6 +1939,9 @@ var MessagePrototype = Message.prototype;
  * @param {*} [options.enum=Number] Enum value conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to the numeric ids.
+ * @param {*} [options.bytes] Bytes value conversion type.
+ * Valid values are `Array` and `String` (the global types).
+ * Defaults to return the underlying buffer type.
  * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
  * @returns {Object.<string,*>} JSON object
  */
