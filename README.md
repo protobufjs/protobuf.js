@@ -336,7 +336,13 @@ protobuf.load("bundle.json", function(err, root) {
 });
 ```
 
-#### Generating TypeScript definitions for static modules
+### Descriptors vs. static modules
+
+While .proto and JSON files require the full library (about 20kb gzipped), pretty much all code but the relatively short descriptors is shared.
+
+Static code, on the other hand, requires just the runtime library (final size TBA), but generates relatively large code bases without any reflection features.
+
+### Generating TypeScript definitions from static modules
 
 Likewise, the `pbts` command line utility can be used to generate TypeScript definitions from `pbjs`-generated static modules.
 

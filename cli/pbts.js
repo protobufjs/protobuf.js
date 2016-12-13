@@ -16,9 +16,10 @@ var protobuf = require("..");
 exports.main = function(args) {
     var argv = minimist(args.slice(2), {
         alias: {
+            name: "n",
             out : "o"
         },
-        string: [ "out" ]
+        string: [ "name", "out" ]
     });
 
     var files  = argv._;
@@ -65,7 +66,7 @@ exports.main = function(args) {
         fs.unlinkSync(path.join(dir, "types.d.ts"));
 
         var header = [
-            "// pbts " + process.argv.slice(2).join(' '),
+            "// $> pbts " + process.argv.slice(2).join(' '),
             "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
             ""
         ];
