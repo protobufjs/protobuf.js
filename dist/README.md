@@ -1,5 +1,7 @@
 This folder contains prebuilt browser versions of [protobuf.js](https://github.com/dcodeIO/protobuf.js). When sending pull requests, it is not required to update these.
 
+Alternatively, you can also use [the minimal runtime](./runtime) when working with statically generated code from `pbjs` *only*.
+
 Prebuilt files are in source control to enable pain-free frontend respectively CDN usage:
 
 CDN usage

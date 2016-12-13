@@ -77,9 +77,11 @@ Production:
 <script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.min.js"></script>
 ```
 
-The `protobuf` namespace will be available globally.
-
 **NOTE:** Remember to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/releases) your project depends upon.
+
+Or [download](https://github.com/dcodeIO/protobuf.js/tree/master/dist) the library.
+
+The `protobuf` namespace will always be available globally but also supports AMD.
 
 Examples
 --------
@@ -336,14 +338,6 @@ protobuf.load("bundle.json", function(err, root) {
 });
 ```
 
-### Descriptors vs. static modules
-
-While .proto and JSON files require the full library (about 20kb gzipped), pretty much all code but the relatively short descriptors is shared.
-
-Static code, on the other hand, requires just the runtime library (about 5kb gzipped), but generates relatively large code bases without any reflection features.
-
-When `new Function` is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same generated at runtime.
-
 ### Generating TypeScript definitions from static modules
 
 Likewise, the `pbts` command line utility can be used to generate TypeScript definitions from `pbjs`-generated static modules.
@@ -357,6 +351,14 @@ Generates TypeScript definitions from annotated JavaScript files.
 
 usage: pbts [options] file1.js file2.js ...
 ```
+
+### Descriptors vs. static modules
+
+While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared.
+
+Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates relatively large code bases without any reflection features.
+
+When `new Function` is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same generated at runtime.
 
 Building
 --------
@@ -404,37 +406,37 @@ The package includes a benchmark that tries to compare performance to native JSO
 ```
 benchmarking encoding performance ...
 
-Type.encode to buffer x 479,876 ops/sec ±0.64% (92 runs sampled)
-JSON.stringify to string x 311,489 ops/sec ±0.84% (87 runs sampled)
-JSON.stringify to buffer x 175,079 ops/sec ±1.48% (82 runs sampled)
+Type.encode to buffer x 481,172 ops/sec ±0.48% (92 runs sampled)
+JSON.stringify to string x 307,509 ops/sec ±1.04% (92 runs sampled)
+JSON.stringify to buffer x 164,463 ops/sec ±1.37% (89 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 35.2% slower
-   JSON.stringify to buffer was 63.8% slower
+   JSON.stringify to string was 36.4% slower
+   JSON.stringify to buffer was 66.1% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,267,612 ops/sec ±1.18% (90 runs sampled)
-JSON.parse from string x 291,707 ops/sec ±1.12% (92 runs sampled)
-JSON.parse from buffer x 262,640 ops/sec ±0.77% (89 runs sampled)
+Type.decode from buffer x 1,319,810 ops/sec ±0.71% (92 runs sampled)
+JSON.parse from string x 298,578 ops/sec ±0.98% (90 runs sampled)
+JSON.parse from buffer x 267,471 ops/sec ±0.81% (89 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 77.0% slower
-     JSON.parse from buffer was 79.2% slower
+     JSON.parse from string was 77.4% slower
+     JSON.parse from buffer was 79.8% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 248,897 ops/sec ±0.89% (90 runs sampled)
-JSON to/from string x 126,848 ops/sec ±0.75% (92 runs sampled)
-JSON to/from buffer x 89,854 ops/sec ±0.79% (93 runs sampled)
+Type to/from buffer x 262,728 ops/sec ±0.92% (92 runs sampled)
+JSON to/from string x 129,405 ops/sec ±0.78% (94 runs sampled)
+JSON to/from buffer x 89,523 ops/sec ±0.71% (89 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 49.0% slower
-        JSON to/from buffer was 63.9% slower
+        JSON to/from string was 50.7% slower
+        JSON to/from buffer was 65.9% slower
 
 benchmarking verifying performance ...
 
-Type.verify x 5,941,014 ops/sec ±0.96% (90 runs sampled)
+Type.verify x 5,833,382 ops/sec ±0.98% (85 runs sampled)
 
                 Type.verify was fastest
 ```
