@@ -1,7 +1,6 @@
-/*
- * protobuf.js v6.1.0 TypeScript definitions
- * Generated Tue, 13 Dec 2016 02:56:17 UTC
- */
+// pbts --name protobufjs --out types/protobuf.js.d.ts ./src
+// Generated Tue, 13 Dec 2016 12:42:40 UTC
+
 declare module "protobufjs" {
 
    /**

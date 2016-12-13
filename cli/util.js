@@ -70,6 +70,12 @@ exports.inspect = function inspect(object, indent) {
 };
 
 exports.require = function(name, version) {
+    var sub = "";
+    var p = name.indexOf("/");
+    if (p > -1) {
+        sub = name.substring(p);
+        name = name.substring(0, p);
+    }
     var cwd = path.join(__dirname, "..");
     var dir = path.join(cwd, "node_modules", name);
     try {
@@ -81,7 +87,7 @@ exports.require = function(name, version) {
             cwd: cwd
         });
     }
-    return require(name);
+    return require(name + sub);
 };
 
 exports.wrap = function(name, OUTPUT, ROOT) {

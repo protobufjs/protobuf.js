@@ -118,25 +118,25 @@ function verifyEncode(test, buf) {
                 values: ["c", "d"]
             },
         */
-        test.equal(buf[ 0], 10, "id 1, wireType 2");
+        test.equal(buf[ 0], 10, "id 1, wireType 2"); // Outer.value
         test.equal(buf[ 1], 14, "a length of 14");
-        test.equal(buf[ 2], 10, "id 1, wireType 2");
+        test.equal(buf[ 2], 10, "id 1, wireType 2"); //   Outer.value $key
         test.equal(buf[ 3],  1, "a length of 1");
         test.equal(buf[ 4], 98, "'b'");
-        test.equal(buf[ 5], 18, "id 2, wireType 2");
+        test.equal(buf[ 5], 18, "id 2, wireType 2"); //   Outer.value $value
         test.equal(buf[ 6],  9, "a length of 9");
-        test.equal(buf[ 7], 10, "id 1, wireType 2");
-        test.equal(buf[ 8],  1 , "a length of 9");
+        test.equal(buf[ 7], 10, "id 1, wireType 2"); //     Inner.key
+        test.equal(buf[ 8],  1 , "a length of 1");
         test.equal(buf[ 9], 49, "'1'");
-        test.equal(buf[10], 18, "id 2, wireType 2");
+        test.equal(buf[10], 18, "id 2, wireType 2"); //     Inner.values (1)
         test.equal(buf[11],  1, "a length of 1");
         test.equal(buf[12], 99, "'c'");
-        test.equal(buf[13], 18, "id 2, wireType 2");
-        test.equal(buf[14],  1, "a lenfth of 1");
+        test.equal(buf[13], 18, "id 2, wireType 2"); //     Inner.values (2)
+        test.equal(buf[14],  1, "a length of 1");
         test.equal(buf[15],100, "'d'");
 
         // second
-        test.equal(buf[16], 10, "id 1, wireType 2");
+        test.equal(buf[16], 10, "id 1, wireType 2"); // Outer.value
         // ...
 
         test.end();

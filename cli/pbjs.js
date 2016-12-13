@@ -8,8 +8,7 @@ var minimist = util.require("minimist", pkg.devDependencies.minimist),
     glob     = util.require("glob", pkg.devDependencies.glob);
 
 var protobuf = require(".."),
-    targets  = util.requireAll("./targets"),
-    pkg      = require("../package.json");
+    targets  = util.requireAll("./targets");
 
 exports.main = function(args) {
     var argv = minimist(args.slice(2), {

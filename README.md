@@ -336,6 +336,20 @@ protobuf.load("bundle.json", function(err, root) {
 });
 ```
 
+#### Generating TypeScript definitions for static modules
+
+Likewise, the `pbts` command line utility can be used to generate TypeScript definitions from `pbjs`-generated static modules.
+
+```
+Generates TypeScript definitions from annotated JavaScript files.
+
+  -n, --name      Specifies the module name.
+
+  -o, --out       Saves to a file instead of writing to stdout.
+
+usage: pbts [options] file1.js file2.js ...
+```
+
 Building
 --------
 

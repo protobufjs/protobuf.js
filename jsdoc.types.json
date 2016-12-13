@@ -3,9 +3,6 @@
         "allowUnknownTags": false
     },
     "source": {
-        "include": [
-            "./src/"
-        ],
         "exclude": [],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
