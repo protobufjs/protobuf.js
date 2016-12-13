@@ -54,6 +54,13 @@ exports.main = function(args) {
             "",
             "  -r, --root      Specifies an alternative protobuf.roots name for *-module targets.",
             "",
+            "  Static code generation only:",
+            "",
+            "  --no-encode     Does not generate encode functions.",
+            "  --no-decode     Does not generate decode functions.",
+            "  --no-verify     Does not generate verify functions.",
+            "  --no-delimited  Does not generate delimited encode/decode functions.",
+            "",
             "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.proto file2.json ..."
         ].join("\n"));
         return 1;

@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts ./src
-// Generated Tue, 13 Dec 2016 12:45:34 UTC
+// Generated Tue, 13 Dec 2016 22:22:37 UTC
 
 declare module "protobufjs" {
 
@@ -1017,16 +1017,16 @@ declare module "protobufjs" {
     * Constructs a new reader instance using the specified buffer.
     * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
     * @constructor
-    * @param {Uint8Array} buffer Buffer to read from
+    * @param {Uint8Array|ArrayBuffer} buffer Buffer to read from
     */
    class Reader {
       /**
        * Constructs a new reader instance using the specified buffer.
        * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
        * @constructor
-       * @param {Uint8Array} buffer Buffer to read from
+       * @param {Uint8Array|ArrayBuffer} buffer Buffer to read from
        */
-      constructor(buffer: Uint8Array);
+      constructor(buffer: (Uint8Array|ArrayBuffer));
    
       /**
        * Read buffer.
@@ -1048,10 +1048,10 @@ declare module "protobufjs" {
    
       /**
        * Creates a new reader using the specified buffer.
-       * @param {Uint8Array} buffer Buffer to read from
+       * @param {Uint8Array|ArrayBuffer} buffer Buffer to read from
        * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
        */
-      static create(buffer: Uint8Array): (BufferReader|Reader);
+      static create(buffer: (Uint8Array|ArrayBuffer)): (BufferReader|Reader);
    
       /**
        * Reads a tag.

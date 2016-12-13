@@ -1,4 +1,4 @@
-var protobuf  = require("../src/index"),
+var protobuf  = require(".."),
     newSuite  = require("./suite"),
     data      = require("./bench.json");
 
@@ -35,6 +35,11 @@ for (var i = 0; i < 500000; ++i)
     Test.verify(data);
 console.log("");
 
+if (!Buffer.from)
+    Buffer.from = function from(str, enc) {
+        return new Buffer(str, enc);
+    };
+
 // give the optimizer some time to do its job
 setTimeout(function() {
     var str    = JSON.stringify(data),
@@ -48,7 +53,7 @@ setTimeout(function() {
         JSON.stringify(data);
     })
     .add("JSON.stringify to buffer", function() {
-        new Buffer(JSON.stringify(data), "utf8");
+        Buffer.from(JSON.stringify(data), "utf8");
     })
     .run();
 
@@ -72,7 +77,7 @@ setTimeout(function() {
         JSON.parse(JSON.stringify(data));
     })
     .add("JSON to/from buffer", function() {
-        JSON.parse(new Buffer(JSON.stringify(data), "utf8").toString("utf8"));
+        JSON.parse(Buffer.from(JSON.stringify(data), "utf8").toString("utf8"));
     })
     .run();
 

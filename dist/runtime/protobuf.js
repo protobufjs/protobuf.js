@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 13 Dec 2016 16:30:43 UTC
+ * protobuf.js v6.1.1 (c) 2016 Daniel Wirtz
+ * Compiled Tue, 13 Dec 2016 22:22:31 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -442,7 +442,7 @@ function indexOutOfRange(reader, writeLength) {
  * Constructs a new reader instance using the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
- * @param {Uint8Array} buffer Buffer to read from
+ * @param {Uint8Array|ArrayBuffer} buffer Buffer to read from
  */
 function Reader(buffer) {
     
@@ -450,7 +450,7 @@ function Reader(buffer) {
      * Read buffer.
      * @type {Uint8Array}
      */
-    this.buf = buffer;
+    this.buf = buffer instanceof ArrayImpl ? buffer : new ArrayImpl(/* ArrayBuffer or whatnot */ buffer);
 
     /**
      * Read buffer position.
@@ -467,11 +467,11 @@ function Reader(buffer) {
 
 /**
  * Creates a new reader using the specified buffer.
- * @param {Uint8Array} buffer Buffer to read from
+ * @param {Uint8Array|ArrayBuffer} buffer Buffer to read from
  * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  */
 Reader.create = function create(buffer) {
-    return new (util.Buffer && util.Buffer.isBuffer(buffer) && BufferReader || Reader)(buffer);
+    return new (util.Buffer ? BufferReader : Reader)(buffer);
 };
 
 /** @alias Reader.prototype */
@@ -920,16 +920,23 @@ ReaderPrototype.finish = function finish(buffer) {
     return remain;
 };
 
+var isBuffer,
+    wrapBuffer;
+
 // One time function to initialize BufferReader with the now-known buffer implementation's slice method
 var initBufferReader = function() {
-    if (!util.Buffer)
+    var Buffer = util.Buffer;
+    if (!Buffer)
         throw Error("Buffer is not supported");
-    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
-    readStringBuffer = util.Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
+    BufferReaderPrototype._slice = Buffer.prototype.slice;
+    readStringBuffer = Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
         ? readStringBuffer_utf8Slice
         : readStringBuffer_toString;
+    isBuffer = Buffer.isBuffer;
+    wrapBuffer = Buffer.from || function wrapBuffer(buf) { return new Buffer(buf); };
     initBufferReader = false;
 };
+
 
 /**
  * Constructs a new buffer reader instance.
@@ -941,6 +948,8 @@ var initBufferReader = function() {
 function BufferReader(buffer) {
     if (initBufferReader)
         initBufferReader();
+    if (!isBuffer(buffer))
+        buffer = wrapBuffer(buffer);
     Reader.call(this, buffer);
 }
 
@@ -1525,7 +1534,7 @@ function Writer() {
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
 Writer.create = function create() {
-    return new (util.Buffer && BufferWriter || Writer);
+    return new (util.Buffer ? BufferWriter : Writer);
 };
 
 /**

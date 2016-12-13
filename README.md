@@ -81,7 +81,7 @@ Production:
 
 Or [download](https://github.com/dcodeIO/protobuf.js/tree/master/dist) the library.
 
-The `protobuf` namespace will always be available globally but also supports AMD.
+The `protobuf` namespace will always be available globally / also supports AMD loaders.
 
 Examples
 --------
@@ -354,11 +354,11 @@ usage: pbts [options] file1.js file2.js ...
 
 ### Descriptors vs. static modules
 
-While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared.
+While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared. Hence, it usually doesn't become much larger than that.
 
-Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates relatively large code bases without any reflection features.
+Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped, no reflection features), but generates relatively large codebases that you can edit or strip down by hand.
 
-When `new Function` is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same generated at runtime.
+When `new Function` is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same as generated at runtime.
 
 Building
 --------

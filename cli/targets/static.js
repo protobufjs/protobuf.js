@@ -13,10 +13,12 @@ var Type      = protobuf.Type,
 
 var out = [];
 var indent = 0;
+var config = {};
 
 static_target.description = "Static code without reflection";
 
 function static_target(root, options, callback) {
+    config = options;
     try {
         push("// Lazily resolved type references");
         push("var $lazyTypes = [];");
@@ -51,6 +53,7 @@ function static_target(root, options, callback) {
     } finally {
         out = [];
         indent = 0;
+        config = {};
     }
 }
 
@@ -266,72 +269,91 @@ function buildType(ref, type) {
         push("});");
     });
     
-    // #encode
-    push("");
-    pushComment([
-        "Encodes the specified " + type.name + ".",
-        "@function",
-        "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
-        "@param {Writer} [writer] Writer to encode to",
-        "@returns {Writer} Writer"
-    ]);
-    buildFunction(type, "encode", protobuf.encode.generate(type), {
-        Writer : "$protobuf.Writer",
-        util   : "$protobuf.util"
-    });
+    if (config.encode !== false) {
 
-    // #encodeDelimited
-    push("");
-    pushComment([
-        "Encodes the specified " + type.name + ", length delimited.",
-        "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
-        "@param {Writer} [writer] Writer to encode to",
-        "@returns {Writer} Writer"
-    ]);
-    push(name(type.name) + ".encodeDelimited = function encodeDelimited(message, writer) {");
-    ++indent;
-    push("return this.encode(message, writer).ldelim();");
-    --indent;
-    push("};");
+        // #encode
+        push("");
+        pushComment([
+            "Encodes the specified " + type.name + ".",
+            "@function",
+            "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
+            "@param {Writer} [writer] Writer to encode to",
+            "@returns {Writer} Writer"
+        ]);
+        buildFunction(type, "encode", protobuf.encode.generate(type), {
+            Writer : "$protobuf.Writer",
+            util   : "$protobuf.util"
+        });
 
-    // #decode
-    push("");
-    pushComment([
-        "Decodes a " + type.name + " from the specified reader or buffer.",
-        "@function",
-        "@param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
-        "@param {number} [length] Message length if known beforehand",
-        "@returns {" + fullName + "} " + type.name
-    ]);
-    buildFunction(type, "decode", protobuf.decode.generate(type), {
-        Reader : "$protobuf.Reader",
-        util   : "$protobuf.util"
-    });
+        if (config.delimited !== false) {
 
-    // #decodeDelimited
-    push("");
-    pushComment([
-        "Decodes a " + type.name + " from the specified reader or buffer, length delimited.",
-        "@param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
-        "@returns {" + fullName + "} " + type.name
-    ]);
-    push(name(type.name) + ".decodeDelimited = function decodeDelimited(readerOrBuffer) {");
-    ++indent;
-    push("readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);");
-    push("return this.decode(readerOrBuffer, readerOrBuffer.uint32());");
-    --indent;
-    push("};");
+            // #encodeDelimited
+            push("");
+            pushComment([
+                "Encodes the specified " + type.name + ", length delimited.",
+                "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
+                "@param {Writer} [writer] Writer to encode to",
+                "@returns {Writer} Writer"
+            ]);
+            push(name(type.name) + ".encodeDelimited = function encodeDelimited(message, writer) {");
+            ++indent;
+            push("return this.encode(message, writer).ldelim();");
+            --indent;
+            push("};");
 
-    // #verify
-    push("");
-    pushComment([
-        "Verifies a " + type.name + ".",
-        "@param {" + fullName + "|Object} message " + type.name + " or plain object to verify",
-        "@returns {?string} `null` if valid, otherwise the reason why it is not"
-    ]);
-    buildFunction(type, "verify", protobuf.verify.generate(type), {
-        util : "$protobuf.util"
-    });
+        }
+
+    }
+
+    if (config.decode !== false) {
+
+        // #decode
+        push("");
+        pushComment([
+            "Decodes a " + type.name + " from the specified reader or buffer.",
+            "@function",
+            "@param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
+            "@param {number} [length] Message length if known beforehand",
+            "@returns {" + fullName + "} " + type.name
+        ]);
+        buildFunction(type, "decode", protobuf.decode.generate(type), {
+            Reader : "$protobuf.Reader",
+            util   : "$protobuf.util"
+        });
+
+        if (config.delimited !== false) {
+
+            // #decodeDelimited
+            push("");
+            pushComment([
+                "Decodes a " + type.name + " from the specified reader or buffer, length delimited.",
+                "@param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
+                "@returns {" + fullName + "} " + type.name
+            ]);
+            push(name(type.name) + ".decodeDelimited = function decodeDelimited(readerOrBuffer) {");
+            ++indent;
+            push("readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);");
+            push("return this.decode(readerOrBuffer, readerOrBuffer.uint32());");
+            --indent;
+            push("};");
+
+        }
+    }
+
+    if (config.verify !== false) {
+
+        // #verify
+        push("");
+        pushComment([
+            "Verifies a " + type.name + ".",
+            "@param {" + fullName + "|Object} message " + type.name + " or plain object to verify",
+            "@returns {?string} `null` if valid, otherwise the reason why it is not"
+        ]);
+        buildFunction(type, "verify", protobuf.verify.generate(type), {
+            util : "$protobuf.util"
+        });
+
+    }
 }
 
 function buildService(ref, service) {

@@ -134,7 +134,7 @@ function Writer() {
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
 Writer.create = function create() {
-    return new (util.Buffer && BufferWriter || Writer);
+    return new (util.Buffer ? BufferWriter : Writer);
 };
 
 /**

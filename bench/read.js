@@ -1,4 +1,4 @@
-var protobuf = require("../src/index"),
+var protobuf = require(".."),
     newSuite = require("./suite"),
     ieee754  = require("../lib/ieee754");
 
