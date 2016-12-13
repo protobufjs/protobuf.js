@@ -342,6 +342,8 @@ While .proto and JSON files require the full library (about 20kb gzipped), prett
 
 Static code, on the other hand, requires just the runtime library (final size TBA), but generates relatively large code bases without any reflection features.
 
+There is no difference performance-wise as the code that is generated statically is the same generated at runtime.
+
 ### Generating TypeScript definitions from static modules
 
 Likewise, the `pbts` command line utility can be used to generate TypeScript definitions from `pbjs`-generated static modules.

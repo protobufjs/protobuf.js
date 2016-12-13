@@ -93,7 +93,11 @@ function buildNamespace(ref, ns) {
         buildService(undefined, ns);
     else if (ns.name !== "") {
         push("");
-        push("/** @alias " + (ns.name && ns.fullName.substring(1) || "exports") + " */");
+        pushComment([
+            "Namespace " + ns.name + ".",
+            "@exports " + ns.fullName.substring(1),
+            "@namespace"
+        ]);
         push("var " + name(ns.name) + " = {};");
     }
 
