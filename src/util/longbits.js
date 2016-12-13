@@ -2,7 +2,7 @@
 
 module.exports = LongBits;
 
-var util = require("../util");
+var util = require("../util/runtime");
 
 /**
  * Any compatible Long instance.

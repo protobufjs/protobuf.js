@@ -24,10 +24,16 @@ var license = [
     " */"
 ].join('\n') + '\n';
 
-function bundle(compress) {
-    var basedir = path.join(__dirname, "..", "src");
+function bundle(compress, runtime) {
+    var src = runtime
+        ? path.join(__dirname, "..", "runtime")
+        : path.join(__dirname, "..", "src");
+    var dst = runtime
+        ? path.join(__dirname, "..", "dist", "runtime")
+        : path.join(__dirname, "..", "dist");
+
     var bundler = browserify({
-        entries: basedir,
+        entries: src,
         debug: true
     })
     return bundler
@@ -51,7 +57,7 @@ function bundle(compress) {
                 version: pkg.version
             }))
     .pipe(sourcemaps.write('.', { sourceRoot: '' }))
-    .pipe(vinylfs.dest(__dirname + '/../dist'))
+    .pipe(vinylfs.dest(dst))
     .on("log", gutil.log)
     .on("error", gutil.log);
 }

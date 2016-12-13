@@ -1,6 +1,27 @@
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
-var protobuf_rt = exports;
-protobuf_rt.Reader = require("../src/reader");
-protobuf_rt.Writer = require("../src/writer");
-protobuf_rt.util   = require("../src/util/runtime");
+var protobuf = exports;
+
+           var Writer =
+protobuf.Writer       = require("../src/writer");
+protobuf.BufferWriter = Writer.BufferWriter;
+           var Reader =
+protobuf.Reader       = require("../src/reader");
+protobuf.BufferReader = Reader.BufferReader;
+protobuf.util         = require("../src/util/runtime");
+
+function configure() {
+    Reader._configure();
+}
+
+protobuf.configure = configure;
+
+// Be nice to AMD
+if (typeof define === "function" && define.amd)
+    define(["long"], function(Long) {
+        if (Long) {
+            protobuf.util.Long = Long;
+            configure();
+        }
+        return protobuf;
+    });

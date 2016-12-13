@@ -340,9 +340,9 @@ protobuf.load("bundle.json", function(err, root) {
 
 While .proto and JSON files require the full library (about 20kb gzipped), pretty much all code but the relatively short descriptors is shared.
 
-Static code, on the other hand, requires just the runtime library (final size TBA), but generates relatively large code bases without any reflection features.
+Static code, on the other hand, requires just the runtime library (about 5kb gzipped), but generates relatively large code bases without any reflection features.
 
-There is no difference performance-wise as the code that is generated statically is the same generated at runtime.
+When `new Function` is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same generated at runtime.
 
 ### Generating TypeScript definitions from static modules
 
