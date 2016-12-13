@@ -8,8 +8,8 @@ gulp.task("default", [
     "bundle-development-runtime", "bundle-production-runtime", "gzip-production-runtime"
 ]);
 
-gulp.task("bundle-development", bundle.bind(this, true ));
-gulp.task("bundle-production" , bundle.bind(this, false));
+gulp.task("bundle-development", bundle.bind(this, true , false));
+gulp.task("bundle-production" , bundle.bind(this, false, false));
 
 gulp.task("bundle-development-runtime", bundle.bind(this, true , true));
 gulp.task("bundle-production-runtime" , bundle.bind(this, false, true));

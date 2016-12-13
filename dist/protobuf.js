@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 13 Dec 2016 12:42:17 UTC
+ * protobuf.js v6.1.1 (c) 2016 Daniel Wirtz
+ * Compiled Tue, 13 Dec 2016 22:27:51 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3382,7 +3382,7 @@ function indexOutOfRange(reader, writeLength) {
  * Constructs a new reader instance using the specified buffer.
  * @classdesc Wire format reader using `Uint8Array` if available, otherwise `Array`.
  * @constructor
- * @param {Uint8Array} buffer Buffer to read from
+ * @param {Uint8Array|ArrayBuffer} buffer Buffer to read from
  */
 function Reader(buffer) {
     
@@ -3390,7 +3390,7 @@ function Reader(buffer) {
      * Read buffer.
      * @type {Uint8Array}
      */
-    this.buf = buffer;
+    this.buf = buffer instanceof ArrayImpl ? buffer : new ArrayImpl(/* ArrayBuffer or whatnot */ buffer);
 
     /**
      * Read buffer position.
@@ -3407,11 +3407,11 @@ function Reader(buffer) {
 
 /**
  * Creates a new reader using the specified buffer.
- * @param {Uint8Array} buffer Buffer to read from
+ * @param {Uint8Array|ArrayBuffer} buffer Buffer to read from
  * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  */
 Reader.create = function create(buffer) {
-    return new (util.Buffer && util.Buffer.isBuffer(buffer) && BufferReader || Reader)(buffer);
+    return new (util.Buffer ? BufferReader : Reader)(buffer);
 };
 
 /** @alias Reader.prototype */
@@ -3860,16 +3860,23 @@ ReaderPrototype.finish = function finish(buffer) {
     return remain;
 };
 
+var isBuffer,
+    wrapBuffer;
+
 // One time function to initialize BufferReader with the now-known buffer implementation's slice method
 var initBufferReader = function() {
-    if (!util.Buffer)
+    var Buffer = util.Buffer;
+    if (!Buffer)
         throw Error("Buffer is not supported");
-    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
-    readStringBuffer = util.Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
+    BufferReaderPrototype._slice = Buffer.prototype.slice;
+    readStringBuffer = Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
         ? readStringBuffer_utf8Slice
         : readStringBuffer_toString;
+    isBuffer = Buffer.isBuffer;
+    wrapBuffer = Buffer.from || function wrapBuffer(buf) { return new Buffer(buf); };
     initBufferReader = false;
 };
+
 
 /**
  * Constructs a new buffer reader instance.
@@ -3881,6 +3888,8 @@ var initBufferReader = function() {
 function BufferReader(buffer) {
     if (initBufferReader)
         initBufferReader();
+    if (!isBuffer(buffer))
+        buffer = wrapBuffer(buffer);
     Reader.call(this, buffer);
 }
 
@@ -5417,7 +5426,7 @@ util._configure = function configure() {
 
 module.exports = LongBits;
 
-var util = require(31);
+var util = require(33);
 
 /**
  * Any compatible Long instance.
@@ -5615,7 +5624,7 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"31":31}],33:[function(require,module,exports){
+},{"33":33}],33:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -6192,7 +6201,7 @@ function Writer() {
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
 Writer.create = function create() {
-    return new (util.Buffer && BufferWriter || Writer);
+    return new (util.Buffer ? BufferWriter : Writer);
 };
 
 /**
@@ -6749,11 +6758,12 @@ protobuf.tokenize         = require(28);
 protobuf.parse            = require(22);
 
 // Serialization
+               var Writer =
 protobuf.Writer           = require(35);
-protobuf.BufferWriter     = protobuf.Writer.BufferWriter;
+protobuf.BufferWriter     = Writer.BufferWriter;
                var Reader =
 protobuf.Reader           = require(23);
-protobuf.BufferReader     = protobuf.Reader.BufferReader;
+protobuf.BufferReader     = Reader.BufferReader;
 protobuf.encode           = require(13);
 protobuf.decode           = require(12);
 protobuf.verify           = require(34);
