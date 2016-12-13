@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 12 Dec 2016 23:19:05 UTC
+ * Compiled Tue, 13 Dec 2016 02:56:23 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1017,23 +1017,18 @@ function decode(readerOrBuffer, length) {
 
             // Map fields
             if (field.map) {
-                var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-                    length  = reader.uint32();
-                var map = message[field.name] = {};
-                if (length) {
-                    length += reader.pos;
-                    var ks = [], vs = [];
-                    while (reader.pos < length) {
-                        if (reader.tag().id === 1)
-                            ks[ks.length] = reader[keyType]();
-                        else if (types.basic[type] !== undefined)
-                            vs[vs.length] = reader[type]();
-                        else
-                            vs[vs.length] = field.resolvedType.decode(reader, reader.uint32());
-                    }
-                    for (var i = 0; i < ks.length; ++i)
-                        map[typeof ks[i] === "object" ? util.longToHash(ks[i]) : ks[i]] = vs[i];
-                }
+                var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
+                reader.skip();
+                reader.pos++; // assumes id 1
+                if (message[field.name] === util.emptyObject)
+                    message[field.name] = {};
+                var key = reader[keyType]();
+                if (typeof key === "object")
+                    key = util.longToHash(key);
+                reader.pos++; // assumes id 2
+                message[field.name][key] = types.basic[type] === undefined
+                    ? field.resolvedType.decode(reader, reader.uint32())
+                    : reader[type]();
 
             // Repeated fields
             } else if (field.repeated) {
@@ -1092,31 +1087,21 @@ decode.generate = function generate(mtype) {
             ("case %d:", field.id);
 
         if (field.map) {
+
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("var n=r.uint32(),o={}")
-                ("if(n){")
-                    ("n+=r.pos")
-                    ("var k=[],v=[]")
-                    ("while(r.pos<n){")
-                        ("if(r.tag().id===1)")
-                            ("k[k.length]=r.%s()", keyType);
-
-                        if (types.basic[type] !== undefined) gen
-
-                        ("else")
-                            ("v[v.length]=r.%s()", type);
-
-                        else gen
-
-                        ("else")
-                            ("v[v.length]=types[%d].decode(r,r.uint32())", i, i);
-                    gen
-                    ("}")
-                    ("for(var i=0;i<k.length;++i)")
-                        ("o[typeof(k[i])===\"object\"?util.longToHash(k[i]):k[i]]=v[i]")
-                ("}")
-                ("m%s=o", prop);
+                ("r.skip()")
+                ("r.pos++")
+                ("if(m%s===util.emptyObject)", prop)
+                    ("m%s={}", prop)
+                ("var k=r.%s()", keyType)
+                ("if(typeof k===\"object\")")
+                    ("k=util.longToHash(k)")
+                ("r.pos++");
+            if (types.basic[type] === undefined) gen
+                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i);
+            else gen
+                ("m%s[k]=r.%s()", prop, type);
 
         } else if (field.repeated) { gen
 
@@ -1190,17 +1175,16 @@ function encode(message, writer) {
         // Map fields
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            var value, keys;
-            if ((value = message[field.name]) && (keys = Object.keys(value)).length) {
-                writer.fork();
-                for (var i = 0; i < keys.length; ++i) {
-                    writer.tag(1, types.mapKey[keyType])[keyType](keys[i]);
-                    if (wireType !== undefined)
-                        writer.tag(2, wireType)[type](value[keys[i]]);
+            if (message[field.name] && message[field.name] !== util.emptyObject) {
+                for (var keys = Object.keys(message[field.name]), i = 0; i < keys.length; ++i) {
+                    writer.tag(field.id,2).fork()
+                          .tag(1,types.mapKey[keyType])[keyType](keys[i]);
+                    if (wireType === undefined)
+                        field.resolvedType.encode(message[field.name][keys[i]], writer.tag(2,2).fork()).ldelim();
                     else
-                        field.resolvedType.encode(value[keys[i]], writer.tag(2,2).fork()).ldelim();
+                        writer.tag(2,wireType)[type](message[field.name][keys[i]]);
+                    writer.ldelim();
                 }
-                writer.ldelim(field.id);
             }
 
         // Repeated fields
@@ -1274,29 +1258,21 @@ encode.generate = function generate(mtype) {
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type],
             prop     = safeProp(field.name);
-        
+
         // Map fields
         if (field.map) {
-            var keyType     = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-                keyWireType = types.mapKey[keyType];
+            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-
-    ("if(m%s){", prop)
-        ("w.fork()")
-        ("for(var i=0,ks=Object.keys(m%s);i<ks.length;++i){", prop)
-            ("w.tag(1,%d).%s(ks[i])", keyWireType, keyType);
-
-            if (wireType !== undefined) gen
-
-            ("w.tag(2,%d).%s(m%s[ks[i]])", wireType, type, prop);
-
-            else gen
-            
+    ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
+        ("for(var ks=Object.keys(m%s),i=0;i<ks.length;++i){", prop)
+            ("w.tag(%d,2).fork().tag(1,%d).%s(ks[i])", field.id, types.mapKey[keyType], keyType);
+            if (wireType === undefined) gen
             ("types[%d].encode(m%s[ks[i]],w.tag(2,2).fork()).ldelim()", i, prop);
-
+            else gen
+            ("w.tag(2,%d).%s(m%s[ks[i]])", wireType, type, prop);
             gen
+            ("w.ldelim()")
         ("}")
-        ("w.len&&w.ldelim(%d)||w.reset()", field.id)
     ("}");
 
         // Repeated fields
@@ -1796,7 +1772,7 @@ FieldPrototype.jsonConvert = function(value, options) {
                 ? typeof value === "number"
                 ? value
                 : util.Long.fromValue(value).toNumber()
-                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString()
+                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
         else if (options.bytes && this.type === "bytes")
             return options.bytes === Array
                 ? Array.prototype.slice.call(value)

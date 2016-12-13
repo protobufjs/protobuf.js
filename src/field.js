@@ -266,7 +266,7 @@ FieldPrototype.jsonConvert = function(value, options) {
                 ? typeof value === "number"
                 ? value
                 : util.Long.fromValue(value).toNumber()
-                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString()
+                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
         else if (options.bytes && this.type === "bytes")
             return options.bytes === Array
                 ? Array.prototype.slice.call(value)

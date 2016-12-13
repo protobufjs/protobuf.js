@@ -30,23 +30,18 @@ function decode(readerOrBuffer, length) {
 
             // Map fields
             if (field.map) {
-                var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType,
-                    length  = reader.uint32();
-                var map = message[field.name] = {};
-                if (length) {
-                    length += reader.pos;
-                    var ks = [], vs = [];
-                    while (reader.pos < length) {
-                        if (reader.tag().id === 1)
-                            ks[ks.length] = reader[keyType]();
-                        else if (types.basic[type] !== undefined)
-                            vs[vs.length] = reader[type]();
-                        else
-                            vs[vs.length] = field.resolvedType.decode(reader, reader.uint32());
-                    }
-                    for (var i = 0; i < ks.length; ++i)
-                        map[typeof ks[i] === "object" ? util.longToHash(ks[i]) : ks[i]] = vs[i];
-                }
+                var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
+                reader.skip();
+                reader.pos++; // assumes id 1
+                if (message[field.name] === util.emptyObject)
+                    message[field.name] = {};
+                var key = reader[keyType]();
+                if (typeof key === "object")
+                    key = util.longToHash(key);
+                reader.pos++; // assumes id 2
+                message[field.name][key] = types.basic[type] === undefined
+                    ? field.resolvedType.decode(reader, reader.uint32())
+                    : reader[type]();
 
             // Repeated fields
             } else if (field.repeated) {
@@ -105,31 +100,21 @@ decode.generate = function generate(mtype) {
             ("case %d:", field.id);
 
         if (field.map) {
+
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("var n=r.uint32(),o={}")
-                ("if(n){")
-                    ("n+=r.pos")
-                    ("var k=[],v=[]")
-                    ("while(r.pos<n){")
-                        ("if(r.tag().id===1)")
-                            ("k[k.length]=r.%s()", keyType);
-
-                        if (types.basic[type] !== undefined) gen
-
-                        ("else")
-                            ("v[v.length]=r.%s()", type);
-
-                        else gen
-
-                        ("else")
-                            ("v[v.length]=types[%d].decode(r,r.uint32())", i, i);
-                    gen
-                    ("}")
-                    ("for(var i=0;i<k.length;++i)")
-                        ("o[typeof(k[i])===\"object\"?util.longToHash(k[i]):k[i]]=v[i]")
-                ("}")
-                ("m%s=o", prop);
+                ("r.skip()")
+                ("r.pos++")
+                ("if(m%s===util.emptyObject)", prop)
+                    ("m%s={}", prop)
+                ("var k=r.%s()", keyType)
+                ("if(typeof k===\"object\")")
+                    ("k=util.longToHash(k)")
+                ("r.pos++");
+            if (types.basic[type] === undefined) gen
+                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i);
+            else gen
+                ("m%s[k]=r.%s()", prop, type);
 
         } else if (field.repeated) { gen
 

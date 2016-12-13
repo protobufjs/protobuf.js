@@ -57,11 +57,88 @@ tape.test("maps", function(test) {
     var Inner = root.lookup("Inner"),
         Outer = root.lookup("Outer");
 
-    var outer = { value: randomMap() };
-    var buf = Outer.encode(outer).finish();
-    var dec = Outer.decode(buf);
+    test.test("randomly generated", function(test) {
 
-    test.deepEqual(dec, outer, "should decode back the original map");
+        var outer = { value: randomMap() };
+        var buf = Outer.encode(outer).finish();
+        var dec = Outer.decode(buf);
+
+        test.deepEqual(dec, outer, "should decode back the original random map");
+
+        var buf = protobuf.encode.call(Outer, outer).finish();
+        var dec = protobuf.decode.call(Outer, buf);
+
+        test.deepEqual(dec, outer, "should decode back the original random map (fallback)");
+
+        test.end();
+    });
+
+    test.test("specifically crafted", function(test) {
+
+        var outer = {
+            value: {
+                b: {
+                    key: "1",
+                    values: ["c", "d"]
+                },
+                a: {
+                    key: "2",
+                    values: ["a", "b"]
+                }
+            }
+        };
+
+        var buf = Outer.encode(outer).finish();
+        verifyEncode(test, buf);
+
+        var dec = Outer.decode(buf);
+        test.deepEqual(dec, outer, "should decode back the original map");
+
+        var buf = protobuf.encode.call(Outer, outer).finish();
+        verifyEncode(test, buf);
+
+        var dec = protobuf.decode.call(Outer, buf);
+
+        test.deepEqual(dec, outer, "should decode back the original map (fallback)");
+
+        test.end();
+    });
 
     test.end();
 });
+
+function verifyEncode(test, buf) {
+    test.test("should encode", function(test) {
+        test.equal(buf.length, 32, "a total of 30 bytes");
+
+        // first kv:
+        /*
+            b: {
+                key: "1",
+                values: ["c", "d"]
+            },
+        */
+        test.equal(buf[ 0], 10, "id 1, wireType 2");
+        test.equal(buf[ 1], 14, "a length of 14");
+        test.equal(buf[ 2], 10, "id 1, wireType 2");
+        test.equal(buf[ 3],  1, "a length of 1");
+        test.equal(buf[ 4], 98, "'b'");
+        test.equal(buf[ 5], 18, "id 2, wireType 2");
+        test.equal(buf[ 6],  9, "a length of 9");
+        test.equal(buf[ 7], 10, "id 1, wireType 2");
+        test.equal(buf[ 8],  1 , "a length of 9");
+        test.equal(buf[ 9], 49, "'1'");
+        test.equal(buf[10], 18, "id 2, wireType 2");
+        test.equal(buf[11],  1, "a length of 1");
+        test.equal(buf[12], 99, "'c'");
+        test.equal(buf[13], 18, "id 2, wireType 2");
+        test.equal(buf[14],  1, "a lenfth of 1");
+        test.equal(buf[15],100, "'d'");
+
+        // second
+        test.equal(buf[16], 10, "id 1, wireType 2");
+        // ...
+
+        test.end();
+    });
+}
