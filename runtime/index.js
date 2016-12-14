@@ -2,19 +2,17 @@
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
-           var Writer =
-protobuf.Writer       = require("../src/writer");
+var Writer = protobuf.Writer = require("../src/writer");
 protobuf.BufferWriter = Writer.BufferWriter;
-           var Reader =
-protobuf.Reader       = require("../src/reader");
+var Reader = protobuf.Reader = require("../src/reader");
 protobuf.BufferReader = Reader.BufferReader;
-protobuf.util         = require("../src/util/runtime");
+protobuf.util = require("../src/util/runtime");
+protobuf.roots = {};
+protobuf.configure = configure;
 
 function configure() {
     Reader._configure();
 }
-
-protobuf.configure = configure;
 
 // Be nice to AMD
 if (typeof define === "function" && define.amd)

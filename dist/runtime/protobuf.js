@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.1 (c) 2016 Daniel Wirtz
- * Compiled Wed, 14 Dec 2016 12:23:48 UTC
+ * Compiled Wed, 14 Dec 2016 12:30:31 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -398,19 +398,17 @@ utf8.write = function(string, buffer, offset) {
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
-           var Writer =
-protobuf.Writer       = require(9);
+var Writer = protobuf.Writer = require(9);
 protobuf.BufferWriter = Writer.BufferWriter;
-           var Reader =
-protobuf.Reader       = require(6);
+var Reader = protobuf.Reader = require(6);
 protobuf.BufferReader = Reader.BufferReader;
-protobuf.util         = require(8);
+protobuf.util = require(8);
+protobuf.roots = {};
+protobuf.configure = configure;
 
 function configure() {
     Reader._configure();
 }
-
-protobuf.configure = configure;
 
 // Be nice to AMD
 if (typeof define === "function" && define.amd)
