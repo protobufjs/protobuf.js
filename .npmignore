@@ -1,4 +1,5 @@
 .vscode/
+.github/
 *.log
 npm-debug.*
 node_modules/
