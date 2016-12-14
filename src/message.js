@@ -3,7 +3,7 @@ module.exports = Message;
 
 /**
  * Constructs a new message instance.
- * 
+ *
  * This method should be called from your custom constructors, i.e. `Message.call(this, properties)`.
  * @classdesc Abstract runtime message.
  * @extends {Object}
@@ -46,9 +46,7 @@ MessagePrototype.asJSON = function asJSON(options) {
         json   = {};
     var keys;
     if (options.defaults) {
-        keys = [];
-        for (var k in this) // eslint-disable-line guard-for-in
-            keys.push(k);
+        keys = Object.keys(fields);
     } else
         keys = Object.keys(this);
     for (var i = 0, key; i < keys.length; ++i) {
@@ -56,7 +54,7 @@ MessagePrototype.asJSON = function asJSON(options) {
             value = this[key];
         if (field) {
             if (field.repeated) {
-                if (value && value.length) {
+                if (value && (value.length || options.defaults)) {
                     var array = new Array(value.length);
                     for (var j = 0, l = value.length; j < l; ++j)
                         array[j] = field.jsonConvert(value[j], options);
