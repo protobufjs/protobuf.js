@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: Message</title>
+    <title>Namespace: path</title>
     
     
     
@@ -1532,7 +1532,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="Message.html">Class: Message</h1>
+        <h1 class="page-title" data-filename="util.path.html">Namespace: path</h1>
         
 
 
@@ -1541,10 +1541,10 @@
     
 <header>
     <h2>
-    Message
-    </h2>
+        <span class="ancestors"><a href="util.html">util</a>.</span>
     
-        <div class="class-description"><p>Abstract runtime message.</p></div>
+    path
+    </h2>
     
 </header>  
 
@@ -1554,174 +1554,10 @@
     
     
         
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="Message">
-            
-            <span class="type-signature ">abstract</span>new Message<span class="signature">(<span class="optional">properties</span>)</span>
-        </h4>
-    
+            <div class="description"><p>A minimal path module to resolve Unix, Windows and URL paths alike.</p></div>
         
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L15">line 15</a>
-        </div>
         
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Constructs a new message instance.</p>
-<p>This method should be called from your custom constructors, i.e. <code>Message.call(this, properties)</code>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>properties</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Properties to set</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="Class.html#.create">Class.create</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>Object</li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".$type">Message.$type <span class="type-signature ">readonly</span><span class="type-signature type">{ <a href="Type.html">Type</a> }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Reference to the reflected type.</p>
-    </div>
-    
-    
-    
 <dl class="details">
     
         
@@ -1746,34 +1582,13 @@
     
 </dl>
 
-    
-    
-</dd>
-
         
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="$type">$type <span class="type-signature ">readonly</span><span class="type-signature type">{ <a href="Type.html">Type</a> }</span></h4>
-    </div>
+        
     
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Reference to the reflected type.</p>
     </div>
     
     
     
-<dl class="details">
-    
-        
-    
-    
-    
-
     
     
     
@@ -1782,20 +1597,6 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
     
     
     
@@ -1805,14 +1606,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".decode">
+        <h4 class="name" id=".isAbsolute">
             
-            Message.decode<span class="signature">(readerOrBuffer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            util.path.isAbsolute<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L107">line 107</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/path/index.js">util/path/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/path/index.js#L16">line 16</a>
         </div>
         
     </div>
@@ -1823,7 +1624,7 @@
     
     
     <div class="description">
-        <p>Decodes a message of this type.</p>
+        <p>Tests if the specified path is absolute.</p>
     </div>
     
 
@@ -1854,16 +1655,13 @@
 	
         <tr>
             
-                <td class="name"><code>readerOrBuffer</code></td>
+                <td class="name"><code>path</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Reader.html">Reader</a></span>
-|
-
-<span class="param-type">Uint8Array</span>
+<span class="param-type">string</span>
 
 
             
@@ -1873,7 +1671,7 @@
             
             <td class="description last">
                 
-                <p>Reader or buffer to decode</p></td>
+                <p>Path to test</p></td>
         </tr>
 	
 	
@@ -1934,11 +1732,11 @@
             
             <td class="type">
             
-                        <a href="Message.html">Message</a>
+                        boolean
                         
                     
             </td>
-            <td class="description last">Decoded message</td>
+            <td class="description last"><code>true</code> if path is absolute</td>
         </tr>
     
     </tbody>
@@ -1953,14 +1751,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".decodeDelimited">
+        <h4 class="name" id=".normalize">
             
-            Message.decodeDelimited<span class="signature">(readerOrBuffer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            util.path.normalize<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L118">line 118</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/path/index.js">util/path/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/path/index.js#L26">line 26</a>
         </div>
         
     </div>
@@ -1971,7 +1769,7 @@
     
     
     <div class="description">
-        <p>Decodes a message of this type preceeded by its length as a varint.</p>
+        <p>Normalizes the specified path.</p>
     </div>
     
 
@@ -2002,16 +1800,13 @@
 	
         <tr>
             
-                <td class="name"><code>readerOrBuffer</code></td>
+                <td class="name"><code>path</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Reader.html">Reader</a></span>
-|
-
-<span class="param-type">Uint8Array</span>
+<span class="param-type">string</span>
 
 
             
@@ -2021,521 +1816,7 @@
             
             <td class="description last">
                 
-                <p>Reader or buffer to decode</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Message.html">Message</a>
-                        
-                    
-            </td>
-            <td class="description last">Decoded message</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".encode">
-            
-            Message.encode<span class="signature">(message, <span class="optional">writer</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Writer.html">Writer</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L93">line 93</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Encodes a message of this type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
-
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Message to encode</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>writer</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Writer.html">Writer</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Writer to use</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Writer.html">Writer</a>
-                        
-                    
-            </td>
-            <td class="description last">Writer</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".encodeDelimited">
-            
-            Message.encodeDelimited<span class="signature">(message, <span class="optional">writer</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Writer.html">Writer</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L103">line 103</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Encodes a message of this type preceeded by its length as a varint.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
-
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Message to encode</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>writer</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Writer.html">Writer</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Writer to use</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Writer.html">Writer</a>
-                        
-                    
-            </td>
-            <td class="description last">Writer</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".verify">
-            
-            Message.verify<span class="signature">(message)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L129">line 129</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Verifies a message of this type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
-
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Message or plain object to verify</p></td>
+                <p>Path to normalize</p></td>
         </tr>
 	
 	
@@ -2600,7 +1881,7 @@
                         
                     
             </td>
-            <td class="description last"><code>null</code> if valid, otherwise the reason why it is not</td>
+            <td class="description last">Normalized path</td>
         </tr>
     
     </tbody>
@@ -2615,14 +1896,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="asJSON">
+        <h4 class="name" id=".resolve">
             
-            asJSON<span class="signature">(<span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
+            util.path.resolve<span class="signature">(originPath, includePath, <span class="optional">alreadyNormalized</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L42">line 42</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/path/index.js">util/path/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/path/index.js#L57">line 57</a>
         </div>
         
     </div>
@@ -2633,7 +1914,7 @@
     
     
     <div class="description">
-        <p>Converts this message to a JSON object.</p>
+        <p>Resolves the specified include path against the specified origin path.</p>
     </div>
     
 
@@ -2643,52 +1924,6 @@
     
     
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p>
-                
 
 <table class="params">
     <thead>
@@ -2712,7 +1947,71 @@
 	
         <tr>
             
-                <td class="name"><code>fieldsOnly</code></td>
+                <td class="name"><code>originPath</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Path to the origin file</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>includePath</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Include path relative to origin path</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>alreadyNormalized</code></td>
             
             
             <td class="type">
@@ -2741,153 +2040,7 @@
                         
                     
                 
-                <p>Converts only properties that reference a field</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>long</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Long conversion type. Only relevant with a long library.<br>Valid values are <code>String</code> and <code>Number</code> (the global types).<br>Defaults to a possibly unsafe number without, and a <code>Long</code> with a long library.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>enum</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    Number
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Enum value conversion type.<br>Valid values are <code>String</code> and <code>Number</code> (the global types).<br>Defaults to the numeric ids.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>bytes</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Bytes value conversion type.<br>Valid values are <code>Array</code> and <code>String</code> (the global types).<br>Defaults to return the underlying buffer type.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>defaults</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Also sets default values on the resulting object</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
+                <p><code>true</code> if both paths are already known to be normalized</p></td>
         </tr>
 	
 	
@@ -2948,11 +2101,11 @@
             
             <td class="type">
             
-                        Object.&lt;string, *>
+                        string
                         
                     
             </td>
-            <td class="description last">JSON object</td>
+            <td class="description last">Path to the include file</td>
         </tr>
     
     </tbody>

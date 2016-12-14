@@ -143,8 +143,6 @@
             
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
-                <li data-name="util.isAbsolutePath"><a href="util.html#.isAbsolutePath">isAbsolutePath</a></li>
-            
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
@@ -161,15 +159,11 @@
             
                 <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
             
-                <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
-            
                 <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
             
                 <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
             
                 <li data-name="util.props"><a href="util.html#.props">props</a></li>
-            
-                <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
             
@@ -212,9 +206,9 @@
             </ul>
         </li>
     
-        <li class="item" data-name="util.f64">
+        <li class="item" data-name="util.path">
             <span class="title">
-                <a href="util.f64.html">util.f64</a>
+                <a href="util.path.html">util.path</a>
                 
                 <span class="static">static</span>
                 
@@ -226,6 +220,14 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.path.isAbsolute"><a href="util.path.html#.isAbsolute">isAbsolute</a></li>
+            
+                <li data-name="util.path.normalize"><a href="util.path.html#.normalize">normalize</a></li>
+            
+                <li data-name="util.path.resolve"><a href="util.path.html#.resolve">resolve</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1590,8 +1592,9 @@
 </ul>
 <h2>Usage</h2><h3>node.js</h3><pre class="prettyprint source"><code>$> npm install protobufjs</code></pre><pre class="prettyprint source lang-js"><code>var protobuf = require(&quot;protobufjs&quot;);</code></pre><h3>Browsers</h3><p>Development:</p>
 <pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.js&quot;>&lt;/script></code></pre><p>Production:</p>
-<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p>The <code>protobuf</code> namespace will be available globally.</p>
-<p><strong>NOTE:</strong> Remember to replace the version tag with the exact <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/releases">release</a> your project depends upon.</p>
+<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p><strong>NOTE:</strong> Remember to replace the version tag with the exact <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/releases">release</a> your project depends upon.</p>
+<p>Or <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">download</a> the library.</p>
+<p>The <code>protobuf</code> namespace will always be available globally / also supports AMD loaders.</p>
 <h2>Examples</h2><h3>Using .proto files</h3><pre class="prettyprint source lang-protobuf"><code>// awesome.proto
 package awesomepackage;
 syntax = &quot;proto3&quot;;
@@ -1671,44 +1674,22 @@ greeter.sayHello({ name: 'you' }, function(err, response) {
 <h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
 
 import * as protobuf from &quot;protobufjs&quot;;
-...</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace with the following members, ordered by category:</p>
+...</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace including but not restricted to the following members, ordered by category:</p>
 <h3>Parser</h3><ul>
 <li><p><strong>load(filename: <code>string|string[]</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise|undefined</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto or preprocessed .json files into a common root namespace.</p>
 </li>
 <li><p><strong>loadSync(filename: <code>string|string[]</code>, [root: <code>Root</code>]): <code>Root</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).</p>
 </li>
-<li><p><strong>tokenize(source: <code>string</code>): <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/tokenize.js">source</a>]<br /><br>Tokenizes the given .proto source and returns an object with useful utility functions.</p>
-</li>
 <li><p><strong>parse(source: <code>string</code>): <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">source</a>]<br /><br>Parses the given .proto source and returns an object with the parsed contents.</p>
-<ul>
-<li><p><strong>package: <code>string|undefined</code></strong><br /><br>The package name, if declared.</p>
-</li>
-<li><p><strong>imports: <code>string[]|undefined</code></strong><br /><br>File names of imported files, if any.</p>
-</li>
-<li><p><strong>weakImports: <code>string[]|undefined</code></strong><br /><br>File names of weakly imported files, if any.</p>
-</li>
-<li><p><strong>syntax: <code>string|undefined</code></strong><br /><br>Source syntax, if defined.</p>
-</li>
-<li><p><strong>root: <code>Root</code></strong><br /><br>The root namespace.</p>
-</li>
-</ul>
 </li>
 </ul>
 <h3>Serialization</h3><ul>
 <li><p><strong>Writer</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js">source</a>]<br /><br>Wire format writer using <code>Uint8Array</code> if available, otherwise <code>Array</code>.</p>
 </li>
-<li><p><strong>BufferWriter</strong> <em>extends <strong>Writer</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js">source</a>]<br /><br>Wire format writer using node buffers.</p>
-</li>
 <li><p><strong>Reader</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">source</a>]<br /><br>Wire format reader using <code>Uint8Array</code> if available, otherwise <code>Array</code>.</p>
-</li>
-<li><p><strong>BufferReader</strong> <em>extends <strong>Reader</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">source</a>]<br /><br>Wire format reader using node buffers.</p>
-</li>
-<li><p><strong>codegen</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/codegen.js">source</a>]<br /><br>A closure for generating functions programmatically.</p>
 </li>
 </ul>
 <h3>Reflection</h3><ul>
-<li><p><strong>ReflectionObject</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">source</a>]<br /><br>Base class of all reflection objects.</p>
-</li>
 <li><p><strong>Namespace</strong> <em>extends <strong>ReflectionObject</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">source</a>]<br /><br>Base class of all reflection objects containing nested objects.</p>
 </li>
 <li><p><strong>Root</strong> <em>extends <strong>Namespace</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">source</a>]<br /><br>Root namespace.</p>
@@ -1733,15 +1714,9 @@ import * as protobuf from &quot;protobufjs&quot;;
 </li>
 </ul>
 <h3>Utility</h3><ul>
-<li><p><strong>types: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/types.js">source</a>]<br /><br>Common type constants.</p>
-</li>
-<li><p><strong>common(name: <code>string</code>, json: <code>Object</code>)</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">source</a>]<br /><br>Provides common type definitions.</p>
-</li>
-<li><p><strong>rpc: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/rpc.js">source</a>]<br /><br>Streaming RPC helpers.</p>
-</li>
-<li><p><strong>util: <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">source</a>]<br /><br>Various utility functions.</p>
-</li>
+<li><strong>util</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">source</a>]<br /><br>Various utility functions.</li>
 </ul>
+<p>For less common members, see the API documentation.</p>
 <h2>Documentation</h2><ul>
 <li><p><a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">Google's Developer Guide</a></p>
 </li>
@@ -1777,7 +1752,17 @@ usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production e
 <pre class="prettyprint source lang-js"><code>var root = protobuf.Root.fromJSON(require(&quot;./bundle.json&quot;));</code></pre><p>or load it the usual way:</p>
 <pre class="prettyprint source lang-js"><code>protobuf.load(&quot;bundle.json&quot;, function(err, root) {
     ...
-});</code></pre><h2>Building</h2><p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
+});</code></pre><h3>Generating TypeScript definitions from static modules</h3><p>Likewise, the <code>pbts</code> command line utility can be used to generate TypeScript definitions from <code>pbjs</code>-generated static modules.</p>
+<pre class="prettyprint source"><code>Generates TypeScript definitions from annotated JavaScript files.
+
+  -n, --name      Specifies the module name.
+
+  -o, --out       Saves to a file instead of writing to stdout.
+
+usage: pbts [options] file1.js file2.js ...</code></pre><h3>Descriptors vs. static modules</h3><p>While .proto and JSON files require the full library (about 18kb gzipped, all features including reflection, parser and utility), pretty much all code but the relatively short descriptors is shared.</p>
+<p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped, i.e. no reflection features), but generates additional, albeit editable and customizable, source code.</p>
+<p>When <code>new Function(...)</code> is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same as generated at runtime.</p>
+<h2>Building</h2><p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
 <pre class="prettyprint source"><code>$> git clone https://github.com/dcodeIO/protobuf.js.git
 $> cd protobuf.js
 $> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
@@ -1786,44 +1771,44 @@ $> npm install --dev</code></pre><p>Building the development and production vers
 <pre class="prettyprint source"><code>$> npm run types</code></pre><h3>Browserify integration</h3><p>protobuf.js integrates into any browserify build-process. There are a few possible tweaks:</p>
 <ul>
 <li>If performance is a concern or IE8 support is required, you should make sure to exclude the browserified <code>buffer</code> module and let protobuf.js do its thing with Uint8Array/Array instead.</li>
-<li>If you do not need int64 support, you can exclude the <code>long</code> module.</li>
+<li>If you do not need int64 support, you can explicitly exclude the <code>long</code> module. It will be included otherwise.</li>
 <li>If your application does not rely on the following modules and package size is a concern, you can also exclude <code>process</code> , <code>_process</code> and <code>fs</code>.</li>
 <li>If you have any special requirements, there is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js">the bundler</a> as a reference.</li>
 </ul>
 <h2>Performance</h2><p>The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
-Type.encode to buffer x 479,876 ops/sec ±0.64% (92 runs sampled)
-JSON.stringify to string x 311,489 ops/sec ±0.84% (87 runs sampled)
-JSON.stringify to buffer x 175,079 ops/sec ±1.48% (82 runs sampled)
+Type.encode to buffer x 481,172 ops/sec ±0.48% (92 runs sampled)
+JSON.stringify to string x 307,509 ops/sec ±1.04% (92 runs sampled)
+JSON.stringify to buffer x 164,463 ops/sec ±1.37% (89 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 35.2% slower
-   JSON.stringify to buffer was 63.8% slower
+   JSON.stringify to string was 36.4% slower
+   JSON.stringify to buffer was 66.1% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,267,612 ops/sec ±1.18% (90 runs sampled)
-JSON.parse from string x 291,707 ops/sec ±1.12% (92 runs sampled)
-JSON.parse from buffer x 262,640 ops/sec ±0.77% (89 runs sampled)
+Type.decode from buffer x 1,319,810 ops/sec ±0.71% (92 runs sampled)
+JSON.parse from string x 298,578 ops/sec ±0.98% (90 runs sampled)
+JSON.parse from buffer x 267,471 ops/sec ±0.81% (89 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 77.0% slower
-     JSON.parse from buffer was 79.2% slower
+     JSON.parse from string was 77.4% slower
+     JSON.parse from buffer was 79.8% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 248,897 ops/sec ±0.89% (90 runs sampled)
-JSON to/from string x 126,848 ops/sec ±0.75% (92 runs sampled)
-JSON to/from buffer x 89,854 ops/sec ±0.79% (93 runs sampled)
+Type to/from buffer x 262,728 ops/sec ±0.92% (92 runs sampled)
+JSON to/from string x 129,405 ops/sec ±0.78% (94 runs sampled)
+JSON to/from buffer x 89,523 ops/sec ±0.71% (89 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 49.0% slower
-        JSON to/from buffer was 63.9% slower
+        JSON to/from string was 50.7% slower
+        JSON to/from buffer was 65.9% slower
 
 benchmarking verifying performance ...
 
-Type.verify x 5,941,014 ops/sec ±0.96% (90 runs sampled)
+Type.verify x 5,833,382 ops/sec ±0.98% (85 runs sampled)
 
                 Type.verify was fastest</code></pre><p>Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?</p>
 <ul>

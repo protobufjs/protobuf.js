@@ -143,8 +143,6 @@
             
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
-                <li data-name="util.isAbsolutePath"><a href="util.html#.isAbsolutePath">isAbsolutePath</a></li>
-            
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
@@ -161,15 +159,11 @@
             
                 <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
             
-                <li data-name="util.normalizePath"><a href="util.html#.normalizePath">normalizePath</a></li>
-            
                 <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
             
                 <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
             
                 <li data-name="util.props"><a href="util.html#.props">props</a></li>
-            
-                <li data-name="util.resolvePath"><a href="util.html#.resolvePath">resolvePath</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
             
@@ -212,9 +206,9 @@
             </ul>
         </li>
     
-        <li class="item" data-name="util.f64">
+        <li class="item" data-name="util.path">
             <span class="title">
-                <a href="util.f64.html">util.f64</a>
+                <a href="util.path.html">util.path</a>
                 
                 <span class="static">static</span>
                 
@@ -226,6 +220,14 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="util.path.isAbsolute"><a href="util.path.html#.isAbsolute">isAbsolute</a></li>
+            
+                <li data-name="util.path.normalize"><a href="util.path.html#.normalize">normalize</a></li>
+            
+                <li data-name="util.path.resolve"><a href="util.path.html#.resolve">resolve</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1608,7 +1610,7 @@
             <dt><a href="namespaces.html#util.base64"><a href="util.base64.html">base64</a></a></dt>
             <dd></dd>
         
-            <dt><a href="namespaces.html#util.f64"><a href="util.f64.html">f64</a></a></dt>
+            <dt><a href="namespaces.html#util.path"><a href="util.path.html">path</a></a></dt>
             <dd></dd>
         
             <dt><a href="namespaces.html#util.utf8"><a href="util.utf8.html">utf8</a></a></dt>
@@ -1758,7 +1760,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".fs">util.fs <span class="type-signature ">nullable</span><span class="type-signature type">{ Object }</span></h4>
+        <h4 class="name" id=".fs">util.fs <span class="type-signature type">{ Object }</span></h4>
     </div>
     
     
@@ -1766,7 +1768,7 @@
 <dd>
     
     <div class="description">
-        <p>Filesystem, if available.</p>
+        <p>Node's fs module if available.</p>
     </div>
     
     
@@ -1906,7 +1908,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L46">line 46</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/aspromise/index.js">util/aspromise/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/aspromise/index.js#L12">line 12</a>
         </div>
         
     </div>
@@ -1917,7 +1919,7 @@
     
     
     <div class="description">
-        <p>Returns a promise from a node-style function.</p>
+        <p>Returns a promise from a node-style callback function.</p>
     </div>
     
 
@@ -2114,7 +2116,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L205">line 205</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L76">line 76</a>
         </div>
         
     </div>
@@ -2497,7 +2499,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L88">line 88</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js">util/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js#L23">line 23</a>
         </div>
         
     </div>
@@ -2659,151 +2661,6 @@
                     
             </td>
             <td class="description last">A Promise if <code>callback</code> has been omitted</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".isAbsolutePath">
-            
-            util.isAbsolutePath<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L118">line 118</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Tests if the specified path is absolute.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>path</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Path to test</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        boolean
-                        
-                    
-            </td>
-            <td class="description last"><code>true</code> if path is absolute</td>
         </tr>
     
     </tbody>
@@ -3777,7 +3634,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L181">line 181</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L52">line 52</a>
         </div>
         
     </div>
@@ -4001,7 +3858,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L227">line 227</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L98">line 98</a>
         </div>
         
     </div>
@@ -4140,151 +3997,6 @@
                     
             </td>
             <td class="description last">Buffer</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".normalizePath">
-            
-            util.normalizePath<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L130">line 130</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Normalizes the specified path.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>path</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Path to normalize</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        string
-                        
-                    
-            </td>
-            <td class="description last">Normalized path</td>
         </tr>
     
     </tbody>
@@ -4882,214 +4594,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".resolvePath">
-            
-            util.resolvePath<span class="signature">(originPath, importPath, <span class="optional">alreadyNormalized</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L163">line 163</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Resolves the specified include path against the specified origin path.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>originPath</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Path that was used to fetch the origin file</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>importPath</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Import path specified in the origin file</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>alreadyNormalized</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p><code>true</code> if both paths are already known to be normalized</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        string
-                        
-                    
-            </td>
-            <td class="description last">Path to the imported file</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id=".safeProp">
             
             util.safeProp<span class="signature">(prop)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
@@ -5097,7 +4601,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L196">line 196</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L67">line 67</a>
         </div>
         
     </div>
@@ -5242,7 +4746,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L16">line 16</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L23">line 23</a>
         </div>
         
     </div>
@@ -5387,7 +4891,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L216">line 216</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L87">line 87</a>
         </div>
         
     </div>
