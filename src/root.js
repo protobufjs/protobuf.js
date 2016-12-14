@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Root;
 
+Root.className = "Root";
+
 var Namespace = require("./namespace");
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
@@ -269,11 +271,4 @@ RootPrototype._handleRemove = function handleRemove(object) {
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
     }
-};
-
-/**
- * @override
- */
-RootPrototype.toString = function toString() {
-    return this.constructor.name;
 };

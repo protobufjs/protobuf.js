@@ -1,6 +1,8 @@
 "use strict";
 module.exports = OneOf;
 
+OneOf.className = "OneOf";
+
 var ReflectionObject = require("./object");
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);

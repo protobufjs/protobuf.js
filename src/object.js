@@ -1,6 +1,7 @@
 "use strict";
 module.exports = ReflectionObject;
 
+ReflectionObject.className = "ReflectionObject";
 ReflectionObject.extend = extend;
 
 var Root = require("./root"),
@@ -190,8 +191,12 @@ ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
 
 /**
  * Converts this instance to its string representation.
- * @returns {string} Constructor name, space, full name
+ * @returns {string} Class name[, space, full name]
  */
 ReflectionObjectPrototype.toString = function toString() {
-    return this.constructor.name + " " + this.getFullName();
+    var className = this.constructor.className;
+    var fullName = this.getFullName();
+    if (fullName.length)
+        return className + " " + fullName;
+    return className;
 };

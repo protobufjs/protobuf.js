@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Method;
 
+Method.className = "Method";
+
 var ReflectionObject = require("./object");
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);

@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Type; 
 
+Type.className = "Type";
+
 var Namespace = require("./namespace");
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;

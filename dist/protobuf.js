@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Wed, 14 Dec 2016 14:46:34 UTC
+ * Compiled Wed, 14 Dec 2016 16:29:36 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1441,6 +1441,8 @@ encode.generate = function generate(mtype) {
 "use strict";
 module.exports = Enum;
 
+Enum.className = "Enum";
+
 var ReflectionObject = require(21);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
@@ -1581,6 +1583,8 @@ EnumPrototype.remove = function(name) {
 },{"21":21,"32":32}],16:[function(require,module,exports){
 "use strict";
 module.exports = Field;
+
+Field.className = "Field";
 
 var ReflectionObject = require(21);
 /** @alias Field.prototype */
@@ -1860,6 +1864,8 @@ FieldPrototype.jsonConvert = function(value, options) {
 "use strict";
 module.exports = MapField;
 
+MapField.className = "MapField";
+
 var Field = require(16);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
@@ -2098,6 +2104,8 @@ Message.verify = function verify(message) {
 "use strict";
 module.exports = Method;
 
+Method.className = "Method";
+
 var ReflectionObject = require(21);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
@@ -2234,6 +2242,8 @@ MethodPrototype.resolve = function resolve() {
 },{"21":21,"30":30,"32":32}],20:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
+
+Namespace.className = "Namespace";
 
 var ReflectionObject = require(21);
 /** @alias Namespace.prototype */
@@ -2502,38 +2512,38 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     return this.parent.lookup(path);
 };
 
+[ Type, Service ].forEach(function(T) {
+    NamespacePrototype['lookup' + T.className] = function lookupT() {
+        var found = this.lookup(path);
+        if (!(found instanceof T))
+            throw Error("no such " + T.className);
+        return found;
+    };
+});
+
 /**
  * Looks up the {@link Type|type} at the specified path, relative to this namespace.
  * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * @name Namespace#lookupType
  * @param {string|string[]} path Path to look up
  * @returns {Type} Looked up type
  * @throws {Error} If `path` does not point to a type
  */
-NamespacePrototype.lookupType = function lookupType(path) {
-    var found = this.lookup(path);
-    if (!(found instanceof Type))
-        throw Error("no such type");
-    return found;
-};
 
 /**
  * Looks up the {@link Service|service} at the specified path, relative to this namespace.
  * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * @name Namespace#lookupService
  * @param {string|string[]} path Path to look up
  * @returns {Service} Looked up service
  * @throws {Error} If `path` does not point to a service
  */
-NamespacePrototype.lookupService = function lookupService(path) {
-    var found = this.lookup(path);
-    if (!(found instanceof Service))
-        throw Error("no such service");
-    return found;
-};
 
 },{"15":15,"16":16,"21":21,"28":28,"30":30,"32":32}],21:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
+ReflectionObject.className = "ReflectionObject";
 ReflectionObject.extend = extend;
 
 var Root = require(25),
@@ -2723,15 +2733,21 @@ ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
 
 /**
  * Converts this instance to its string representation.
- * @returns {string} Constructor name, space, full name
+ * @returns {string} Class name[, space, full name]
  */
 ReflectionObjectPrototype.toString = function toString() {
-    return this.constructor.name + " " + this.getFullName();
+    var className = this.constructor.className;
+    var fullName = this.getFullName();
+    if (fullName.length)
+        return className + " " + fullName;
+    return className;
 };
 
 },{"25":25,"32":32}],22:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
+
+OneOf.className = "OneOf";
 
 var ReflectionObject = require(21);
 /** @alias OneOf.prototype */
@@ -4036,6 +4052,8 @@ configure();
 "use strict";
 module.exports = Root;
 
+Root.className = "Root";
+
 var Namespace = require(20);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
@@ -4306,13 +4324,6 @@ RootPrototype._handleRemove = function handleRemove(object) {
     }
 };
 
-/**
- * @override
- */
-RootPrototype.toString = function toString() {
-    return this.constructor.name;
-};
-
 },{"12":12,"16":16,"20":20,"23":23,"32":32}],26:[function(require,module,exports){
 "use strict";
 
@@ -4371,6 +4382,8 @@ ServicePrototype.end = function end(endedByRPC) {
 },{"32":32}],28:[function(require,module,exports){
 "use strict";
 module.exports = Service;
+
+Service.className = "Service";
 
 var Namespace = require(20);
 /** @alias Namespace.prototype */
@@ -4786,6 +4799,8 @@ function tokenize(source) {
 },{}],30:[function(require,module,exports){
 "use strict";
 module.exports = Type; 
+
+Type.className = "Type";
 
 var Namespace = require(20);
 /** @alias Namespace.prototype */

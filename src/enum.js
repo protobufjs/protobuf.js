@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Enum;
 
+Enum.className = "Enum";
+
 var ReflectionObject = require("./object");
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);

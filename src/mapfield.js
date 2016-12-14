@@ -1,6 +1,8 @@
 "use strict";
 module.exports = MapField;
 
+MapField.className = "MapField";
+
 var Field = require("./field");
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;

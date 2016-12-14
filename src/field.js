@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Field;
 
+Field.className = "Field";
+
 var ReflectionObject = require("./object");
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);

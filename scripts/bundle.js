@@ -49,7 +49,9 @@ function bundle(compress, runtime) {
     .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(
                 gulpif(compress, uglify({
-                    mangleProperties: { regex: /^_/ }
+                    mangleProperties: {
+                        regex: /^_/
+                    }
                 }))
             )
             .pipe(header(license, {
