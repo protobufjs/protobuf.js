@@ -49,21 +49,27 @@ exports.main = function(args) {
             ++i;
     }
 
-    // There is no proper API for jsdoc, so this executes the CLI and writes to types/types.d.ts
-    var child = child_process.exec("node node_modules/jsdoc/jsdoc.js -c jsdoc.types.json " + files.join(' '), {
-        cwd: path.join(__dirname, ".."),
+    // There is no proper API for jsdoc, so this executes the CLI and pipes the output
+    var basedir = path.join(__dirname, "..");
+    var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
+        cwd: process.cwd(),
         argv0: "node",
         stdio: "pipe"
     });
-    child.stdout.pipe(process.stdout);
+    var out = [];
+    child.stdout.on("data", function(data) {
+        out.push(data);
+    });
     child.stderr.pipe(process.stderr);
     child.on("close", function(code) {
-        if (code)
-            throw Error("exited with " + code);
-        
-        var dir = path.join(__dirname, "..", "types");
-        var dts = fs.readFileSync(path.join(dir, "types.d.ts"), "utf8");
-        fs.unlinkSync(path.join(dir, "types.d.ts"));
+        if (code) {
+            out = out.join('').replace(/\s*JSDoc \d+\.\d+\.\d+ [^$]+/, "");
+            process.stderr.write(out);
+            process.exit(code);
+            return;
+        }
+
+        var dts = out.join('').replace(/{$/mg, "{\n").trim();
 
         var header = [
             "// $> pbts " + process.argv.slice(2).join(' '),
@@ -74,7 +80,7 @@ exports.main = function(args) {
         // Remove declare statements and wrap everything in a module
         dts = dts.replace(/\bdeclare\s/g, "");
         dts = dts.replace(/^/mg, "   ");
-        dts = header.join('\n')+"\ndeclare module " + JSON.stringify(argv.name || "mymodule") + " {\n\n" + dts + "\n}\n";
+        dts = header.join('\n')+"\ndeclare module " + JSON.stringify(argv.name || "mymodule") + " {\n\n" + dts + "\n\n}\n";
 
         if (argv.out)
             fs.writeFileSync(argv.out, dts);

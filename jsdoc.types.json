@@ -17,7 +17,7 @@
         "recurse"       : true,
         "private"       : false,
         "lenient"       : true,
-        "destination"   : "./types",
+        "destination"   : "console",
         "template"      : "./node_modules/tsd-jsdoc"
     }
 }

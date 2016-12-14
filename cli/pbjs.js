@@ -84,11 +84,11 @@ exports.main = function(args) {
 
     // Search include paths when resolving imports
     root.resolvePath = function pbjsResolvePath(origin, target) {
-        var filepath = protobuf.util.resolvePath(origin, target);
+        var filepath = protobuf.util.path.resolve(origin, target);
         if (fs.existsSync(filepath))
             return filepath;
         for (var i = 0; i < paths.length; ++i) {
-            var ifilepath = protobuf.util.resolvePath(paths[i] + "/", target);
+            var ifilepath = protobuf.util.path.resolve(paths[i] + "/", target);
             if (fs.existsSync(ifilepath))
                 return ifilepath;
         }
