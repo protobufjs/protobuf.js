@@ -1,6 +1,6 @@
 {
   "name": "protobufjs",
-  "version": "6.1.2",
+  "version": "6.2.0",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "license": "Apache-2.0",
@@ -44,6 +44,7 @@
     "@protobufjs/eventemitter": "^1.0.2",
     "@protobufjs/fetch": "^1.0.1",
     "@protobufjs/fs": "^1.0.1",
+    "@protobufjs/path": "^1.0.0",
     "@protobufjs/pool": "^1.0.1",
     "@protobufjs/utf8": "^1.0.3"
   },
@@ -52,7 +53,7 @@
   },
   "devDependencies": {
     "@types/long": "^3.0.31",
-    "@types/node": "0.0.3",
+    "@types/node": "6.0.52",
     "benchmark": "^2.1.2",
     "browserify": "^13.1.1",
     "bundle-collapser": "^1.2.1",
@@ -72,7 +73,7 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "tsd-jsdoc": "dcodeIO/tsd-jsdoc",
-    "typescript": "^2.2.0-dev.20161212",
+    "typescript": "^2.2.0-dev.20161214",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
     "vinyl-source-stream": "^1.1.0",

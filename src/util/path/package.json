@@ -1,6 +1,6 @@
 {
   "name": "@protobufjs/path",
-  "description": "A minimal path module for Unix, Windows and URL paths alike.",
+  "description": "A minimal path module to resolve Unix, Windows and URL paths alike.",
   "version": "1.0.0",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {

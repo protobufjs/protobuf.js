@@ -11,7 +11,7 @@ util.codegen      = require("@protobufjs/codegen");
 util.EventEmitter = require("@protobufjs/eventemitter");
 util.fetch        = require("@protobufjs/fetch");
 util.fs           = require("@protobufjs/fs");
-util.path         = require("./util/path");
+util.path         = require("@protobufjs/path");
 
 var runtime       = require("./util/runtime");
 

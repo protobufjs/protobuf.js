@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Wed, 14 Dec 2016 12:24:00 UTC
+// Generated Wed, 14 Dec 2016 14:46:41 UTC
 
 declare module "protobufjs" {
 
@@ -1910,7 +1910,7 @@ declare module "protobufjs" {
       }
    
       /**
-       * A minimal path module for Unix, Windows and URL paths alike.
+       * A minimal path module to resolve Unix, Windows and URL paths alike.
        * @memberof util
        * @namespace
        */
@@ -1933,7 +1933,7 @@ declare module "protobufjs" {
            * Resolves the specified include path against the specified origin path.
            * @param {string} originPath Path to the origin file
            * @param {string} includePath Include path relative to origin path
-           * @param {boolean} [alreadyNormalized] `true` if both paths are already known to be normalized
+           * @param {boolean} [alreadyNormalized=false] `true` if both paths are already known to be normalized
            * @returns {string} Path to the include file
            */
           function resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string;
