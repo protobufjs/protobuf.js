@@ -297,11 +297,11 @@ Consolidates imports and converts between file formats.
   -t, --target    Specifies the target format. Also accepts a path to require a custom target.
 
                   json          JSON representation
-                  json-module   JSON representation as a module (AMD, CommonJS, global)
+                  json-module   JSON representation as a module
                   proto2        Protocol Buffers, Version 2
                   proto3        Protocol Buffers, Version 3
                   static        Static code without reflection
-                  static-module Static code without reflection as a module (AMD, CommonJS, global)
+                  static-module Static code without reflection as a module
 
   -p, --path      Adds a directory to the include path.
 
@@ -314,6 +314,13 @@ Consolidates imports and converts between file formats.
                   amd       AMD only wrapper
 
   -r, --root      Specifies an alternative protobuf.roots name for *-module targets.
+
+  Static code generation only:
+
+  --no-encode     Does not generate encode functions.
+  --no-decode     Does not generate decode functions.
+  --no-verify     Does not generate verify functions.
+  --no-delimited  Does not generate delimited encode/decode functions.
 
 usage: pbjs [options] file1.proto file2.json ...
 ```
