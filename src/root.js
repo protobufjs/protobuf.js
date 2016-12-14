@@ -52,7 +52,7 @@ Root.fromJSON = function fromJSON(json, root) {
  * @param {string} target The file name being imported
  * @returns {string} Resolved path to `target`
  */
-RootPrototype.resolvePath = util.resolvePath;
+RootPrototype.resolvePath = util.path.resolve;
 
 // A symbol-like function to safely signal synchronous loading
 function SYNC() {} // eslint-disable-line no-empty-function

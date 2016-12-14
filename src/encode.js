@@ -30,12 +30,12 @@ function encode(message, writer) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             if (message[field.name] && message[field.name] !== util.emptyObject) {
                 for (var keys = Object.keys(message[field.name]), i = 0; i < keys.length; ++i) {
-                    writer.tag(field.id,2).fork()
-                          .tag(1,types.mapKey[keyType])[keyType](keys[i]);
+                    writer.uint32(field.id << 3 | 2).fork()
+                          .uint32(/*1*/8 | types.mapKey[keyType])[keyType](keys[i]);
                     if (wireType === undefined)
-                        field.resolvedType.encode(message[field.name][keys[i]], writer.tag(2,2).fork()).ldelim();
+                        field.resolvedType.encode(message[field.name][keys[i]], writer.uint32(/*2,2*/18).fork()).ldelim();
                     else
-                        writer.tag(2,wireType)[type](message[field.name][keys[i]]);
+                        writer.uint32(/*2*/16 | wireType)[type](message[field.name][keys[i]]);
                     writer.ldelim();
                 }
             }
@@ -58,10 +58,10 @@ function encode(message, writer) {
                     var i = 0;
                     if (wireType !== undefined)
                         while (i < values.length)
-                            writer.tag(field.id, wireType)[type](values[i++]);
+                            writer.uint32(field.id << 3 | wireType)[type](values[i++]);
                     else
                         while (i < values.length)
-                            field.resolvedType.encode(values[i++], writer.tag(field.id,2).fork()).ldelim();
+                            field.resolvedType.encode(values[i++], writer.uint32(field.id << 3 | 2).fork()).ldelim();
                 }
 
             }
@@ -75,7 +75,7 @@ function encode(message, writer) {
                 (field.required || value !== undefined) && (field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue)
             ) {
                 if (wireType !== undefined)
-                    writer.tag(field.id, wireType)[type](value);
+                    writer.uint32(field.id << 3 | wireType)[type](value);
                 else {
                     field.resolvedType.encode(value, writer.fork());
                     if (writer.len || field.required)
@@ -118,11 +118,11 @@ encode.generate = function generate(mtype) {
             gen
     ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
         ("for(var ks=Object.keys(m%s),i=0;i<ks.length;++i){", prop)
-            ("w.tag(%d,2).fork().tag(1,%d).%s(ks[i])", field.id, types.mapKey[keyType], keyType);
+            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", field.id << 3 | 2, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(m%s[ks[i]],w.tag(2,2).fork()).ldelim()", i, prop);
+            ("types[%d].encode(m%s[ks[i]],w.uint32(18).fork()).ldelim()", i, prop);
             else gen
-            ("w.tag(2,%d).%s(m%s[ks[i]])", wireType, type, prop);
+            ("w.uint32(%d).%s(m%s[ks[i]])", 16 | wireType, type, prop);
             gen
             ("w.ldelim()")
         ("}")
@@ -147,9 +147,9 @@ encode.generate = function generate(mtype) {
     ("if(m%s)", prop)
         ("for(var i=0;i<m%s.length;++i)", prop);
                 if (wireType !== undefined) gen
-            ("w.tag(%d,%d).%s(m%s[i])", field.id, wireType, type, prop);
+            ("w.uint32(%d).%s(m%s[i])", field.id << 3 | wireType, type, prop);
                 else gen
-            ("types[%d].encode(m%s[i],w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
+            ("types[%d].encode(m%s[i],w.uint32(%d).fork()).ldelim()", i, prop, field.id << 3 | 2);
 
             }
 
@@ -166,11 +166,11 @@ encode.generate = function generate(mtype) {
 
             if (wireType !== undefined) gen
 
-        ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
+        ("w.uint32(%d).%s(m%s)", field.id << 3 | wireType, type, prop);
 
             else if (field.required) gen
             
-        ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
+        ("types[%d].encode(m%s,w.uint32(%d).fork()).ldelim()", i, prop, field.id << 3 | 2);
         
             else gen
 
@@ -194,11 +194,11 @@ encode.generate = function generate(mtype) {
 
             if (wireType !== undefined) gen
 
-                ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
+                ("w.uint32(%d).%s(m%s)", field.id << 3 | wireType, type, prop);
 
             else if (field.required) gen
             
-                ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", fields.indexOf(field), prop, field.id);
+                ("types[%d].encode(m%s,w.uint32(%d).fork()).ldelim()", fields.indexOf(field), prop, field.id << 3 | 2);
         
             else gen
 

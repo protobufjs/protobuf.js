@@ -21,8 +21,9 @@ function decode(readerOrBuffer, length) {
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
-        var tag      = reader.tag(),
-            field    = fields[tag.id].resolve(),
+        var tag      = reader.int32(),
+            wireType = tag & 7,
+            field    = fields[tag >>> 3].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
         
         // Known fields
@@ -48,7 +49,7 @@ function decode(readerOrBuffer, length) {
                 var values = message[field.name] && message[field.name].length ? message[field.name] : message[field.name] = [];
 
                 // Packed
-                if (field.packed && types.packed[type] !== undefined && tag.wireType === 2) {
+                if (field.packed && types.packed[type] !== undefined && wireType === 2) {
                     var plimit = reader.uint32() + reader.pos;
                     while (reader.pos < plimit)
                         values[values.length] = reader[type]();
@@ -67,7 +68,7 @@ function decode(readerOrBuffer, length) {
 
         // Unknown fields
         } else
-            reader.skipType(tag.wireType);
+            reader.skipType(wireType);
     }
     return message;
     /* eslint-enable no-invalid-this, block-scoped-var, no-redeclare */
@@ -89,8 +90,8 @@ decode.generate = function generate(mtype) {
     ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
-        ("var t=r.tag()")
-        ("switch(t.id){");
+        ("var t=r.int32()")
+        ("switch(t>>>3){");
     
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
@@ -122,7 +123,7 @@ decode.generate = function generate(mtype) {
 
             if (field.packed && types.packed[type] !== undefined) { gen
 
-                ("if(t.wireType===2){")
+                ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
                         ("m%s[m%s.length]=r.%s()", prop, prop, type)
@@ -149,7 +150,7 @@ decode.generate = function generate(mtype) {
                 ("break");
     } return gen
             ("default:")
-                ("r.skipType(t.wireType)")
+                ("r.skipType(t&7)")
                 ("break")
         ("}")
     ("}")

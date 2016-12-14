@@ -3,7 +3,6 @@
 npm-debug.*
 node_modules/
 types/types.d.ts
-bench.txt
 docs/
 examples/
 src/util/aspromise/

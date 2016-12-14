@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.1 (c) 2016 Daniel Wirtz
- * Compiled Tue, 13 Dec 2016 22:38:23 UTC
+ * Compiled Wed, 14 Dec 2016 12:23:48 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -480,25 +480,16 @@ var ReaderPrototype = Reader.prototype;
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
 /**
- * Tag read.
- * @constructor
- * @param {number} id Field id
- * @param {number} wireType Wire type
- * @ignore
- */
-function Tag(id, wireType) {
-    this.id = id;
-    this.wireType = wireType;
-}
-
-/**
  * Reads a tag.
  * @returns {{id: number, wireType: number}} Field id and wire type
  */
 ReaderPrototype.tag = function read_tag() {
-    if (this.pos >= this.len)
-        throw indexOutOfRange(this);
-    return new Tag(this.buf[this.pos] >>> 3, this.buf[this.pos++] & 7);
+    // deprecated internally, but remains for completeness
+    var val = this.int32();
+    return {
+        id: val >>> 3,
+        wireType: val & 7
+    };
 };
 
 /**
@@ -875,10 +866,10 @@ ReaderPrototype.skipType = function(wireType) {
             break;
         case 3:
             do { // eslint-disable-line no-constant-condition
-                var tag = this.tag();
-                if (tag.wireType === 4)
+                wireType = this.int32() & 7;
+                if (wireType === 4)
                     break;
-                this.skipType(tag.wireType);
+                this.skipType(wireType);
             } while (true);
             break;
         case 5:
@@ -1571,7 +1562,8 @@ function writeByte(val, buf, pos) {
  * @returns {Writer} `this`
  */
 WriterPrototype.tag = function write_tag(id, wireType) {
-    return this.push(writeByte, 1, id << 3 | wireType & 7);
+    // deprecated internally, but remains for completeness
+    return this.uint32(id << 3 | wireType & 7);
 };
 
 function writeVarint32(val, buf, pos) {
@@ -1877,7 +1869,7 @@ WriterPrototype.ldelim = function ldelim(id) {
         len  = this.len;
     this.reset();
     if (id !== undefined)
-        this.tag(id, 2);
+        this.uint32(id << 3 | 2);
     this.uint32(len);
     this.tail.next = head.next; // skip noop
     this.tail = tail;

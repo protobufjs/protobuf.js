@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.1.1 (c) 2016 Daniel Wirtz
- * Compiled Tue, 13 Dec 2016 22:38:23 UTC
+ * Compiled Wed, 14 Dec 2016 12:23:48 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1008,8 +1008,9 @@ function decode(readerOrBuffer, length) {
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
-        var tag      = reader.tag(),
-            field    = fields[tag.id].resolve(),
+        var tag      = reader.int32(),
+            wireType = tag & 7,
+            field    = fields[tag >>> 3].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
         
         // Known fields
@@ -1035,7 +1036,7 @@ function decode(readerOrBuffer, length) {
                 var values = message[field.name] && message[field.name].length ? message[field.name] : message[field.name] = [];
 
                 // Packed
-                if (field.packed && types.packed[type] !== undefined && tag.wireType === 2) {
+                if (field.packed && types.packed[type] !== undefined && wireType === 2) {
                     var plimit = reader.uint32() + reader.pos;
                     while (reader.pos < plimit)
                         values[values.length] = reader[type]();
@@ -1054,7 +1055,7 @@ function decode(readerOrBuffer, length) {
 
         // Unknown fields
         } else
-            reader.skipType(tag.wireType);
+            reader.skipType(wireType);
     }
     return message;
     /* eslint-enable no-invalid-this, block-scoped-var, no-redeclare */
@@ -1076,8 +1077,8 @@ decode.generate = function generate(mtype) {
     ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
-        ("var t=r.tag()")
-        ("switch(t.id){");
+        ("var t=r.int32()")
+        ("switch(t>>>3){");
     
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
@@ -1109,7 +1110,7 @@ decode.generate = function generate(mtype) {
 
             if (field.packed && types.packed[type] !== undefined) { gen
 
-                ("if(t.wireType===2){")
+                ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
                         ("m%s[m%s.length]=r.%s()", prop, prop, type)
@@ -1136,7 +1137,7 @@ decode.generate = function generate(mtype) {
                 ("break");
     } return gen
             ("default:")
-                ("r.skipType(t.wireType)")
+                ("r.skipType(t&7)")
                 ("break")
         ("}")
     ("}")
@@ -1149,7 +1150,7 @@ decode.generate = function generate(mtype) {
 module.exports = encode;
 
 var Enum     = require(14),
-    Writer   = require(35),
+    Writer   = require(36),
     types    = require(30),
     util     = require(31);
 var safeProp = util.safeProp;
@@ -1177,12 +1178,12 @@ function encode(message, writer) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             if (message[field.name] && message[field.name] !== util.emptyObject) {
                 for (var keys = Object.keys(message[field.name]), i = 0; i < keys.length; ++i) {
-                    writer.tag(field.id,2).fork()
-                          .tag(1,types.mapKey[keyType])[keyType](keys[i]);
+                    writer.uint32(field.id << 3 | 2).fork()
+                          .uint32(/*1*/8 | types.mapKey[keyType])[keyType](keys[i]);
                     if (wireType === undefined)
-                        field.resolvedType.encode(message[field.name][keys[i]], writer.tag(2,2).fork()).ldelim();
+                        field.resolvedType.encode(message[field.name][keys[i]], writer.uint32(/*2,2*/18).fork()).ldelim();
                     else
-                        writer.tag(2,wireType)[type](message[field.name][keys[i]]);
+                        writer.uint32(/*2*/16 | wireType)[type](message[field.name][keys[i]]);
                     writer.ldelim();
                 }
             }
@@ -1205,10 +1206,10 @@ function encode(message, writer) {
                     var i = 0;
                     if (wireType !== undefined)
                         while (i < values.length)
-                            writer.tag(field.id, wireType)[type](values[i++]);
+                            writer.uint32(field.id << 3 | wireType)[type](values[i++]);
                     else
                         while (i < values.length)
-                            field.resolvedType.encode(values[i++], writer.tag(field.id,2).fork()).ldelim();
+                            field.resolvedType.encode(values[i++], writer.uint32(field.id << 3 | 2).fork()).ldelim();
                 }
 
             }
@@ -1222,7 +1223,7 @@ function encode(message, writer) {
                 (field.required || value !== undefined) && (field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue)
             ) {
                 if (wireType !== undefined)
-                    writer.tag(field.id, wireType)[type](value);
+                    writer.uint32(field.id << 3 | wireType)[type](value);
                 else {
                     field.resolvedType.encode(value, writer.fork());
                     if (writer.len || field.required)
@@ -1265,11 +1266,11 @@ encode.generate = function generate(mtype) {
             gen
     ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
         ("for(var ks=Object.keys(m%s),i=0;i<ks.length;++i){", prop)
-            ("w.tag(%d,2).fork().tag(1,%d).%s(ks[i])", field.id, types.mapKey[keyType], keyType);
+            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", field.id << 3 | 2, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(m%s[ks[i]],w.tag(2,2).fork()).ldelim()", i, prop);
+            ("types[%d].encode(m%s[ks[i]],w.uint32(18).fork()).ldelim()", i, prop);
             else gen
-            ("w.tag(2,%d).%s(m%s[ks[i]])", wireType, type, prop);
+            ("w.uint32(%d).%s(m%s[ks[i]])", 16 | wireType, type, prop);
             gen
             ("w.ldelim()")
         ("}")
@@ -1294,9 +1295,9 @@ encode.generate = function generate(mtype) {
     ("if(m%s)", prop)
         ("for(var i=0;i<m%s.length;++i)", prop);
                 if (wireType !== undefined) gen
-            ("w.tag(%d,%d).%s(m%s[i])", field.id, wireType, type, prop);
+            ("w.uint32(%d).%s(m%s[i])", field.id << 3 | wireType, type, prop);
                 else gen
-            ("types[%d].encode(m%s[i],w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
+            ("types[%d].encode(m%s[i],w.uint32(%d).fork()).ldelim()", i, prop, field.id << 3 | 2);
 
             }
 
@@ -1313,11 +1314,11 @@ encode.generate = function generate(mtype) {
 
             if (wireType !== undefined) gen
 
-        ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
+        ("w.uint32(%d).%s(m%s)", field.id << 3 | wireType, type, prop);
 
             else if (field.required) gen
             
-        ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", i, prop, field.id);
+        ("types[%d].encode(m%s,w.uint32(%d).fork()).ldelim()", i, prop, field.id << 3 | 2);
         
             else gen
 
@@ -1341,11 +1342,11 @@ encode.generate = function generate(mtype) {
 
             if (wireType !== undefined) gen
 
-                ("w.tag(%d,%d).%s(m%s)", field.id, wireType, type, prop);
+                ("w.uint32(%d).%s(m%s)", field.id << 3 | wireType, type, prop);
 
             else if (field.required) gen
             
-                ("types[%d].encode(m%s,w.tag(%d,2).fork()).ldelim()", fields.indexOf(field), prop, field.id);
+                ("types[%d].encode(m%s,w.uint32(%d).fork()).ldelim()", fields.indexOf(field), prop, field.id << 3 | 2);
         
             else gen
 
@@ -1362,7 +1363,7 @@ encode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"14":14,"30":30,"31":31,"35":35}],14:[function(require,module,exports){
+},{"14":14,"30":30,"31":31,"36":36}],14:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
@@ -3368,7 +3369,7 @@ module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util      = require(33),
+var util      = require(34),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
@@ -3420,25 +3421,16 @@ var ReaderPrototype = Reader.prototype;
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
 /**
- * Tag read.
- * @constructor
- * @param {number} id Field id
- * @param {number} wireType Wire type
- * @ignore
- */
-function Tag(id, wireType) {
-    this.id = id;
-    this.wireType = wireType;
-}
-
-/**
  * Reads a tag.
  * @returns {{id: number, wireType: number}} Field id and wire type
  */
 ReaderPrototype.tag = function read_tag() {
-    if (this.pos >= this.len)
-        throw indexOutOfRange(this);
-    return new Tag(this.buf[this.pos] >>> 3, this.buf[this.pos++] & 7);
+    // deprecated internally, but remains for completeness
+    var val = this.int32();
+    return {
+        id: val >>> 3,
+        wireType: val & 7
+    };
 };
 
 /**
@@ -3815,10 +3807,10 @@ ReaderPrototype.skipType = function(wireType) {
             break;
         case 3:
             do { // eslint-disable-line no-constant-condition
-                var tag = this.tag();
-                if (tag.wireType === 4)
+                wireType = this.int32() & 7;
+                if (wireType === 4)
                     break;
-                this.skipType(tag.wireType);
+                this.skipType(wireType);
             } while (true);
             break;
         case 5:
@@ -3966,7 +3958,7 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"33":33}],24:[function(require,module,exports){
+},{"1":1,"34":34}],24:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
@@ -4021,7 +4013,7 @@ Root.fromJSON = function fromJSON(json, root) {
  * @param {string} target The file name being imported
  * @returns {string} Resolved path to `target`
  */
-RootPrototype.resolvePath = util.resolvePath;
+RootPrototype.resolvePath = util.path.resolve;
 
 // A symbol-like function to safely signal synchronous loading
 function SYNC() {} // eslint-disable-line no-empty-function
@@ -4734,11 +4726,11 @@ var Enum      = require(14),
     Class     = require(10),
     Message   = require(17),
     Reader    = require(23),
-    Writer    = require(35),
+    Writer    = require(36),
     util      = require(31);
 var encode    = require(13),
     decode    = require(12),
-    verify    = require(34);
+    verify    = require(35);
 
 /**
  * Constructs a new reflected message type instance.
@@ -5108,7 +5100,7 @@ TypePrototype.verify = function verify_setup(message) {
     ).call(this, message);
 };
 
-},{"10":10,"12":12,"13":13,"14":14,"15":15,"17":17,"19":19,"21":21,"23":23,"27":27,"31":31,"34":34,"35":35}],30:[function(require,module,exports){
+},{"10":10,"12":12,"13":13,"14":14,"15":15,"17":17,"19":19,"21":21,"23":23,"27":27,"31":31,"35":35,"36":36}],30:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5248,10 +5240,14 @@ types.packed = bake([
  */
 var util = exports;
 
-util.asPromise = require(2);
-util.codegen   = require(4);
-util.fetch     = require(6);
-util.fs        = require(7);
+util.asPromise    = require(2);
+util.codegen      = require(4);
+util.EventEmitter = require(5);
+util.fetch        = require(6);
+util.fs           = require(7);
+util.path         = require(33);
+
+var runtime       = require(34);
 
 /**
  * Converts an object's values to an array.
@@ -5278,68 +5274,6 @@ util.toArray = function toArray(object) {
  */
 util._TypeError = function(name, description) {
     return TypeError(name + " must be " + (description || "a string"));
-};
-
-/**
- * Tests if the specified path is absolute.
- * @memberof util
- * @param {string} path Path to test
- * @returns {boolean} `true` if path is absolute
- */
-function isAbsolutePath(path) {
-    return /^(?:\/|[a-zA-Z0-9]+:)/.test(path);
-}
-
-util.isAbsolutePath = isAbsolutePath;
-
-/**
- * Normalizes the specified path.
- * @memberof util
- * @param {string} path Path to normalize
- * @returns {string} Normalized path
- */
-function normalizePath(path) {
-    path = path.replace(/\\/g, "/")
-               .replace(/\/{2,}/g, "/");
-    var parts = path.split("/");
-    var abs = isAbsolutePath(path);
-    var prefix = "";
-    if (abs)
-        prefix = parts.shift() + "/";
-    for (var i = 0; i < parts.length;) {
-        if (parts[i] === "..") {
-            if (i > 0)
-                parts.splice(--i, 2);
-            else if (abs)
-                parts.splice(i, 1);
-            else
-                ++i;
-        } else if (parts[i] === ".")
-            parts.splice(i, 1);
-        else
-            ++i;
-    }
-    return prefix + parts.join("/");
-}
-
-util.normalizePath = normalizePath;
-
-/**
- * Resolves the specified include path against the specified origin path.
- * @param {string} originPath Path that was used to fetch the origin file
- * @param {string} importPath Import path specified in the origin file
- * @param {boolean} [alreadyNormalized] `true` if both paths are already known to be normalized
- * @returns {string} Path to the imported file
- */
-util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalized) {
-    if (!alreadyNormalized)
-        importPath = normalizePath(importPath);
-    if (isAbsolutePath(importPath))
-        return importPath;
-    if (!alreadyNormalized)
-        originPath = normalizePath(originPath);
-    originPath = originPath.replace(/(?:\/|^)[^/]+$/, "");
-    return originPath.length ? normalizePath(originPath + "/" + importPath) : importPath;
 };
 
 /**
@@ -5402,10 +5336,6 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== "undefined" && Uint8Array || Array)(size);
 };
 
-var runtime = require(33);
-
-util.EventEmitter = require(5);
-
 // Merge in runtime utility
 util.merge(util, runtime);
 
@@ -5413,12 +5343,12 @@ util._configure = function configure() {
     runtime.Long = util.Long;
 };
 
-},{"2":2,"33":33,"4":4,"5":5,"6":6,"7":7}],32:[function(require,module,exports){
+},{"2":2,"33":33,"34":34,"4":4,"5":5,"6":6,"7":7}],32:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(33);
+var util = require(34);
 
 /**
  * Any compatible Long instance.
@@ -5616,7 +5546,74 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"33":33}],33:[function(require,module,exports){
+},{"34":34}],33:[function(require,module,exports){
+"use strict";
+
+/**
+ * A minimal path module for Unix, Windows and URL paths alike.
+ * @memberof util
+ * @namespace
+ */
+var path = exports;
+
+var isAbsolute =
+/**
+ * Tests if the specified path is absolute.
+ * @param {string} path Path to test
+ * @returns {boolean} `true` if path is absolute
+ */
+path.isAbsolute = function isAbsolute(path) {
+    return /^(?:\/|\w+:)/.test(path);
+};
+
+var normalize =
+/**
+ * Normalizes the specified path.
+ * @param {string} path Path to normalize
+ * @returns {string} Normalized path
+ */
+path.normalize = function normalize(path) {
+    path = path.replace(/\\/g, "/")
+               .replace(/\/{2,}/g, "/");
+    var parts    = path.split("/"),
+        absolute = isAbsolute(path),
+        prefix   = "";
+    if (absolute)
+        prefix = parts.shift() + "/";
+    for (var i = 0; i < parts.length;) {
+        if (parts[i] === "..") {
+            if (i > 0)
+                parts.splice(--i, 2);
+            else if (absolute)
+                parts.splice(i, 1);
+            else
+                ++i;
+        } else if (parts[i] === ".")
+            parts.splice(i, 1);
+        else
+            ++i;
+    }
+    return prefix + parts.join("/");
+};
+
+/**
+ * Resolves the specified include path against the specified origin path.
+ * @param {string} originPath Path to the origin file
+ * @param {string} includePath Include path relative to origin path
+ * @param {boolean} [alreadyNormalized] `true` if both paths are already known to be normalized
+ * @returns {string} Path to the include file
+ */
+path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
+    if (!alreadyNormalized)
+        includePath = normalize(includePath);
+    if (isAbsolute(includePath))
+        return includePath;
+    if (!alreadyNormalized)
+        originPath = normalize(originPath);
+    return (originPath = originPath.replace(/(?:\/|^)[^/]+$/, "")).length ? normalize(originPath + "/" + includePath) : includePath;
+};
+
+},{}],34:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5776,7 +5773,7 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"3":3,"32":32,"8":8,"9":9,"buffer":"buffer","long":"long"}],34:[function(require,module,exports){
+},{"3":3,"32":32,"8":8,"9":9,"buffer":"buffer","long":"long"}],35:[function(require,module,exports){
 "use strict";
 module.exports = verify;
 
@@ -6056,13 +6053,13 @@ verify.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"14":14,"29":29,"31":31}],35:[function(require,module,exports){
+},{"14":14,"29":29,"31":31}],36:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util      = require(33),
+var util      = require(34),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     base64    = util.base64,
@@ -6238,7 +6235,8 @@ function writeByte(val, buf, pos) {
  * @returns {Writer} `this`
  */
 WriterPrototype.tag = function write_tag(id, wireType) {
-    return this.push(writeByte, 1, id << 3 | wireType & 7);
+    // deprecated internally, but remains for completeness
+    return this.uint32(id << 3 | wireType & 7);
 };
 
 function writeVarint32(val, buf, pos) {
@@ -6544,7 +6542,7 @@ WriterPrototype.ldelim = function ldelim(id) {
         len  = this.len;
     this.reset();
     if (id !== undefined)
-        this.tag(id, 2);
+        this.uint32(id << 3 | 2);
     this.uint32(len);
     this.tail.next = head.next; // skip noop
     this.tail = tail;
@@ -6668,7 +6666,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"33":33}],36:[function(require,module,exports){
+},{"1":1,"34":34}],37:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6751,14 +6749,14 @@ protobuf.parse            = require(22);
 
 // Serialization
                var Writer =
-protobuf.Writer           = require(35);
+protobuf.Writer           = require(36);
 protobuf.BufferWriter     = Writer.BufferWriter;
                var Reader =
 protobuf.Reader           = require(23);
 protobuf.BufferReader     = Reader.BufferReader;
 protobuf.encode           = require(13);
 protobuf.decode           = require(12);
-protobuf.verify           = require(34);
+protobuf.verify           = require(35);
 
 // Reflection
 protobuf.ReflectionObject = require(20);
@@ -6805,7 +6803,7 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"27":27,"28":28,"29":29,"30":30,"31":31,"34":34,"35":35}]},{},[36])
+},{"10":10,"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"27":27,"28":28,"29":29,"30":30,"31":31,"35":35,"36":36}]},{},[37])
 
 
 //# sourceMappingURL=protobuf.js.map

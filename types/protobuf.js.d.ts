@@ -1,5 +1,5 @@
-// $> pbts --name protobufjs --out types/protobuf.js.d.ts ./src
-// Generated Tue, 13 Dec 2016 22:38:30 UTC
+// $> pbts --name protobufjs --out types/protobuf.js.d.ts src
+// Generated Wed, 14 Dec 2016 12:24:00 UTC
 
 declare module "protobufjs" {
 
@@ -1910,6 +1910,37 @@ declare module "protobufjs" {
       }
    
       /**
+       * A minimal path module for Unix, Windows and URL paths alike.
+       * @memberof util
+       * @namespace
+       */
+      module path {
+          /**
+           * Tests if the specified path is absolute.
+           * @param {string} path Path to test
+           * @returns {boolean} `true` if path is absolute
+           */
+          function isAbsolute(path: string): boolean;
+   
+          /**
+           * Normalizes the specified path.
+           * @param {string} path Path to normalize
+           * @returns {string} Normalized path
+           */
+          function normalize(path: string): string;
+   
+          /**
+           * Resolves the specified include path against the specified origin path.
+           * @param {string} originPath Path to the origin file
+           * @param {string} includePath Include path relative to origin path
+           * @param {boolean} [alreadyNormalized] `true` if both paths are already known to be normalized
+           * @returns {string} Path to the include file
+           */
+          function resolve(originPath: string, includePath: string, alreadyNormalized?: boolean): string;
+   
+      }
+   
+      /**
        * A general purpose buffer pool.
        * @memberof util
        * @function
@@ -2055,31 +2086,6 @@ declare module "protobufjs" {
        * @returns {Array.<*>} Converted array
        */
       function toArray(object: { [k: string]: any }): any[];
-   
-      /**
-       * Tests if the specified path is absolute.
-       * @memberof util
-       * @param {string} path Path to test
-       * @returns {boolean} `true` if path is absolute
-       */
-      function isAbsolutePath(path: string): boolean;
-   
-      /**
-       * Normalizes the specified path.
-       * @memberof util
-       * @param {string} path Path to normalize
-       * @returns {string} Normalized path
-       */
-      function normalizePath(path: string): string;
-   
-      /**
-       * Resolves the specified include path against the specified origin path.
-       * @param {string} originPath Path that was used to fetch the origin file
-       * @param {string} importPath Import path specified in the origin file
-       * @param {boolean} [alreadyNormalized] `true` if both paths are already known to be normalized
-       * @returns {string} Path to the imported file
-       */
-      function resolvePath(originPath: string, importPath: string, alreadyNormalized?: boolean): string;
    
       /**
        * Merges the properties of the source object into the destination object.

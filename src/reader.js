@@ -55,25 +55,16 @@ var ReaderPrototype = Reader.prototype;
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
 /**
- * Tag read.
- * @constructor
- * @param {number} id Field id
- * @param {number} wireType Wire type
- * @ignore
- */
-function Tag(id, wireType) {
-    this.id = id;
-    this.wireType = wireType;
-}
-
-/**
  * Reads a tag.
  * @returns {{id: number, wireType: number}} Field id and wire type
  */
 ReaderPrototype.tag = function read_tag() {
-    if (this.pos >= this.len)
-        throw indexOutOfRange(this);
-    return new Tag(this.buf[this.pos] >>> 3, this.buf[this.pos++] & 7);
+    // deprecated internally, but remains for completeness
+    var val = this.int32();
+    return {
+        id: val >>> 3,
+        wireType: val & 7
+    };
 };
 
 /**
@@ -450,10 +441,10 @@ ReaderPrototype.skipType = function(wireType) {
             break;
         case 3:
             do { // eslint-disable-line no-constant-condition
-                var tag = this.tag();
-                if (tag.wireType === 4)
+                wireType = this.int32() & 7;
+                if (wireType === 4)
                     break;
-                this.skipType(tag.wireType);
+                this.skipType(wireType);
             } while (true);
             break;
         case 5:

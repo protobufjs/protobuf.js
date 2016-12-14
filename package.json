@@ -33,7 +33,7 @@
     "prepublish": "node scripts/prepublish",
     "prof": "node bench/prof",
     "test": "tape tests/*.js | tap-spec",
-    "types": "node bin/pbts --name protobufjs --out types/protobuf.js.d.ts ./src && tsc types/test.ts --lib es2015 --noEmit",
+    "types": "node bin/pbts --name protobufjs --out types/protobuf.js.d.ts src && tsc types/test.ts --lib es2015 --noEmit",
     "zuul": "zuul --ui tape --no-coverage --concurrency 4 -- tests/*.js",
     "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js"
   },

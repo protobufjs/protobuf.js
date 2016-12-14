@@ -6,10 +6,14 @@
  */
 var util = exports;
 
-util.asPromise = require("@protobufjs/aspromise");
-util.codegen   = require("@protobufjs/codegen");
-util.fetch     = require("@protobufjs/fetch");
-util.fs        = require("@protobufjs/fs");
+util.asPromise    = require("@protobufjs/aspromise");
+util.codegen      = require("@protobufjs/codegen");
+util.EventEmitter = require("@protobufjs/eventemitter");
+util.fetch        = require("@protobufjs/fetch");
+util.fs           = require("@protobufjs/fs");
+util.path         = require("./util/path");
+
+var runtime       = require("./util/runtime");
 
 /**
  * Converts an object's values to an array.
@@ -36,68 +40,6 @@ util.toArray = function toArray(object) {
  */
 util._TypeError = function(name, description) {
     return TypeError(name + " must be " + (description || "a string"));
-};
-
-/**
- * Tests if the specified path is absolute.
- * @memberof util
- * @param {string} path Path to test
- * @returns {boolean} `true` if path is absolute
- */
-function isAbsolutePath(path) {
-    return /^(?:\/|[a-zA-Z0-9]+:)/.test(path);
-}
-
-util.isAbsolutePath = isAbsolutePath;
-
-/**
- * Normalizes the specified path.
- * @memberof util
- * @param {string} path Path to normalize
- * @returns {string} Normalized path
- */
-function normalizePath(path) {
-    path = path.replace(/\\/g, "/")
-               .replace(/\/{2,}/g, "/");
-    var parts = path.split("/");
-    var abs = isAbsolutePath(path);
-    var prefix = "";
-    if (abs)
-        prefix = parts.shift() + "/";
-    for (var i = 0; i < parts.length;) {
-        if (parts[i] === "..") {
-            if (i > 0)
-                parts.splice(--i, 2);
-            else if (abs)
-                parts.splice(i, 1);
-            else
-                ++i;
-        } else if (parts[i] === ".")
-            parts.splice(i, 1);
-        else
-            ++i;
-    }
-    return prefix + parts.join("/");
-}
-
-util.normalizePath = normalizePath;
-
-/**
- * Resolves the specified include path against the specified origin path.
- * @param {string} originPath Path that was used to fetch the origin file
- * @param {string} importPath Import path specified in the origin file
- * @param {boolean} [alreadyNormalized] `true` if both paths are already known to be normalized
- * @returns {string} Path to the imported file
- */
-util.resolvePath = function resolvePath(originPath, importPath, alreadyNormalized) {
-    if (!alreadyNormalized)
-        importPath = normalizePath(importPath);
-    if (isAbsolutePath(importPath))
-        return importPath;
-    if (!alreadyNormalized)
-        originPath = normalizePath(originPath);
-    originPath = originPath.replace(/(?:\/|^)[^/]+$/, "");
-    return originPath.length ? normalizePath(originPath + "/" + importPath) : importPath;
 };
 
 /**
@@ -159,10 +101,6 @@ util.newBuffer = function newBuffer(size) {
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
         : new (typeof Uint8Array !== "undefined" && Uint8Array || Array)(size);
 };
-
-var runtime = require("./util/runtime");
-
-util.EventEmitter = require("@protobufjs/eventemitter");
 
 // Merge in runtime utility
 util.merge(util, runtime);

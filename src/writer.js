@@ -179,7 +179,8 @@ function writeByte(val, buf, pos) {
  * @returns {Writer} `this`
  */
 WriterPrototype.tag = function write_tag(id, wireType) {
-    return this.push(writeByte, 1, id << 3 | wireType & 7);
+    // deprecated internally, but remains for completeness
+    return this.uint32(id << 3 | wireType & 7);
 };
 
 function writeVarint32(val, buf, pos) {
@@ -485,7 +486,7 @@ WriterPrototype.ldelim = function ldelim(id) {
         len  = this.len;
     this.reset();
     if (id !== undefined)
-        this.tag(id, 2);
+        this.uint32(id << 3 | 2);
     this.uint32(len);
     this.tail.next = head.next; // skip noop
     this.tail = tail;
