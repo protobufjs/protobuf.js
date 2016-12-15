@@ -1,9 +1,9 @@
 var tape = require("tape");
 var protobuf  = require("..");
 
-tape.test("test asJSON repeated defaults", function(test) {
+tape.test("asJSON repeated defaults", function(test) {
 
-    protobuf.load("tests/data/message.proto", function(err, root) {
+    protobuf.load("tests/data/asjson.proto", function(err, root) {
         if (err)
             return test.fail(err.message);
         test.ok(true, "should parse without errors");

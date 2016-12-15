@@ -7,17 +7,14 @@
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
-    "templates": {
-        "jsdoc2tsd": {
-            "interfacePrefix" : ""
-        }
-    },
     "opts": {
         "encoding"      : "utf8",
         "recurse"       : true,
-        "private"       : false,
         "lenient"       : true,
-        "destination"   : "console",
-        "template"      : "./node_modules/tsd-jsdoc"
+        "template"      : "./lib/tsd-jsdoc",
+
+        "private"       : false,
+        "comments"      : true,
+        "destination"   : false
     }
 }

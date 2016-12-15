@@ -51,7 +51,8 @@ exports.main = function(args) {
 
     // There is no proper API for jsdoc, so this executes the CLI and pipes the output
     var basedir = path.join(__dirname, "..");
-    var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
+    var moduleName = argv.name || "mymodule";
+    var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" -q \"module=" + encodeURIComponent(moduleName) + "\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
         cwd: process.cwd(),
         argv0: "node",
         stdio: "pipe"
@@ -69,23 +70,15 @@ exports.main = function(args) {
             return;
         }
 
-        var dts = out.join('').replace(/{$/mg, "{\n").trim();
-
-        var header = [
+        var output = [
             "// $> pbts " + process.argv.slice(2).join(' '),
             "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
-            ""
-        ];
-
-        // Remove declare statements and wrap everything in a module
-        dts = dts.replace(/\bdeclare\s/g, "");
-        dts = dts.replace(/^/mg, "   ");
-        dts = header.join('\n')+"\ndeclare module " + JSON.stringify(argv.name || "mymodule") + " {\n\n" + dts + "\n\n}\n";
+        ].join('\n') + "\n" + out.join('');
 
         if (argv.out)
-            fs.writeFileSync(argv.out, dts);
+            fs.writeFileSync(argv.out, output);
         else
-            process.stdout.write(dts, "utf8");
+            process.stdout.write(output, "utf8");
     });
 
     return undefined;

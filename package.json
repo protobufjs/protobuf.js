@@ -72,7 +72,6 @@
     "minimist": "^1.2.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
-    "tsd-jsdoc": "dcodeIO/tsd-jsdoc",
     "typescript": "^2.2.0-dev.20161214",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
