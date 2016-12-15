@@ -8,7 +8,7 @@ var util = module.exports = require("./util/runtime");
 
 util.asPromise    = require("@protobufjs/aspromise");
 util.codegen      = require("@protobufjs/codegen");
-util.EventEmitter = require("@protobufjs/eventemitter");
+util.EventEmitter = require("./util/eventemitter");
 util.extend       = require("@protobufjs/extend");
 util.fetch        = require("@protobufjs/fetch");
 util.fs           = require("@protobufjs/fs");
@@ -97,6 +97,6 @@ util.underScore = function underScore(str) {
 util.newBuffer = function newBuffer(size) {
     size = size || 0;
     return util.Buffer
-        ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
-        : new (typeof Uint8Array !== "undefined" && Uint8Array || Array)(size);
+        ? util.Buffer.allocUnsafe ? util.Buffer.allocUnsafe(size) : new util.Buffer(size)
+        : new (typeof Uint8Array !== "undefined" ? Uint8Array : Array)(size);
 };

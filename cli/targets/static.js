@@ -407,11 +407,11 @@ function buildService(ref, service) {
             push("var requestData;");
             push("try {");
                 ++indent;
-                push("requestData = (this.requestDelimited && $root" + name(method.resolvedRequestType.fullName) + ".encodeDelimited(request) || $root" + name(method.resolvedRequestType.fullName) + ".encode(request)).finish();");
+                push("requestData = (this.requestDelimited ? $root" + name(method.resolvedRequestType.fullName) + ".encodeDelimited(request) : $root" + name(method.resolvedRequestType.fullName) + ".encode(request)).finish();");
                 --indent;
             push("} catch (err) {");
                 ++indent;
-                push("(typeof setImmediate === 'function' && setImmediate || setTimeout)(function() { callback(err); });");
+                push("(typeof setImmediate === 'function' ? setImmediate : setTimeout)(function() { callback(err); });");
                 push("return;");
                 --indent;
             push("}");
@@ -427,7 +427,7 @@ function buildService(ref, service) {
                 push("var response;");
                 push("try {");
                     ++indent;
-                    push("response = self.responseDelimited && $root" + name(method.resolvedResponseType.fullName) + ".decodeDelimited(responseData) || $root" + name(method.resolvedResponseType.fullName) + ".decode(responseData);");
+                    push("response = self.responseDelimited ? $root" + name(method.resolvedResponseType.fullName) + ".decodeDelimited(responseData) : $root" + name(method.resolvedResponseType.fullName) + ".decode(responseData);");
                     --indent;
                 push("} catch (err2) {");
                     ++indent;

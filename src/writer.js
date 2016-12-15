@@ -561,7 +561,7 @@ function writeBytesBuffer(val, buf, pos) {
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     if (typeof value === "string")
-        value = util.Buffer.from && util.Buffer.from(value, "base64") || new util.Buffer(value, "base64");
+        value = util.Buffer.from ? util.Buffer.from(value, "base64") : new util.Buffer(value, "base64");
     var len = value.length >>> 0;
     return len
         ? this.uint32(len).push(writeBytesBuffer, len, value)

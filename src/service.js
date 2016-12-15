@@ -179,9 +179,9 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
             method.resolve();
             var requestData;
             try {
-                requestData = (requestDelimited && method.resolvedRequestType.encodeDelimited(request) || method.resolvedRequestType.encode(request)).finish();
+                requestData = (requestDelimited ? method.resolvedRequestType.encodeDelimited(request) : method.resolvedRequestType.encode(request)).finish();
             } catch (err) {
-                (typeof setImmediate === "function" && setImmediate || setTimeout)(function() { callback(err); });
+                (typeof setImmediate === "function" ? setImmediate : setTimeout)(function() { callback(err); });
                 return;
             }
             // Calls the custom RPC implementation with the reflected method and binary request data
@@ -197,7 +197,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
                 }
                 var response;
                 try {
-                    response = responseDelimited && method.resolvedResponseType.decodeDelimited(responseData) || method.resolvedResponseType.decode(responseData);
+                    response = responseDelimited ? method.resolvedResponseType.decodeDelimited(responseData) : method.resolvedResponseType.decode(responseData);
                 } catch (err2) {
                     rpcService.emit("error", err2, method);
                     return callback ? callback("error", err2) : undefined;

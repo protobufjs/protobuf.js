@@ -44,7 +44,7 @@ var root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto"
 var Test = root.lookup("Test");
 var data = require("../bench/bench.json");
 
-var count = process.argv.length > 3 && parseInt(process.argv[3], 10) || 10000000;
+var count = process.argv.length > 3 ? parseInt(process.argv[3], 10) : 10000000;
 
 function setupBrowser() {
     protobuf.Writer.create = function create_browser() { return new protobuf.Writer(); };

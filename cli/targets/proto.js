@@ -178,7 +178,7 @@ function buildField(field, passExtend) {
     else if (field.repeated)
         sb.push("repeated", field.type);
     else if (syntax === 2)
-        sb.push(field.required && "required" || "optional", field.type);
+        sb.push(field.required ? "required" : "optional", field.type);
     else
         sb.push(field.type);
     sb.push(underScore(field.name), "=", field.id);

@@ -69,7 +69,7 @@ EventEmitterPrototype.emit = function emit(evt) {
     var listeners = this._listeners[evt];
     if (listeners) {
         var args = [],
-            i = 0;
+            i = 1;
         for (; i < arguments.length;)
             args.push(arguments[i++]);
         for (i = 0; i < listeners.length;)

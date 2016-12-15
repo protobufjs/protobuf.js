@@ -49,9 +49,9 @@ $root.MyService = (function() {
     MyService.prototype["myMethod"] = function myMethod(request, callback) {
         var requestData;
         try {
-            requestData = (this.requestDelimited && $root.MyRequest.encodeDelimited(request) || $root.MyRequest.encode(request)).finish();
+            requestData = (this.requestDelimited ? $root.MyRequest.encodeDelimited(request) : $root.MyRequest.encode(request)).finish();
         } catch (err) {
-            (typeof setImmediate === 'function' && setImmediate || setTimeout)(function() { callback(err); });
+            (typeof setImmediate === 'function' ? setImmediate : setTimeout)(function() { callback(err); });
             return;
         }
         var self = this;
@@ -62,7 +62,7 @@ $root.MyService = (function() {
             }
             var response;
             try {
-                response = self.responseDelimited && $root.MyResponse.decodeDelimited(responseData) || $root.MyResponse.decode(responseData);
+                response = self.responseDelimited ? $root.MyResponse.decodeDelimited(responseData) : $root.MyResponse.decode(responseData);
             } catch (err2) {
                 callback(err2);
                 return;

@@ -90,7 +90,7 @@ LongBits.from = function from(value) {
             else
                 return LongBits.fromNumber(parseInt(value, 10));
     }
-    return (value.low || value.high) && new LongBits(value.low >>> 0, value.high >>> 0) || zero;
+    return (value.low || value.high) ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
 };
 
 /**

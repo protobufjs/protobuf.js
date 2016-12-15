@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 15 Dec 2016 17:47:11 UTC
+ * Compiled Thu, 15 Dec 2016 18:17:40 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1102,7 +1102,7 @@ LongBits.from = function from(value) {
             else
                 return LongBits.fromNumber(parseInt(value, 10));
     }
-    return (value.low || value.high) && new LongBits(value.low >>> 0, value.high >>> 0) || zero;
+    return (value.low || value.high) ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
 };
 
 /**
@@ -1936,7 +1936,7 @@ function writeBytesBuffer(val, buf, pos) {
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     if (typeof value === "string")
-        value = util.Buffer.from && util.Buffer.from(value, "base64") || new util.Buffer(value, "base64");
+        value = util.Buffer.from ? util.Buffer.from(value, "base64") : new util.Buffer(value, "base64");
     var len = value.length >>> 0;
     return len
         ? this.uint32(len).push(writeBytesBuffer, len, value)

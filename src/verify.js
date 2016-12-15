@@ -265,8 +265,12 @@ verify.generate = function generate(mtype) {
 
         // required or present fields
         } else {
-            if (!field.required) gen
+            if (!field.required) {
+                if (field.resolvedType instanceof Type) gen
+            ("if(m%s!==undefined&&m%s!==null){", prop, prop);
+                else gen
             ("if(m%s!==undefined){", prop);
+            }
                 genVerifyValue(gen, field, i, "m" + prop);
             if (!field.required) gen
             ("}");

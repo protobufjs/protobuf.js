@@ -168,7 +168,7 @@ Custom classes are automatically populated with static `encode`, `encodeDelimite
 
 ### Using the Reader/Writer interface directly
 
-While meant for the adventurous, it's also possible to use the Reader/Writer interface directly to build custom encoders and decoders that work accross modern to ancient browsers and, of course, node:
+While only useful for the adventurous cherishing an aversion to [generated static code](https://github.com/dcodeIO/protobuf.js#command-line), it's also possible to use the Reader/Writer interface directly using just the [minimal runtime](https://github.com/dcodeIO/protobuf.js/tree/master/dist/runtime) to build custom encoders and decoders that work accross modern to ancient browsers and, of course, node:
 
 ```js
 var writer = protobuf.Writer.create();
@@ -191,7 +191,7 @@ while (reader.pos < reader.len) {
 }
 ```
 
-You can take pretty much any generated code snippet as a reference. Easy ways to obtain these are either setting `protobuf.util.codegen.verbose = true` while watching the magic as it happens, or simply inspecting [generated static code](https://github.com/dcodeIO/protobuf.js#command-line).
+Easy ways to obtain example code snippets are either setting `protobuf.util.codegen.verbose = true` while watching the magic as it happens, or simply inspecting generated static code.
 
 ### Using services
 
