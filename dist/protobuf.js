@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Wed, 14 Dec 2016 16:29:36 UTC
+ * Compiled Thu, 15 Dec 2016 11:55:38 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1224,7 +1224,7 @@ decode.generate = function generate(mtype) {
 module.exports = encode;
 
 var Enum     = require(15),
-    Writer   = require(36),
+    Writer   = require(37),
     types    = require(31),
     util     = require(32);
 var safeProp = util.safeProp;
@@ -1437,7 +1437,7 @@ encode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"15":15,"31":31,"32":32,"36":36}],15:[function(require,module,exports){
+},{"15":15,"31":31,"32":32,"37":37}],15:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
@@ -1966,7 +1966,7 @@ module.exports = Message;
 
 /**
  * Constructs a new message instance.
- * 
+ *
  * This method should be called from your custom constructors, i.e. `Message.call(this, properties)`.
  * @classdesc Abstract runtime message.
  * @extends {Object}
@@ -2009,9 +2009,7 @@ MessagePrototype.asJSON = function asJSON(options) {
         json   = {};
     var keys;
     if (options.defaults) {
-        keys = [];
-        for (var k in this) // eslint-disable-line guard-for-in
-            keys.push(k);
+        keys = Object.keys(fields);
     } else
         keys = Object.keys(this);
     for (var i = 0, key; i < keys.length; ++i) {
@@ -2019,7 +2017,7 @@ MessagePrototype.asJSON = function asJSON(options) {
             value = this[key];
         if (field) {
             if (field.repeated) {
-                if (value && value.length) {
+                if (value && (value.length || options.defaults)) {
                     var array = new Array(value.length);
                     for (var j = 0, l = value.length; j < l; ++j)
                         array[j] = field.jsonConvert(value[j], options);
@@ -2543,11 +2541,12 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
 "use strict";
 module.exports = ReflectionObject;
 
-ReflectionObject.className = "ReflectionObject";
-ReflectionObject.extend = extend;
+var util = require(32);
 
-var Root = require(25),
-    util = require(32);
+ReflectionObject.className = "ReflectionObject";
+ReflectionObject.extend = util.extend;
+
+var Root = require(25);
 
 var _TypeError = util._TypeError;
 
@@ -2628,20 +2627,6 @@ util.props(ReflectionObjectPrototype, {
         }
     }
 });
-
-/**
- * Lets the specified constructor extend this class.
- * @memberof ReflectionObject
- * @param {*} constructor Extending constructor
- * @returns {Object} Constructor prototype
- * @this ReflectionObject
- */
-function extend(constructor) {
-    var prototype = constructor.prototype = Object.create(this.prototype);
-    prototype.constructor = constructor;
-    constructor.extend = extend;
-    return prototype;
-}
 
 /**
  * Converts this reflection object to its JSON representation.
@@ -3459,7 +3444,7 @@ module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util      = require(34),
+var util      = require(35),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
@@ -4048,7 +4033,7 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"34":34}],25:[function(require,module,exports){
+},{"1":1,"35":35}],25:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
@@ -4815,11 +4800,11 @@ var Enum      = require(15),
     Class     = require(11),
     Message   = require(18),
     Reader    = require(24),
-    Writer    = require(36),
+    Writer    = require(37),
     util      = require(32);
 var encode    = require(14),
     decode    = require(13),
-    verify    = require(35);
+    verify    = require(36);
 
 /**
  * Constructs a new reflected message type instance.
@@ -5189,7 +5174,7 @@ TypePrototype.verify = function verify_setup(message) {
     ).call(this, message);
 };
 
-},{"11":11,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"22":22,"24":24,"28":28,"32":32,"35":35,"36":36}],31:[function(require,module,exports){
+},{"11":11,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"22":22,"24":24,"28":28,"32":32,"36":36,"37":37}],31:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5332,11 +5317,12 @@ var util = exports;
 util.asPromise    = require(2);
 util.codegen      = require(4);
 util.EventEmitter = require(5);
+util.extend       = require(33);
 util.fetch        = require(6);
 util.fs           = require(7);
 util.path         = require(8);
 
-var runtime       = require(34);
+var runtime       = require(35);
 
 /**
  * Converts an object's values to an array.
@@ -5432,12 +5418,34 @@ util._configure = function configure() {
     runtime.Long = util.Long;
 };
 
-},{"2":2,"34":34,"4":4,"5":5,"6":6,"7":7,"8":8}],33:[function(require,module,exports){
+},{"2":2,"33":33,"35":35,"4":4,"5":5,"6":6,"7":7,"8":8}],33:[function(require,module,exports){
+"use strict";
+module.exports = extend;
+
+/**
+ * Lets the specified constructor extend `this` class.
+ * @memberof util
+ * @param {*} ctor Extending constructor
+ * @returns {Object} Constructor prototype
+ * @this Function
+ */
+function extend(ctor) {
+    // copy static members
+    var keys = Object.keys(this);
+    for (var i = 0; i < keys.length; ++i)
+        ctor[keys[i]] = this[keys[i]];
+    // properly extend
+    var prototype = ctor.prototype = Object.create(this.prototype);
+    prototype.constructor = ctor;
+    return prototype;
+}
+
+},{}],34:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(34);
+var util = require(35);
 
 /**
  * Any compatible Long instance.
@@ -5635,17 +5643,17 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"34":34}],34:[function(require,module,exports){
+},{"35":35}],35:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-var LongBits = util.LongBits = require(33);
-
-util.base64 = require(3);
-util.utf8   = require(10);
-util.pool   = require(9);
+var LongBits =
+util.LongBits = require(34);
+util.base64   = require(3);
+util.utf8     = require(10);
+util.pool     = require(9);
 
 /**
  * Whether running within node or not.
@@ -5795,7 +5803,7 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"3":3,"33":33,"9":9,"buffer":"buffer","long":"long"}],35:[function(require,module,exports){
+},{"10":10,"3":3,"34":34,"9":9,"buffer":"buffer","long":"long"}],36:[function(require,module,exports){
 "use strict";
 module.exports = verify;
 
@@ -6075,13 +6083,13 @@ verify.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"15":15,"30":30,"32":32}],36:[function(require,module,exports){
+},{"15":15,"30":30,"32":32}],37:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util      = require(34),
+var util      = require(35),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     base64    = util.base64,
@@ -6688,7 +6696,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"34":34}],37:[function(require,module,exports){
+},{"1":1,"35":35}],38:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6771,14 +6779,14 @@ protobuf.parse            = require(23);
 
 // Serialization
                var Writer =
-protobuf.Writer           = require(36);
+protobuf.Writer           = require(37);
 protobuf.BufferWriter     = Writer.BufferWriter;
                var Reader =
 protobuf.Reader           = require(24);
 protobuf.BufferReader     = Reader.BufferReader;
 protobuf.encode           = require(14);
 protobuf.decode           = require(13);
-protobuf.verify           = require(35);
+protobuf.verify           = require(36);
 
 // Reflection
 protobuf.ReflectionObject = require(21);
@@ -6825,7 +6833,7 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"28":28,"29":29,"30":30,"31":31,"32":32,"35":35,"36":36}]},{},[37])
+},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"28":28,"29":29,"30":30,"31":31,"32":32,"36":36,"37":37}]},{},[38])
 
 
 //# sourceMappingURL=protobuf.js.map

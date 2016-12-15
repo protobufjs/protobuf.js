@@ -3,13 +3,13 @@ protobuf.js version: <fill in>
 ### How to reproduce ###
 
 ```js
-<code snippet>
+<please add a code snippet>
 ```
 
-### Expected behaviour ###
+### Expected behavior ###
 
 <please describe>
 
-### Actual behaviour ###
+### Actual behavior ###
 
 <please describe>

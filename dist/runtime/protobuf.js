@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Wed, 14 Dec 2016 16:29:36 UTC
+ * Compiled Thu, 15 Dec 2016 11:55:38 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1231,11 +1231,11 @@ LongBitsPrototype.length = function length() {
 
 var util = exports;
 
-var LongBits = util.LongBits = require(7);
-
-util.base64 = require(2);
-util.utf8   = require(4);
-util.pool   = require(3);
+var LongBits =
+util.LongBits = require(7);
+util.base64   = require(2);
+util.utf8     = require(4);
+util.pool     = require(3);
 
 /**
  * Whether running within node or not.

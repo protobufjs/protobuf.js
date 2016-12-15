@@ -2,11 +2,11 @@
 
 var util = exports;
 
-var LongBits = util.LongBits = require("./longbits");
-
-util.base64 = require("@protobufjs/base64");
-util.utf8   = require("@protobufjs/utf8");
-util.pool   = require("@protobufjs/pool");
+var LongBits =
+util.LongBits = require("./longbits");
+util.base64   = require("@protobufjs/base64");
+util.utf8     = require("@protobufjs/utf8");
+util.pool     = require("@protobufjs/pool");
 
 /**
  * Whether running within node or not.

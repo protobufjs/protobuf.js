@@ -1,11 +1,12 @@
 "use strict";
 module.exports = ReflectionObject;
 
-ReflectionObject.className = "ReflectionObject";
-ReflectionObject.extend = extend;
+var util = require("./util");
 
-var Root = require("./root"),
-    util = require("./util");
+ReflectionObject.className = "ReflectionObject";
+ReflectionObject.extend = util.extend;
+
+var Root = require("./root");
 
 var _TypeError = util._TypeError;
 
@@ -86,20 +87,6 @@ util.props(ReflectionObjectPrototype, {
         }
     }
 });
-
-/**
- * Lets the specified constructor extend this class.
- * @memberof ReflectionObject
- * @param {*} constructor Extending constructor
- * @returns {Object} Constructor prototype
- * @this ReflectionObject
- */
-function extend(constructor) {
-    var prototype = constructor.prototype = Object.create(this.prototype);
-    prototype.constructor = constructor;
-    constructor.extend = extend;
-    return prototype;
-}
 
 /**
  * Converts this reflection object to its JSON representation.

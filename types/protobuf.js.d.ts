@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 15 Dec 2016 01:45:16 UTC
+// Generated Thu, 15 Dec 2016 11:55:45 UTC
 declare module "protobufjs" {
 
     /**
@@ -846,15 +846,6 @@ declare module "protobufjs" {
          * @readonly
          */
         readonly fullName: string;
-
-        /**
-         * Lets the specified constructor extend this class.
-         * @memberof ReflectionObject
-         * @param {*} constructor Extending constructor
-         * @returns {Object} Constructor prototype
-         * @this ReflectionObject
-         */
-        static extend(this: ReflectionObject, constructor: any): Object;
 
         /**
          * Converts this reflection object to its JSON representation.
@@ -1791,6 +1782,15 @@ declare module "protobufjs" {
              */
             emit(evt: string, args: any): util.EventEmitter;
         }
+
+        /**
+         * Lets the specified constructor extend `this` class.
+         * @memberof util
+         * @param {*} ctor Extending constructor
+         * @returns {Object} Constructor prototype
+         * @this Function
+         */
+        function extend(this: Function, ctor: any): Object;
 
         /**
          * Fetches the contents of a file.

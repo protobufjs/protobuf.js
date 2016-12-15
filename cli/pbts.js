@@ -51,7 +51,7 @@ exports.main = function(args) {
 
     // There is no proper API for jsdoc, so this executes the CLI and pipes the output
     var basedir = path.join(__dirname, "..");
-    var moduleName = argv.name || "mymodule";
+    var moduleName = argv.name || "null";
     var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" -q \"module=" + encodeURIComponent(moduleName) + "\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
         cwd: process.cwd(),
         argv0: "node",
