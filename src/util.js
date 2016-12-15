@@ -8,7 +8,7 @@ var util = module.exports = require("./util/runtime");
 
 util.asPromise    = require("@protobufjs/aspromise");
 util.codegen      = require("@protobufjs/codegen");
-util.EventEmitter = require("./util/eventemitter");
+util.EventEmitter = require("@protobufjs/eventemitter");
 util.extend       = require("@protobufjs/extend");
 util.fetch        = require("@protobufjs/fetch");
 util.fs           = require("@protobufjs/fs");

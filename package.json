@@ -73,7 +73,7 @@
     "minimist": "^1.2.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
-    "typescript": "^2.2.0-dev.20161215",
+    "typescript": "^2.1.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
     "vinyl-source-stream": "^1.1.0",
