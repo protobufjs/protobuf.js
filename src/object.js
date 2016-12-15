@@ -6,7 +6,7 @@ var util = require("./util");
 ReflectionObject.className = "ReflectionObject";
 ReflectionObject.extend = util.extend;
 
-var Root = require("./root");
+var Root; // cyclic
 
 var _TypeError = util._TypeError;
 
@@ -108,6 +108,8 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
     this.parent = parent;
     this.resolved = false;
     var root = parent.getRoot();
+    if (!Root)
+        Root = require("./root");
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -119,6 +121,8 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     var root = parent.getRoot();
+    if (!Root)
+        Root = require("./root");
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
@@ -133,6 +137,8 @@ ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     var root = this.getRoot();
+    if (!Root)
+        Root = require("./root");
     if (root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;

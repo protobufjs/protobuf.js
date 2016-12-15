@@ -8,15 +8,24 @@ var ReflectionObject = require("./object");
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
 var Enum    = require("./enum"),
-    Type    = require("./type"),
     Field   = require("./field"),
-    Service = require("./service"),
     util    = require("./util");
 
-var _TypeError = util._TypeError;
+var Type,    // cyclic
+    Service; // cyclic
 
-var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
+var nestedTypes, // contains cyclics
+    nestedError;
+function initNested() {
+    if (!Type)
+        Type = require("./type");
+    if (!Service)
+        Service = require("./service");
+    nestedTypes = [ Enum, Type, Service, Field, Namespace ];
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
+}
+
+var _TypeError = util._TypeError;
 
 /**
  * Constructs a new namespace instance.
@@ -125,7 +134,9 @@ Namespace.arrayToJSON = arrayToJSON;
  */
 NamespacePrototype.addJSON = function addJSON(nestedJson) {
     var ns = this;
-    if (nestedJson)
+    if (nestedJson) {
+        if (!nestedTypes)
+            initNested();
         Object.keys(nestedJson).forEach(function(nestedName) {
             var nested = nestedJson[nestedName];
             for (var j = 0; j < nestedTypes.length; ++j)
@@ -133,6 +144,7 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
                     return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
             throw _TypeError("nested." + nestedName, "JSON for " + nestedError);
         });
+    }
     return this;
 };
 
@@ -155,6 +167,8 @@ NamespacePrototype.get = function get(name) {
  * @throws {Error} If there is already a nested object with this name
  */
 NamespacePrototype.add = function add(object) {
+    if (!nestedTypes)
+        initNested();
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw _TypeError("object", nestedError);
     if (object instanceof Field && object.extend === undefined)
@@ -164,6 +178,10 @@ NamespacePrototype.add = function add(object) {
     else {
         var prev = this.get(object.name);
         if (prev) {
+            if (!Type)
+                Type = require("./type");
+            if (!Service)
+                Service = require("./service");
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.getNestedArray();
@@ -270,29 +288,34 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     return this.parent.lookup(path);
 };
 
-[ Type, Service ].forEach(function(T) {
-    NamespacePrototype['lookup' + T.className] = function lookupT() {
-        var found = this.lookup(path);
-        if (!(found instanceof T))
-            throw Error("no such " + T.className);
-        return found;
-    };
-});
-
 /**
  * Looks up the {@link Type|type} at the specified path, relative to this namespace.
  * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
- * @name Namespace#lookupType
  * @param {string|string[]} path Path to look up
  * @returns {Type} Looked up type
  * @throws {Error} If `path` does not point to a type
  */
+NamespacePrototype.lookupType = function lookupType(path) {
+    var found = this.lookup(path);
+    if (!Type)
+        Type = require("./type");
+    if (!(found instanceof Type))
+        throw Error("no such type");
+    return found;
+};
 
 /**
  * Looks up the {@link Service|service} at the specified path, relative to this namespace.
  * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
- * @name Namespace#lookupService
  * @param {string|string[]} path Path to look up
  * @returns {Service} Looked up service
  * @throws {Error} If `path` does not point to a service
  */
+NamespacePrototype.lookupService = function lookupService(path) {
+    var found = this.lookup(path);
+    if (!Service)
+        Service = require("./service");
+    if (!(found instanceof Service))
+        throw Error("no such service");
+    return found;
+};

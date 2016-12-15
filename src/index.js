@@ -117,7 +117,6 @@ protobuf.configure        = configure;
  * @returns {undefined}
  */
 function configure() {
-    util._configure();
     Reader._configure();
 }
 

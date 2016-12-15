@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 15 Dec 2016 13:41:30 UTC
+ * Compiled Thu, 15 Dec 2016 14:26:26 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1612,11 +1612,12 @@ var ReflectionObject = require(22);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Type      = require(31),
-    Enum      = require(16),
-    MapField  = require(18),
+var Enum      = require(16),
     types     = require(32),
     util      = require(33);
+
+var Type,     // cyclic
+    MapField; // cyclic
 
 var _TypeError = util._TypeError;
 
@@ -1798,8 +1799,11 @@ Field.testJSON = function testJSON(json) {
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    if (json.keyType !== undefined)
+    if (json.keyType !== undefined) {
+        if (!MapField)
+            MapField = require(18);
         return MapField.fromJSON(name, json);
+    }
     return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
 };
 
@@ -1830,6 +1834,8 @@ FieldPrototype.resolve = function resolve() {
     // if not a basic type, resolve it
     if (typeDefault === undefined) {
         var resolved = this.parent.lookup(this.type);
+        if (!Type)
+            Type = require(31);
         if (resolved instanceof Type) {
             this.resolvedType = resolved;
             typeDefault = null;
@@ -2270,15 +2276,24 @@ var ReflectionObject = require(22);
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
 var Enum    = require(16),
-    Type    = require(31),
     Field   = require(17),
-    Service = require(29),
     util    = require(33);
 
-var _TypeError = util._TypeError;
+var Type,    // cyclic
+    Service; // cyclic
 
-var nestedTypes = [ Enum, Type, Service, Field, Namespace ],
+var nestedTypes, // contains cyclics
+    nestedError;
+function initNested() {
+    if (!Type)
+        Type = require(31);
+    if (!Service)
+        Service = require(29);
+    nestedTypes = [ Enum, Type, Service, Field, Namespace ];
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
+}
+
+var _TypeError = util._TypeError;
 
 /**
  * Constructs a new namespace instance.
@@ -2387,7 +2402,9 @@ Namespace.arrayToJSON = arrayToJSON;
  */
 NamespacePrototype.addJSON = function addJSON(nestedJson) {
     var ns = this;
-    if (nestedJson)
+    if (nestedJson) {
+        if (!nestedTypes)
+            initNested();
         Object.keys(nestedJson).forEach(function(nestedName) {
             var nested = nestedJson[nestedName];
             for (var j = 0; j < nestedTypes.length; ++j)
@@ -2395,6 +2412,7 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
                     return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
             throw _TypeError("nested." + nestedName, "JSON for " + nestedError);
         });
+    }
     return this;
 };
 
@@ -2417,6 +2435,8 @@ NamespacePrototype.get = function get(name) {
  * @throws {Error} If there is already a nested object with this name
  */
 NamespacePrototype.add = function add(object) {
+    if (!nestedTypes)
+        initNested();
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw _TypeError("object", nestedError);
     if (object instanceof Field && object.extend === undefined)
@@ -2426,6 +2446,10 @@ NamespacePrototype.add = function add(object) {
     else {
         var prev = this.get(object.name);
         if (prev) {
+            if (!Type)
+                Type = require(31);
+            if (!Service)
+                Service = require(29);
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.getNestedArray();
@@ -2532,32 +2556,37 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
     return this.parent.lookup(path);
 };
 
-[ Type, Service ].forEach(function(T) {
-    NamespacePrototype['lookup' + T.className] = function lookupT() {
-        var found = this.lookup(path);
-        if (!(found instanceof T))
-            throw Error("no such " + T.className);
-        return found;
-    };
-});
-
 /**
  * Looks up the {@link Type|type} at the specified path, relative to this namespace.
  * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
- * @name Namespace#lookupType
  * @param {string|string[]} path Path to look up
  * @returns {Type} Looked up type
  * @throws {Error} If `path` does not point to a type
  */
+NamespacePrototype.lookupType = function lookupType(path) {
+    var found = this.lookup(path);
+    if (!Type)
+        Type = require(31);
+    if (!(found instanceof Type))
+        throw Error("no such type");
+    return found;
+};
 
 /**
  * Looks up the {@link Service|service} at the specified path, relative to this namespace.
  * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
- * @name Namespace#lookupService
  * @param {string|string[]} path Path to look up
  * @returns {Service} Looked up service
  * @throws {Error} If `path` does not point to a service
  */
+NamespacePrototype.lookupService = function lookupService(path) {
+    var found = this.lookup(path);
+    if (!Service)
+        Service = require(29);
+    if (!(found instanceof Service))
+        throw Error("no such service");
+    return found;
+};
 
 },{"16":16,"17":17,"22":22,"29":29,"31":31,"33":33}],22:[function(require,module,exports){
 "use strict";
@@ -2568,7 +2597,7 @@ var util = require(33);
 ReflectionObject.className = "ReflectionObject";
 ReflectionObject.extend = util.extend;
 
-var Root = require(26);
+var Root; // cyclic
 
 var _TypeError = util._TypeError;
 
@@ -2670,6 +2699,8 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
     this.parent = parent;
     this.resolved = false;
     var root = parent.getRoot();
+    if (!Root)
+        Root = require(26);
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -2681,6 +2712,8 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     var root = parent.getRoot();
+    if (!Root)
+        Root = require(26);
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
@@ -2695,6 +2728,8 @@ ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     var root = this.getRoot();
+    if (!Root)
+        Root = require(26);
     if (root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
@@ -5334,7 +5369,7 @@ types.packed = bake([
  * Various utility functions.
  * @namespace
  */
-var util = exports;
+var util = module.exports = require(35);
 
 util.asPromise    = require(2);
 util.codegen      = require(4);
@@ -5343,8 +5378,6 @@ util.extend       = require(6);
 util.fetch        = require(7);
 util.fs           = require(8);
 util.path         = require(9);
-
-var runtime       = require(35);
 
 /**
  * Converts an object's values to an array.
@@ -5431,13 +5464,6 @@ util.newBuffer = function newBuffer(size) {
     return util.Buffer
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
         : new (typeof Uint8Array !== "undefined" && Uint8Array || Array)(size);
-};
-
-// Merge in runtime utility
-util.merge(util, runtime);
-
-util._configure = function configure() {
-    runtime.Long = util.Long;
 };
 
 },{"2":2,"35":35,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}],34:[function(require,module,exports){
@@ -6817,7 +6843,6 @@ protobuf.configure        = configure;
  * @returns {undefined}
  */
 function configure() {
-    util._configure();
     Reader._configure();
 }
 

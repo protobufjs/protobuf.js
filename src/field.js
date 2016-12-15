@@ -7,11 +7,12 @@ var ReflectionObject = require("./object");
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Type      = require("./type"),
-    Enum      = require("./enum"),
-    MapField  = require("./mapfield"),
+var Enum      = require("./enum"),
     types     = require("./types"),
     util      = require("./util");
+
+var Type,     // cyclic
+    MapField; // cyclic
 
 var _TypeError = util._TypeError;
 
@@ -193,8 +194,11 @@ Field.testJSON = function testJSON(json) {
  * @throws {TypeError} If arguments are invalid
  */
 Field.fromJSON = function fromJSON(name, json) {
-    if (json.keyType !== undefined)
+    if (json.keyType !== undefined) {
+        if (!MapField)
+            MapField = require("./mapfield");
         return MapField.fromJSON(name, json);
+    }
     return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
 };
 
@@ -225,6 +229,8 @@ FieldPrototype.resolve = function resolve() {
     // if not a basic type, resolve it
     if (typeDefault === undefined) {
         var resolved = this.parent.lookup(this.type);
+        if (!Type)
+            Type = require("./type");
         if (resolved instanceof Type) {
             this.resolvedType = resolved;
             typeDefault = null;

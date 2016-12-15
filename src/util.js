@@ -4,7 +4,7 @@
  * Various utility functions.
  * @namespace
  */
-var util = exports;
+var util = module.exports = require("./util/runtime");
 
 util.asPromise    = require("@protobufjs/aspromise");
 util.codegen      = require("@protobufjs/codegen");
@@ -13,8 +13,6 @@ util.extend       = require("@protobufjs/extend");
 util.fetch        = require("@protobufjs/fetch");
 util.fs           = require("@protobufjs/fs");
 util.path         = require("@protobufjs/path");
-
-var runtime       = require("./util/runtime");
 
 /**
  * Converts an object's values to an array.
@@ -101,11 +99,4 @@ util.newBuffer = function newBuffer(size) {
     return util.Buffer
         ? util.Buffer.allocUnsafe && util.Buffer.allocUnsafe(size) || new util.Buffer(size)
         : new (typeof Uint8Array !== "undefined" && Uint8Array || Array)(size);
-};
-
-// Merge in runtime utility
-util.merge(util, runtime);
-
-util._configure = function configure() {
-    runtime.Long = util.Long;
 };

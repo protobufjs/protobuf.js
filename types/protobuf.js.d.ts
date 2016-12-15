@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 15 Dec 2016 13:42:56 UTC
+// Generated Thu, 15 Dec 2016 14:26:57 UTC
 declare module "protobufjs" {
 
     /**
@@ -779,22 +779,20 @@ declare module "protobufjs" {
         /**
          * Looks up the {@link Type|type} at the specified path, relative to this namespace.
          * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
-         * @name Namespace#lookupType
          * @param {string|string[]} path Path to look up
          * @returns {Type} Looked up type
          * @throws {Error} If `path` does not point to a type
          */
-        lookupType: any;
+        lookupType(path: (string|string[])): Type;
 
         /**
          * Looks up the {@link Service|service} at the specified path, relative to this namespace.
          * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
-         * @name Namespace#lookupService
          * @param {string|string[]} path Path to look up
          * @returns {Service} Looked up service
          * @throws {Error} If `path` does not point to a service
          */
-        lookupService: any;
+        lookupService(path: (string|string[])): Service;
     }
 
     /**
