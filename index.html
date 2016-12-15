@@ -141,6 +141,8 @@
             
                 <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
             
+                <li data-name="util.extend"><a href="util.html#.extend">extend</a></li>
+            
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
@@ -811,6 +813,10 @@
             
                 <li data-name="Namespace#fullName"><a href="Namespace.html#fullName">fullName</a></li>
             
+                <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
+            
                 <li data-name="Namespace#name"><a href="Namespace.html#name">name</a></li>
             
                 <li data-name="Namespace#nested"><a href="Namespace.html#nested">nested</a></li>
@@ -850,10 +856,6 @@
                 <li data-name="Namespace#getOption"><a href="Namespace.html#getOption">getOption</a></li>
             
                 <li data-name="Namespace#lookup"><a href="Namespace.html#lookup">lookup</a></li>
-            
-                <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
             
                 <li data-name="Namespace#onAdd"><a href="Namespace.html#onAdd">onAdd</a></li>
             
@@ -1044,8 +1046,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ReflectionObject.extend"><a href="ReflectionObject.html#.extend">extend</a></li>
-            
                 <li data-name="ReflectionObject#getOption"><a href="ReflectionObject.html#getOption">getOption</a></li>
             
                 <li data-name="ReflectionObject#onAdd"><a href="ReflectionObject.html#onAdd">onAdd</a></li>
@@ -1082,6 +1082,10 @@
                 <li data-name="Root#files"><a href="Root.html#files">files</a></li>
             
                 <li data-name="Root#fullName"><a href="Root.html#fullName">fullName</a></li>
+            
+                <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
             
                 <li data-name="Root#name"><a href="Root.html#name">name</a></li>
             
@@ -1124,10 +1128,6 @@
                 <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
-            
-                <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
             
                 <li data-name="Root#onAdd"><a href="Root.html#onAdd">onAdd</a></li>
             
@@ -1199,6 +1199,10 @@
             
                 <li data-name="Service#fullName"><a href="Service.html#fullName">fullName</a></li>
             
+                <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
+            
                 <li data-name="Service#methods"><a href="Service.html#methods">methods</a></li>
             
                 <li data-name="Service#methodsArray"><a href="Service.html#methodsArray">methodsArray</a></li>
@@ -1242,10 +1246,6 @@
                 <li data-name="Service#getOption"><a href="Service.html#getOption">getOption</a></li>
             
                 <li data-name="Service#lookup"><a href="Service.html#lookup">lookup</a></li>
-            
-                <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
             
                 <li data-name="Service#onAdd"><a href="Service.html#onAdd">onAdd</a></li>
             
@@ -1291,6 +1291,10 @@
                 <li data-name="Type#fieldsById"><a href="Type.html#fieldsById">fieldsById</a></li>
             
                 <li data-name="Type#fullName"><a href="Type.html#fullName">fullName</a></li>
+            
+                <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Type#lookupType"><a href="Type.html#lookupType">lookupType</a></li>
             
                 <li data-name="Type#name"><a href="Type.html#name">name</a></li>
             
@@ -1347,10 +1351,6 @@
                 <li data-name="Type#getOption"><a href="Type.html#getOption">getOption</a></li>
             
                 <li data-name="Type#lookup"><a href="Type.html#lookup">lookup</a></li>
-            
-                <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Type#lookupType"><a href="Type.html#lookupType">lookupType</a></li>
             
                 <li data-name="Type#onAdd"><a href="Type.html#onAdd">onAdd</a></li>
             
@@ -1560,11 +1560,13 @@
 
 
     <section>
-        <article class="readme"><h1>protobuf.js</h1><p><a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></p>
+        <article class="readme"><h1 id="protobuf-js">protobuf.js</h1>
+<p><a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></p>
 <p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
 <p><strong>Recommended read:</strong> <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/wiki/Changes-in-protobuf.js-6.0">Changes in protobuf.js 6.0</a></p>
-<h2>Features</h2><ul>
+<h2 id="features">Features</h2>
+<ul>
 <li>Optimized <a href="#performance">for performance</a></li>
 <li>Exhaustive <a href="#compatibility">browser support</a></li>
 <li>Managed <a href="#usage-with-typescript">TypeScript definitions</a></li>
@@ -1572,7 +1574,8 @@
 <li>Convenient <a href="#command-line">CLI utilities</a></li>
 <li>Seamless <a href="#browserify-integration">browserify integration</a></li>
 </ul>
-<h2>Contents</h2><ul>
+<h2 id="contents">Contents</h2>
+<ul>
 <li><p><a href="#usage">Usage</a><br /><br>How to include protobuf.js in your project.</p>
 </li>
 <li><p><a href="#examples">Examples</a><br /><br>A few examples to get you started.</p>
@@ -1590,12 +1593,17 @@
 <li><p><a href="#compatibility">Compatibility</a><br /><br>Notes on compatibility regarding browsers and optional libraries.</p>
 </li>
 </ul>
-<h2>Usage</h2><h3>node.js</h3><pre class="prettyprint source"><code>$> npm install protobufjs</code></pre><pre class="prettyprint source lang-js"><code>var protobuf = require(&quot;protobufjs&quot;);</code></pre><h3>Browsers</h3><p>Development:</p>
+<h2 id="usage">Usage</h2>
+<h3 id="node-js">node.js</h3>
+<pre class="prettyprint source"><code>$> npm install protobufjs</code></pre><pre class="prettyprint source lang-js"><code>var protobuf = require(&quot;protobufjs&quot;);</code></pre><h3 id="browsers">Browsers</h3>
+<p>Development:</p>
 <pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.js&quot;>&lt;/script></code></pre><p>Production:</p>
 <pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p><strong>NOTE:</strong> Remember to replace the version tag with the exact <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/releases">release</a> your project depends upon.</p>
 <p>Or <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">download</a> the library.</p>
 <p>The <code>protobuf</code> namespace will always be available globally / also supports AMD loaders.</p>
-<h2>Examples</h2><h3>Using .proto files</h3><pre class="prettyprint source lang-protobuf"><code>// awesome.proto
+<h2 id="examples">Examples</h2>
+<h3 id="using-proto-files">Using .proto files</h3>
+<pre class="prettyprint source lang-protobuf"><code>// awesome.proto
 package awesomepackage;
 syntax = &quot;proto3&quot;;
 
@@ -1627,7 +1635,8 @@ message AwesomeMessage {
 <pre class="prettyprint source lang-js"><code>protobuf.load(&quot;awesome.proto&quot;)
     .then(function(root) {
        ...
-    });</code></pre><h3>Using reflection only</h3><pre class="prettyprint source lang-js"><code>...
+    });</code></pre><h3 id="using-reflection-only">Using reflection only</h3>
+<pre class="prettyprint source lang-js"><code>...
 var Root  = protobuf.Root,
     Type  = protobuf.Type,
     Field = protobuf.Field;
@@ -1637,7 +1646,8 @@ var AwesomeMessage = new Type(&quot;AwesomeMessage&quot;).add(new Field(&quot;aw
 var root = new Root().define(&quot;awesomepackage&quot;).add(AwesomeMessage);
 
 // Continue at &quot;Create a new message&quot; above
-...</code></pre><h3>Using custom classes</h3><pre class="prettyprint source lang-js"><code>...
+...</code></pre><h3 id="using-custom-classes">Using custom classes</h3>
+<pre class="prettyprint source lang-js"><code>...
 
 function AwesomeMessage(properties) {
     protobuf.Message.call(this, properties);
@@ -1647,7 +1657,8 @@ protobuf.Class.create(root.lookup(&quot;awesomepackage.AwesomeMessage&quot;) /* 
 var message = new AwesomeMessage({ awesomeField: &quot;AwesomeString&quot; });
 
 // Continue at &quot;Encode a message&quot; above</code></pre><p>Custom classes are automatically populated with static <code>encode</code>, <code>encodeDelimited</code>, <code>decode</code>, <code>decodeDelimited</code> and <code>verify</code> methods and reference their reflected type via the <code>$type</code> property. Note that there are no methods (just <code>$type</code>) on instances by default as method names might conflict with field names.</p>
-<h3>Using services</h3><pre class="prettyprint source lang-protobuf"><code>// greeter.proto
+<h3 id="using-services">Using services</h3>
+<pre class="prettyprint source lang-protobuf"><code>// greeter.proto
 service Greeter {
     rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
@@ -1671,11 +1682,15 @@ greeter.sayHello({ name: 'you' }, function(err, response) {
     // and call the callback with the binary response afterwards:
     callback(null, responseData);
 }</code></pre><p>There is also an <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/examples/streaming-rpc.js">example for streaming RPC</a>.</p>
-<h3>Usage with TypeScript</h3><pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
+<h3 id="usage-with-typescript">Usage with TypeScript</h3>
+<pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
 
 import * as protobuf from &quot;protobufjs&quot;;
-...</code></pre><h2>Module Structure</h2><p>The library exports a flat <code>protobuf</code> namespace including but not restricted to the following members, ordered by category:</p>
-<h3>Parser</h3><ul>
+...</code></pre><p>See also: <a target="_blank" href="https://github.com/dcodeIO/protobuf.js#generating-typescript-definitions-from-static-modules">Generating your own TypeScript definitions</a></p>
+<h2 id="module-structure">Module Structure</h2>
+<p>The library exports a flat <code>protobuf</code> namespace including but not restricted to the following members, ordered by category:</p>
+<h3 id="parser">Parser</h3>
+<ul>
 <li><p><strong>load(filename: <code>string|string[]</code>, [root: <code>Root</code>], [callback: <code>function(err: Error, [root: Root])</code>]): <code>Promise|undefined</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Loads one or multiple .proto or preprocessed .json files into a common root namespace.</p>
 </li>
 <li><p><strong>loadSync(filename: <code>string|string[]</code>, [root: <code>Root</code>]): <code>Root</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">source</a>]<br /><br>Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).</p>
@@ -1683,13 +1698,15 @@ import * as protobuf from &quot;protobufjs&quot;;
 <li><p><strong>parse(source: <code>string</code>): <code>Object</code></strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">source</a>]<br /><br>Parses the given .proto source and returns an object with the parsed contents.</p>
 </li>
 </ul>
-<h3>Serialization</h3><ul>
+<h3 id="serialization">Serialization</h3>
+<ul>
 <li><p><strong>Writer</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js">source</a>]<br /><br>Wire format writer using <code>Uint8Array</code> if available, otherwise <code>Array</code>.</p>
 </li>
 <li><p><strong>Reader</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">source</a>]<br /><br>Wire format reader using <code>Uint8Array</code> if available, otherwise <code>Array</code>.</p>
 </li>
 </ul>
-<h3>Reflection</h3><ul>
+<h3 id="reflection">Reflection</h3>
+<ul>
 <li><p><strong>Namespace</strong> <em>extends <strong>ReflectionObject</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">source</a>]<br /><br>Base class of all reflection objects containing nested objects.</p>
 </li>
 <li><p><strong>Root</strong> <em>extends <strong>Namespace</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">source</a>]<br /><br>Root namespace.</p>
@@ -1707,33 +1724,37 @@ import * as protobuf from &quot;protobufjs&quot;;
 <li><p><strong>Method</strong> <em>extends <strong>ReflectionObject</strong></em> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js">source</a>]<br /><br>Reflected service method.</p>
 </li>
 </ul>
-<h3>Runtime</h3><ul>
+<h3 id="runtime">Runtime</h3>
+<ul>
 <li><p><strong>Class</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">source</a>]<br /><br>Runtime class providing the tools to create your own custom classes.</p>
 </li>
 <li><p><strong>Message</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">source</a>]<br /><br>Abstract runtime message.</p>
 </li>
 </ul>
-<h3>Utility</h3><ul>
+<h3 id="utility">Utility</h3>
+<ul>
 <li><strong>util</strong> [<a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">source</a>]<br /><br>Various utility functions.</li>
 </ul>
 <p>For less common members, see the API documentation.</p>
-<h2>Documentation</h2><ul>
+<h2 id="documentation">Documentation</h2>
+<ul>
 <li><p><a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">Google's Developer Guide</a></p>
 </li>
 <li><p><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a></p>
 </li>
 </ul>
-<h2>Command line</h2><p>The <code>pbjs</code> command line utility can be used to bundle and translate between .proto and .json files.</p>
+<h2 id="command-line">Command line</h2>
+<p>The <code>pbjs</code> command line utility can be used to bundle and translate between .proto and .json files.</p>
 <pre class="prettyprint source"><code>Consolidates imports and converts between file formats.
 
   -t, --target    Specifies the target format. Also accepts a path to require a custom target.
 
                   json          JSON representation
-                  json-module   JSON representation as a module (AMD, CommonJS, global)
+                  json-module   JSON representation as a module
                   proto2        Protocol Buffers, Version 2
                   proto3        Protocol Buffers, Version 3
                   static        Static code without reflection
-                  static-module Static code without reflection as a module (AMD, CommonJS, global)
+                  static-module Static code without reflection as a module
 
   -p, --path      Adds a directory to the include path.
 
@@ -1747,35 +1768,47 @@ import * as protobuf from &quot;protobufjs&quot;;
 
   -r, --root      Specifies an alternative protobuf.roots name for *-module targets.
 
+  Static code generation only:
+
+  --no-encode     Does not generate encode functions.
+  --no-decode     Does not generate decode functions.
+  --no-verify     Does not generate verify functions.
+  --no-delimited  Does not generate delimited encode/decode functions.
+
 usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production environments it is recommended to bundle all your .proto files to a single .json file, which reduces the number of network requests and parser invocations required:</p>
 <pre class="prettyprint source"><code>$> pbjs -t json file1.proto file2.proto > bundle.json</code></pre><p>Now, either include this file in your final bundle:</p>
 <pre class="prettyprint source lang-js"><code>var root = protobuf.Root.fromJSON(require(&quot;./bundle.json&quot;));</code></pre><p>or load it the usual way:</p>
 <pre class="prettyprint source lang-js"><code>protobuf.load(&quot;bundle.json&quot;, function(err, root) {
     ...
-});</code></pre><h3>Generating TypeScript definitions from static modules</h3><p>Likewise, the <code>pbts</code> command line utility can be used to generate TypeScript definitions from <code>pbjs</code>-generated static modules.</p>
+});</code></pre><h3 id="generating-typescript-definitions-from-static-modules">Generating TypeScript definitions from static modules</h3>
+<p>Likewise, the <code>pbts</code> command line utility can be used to generate TypeScript definitions from <code>pbjs</code>-generated static modules.</p>
 <pre class="prettyprint source"><code>Generates TypeScript definitions from annotated JavaScript files.
 
-  -n, --name      Specifies the module name.
+  -n, --name      Wraps everything in a module of the specified name.
 
   -o, --out       Saves to a file instead of writing to stdout.
 
-usage: pbts [options] file1.js file2.js ...</code></pre><h3>Descriptors vs. static modules</h3><p>While .proto and JSON files require the full library (about 18kb gzipped, all features including reflection, parser and utility), pretty much all code but the relatively short descriptors is shared.</p>
-<p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped, i.e. no reflection features), but generates additional, albeit editable and customizable, source code.</p>
-<p>When <code>new Function(...)</code> is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same as generated at runtime.</p>
-<h2>Building</h2><p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
+usage: pbts [options] file1.js file2.js ...</code></pre><h3 id="descriptors-vs-static-modules">Descriptors vs. static modules</h3>
+<p>While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
+<p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
+<p>When <code>new Function(...)</code> is supported (and it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
+<h2 id="building">Building</h2>
+<p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
 <pre class="prettyprint source"><code>$> git clone https://github.com/dcodeIO/protobuf.js.git
 $> cd protobuf.js
 $> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
-<pre class="prettyprint source"><code>$> npm run types</code></pre><h3>Browserify integration</h3><p>protobuf.js integrates into any browserify build-process. There are a few possible tweaks:</p>
+<pre class="prettyprint source"><code>$> npm run types</code></pre><h3 id="browserify-integration">Browserify integration</h3>
+<p>protobuf.js integrates into any browserify build-process. There are a few possible tweaks:</p>
 <ul>
 <li>If performance is a concern or IE8 support is required, you should make sure to exclude the browserified <code>buffer</code> module and let protobuf.js do its thing with Uint8Array/Array instead.</li>
 <li>If you do not need int64 support, you can explicitly exclude the <code>long</code> module. It will be included otherwise.</li>
 <li>If your application does not rely on the following modules and package size is a concern, you can also exclude <code>process</code> , <code>_process</code> and <code>fs</code>.</li>
 <li>If you have any special requirements, there is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js">the bundler</a> as a reference.</li>
 </ul>
-<h2>Performance</h2><p>The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
+<h2 id="performance">Performance</h2>
+<p>The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
 Type.encode to buffer x 481,172 ops/sec ±0.48% (92 runs sampled)
@@ -1824,11 +1857,12 @@ Type.verify x 5,833,382 ops/sec ±0.98% (85 runs sampled)
 <p>You can also run <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js">the benchmark</a> ...</p>
 <pre class="prettyprint source"><code>$> npm run bench</code></pre><p>and <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/prof.js">the profiler</a> yourself (the latter requires a recent version of node):</p>
 <pre class="prettyprint source"><code>$> npm run prof &lt;encode|decode|encode-browser|decode-browser> [iterations=10000000]</code></pre><p>Note that as of this writing, the benchmark suite performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.</p>
-<h2>Compatibility</h2><p><a target="_blank" href="https://saucelabs.com/u/protobuf"><img src="https://saucelabs.com/browser-matrix/protobuf.svg" alt="Sauce Test Status"></a></p>
+<h2 id="compatibility">Compatibility</h2>
+<p><a target="_blank" href="https://saucelabs.com/u/protobuf"><img src="https://saucelabs.com/browser-matrix/protobuf.svg" alt="Sauce Test Status"></a></p>
 <ul>
 <li>Because the internals of this package do not rely on <code>google/protobuf/descriptor.proto</code>, options are parsed and presented literally.</li>
 <li>If typed arrays are not supported by the environment, plain arrays will be used instead.</li>
-<li>Support for pre-ES5 environments like IE8 can be achieved by <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js">using a polyfill</a> and, instead of using property getters and setters on reflection objects, calling the respective functions prefixed with <code>get</code>, <code>set</code> or <code>is</code> directly (i.e. calling <code>Type#getFieldsById()</code> instead of accessing <code>Type#fieldsById</code>).</li>
+<li>Support for pre-ES5 environments like IE8 can be achieved by <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js">using a polyfill</a> and, instead of using property getters and setters on reflection objects, calling the respective functions prefixed with <code>get</code>, <code>set</code> or <code>is</code> directly (i.e. calling <code>Type#getFieldsById()</code> instead of accessing <code>Type#fieldsById</code>). Note that this also applies to virtual oneof properties (use <code>getKind</code>, <code>setKind</code> for example if the oneof is named <code>kind</code>).</li>
 <li>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install <a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. All 64 bit numbers will then be returned as a <code>Long</code> instance instead of a possibly unsafe JavaScript number (<a target="_blank" href="https://github.com/dcodeIO/long.js">see</a>).</li>
 </ul>
 <p><strong>License:</strong> <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, Version 2.0</a>, bundled external libraries may have <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/lib">their own license</a></p>

@@ -141,6 +141,8 @@
             
                 <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
             
+                <li data-name="util.extend"><a href="util.html#.extend">extend</a></li>
+            
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
@@ -811,6 +813,10 @@
             
                 <li data-name="Namespace#fullName"><a href="Namespace.html#fullName">fullName</a></li>
             
+                <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
+            
                 <li data-name="Namespace#name"><a href="Namespace.html#name">name</a></li>
             
                 <li data-name="Namespace#nested"><a href="Namespace.html#nested">nested</a></li>
@@ -850,10 +856,6 @@
                 <li data-name="Namespace#getOption"><a href="Namespace.html#getOption">getOption</a></li>
             
                 <li data-name="Namespace#lookup"><a href="Namespace.html#lookup">lookup</a></li>
-            
-                <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
             
                 <li data-name="Namespace#onAdd"><a href="Namespace.html#onAdd">onAdd</a></li>
             
@@ -1044,8 +1046,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ReflectionObject.extend"><a href="ReflectionObject.html#.extend">extend</a></li>
-            
                 <li data-name="ReflectionObject#getOption"><a href="ReflectionObject.html#getOption">getOption</a></li>
             
                 <li data-name="ReflectionObject#onAdd"><a href="ReflectionObject.html#onAdd">onAdd</a></li>
@@ -1082,6 +1082,10 @@
                 <li data-name="Root#files"><a href="Root.html#files">files</a></li>
             
                 <li data-name="Root#fullName"><a href="Root.html#fullName">fullName</a></li>
+            
+                <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
             
                 <li data-name="Root#name"><a href="Root.html#name">name</a></li>
             
@@ -1124,10 +1128,6 @@
                 <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
-            
-                <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
             
                 <li data-name="Root#onAdd"><a href="Root.html#onAdd">onAdd</a></li>
             
@@ -1199,6 +1199,10 @@
             
                 <li data-name="Service#fullName"><a href="Service.html#fullName">fullName</a></li>
             
+                <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
+            
                 <li data-name="Service#methods"><a href="Service.html#methods">methods</a></li>
             
                 <li data-name="Service#methodsArray"><a href="Service.html#methodsArray">methodsArray</a></li>
@@ -1242,10 +1246,6 @@
                 <li data-name="Service#getOption"><a href="Service.html#getOption">getOption</a></li>
             
                 <li data-name="Service#lookup"><a href="Service.html#lookup">lookup</a></li>
-            
-                <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
             
                 <li data-name="Service#onAdd"><a href="Service.html#onAdd">onAdd</a></li>
             
@@ -1291,6 +1291,10 @@
                 <li data-name="Type#fieldsById"><a href="Type.html#fieldsById">fieldsById</a></li>
             
                 <li data-name="Type#fullName"><a href="Type.html#fullName">fullName</a></li>
+            
+                <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Type#lookupType"><a href="Type.html#lookupType">lookupType</a></li>
             
                 <li data-name="Type#name"><a href="Type.html#name">name</a></li>
             
@@ -1347,10 +1351,6 @@
                 <li data-name="Type#getOption"><a href="Type.html#getOption">getOption</a></li>
             
                 <li data-name="Type#lookup"><a href="Type.html#lookup">lookup</a></li>
-            
-                <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Type#lookupType"><a href="Type.html#lookupType">lookupType</a></li>
             
                 <li data-name="Type#onAdd"><a href="Type.html#onAdd">onAdd</a></li>
             
@@ -1563,7 +1563,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L19">line 19</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L21">line 21</a>
         </div>
         
     </div>
@@ -1800,6 +1800,96 @@
     
     <div class="description">
         <p>Full name including leading dot.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="lookupService">lookupService </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Looks up the <a href="Service.html">service</a> at the specified path, relative to this namespace.<br>Besides its signature, this methods differs from <a href="Namespace.html#lookup">Namespace#lookup</a> in that it throws instead of returning <code>null</code>.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="lookupType">lookupType </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Looks up the <a href="Type.html">type</a> at the specified path, relative to this namespace.<br>Besides its signature, this methods differs from <a href="Namespace.html#lookup">Namespace#lookup</a> in that it throws instead of returning <code>null</code>.</p>
     </div>
     
     
@@ -2164,7 +2254,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L41">line 41</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L43">line 43</a>
         </div>
         
     </div>
@@ -2346,7 +2436,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L155">line 155</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L157">line 157</a>
         </div>
         
     </div>
@@ -2547,7 +2637,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L124">line 124</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L126">line 126</a>
         </div>
         
     </div>
@@ -2694,7 +2784,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L208">line 208</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L210">line 210</a>
         </div>
         
     </div>
@@ -2879,7 +2969,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L142">line 142</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L144">line 144</a>
         </div>
         
     </div>
@@ -3026,7 +3116,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L158">line 158</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L146">line 146</a>
         </div>
         
     </div>
@@ -3171,7 +3261,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L66">line 66</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L68">line 68</a>
         </div>
         
     </div>
@@ -3342,7 +3432,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L182">line 182</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L184">line 184</a>
         </div>
         
     </div>
@@ -3490,7 +3580,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L198">line 198</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L200">line 200</a>
         </div>
         
     </div>
@@ -3668,7 +3758,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L251">line 251</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L253">line 253</a>
         </div>
         
     </div>
@@ -3856,362 +3946,6 @@
             
 <dt>
     <div class="nameContainer inherited">
-        <h4 class="name" id="lookupService">
-            
-                <span class="inherited"><a href="Namespace.html#lookupService">inherited</a></span>
-            
-            lookupService<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Service.html">Service</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L292">line 292</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Looks up the <a href="Service.html">service</a> at the specified path, relative to this namespace.<br>Besides its signature, this methods differs from <a href="Namespace.html#lookup">Namespace#lookup</a> in that it throws instead of returning <code>null</code>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>path</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Path to look up</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-
-<table class="params">
-    <thead>
-	<tr>
-		<th>Type</th>	
-		<th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td class="type">
-            
-<span class="param-type">Error</span>
-
-
-        </td>
-        <td class="description last">
-            <p>If <code>path</code> does not point to a service</p>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Service.html">Service</a>
-                        
-                    
-            </td>
-            <td class="description last">Looked up service</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="lookupType">
-            
-                <span class="inherited"><a href="Namespace.html#lookupType">inherited</a></span>
-            
-            lookupType<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Type.html">Type</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L278">line 278</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Looks up the <a href="Type.html">type</a> at the specified path, relative to this namespace.<br>Besides its signature, this methods differs from <a href="Namespace.html#lookup">Namespace#lookup</a> in that it throws instead of returning <code>null</code>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>path</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Path to look up</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-
-<table class="params">
-    <thead>
-	<tr>
-		<th>Type</th>	
-		<th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td class="type">
-            
-<span class="param-type">Error</span>
-
-
-        </td>
-        <td class="description last">
-            <p>If <code>path</code> does not point to a type</p>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Type.html">Type</a>
-                        
-                    
-            </td>
-            <td class="description last">Looked up type</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
         <h4 class="name" id="onAdd">
             
                 <span class="inherited"><a href="ReflectionObject.html#onAdd">inherited</a></span>
@@ -4221,7 +3955,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L117">line 117</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L105">line 105</a>
         </div>
         
     </div>
@@ -4368,7 +4102,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L132">line 132</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L120">line 120</a>
         </div>
         
     </div>
@@ -4515,7 +4249,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L190">line 190</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L192">line 192</a>
         </div>
         
     </div>
@@ -4716,7 +4450,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L144">line 144</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L132">line 132</a>
         </div>
         
     </div>
@@ -4818,7 +4552,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L235">line 235</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L237">line 237</a>
         </div>
         
     </div>
@@ -4918,7 +4652,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L55">line 55</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js">root.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js#L57">line 57</a>
         </div>
         
     </div>
@@ -5088,7 +4822,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L171">line 171</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L159">line 159</a>
         </div>
         
     </div>
@@ -5298,7 +5032,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L183">line 183</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L171">line 171</a>
         </div>
         
     </div>
@@ -5480,7 +5214,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L108">line 108</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L96">line 96</a>
         </div>
         
     </div>
@@ -5582,7 +5316,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L195">line 195</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L183">line 183</a>
         </div>
         
     </div>
@@ -5660,7 +5394,7 @@
                         
                     
             </td>
-            <td class="description last">Constructor name, space, full name</td>
+            <td class="description last">Class name[, space, full name]</td>
         </tr>
     
     </tbody>

@@ -141,6 +141,8 @@
             
                 <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
             
+                <li data-name="util.extend"><a href="util.html#.extend">extend</a></li>
+            
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
@@ -811,6 +813,10 @@
             
                 <li data-name="Namespace#fullName"><a href="Namespace.html#fullName">fullName</a></li>
             
+                <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
+            
                 <li data-name="Namespace#name"><a href="Namespace.html#name">name</a></li>
             
                 <li data-name="Namespace#nested"><a href="Namespace.html#nested">nested</a></li>
@@ -850,10 +856,6 @@
                 <li data-name="Namespace#getOption"><a href="Namespace.html#getOption">getOption</a></li>
             
                 <li data-name="Namespace#lookup"><a href="Namespace.html#lookup">lookup</a></li>
-            
-                <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
             
                 <li data-name="Namespace#onAdd"><a href="Namespace.html#onAdd">onAdd</a></li>
             
@@ -1044,8 +1046,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ReflectionObject.extend"><a href="ReflectionObject.html#.extend">extend</a></li>
-            
                 <li data-name="ReflectionObject#getOption"><a href="ReflectionObject.html#getOption">getOption</a></li>
             
                 <li data-name="ReflectionObject#onAdd"><a href="ReflectionObject.html#onAdd">onAdd</a></li>
@@ -1082,6 +1082,10 @@
                 <li data-name="Root#files"><a href="Root.html#files">files</a></li>
             
                 <li data-name="Root#fullName"><a href="Root.html#fullName">fullName</a></li>
+            
+                <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
             
                 <li data-name="Root#name"><a href="Root.html#name">name</a></li>
             
@@ -1124,10 +1128,6 @@
                 <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
-            
-                <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
             
                 <li data-name="Root#onAdd"><a href="Root.html#onAdd">onAdd</a></li>
             
@@ -1199,6 +1199,10 @@
             
                 <li data-name="Service#fullName"><a href="Service.html#fullName">fullName</a></li>
             
+                <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
+            
                 <li data-name="Service#methods"><a href="Service.html#methods">methods</a></li>
             
                 <li data-name="Service#methodsArray"><a href="Service.html#methodsArray">methodsArray</a></li>
@@ -1242,10 +1246,6 @@
                 <li data-name="Service#getOption"><a href="Service.html#getOption">getOption</a></li>
             
                 <li data-name="Service#lookup"><a href="Service.html#lookup">lookup</a></li>
-            
-                <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
             
                 <li data-name="Service#onAdd"><a href="Service.html#onAdd">onAdd</a></li>
             
@@ -1291,6 +1291,10 @@
                 <li data-name="Type#fieldsById"><a href="Type.html#fieldsById">fieldsById</a></li>
             
                 <li data-name="Type#fullName"><a href="Type.html#fullName">fullName</a></li>
+            
+                <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
+            
+                <li data-name="Type#lookupType"><a href="Type.html#lookupType">lookupType</a></li>
             
                 <li data-name="Type#name"><a href="Type.html#name">name</a></li>
             
@@ -1347,10 +1351,6 @@
                 <li data-name="Type#getOption"><a href="Type.html#getOption">getOption</a></li>
             
                 <li data-name="Type#lookup"><a href="Type.html#lookup">lookup</a></li>
-            
-                <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
-            
-                <li data-name="Type#lookupType"><a href="Type.html#lookupType">lookupType</a></li>
             
                 <li data-name="Type#onAdd"><a href="Type.html#onAdd">onAdd</a></li>
             
@@ -5546,7 +5546,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L153">line 153</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L155">line 155</a>
         </div>
         
     </div>
@@ -5728,7 +5728,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L143">line 143</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L145">line 145</a>
         </div>
         
     </div>
