@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 15 Dec 2016 11:55:38 UTC
+ * Compiled Thu, 15 Dec 2016 13:41:30 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -508,10 +508,32 @@ EventEmitterPrototype.emit = function emit(evt) {
 
 },{}],6:[function(require,module,exports){
 "use strict";
+module.exports = extend;
+
+/**
+ * Lets the specified constructor extend `this` class.
+ * @memberof util
+ * @param {*} ctor Extending constructor
+ * @returns {Object} Constructor prototype
+ * @this Function
+ */
+function extend(ctor) {
+    // copy static members
+    var keys = Object.keys(this);
+    for (var i = 0; i < keys.length; ++i)
+        ctor[keys[i]] = this[keys[i]];
+    // properly extend
+    var prototype = ctor.prototype = Object.create(this.prototype);
+    prototype.constructor = ctor;
+    return prototype;
+}
+
+},{}],7:[function(require,module,exports){
+"use strict";
 module.exports = fetch;
 
 var asPromise = require(2);
-var fs        = require(7);
+var fs        = require(8);
 
 /**
  * Node-style callback as used by {@link util.fetch}.
@@ -557,7 +579,7 @@ function fetch_xhr(path, callback) {
     xhr.send();
 }
 
-},{"2":2,"7":7}],7:[function(require,module,exports){
+},{"2":2,"8":8}],8:[function(require,module,exports){
 "use strict";
 
 /**
@@ -569,7 +591,7 @@ function fetch_xhr(path, callback) {
 /**/
 try { module.exports = eval(["req","uire"].join(""))("fs"); } catch (e) {} // eslint-disable-line no-eval, no-empty
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 /**
@@ -636,7 +658,7 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
     return (originPath = originPath.replace(/(?:\/|^)[^/]+$/, "")).length ? normalize(originPath + "/" + includePath) : includePath;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -686,7 +708,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 /**
@@ -790,13 +812,13 @@ utf8.write = function(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 module.exports = Class;
 
-var Message = require(18),
-    Type    = require(30),
-    util    = require(32);
+var Message = require(19),
+    Type    = require(31),
+    util    = require(33);
 
 var _TypeError = util._TypeError;
 
@@ -925,7 +947,7 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-},{"18":18,"30":30,"32":32}],12:[function(require,module,exports){
+},{"19":19,"31":31,"33":33}],13:[function(require,module,exports){
 "use strict";
 
 module.exports = common;
@@ -1058,14 +1080,14 @@ common("struct", {
     }
 });
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 module.exports = decode;
 
-var Enum    = require(15),
-    Reader  = require(24),
-    types   = require(31),
-    util    = require(32);
+var Enum    = require(16),
+    Reader  = require(25),
+    types   = require(32),
+    util    = require(33);
 
 /**
  * General purpose message decoder.
@@ -1219,14 +1241,14 @@ decode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"15":15,"24":24,"31":31,"32":32}],14:[function(require,module,exports){
+},{"16":16,"25":25,"32":32,"33":33}],15:[function(require,module,exports){
 "use strict";
 module.exports = encode;
 
-var Enum     = require(15),
+var Enum     = require(16),
     Writer   = require(37),
-    types    = require(31),
-    util     = require(32);
+    types    = require(32),
+    util     = require(33);
 var safeProp = util.safeProp;
 
 /**
@@ -1437,17 +1459,17 @@ encode.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"15":15,"31":31,"32":32,"37":37}],15:[function(require,module,exports){
+},{"16":16,"32":32,"33":33,"37":37}],16:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
 Enum.className = "Enum";
 
-var ReflectionObject = require(21);
+var ReflectionObject = require(22);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
 
-var util = require(32);
+var util = require(33);
 
 var _TypeError = util._TypeError;
 
@@ -1580,21 +1602,21 @@ EnumPrototype.remove = function(name) {
     return clearCache(this);
 };
 
-},{"21":21,"32":32}],16:[function(require,module,exports){
+},{"22":22,"33":33}],17:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
 Field.className = "Field";
 
-var ReflectionObject = require(21);
+var ReflectionObject = require(22);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Type      = require(30),
-    Enum      = require(15),
-    MapField  = require(17),
-    types     = require(31),
-    util      = require(32);
+var Type      = require(31),
+    Enum      = require(16),
+    MapField  = require(18),
+    types     = require(32),
+    util      = require(33);
 
 var _TypeError = util._TypeError;
 
@@ -1860,21 +1882,21 @@ FieldPrototype.jsonConvert = function(value, options) {
     return value;
 };
 
-},{"15":15,"17":17,"21":21,"30":30,"31":31,"32":32}],17:[function(require,module,exports){
+},{"16":16,"18":18,"22":22,"31":31,"32":32,"33":33}],18:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
 MapField.className = "MapField";
 
-var Field = require(16);
+var Field = require(17);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField);
 
-var Enum    = require(15),
-    types   = require(31),
-    util    = require(32);
+var Enum    = require(16),
+    types   = require(32),
+    util    = require(33);
 
 /**
  * Constructs a new map field instance.
@@ -1960,7 +1982,7 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"15":15,"16":16,"31":31,"32":32}],18:[function(require,module,exports){
+},{"16":16,"17":17,"32":32,"33":33}],19:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 
@@ -2098,18 +2120,18 @@ Message.verify = function verify(message) {
     return this.$type.verify(message);
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
 Method.className = "Method";
 
-var ReflectionObject = require(21);
+var ReflectionObject = require(22);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
 
-var Type = require(30),
-    util = require(32);
+var Type = require(31),
+    util = require(33);
 
 var _TypeError = util._TypeError;
 
@@ -2237,21 +2259,21 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"21":21,"30":30,"32":32}],20:[function(require,module,exports){
+},{"22":22,"31":31,"33":33}],21:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
 Namespace.className = "Namespace";
 
-var ReflectionObject = require(21);
+var ReflectionObject = require(22);
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
-var Enum    = require(15),
-    Type    = require(30),
-    Field   = require(16),
-    Service = require(28),
-    util    = require(32);
+var Enum    = require(16),
+    Type    = require(31),
+    Field   = require(17),
+    Service = require(29),
+    util    = require(33);
 
 var _TypeError = util._TypeError;
 
@@ -2537,16 +2559,16 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
  * @throws {Error} If `path` does not point to a service
  */
 
-},{"15":15,"16":16,"21":21,"28":28,"30":30,"32":32}],21:[function(require,module,exports){
+},{"16":16,"17":17,"22":22,"29":29,"31":31,"33":33}],22:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
-var util = require(32);
+var util = require(33);
 
 ReflectionObject.className = "ReflectionObject";
 ReflectionObject.extend = util.extend;
 
-var Root = require(25);
+var Root = require(26);
 
 var _TypeError = util._TypeError;
 
@@ -2728,18 +2750,18 @@ ReflectionObjectPrototype.toString = function toString() {
     return className;
 };
 
-},{"25":25,"32":32}],22:[function(require,module,exports){
+},{"26":26,"33":33}],23:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
 OneOf.className = "OneOf";
 
-var ReflectionObject = require(21);
+var ReflectionObject = require(22);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
-var Field = require(16),
-    util  = require(32);
+var Field = require(17),
+    util  = require(33);
 
 var _TypeError = util._TypeError;
 
@@ -2895,21 +2917,21 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"16":16,"21":21,"32":32}],23:[function(require,module,exports){
+},{"17":17,"22":22,"33":33}],24:[function(require,module,exports){
 "use strict";
 module.exports = parse;
 
-var tokenize  = require(29),
-    Root      = require(25),
-    Type      = require(30),
-    Field     = require(16),
-    MapField  = require(17),
-    OneOf     = require(22),
-    Enum      = require(15),
-    Service   = require(28),
-    Method    = require(19),
-    types     = require(31),
-    util      = require(32);
+var tokenize  = require(30),
+    Root      = require(26),
+    Type      = require(31),
+    Field     = require(17),
+    MapField  = require(18),
+    OneOf     = require(23),
+    Enum      = require(16),
+    Service   = require(29),
+    Method    = require(20),
+    types     = require(32),
+    util      = require(33);
 var camelCase = util.camelCase;
 
 var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
@@ -3438,7 +3460,7 @@ function parse(source, root) {
     };
 }
 
-},{"15":15,"16":16,"17":17,"19":19,"22":22,"25":25,"28":28,"29":29,"30":30,"31":31,"32":32}],24:[function(require,module,exports){
+},{"16":16,"17":17,"18":18,"20":20,"23":23,"26":26,"29":29,"30":30,"31":31,"32":32,"33":33}],25:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -4033,19 +4055,19 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"35":35}],25:[function(require,module,exports){
+},{"1":1,"35":35}],26:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
 Root.className = "Root";
 
-var Namespace = require(20);
+var Namespace = require(21);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
 
-var Field  = require(16),
-    util   = require(32),
-    common = require(12);
+var Field  = require(17),
+    util   = require(33),
+    common = require(13);
 
 /**
  * Constructs a new root namespace instance.
@@ -4125,7 +4147,7 @@ RootPrototype.load = function load(filename, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require(23)(source, self);
+                var parsed = require(24)(source, self);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -4309,7 +4331,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
     }
 };
 
-},{"12":12,"16":16,"20":20,"23":23,"32":32}],26:[function(require,module,exports){
+},{"13":13,"17":17,"21":21,"24":24,"33":33}],27:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4318,13 +4340,13 @@ RootPrototype._handleRemove = function handleRemove(object) {
  */
 var rpc = exports;
 
-rpc.Service = require(27);
+rpc.Service = require(28);
 
-},{"27":27}],27:[function(require,module,exports){
+},{"28":28}],28:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var util         = require(32);
+var util         = require(33);
 var EventEmitter = util.EventEmitter;
 
 /**
@@ -4364,21 +4386,21 @@ ServicePrototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"32":32}],28:[function(require,module,exports){
+},{"33":33}],29:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
 Service.className = "Service";
 
-var Namespace = require(20);
+var Namespace = require(21);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service);
 
-var Method = require(19),
-    util   = require(32),
-    rpc    = require(26);
+var Method = require(20),
+    util   = require(33),
+    rpc    = require(27);
 
 /**
  * Constructs a new service instance.
@@ -4577,7 +4599,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     return rpcService;
 };
 
-},{"19":19,"20":20,"26":26,"32":32}],29:[function(require,module,exports){
+},{"20":20,"21":21,"27":27,"33":33}],30:[function(require,module,exports){
 "use strict";
 module.exports = tokenize;
 
@@ -4781,29 +4803,29 @@ function tokenize(source) {
     };
     /* eslint-enable callback-return */
 }
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 "use strict";
 module.exports = Type; 
 
 Type.className = "Type";
 
-var Namespace = require(20);
+var Namespace = require(21);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
 var TypePrototype = Namespace.extend(Type);
 
-var Enum      = require(15),
-    OneOf     = require(22),
-    Field     = require(16),
-    Service   = require(28),
-    Class     = require(11),
-    Message   = require(18),
-    Reader    = require(24),
+var Enum      = require(16),
+    OneOf     = require(23),
+    Field     = require(17),
+    Service   = require(29),
+    Class     = require(12),
+    Message   = require(19),
+    Reader    = require(25),
     Writer    = require(37),
-    util      = require(32);
-var encode    = require(14),
-    decode    = require(13),
+    util      = require(33);
+var encode    = require(15),
+    decode    = require(14),
     verify    = require(36);
 
 /**
@@ -5174,7 +5196,7 @@ TypePrototype.verify = function verify_setup(message) {
     ).call(this, message);
 };
 
-},{"11":11,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"22":22,"24":24,"28":28,"32":32,"36":36,"37":37}],31:[function(require,module,exports){
+},{"12":12,"14":14,"15":15,"16":16,"17":17,"19":19,"21":21,"23":23,"25":25,"29":29,"33":33,"36":36,"37":37}],32:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5183,7 +5205,7 @@ TypePrototype.verify = function verify_setup(message) {
  */
 var types = exports;
 
-var util = require(32);
+var util = require(33);
 
 var s = [
     "double",   // 0
@@ -5305,7 +5327,7 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"32":32}],32:[function(require,module,exports){
+},{"33":33}],33:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5317,10 +5339,10 @@ var util = exports;
 util.asPromise    = require(2);
 util.codegen      = require(4);
 util.EventEmitter = require(5);
-util.extend       = require(33);
-util.fetch        = require(6);
-util.fs           = require(7);
-util.path         = require(8);
+util.extend       = require(6);
+util.fetch        = require(7);
+util.fs           = require(8);
+util.path         = require(9);
 
 var runtime       = require(35);
 
@@ -5418,29 +5440,7 @@ util._configure = function configure() {
     runtime.Long = util.Long;
 };
 
-},{"2":2,"33":33,"35":35,"4":4,"5":5,"6":6,"7":7,"8":8}],33:[function(require,module,exports){
-"use strict";
-module.exports = extend;
-
-/**
- * Lets the specified constructor extend `this` class.
- * @memberof util
- * @param {*} ctor Extending constructor
- * @returns {Object} Constructor prototype
- * @this Function
- */
-function extend(ctor) {
-    // copy static members
-    var keys = Object.keys(this);
-    for (var i = 0; i < keys.length; ++i)
-        ctor[keys[i]] = this[keys[i]];
-    // properly extend
-    var prototype = ctor.prototype = Object.create(this.prototype);
-    prototype.constructor = ctor;
-    return prototype;
-}
-
-},{}],34:[function(require,module,exports){
+},{"2":2,"35":35,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}],34:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
@@ -5652,8 +5652,8 @@ var util = exports;
 var LongBits =
 util.LongBits = require(34);
 util.base64   = require(3);
-util.utf8     = require(10);
-util.pool     = require(9);
+util.utf8     = require(11);
+util.pool     = require(10);
 
 /**
  * Whether running within node or not.
@@ -5803,13 +5803,13 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"3":3,"34":34,"9":9,"buffer":"buffer","long":"long"}],36:[function(require,module,exports){
+},{"10":10,"11":11,"3":3,"34":34,"buffer":"buffer","long":"long"}],36:[function(require,module,exports){
 "use strict";
 module.exports = verify;
 
-var Enum      = require(15),
-    Type      = require(30),
-    util      = require(32);
+var Enum      = require(16),
+    Type      = require(31),
+    util      = require(33);
 var isInteger = util.isInteger;
 
 function invalid(field, expected) {
@@ -6083,7 +6083,7 @@ verify.generate = function generate(mtype) {
     /* eslint-enable no-unexpected-multiline */
 };
 
-},{"15":15,"30":30,"32":32}],37:[function(require,module,exports){
+},{"16":16,"31":31,"33":33}],37:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -6774,42 +6774,42 @@ protobuf.loadSync = loadSync;
 protobuf.roots = {};
 
 // Parser
-protobuf.tokenize         = require(29);
-protobuf.parse            = require(23);
+protobuf.tokenize         = require(30);
+protobuf.parse            = require(24);
 
 // Serialization
                var Writer =
 protobuf.Writer           = require(37);
 protobuf.BufferWriter     = Writer.BufferWriter;
                var Reader =
-protobuf.Reader           = require(24);
+protobuf.Reader           = require(25);
 protobuf.BufferReader     = Reader.BufferReader;
-protobuf.encode           = require(14);
-protobuf.decode           = require(13);
+protobuf.encode           = require(15);
+protobuf.decode           = require(14);
 protobuf.verify           = require(36);
 
 // Reflection
-protobuf.ReflectionObject = require(21);
-protobuf.Namespace        = require(20);
-protobuf.Root             = require(25);
-protobuf.Enum             = require(15);
-protobuf.Type             = require(30);
-protobuf.Field            = require(16);
-protobuf.OneOf            = require(22);
-protobuf.MapField         = require(17);
-protobuf.Service          = require(28);
-protobuf.Method           = require(19);
+protobuf.ReflectionObject = require(22);
+protobuf.Namespace        = require(21);
+protobuf.Root             = require(26);
+protobuf.Enum             = require(16);
+protobuf.Type             = require(31);
+protobuf.Field            = require(17);
+protobuf.OneOf            = require(23);
+protobuf.MapField         = require(18);
+protobuf.Service          = require(29);
+protobuf.Method           = require(20);
 
 // Runtime
-protobuf.Class            = require(11);
-protobuf.Message          = require(18);
+protobuf.Class            = require(12);
+protobuf.Message          = require(19);
 
 // Utility
-protobuf.types            = require(31);
-protobuf.common           = require(12);
-protobuf.rpc              = require(26);
+protobuf.types            = require(32);
+protobuf.common           = require(13);
+protobuf.rpc              = require(27);
                  var util =
-protobuf.util             = require(32);
+protobuf.util             = require(33);
 protobuf.configure        = configure;
 
 /**
@@ -6833,7 +6833,7 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"28":28,"29":29,"30":30,"31":31,"32":32,"36":36,"37":37}]},{},[38])
+},{"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"27":27,"29":29,"30":30,"31":31,"32":32,"33":33,"36":36,"37":37}]},{},[38])
 
 
 //# sourceMappingURL=protobuf.js.map

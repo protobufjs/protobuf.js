@@ -38,7 +38,8 @@
     },
     "markdown"  : {
         "parser"        : "gfm",
-        "hardwrap"      : true
+        "hardwrap"      : true,
+        "idInHeadings"  : true
     },
     "opts": {
         "encoding"      : "utf8",

@@ -215,6 +215,8 @@ import * as protobuf from "protobufjs";
 ...
 ```
 
+See also: [Generating your own TypeScript definitions](https://github.com/dcodeIO/protobuf.js#generating-typescript-definitions-from-static-modules)
+
 Module Structure
 ----------------
 The library exports a flat `protobuf` namespace including but not restricted to the following members, ordered by category:
@@ -352,7 +354,7 @@ Likewise, the `pbts` command line utility can be used to generate TypeScript def
 ```
 Generates TypeScript definitions from annotated JavaScript files.
 
-  -n, --name      Specifies the module name.
+  -n, --name      Wraps everything in a module of the specified name.
 
   -o, --out       Saves to a file instead of writing to stdout.
 
@@ -361,11 +363,11 @@ usage: pbts [options] file1.js file2.js ...
 
 ### Descriptors vs. static modules
 
-While .proto and JSON files require the full library (about 18kb gzipped, all features including reflection, parser and utility), pretty much all code but the relatively short descriptors is shared.
+While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
 
-Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped, i.e. no reflection features), but generates additional, albeit editable and customizable, source code.
+Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
 
-When `new Function(...)` is supported (and it usually is), there is no difference performance-wise as the code generated statically is the same as generated at runtime.
+When `new Function(...)` is supported (and it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.
 
 Building
 --------

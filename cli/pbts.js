@@ -8,8 +8,7 @@ var minimist = util.require("minimist", pkg.devDependencies.minimist),
     chalk    = util.require("chalk", pkg.devDependencies.chalk),
     glob     = util.require("glob", pkg.devDependencies.glob);
 
-var jsdoc    = util.require("jsdoc/package.json", pkg.devDependencies.jsdoc),
-    tsdjsdoc = util.require("tsd-jsdoc/package.json", pkg.devDependencies['tsd-jsdoc']);
+var jsdoc    = util.require("jsdoc/package.json", pkg.devDependencies.jsdoc);
 
 var protobuf = require("..");
 
@@ -30,7 +29,7 @@ exports.main = function(args) {
             "",
             "Generates TypeScript definitions from annotated JavaScript files.",
             "",
-            "  -n, --name      Specifies the module name.",
+            "  -n, --name      Wraps everything in a module of the specified name.",
             "",
             "  -o, --out       Saves to a file instead of writing to stdout.",
             "",

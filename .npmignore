@@ -3,14 +3,15 @@
 *.log
 npm-debug.*
 node_modules/
-types/types.d.ts
 docs/
 examples/
 src/util/aspromise/
 src/util/base64/
 src/util/codegen/
 src/util/eventemitter/
+src/util/extend/
 src/util/fetch/
 src/util/fs/
+src/util/path/
 src/util/pool/
 src/util/utf8/

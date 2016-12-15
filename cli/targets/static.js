@@ -74,10 +74,12 @@ function pushComment(lines) {
     push(" */");
 }
 
+var reservedRe = /^do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof$/;
+
 function name(name) {
     if (!name)
         return "$root";
-    return name;
+    return reservedRe.test(name) ? name + "_" : name;
 }
 
 function buildNamespace(ref, ns) {
