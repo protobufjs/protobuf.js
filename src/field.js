@@ -4,6 +4,7 @@ module.exports = Field;
 Field.className = "Field";
 
 var ReflectionObject = require("./object");
+var Message = require("./message");
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
@@ -254,7 +255,7 @@ FieldPrototype.resolve = function resolve() {
 
     if (this.long)
         this.defaultValue = util.Long.fromValue(this.defaultValue);
-    
+
     return ReflectionObject.prototype.resolve.call(this);
 };
 
@@ -279,6 +280,8 @@ FieldPrototype.jsonConvert = function(value, options) {
             return options.bytes === Array
                 ? Array.prototype.slice.call(value)
                 : util.base64.encode(value, 0, value.length);
+        else if(value instanceof Message)
+            return value.asJSON(options);
     }
     return value;
 };
