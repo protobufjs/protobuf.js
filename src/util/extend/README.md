@@ -22,7 +22,7 @@ var ChildPrototype = ParentClass.extend(ChildClass); // also inherits .extend it
 ```js
 function GrandchildClass() {
 }
-var GrandchildClass = ChildClass.extend(GrandchildClass); // and so it goes forever
+var GrandchildPrototype = ChildClass.extend(GrandchildClass); // and so it goes forever
 ```
 
 **License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
