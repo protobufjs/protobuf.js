@@ -120,6 +120,12 @@ function Field(name, id, type, rule, extend, options) {
     this.long = util.Long ? types.long[type] !== undefined : false;
 
     /**
+     * Whether this field's value is a buffer.
+     * @type {boolean}
+     */
+    this.bytes = type === "bytes";
+
+    /**
      * Resolved type if not a basic type.
      * @type {?(Type|Enum)}
      */
@@ -268,20 +274,20 @@ FieldPrototype.resolve = function resolve() {
  */
 FieldPrototype.jsonConvert = function(value, options) {
     if (options) {
+        if (value instanceof Message)
+            return value.asJSON(options);
         if (this.resolvedType instanceof Enum && options["enum"] === String) // eslint-disable-line dot-notation
             return this.resolvedType.getValuesById()[value];
-        else if (this.long && options.long)
+        if (options.long && this.long)
             return options.long === Number
                 ? typeof value === "number"
-                ? value
-                : util.Long.fromValue(value).toNumber()
+                    ? value
+                    : util.LongBits.from(value).toNumber(this.type.charAt(0) === "u")
                 : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
-        else if (options.bytes && this.type === "bytes")
+        if (options.bytes && this.bytes)
             return options.bytes === Array
                 ? Array.prototype.slice.call(value)
                 : util.base64.encode(value, 0, value.length);
-        else if(value instanceof Message)
-            return value.asJSON(options);
     }
     return value;
 };

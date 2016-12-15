@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 15 Dec 2016 16:49:02 UTC
+// Generated Thu, 15 Dec 2016 17:47:18 UTC
 declare module "protobufjs" {
 
     /**
@@ -305,6 +305,12 @@ declare module "protobufjs" {
          * @type {boolean}
          */
         long: boolean;
+
+        /**
+         * Whether this field's value is a buffer.
+         * @type {boolean}
+         */
+        bytes: boolean;
 
         /**
          * Resolved type if not a basic type.

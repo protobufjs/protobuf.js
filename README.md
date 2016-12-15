@@ -166,6 +166,33 @@ var message = new AwesomeMessage({ awesomeField: "AwesomeString" });
 
 Custom classes are automatically populated with static `encode`, `encodeDelimited`, `decode`, `decodeDelimited` and `verify` methods and reference their reflected type via the `$type` property. Note that there are no methods (just `$type`) on instances by default as method names might conflict with field names.
 
+### Using the Reader/Writer interface directly
+
+While meant for the adventurous, it's also possible to use the Reader/Writer interface directly to build custom encoders and decoders that work accross modern to ancient browsers and, of course, node:
+
+```js
+var writer = protobuf.Writer.create();
+var buffer = writer
+    .int32(/* id */ 1 << 3 | /* wireType */ 2)
+    .string("hello world!")
+    .finish();
+
+var reader = protobuf.Reader.create(buffer);
+while (reader.pos < reader.len) {
+    var tag = reader.int32();
+    switch (/* id */ tag >>> 3) {
+        case 1:
+            console.log(reader.string());
+            break;
+        default:
+            reader.skipType(/* wireType */ tag & 7);
+            break;
+    }
+}
+```
+
+You can take pretty much any generated code snippet as a reference. Easy ways to obtain these are either setting `protobuf.util.codegen.verbose = true` while watching the magic as it happens, or simply inspecting [generated static code](https://github.com/dcodeIO/protobuf.js#command-line).
+
 ### Using services
 
 ```protobuf
