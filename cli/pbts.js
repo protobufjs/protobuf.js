@@ -30,17 +30,20 @@ exports.main = function(args, callback) {
     var files  = argv._;
 
     if (!files.length) {
-        console.log([
-            "protobuf.js v" + pkg.version + " cli for TypeScript",
-            "",
-            "Generates TypeScript definitions from annotated JavaScript files.",
-            "",
-            "  -n, --name      Wraps everything in a module of the specified name.",
-            "",
-            "  -o, --out       Saves to a file instead of writing to stdout.",
-            "",
-            "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.js file2.js ..."
-        ].join("\n"));
+        if (callback)
+            callback(Error("usage"));
+        else
+            console.error([
+                "protobuf.js v" + pkg.version + " cli for TypeScript",
+                "",
+                "Generates TypeScript definitions from annotated JavaScript files.",
+                "",
+                "  -n, --name      Wraps everything in a module of the specified name.",
+                "",
+                "  -o, --out       Saves to a file instead of writing to stdout.",
+                "",
+                "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..."
+            ].join("\n"));
         if (callback)
             callback(Error("usage"));
         return 1;

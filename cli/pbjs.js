@@ -39,38 +39,39 @@ exports.main = function(args, callback) {
         var descs = Object.keys(targets).filter(function(key) { return !targets[key].private; }).map(function(key) {
             return "                  " + util.pad(key, 14, true) + targets[key].description;
         });
-        console.log([
-            "protobuf.js v" + pkg.version + " cli",
-            "",
-            "Consolidates imports and converts between file formats.",
-            "",
-            "  -t, --target    Specifies the target format. Also accepts a path to require a custom target.",
-            "",
-            descs.join('\n'),
-            "",
-            "  -p, --path      Adds a directory to the include path.",
-            "",
-            "  -o, --out       Saves to a file instead of writing to stdout.",
-            "",
-            "  -w, --wrap      Specifies the wrapper to use for *-module targets. Also accepts a path.",
-            "",
-            "                  default   Default wrapper supporting both CommonJS and AMD",
-            "                  commonjs  CommonJS only wrapper",
-            "                  amd       AMD only wrapper",
-            "",
-            "  -r, --root      Specifies an alternative protobuf.roots name for *-module targets.",
-            "",
-            "  Static code generation only:",
-            "",
-            "  --no-encode     Does not generate encode functions.",
-            "  --no-decode     Does not generate decode functions.",
-            "  --no-verify     Does not generate verify functions.",
-            "  --no-delimited  Does not generate delimited encode/decode functions.",
-            "",
-            "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.proto file2.json ..."
-        ].join("\n"));
         if (callback)
             callback(Error("usage"));
+        else
+            console.error([
+                "protobuf.js v" + pkg.version + " cli",
+                "",
+                "Consolidates imports and converts between file formats.",
+                "",
+                "  -t, --target    Specifies the target format. Also accepts a path to require a custom target.",
+                "",
+                descs.join('\n'),
+                "",
+                "  -p, --path      Adds a directory to the include path.",
+                "",
+                "  -o, --out       Saves to a file instead of writing to stdout.",
+                "",
+                "  -w, --wrap      Specifies the wrapper to use for *-module targets. Also accepts a path.",
+                "",
+                "                  default   Default wrapper supporting both CommonJS and AMD",
+                "                  commonjs  CommonJS only wrapper",
+                "                  amd       AMD only wrapper",
+                "",
+                "  -r, --root      Specifies an alternative protobuf.roots name for *-module targets.",
+                "",
+                "  Static code generation only:",
+                "",
+                "  --no-encode     Does not generate encode functions.",
+                "  --no-decode     Does not generate decode functions.",
+                "  --no-verify     Does not generate verify functions.",
+                "  --no-delimited  Does not generate delimited encode/decode functions.",
+                "",
+                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..."
+            ].join("\n"));
         return 1;
     }
 
