@@ -74,7 +74,7 @@ function pushComment(lines) {
     push(" */");
 }
 
-var reservedRe = /^do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof$/;
+var reservedRe = /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
 
 function name(name) {
     if (!name)
@@ -402,7 +402,7 @@ function buildService(ref, service) {
             "@param {function(?Error, " + method.resolvedResponseType.fullName.substring(1) + "=)} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}"
         ]);
-        push(name(service.name) + ".prototype." + name(lcName) + " = function " + name(lcName) + "(request, callback) {");
+        push(name(service.name) + ".prototype[" + JSON.stringify(lcName) + "] = function " + name(lcName) + "(request, callback) {");
             ++indent;
             push("var requestData;");
             push("try {");
