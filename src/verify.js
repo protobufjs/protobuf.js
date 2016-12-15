@@ -240,6 +240,9 @@ verify.generate = function generate(mtype) {
         var field = fields[i].resolve(),
             prop  = util.safeProp(field.name);
 
+        if (field.optional)
+            gen("if(m===null || m===undefined) return null");
+
         // map fields
         if (field.map) { gen
             ("if(m%s!==undefined){", prop)
