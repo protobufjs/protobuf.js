@@ -12,8 +12,14 @@ var jsdoc    = util.require("jsdoc/package.json", pkg.devDependencies.jsdoc);
 
 var protobuf = require("..");
 
-exports.main = function(args) {
-    var argv = minimist(args.slice(2), {
+/**
+ * Runs pbts programmatically.
+ * @param {string[]} args Command line arguments
+ * @param {function(?Error)} [callback] Optional completion callback
+ * @returns {number|undefined} Exit code, if known
+ */
+exports.main = function(args, callback) {
+    var argv = minimist(args, {
         alias: {
             name: "n",
             out : "o"
@@ -35,6 +41,8 @@ exports.main = function(args) {
             "",
             "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.js file2.js ..."
         ].join("\n"));
+        if (callback)
+            callback(Error("usage"));
         return 1;
     }
 
@@ -65,7 +73,11 @@ exports.main = function(args) {
         if (code) {
             out = out.join('').replace(/\s*JSDoc \d+\.\d+\.\d+ [^$]+/, "");
             process.stderr.write(out);
-            process.exit(code);
+            var err = Error("code " + code);
+            if (callback)
+                callback(err);
+            else
+                throw err;
             return;
         }
 
@@ -74,10 +86,17 @@ exports.main = function(args) {
             "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
         ].join('\n') + "\n" + out.join('');
 
-        if (argv.out)
-            fs.writeFileSync(argv.out, output);
-        else
-            process.stdout.write(output, "utf8");
+        try {
+            if (argv.out)
+                fs.writeFileSync(argv.out, output);
+            else
+                process.stdout.write(output, "utf8");
+        } catch (err) {
+            if (callback)
+                callback(err);
+            else
+                throw err;
+        }
     });
 
     return undefined;

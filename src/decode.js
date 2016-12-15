@@ -55,16 +55,16 @@ function decode(readerOrBuffer, length) {
                         values[values.length] = reader[type]();
 
                 // Non-packed
-                } else if (types.basic[type] !== undefined)
-                    values[values.length] = reader[type]();
-                else
+                } else if (types.basic[type] === undefined)
                     values[values.length] = field.resolvedType.decode(reader, reader.uint32());
+                else
+                    values[values.length] = reader[type]();
 
             // Non-repeated
-            } else if (types.basic[type] !== undefined)
-                message[field.name] = reader[type]();
-              else
+            } else if (types.basic[type] === undefined)
                 message[field.name] = field.resolvedType.decode(reader, reader.uint32());
+            else
+                message[field.name] = reader[type]();
 
         // Unknown fields
         } else
@@ -104,8 +104,7 @@ decode.generate = function generate(mtype) {
 
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("r.skip()")
-                ("r.pos++")
+                ("r.skip().pos++")
                 ("if(m%s===util.emptyObject)", prop)
                     ("m%s={}", prop)
                 ("var k=r.%s()", keyType)
@@ -121,32 +120,22 @@ decode.generate = function generate(mtype) {
 
                 ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
 
-            if (field.packed && types.packed[type] !== undefined) { gen
-
+            if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
                         ("m%s[m%s.length]=r.%s()", prop, prop, type)
                 ("}else");
-            }
-
-            if (types.basic[type] !== undefined) gen
-
+            if (types.basic[type] === undefined) gen
+                    ("m%s[m%s.length]=types[%d].decode(r,r.uint32())", prop, prop, i, i);
+            else gen
                     ("m%s[m%s.length]=r.%s()", prop, prop, type);
 
-            else gen
-
-                    ("m%s[m%s.length]=types[%d].decode(r,r.uint32())", prop, prop, i, i);
-
-        } else if (types.basic[type] !== undefined) { gen
-
-                ("m%s=r.%s()", prop, type);
-
-        } else { gen
-
+        } else if (types.basic[type] === undefined) gen
                 ("m%s=types[%d].decode(r,r.uint32())", prop, i, i);
-
-        } gen
+        else gen
+                ("m%s=r.%s()", prop, type);
+        gen
                 ("break");
     } return gen
             ("default:")

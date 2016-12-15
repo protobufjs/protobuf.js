@@ -10,8 +10,14 @@ var minimist = util.require("minimist", pkg.devDependencies.minimist),
 var protobuf = require(".."),
     targets  = util.requireAll("./targets");
 
-exports.main = function(args) {
-    var argv = minimist(args.slice(2), {
+/**
+ * Runs pbjs programmatically.
+ * @param {string[]} args Command line arguments
+ * @param {function(?Error)} [callback] Optional completion callback
+ * @returns {number|undefined} Exit code, if known
+ */
+exports.main = function(args, callback) {
+    var argv = minimist(args, {
         alias: {
             target : "t",
             out    : "o",
@@ -63,6 +69,8 @@ exports.main = function(args) {
             "",
             "usage: " + chalk.bold.green(path.basename(process.argv[1])) + " [options] file1.proto file2.json ..."
         ].join("\n"));
+        if (callback)
+            callback(Error("usage"));
         return 1;
     }
 
@@ -96,18 +104,27 @@ exports.main = function(args) {
     };
 
     root.load(files, function(err) {
-        if (err)
-            throw err;
-        target(root, argv, function(err, output) {
-            if (err)
+        if (err) {
+            if (callback)
+                return callback(err);
+            else
                 throw err;
+        }
+        target(root, argv, function(err, output) {
+            if (err) {
+                if (callback)
+                    return callback(err);
+                else
+                    throw err;
+            }
             if (output !== "") {
                 if (argv.out)
                     fs.writeFileSync(argv.out, output, { encoding: "utf8" });
                 else
                     process.stdout.write(output, "utf8");
             }
-            process.exit(0);
+            if (callback)
+                callback(null);
         });
     });
 };

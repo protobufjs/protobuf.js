@@ -12,7 +12,6 @@ var _TypeError = util._TypeError;
  * @classdesc Runtime class providing the tools to create your own custom classes.
  * @constructor
  * @param {Type} type Reflected type
- * @abstract
  */
 function Class(type) {
     return Class.create(type);

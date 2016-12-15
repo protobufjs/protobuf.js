@@ -55,19 +55,6 @@ var ReaderPrototype = Reader.prototype;
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
 /**
- * Reads a tag.
- * @returns {{id: number, wireType: number}} Field id and wire type
- */
-ReaderPrototype.tag = function read_tag() {
-    // deprecated internally, but remains for completeness
-    var val = this.int32();
-    return {
-        id: val >>> 3,
-        wireType: val & 7
-    };
-};
-
-/**
  * Reads a varint as a signed 32 bit value.
  * @returns {number} Value read
  */

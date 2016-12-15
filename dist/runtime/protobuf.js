@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 15 Dec 2016 14:26:26 UTC
+ * Compiled Thu, 15 Dec 2016 16:48:55 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -483,19 +483,6 @@ Reader.create = function create(buffer) {
 var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
-
-/**
- * Reads a tag.
- * @returns {{id: number, wireType: number}} Field id and wire type
- */
-ReaderPrototype.tag = function read_tag() {
-    // deprecated internally, but remains for completeness
-    var val = this.int32();
-    return {
-        id: val >>> 3,
-        wireType: val & 7
-    };
-};
 
 /**
  * Reads a varint as a signed 32 bit value.
@@ -1559,17 +1546,6 @@ WriterPrototype.push = function push(fn, len, val) {
 function writeByte(val, buf, pos) {
     buf[pos] = val & 255;
 }
-
-/**
- * Writes a tag.
- * @param {number} id Field id
- * @param {number} wireType Wire type
- * @returns {Writer} `this`
- */
-WriterPrototype.tag = function write_tag(id, wireType) {
-    // deprecated internally, but remains for completeness
-    return this.uint32(id << 3 | wireType & 7);
-};
 
 function writeVarint32(val, buf, pos) {
     while (val > 127) {

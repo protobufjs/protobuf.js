@@ -172,17 +172,6 @@ function writeByte(val, buf, pos) {
     buf[pos] = val & 255;
 }
 
-/**
- * Writes a tag.
- * @param {number} id Field id
- * @param {number} wireType Wire type
- * @returns {Writer} `this`
- */
-WriterPrototype.tag = function write_tag(id, wireType) {
-    // deprecated internally, but remains for completeness
-    return this.uint32(id << 3 | wireType & 7);
-};
-
 function writeVarint32(val, buf, pos) {
     while (val > 127) {
         buf[pos++] = val & 127 | 128;

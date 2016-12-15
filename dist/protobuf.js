@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 15 Dec 2016 14:26:26 UTC
+ * Compiled Thu, 15 Dec 2016 16:48:55 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -827,7 +827,6 @@ var _TypeError = util._TypeError;
  * @classdesc Runtime class providing the tools to create your own custom classes.
  * @constructor
  * @param {Type} type Reflected type
- * @abstract
  */
 function Class(type) {
     return Class.create(type);
@@ -1138,16 +1137,16 @@ function decode(readerOrBuffer, length) {
                         values[values.length] = reader[type]();
 
                 // Non-packed
-                } else if (types.basic[type] !== undefined)
-                    values[values.length] = reader[type]();
-                else
+                } else if (types.basic[type] === undefined)
                     values[values.length] = field.resolvedType.decode(reader, reader.uint32());
+                else
+                    values[values.length] = reader[type]();
 
             // Non-repeated
-            } else if (types.basic[type] !== undefined)
-                message[field.name] = reader[type]();
-              else
+            } else if (types.basic[type] === undefined)
                 message[field.name] = field.resolvedType.decode(reader, reader.uint32());
+            else
+                message[field.name] = reader[type]();
 
         // Unknown fields
         } else
@@ -1187,8 +1186,7 @@ decode.generate = function generate(mtype) {
 
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("r.skip()")
-                ("r.pos++")
+                ("r.skip().pos++")
                 ("if(m%s===util.emptyObject)", prop)
                     ("m%s={}", prop)
                 ("var k=r.%s()", keyType)
@@ -1204,32 +1202,22 @@ decode.generate = function generate(mtype) {
 
                 ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
 
-            if (field.packed && types.packed[type] !== undefined) { gen
-
+            if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
                         ("m%s[m%s.length]=r.%s()", prop, prop, type)
                 ("}else");
-            }
-
-            if (types.basic[type] !== undefined) gen
-
+            if (types.basic[type] === undefined) gen
+                    ("m%s[m%s.length]=types[%d].decode(r,r.uint32())", prop, prop, i, i);
+            else gen
                     ("m%s[m%s.length]=r.%s()", prop, prop, type);
 
-            else gen
-
-                    ("m%s[m%s.length]=types[%d].decode(r,r.uint32())", prop, prop, i, i);
-
-        } else if (types.basic[type] !== undefined) { gen
-
-                ("m%s=r.%s()", prop, type);
-
-        } else { gen
-
+        } else if (types.basic[type] === undefined) gen
                 ("m%s=types[%d].decode(r,r.uint32())", prop, i, i);
-
-        } gen
+        else gen
+                ("m%s=r.%s()", prop, type);
+        gen
                 ("break");
     } return gen
             ("default:")
@@ -3551,19 +3539,6 @@ Reader.create = function create(buffer) {
 var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
-
-/**
- * Reads a tag.
- * @returns {{id: number, wireType: number}} Field id and wire type
- */
-ReaderPrototype.tag = function read_tag() {
-    // deprecated internally, but remains for completeness
-    var val = this.int32();
-    return {
-        id: val >>> 3,
-        wireType: val & 7
-    };
-};
 
 /**
  * Reads a varint as a signed 32 bit value.
@@ -6283,17 +6258,6 @@ WriterPrototype.push = function push(fn, len, val) {
 function writeByte(val, buf, pos) {
     buf[pos] = val & 255;
 }
-
-/**
- * Writes a tag.
- * @param {number} id Field id
- * @param {number} wireType Wire type
- * @returns {Writer} `this`
- */
-WriterPrototype.tag = function write_tag(id, wireType) {
-    // deprecated internally, but remains for completeness
-    return this.uint32(id << 3 | wireType & 7);
-};
 
 function writeVarint32(val, buf, pos) {
     while (val > 127) {

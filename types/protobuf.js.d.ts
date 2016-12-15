@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 15 Dec 2016 14:26:57 UTC
+// Generated Thu, 15 Dec 2016 16:49:02 UTC
 declare module "protobufjs" {
 
     /**
@@ -7,9 +7,16 @@ declare module "protobufjs" {
      * @classdesc Runtime class providing the tools to create your own custom classes.
      * @constructor
      * @param {Type} type Reflected type
-     * @abstract
      */
-    abstract class Class {
+    class Class {
+
+        /**
+         * Constructs a class instance, which is also a message prototype.
+         * @classdesc Runtime class providing the tools to create your own custom classes.
+         * @constructor
+         * @param {Type} type Reflected type
+         */
+        constructor(type: Type);
 
         /**
          * Constructs a new message prototype for the specified reflected type and sets up its constructor.
@@ -1042,12 +1049,6 @@ declare module "protobufjs" {
          * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
          */
         static create(buffer: Uint8Array): (BufferReader|Reader);
-
-        /**
-         * Reads a tag.
-         * @returns {{id: number, wireType: number}} Field id and wire type
-         */
-        tag(): Object;
 
         /**
          * Reads a varint as a signed 32 bit value.
@@ -2199,14 +2200,6 @@ declare module "protobufjs" {
          * @returns {Writer} `this`
          */
         push(fn: () => any, len: number, val: number): Writer;
-
-        /**
-         * Writes a tag.
-         * @param {number} id Field id
-         * @param {number} wireType Wire type
-         * @returns {Writer} `this`
-         */
-        tag(id: number, wireType: number): Writer;
 
         /**
          * Writes an unsigned 32 bit value as a varint.
