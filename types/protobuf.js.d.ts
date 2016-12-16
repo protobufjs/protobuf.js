@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Fri, 16 Dec 2016 14:07:14 UTC
+// Generated Fri, 16 Dec 2016 14:38:04 UTC
 declare module "protobufjs" {
 
     /**
@@ -1008,7 +1008,7 @@ declare module "protobufjs" {
     }
 
     /**
-     * Options modifying the the behavior of {@link parse}.
+     * Options modifying the behavior of {@link parse}.
      * @typedef ParseOptions
      * @type {Object}
      * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
@@ -1020,11 +1020,22 @@ declare module "protobufjs" {
     /**
      * Parses the given .proto source and returns an object with the parsed contents.
      * @param {string} source Source contents
-     * @param {Root|ParseOptions} [root] Root to populate
+     * @param {Root} root Root to populate
      * @param {ParseOptions} [options] Parse options
      * @returns {ParserResult} Parser result
      */
-    function parse(source: string, root?: (Root|ParseOptions), options?: ParseOptions): ParserResult;
+    function parse(source: string, root: Root, options?: ParseOptions): ParserResult;
+
+    /**
+     * Parses the given .proto source and returns an object with the parsed contents.
+     * @name parse
+     * @function
+     * @param {string} source Source contents
+     * @param {ParseOptions} [options] Parse options
+     * @returns {ParserResult} Parser result
+     * @variation 2
+     */
+    function parse(source: string, options?: ParseOptions): ParserResult;
 
     /**
      * Constructs a new reader instance using the specified buffer.

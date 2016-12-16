@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Fri, 16 Dec 2016 14:06:25 UTC
+ * Compiled Fri, 16 Dec 2016 14:42:52 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2990,7 +2990,7 @@ function lower(token) {
  */
 
 /**
- * Options modifying the the behavior of {@link parse}.
+ * Options modifying the behavior of {@link parse}.
  * @typedef ParseOptions
  * @type {Object}
  * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
@@ -2999,7 +2999,7 @@ function lower(token) {
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
  * @param {string} source Source contents
- * @param {Root|ParseOptions} [root] Root to populate
+ * @param {Root} root Root to populate
  * @param {ParseOptions} [options] Parse options
  * @returns {ParserResult} Parser result
  */
@@ -3508,6 +3508,16 @@ function parse(source, root, options) {
          root         : root
     };
 }
+
+/**
+ * Parses the given .proto source and returns an object with the parsed contents.
+ * @name parse
+ * @function
+ * @param {string} source Source contents
+ * @param {ParseOptions} [options] Parse options
+ * @returns {ParserResult} Parser result
+ * @variation 2
+ */
 
 },{"16":16,"17":17,"18":18,"20":20,"23":23,"26":26,"29":29,"30":30,"31":31,"32":32,"33":33}],25:[function(require,module,exports){
 "use strict";

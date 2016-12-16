@@ -34,7 +34,7 @@ function lower(token) {
  */
 
 /**
- * Options modifying the the behavior of {@link parse}.
+ * Options modifying the behavior of {@link parse}.
  * @typedef ParseOptions
  * @type {Object}
  * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
@@ -43,7 +43,7 @@ function lower(token) {
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
  * @param {string} source Source contents
- * @param {Root|ParseOptions} [root] Root to populate
+ * @param {Root} root Root to populate
  * @param {ParseOptions} [options] Parse options
  * @returns {ParserResult} Parser result
  */
@@ -552,3 +552,13 @@ function parse(source, root, options) {
          root         : root
     };
 }
+
+/**
+ * Parses the given .proto source and returns an object with the parsed contents.
+ * @name parse
+ * @function
+ * @param {string} source Source contents
+ * @param {ParseOptions} [options] Parse options
+ * @returns {ParserResult} Parser result
+ * @variation 2
+ */
