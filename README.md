@@ -77,7 +77,7 @@ Production:
 <script src="//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.min.js"></script>
 ```
 
-**NOTE:** Remember to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/releases) your project depends upon.
+**NOTE:** Remember to replace the version tag with the exact [release](https://github.com/dcodeIO/protobuf.js/releases/tags) your project depends upon.
 
 Or [download](https://github.com/dcodeIO/protobuf.js/tree/master/dist) the library.
 
@@ -314,6 +314,8 @@ Documentation
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
 
 * [protobuf.js API Documentation](http://dcode.io/protobuf.js/)
+
+* [Questions and answers on StackOverflow](http://stackoverflow.com/questions/tagged/protobuf.js)
 
 Command line
 ------------

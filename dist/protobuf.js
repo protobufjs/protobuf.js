@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Fri, 16 Dec 2016 14:42:52 UTC
+ * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
+ * Compiled Fri, 16 Dec 2016 16:10:12 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4154,7 +4154,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, options, callback) {
-    if (typeof options === 'function') {
+    if (typeof options === "function") {
         callback = options;
         options = undefined;
     }
@@ -5273,7 +5273,8 @@ var s = [
     "sfixed64", // 11
     "bool",     // 12
     "string",   // 13
-    "bytes"     // 14
+    "bytes",    // 14
+    "message"   // 15
 ];
 
 function bake(values, offset) {
@@ -5286,6 +5287,21 @@ function bake(values, offset) {
 /**
  * Basic type wire types.
  * @type {Object.<string,number>}
+ * @property {number} double=1 Fixed64 wire type
+ * @property {number} float=5 Fixed32 wire type
+ * @property {number} int32=0 Varint wire type
+ * @property {number} uint32=0 Varint wire type
+ * @property {number} sint32=0 Varint wire type
+ * @property {number} fixed32=5 Fixed32 wire type
+ * @property {number} sfixed32=5 Fixed32 wire type
+ * @property {number} int64=0 Varint wire type
+ * @property {number} uint64=0 Varint wire type
+ * @property {number} sint64=0 Varint wire type
+ * @property {number} fixed64=1 Fixed64 wire type
+ * @property {number} sfixed64=1 Fixed64 wire type
+ * @property {number} bool=0 Varint wire type
+ * @property {number} string=2 Ldelim wire type
+ * @property {number} bytes=2 Ldelim wire type
  */
 types.basic = bake([
     /* double   */ 1,
@@ -5308,6 +5324,22 @@ types.basic = bake([
 /**
  * Basic type defaults.
  * @type {Object.<string,*>}
+ * @property {number} double=0 Double default
+ * @property {number} float=0 Float default
+ * @property {number} int32=0 Int32 default
+ * @property {number} uint32=0 Uint32 default
+ * @property {number} sint32=0 Sint32 default
+ * @property {number} fixed32=0 Fixed32 default
+ * @property {number} sfixed32=0 Sfixed32 default
+ * @property {number} int64=0 Int64 default
+ * @property {number} uint64=0 Uint64 default
+ * @property {number} sint64=0 Sint32 default
+ * @property {number} fixed64=0 Fixed64 default
+ * @property {number} sfixed64=0 Sfixed64 default
+ * @property {boolean} bool=false Bool default
+ * @property {string} string="" String default
+ * @property {Array.<number>} bytes=Array(0) Bytes default
+ * @property {Message} message=null Message default
  */
 types.defaults = bake([
     /* double   */ 0,
@@ -5324,12 +5356,18 @@ types.defaults = bake([
     /* sfixed64 */ 0,
     /* bool     */ false,
     /* string   */ "",
-    /* bytes    */ util.emptyArray
+    /* bytes    */ util.emptyArray,
+    /* message  */ null
 ]);
 
 /**
  * Basic long type wire types.
  * @type {Object.<string,number>}
+ * @property {number} int64=0 Varint wire type
+ * @property {number} uint64=0 Varint wire type
+ * @property {number} sint64=0 Varint wire type
+ * @property {number} fixed64=1 Fixed64 wire type
+ * @property {number} sfixed64=1 Fixed64 wire type
  */
 types.long = bake([
     /* int64    */ 0,
@@ -5342,6 +5380,18 @@ types.long = bake([
 /**
  * Allowed types for map keys with their associated wire type.
  * @type {Object.<string,number>}
+ * @property {number} int32=0 Varint wire type
+ * @property {number} uint32=0 Varint wire type
+ * @property {number} sint32=0 Varint wire type
+ * @property {number} fixed32=5 Fixed32 wire type
+ * @property {number} sfixed32=5 Fixed32 wire type
+ * @property {number} int64=0 Varint wire type
+ * @property {number} uint64=0 Varint wire type
+ * @property {number} sint64=0 Varint wire type
+ * @property {number} fixed64=1 Fixed64 wire type
+ * @property {number} sfixed64=1 Fixed64 wire type
+ * @property {number} bool=0 Varint wire type
+ * @property {number} string=2 Ldelim wire type
  */
 types.mapKey = bake([
     /* int32    */ 0,
@@ -5361,6 +5411,19 @@ types.mapKey = bake([
 /**
  * Allowed types for packed repeated fields with their associated wire type.
  * @type {Object.<string,number>}
+ * @property {number} double=1 Fixed64 wire type
+ * @property {number} float=5 Fixed32 wire type
+ * @property {number} int32=0 Varint wire type
+ * @property {number} uint32=0 Varint wire type
+ * @property {number} sint32=0 Varint wire type
+ * @property {number} fixed32=5 Fixed32 wire type
+ * @property {number} sfixed32=5 Fixed32 wire type
+ * @property {number} int64=0 Varint wire type
+ * @property {number} uint64=0 Varint wire type
+ * @property {number} sint64=0 Varint wire type
+ * @property {number} fixed64=1 Fixed64 wire type
+ * @property {number} sfixed64=1 Fixed64 wire type
+ * @property {number} bool=0 Varint wire type
  */
 types.packed = bake([
     /* double   */ 1,
@@ -5800,7 +5863,7 @@ util.longNeq = function longNeq(a, b) {
  * @returns {boolean} `true` if not equal
  */
 util.longNe = function longNe(val, lo, hi) {
-    if (typeof val === 'object') // Long-like, null is invalid and throws
+    if (typeof val === "object") // Long-like, null is invalid and throws
         return val.low !== lo || val.high !== hi;
     var bits = util.LongBits.from(val);
     return bits.lo !== lo || bits.hi !== hi;
