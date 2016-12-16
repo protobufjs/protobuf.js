@@ -153,6 +153,8 @@
             
                 <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
             
+                <li data-name="util.longNe"><a href="util.html#.longNe">longNe</a></li>
+            
                 <li data-name="util.longNeq"><a href="util.html#.longNeq">longNeq</a></li>
             
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
@@ -1117,7 +1119,7 @@
             
                 <li data-name="Root#load"><a href="Root.html#load">load</a></li>
             
-                <li data-name="Root#load(2)"><a href="Root.html#load2">load</a></li>
+                <li data-name="Root#load(3)"><a href="Root.html#load3">load</a></li>
             
                 <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
@@ -1593,8 +1595,8 @@
 <h3 id="node-js">node.js</h3>
 <pre class="prettyprint source"><code>$> npm install protobufjs</code></pre><pre class="prettyprint source lang-js"><code>var protobuf = require(&quot;protobufjs&quot;);</code></pre><h3 id="browsers">Browsers</h3>
 <p>Development:</p>
-<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.js&quot;>&lt;/script></code></pre><p>Production:</p>
-<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.1.0/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p><strong>NOTE:</strong> Remember to replace the version tag with the exact <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/releases">release</a> your project depends upon.</p>
+<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.js&quot;>&lt;/script></code></pre><p>Production:</p>
+<pre class="prettyprint source"><code>&lt;script src=&quot;//cdn.rawgit.com/dcodeIO/protobuf.js/6.X.X/dist/protobuf.min.js&quot;>&lt;/script></code></pre><p><strong>NOTE:</strong> Remember to replace the version tag with the exact <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/releases">release</a> your project depends upon.</p>
 <p>Or <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist">download</a> the library.</p>
 <p>The <code>protobuf</code> namespace will always be available globally / also supports AMD loaders.</p>
 <h2 id="examples">Examples</h2>
@@ -1654,7 +1656,7 @@ var message = new AwesomeMessage({ awesomeField: &quot;AwesomeString&quot; });
 
 // Continue at &quot;Encode a message&quot; above</code></pre><p>Custom classes are automatically populated with static <code>encode</code>, <code>encodeDelimited</code>, <code>decode</code>, <code>decodeDelimited</code> and <code>verify</code> methods and reference their reflected type via the <code>$type</code> property. Note that there are no methods (just <code>$type</code>) on instances by default as method names might conflict with field names.</p>
 <h3 id="using-the-reader-writer-interface-directly">Using the Reader/Writer interface directly</h3>
-<p>While meant for the adventurous, it's also possible to use the Reader/Writer interface directly to build custom encoders and decoders that work accross modern to ancient browsers and, of course, node:</p>
+<p>While only useful for the adventurous cherishing an aversion to <a target="_blank" href="https://github.com/dcodeIO/protobuf.js#command-line">generated static code</a>, it's also possible to use the Reader/Writer interface directly using just the <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/dist/runtime">minimal runtime</a> to build custom encoders and decoders that work accross modern to ancient browsers and, of course, node:</p>
 <pre class="prettyprint source lang-js"><code>var writer = protobuf.Writer.create();
 var buffer = writer
     .int32(/* id */ 1 &lt;&lt; 3 | /* wireType */ 2)
@@ -1672,7 +1674,7 @@ while (reader.pos &lt; reader.len) {
             reader.skipType(/* wireType */ tag & 7);
             break;
     }
-}</code></pre><p>You can take pretty much any generated code snippet as a reference. Easy ways to obtain these are either setting <code>protobuf.util.codegen.verbose = true</code> while watching the magic as it happens, or simply inspecting <a target="_blank" href="https://github.com/dcodeIO/protobuf.js#command-line">generated static code</a>.</p>
+}</code></pre><p>Easy ways to obtain example code snippets are either setting <code>protobuf.util.codegen.verbose = true</code> while watching the magic as it happens, or simply inspecting generated static code.</p>
 <h3 id="using-services">Using services</h3>
 <pre class="prettyprint source lang-protobuf"><code>// greeter.proto
 service Greeter {
@@ -1827,39 +1829,37 @@ $> npm install --dev</code></pre><p>Building the development and production vers
 <p>The package includes a benchmark that tries to compare performance to native JSON as far as this is possible. On an i7-2600K running node 6.9.1 it yields:</p>
 <pre class="prettyprint source"><code>benchmarking encoding performance ...
 
-Type.encode to buffer x 481,172 ops/sec ±0.48% (92 runs sampled)
-JSON.stringify to string x 307,509 ops/sec ±1.04% (92 runs sampled)
-JSON.stringify to buffer x 164,463 ops/sec ±1.37% (89 runs sampled)
+Type.encode to buffer x 521,803 ops/sec ±0.84% (88 runs sampled)
+JSON.stringify to string x 300,362 ops/sec ±1.11% (86 runs sampled)
+JSON.stringify to buffer x 169,413 ops/sec ±1.49% (86 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 36.4% slower
-   JSON.stringify to buffer was 66.1% slower
+   JSON.stringify to string was 42.6% slower
+   JSON.stringify to buffer was 67.7% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,319,810 ops/sec ±0.71% (92 runs sampled)
-JSON.parse from string x 298,578 ops/sec ±0.98% (90 runs sampled)
-JSON.parse from buffer x 267,471 ops/sec ±0.81% (89 runs sampled)
+Type.decode from buffer x 1,325,308 ops/sec ±1.46% (88 runs sampled)
+JSON.parse from string x 283,907 ops/sec ±1.39% (86 runs sampled)
+JSON.parse from buffer x 255,372 ops/sec ±1.28% (88 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 77.4% slower
-     JSON.parse from buffer was 79.8% slower
+     JSON.parse from string was 78.6% slower
+     JSON.parse from buffer was 80.7% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 262,728 ops/sec ±0.92% (92 runs sampled)
-JSON to/from string x 129,405 ops/sec ±0.78% (94 runs sampled)
-JSON to/from buffer x 89,523 ops/sec ±0.71% (89 runs sampled)
+Type to/from buffer x 269,719 ops/sec ±0.87% (91 runs sampled)
+JSON to/from string x 122,878 ops/sec ±1.59% (87 runs sampled)
+JSON to/from buffer x 89,310 ops/sec ±1.01% (88 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 50.7% slower
-        JSON to/from buffer was 65.9% slower
+        JSON to/from string was 54.8% slower
+        JSON to/from buffer was 66.9% slower
 
 benchmarking verifying performance ...
 
-Type.verify x 5,833,382 ops/sec ±0.98% (85 runs sampled)
-
-                Type.verify was fastest</code></pre><p>Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?</p>
+Type.verify x 5,857,856 ops/sec ±0.82% (91 runs sampled)</code></pre><p>Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?</p>
 <ul>
 <li>The benchmark is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js">somewhat flawed</a>.</li>
 <li>Reader and writer interfaces configure themselves according to the environment to eliminate redundant conditionals.</li>

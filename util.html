@@ -153,6 +153,8 @@
             
                 <li data-name="util.longFromHash"><a href="util.html#.longFromHash">longFromHash</a></li>
             
+                <li data-name="util.longNe"><a href="util.html#.longNe">longNe</a></li>
+            
                 <li data-name="util.longNeq"><a href="util.html#.longNeq">longNeq</a></li>
             
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
@@ -1117,7 +1119,7 @@
             
                 <li data-name="Root#load"><a href="Root.html#load">load</a></li>
             
-                <li data-name="Root#load(2)"><a href="Root.html#load2">load</a></li>
+                <li data-name="Root#load(3)"><a href="Root.html#load3">load</a></li>
             
                 <li data-name="Root#loadSync"><a href="Root.html#loadSync">loadSync</a></li>
             
@@ -3449,6 +3451,203 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".longNe">
+            
+            util.longNe<span class="signature">(val, lo, hi)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L115">line 115</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Tests if a possibily long value equals the specified low and high bits.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>val</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="global.html#Long">Long</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Value to test</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>lo</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Low bits to test against</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>hi</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>High bits to test against</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last"><code>true</code> if not equal</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".longNeq">
             
             util.longNeq<span class="signature">(a, b)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
@@ -3456,7 +3655,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L96">line 96</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L98">line 98</a>
         </div>
         
     </div>
@@ -3560,6 +3759,7 @@
     
 
     
+        <dt class="important tag-deprecated">Deprecated</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>
     
     
     
@@ -3571,6 +3771,14 @@
     
     
     
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>Use <a href="util.html#.longNe">util.longNe</a> instead</li>
+        </ul>
+    </dd>
     
     
     
@@ -4386,7 +4594,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L125">line 125</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L141">line 141</a>
         </div>
         
     </div>
@@ -4577,7 +4785,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L112">line 112</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L128">line 128</a>
         </div>
         
     </div>
