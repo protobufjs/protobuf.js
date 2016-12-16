@@ -271,7 +271,7 @@ $root.Package = (function() {
                         break
                     case 9:
                         m["keywords"]&&m["keywords"].length?m["keywords"]:m["keywords"]=[]
-                        m["keywords"][m["keywords"].length]=r.string()
+                        m["keywords"].push(r.string())
                         break
                     case 10:
                         m["main"]=r.string()
@@ -379,7 +379,7 @@ $root.Package = (function() {
                 if(!util.isString(m["license"]))
                     return"invalid value for field .Package.license (string expected)"
             }
-            if(m["repository"]!==undefined){
+            if(m["repository"]!==undefined&&m["repository"]!==null){
                 var r;
                 if(r=types[5].verify(m["repository"]))
                     return r

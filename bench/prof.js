@@ -19,7 +19,7 @@ if (process.execArgv.indexOf("--prof") < 0) {
             fs.unlink(file);
     });
     console.log("generating profile (may take a while) ...");
-    child_process.execSync("node --prof --trace-deopt " + process.argv.slice(1).join(' '), {
+    var child = child_process.execSync("node --prof " + process.argv.slice(1).join(' '), {
         cwd: process.cwd(),
         stdio: 'inherit'
     });
@@ -40,9 +40,16 @@ if (process.execArgv.indexOf("--prof") < 0) {
 // Actual profiling code
 var protobuf = require("..");
 
+protobuf.util.codegen.verbose = true;
+
 var root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto")).toString("utf8")).root;
 var Test = root.lookup("Test");
 var data = require("../bench/bench.json");
+
+// Alternative mapbox data
+/* var root = protobuf.parse(fs.readFileSync(require.resolve("../tests/data/mapbox/vector_tile.proto")).toString("utf8")).root;
+var Test = root.lookup("vector_tile.Tile");
+var data = Test.decode(fs.readFileSync(require.resolve("../tests/data/mapbox/vector_tile.bin")));*/
 
 var count = process.argv.length > 3 ? parseInt(process.argv[3], 10) : 10000000;
 
@@ -66,3 +73,4 @@ switch (process.argv[2]) {
             Test.decode(buf);
         break;
 }
+process.exit(0);

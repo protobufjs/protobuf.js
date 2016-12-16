@@ -80,17 +80,15 @@ LongBits.fromNumber = function fromNumber(value) {
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    switch (typeof value) {
-        case "number":
-            return LongBits.fromNumber(value);
-        case "string":
-            if (util.Long)
-                value = util.Long.fromString(value);
-                // fallthrough
-            else
-                return LongBits.fromNumber(parseInt(value, 10));
+    if (typeof value === "number")
+        return LongBits.fromNumber(value);
+    if (typeof value === "string") {
+        if (util.Long)
+            value = util.Long.fromString(value);
+        else
+            return LongBits.fromNumber(parseInt(value, 10));
     }
-    return (value.low || value.high) ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
+    return value.low || value.high ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
 };
 
 /**

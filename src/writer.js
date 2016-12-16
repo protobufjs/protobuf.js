@@ -58,11 +58,10 @@ function noop() {} // eslint-disable-line no-empty-function
  * @memberof Writer
  * @constructor
  * @param {Writer} writer Writer to copy state from
- * @param {State} next Next state entry
  * @private
  * @ignore
  */
-function State(writer, next) {
+function State(writer) {
 
     /**
      * Current head.
@@ -86,7 +85,7 @@ function State(writer, next) {
      * Next state.
      * @type {?State}
      */
-    this.next = next;
+    this.next = writer.states;
 }
 
 Writer.State = State;
@@ -186,15 +185,14 @@ function writeVarint32(val, buf, pos) {
  * @returns {Writer} `this`
  */
 WriterPrototype.uint32 = function write_uint32(value) {
-    value >>>= 0;
-    return value < 128
-        ? this.push(writeByte, 1, value)
-        : this.push(writeVarint32,
-              value < 16384     ? 2
-            : value < 2097152   ? 3
-            : value < 268435456 ? 4
-            :                     5
-        , value);
+    value = value >>> 0;
+    return this.push(writeVarint32,
+          value < 128       ? 1
+        : value < 16384     ? 2
+        : value < 2097152   ? 3
+        : value < 268435456 ? 4
+        :                     5
+    , value);
 };
 
 /**
@@ -437,11 +435,11 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack.
- * Calling {@link Writer#}, {@link Writer#reset} or {@link Writer#finish} resets the writer to the previous state.
+ * Calling {@link Writer#reset} or {@link Writer#ldelim} resets the writer to the previous state.
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {
-    this.states = new State(this, this.states);
+    this.states = new State(this);
     this.head = this.tail = new Op(noop, 0, 0);
     this.len = 0;
     return this;
@@ -474,9 +472,9 @@ WriterPrototype.ldelim = function ldelim(id) {
         tail = this.tail,
         len  = this.len;
     this.reset();
-    if (id !== undefined)
-        this.uint32(id << 3 | 2);
-    this.uint32(len);
+    if (id)
+        this.uint32((id << 3 | 2) >>> 0);
+    this.uint32(len >>> 0);
     this.tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;
@@ -484,19 +482,20 @@ WriterPrototype.ldelim = function ldelim(id) {
 };
 
 /**
- * Finishes the current sequence of write operations and frees all resources.
+ * Finishes the write operation.
  * @returns {Uint8Array} Finished buffer
  */
 WriterPrototype.finish = function finish() {
     var head = this.head.next, // skip noop
-        buf  = this.constructor.alloc(this.len);
-    this.reset();
-    var pos = 0;
+        buf  = this.constructor.alloc(this.len),
+        pos  = 0;
     while (head) {
         head.fn(head.val, buf, pos);
         pos += head.len;
         head = head.next;
     }
+    this.head = this.tail = null; // gc
+    this.len = 0;
     return buf;
 };
 

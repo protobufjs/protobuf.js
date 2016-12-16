@@ -59,33 +59,13 @@ ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.sli
  * @returns {number} Value read
  */
 ReaderPrototype.int32 = function read_int32() {
-    // 1 byte
     var octet = this.buf[this.pos++],
         value = octet & 127;
-    if (octet > 127) { // false if octet is undefined (pos >= len)
-        // 2 bytes
-        octet = this.buf[this.pos++];
-        value |= (octet & 127) << 7;
-        if (octet > 127) {
-            // 3 bytes
-            octet = this.buf[this.pos++];
-            value |= (octet & 127) << 14;
-            if (octet > 127) {
-                // 4 bytes
-                octet = this.buf[this.pos++];
-                value |= (octet & 127) << 21;
-                if (octet > 127) {
-                    // 5 bytes
-                    octet = this.buf[this.pos++];
-                    value |= octet << 28;
-                    if (octet > 127) {
-                        // 6..10 bytes (sign extended)
-                        this.pos += 5;
-                    }
-                }
-            }
-        }
-    }
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) <<  7;
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 14;
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 21;
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 28;
+    if (octet > 127)   this.pos += 5; } } } }
     if (this.pos > this.len) {
         this.pos = this.len;
         throw indexOutOfRange(this);
@@ -113,49 +93,52 @@ ReaderPrototype.sint32 = function read_sint32() {
 /* eslint-disable no-invalid-this */
 
 function readLongVarint() {
-    var lo = 0, hi = 0,
-        i  = 0, b  = 0;
-    if (this.len - this.pos > 9) { // fast route
+    var bits = new LongBits(0, 0),
+        i = 0, b = 0;
+    if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
-            b = this.buf[this.pos++];
-            lo |= (b & 127) << i * 7;
+            b = this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
             if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
+                return bits;
         }
-        b = this.buf[this.pos++];
-        lo |= (b & 127) << 28;
-        hi |= (b & 127) >> 4;
+        b = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
         if (b < 128)
-            return new LongBits(lo >>> 0, hi >>> 0);
-        for (i = 0; i < 5; ++i) {
-            b = this.buf[this.pos++];
-            hi |= (b & 127) << i * 7 + 3;
-            if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
-        }
+            return bits;
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++];
-            lo |= (b & 127) << i * 7;
+            b = this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
             if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
+                return bits;
         }
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
-        b = this.buf[this.pos++];
-        lo |= (b & 127) << 28;
-        hi |= (b & 127) >> 4;
+        b = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
         if (b < 128)
-            return new LongBits(lo >>> 0, hi >>> 0);
+            return bits;
+    }
+    if (this.len - this.pos > 4) { // fast route (hi)
+        for (i = 0; i < 5; ++i) {
+            b = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
+            if (b < 128)
+                return bits;
+        }
+    } else {
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++];
-            hi |= (b & 127) << i * 7 + 3;
+            b = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
             if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
+                return bits;
         }
     }
     throw Error("invalid varint encoding");

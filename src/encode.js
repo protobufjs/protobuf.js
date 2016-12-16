@@ -68,11 +68,12 @@ function encode(message, writer) {
 
         // Non-repeated
         } else {
-            var value = message[field.name];
+            var value = message[field.name],
+                longVal = field.long && typeof value === "number" ? util.LongBits.fromNumber(value) : value;
             if (
                 field.partOf && message[field.partOf.name] === field.name
                 ||
-                (field.required || value !== undefined) && (field.long ? util.longNeq(value, field.defaultValue) : value !== field.defaultValue)
+                (field.required || value !== undefined) && (field.long ? longVal.lo !== field.defaultValue.low || longVal.hi !== field.defaultValue.high : value !== field.defaultValue)
             ) {
                 if (wireType !== undefined)
                     writer.uint32(field.id << 3 | wireType)[type](value);
@@ -106,6 +107,7 @@ encode.generate = function generate(mtype) {
     ("w||(w=Writer.create())");
 
     var i;
+    var hasLongVar = false;
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -157,9 +159,14 @@ encode.generate = function generate(mtype) {
         } else if (!field.partOf) {
             if (!field.required) {
 
-                if (field.long) gen
-    ("if(m%s!==undefined&&util.longNeq(m%s,%j))", prop, prop, field.defaultValue);
-                else gen
+                if (field.long) {
+                    if (!hasLongVar) { gen
+    ("var l");
+                        hasLongVar = true;
+                    }
+                    gen
+    ("if(m%s!==undefined&&((l=typeof m%s===\"object\"?m%s:util.LongBits.from(m%s)).lo!==%d||l.hi!==%d))", prop, prop, prop, prop, field.defaultValue.low, field.defaultValue.high);
+                } else gen
     ("if(m%s!==undefined&&m%s!==%j)", prop, prop, field.defaultValue);
 
             }

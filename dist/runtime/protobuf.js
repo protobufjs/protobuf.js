@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.0 (c) 2016 Daniel Wirtz
- * Compiled Thu, 15 Dec 2016 18:20:04 UTC
+ * Compiled Fri, 16 Dec 2016 11:35:47 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -489,33 +489,13 @@ ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.sli
  * @returns {number} Value read
  */
 ReaderPrototype.int32 = function read_int32() {
-    // 1 byte
     var octet = this.buf[this.pos++],
         value = octet & 127;
-    if (octet > 127) { // false if octet is undefined (pos >= len)
-        // 2 bytes
-        octet = this.buf[this.pos++];
-        value |= (octet & 127) << 7;
-        if (octet > 127) {
-            // 3 bytes
-            octet = this.buf[this.pos++];
-            value |= (octet & 127) << 14;
-            if (octet > 127) {
-                // 4 bytes
-                octet = this.buf[this.pos++];
-                value |= (octet & 127) << 21;
-                if (octet > 127) {
-                    // 5 bytes
-                    octet = this.buf[this.pos++];
-                    value |= octet << 28;
-                    if (octet > 127) {
-                        // 6..10 bytes (sign extended)
-                        this.pos += 5;
-                    }
-                }
-            }
-        }
-    }
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) <<  7;
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 14;
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 21;
+    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 28;
+    if (octet > 127)   this.pos += 5; } } } }
     if (this.pos > this.len) {
         this.pos = this.len;
         throw indexOutOfRange(this);
@@ -543,49 +523,52 @@ ReaderPrototype.sint32 = function read_sint32() {
 /* eslint-disable no-invalid-this */
 
 function readLongVarint() {
-    var lo = 0, hi = 0,
-        i  = 0, b  = 0;
-    if (this.len - this.pos > 9) { // fast route
+    var bits = new LongBits(0, 0),
+        i = 0, b = 0;
+    if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
-            b = this.buf[this.pos++];
-            lo |= (b & 127) << i * 7;
+            b = this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
             if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
+                return bits;
         }
-        b = this.buf[this.pos++];
-        lo |= (b & 127) << 28;
-        hi |= (b & 127) >> 4;
+        b = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
         if (b < 128)
-            return new LongBits(lo >>> 0, hi >>> 0);
-        for (i = 0; i < 5; ++i) {
-            b = this.buf[this.pos++];
-            hi |= (b & 127) << i * 7 + 3;
-            if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
-        }
+            return bits;
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++];
-            lo |= (b & 127) << i * 7;
+            b = this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
             if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
+                return bits;
         }
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
-        b = this.buf[this.pos++];
-        lo |= (b & 127) << 28;
-        hi |= (b & 127) >> 4;
+        b = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
         if (b < 128)
-            return new LongBits(lo >>> 0, hi >>> 0);
+            return bits;
+    }
+    if (this.len - this.pos > 4) { // fast route (hi)
+        for (i = 0; i < 5; ++i) {
+            b = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
+            if (b < 128)
+                return bits;
+        }
+    } else {
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++];
-            hi |= (b & 127) << i * 7 + 3;
+            b = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
             if (b < 128)
-                return new LongBits(lo >>> 0, hi >>> 0);
+                return bits;
         }
     }
     throw Error("invalid varint encoding");
@@ -1092,17 +1075,15 @@ LongBits.fromNumber = function fromNumber(value) {
  * @returns {util.LongBits} Instance
  */
 LongBits.from = function from(value) {
-    switch (typeof value) {
-        case "number":
-            return LongBits.fromNumber(value);
-        case "string":
-            if (util.Long)
-                value = util.Long.fromString(value);
-                // fallthrough
-            else
-                return LongBits.fromNumber(parseInt(value, 10));
+    if (typeof value === "number")
+        return LongBits.fromNumber(value);
+    if (typeof value === "string") {
+        if (util.Long)
+            value = util.Long.fromString(value);
+        else
+            return LongBits.fromNumber(parseInt(value, 10));
     }
-    return (value.low || value.high) ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
+    return value.low || value.high ? new LongBits(value.low >>> 0, value.high >>> 0) : zero;
 };
 
 /**
@@ -1308,6 +1289,7 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @param {number|Long} a First value
  * @param {number|Long} b Second value
  * @returns {boolean} `true` if not equal
+ * @deprecated
  */
 util.longNeq = function longNeq(a, b) {
     return typeof a === "number"
@@ -1433,11 +1415,10 @@ function noop() {} // eslint-disable-line no-empty-function
  * @memberof Writer
  * @constructor
  * @param {Writer} writer Writer to copy state from
- * @param {State} next Next state entry
  * @private
  * @ignore
  */
-function State(writer, next) {
+function State(writer) {
 
     /**
      * Current head.
@@ -1461,7 +1442,7 @@ function State(writer, next) {
      * Next state.
      * @type {?State}
      */
-    this.next = next;
+    this.next = writer.states;
 }
 
 Writer.State = State;
@@ -1561,15 +1542,14 @@ function writeVarint32(val, buf, pos) {
  * @returns {Writer} `this`
  */
 WriterPrototype.uint32 = function write_uint32(value) {
-    value >>>= 0;
-    return value < 128
-        ? this.push(writeByte, 1, value)
-        : this.push(writeVarint32,
-              value < 16384     ? 2
-            : value < 2097152   ? 3
-            : value < 268435456 ? 4
-            :                     5
-        , value);
+    value = value >>> 0;
+    return this.push(writeVarint32,
+          value < 128       ? 1
+        : value < 16384     ? 2
+        : value < 2097152   ? 3
+        : value < 268435456 ? 4
+        :                     5
+    , value);
 };
 
 /**
@@ -1812,11 +1792,11 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack.
- * Calling {@link Writer#}, {@link Writer#reset} or {@link Writer#finish} resets the writer to the previous state.
+ * Calling {@link Writer#reset} or {@link Writer#ldelim} resets the writer to the previous state.
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {
-    this.states = new State(this, this.states);
+    this.states = new State(this);
     this.head = this.tail = new Op(noop, 0, 0);
     this.len = 0;
     return this;
@@ -1849,9 +1829,9 @@ WriterPrototype.ldelim = function ldelim(id) {
         tail = this.tail,
         len  = this.len;
     this.reset();
-    if (id !== undefined)
-        this.uint32(id << 3 | 2);
-    this.uint32(len);
+    if (id)
+        this.uint32((id << 3 | 2) >>> 0);
+    this.uint32(len >>> 0);
     this.tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;
@@ -1859,19 +1839,20 @@ WriterPrototype.ldelim = function ldelim(id) {
 };
 
 /**
- * Finishes the current sequence of write operations and frees all resources.
+ * Finishes the write operation.
  * @returns {Uint8Array} Finished buffer
  */
 WriterPrototype.finish = function finish() {
     var head = this.head.next, // skip noop
-        buf  = this.constructor.alloc(this.len);
-    this.reset();
-    var pos = 0;
+        buf  = this.constructor.alloc(this.len),
+        pos  = 0;
     while (head) {
         head.fn(head.val, buf, pos);
         pos += head.len;
         head = head.next;
     }
+    this.head = this.tail = null; // gc
+    this.len = 0;
     return buf;
 };
 

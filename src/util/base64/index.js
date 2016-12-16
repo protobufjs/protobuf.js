@@ -23,10 +23,10 @@ base64.length = function length(string) {
 };
 
 // Base64 encoding table
-var b64 = [];
+var b64 = new Array(64);
 
 // Base64 decoding table
-var s64 = [];
+var s64 = new Array(123);
 
 // 65..90, 97..122, 48..57, 43, 47
 for (var i = 0; i < 64;)

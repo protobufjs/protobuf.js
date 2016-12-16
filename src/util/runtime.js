@@ -92,6 +92,7 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @param {number|Long} a First value
  * @param {number|Long} b Second value
  * @returns {boolean} `true` if not equal
+ * @deprecated
  */
 util.longNeq = function longNeq(a, b) {
     return typeof a === "number"

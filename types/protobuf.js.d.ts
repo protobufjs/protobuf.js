@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 15 Dec 2016 18:21:35 UTC
+// Generated Fri, 16 Dec 2016 11:35:57 UTC
 declare module "protobufjs" {
 
     /**
@@ -2018,6 +2018,7 @@ declare module "protobufjs" {
          * @param {number|Long} a First value
          * @param {number|Long} b Second value
          * @returns {boolean} `true` if not equal
+         * @deprecated
          */
         function longNeq(a: (number|Long), b: (number|Long)): boolean;
 
@@ -2323,7 +2324,7 @@ declare module "protobufjs" {
 
         /**
          * Forks this writer's state by pushing it to a stack.
-         * Calling {@link Writer#}, {@link Writer#reset} or {@link Writer#finish} resets the writer to the previous state.
+         * Calling {@link Writer#reset} or {@link Writer#ldelim} resets the writer to the previous state.
          * @returns {Writer} `this`
          */
         fork(): Writer;
@@ -2342,7 +2343,7 @@ declare module "protobufjs" {
         ldelim(id?: number): Writer;
 
         /**
-         * Finishes the current sequence of write operations and frees all resources.
+         * Finishes the write operation.
          * @returns {Uint8Array} Finished buffer
          */
         finish(): Uint8Array;

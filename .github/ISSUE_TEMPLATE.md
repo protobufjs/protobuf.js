@@ -1,15 +1,11 @@
-protobuf.js version: <fill in>
+protobuf.js version: <please fill in>
 
-### How to reproduce ###
+<please describe the expected and actual behavior>
 
 ```js
-<please add a code snippet>
+<please provide a code snippet for reproduction>
 ```
 
-### Expected behavior ###
-
-<please describe>
-
-### Actual behavior ###
-
-<please describe>
+```
+<please paste the stack trace of the error if applicable>
+```

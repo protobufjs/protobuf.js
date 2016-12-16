@@ -52,13 +52,13 @@ function decode(readerOrBuffer, length) {
                 if (field.packed && types.packed[type] !== undefined && wireType === 2) {
                     var plimit = reader.uint32() + reader.pos;
                     while (reader.pos < plimit)
-                        values[values.length] = reader[type]();
+                        values.push(reader[type]());
 
                 // Non-packed
                 } else if (types.basic[type] === undefined)
-                    values[values.length] = field.resolvedType.decode(reader, reader.uint32());
+                    values.push(field.resolvedType.decode(reader, reader.uint32()));
                 else
-                    values[values.length] = reader[type]();
+                    values.push(reader[type]());
 
             // Non-repeated
             } else if (types.basic[type] === undefined)
@@ -124,12 +124,12 @@ decode.generate = function generate(mtype) {
                 ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
-                        ("m%s[m%s.length]=r.%s()", prop, prop, type)
+                        ("m%s.push(r.%s())", prop, type)
                 ("}else");
             if (types.basic[type] === undefined) gen
-                    ("m%s[m%s.length]=types[%d].decode(r,r.uint32())", prop, prop, i, i);
+                    ("m%s.push(types[%d].decode(r,r.uint32()))", prop, i, i);
             else gen
-                    ("m%s[m%s.length]=r.%s()", prop, prop, type);
+                    ("m%s.push(r.%s())", prop, type);
 
         } else if (types.basic[type] === undefined) gen
                 ("m%s=types[%d].decode(r,r.uint32())", prop, i, i);

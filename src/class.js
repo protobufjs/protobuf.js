@@ -2,8 +2,9 @@
 module.exports = Class;
 
 var Message = require("./message"),
-    Type    = require("./type"),
     util    = require("./util");
+
+var Type; // cyclic
 
 var _TypeError = util._TypeError;
 
@@ -24,6 +25,8 @@ function Class(type) {
  * @returns {Message} Message prototype
  */
 Class.create = function create(type, ctor) {
+    if (!Type)
+        Type = require("./type");
     if (!(type instanceof Type))
         throw _TypeError("type", "a Type");
     if (ctor) {

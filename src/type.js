@@ -18,9 +18,10 @@ var Enum      = require("./enum"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
     util      = require("./util");
-var encode    = require("./encode"),
-    decode    = require("./decode"),
-    verify    = require("./verify");
+
+var encode, // might become cyclic
+    decode, // might become cyclic
+    verify; // cyclic
 
 /**
  * Constructs a new reflected message type instance.
@@ -328,6 +329,8 @@ TypePrototype.create = function create(properties) {
  * @returns {Writer} writer
  */
 TypePrototype.encode = function encode_setup(message, writer) {
+    if (!encode)
+        encode = require("./encode");
     return (this.encode = util.codegen.supported
         ? encode.generate(this).eof(this.getFullName() + "$encode", {
               Writer : Writer,
@@ -355,6 +358,8 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @returns {Message} Decoded message
  */
 TypePrototype.decode = function decode_setup(readerOrBuffer, length) {
+    if (!decode)
+        decode = require("./decode");
     return (this.decode = util.codegen.supported
         ? decode.generate(this).eof(this.getFullName() + "$decode", {
               Reader : Reader,
@@ -381,6 +386,8 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 TypePrototype.verify = function verify_setup(message) {
+    if (!verify)
+        verify = require("./verify");
     return (this.verify = util.codegen.supported
         ? verify.generate(this).eof(this.getFullName() + "$verify", {
               types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
