@@ -3295,7 +3295,7 @@
     <div class="nameContainer">
         <h4 class="name" id="parse">
             
-            parse<span class="signature">(source, <span class="optional">root</span>, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#ParserResult">ParserResult</a> }</span>
+            parse<span class="signature">(source, root, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#ParserResult">ParserResult</a> }</span>
         </h4>
     
         
@@ -3377,8 +3377,33 @@
             
                 
 <span class="param-type"><a href="Root.html">Root</a></span>
-|
 
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Root to populate</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
 <span class="param-type"><a href="global.html#ParseOptions">ParseOptions</a></span>
 
 
@@ -3396,7 +3421,157 @@
                         
                     
                 
-                <p>Root to populate</p></td>
+                <p>Parse options</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="global.html#ParserResult">ParserResult</a>
+                        
+                    
+            </td>
+            <td class="description last">Parser result</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="parse2">
+            
+            parse<span class="signature">(source, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#ParserResult">ParserResult</a> }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js#L556">line 556</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Parses the given .proto source and returns an object with the parsed contents.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Source contents</p></td>
         </tr>
 	
 	
@@ -5062,7 +5237,7 @@
 <dd>
     
     <div class="description">
-        <p>Options modifying the the behavior of <a href="global.html#parse">parse</a>.</p>
+        <p>Options modifying the behavior of <a href="global.html#parse">parse</a>.</p>
     </div>
     
     
