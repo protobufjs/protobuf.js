@@ -26,8 +26,13 @@ exports.main = function(args, callback) {
             root   : "r"
         },
         string: [ "target", "out", "path", "wrap", "root" ],
+        boolean: [ "keep-case", "encode", "decode", "verify", "delimited" ],
         default: {
-            target: "json"
+            target: "json",
+            encode: true,
+            decode: true,
+            verify: true,
+            delimited: true
         }
     });
 
@@ -55,15 +60,21 @@ exports.main = function(args, callback) {
                 "",
                 "  -o, --out       Saves to a file instead of writing to stdout.",
                 "",
-                "  -w, --wrap      Specifies the wrapper to use for *-module targets. Also accepts a path.",
+                "  Module targets only:",
+                "",
+                "  -w, --wrap      Specifies the wrapper to use. Also accepts a path to require a custom wrapper.",
                 "",
                 "                  default   Default wrapper supporting both CommonJS and AMD",
                 "                  commonjs  CommonJS only wrapper",
                 "                  amd       AMD only wrapper",
                 "",
-                "  -r, --root      Specifies an alternative protobuf.roots name for *-module targets.",
+                "  -r, --root      Specifies an alternative protobuf.roots name.",
                 "",
-                "  Static code generation only:",
+                "  Proto sources only:",
+                "",
+                "  --keep-case     Keeps field casing instead of converting to camel case (not recommended).",
+                "",
+                "  Static targets only:",
                 "",
                 "  --no-encode     Does not generate encode functions.",
                 "  --no-decode     Does not generate decode functions.",
@@ -104,7 +115,11 @@ exports.main = function(args, callback) {
         return filepath;
     };
 
-    root.load(files, function(err) {
+    var parseOptions = {
+        "keepCase": argv["keep-case"] || false
+    };
+
+    root.load(files, parseOptions, function(err) {
         if (err) {
             if (callback)
                 return callback(err);

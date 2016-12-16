@@ -271,7 +271,7 @@ function buildType(ref, type) {
         push("});");
     });
     
-    if (config.encode !== false) {
+    if (config.encode) {
 
         // #encode
         push("");
@@ -287,7 +287,7 @@ function buildType(ref, type) {
             util   : "$protobuf.util"
         });
 
-        if (config.delimited !== false) {
+        if (config.delimited) {
 
             // #encodeDelimited
             push("");
@@ -307,7 +307,7 @@ function buildType(ref, type) {
 
     }
 
-    if (config.decode !== false) {
+    if (config.decode) {
 
         // #decode
         push("");
@@ -323,7 +323,7 @@ function buildType(ref, type) {
             util   : "$protobuf.util"
         });
 
-        if (config.delimited !== false) {
+        if (config.delimited) {
 
             // #decodeDelimited
             push("");
@@ -342,7 +342,7 @@ function buildType(ref, type) {
         }
     }
 
-    if (config.verify !== false) {
+    if (config.verify) {
 
         // #verify
         push("");

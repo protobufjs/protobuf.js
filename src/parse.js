@@ -32,18 +32,28 @@ function lower(token) {
  * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
  * @property {Root} root Populated root instance
  */
-/**/
+
+/**
+ * Options modifying the the behavior of {@link parse}.
+ * @typedef ParseOptions
+ * @type {Object}
+ * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
+ */
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
  * @param {string} source Source contents
- * @param {Root} [root] Root to populate
+ * @param {Root|ParseOptions} [root] Root to populate
+ * @param {ParseOptions} [options] Parse options
  * @returns {ParserResult} Parser result
  */
-function parse(source, root) {
+function parse(source, root, options) {
     /* eslint-disable callback-return */
-    if (!root)
+    if (!(root instanceof Root)) {
         root = new Root();
+        options = root || {};
+    } else if (!options)
+        options = {};
 
     var tn = tokenize(source),
         next = tn.next,
@@ -267,7 +277,8 @@ function parse(source, root) {
         var name = next();
         if (!nameRe.test(name))
             throw illegal(name, "name");
-        name = camelCase(name);
+        if (!options.keepCase)
+            name = camelCase(name);
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new Field(name, id, type, rule, extend));
@@ -289,7 +300,8 @@ function parse(source, root) {
         var name = next();
         if (!nameRe.test(name))
             throw illegal(name, "name");
-        name = camelCase(name);
+        if (!options.keepCase)
+            name = camelCase(name);
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new MapField(name, id, keyType, valueType));
@@ -300,7 +312,8 @@ function parse(source, root) {
         var name = next();
         if (!nameRe.test(name))
             throw illegal(name, "name");
-        name = camelCase(name);
+        if (!options.keepCase)
+            name = camelCase(name);
         var oneof = new OneOf(name);
         if (skip("{", true)) {
             while ((token = next()) !== "}") {

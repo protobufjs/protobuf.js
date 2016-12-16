@@ -62,10 +62,15 @@ function SYNC() {} // eslint-disable-line no-empty-function
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
+ * @param {ParseOptions} options Parse options
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
  */
-RootPrototype.load = function load(filename, callback) {
+RootPrototype.load = function load(filename, options, callback) {
+    if (typeof options === 'function') {
+        callback = options;
+        options = undefined;
+    }
     var self = this;
     if (!callback)
         return util.asPromise(load, self, filename);
@@ -89,7 +94,7 @@ RootPrototype.load = function load(filename, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require("./parse")(source, self);
+                var parsed = require("./parse")(source, self, options);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -179,6 +184,15 @@ RootPrototype.load = function load(filename, callback) {
         finish(null, self);
     return undefined;
 };
+// function load(filename:string, options:ParseOptions, callback:LoadCallback):undefined
+
+/**
+ * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
+ * @param {string|string[]} filename Names of one or multiple files to load
+ * @param {LoadCallback} callback Callback function
+ * @returns {undefined}
+ * @variation 2
+ */
 // function load(filename:string, callback:LoadCallback):undefined
 
 /**
@@ -186,10 +200,11 @@ RootPrototype.load = function load(filename, callback) {
  * @name Root#load
  * @function
  * @param {string|string[]} filename Names of one or multiple files to load
+ * @param {ParseOptions} [options] Parse options
  * @returns {Promise<Root>} Promise
- * @variation 2
+ * @variation 3
  */
-// function load(filename:string):Promise<Root>
+// function load(filename:string, [options:ParseOptions]):Promise<Root>
 
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.

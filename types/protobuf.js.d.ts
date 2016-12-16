@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Fri, 16 Dec 2016 13:13:58 UTC
+// Generated Fri, 16 Dec 2016 14:07:14 UTC
 declare module "protobufjs" {
 
     /**
@@ -1008,12 +1008,23 @@ declare module "protobufjs" {
     }
 
     /**
+     * Options modifying the the behavior of {@link parse}.
+     * @typedef ParseOptions
+     * @type {Object}
+     * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
+     */
+    interface ParseOptions {
+        keepCase: boolean;
+    }
+
+    /**
      * Parses the given .proto source and returns an object with the parsed contents.
      * @param {string} source Source contents
-     * @param {Root} [root] Root to populate
+     * @param {Root|ParseOptions} [root] Root to populate
+     * @param {ParseOptions} [options] Parse options
      * @returns {ParserResult} Parser result
      */
-    function parse(source: string, root?: Root): ParserResult;
+    function parse(source: string, root?: (Root|ParseOptions), options?: ParseOptions): ParserResult;
 
     /**
      * Constructs a new reader instance using the specified buffer.
@@ -1257,20 +1268,22 @@ declare module "protobufjs" {
         /**
          * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
          * @param {string|string[]} filename Names of one or multiple files to load
+         * @param {ParseOptions} options Parse options
          * @param {LoadCallback} callback Callback function
          * @returns {undefined}
          */
-        load(filename: (string|string[]), callback: LoadCallback): void;
+        load(filename: (string|string[]), options: ParseOptions, callback: LoadCallback): void;
 
         /**
          * Loads one or multiple .proto or preprocessed .json files into this root namespace and returns a promise.
          * @name Root#load
          * @function
          * @param {string|string[]} filename Names of one or multiple files to load
+         * @param {ParseOptions} [options] Parse options
          * @returns {Promise<Root>} Promise
-         * @variation 2
+         * @variation 3
          */
-        load(filename: (string|string[])): Promise<Root>;
+        load(filename: (string|string[]), options?: ParseOptions): Promise<Root>;
 
         /**
          * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
