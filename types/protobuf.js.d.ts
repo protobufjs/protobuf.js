@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Fri, 16 Dec 2016 14:38:04 UTC
+// Generated Fri, 16 Dec 2016 15:34:54 UTC
 declare module "protobufjs" {
 
     /**
@@ -1624,32 +1624,159 @@ declare module "protobufjs" {
         /**
          * Basic type wire types.
          * @type {Object.<string,number>}
+         * @property {number} double=1 Fixed64 wire type
+         * @property {number} float=5 Fixed32 wire type
+         * @property {number} int32=0 Varint wire type
+         * @property {number} uint32=0 Varint wire type
+         * @property {number} sint32=0 Varint wire type
+         * @property {number} fixed32=5 Fixed32 wire type
+         * @property {number} sfixed32=5 Fixed32 wire type
+         * @property {number} int64=0 Varint wire type
+         * @property {number} uint64=0 Varint wire type
+         * @property {number} sint64=0 Varint wire type
+         * @property {number} fixed64=1 Fixed64 wire type
+         * @property {number} sfixed64=1 Fixed64 wire type
+         * @property {number} bool=0 Varint wire type
+         * @property {number} string=2 Ldelim wire type
+         * @property {number} bytes=2 Ldelim wire type
          */
-        var basic: { [k: string]: number };
+        var basic: {
+            "double": number,
+            "float": number,
+            "int32": number,
+            "uint32": number,
+            "sint32": number,
+            "fixed32": number,
+            "sfixed32": number,
+            "int64": number,
+            "uint64": number,
+            "sint64": number,
+            "fixed64": number,
+            "sfixed64": number,
+            "bool": number,
+            "string": number,
+            "bytes": number
+        };
 
         /**
          * Basic type defaults.
          * @type {Object.<string,*>}
+         * @property {number} double=0 Double default
+         * @property {number} float=0 Float default
+         * @property {number} int32=0 Int32 default
+         * @property {number} uint32=0 Uint32 default
+         * @property {number} sint32=0 Sint32 default
+         * @property {number} fixed32=0 Fixed32 default
+         * @property {number} sfixed32=0 Sfixed32 default
+         * @property {number} int64=0 Int64 default
+         * @property {number} uint64=0 Uint64 default
+         * @property {number} sint64=0 Sint32 default
+         * @property {number} fixed64=0 Fixed64 default
+         * @property {number} sfixed64=0 Sfixed64 default
+         * @property {boolean} bool=false Bool default
+         * @property {string} string="" String default
+         * @property {Array.<number>} bytes=Array(0) Bytes default
+         * @property {Message} message=null Message default
          */
-        var defaults: { [k: string]: any };
+        var defaults: {
+            "double": number,
+            "float": number,
+            "int32": number,
+            "uint32": number,
+            "sint32": number,
+            "fixed32": number,
+            "sfixed32": number,
+            "int64": number,
+            "uint64": number,
+            "sint64": number,
+            "fixed64": number,
+            "sfixed64": number,
+            "bool": boolean,
+            "string": string,
+            "bytes": number[],
+            "message": Message
+        };
 
         /**
          * Basic long type wire types.
          * @type {Object.<string,number>}
+         * @property {number} int64=0 Varint wire type
+         * @property {number} uint64=0 Varint wire type
+         * @property {number} sint64=0 Varint wire type
+         * @property {number} fixed64=1 Fixed64 wire type
+         * @property {number} sfixed64=1 Fixed64 wire type
          */
-        var long: { [k: string]: number };
+        var long: {
+            "int64": number,
+            "uint64": number,
+            "sint64": number,
+            "fixed64": number,
+            "sfixed64": number
+        };
 
         /**
          * Allowed types for map keys with their associated wire type.
          * @type {Object.<string,number>}
+         * @property {number} int32=0 Varint wire type
+         * @property {number} uint32=0 Varint wire type
+         * @property {number} sint32=0 Varint wire type
+         * @property {number} fixed32=5 Fixed32 wire type
+         * @property {number} sfixed32=5 Fixed32 wire type
+         * @property {number} int64=0 Varint wire type
+         * @property {number} uint64=0 Varint wire type
+         * @property {number} sint64=0 Varint wire type
+         * @property {number} fixed64=1 Fixed64 wire type
+         * @property {number} sfixed64=1 Fixed64 wire type
+         * @property {number} bool=0 Varint wire type
+         * @property {number} string=2 Ldelim wire type
          */
-        var mapKey: { [k: string]: number };
+        var mapKey: {
+            "int32": number,
+            "uint32": number,
+            "sint32": number,
+            "fixed32": number,
+            "sfixed32": number,
+            "int64": number,
+            "uint64": number,
+            "sint64": number,
+            "fixed64": number,
+            "sfixed64": number,
+            "bool": number,
+            "string": number
+        };
 
         /**
          * Allowed types for packed repeated fields with their associated wire type.
          * @type {Object.<string,number>}
+         * @property {number} double=1 Fixed64 wire type
+         * @property {number} float=5 Fixed32 wire type
+         * @property {number} int32=0 Varint wire type
+         * @property {number} uint32=0 Varint wire type
+         * @property {number} sint32=0 Varint wire type
+         * @property {number} fixed32=5 Fixed32 wire type
+         * @property {number} sfixed32=5 Fixed32 wire type
+         * @property {number} int64=0 Varint wire type
+         * @property {number} uint64=0 Varint wire type
+         * @property {number} sint64=0 Varint wire type
+         * @property {number} fixed64=1 Fixed64 wire type
+         * @property {number} sfixed64=1 Fixed64 wire type
+         * @property {number} bool=0 Varint wire type
          */
-        var packed: { [k: string]: number };
+        var packed: {
+            "double": number,
+            "float": number,
+            "int32": number,
+            "uint32": number,
+            "sint32": number,
+            "fixed32": number,
+            "sfixed32": number,
+            "int64": number,
+            "uint64": number,
+            "sint64": number,
+            "fixed64": number,
+            "sfixed64": number,
+            "bool": number
+        };
     }
 
     /**

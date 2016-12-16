@@ -400,7 +400,7 @@ While .proto and JSON files require the full library (about 18kb gzipped), prett
 
 Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
 
-When `new Function(...)` is supported (and it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.
+Where `new Function(...)` is supported (it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.
 
 Building
 --------

@@ -113,7 +113,7 @@ util.longNeq = function longNeq(a, b) {
  * @returns {boolean} `true` if not equal
  */
 util.longNe = function longNe(val, lo, hi) {
-    if (typeof val === 'object') // Long-like, null is invalid and throws
+    if (typeof val === "object") // Long-like, null is invalid and throws
         return val.low !== lo || val.high !== hi;
     var bits = util.LongBits.from(val);
     return bits.lo !== lo || bits.hi !== hi;

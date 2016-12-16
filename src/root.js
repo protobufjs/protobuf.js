@@ -67,7 +67,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, options, callback) {
-    if (typeof options === 'function') {
+    if (typeof options === "function") {
         callback = options;
         options = undefined;
     }
