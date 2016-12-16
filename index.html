@@ -1815,7 +1815,7 @@ usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production e
 usage: pbts [options] file1.js file2.js ...</code></pre><h3 id="descriptors-vs-static-modules">Descriptors vs. static modules</h3>
 <p>While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
 <p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
-<p>When <code>new Function(...)</code> is supported (and it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
+<p>Where <code>new Function(...)</code> is supported (it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
 <h2 id="building">Building</h2>
 <p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
 <pre class="prettyprint source"><code>$> git clone https://github.com/dcodeIO/protobuf.js.git
