@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@protobufjs/aspromise": "^1.0.3",
-    "@protobufjs/base64": "^1.0.2",
+    "@protobufjs/base64": "^1.0.3",
     "@protobufjs/codegen": "^1.0.2",
     "@protobufjs/eventemitter": "^1.0.3",
     "@protobufjs/extend": "^1.0.0",

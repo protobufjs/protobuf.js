@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Fri, 16 Dec 2016 11:35:57 UTC
+// Generated Fri, 16 Dec 2016 13:13:58 UTC
 declare module "protobufjs" {
 
     /**
@@ -2019,8 +2019,18 @@ declare module "protobufjs" {
          * @param {number|Long} b Second value
          * @returns {boolean} `true` if not equal
          * @deprecated
+         * @see Use {@link util.longNe} instead
          */
         function longNeq(a: (number|Long), b: (number|Long)): boolean;
+
+        /**
+         * Tests if a possibily long value equals the specified low and high bits.
+         * @param {number|string|Long} val Value to test
+         * @param {number} lo Low bits to test against
+         * @param {number} hi High bits to test against
+         * @returns {boolean} `true` if not equal
+         */
+        function longNe(val: (number|string|Long), lo: number, hi: number): boolean;
 
         /**
          * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.

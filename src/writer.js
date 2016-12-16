@@ -213,11 +213,10 @@ WriterPrototype.int32 = function write_int32(value) {
  * @returns {Writer} `this`
  */
 WriterPrototype.sint32 = function write_sint32(value) {
-    return this.uint32(value << 1 ^ value >> 31);
+    return this.uint32((value << 1 ^ value >> 31) >>> 0);
 };
 
 function writeVarint64(val, buf, pos) {
-    // tends to deoptimize. stays optimized when using bits directly.
     while (val.hi) {
         buf[pos++] = val.lo & 127 | 128;
         val.lo = (val.lo >>> 7 | val.hi << 25) >>> 0;
@@ -474,7 +473,7 @@ WriterPrototype.ldelim = function ldelim(id) {
     this.reset();
     if (id)
         this.uint32((id << 3 | 2) >>> 0);
-    this.uint32(len >>> 0);
+    this.uint32(len);
     this.tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;
@@ -495,7 +494,6 @@ WriterPrototype.finish = function finish() {
         head = head.next;
     }
     this.head = this.tail = null; // gc
-    this.len = 0;
     return buf;
 };
 

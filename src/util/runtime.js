@@ -93,6 +93,7 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @param {number|Long} b Second value
  * @returns {boolean} `true` if not equal
  * @deprecated
+ * @see Use {@link util.longNe} instead
  */
 util.longNeq = function longNeq(a, b) {
     return typeof a === "number"
@@ -102,6 +103,20 @@ util.longNeq = function longNeq(a, b) {
          : typeof b === "number"
             ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
+};
+
+/**
+ * Tests if a possibily long value equals the specified low and high bits.
+ * @param {number|string|Long} val Value to test
+ * @param {number} lo Low bits to test against
+ * @param {number} hi High bits to test against
+ * @returns {boolean} `true` if not equal
+ */
+util.longNe = function longNe(val, lo, hi) {
+    if (typeof val === 'object') // Long-like, null is invalid and throws
+        return val.low !== lo || val.high !== hi;
+    var bits = util.LongBits.from(val);
+    return bits.lo !== lo || bits.hi !== hi;
 };
 
 /**

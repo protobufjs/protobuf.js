@@ -40,7 +40,7 @@ if (process.execArgv.indexOf("--prof") < 0) {
 // Actual profiling code
 var protobuf = require("..");
 
-protobuf.util.codegen.verbose = true;
+// protobuf.util.codegen.verbose = true;
 
 var root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto")).toString("utf8")).root;
 var Test = root.lookup("Test");
