@@ -101,52 +101,52 @@ ReaderPrototype.sint32 = function read_sint32() {
 /* eslint-disable no-invalid-this */
 
 function readLongVarint() {
+    // tends to deopt with local vars for octet etc.
     var bits = new LongBits(0, 0),
-        i = 0,
-        octet = 0;
+        i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
-            octet= this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
-            if (octet < 128)
+            // 1st..4th
+            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
-        octet = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
-        if (octet < 128)
+        // 5th
+        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
+        if (this.buf[this.pos++] < 128)
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            octet = this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
-            if (octet < 128)
+            // 1st..4th
+            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
-        octet = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
-        if (octet < 128)
+        // 5th
+        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
+        if (this.buf[this.pos++] < 128)
             return bits;
     }
     if (this.len - this.pos > 4) { // fast route (hi)
         for (i = 0; i < 5; ++i) {
-            octet = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
-            if (octet < 128)
+            // 6th..10th
+            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
     } else {
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            octet = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
-            if (octet < 128)
+            // 6th..10th
+            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
     }

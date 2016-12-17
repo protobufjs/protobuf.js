@@ -16,24 +16,18 @@ var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
  * @memberof Writer
  * @constructor
  * @param {function(*, Uint8Array, number)} fn Function to call
- * @param {*} val Value to write
  * @param {number} len Value byte length
+ * @param {*} val Value to write
  * @private
  * @ignore
  */
-function Op(fn, val, len) {
+function Op(fn, len, val) {
 
     /**
      * Function to call.
      * @type {function(Uint8Array, number, *)}
      */
     this.fn = fn;
-
-    /**
-     * Value to write.
-     * @type {*}
-     */
-    this.val = val;
 
     /**
      * Value byte length.
@@ -43,9 +37,15 @@ function Op(fn, val, len) {
 
     /**
      * Next operation.
-     * @type {?Writer.Op}
+     * @type {Writer.Op|undefined}
      */
-    this.next = null;
+    // this.next = undefined;
+
+    /**
+     * Value to write.
+     * @type {*}
+     */
+    this.val = val; // type varies
 }
 
 Writer.Op = Op;
@@ -160,7 +160,7 @@ var WriterPrototype = Writer.prototype;
  * @returns {Writer} `this`
  */
 WriterPrototype.push = function push(fn, len, val) {
-    this.tail = this.tail.next = new Op(fn, val, len);
+    this.tail = this.tail.next = new Op(fn, len, val);
     this.len += len;
     return this;
 };
@@ -469,7 +469,7 @@ WriterPrototype.ldelim = function ldelim(id) {
         tail = this.tail,
         len  = this.len;
     this.reset();
-    if (id)
+    if (typeof id === 'number')
         this.uint32((id << 3 | 2) >>> 0);
     this.uint32(len);
     this.tail.next = head.next; // skip noop
