@@ -42,16 +42,24 @@ var protobuf = require("..");
 
 // protobuf.util.codegen.verbose = true;
 
-var root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto")).toString("utf8")).root;
-var Test = root.lookup("Test");
-var data = require("../bench/bench.json");
+var root, Test, data, count;
+if (process.argv.indexOf("--alt") < 0) {
+    root = protobuf.parse(fs.readFileSync(require.resolve("../bench/bench.proto")).toString("utf8")).root;
+    Test = root.lookup("Test");
+    data = require("../bench/bench.json");
+    count = 10000000;
+    process.stdout.write("bench.proto");
+} else {
+    root = protobuf.parse(fs.readFileSync(require.resolve("../tests/data/mapbox/vector_tile.proto")).toString("utf8")).root;
+    Test = root.lookup("vector_tile.Tile");
+    data = Test.decode(fs.readFileSync(require.resolve("../tests/data/mapbox/vector_tile.bin")));
+    count = 1000;
+    process.stdout.write("vector_tile.proto");
+}
 
-// Alternative mapbox data
-/* var root = protobuf.parse(fs.readFileSync(require.resolve("../tests/data/mapbox/vector_tile.proto")).toString("utf8")).root;
-var Test = root.lookup("vector_tile.Tile");
-var data = Test.decode(fs.readFileSync(require.resolve("../tests/data/mapbox/vector_tile.bin")));*/
-
-var count = process.argv.length > 3 ? parseInt(process.argv[3], 10) : 10000000;
+if (process.argv.length > 3 && /^\d+$/.test(process.argv[3]))
+    count = parseInt(process.argv[3], 10);
+console.log(" x " + count);
 
 function setupBrowser() {
     protobuf.Writer.create = function create_browser() { return new protobuf.Writer(); };

@@ -160,9 +160,7 @@ var WriterPrototype = Writer.prototype;
  * @returns {Writer} `this`
  */
 WriterPrototype.push = function push(fn, len, val) {
-    var op = new Op(fn, val, len);
-    this.tail.next = op;
-    this.tail = op;
+    this.tail = this.tail.next = new Op(fn, val, len);
     this.len += len;
     return this;
 };

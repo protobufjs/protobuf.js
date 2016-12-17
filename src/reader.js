@@ -54,31 +54,39 @@ var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
-/**
- * Reads a varint as a signed 32 bit value.
- * @returns {number} Value read
- */
-ReaderPrototype.int32 = function read_int32() {
-    var octet = this.buf[this.pos++],
-        value = octet & 127;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) <<  7;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 14;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 21;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 28;
-    if (octet > 127)   this.pos += 5; } } } }
-    if (this.pos > this.len) {
-        this.pos = this.len;
-        throw indexOutOfRange(this);
-    }
-    return value;
-};
-
+var read_uint32 = 
 /**
  * Reads a varint as an unsigned 32 bit value.
  * @returns {number} Value read
  */
 ReaderPrototype.uint32 = function read_uint32() {
-    return this.int32() >>> 0;
+    // FIXME: tends to soft-deopt with "Insufficient type feedback for generic named access", which
+    // is not a problem, but with --trace-deopt, node v4-v7 always crashes when the above happens.
+    var value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
+    if ((this.pos += 5) > this.len) {
+        this.pos = this.len;
+        throw indexOutOfRange(this, 10);
+    }
+    return value;
+};
+
+// See comment above. While unnecessary code, this prevents crashing with --trace-deopt (node 6.9.1).
+read_uint32.call({
+    buf: [255,255,255,255,15],
+    pos: 0,
+    len: 5
+});
+
+/**
+ * Reads a varint as a signed 32 bit value.
+ * @returns {number} Value read
+ */
+ReaderPrototype.int32 = function read_int32() {
+    return this.uint32() | 0;
 };
 
 /**
@@ -86,58 +94,59 @@ ReaderPrototype.uint32 = function read_uint32() {
  * @returns {number} Value read
  */
 ReaderPrototype.sint32 = function read_sint32() {
-    var value = this.int32();
-    return value >>> 1 ^ -(value & 1);
+    var value = this.uint32();
+    return value >>> 1 ^ -(value & 1) | 0;
 };
 
 /* eslint-disable no-invalid-this */
 
 function readLongVarint() {
     var bits = new LongBits(0, 0),
-        i = 0, b = 0;
+        i = 0,
+        octet = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
-            b = this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
-            if (b < 128)
+            octet= this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
+            if (octet < 128)
                 return bits;
         }
-        b = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
-        if (b < 128)
+        octet = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
+        if (octet < 128)
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
-            if (b < 128)
+            octet = this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
+            if (octet < 128)
                 return bits;
         }
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
-        b = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
-        if (b < 128)
+        octet = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
+        if (octet < 128)
             return bits;
     }
     if (this.len - this.pos > 4) { // fast route (hi)
         for (i = 0; i < 5; ++i) {
-            b = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
-            if (b < 128)
+            octet = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
+            if (octet < 128)
                 return bits;
         }
     } else {
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
-            if (b < 128)
+            octet = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
+            if (octet < 128)
                 return bits;
         }
     }
@@ -196,7 +205,7 @@ function read_sint64_number() {
  * @returns {boolean} Value read
  */
 ReaderPrototype.bool = function read_bool() {
-    return this.int32() !== 0;
+    return this.uint32() !== 0;
 };
 
 function readFixed32(buf, end) {
@@ -354,7 +363,7 @@ ReaderPrototype.double = function read_double() {
  * @returns {Uint8Array} Value read
  */
 ReaderPrototype.bytes = function read_bytes() {
-    var length = this.int32() >>> 0,
+    var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
     if (end > this.len)
@@ -411,7 +420,7 @@ ReaderPrototype.skipType = function(wireType) {
             break;
         case 3:
             do { // eslint-disable-line no-constant-condition
-                wireType = this.int32() & 7;
+                wireType = this.uint32() & 7;
                 if (wireType === 4)
                     break;
                 this.skipType(wireType);
@@ -524,7 +533,7 @@ function readStringBuffer_toString(buf, start, end) {
  * @override
  */
 BufferReaderPrototype.string = function read_string_buffer() {
-    var length = this.int32() >>> 0,
+    var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
     if (end > this.len)

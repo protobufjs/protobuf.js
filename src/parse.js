@@ -42,10 +42,12 @@ function lower(token) {
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
+ * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
  * @param {ParseOptions} [options] Parse options
  * @returns {ParserResult} Parser result
+ * @property {string} filename=null Currently processing file name for error reporting, if known
  */
 function parse(source, root, options) {
     /* eslint-disable callback-return */
@@ -74,7 +76,9 @@ function parse(source, root, options) {
     var ptr = root;
 
     function illegal(token, name) {
-        return Error("illegal " + (name || "token") + " '" + token + "' (line " + tn.line() + ")");
+        var filename = parse.filename;
+        parse.filename = null;
+        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line() + ")");
     }
 
     function readString() {
@@ -339,9 +343,10 @@ function parse(source, root, options) {
         var enm = new Enum(name, values);
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                if (lower(token) === "option")
-                    parseOption(enm);
-                else
+                if (lower(token) === "option") {
+                    parseOption(enm, token);
+                    skip(";");
+                } else
                     parseEnumField(enm, token);
             }
             skip(";", true);
@@ -544,6 +549,7 @@ function parse(source, root, options) {
         }
     }
 
+    parse.filename = null;
     return {
         "package"     : pkg,
         "imports"     : imports,

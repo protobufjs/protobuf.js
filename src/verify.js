@@ -30,7 +30,7 @@ function verifyValue(field, value) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            if (!(isInteger(value) || value && isInteger(value.low) && isInteger(value.high)))
+            if (!isInteger(value) && !(value && isInteger(value.low) && isInteger(value.high)))
                 return invalid(field, "integer|Long");
             break;
         case "bool":
@@ -160,7 +160,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
         case "sint64":
         case "fixed64":
         case "sfixed64": gen
-            ("if(!(util.isInteger(%s)||%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+            ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
                 ("return%j", invalid(field, "integer|Long"));
             break;
         case "bool": gen

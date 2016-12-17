@@ -323,22 +323,48 @@ TypePrototype.create = function create(properties) {
 };
 
 /**
+ * Sets up {@link Type#encode}, {@link Type#decode} and {@link Type#verify}.
+ * @returns {Type} `this`
+ */
+TypePrototype.setup = function setup() {
+    // Sets up everything at once so that the prototype chain does not have to be re-evaluated
+    // multiple times (V8, soft-deopt prototype-check).
+    if (!encode) {
+        encode = require("./encode");
+        decode = require("./decode");
+        verify = require("./verify");
+    }
+    this.encode = util.codegen.supported
+        ? encode.generate(this).eof(this.getFullName() + "$encode", {
+              Writer : Writer,
+              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util   : util
+          })
+        : encode;
+    this.decode = util.codegen.supported
+        ? decode.generate(this).eof(this.getFullName() + "$decode", {
+              Reader : Reader,
+              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util   : util
+          })
+        : decode;
+    this.verify = util.codegen.supported
+        ? verify.generate(this).eof(this.getFullName() + "$verify", {
+              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util  : util
+          })
+        : verify;
+    return this;
+};
+
+/**
  * Encodes a message of this type.
  * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
 TypePrototype.encode = function encode_setup(message, writer) {
-    if (!encode)
-        encode = require("./encode");
-    return (this.encode = util.codegen.supported
-        ? encode.generate(this).eof(this.getFullName() + "$encode", {
-              Writer : Writer,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : encode
-    ).call(this, message, writer);
+    return this.setup().encode(message, writer); // overrides this method
 };
 
 /**
@@ -358,16 +384,7 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @returns {Message} Decoded message
  */
 TypePrototype.decode = function decode_setup(readerOrBuffer, length) {
-    if (!decode)
-        decode = require("./decode");
-    return (this.decode = util.codegen.supported
-        ? decode.generate(this).eof(this.getFullName() + "$decode", {
-              Reader : Reader,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : decode
-    ).call(this, readerOrBuffer, length);
+    return this.setup().decode(readerOrBuffer, length); // overrides this method
 };
 
 /**
@@ -386,13 +403,5 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 TypePrototype.verify = function verify_setup(message) {
-    if (!verify)
-        verify = require("./verify");
-    return (this.verify = util.codegen.supported
-        ? verify.generate(this).eof(this.getFullName() + "$verify", {
-              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util  : util
-          })
-        : verify
-    ).call(this, message);
+    return this.setup().verify(message); // overrides this method
 };

@@ -11,6 +11,8 @@ var Field  = require("./field"),
     util   = require("./util"),
     common = require("./common");
 
+var parse; // cyclic
+
 /**
  * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
@@ -67,6 +69,8 @@ function SYNC() {} // eslint-disable-line no-empty-function
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, options, callback) {
+    if (!parse)
+        parse = require("./parse");
     if (typeof options === "function") {
         callback = options;
         options = undefined;
@@ -94,7 +98,8 @@ RootPrototype.load = function load(filename, options, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require("./parse")(source, self, options);
+                parse.filename = filename;
+                var parsed = parse(source, self, options);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));

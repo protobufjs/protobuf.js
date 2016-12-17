@@ -21,7 +21,7 @@ function decode(readerOrBuffer, length) {
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
-        var tag      = reader.int32(),
+        var tag      = reader.uint32(),
             wireType = tag & 7,
             field    = fields[tag >>> 3].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type;

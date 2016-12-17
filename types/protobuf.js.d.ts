@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Fri, 16 Dec 2016 16:10:21 UTC
+// Generated Sat, 17 Dec 2016 12:44:46 UTC
 declare module "protobufjs" {
 
     /**
@@ -1019,10 +1019,12 @@ declare module "protobufjs" {
 
     /**
      * Parses the given .proto source and returns an object with the parsed contents.
+     * @function
      * @param {string} source Source contents
      * @param {Root} root Root to populate
      * @param {ParseOptions} [options] Parse options
      * @returns {ParserResult} Parser result
+     * @property {string} filename=null Currently processing file name for error reporting, if known
      */
     function parse(source: string, root: Root, options?: ParseOptions): ParserResult;
 
@@ -1079,16 +1081,16 @@ declare module "protobufjs" {
         static create(buffer: Uint8Array): (BufferReader|Reader);
 
         /**
-         * Reads a varint as a signed 32 bit value.
-         * @returns {number} Value read
-         */
-        int32(): number;
-
-        /**
          * Reads a varint as an unsigned 32 bit value.
          * @returns {number} Value read
          */
         uint32(): number;
+
+        /**
+         * Reads a varint as a signed 32 bit value.
+         * @returns {number} Value read
+         */
+        int32(): number;
 
         /**
          * Reads a zig-zag encoded varint as a signed 32 bit value.
@@ -1575,6 +1577,12 @@ declare module "protobufjs" {
          * @returns {Message} Runtime message
          */
         create(properties?: (Object|any)): Message;
+
+        /**
+         * Sets up {@link Type#encode}, {@link Type#decode} and {@link Type#verify}.
+         * @returns {Type} `this`
+         */
+        setup(): Type;
 
         /**
          * Encodes a message of this type.

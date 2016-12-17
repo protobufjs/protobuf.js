@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
- * Compiled Fri, 16 Dec 2016 16:10:12 UTC
+ * Compiled Sat, 17 Dec 2016 12:44:38 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -186,16 +186,16 @@ base64.length = function length(string) {
     if (!p)
         return 0;
     var n = 0;
-    while (--p % 4 > 1 && string.charAt(p) === '=')
+    while (--p % 4 > 1 && string.charAt(p) === "=")
         ++n;
     return Math.ceil(string.length * 3) / 4 - n;
 };
 
 // Base64 encoding table
-var b64 = [];
+var b64 = new Array(64);
 
 // Base64 decoding table
-var s64 = [];
+var s64 = new Array(123);
 
 // 65..90, 97..122, 48..57, 43, 47
 for (var i = 0; i < 64;)
@@ -1106,7 +1106,7 @@ function decode(readerOrBuffer, length) {
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
-        var tag      = reader.int32(),
+        var tag      = reader.uint32(),
             wireType = tag & 7,
             field    = fields[tag >>> 3].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
@@ -1595,6 +1595,7 @@ EnumPrototype.remove = function(name) {
 };
 
 },{"22":22,"33":33}],17:[function(require,module,exports){
+(function (Buffer){
 "use strict";
 module.exports = Field;
 
@@ -1881,15 +1882,21 @@ FieldPrototype.jsonConvert = function(value, options) {
                     ? value
                     : util.LongBits.from(value).toNumber(this.type.charAt(0) === "u")
                 : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
-        if (options.bytes && this.bytes)
-            return options.bytes === Array
-                ? Array.prototype.slice.call(value)
-                : util.base64.encode(value, 0, value.length);
+        if (options.bytes && this.bytes) {
+            if (options.bytes === String)
+                return util.base64.encode(value, 0, value.length);
+            if (options.bytes === Array)
+                return Array.prototype.slice.call(value);
+            if (options.bytes === util.Buffer && !util.Buffer.isBuffer(value))
+                return util.Buffer.from ? util.Buffer.from(value) : new Buffer(value);
+        }
     }
     return value;
 };
 
-},{"16":16,"18":18,"19":19,"22":22,"31":31,"32":32,"33":33}],18:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+
+},{"16":16,"18":18,"19":19,"22":22,"31":31,"32":32,"33":33,"buffer":"buffer"}],18:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
@@ -2998,10 +3005,12 @@ function lower(token) {
 
 /**
  * Parses the given .proto source and returns an object with the parsed contents.
+ * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
  * @param {ParseOptions} [options] Parse options
  * @returns {ParserResult} Parser result
+ * @property {string} filename=null Currently processing file name for error reporting, if known
  */
 function parse(source, root, options) {
     /* eslint-disable callback-return */
@@ -3030,7 +3039,9 @@ function parse(source, root, options) {
     var ptr = root;
 
     function illegal(token, name) {
-        return Error("illegal " + (name || "token") + " '" + token + "' (line " + tn.line() + ")");
+        var filename = parse.filename;
+        parse.filename = null;
+        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line() + ")");
     }
 
     function readString() {
@@ -3295,9 +3306,10 @@ function parse(source, root, options) {
         var enm = new Enum(name, values);
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                if (lower(token) === "option")
-                    parseOption(enm);
-                else
+                if (lower(token) === "option") {
+                    parseOption(enm, token);
+                    skip(";");
+                } else
                     parseEnumField(enm, token);
             }
             skip(";", true);
@@ -3500,6 +3512,7 @@ function parse(source, root, options) {
         }
     }
 
+    parse.filename = null;
     return {
         "package"     : pkg,
         "imports"     : imports,
@@ -3576,31 +3589,39 @@ var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
-/**
- * Reads a varint as a signed 32 bit value.
- * @returns {number} Value read
- */
-ReaderPrototype.int32 = function read_int32() {
-    var octet = this.buf[this.pos++],
-        value = octet & 127;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) <<  7;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 14;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 21;
-    if (octet > 127) { octet = this.buf[this.pos++]; value |= (octet & 127) << 28;
-    if (octet > 127)   this.pos += 5; } } } }
-    if (this.pos > this.len) {
-        this.pos = this.len;
-        throw indexOutOfRange(this);
-    }
-    return value;
-};
-
+var read_uint32 = 
 /**
  * Reads a varint as an unsigned 32 bit value.
  * @returns {number} Value read
  */
 ReaderPrototype.uint32 = function read_uint32() {
-    return this.int32() >>> 0;
+    // FIXME: tends to soft-deopt with "Insufficient type feedback for generic named access", which
+    // is not a problem, but with --trace-deopt, node v4-v7 always crashes when the above happens.
+    var value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
+    if ((this.pos += 5) > this.len) {
+        this.pos = this.len;
+        throw indexOutOfRange(this, 10);
+    }
+    return value;
+};
+
+// See comment above. While unnecessary code, this prevents crashing with --trace-deopt (node 6.9.1).
+read_uint32.call({
+    buf: [255,255,255,255,15],
+    pos: 0,
+    len: 5
+});
+
+/**
+ * Reads a varint as a signed 32 bit value.
+ * @returns {number} Value read
+ */
+ReaderPrototype.int32 = function read_int32() {
+    return this.uint32() | 0;
 };
 
 /**
@@ -3608,58 +3629,59 @@ ReaderPrototype.uint32 = function read_uint32() {
  * @returns {number} Value read
  */
 ReaderPrototype.sint32 = function read_sint32() {
-    var value = this.int32();
-    return value >>> 1 ^ -(value & 1);
+    var value = this.uint32();
+    return value >>> 1 ^ -(value & 1) | 0;
 };
 
 /* eslint-disable no-invalid-this */
 
 function readLongVarint() {
     var bits = new LongBits(0, 0),
-        i = 0, b = 0;
+        i = 0,
+        octet = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
-            b = this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
-            if (b < 128)
+            octet= this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
+            if (octet < 128)
                 return bits;
         }
-        b = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
-        if (b < 128)
+        octet = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
+        if (octet < 128)
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (b & 127) << i * 7) >>> 0;
-            if (b < 128)
+            octet = this.buf[this.pos++]; // 1st..4th
+            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
+            if (octet < 128)
                 return bits;
         }
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
-        b = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (b & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (b & 127) >>  4) >>> 0;
-        if (b < 128)
+        octet = this.buf[this.pos++]; // 5th
+        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
+        if (octet < 128)
             return bits;
     }
     if (this.len - this.pos > 4) { // fast route (hi)
         for (i = 0; i < 5; ++i) {
-            b = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
-            if (b < 128)
+            octet = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
+            if (octet < 128)
                 return bits;
         }
     } else {
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            b = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (b & 127) << i * 7 + 3) >>> 0;
-            if (b < 128)
+            octet = this.buf[this.pos++]; // 6th..10th
+            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
+            if (octet < 128)
                 return bits;
         }
     }
@@ -3718,7 +3740,7 @@ function read_sint64_number() {
  * @returns {boolean} Value read
  */
 ReaderPrototype.bool = function read_bool() {
-    return this.int32() !== 0;
+    return this.uint32() !== 0;
 };
 
 function readFixed32(buf, end) {
@@ -3876,7 +3898,7 @@ ReaderPrototype.double = function read_double() {
  * @returns {Uint8Array} Value read
  */
 ReaderPrototype.bytes = function read_bytes() {
-    var length = this.int32() >>> 0,
+    var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
     if (end > this.len)
@@ -3933,7 +3955,7 @@ ReaderPrototype.skipType = function(wireType) {
             break;
         case 3:
             do { // eslint-disable-line no-constant-condition
-                wireType = this.int32() & 7;
+                wireType = this.uint32() & 7;
                 if (wireType === 4)
                     break;
                 this.skipType(wireType);
@@ -4046,7 +4068,7 @@ function readStringBuffer_toString(buf, start, end) {
  * @override
  */
 BufferReaderPrototype.string = function read_string_buffer() {
-    var length = this.int32() >>> 0,
+    var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
     if (end > this.len)
@@ -4097,6 +4119,8 @@ var RootPrototype = Namespace.extend(Root);
 var Field  = require(17),
     util   = require(33),
     common = require(13);
+
+var parse; // cyclic
 
 /**
  * Constructs a new root namespace instance.
@@ -4154,6 +4178,8 @@ function SYNC() {} // eslint-disable-line no-empty-function
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, options, callback) {
+    if (!parse)
+        parse = require(24);
     if (typeof options === "function") {
         callback = options;
         options = undefined;
@@ -4181,7 +4207,8 @@ RootPrototype.load = function load(filename, options, callback) {
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
-                var parsed = require(24)(source, self, options);
+                parse.filename = filename;
+                var parsed = parse(source, self, options);
                 if (parsed.imports)
                     parsed.imports.forEach(function(name) {
                         fetch(self.resolvePath(filename, name));
@@ -5173,22 +5200,48 @@ TypePrototype.create = function create(properties) {
 };
 
 /**
+ * Sets up {@link Type#encode}, {@link Type#decode} and {@link Type#verify}.
+ * @returns {Type} `this`
+ */
+TypePrototype.setup = function setup() {
+    // Sets up everything at once so that the prototype chain does not have to be re-evaluated
+    // multiple times (V8, soft-deopt prototype-check).
+    if (!encode) {
+        encode = require(15);
+        decode = require(14);
+        verify = require(36);
+    }
+    this.encode = util.codegen.supported
+        ? encode.generate(this).eof(this.getFullName() + "$encode", {
+              Writer : Writer,
+              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util   : util
+          })
+        : encode;
+    this.decode = util.codegen.supported
+        ? decode.generate(this).eof(this.getFullName() + "$decode", {
+              Reader : Reader,
+              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util   : util
+          })
+        : decode;
+    this.verify = util.codegen.supported
+        ? verify.generate(this).eof(this.getFullName() + "$verify", {
+              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+              util  : util
+          })
+        : verify;
+    return this;
+};
+
+/**
  * Encodes a message of this type.
  * @param {Message|Object} message Message instance or plain object
  * @param {Writer} [writer] Writer to encode to
  * @returns {Writer} writer
  */
 TypePrototype.encode = function encode_setup(message, writer) {
-    if (!encode)
-        encode = require(15);
-    return (this.encode = util.codegen.supported
-        ? encode.generate(this).eof(this.getFullName() + "$encode", {
-              Writer : Writer,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : encode
-    ).call(this, message, writer);
+    return this.setup().encode(message, writer); // overrides this method
 };
 
 /**
@@ -5208,16 +5261,7 @@ TypePrototype.encodeDelimited = function encodeDelimited(message, writer) {
  * @returns {Message} Decoded message
  */
 TypePrototype.decode = function decode_setup(readerOrBuffer, length) {
-    if (!decode)
-        decode = require(14);
-    return (this.decode = util.codegen.supported
-        ? decode.generate(this).eof(this.getFullName() + "$decode", {
-              Reader : Reader,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : decode
-    ).call(this, readerOrBuffer, length);
+    return this.setup().decode(readerOrBuffer, length); // overrides this method
 };
 
 /**
@@ -5236,15 +5280,7 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 TypePrototype.verify = function verify_setup(message) {
-    if (!verify)
-        verify = require(36);
-    return (this.verify = util.codegen.supported
-        ? verify.generate(this).eof(this.getFullName() + "$verify", {
-              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util  : util
-          })
-        : verify
-    ).call(this, message);
+    return this.setup().verify(message); // overrides this method
 };
 
 },{"12":12,"14":14,"15":15,"16":16,"17":17,"19":19,"21":21,"23":23,"25":25,"29":29,"33":33,"36":36,"37":37}],32:[function(require,module,exports){
@@ -5955,7 +5991,7 @@ function verifyValue(field, value) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            if (!(isInteger(value) || value && isInteger(value.low) && isInteger(value.high)))
+            if (!isInteger(value) && !(value && isInteger(value.low) && isInteger(value.high)))
                 return invalid(field, "integer|Long");
             break;
         case "bool":
@@ -6085,7 +6121,7 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
         case "sint64":
         case "fixed64":
         case "sfixed64": gen
-            ("if(!(util.isInteger(%s)||%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+            ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
                 ("return%j", invalid(field, "integer|Long"));
             break;
         case "bool": gen
@@ -6369,9 +6405,7 @@ var WriterPrototype = Writer.prototype;
  * @returns {Writer} `this`
  */
 WriterPrototype.push = function push(fn, len, val) {
-    var op = new Op(fn, val, len);
-    this.tail.next = op;
-    this.tail = op;
+    this.tail = this.tail.next = new Op(fn, val, len);
     this.len += len;
     return this;
 };

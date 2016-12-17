@@ -284,10 +284,14 @@ FieldPrototype.jsonConvert = function(value, options) {
                     ? value
                     : util.LongBits.from(value).toNumber(this.type.charAt(0) === "u")
                 : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
-        if (options.bytes && this.bytes)
-            return options.bytes === Array
-                ? Array.prototype.slice.call(value)
-                : util.base64.encode(value, 0, value.length);
+        if (options.bytes && this.bytes) {
+            if (options.bytes === String)
+                return util.base64.encode(value, 0, value.length);
+            if (options.bytes === Array)
+                return Array.prototype.slice.call(value);
+            if (options.bytes === util.Buffer && !util.Buffer.isBuffer(value))
+                return util.Buffer.from ? util.Buffer.from(value) : new Buffer(value);
+        }
     }
     return value;
 };
