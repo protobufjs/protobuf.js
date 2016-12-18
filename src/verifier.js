@@ -1,5 +1,5 @@
 "use strict";
-module.exports = verify;
+module.exports = verifier;
 
 var Enum      = require("./enum"),
     Type      = require("./type"),
@@ -7,135 +7,6 @@ var Enum      = require("./enum"),
 
 function invalid(field, expected) {
     return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
-}
-
-function verifyValue(field, value) {
-    switch (field.type) {
-        case "double":
-        case "float":
-            if (typeof value !== "number")
-                return invalid(field, "number");
-            break;
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32":
-            if (!util.isInteger(value))
-                return invalid(field, "integer");
-            break;
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64":
-            if (!util.isInteger(value) && !(value && util.isInteger(value.low) && util.isInteger(value.high)))
-                return invalid(field, "integer|Long");
-            break;
-        case "bool":
-            if (typeof value !== "boolean")
-                return invalid(field, "boolean");
-            break;
-        case "string":
-            if (!util.isString(value))
-                return invalid(field, "string");
-            break;
-        case "bytes":
-            if (!(value && typeof value.length === "number" || util.isString(value)))
-                return invalid(field, "buffer");
-            break;
-        default:
-            if (field.resolvedType instanceof Enum) {
-                if (typeof field.resolvedType.getValuesById()[value] !== "number")
-                    return invalid(field, "enum value");
-            } else if (field.resolvedType instanceof Type) {
-                var reason = field.resolvedType.verify(value);
-                if (reason)
-                    return reason;
-            }
-            break;
-    }
-    return null;
-}
-
-function verifyKey(field, value) {
-    switch (field.keyType) {
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64":
-            if (/^[\x00-\xff]{8}$/.test(value)) // eslint-disable-line no-control-regex
-                return null;
-            // fallthrough
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32":
-            if (/^-?(?:0|[1-9]\d*)$/.test(value))
-                return invalid(field, "integer key");
-            break;
-        case "bool":
-            if (/^true|false|0|1$/.test(value))
-                return invalid(field, "boolean key");
-            break;
-    }
-    return null;
-}
-
-/**
- * General purpose message verifier.
- * @param {Message|Object} message Runtime message or plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
- * @this {Type}
- * @property {GenerateVerifier} generate Generates a type specific verifier
- */
-function verify(message) {
-    /* eslint-disable block-scoped-var, no-redeclare */
-    var fields = this.getFieldsArray(),
-        i = 0,
-        reason;
-    while (i < fields.length) {
-        var field = fields[i++].resolve(),
-            value = message[field.name];
-
-        // map fields
-        if (field.map) {
-
-            if (value !== undefined) {
-                if (!util.isObject(value))
-                    return invalid(field, "object");
-                var keys = Object.keys(value);
-                for (var j = 0; j < keys.length; ++j) {
-                    if (reason = verifyKey(field, keys[j])) // eslint-disable-line no-cond-assign
-                        return reason;
-                    if (reason = verifyValue(field, value[keys[j]])) // eslint-disable-line no-cond-assign
-                        return reason;
-                }
-            }
-
-        // repeated fields
-        } else if (field.repeated) {
-
-            if (value !== undefined) {
-                if (!Array.isArray(value))
-                    return invalid(field, "array");
-                for (var j = 0; j < value.length; ++j)
-                    if (reason = verifyValue(field, value[j])) // eslint-disable-line no-cond-assign
-                        return reason;
-            }
-
-        // required or present fields
-        } else if (field.required || value !== undefined) {
-
-            if (reason = verifyValue(field, value)) // eslint-disable-line no-cond-assign
-                return reason;
-        }
-
-    }
-    return null;
-    /* eslint-enable block-scoped-var, no-redeclare */
 }
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
@@ -195,13 +66,10 @@ function genVerifyKey(gen, field, ref) {
 
 /**
  * Generates a verifier specific to the specified message type.
- * @typedef GenerateVerifier
- * @type {function}
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
  */
-/**/
-verify.generate = function generate(mtype) {
+function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
     var gen = util.codegen("m");
@@ -249,4 +117,4 @@ verify.generate = function generate(mtype) {
     return gen
     ("return null");
     /* eslint-enable no-unexpected-multiline */
-};
+}

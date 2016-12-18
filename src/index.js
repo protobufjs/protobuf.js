@@ -82,9 +82,9 @@ protobuf.BufferWriter = (
 protobuf.Writer           = require("./writer")).BufferWriter;
 protobuf.BufferReader = (
 protobuf.Reader           = require("./reader")).BufferReader;
-protobuf.encode           = require("./encode");
-protobuf.decode           = require("./decode");
-protobuf.verify           = require("./verify");
+protobuf.encoder          = require("./encoder");
+protobuf.decoder          = require("./decoder");
+protobuf.verifier         = require("./verifier");
 
 // Reflection
 protobuf.ReflectionObject = require("./object");

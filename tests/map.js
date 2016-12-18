@@ -65,11 +65,6 @@ tape.test("maps", function(test) {
 
         test.deepEqual(dec, outer, "should decode back the original random map");
 
-        var buf = protobuf.encode.call(Outer, outer).finish();
-        var dec = protobuf.decode.call(Outer, buf);
-
-        test.deepEqual(dec, outer, "should decode back the original random map (fallback)");
-
         test.end();
     });
 
@@ -93,13 +88,6 @@ tape.test("maps", function(test) {
 
         var dec = Outer.decode(buf);
         test.deepEqual(dec, outer, "should decode back the original map");
-
-        var buf = protobuf.encode.call(Outer, outer).finish();
-        verifyEncode(test, buf);
-
-        var dec = protobuf.decode.call(Outer, buf);
-
-        test.deepEqual(dec, outer, "should decode back the original map (fallback)");
 
         test.end();
     });

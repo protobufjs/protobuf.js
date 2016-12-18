@@ -40,11 +40,6 @@ tape.test("oneofs", function(test) {
         test.equal(buf[0], 16, "should write id 1, wireType 0");
         test.equal(buf[1], 0, "should write a value of 0");
 
-        buf = protobuf.encode.call(Message, message).finish();
-        test.equal(buf.length, 2, "should write a total of 2 bytes (fallback)");
-        test.equal(buf[0], 16, "should write id 1, wireType 0 (fallback)");
-        test.equal(buf[1], 0, "should write a value of 0 (fallback)");
-
         test.end();
     });
 

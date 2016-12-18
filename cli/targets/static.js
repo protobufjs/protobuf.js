@@ -282,7 +282,7 @@ function buildType(ref, type) {
             "@param {Writer} [writer] Writer to encode to",
             "@returns {Writer} Writer"
         ]);
-        buildFunction(type, "encode", protobuf.encode.generate(type), {
+        buildFunction(type, "encode", protobuf.encoder(type), {
             Writer : "$protobuf.Writer",
             util   : "$protobuf.util"
         });
@@ -318,7 +318,7 @@ function buildType(ref, type) {
             "@param {number} [length] Message length if known beforehand",
             "@returns {" + fullName + "} " + type.name
         ]);
-        buildFunction(type, "decode", protobuf.decode.generate(type), {
+        buildFunction(type, "decode", protobuf.decoder(type), {
             Reader : "$protobuf.Reader",
             util   : "$protobuf.util"
         });
@@ -351,7 +351,7 @@ function buildType(ref, type) {
             "@param {" + fullName + "|Object} message " + type.name + " or plain object to verify",
             "@returns {?string} `null` if valid, otherwise the reason why it is not"
         ]);
-        buildFunction(type, "verify", protobuf.verify.generate(type), {
+        buildFunction(type, "verify", protobuf.verifier(type), {
             util : "$protobuf.util"
         });
 

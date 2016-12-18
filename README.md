@@ -402,7 +402,7 @@ While .proto and JSON files require the full library (about 18kb gzipped), prett
 
 Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
 
-Where `new Function(...)` is supported (it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.
+There is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.
 
 Building
 --------
@@ -492,8 +492,6 @@ Note that JSON is a native binding nowadays and as such is about as fast as it p
 * Encoders and decoders do not verify that required fields are present (with proto3 this is dead code anyway). There is a `verify` method to check this manually instead - where applicable.
 * For entirely bogus values encoders intentionally rely on runtime errors to be thrown somewhere down the road.
 * Quite a bit of V8-specific profiling is accountable for everything else.
-
-Note that code generation requires `new Function(...)` (basically `eval`) support and that an equivalent but slower fallback will be used where unsupported.
 
 You can also run [the benchmark](https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js) ...
 

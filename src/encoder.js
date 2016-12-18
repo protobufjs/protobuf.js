@@ -1,100 +1,11 @@
 "use strict";
-module.exports = encode;
+module.exports = encoder;
 
 var Enum     = require("./enum"),
-    Writer   = require("./writer"),
     types    = require("./types"),
     util     = require("./util");
+
 var safeProp = util.safeProp;
-
-function encodeType(field, value, writer) {
-    if (field.resolvedType.group)
-        field.resolvedType.encode(value, writer.uint32((field.id << 3 | 3) >>> 0)).uint32((field.id << 3 | 4) >>> 0);
-    else if (field.resolvedType.encode(value, writer.fork()).len || field.required)
-        writer.ldelim(field.id);
-    else
-        writer.reset();
-}
-
-/**
- * General purpose message encoder.
- * @param {Message|Object} message Runtime message or plain object to encode
- * @param {Writer} [writer] Writer to encode to
- * @returns {Writer} writer
- * @this Type
- * @property {GenerateEncoder} generate Generates a type specific encoder
- */
-function encode(message, writer) {
-    /* eslint-disable block-scoped-var, no-redeclare */
-    if (!writer)
-        writer = Writer.create();
-    var fields = this.getFieldsArray(), fi = 0;
-    while (fi < fields.length) {
-        var field    = fields[fi++].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.basic[type];
-
-        // Map fields
-        if (field.map) {
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            if (message[field.name] && message[field.name] !== util.emptyObject) {
-                for (var keys = Object.keys(message[field.name]), i = 0; i < keys.length; ++i) {
-                    writer.uint32((field.id << 3 | 2) >>> 0).fork()
-                          .uint32(/*1*/8 | types.mapKey[keyType])[keyType](keys[i]);
-                    if (wireType === undefined)
-                        field.resolvedType.encode(message[field.name][keys[i]], writer.uint32(/*2,2*/18).fork()).ldelim();
-                    else
-                        writer.uint32(/*2*/16 | wireType)[type](message[field.name][keys[i]]);
-                    writer.ldelim();
-                }
-            }
-
-        // Repeated fields
-        } else if (field.repeated) {
-            var values = message[field.name];
-            if (values && values.length) {
-
-                // Packed repeated
-                if (field.packed && types.packed[type] !== undefined) {
-                    if (values.length) {
-                        writer.uint32((field.id << 3 | 2) >>> 0).fork();
-                        var i = 0;
-                        while (i < values.length)
-                            writer[type](values[i++]);
-                        writer.ldelim();
-                    }
-
-                // Non-packed
-                } else {
-                    var i = 0;
-                    if (wireType === undefined)
-                        while (i < values.length)
-                            encodeType(field, values[i++], writer);
-                    else
-                        while (i < values.length)
-                            writer.uint32((field.id << 3 | wireType) >>> 0)[type](values[i++]);
-                }
-
-            }
-
-        // Non-repeated
-        } else {
-            var value = message[field.name];
-            if (
-                field.partOf && message[field.partOf.name] === field.name
-                ||
-                (field.required || value !== undefined) && (field.long ? util.longNe(value, field.defaultValue.low, field.defaultValue.high) : value !== field.defaultValue)
-            ) {
-                if (wireType === undefined)
-                    encodeType(field, value, writer);
-                else
-                    writer.uint32((field.id << 3 | wireType) >>> 0)[type](value);
-            }
-        }
-    }
-    return writer;
-    /* eslint-enable block-scoped-var, no-redeclare */
-}
 
 function genEncodeType(gen, field, fieldIndex, ref, alwaysRequired) {
     if (field.resolvedType.group)
@@ -105,14 +16,11 @@ function genEncodeType(gen, field, fieldIndex, ref, alwaysRequired) {
 }
 
 /**
- * Generates an {@link Encoder|encoder} specific to the specified message type.
- * @typedef GenerateEncoder
- * @type {function}
+ * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
  */
-/**/
-encode.generate = function generate(mtype) {
+function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.getFieldsArray();
     var oneofs = mtype.getOneofsArray();
@@ -215,4 +123,4 @@ encode.generate = function generate(mtype) {
     return gen
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
-};
+}

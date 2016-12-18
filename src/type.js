@@ -19,9 +19,9 @@ var Enum      = require("./enum"),
     Writer    = require("./writer"),
     util      = require("./util");
 
-var encode, // might become cyclic
-    decode, // might become cyclic
-    verify; // cyclic
+var encoder,  // might become cyclic
+    decoder,  // might become cyclic
+    verifier; // cyclic
 
 /**
  * Constructs a new reflected message type instance.
@@ -182,6 +182,7 @@ function clearCache(type) {
     type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;
     delete type.encode;
     delete type.decode;
+    delete type.verify;
     return type;
 }
 
@@ -338,32 +339,25 @@ TypePrototype.create = function create(properties) {
 TypePrototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
-    if (!encode) {
-        encode = require("./encode");
-        decode = require("./decode");
-        verify = require("./verify");
+    if (!encoder) {
+        encoder  = require("./encoder");
+        decoder  = require("./decoder");
+        verifier = require("./verifier");
     }
-    var codegen_supported = util.codegen.supported;
-    this.encode = codegen_supported
-        ? encode.generate(this).eof(this.getFullName() + "$encode", {
-              Writer : Writer,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : encode;
-    this.decode = codegen_supported
-        ? decode.generate(this).eof(this.getFullName() + "$decode", {
-              Reader : Reader,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : decode;
-    this.verify = codegen_supported
-        ? verify.generate(this).eof(this.getFullName() + "$verify", {
-              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util  : util
-          })
-        : verify;
+    this.encode = encoder(this).eof(this.getFullName() + "$encode", {
+        Writer : Writer,
+        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        util   : util
+    });
+    this.decode = decoder(this).eof(this.getFullName() + "$decode", {
+        Reader : Reader,
+        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        util   : util
+    });
+    this.verify = verifier(this).eof(this.getFullName() + "$verify", {
+        types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        util  : util
+    });
     return this;
 };
 

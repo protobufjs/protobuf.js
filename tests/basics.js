@@ -47,28 +47,9 @@ tape.test("google.protobuf.Any type", function(test) {
                 test.end();
             });
 
-            test.test("should encode (fallback)", function(test) {
-                
-                writer = protobuf.encode.call(Any, any);
-                buf = writer.finish();
-
-                verifyEncode(test, buf);
-
-                test.end();
-            });
-
             test.test("should decode", function(test) {
 
                 msg = Any.decode(buf);
-
-                test.deepEqual(msg, any, "an equal message");
-
-                test.end();
-            });
-
-            test.test("should decode (fallback)", function(test) {
-
-                msg = protobuf.decode.call(Any, buf);
 
                 test.deepEqual(msg, any, "an equal message");
 

@@ -28,13 +28,6 @@ tape.test("legacy groups", function(test) {
             test.end();
         });
 
-        test.test("should encode (fallback)", function(test) {
-            var buf = protobuf.encode.call(Test, msg).finish();
-            verifyEncode(test, buf);
-            test.deepEqual(protobuf.decode.call(Test, buf), msg, "and decode back the original message");
-            test.end();
-        });
-
         var json = MyGroupType.toJSON();
         test.equal(json.group, true, "should export group=true to JSON");
 

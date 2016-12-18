@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 12:27:11 UTC
+ * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
+ * Compiled Sun, 18 Dec 2016 12:57:35 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1087,96 +1087,18 @@ common("struct", {
 
 },{}],14:[function(require,module,exports){
 "use strict";
-module.exports = decode;
+module.exports = decoder;
 
 var Enum    = require(16),
-    Reader  = require(25),
     types   = require(32),
     util    = require(33);
 
 /**
- * General purpose message decoder.
- * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
- * @param {number} [length] Length of the message, if known beforehand
- * @returns {Message} Populated runtime message
- * @this Type
- * @property {GenerateDecoder} generate Generates a type specific decoder
- */
-function decode(readerOrBuffer, length) {
-    /* eslint-disable no-invalid-this, block-scoped-var, no-redeclare */
-    var fields  = this.getFieldsById(),
-        reader  = readerOrBuffer instanceof Reader ? readerOrBuffer : Reader.create(readerOrBuffer),
-        limit   = length === undefined ? reader.len : reader.pos + length,
-        message = new (this.getCtor())();
-    while (reader.pos < limit) {
-        var tag = reader.uint32(),
-            wireType = tag & 7;
-
-        // End group
-        if (wireType === 4)
-            break;
-
-        var field = fields[tag >>> 3].resolve(),
-            type = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            resolvedType = field.resolvedType;
-        
-        // Known fields
-        if (field) {
-
-            // Map fields
-            if (field.map) {
-                var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-                reader.skip();
-                reader.pos++; // assumes id 1
-                if (message[field.name] === util.emptyObject)
-                    message[field.name] = {};
-                var key = reader[keyType]();
-                if (typeof key === "object")
-                    key = util.longToHash(key);
-                reader.pos++; // assumes id 2
-                message[field.name][key] = types.basic[type] === undefined
-                    ? resolvedType.decode(reader, reader.uint32())
-                    : reader[type]();
-
-            // Repeated fields
-            } else if (field.repeated) {
-                var values = message[field.name] && message[field.name].length ? message[field.name] : message[field.name] = [];
-
-                // Packed
-                if (field.packed && types.packed[type] !== undefined && wireType === 2) {
-                    var plimit = reader.uint32() + reader.pos;
-                    while (reader.pos < plimit)
-                        values.push(reader[type]());
-
-                // Non-packed
-                } else if (types.basic[type] === undefined)
-                    values.push(resolvedType.decode(reader, resolvedType.group ? undefined : reader.uint32()));
-                else
-                    values.push(reader[type]());
-
-            // Non-repeated
-            } else if (types.basic[type] === undefined)
-                message[field.name] = resolvedType.decode(reader, resolvedType.group ? undefined : reader.uint32());
-            else
-                message[field.name] = reader[type]();
-
-        // Unknown fields
-        } else
-            reader.skipType(wireType);
-    }
-    return message;
-    /* eslint-enable no-invalid-this, block-scoped-var, no-redeclare */
-}
-
-/**
  * Generates a decoder specific to the specified message type.
- * @typedef GenerateDecoder
- * @type {function}
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
  */
-/**/
-decode.generate = function generate(mtype) {
+function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();    
     var gen = util.codegen("r", "l")
@@ -1253,106 +1175,17 @@ decode.generate = function generate(mtype) {
     ("}")
     ("return m");
     /* eslint-enable no-unexpected-multiline */
-};
+}
 
-},{"16":16,"25":25,"32":32,"33":33}],15:[function(require,module,exports){
+},{"16":16,"32":32,"33":33}],15:[function(require,module,exports){
 "use strict";
-module.exports = encode;
+module.exports = encoder;
 
 var Enum     = require(16),
-    Writer   = require(37),
     types    = require(32),
     util     = require(33);
+
 var safeProp = util.safeProp;
-
-function encodeType(field, value, writer) {
-    if (field.resolvedType.group)
-        field.resolvedType.encode(value, writer.uint32((field.id << 3 | 3) >>> 0)).uint32((field.id << 3 | 4) >>> 0);
-    else if (field.resolvedType.encode(value, writer.fork()).len || field.required)
-        writer.ldelim(field.id);
-    else
-        writer.reset();
-}
-
-/**
- * General purpose message encoder.
- * @param {Message|Object} message Runtime message or plain object to encode
- * @param {Writer} [writer] Writer to encode to
- * @returns {Writer} writer
- * @this Type
- * @property {GenerateEncoder} generate Generates a type specific encoder
- */
-function encode(message, writer) {
-    /* eslint-disable block-scoped-var, no-redeclare */
-    if (!writer)
-        writer = Writer.create();
-    var fields = this.getFieldsArray(), fi = 0;
-    while (fi < fields.length) {
-        var field    = fields[fi++].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.basic[type];
-
-        // Map fields
-        if (field.map) {
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            if (message[field.name] && message[field.name] !== util.emptyObject) {
-                for (var keys = Object.keys(message[field.name]), i = 0; i < keys.length; ++i) {
-                    writer.uint32((field.id << 3 | 2) >>> 0).fork()
-                          .uint32(/*1*/8 | types.mapKey[keyType])[keyType](keys[i]);
-                    if (wireType === undefined)
-                        field.resolvedType.encode(message[field.name][keys[i]], writer.uint32(/*2,2*/18).fork()).ldelim();
-                    else
-                        writer.uint32(/*2*/16 | wireType)[type](message[field.name][keys[i]]);
-                    writer.ldelim();
-                }
-            }
-
-        // Repeated fields
-        } else if (field.repeated) {
-            var values = message[field.name];
-            if (values && values.length) {
-
-                // Packed repeated
-                if (field.packed && types.packed[type] !== undefined) {
-                    if (values.length) {
-                        writer.uint32((field.id << 3 | 2) >>> 0).fork();
-                        var i = 0;
-                        while (i < values.length)
-                            writer[type](values[i++]);
-                        writer.ldelim();
-                    }
-
-                // Non-packed
-                } else {
-                    var i = 0;
-                    if (wireType === undefined)
-                        while (i < values.length)
-                            encodeType(field, values[i++], writer);
-                    else
-                        while (i < values.length)
-                            writer.uint32((field.id << 3 | wireType) >>> 0)[type](values[i++]);
-                }
-
-            }
-
-        // Non-repeated
-        } else {
-            var value = message[field.name];
-            if (
-                field.partOf && message[field.partOf.name] === field.name
-                ||
-                (field.required || value !== undefined) && (field.long ? util.longNe(value, field.defaultValue.low, field.defaultValue.high) : value !== field.defaultValue)
-            ) {
-                if (wireType === undefined)
-                    encodeType(field, value, writer);
-                else
-                    writer.uint32((field.id << 3 | wireType) >>> 0)[type](value);
-            }
-        }
-    }
-    return writer;
-    /* eslint-enable block-scoped-var, no-redeclare */
-}
 
 function genEncodeType(gen, field, fieldIndex, ref, alwaysRequired) {
     if (field.resolvedType.group)
@@ -1363,14 +1196,11 @@ function genEncodeType(gen, field, fieldIndex, ref, alwaysRequired) {
 }
 
 /**
- * Generates an {@link Encoder|encoder} specific to the specified message type.
- * @typedef GenerateEncoder
- * @type {function}
+ * Generates an encoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
  */
-/**/
-encode.generate = function generate(mtype) {
+function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.getFieldsArray();
     var oneofs = mtype.getOneofsArray();
@@ -1473,9 +1303,8 @@ encode.generate = function generate(mtype) {
     return gen
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
-};
-
-},{"16":16,"32":32,"33":33,"37":37}],16:[function(require,module,exports){
+}
+},{"16":16,"32":32,"33":33}],16:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
@@ -2578,9 +2407,8 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
         return this.getRoot().lookup(path.slice(1), filterType);
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
-    if (found && path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true)))
-        if (!filterType || found instanceof filterType)
-            return found;
+    if (found && path.length === 1 && (!filterType || found instanceof filterType) || found instanceof Namespace && (found = found.lookup(path.slice(1), filterType, true)))
+        return found;
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;
@@ -4990,9 +4818,9 @@ var Enum      = require(16),
     Writer    = require(37),
     util      = require(33);
 
-var encode, // might become cyclic
-    decode, // might become cyclic
-    verify; // cyclic
+var encoder,  // might become cyclic
+    decoder,  // might become cyclic
+    verifier; // cyclic
 
 /**
  * Constructs a new reflected message type instance.
@@ -5153,6 +4981,7 @@ function clearCache(type) {
     type._fieldsById = type._fieldsArray = type._oneofsArray = type._ctor = null;
     delete type.encode;
     delete type.decode;
+    delete type.verify;
     return type;
 }
 
@@ -5309,32 +5138,25 @@ TypePrototype.create = function create(properties) {
 TypePrototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
-    if (!encode) {
-        encode = require(15);
-        decode = require(14);
-        verify = require(36);
+    if (!encoder) {
+        encoder  = require(15);
+        decoder  = require(14);
+        verifier = require(36);
     }
-    var codegen_supported = util.codegen.supported;
-    this.encode = codegen_supported
-        ? encode.generate(this).eof(this.getFullName() + "$encode", {
-              Writer : Writer,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : encode;
-    this.decode = codegen_supported
-        ? decode.generate(this).eof(this.getFullName() + "$decode", {
-              Reader : Reader,
-              types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util   : util
-          })
-        : decode;
-    this.verify = codegen_supported
-        ? verify.generate(this).eof(this.getFullName() + "$verify", {
-              types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
-              util  : util
-          })
-        : verify;
+    this.encode = encoder(this).eof(this.getFullName() + "$encode", {
+        Writer : Writer,
+        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        util   : util
+    });
+    this.decode = decoder(this).eof(this.getFullName() + "$decode", {
+        Reader : Reader,
+        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        util   : util
+    });
+    this.verify = verifier(this).eof(this.getFullName() + "$verify", {
+        types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        util  : util
+    });
     return this;
 };
 
@@ -6082,7 +5904,7 @@ util.emptyObject = Object.freeze({});
 
 },{"10":10,"11":11,"3":3,"34":34,"buffer":"buffer","long":"long"}],36:[function(require,module,exports){
 "use strict";
-module.exports = verify;
+module.exports = verifier;
 
 var Enum      = require(16),
     Type      = require(31),
@@ -6090,135 +5912,6 @@ var Enum      = require(16),
 
 function invalid(field, expected) {
     return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
-}
-
-function verifyValue(field, value) {
-    switch (field.type) {
-        case "double":
-        case "float":
-            if (typeof value !== "number")
-                return invalid(field, "number");
-            break;
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32":
-            if (!util.isInteger(value))
-                return invalid(field, "integer");
-            break;
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64":
-            if (!util.isInteger(value) && !(value && util.isInteger(value.low) && util.isInteger(value.high)))
-                return invalid(field, "integer|Long");
-            break;
-        case "bool":
-            if (typeof value !== "boolean")
-                return invalid(field, "boolean");
-            break;
-        case "string":
-            if (!util.isString(value))
-                return invalid(field, "string");
-            break;
-        case "bytes":
-            if (!(value && typeof value.length === "number" || util.isString(value)))
-                return invalid(field, "buffer");
-            break;
-        default:
-            if (field.resolvedType instanceof Enum) {
-                if (typeof field.resolvedType.getValuesById()[value] !== "number")
-                    return invalid(field, "enum value");
-            } else if (field.resolvedType instanceof Type) {
-                var reason = field.resolvedType.verify(value);
-                if (reason)
-                    return reason;
-            }
-            break;
-    }
-    return null;
-}
-
-function verifyKey(field, value) {
-    switch (field.keyType) {
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64":
-            if (/^[\x00-\xff]{8}$/.test(value)) // eslint-disable-line no-control-regex
-                return null;
-            // fallthrough
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32":
-            if (/^-?(?:0|[1-9]\d*)$/.test(value))
-                return invalid(field, "integer key");
-            break;
-        case "bool":
-            if (/^true|false|0|1$/.test(value))
-                return invalid(field, "boolean key");
-            break;
-    }
-    return null;
-}
-
-/**
- * General purpose message verifier.
- * @param {Message|Object} message Runtime message or plain object to verify
- * @returns {?string} `null` if valid, otherwise the reason why it is not
- * @this {Type}
- * @property {GenerateVerifier} generate Generates a type specific verifier
- */
-function verify(message) {
-    /* eslint-disable block-scoped-var, no-redeclare */
-    var fields = this.getFieldsArray(),
-        i = 0,
-        reason;
-    while (i < fields.length) {
-        var field = fields[i++].resolve(),
-            value = message[field.name];
-
-        // map fields
-        if (field.map) {
-
-            if (value !== undefined) {
-                if (!util.isObject(value))
-                    return invalid(field, "object");
-                var keys = Object.keys(value);
-                for (var j = 0; j < keys.length; ++j) {
-                    if (reason = verifyKey(field, keys[j])) // eslint-disable-line no-cond-assign
-                        return reason;
-                    if (reason = verifyValue(field, value[keys[j]])) // eslint-disable-line no-cond-assign
-                        return reason;
-                }
-            }
-
-        // repeated fields
-        } else if (field.repeated) {
-
-            if (value !== undefined) {
-                if (!Array.isArray(value))
-                    return invalid(field, "array");
-                for (var j = 0; j < value.length; ++j)
-                    if (reason = verifyValue(field, value[j])) // eslint-disable-line no-cond-assign
-                        return reason;
-            }
-
-        // required or present fields
-        } else if (field.required || value !== undefined) {
-
-            if (reason = verifyValue(field, value)) // eslint-disable-line no-cond-assign
-                return reason;
-        }
-
-    }
-    return null;
-    /* eslint-enable block-scoped-var, no-redeclare */
 }
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
@@ -6278,13 +5971,10 @@ function genVerifyKey(gen, field, ref) {
 
 /**
  * Generates a verifier specific to the specified message type.
- * @typedef GenerateVerifier
- * @type {function}
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
  */
-/**/
-verify.generate = function generate(mtype) {
+function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
     var gen = util.codegen("m");
@@ -6332,8 +6022,7 @@ verify.generate = function generate(mtype) {
     return gen
     ("return null");
     /* eslint-enable no-unexpected-multiline */
-};
-
+}
 },{"16":16,"31":31,"33":33}],37:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
@@ -7019,9 +6708,9 @@ protobuf.BufferWriter = (
 protobuf.Writer           = require(37)).BufferWriter;
 protobuf.BufferReader = (
 protobuf.Reader           = require(25)).BufferReader;
-protobuf.encode           = require(15);
-protobuf.decode           = require(14);
-protobuf.verify           = require(36);
+protobuf.encoder          = require(15);
+protobuf.decoder          = require(14);
+protobuf.verifier         = require(36);
 
 // Reflection
 protobuf.ReflectionObject = require(22);

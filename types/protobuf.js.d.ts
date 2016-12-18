@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sun, 18 Dec 2016 12:27:17 UTC
+// Generated Sun, 18 Dec 2016 12:57:48 UTC
 declare module "protobufjs" {
 
     /**
@@ -90,42 +90,18 @@ declare module "protobufjs" {
     function common(name: string, json: Object): void;
 
     /**
-     * General purpose message decoder.
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
-     * @param {number} [length] Length of the message, if known beforehand
-     * @returns {Message} Populated runtime message
-     * @this Type
-     * @property {GenerateDecoder} generate Generates a type specific decoder
-     */
-    function decode(this: Type, readerOrBuffer: (Reader|Uint8Array), length?: number): Message;
-
-    /**
      * Generates a decoder specific to the specified message type.
-     * @typedef GenerateDecoder
-     * @type {function}
      * @param {Type} mtype Message type
      * @returns {Codegen} Codegen instance
      */
-    type GenerateDecoder = (mtype: Type) => Codegen;
+    function decoder(mtype: Type): Codegen;
 
     /**
-     * General purpose message encoder.
-     * @param {Message|Object} message Runtime message or plain object to encode
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} writer
-     * @this Type
-     * @property {GenerateEncoder} generate Generates a type specific encoder
-     */
-    function encode(this: Type, message: (Message|Object), writer?: Writer): Writer;
-
-    /**
-     * Generates an {@link Encoder|encoder} specific to the specified message type.
-     * @typedef GenerateEncoder
-     * @type {function}
+     * Generates an encoder specific to the specified message type.
      * @param {Type} mtype Message type
      * @returns {Codegen} Codegen instance
      */
-    type GenerateEncoder = (mtype: Type) => Codegen;
+    function encoder(mtype: Type): Codegen;
 
     /**
      * Constructs a new enum instance.
@@ -2336,22 +2312,11 @@ declare module "protobufjs" {
     }
 
     /**
-     * General purpose message verifier.
-     * @param {Message|Object} message Runtime message or plain object to verify
-     * @returns {?string} `null` if valid, otherwise the reason why it is not
-     * @this {Type}
-     * @property {GenerateVerifier} generate Generates a type specific verifier
-     */
-    function verify(this: Type, message: (Message|Object)): string;
-
-    /**
      * Generates a verifier specific to the specified message type.
-     * @typedef GenerateVerifier
-     * @type {function}
      * @param {Type} mtype Message type
      * @returns {Codegen} Codegen instance
      */
-    type GenerateVerifier = (mtype: Type) => Codegen;
+    function verifier(mtype: Type): Codegen;
 
     /**
      * Constructs a new writer instance.
