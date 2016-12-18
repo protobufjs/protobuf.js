@@ -469,7 +469,7 @@ WriterPrototype.ldelim = function ldelim(id) {
         tail = this.tail,
         len  = this.len;
     this.reset();
-    if (typeof id === 'number')
+    if (typeof id === "number")
         this.uint32((id << 3 | 2) >>> 0);
     this.uint32(len);
     this.tail.next = head.next; // skip noop

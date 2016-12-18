@@ -1,13 +1,13 @@
 "use strict";
 module.exports = Type; 
 
-Type.className = "Type";
-
 var Namespace = require("./namespace");
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
 var TypePrototype = Namespace.extend(Type);
+
+Type.className = "Type";
 
 var Enum      = require("./enum"),
     OneOf     = require("./oneof"),
@@ -57,6 +57,12 @@ function Type(name, options) {
      * @type {number[][]}
      */
     this.reserved = undefined; // toJSON
+
+    /*?
+     * Whether this type is a legacy group.
+     * @type {boolean|undefined}
+     */
+    this.group = undefined; // toJSON
 
     /**
      * Cached fields by id.
@@ -223,6 +229,8 @@ Type.fromJSON = function fromJSON(name, json) {
         type.extensions = json.extensions;
     if (json.reserved && json.reserved.length)
         type.reserved = json.reserved;
+    if (json.group)
+        type.group = true;
     return type;
 };
 
@@ -237,6 +245,7 @@ TypePrototype.toJSON = function toJSON() {
         fields     : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
         extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
         reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
+        group      : this.group || undefined,
         nested     : inherited && inherited.nested || undefined
     };
 };

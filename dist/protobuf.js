@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
- * Compiled Sat, 17 Dec 2016 12:44:38 UTC
+ * Compiled Sun, 18 Dec 2016 00:20:15 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1107,8 +1107,13 @@ function decode(readerOrBuffer, length) {
         message = new (this.getCtor())();
     while (reader.pos < limit) {
         var tag      = reader.uint32(),
-            wireType = tag & 7,
-            field    = fields[tag >>> 3].resolve(),
+            wireType = tag & 7;
+
+        // End group
+        if (wireType === 4)
+            break;
+
+        var field    = fields[tag >>> 3].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
         
         // Known fields
@@ -1141,13 +1146,13 @@ function decode(readerOrBuffer, length) {
 
                 // Non-packed
                 } else if (types.basic[type] === undefined)
-                    values.push(field.resolvedType.decode(reader, reader.uint32()));
+                    values.push(field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32()));
                 else
                     values.push(reader[type]());
 
             // Non-repeated
             } else if (types.basic[type] === undefined)
-                message[field.name] = field.resolvedType.decode(reader, reader.uint32());
+                message[field.name] = field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32());
             else
                 message[field.name] = reader[type]();
 
@@ -1175,7 +1180,11 @@ decode.generate = function generate(mtype) {
     ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
-        ("var t=r.int32()")
+        ("var t=r.int32()");
+    if (mtype.group) gen
+        ("if((t&7)===4)")
+            ("break");
+    gen
         ("switch(t>>>3){");
     
     for (var i = 0; i < fields.length; ++i) {
@@ -1185,6 +1194,7 @@ decode.generate = function generate(mtype) {
         gen
             ("case %d:", field.id);
 
+        // Map fields
         if (field.map) {
 
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
@@ -1201,27 +1211,36 @@ decode.generate = function generate(mtype) {
             else gen
                 ("m%s[k]=r.%s()", prop, type);
 
+        // Repeated fields
         } else if (field.repeated) { gen
 
                 ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
 
+            // Packed
             if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
                         ("m%s.push(r.%s())", prop, type)
                 ("}else");
-            if (types.basic[type] === undefined) gen
-                    ("m%s.push(types[%d].decode(r,r.uint32()))", prop, i, i);
+
+            // Non-packed
+            if (types.basic[type] === undefined) gen(field.resolvedType.group
+                    ? "m%s.push(types[%d].decode(r))"
+                    : "m%s.push(types[%d].decode(r,r.uint32()))", prop, i);
             else gen
                     ("m%s.push(r.%s())", prop, type);
 
-        } else if (types.basic[type] === undefined) gen
-                ("m%s=types[%d].decode(r,r.uint32())", prop, i, i);
+        // Non-repeated
+        } else if (types.basic[type] === undefined) gen(field.resolvedType.group
+                ? "m%s=types[%d].decode(r)"
+                : "m%s=types[%d].decode(r,r.uint32())", prop, i);
         else gen
                 ("m%s=r.%s()", prop, type);
         gen
                 ("break");
+
+    // Unknown fields
     } return gen
             ("default:")
                 ("r.skipType(t&7)")
@@ -1241,6 +1260,15 @@ var Enum     = require(16),
     types    = require(32),
     util     = require(33);
 var safeProp = util.safeProp;
+
+function encodeType(field, value, writer) {
+    if (field.resolvedType.group)
+        field.resolvedType.encode(value, writer.uint32((field.id << 3 | 3) >>> 0)).uint32((field.id << 3 | 4) >>> 0);
+    else if (field.resolvedType.encode(value, writer.fork()).len || field.required)
+        writer.ldelim(field.id);
+    else
+        writer.reset();
+}
 
 /**
  * General purpose message encoder.
@@ -1265,7 +1293,7 @@ function encode(message, writer) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             if (message[field.name] && message[field.name] !== util.emptyObject) {
                 for (var keys = Object.keys(message[field.name]), i = 0; i < keys.length; ++i) {
-                    writer.uint32(field.id << 3 | 2).fork()
+                    writer.uint32((field.id << 3 | 2) >>> 0).fork()
                           .uint32(/*1*/8 | types.mapKey[keyType])[keyType](keys[i]);
                     if (wireType === undefined)
                         field.resolvedType.encode(message[field.name][keys[i]], writer.uint32(/*2,2*/18).fork()).ldelim();
@@ -1282,21 +1310,23 @@ function encode(message, writer) {
 
                 // Packed repeated
                 if (field.packed && types.packed[type] !== undefined) {
-                    writer.fork();
-                    var i = 0;
-                    while (i < values.length)
-                        writer[type](values[i++]);
-                    writer.ldelim(field.id);
+                    if (values.length) {
+                        writer.uint32((field.id << 3 | 2) >>> 0).fork();
+                        var i = 0;
+                        while (i < values.length)
+                            writer[type](values[i++]);
+                        writer.ldelim();
+                    }
 
                 // Non-packed
                 } else {
                     var i = 0;
-                    if (wireType !== undefined)
+                    if (wireType === undefined)
                         while (i < values.length)
-                            writer.uint32(field.id << 3 | wireType)[type](values[i++]);
+                            encodeType(field, values[i++], writer);
                     else
                         while (i < values.length)
-                            field.resolvedType.encode(values[i++], writer.uint32(field.id << 3 | 2).fork()).ldelim();
+                            writer.uint32((field.id << 3 | wireType) >>> 0)[type](values[i++]);
                 }
 
             }
@@ -1309,20 +1339,23 @@ function encode(message, writer) {
                 ||
                 (field.required || value !== undefined) && (field.long ? util.longNe(value, field.defaultValue.low, field.defaultValue.high) : value !== field.defaultValue)
             ) {
-                if (wireType !== undefined)
-                    writer.uint32(field.id << 3 | wireType)[type](value);
-                else {
-                    field.resolvedType.encode(value, writer.fork());
-                    if (writer.len || field.required)
-                        writer.ldelim(field.id);
-                    else
-                        writer.reset();
-                }
+                if (wireType === undefined)
+                    encodeType(field, value, writer);
+                else
+                    writer.uint32((field.id << 3 | wireType) >>> 0)[type](value);
             }
         }
     }
     return writer;
     /* eslint-enable block-scoped-var, no-redeclare */
+}
+
+function genEncodeType(gen, field, fieldIndex, ref, alwaysRequired) {
+    if (field.resolvedType.group)
+        return gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0);
+    return alwaysRequired || field.required
+      ? gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0)
+      : gen("types[%d].encode(%s,w.fork()).len&&w.ldelim(%d)||w.reset()", fieldIndex, ref, field.id);
 }
 
 /**
@@ -1353,9 +1386,9 @@ encode.generate = function generate(mtype) {
             gen
     ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
         ("for(var ks=Object.keys(m%s),i=0;i<ks.length;++i){", prop)
-            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", field.id << 3 | 2, 8 | types.mapKey[keyType], keyType);
+            ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(m%s[ks[i]],w.uint32(18).fork()).ldelim()", i, prop);
+            ("types[%d].encode(m%s[ks[i]],w.uint32(18).fork()).ldelim()", i, prop); // can't be groups
             else gen
             ("w.uint32(%d).%s(m%s[ks[i]])", 16 | wireType, type, prop);
             gen
@@ -1370,10 +1403,10 @@ encode.generate = function generate(mtype) {
             if (field.packed && types.packed[type] !== undefined) { gen
 
     ("if(m%s&&m%s.length){", prop, prop)
-        ("w.fork()")
+        ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
         ("for(var i=0;i<m%s.length;++i)", prop)
             ("w.%s(m%s[i])", type, prop)
-        ("w.ldelim(%d)", field.id)
+        ("w.ldelim()", field.id)
     ("}");
 
             // Non-packed
@@ -1382,9 +1415,9 @@ encode.generate = function generate(mtype) {
     ("if(m%s)", prop)
         ("for(var i=0;i<m%s.length;++i)", prop);
                 if (wireType !== undefined) gen
-            ("w.uint32(%d).%s(m%s[i])", field.id << 3 | wireType, type, prop);
-                else gen
-            ("types[%d].encode(m%s[i],w.uint32(%d).fork()).ldelim()", i, prop, field.id << 3 | 2);
+            ("w.uint32(%d).%s(m%s[i])", (field.id << 3 | wireType) >>> 0, type, prop);
+                else
+            genEncodeType(gen, field, i, "m" + prop + "[i]", true);
 
             }
 
@@ -1401,17 +1434,10 @@ encode.generate = function generate(mtype) {
             }
 
             if (wireType !== undefined) gen
+        ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
+            else
+         genEncodeType(gen, field, i, "m" + prop);
 
-        ("w.uint32(%d).%s(m%s)", field.id << 3 | wireType, type, prop);
-
-            else if (field.required) gen
-            
-        ("types[%d].encode(m%s,w.uint32(%d).fork()).ldelim()", i, prop, field.id << 3 | 2);
-        
-            else gen
-
-        ("types[%d].encode(m%s,w.fork()).len&&w.ldelim(%d)||w.reset()", i, prop, field.id);
-    
         }
     }
     for (var i = 0; i < oneofs.length; ++i) {
@@ -1429,16 +1455,10 @@ encode.generate = function generate(mtype) {
             ("case%j:", field.name);
 
             if (wireType !== undefined) gen
+                ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
+            else
+                genEncodeType(gen, field, fields.indexOf(field), "m" + prop);
 
-                ("w.uint32(%d).%s(m%s)", field.id << 3 | wireType, type, prop);
-
-            else if (field.required) gen
-            
-                ("types[%d].encode(m%s,w.uint32(%d).fork()).ldelim()", fields.indexOf(field), prop, field.id << 3 | 2);
-        
-            else gen
-
-                ("types[%d].encode(m%s,w.fork()).len&&w.ldelim(%d)||w.reset()", fields.indexOf(field), prop, field.id);
             gen
                 ("break;");
 
@@ -1455,11 +1475,11 @@ encode.generate = function generate(mtype) {
 "use strict";
 module.exports = Enum;
 
-Enum.className = "Enum";
-
 var ReflectionObject = require(22);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
+
+Enum.className = "Enum";
 
 var util = require(33);
 
@@ -1599,14 +1619,14 @@ EnumPrototype.remove = function(name) {
 "use strict";
 module.exports = Field;
 
-Field.className = "Field";
-
 var ReflectionObject = require(22);
-var Message = require(19);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Enum      = require(16),
+Field.className = "Field";
+
+var Message = require(19),
+    Enum      = require(16),
     types     = require(32),
     util      = require(33);
 
@@ -1900,13 +1920,13 @@ FieldPrototype.jsonConvert = function(value, options) {
 "use strict";
 module.exports = MapField;
 
-MapField.className = "MapField";
-
 var Field = require(17);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField);
+
+MapField.className = "MapField";
 
 var Enum    = require(16),
     types   = require(32),
@@ -2138,11 +2158,11 @@ Message.verify = function verify(message) {
 "use strict";
 module.exports = Method;
 
-Method.className = "Method";
-
 var ReflectionObject = require(22);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
+
+Method.className = "Method";
 
 var Type = require(31),
     util = require(33);
@@ -2277,11 +2297,11 @@ MethodPrototype.resolve = function resolve() {
 "use strict";
 module.exports = Namespace;
 
-Namespace.className = "Namespace";
-
 var ReflectionObject = require(22);
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
+
+Namespace.className = "Namespace";
 
 var Enum    = require(16),
     Field   = require(17),
@@ -2797,11 +2817,11 @@ ReflectionObjectPrototype.toString = function toString() {
 "use strict";
 module.exports = OneOf;
 
-OneOf.className = "OneOf";
-
 var ReflectionObject = require(22);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
+
+OneOf.className = "OneOf";
 
 var Field = require(17),
     util  = require(33);
@@ -2975,11 +2995,18 @@ var tokenize  = require(30),
     Method    = require(20),
     types     = require(32),
     util      = require(33);
-var camelCase = util.camelCase;
 
-var nameRe      = /^[a-zA-Z_][a-zA-Z_0-9]*$/,
-    typeRefRe   = /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/,
-    fqTypeRefRe = /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/;
+function isName(token) {
+    return /^[a-zA-Z_][a-zA-Z_0-9]*$/.test(token);
+}
+
+function isTypeRef(token) {
+    return /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/.test(token);
+}
+
+function isFqTypeRef(token) {
+    return /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/.test(token);
+}
 
 function lower(token) {
     return token === null ? null : token.toLowerCase();
@@ -3038,6 +3065,8 @@ function parse(source, root, options) {
 
     var ptr = root;
 
+    var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
+
     function illegal(token, name) {
         var filename = parse.filename;
         parse.filename = null;
@@ -3072,7 +3101,7 @@ function parse(source, root, options) {
         try {
             return parseNumber(token);
         } catch (e) {
-            if (acceptTypeRef && typeRefRe.test(token))
+            if (acceptTypeRef && isTypeRef(token))
                 return token;
             throw illegal(token, "value");
         }
@@ -3113,7 +3142,6 @@ function parse(source, root, options) {
     function parseId(token, acceptNegative) {
         var tokenLower = lower(token);
         switch (tokenLower) {
-            case "min": return 1;
             case "max": return 0x1FFFFFFF;
             case "0": return 0;
         }
@@ -3132,7 +3160,7 @@ function parse(source, root, options) {
         if (pkg !== undefined)
             throw illegal("package");
         pkg = next();
-        if (!typeRefRe.test(pkg))
+        if (!isTypeRef(pkg))
             throw illegal(pkg, "name");
         ptr = ptr.define(pkg);
         skip(";");
@@ -3161,10 +3189,9 @@ function parse(source, root, options) {
     function parseSyntax() {
         skip("=");
         syntax = lower(readString());
-        var p3;
-        if ([ "proto2", p3 = "proto3" ].indexOf(syntax) < 0)
+        isProto3 = syntax === "proto3";
+        if (!isProto3 && syntax !== "proto2")
             throw illegal(syntax, "syntax");
-        isProto3 = syntax === p3;
         skip(";");
     }
 
@@ -3197,7 +3224,7 @@ function parse(source, root, options) {
 
     function parseType(parent, token) {
         var name = next();
-        if (!nameRe.test(name))
+        if (!isName(name))
             throw illegal(name, "type name");
         var type = new Type(name);
         if (skip("{", true)) {
@@ -3206,25 +3233,31 @@ function parse(source, root, options) {
                 if (parseCommon(type, token))
                     continue;
                 switch (tokenLower) {
+
                     case "map":
                         parseMapField(type, tokenLower);
                         break;
+
                     case "required":
                     case "optional":
                     case "repeated":
                         parseField(type, tokenLower);
                         break;
+
                     case "oneof":
                         parseOneOf(type, tokenLower);
                         break;
+
                     case "extensions":
                         (type.extensions || (type.extensions = [])).push(readRange(type, tokenLower));
                         break;
+
                     case "reserved":
                         (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
                         break;
+                        
                     default:
-                        if (!isProto3 || !typeRefRe.test(token))
+                        if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);
                         push(token);
                         parseField(type, "optional");
@@ -3239,19 +3272,54 @@ function parse(source, root, options) {
 
     function parseField(parent, rule, extend) {
         var type = next();
-        if (!typeRefRe.test(type))
+        if (lower(type) === "group") {
+            parseGroup(parent, rule);
+            return;
+        }
+        if (!isTypeRef(type))
             throw illegal(type, "type");
         var name = next();
-        if (!nameRe.test(name))
+        if (!isName(name))
             throw illegal(name, "name");
-        if (!options.keepCase)
-            name = camelCase(name);
+        name = applyCase(name);
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new Field(name, id, type, rule, extend));
         if (field.repeated)
             field.setOption("packed", isProto3, /* ifNotSet */ true);
         parent.add(field);
+    }
+
+    function parseGroup(parent, rule) {
+        var name = next();
+        if (!isName(name))
+            throw illegal(name, "name");
+        var fieldName = util.lcFirst(name);
+        if (name === fieldName)
+            name = util.ucFirst(name);
+        skip("=");
+        var id = parseId(next());
+        var type = new Type(name);
+        type.group = true;
+        var field = new Field(fieldName, id, name, rule);
+        skip("{");
+        while ((token = next()) !== "}") {
+            switch (token = lower(token)) {
+                case "option":
+                    parseOption(type, token);
+                    skip(";");
+                    break;
+                case "required":
+                case "optional":
+                case "repeated":
+                    parseField(type, token);
+                    break;
+                default:
+                    throw illegal(token); // there are no groups with proto3 semantics
+            }
+        }
+        skip(";", true);
+        parent.add(type).add(field);
     }
 
     function parseMapField(parent) {
@@ -3261,14 +3329,13 @@ function parse(source, root, options) {
             throw illegal(keyType, "type");
         skip(",");
         var valueType = next();
-        if (!typeRefRe.test(valueType))
+        if (!isTypeRef(valueType))
             throw illegal(valueType, "type");
         skip(">");
         var name = next();
-        if (!nameRe.test(name))
+        if (!isName(name))
             throw illegal(name, "name");
-        if (!options.keepCase)
-            name = camelCase(name);
+        name = applyCase(name);
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new MapField(name, id, keyType, valueType));
@@ -3277,10 +3344,9 @@ function parse(source, root, options) {
 
     function parseOneOf(parent, token) {
         var name = next();
-        if (!nameRe.test(name))
+        if (!isName(name))
             throw illegal(name, "name");
-        if (!options.keepCase)
-            name = camelCase(name);
+        name = applyCase(name);
         var oneof = new OneOf(name);
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
@@ -3300,7 +3366,7 @@ function parse(source, root, options) {
 
     function parseEnum(parent, token) {
         var name = next();
-        if (!nameRe.test(name))
+        if (!isName(name))
             throw illegal(name, "name");
         var values = {};
         var enm = new Enum(name, values);
@@ -3319,7 +3385,7 @@ function parse(source, root, options) {
     }
 
     function parseEnumField(parent, token) {
-        if (!nameRe.test(token))
+        if (!isName(token))
             throw illegal(token, "name");
         var name = token;
         skip("=");
@@ -3331,13 +3397,13 @@ function parse(source, root, options) {
     function parseOption(parent, token) {
         var custom = skip("(", true);
         var name = next();
-        if (!typeRefRe.test(name))
+        if (!isTypeRef(name))
             throw illegal(name, "name");
         if (custom) {
             skip(")");
             name = "(" + name + ")";
             token = peek();
-            if (fqTypeRefRe.test(token)) {
+            if (!isFqTypeRef(token)) {
                 name += token;
                 next();
             }
@@ -3349,7 +3415,7 @@ function parse(source, root, options) {
     function parseOptionValue(parent, name) {
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
-                if (!nameRe.test(token))
+                if (!isName(token))
                     throw illegal(token, "name");
                 name = name + "." + token;
                 if (skip(":", true))
@@ -3382,7 +3448,7 @@ function parse(source, root, options) {
 
     function parseService(parent, token) {
         token = next();
-        if (!nameRe.test(token))
+        if (!isName(token))
             throw illegal(token, "service name");
         var name = token;
         var service = new Service(name);
@@ -3410,7 +3476,7 @@ function parse(source, root, options) {
     function parseMethod(parent, token) {
         var type = token;
         var name = next();
-        if (!nameRe.test(name))
+        if (!isName(name))
             throw illegal(name, "name");
         var requestType, requestStream,
             responseType, responseStream;
@@ -3418,13 +3484,13 @@ function parse(source, root, options) {
         var st;
         if (skip(st = "stream", true))
             requestStream = true;
-        if (!typeRefRe.test(token = next()))
+        if (!isTypeRef(token = next()))
             throw illegal(token);
         requestType = token;
         skip(")"); skip("returns"); skip("(");
         if (skip(st, true))
             responseStream = true;
-        if (!typeRefRe.test(token = next()))
+        if (!isTypeRef(token = next()))
             throw illegal(token);
         responseType = token;
         skip(")");
@@ -3449,7 +3515,7 @@ function parse(source, root, options) {
 
     function parseExtension(parent, token) {
         var reference = next();
-        if (!typeRefRe.test(reference))
+        if (!isTypeRef(reference))
             throw illegal(reference, "reference");
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
@@ -3461,7 +3527,7 @@ function parse(source, root, options) {
                         parseField(parent, tokenLower, reference);
                         break;
                     default:
-                        if (!isProto3 || !typeRefRe.test(token))
+                        if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);
                         push(token);
                         parseField(parent, "optional", reference);
@@ -3636,52 +3702,52 @@ ReaderPrototype.sint32 = function read_sint32() {
 /* eslint-disable no-invalid-this */
 
 function readLongVarint() {
+    // tends to deopt with local vars for octet etc.
     var bits = new LongBits(0, 0),
-        i = 0,
-        octet = 0;
+        i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
-            octet= this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
-            if (octet < 128)
+            // 1st..4th
+            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
-        octet = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
-        if (octet < 128)
+        // 5th
+        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
+        if (this.buf[this.pos++] < 128)
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            octet = this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
-            if (octet < 128)
+            // 1st..4th
+            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
-        octet = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
-        if (octet < 128)
+        // 5th
+        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
+        if (this.buf[this.pos++] < 128)
             return bits;
     }
     if (this.len - this.pos > 4) { // fast route (hi)
         for (i = 0; i < 5; ++i) {
-            octet = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
-            if (octet < 128)
+            // 6th..10th
+            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
     } else {
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            octet = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
-            if (octet < 128)
+            // 6th..10th
+            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
     }
@@ -4110,11 +4176,11 @@ configure();
 "use strict";
 module.exports = Root;
 
-Root.className = "Root";
-
 var Namespace = require(21);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
+
+Root.className = "Root";
 
 var Field  = require(17),
     util   = require(33),
@@ -4461,13 +4527,13 @@ ServicePrototype.end = function end(endedByRPC) {
 "use strict";
 module.exports = Service;
 
-Service.className = "Service";
-
 var Namespace = require(21);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
 var ServicePrototype = Namespace.extend(Service);
+
+Service.className = "Service";
 
 var Method = require(20),
     util   = require(33),
@@ -4878,13 +4944,13 @@ function tokenize(source) {
 "use strict";
 module.exports = Type; 
 
-Type.className = "Type";
-
 var Namespace = require(21);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
 var TypePrototype = Namespace.extend(Type);
+
+Type.className = "Type";
 
 var Enum      = require(16),
     OneOf     = require(23),
@@ -4934,6 +5000,12 @@ function Type(name, options) {
      * @type {number[][]}
      */
     this.reserved = undefined; // toJSON
+
+    /*?
+     * Whether this type is a legacy group.
+     * @type {boolean|undefined}
+     */
+    this.group = undefined; // toJSON
 
     /**
      * Cached fields by id.
@@ -5100,6 +5172,8 @@ Type.fromJSON = function fromJSON(name, json) {
         type.extensions = json.extensions;
     if (json.reserved && json.reserved.length)
         type.reserved = json.reserved;
+    if (json.group)
+        type.group = true;
     return type;
 };
 
@@ -5114,6 +5188,7 @@ TypePrototype.toJSON = function toJSON() {
         fields     : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
         extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
         reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
+        group      : this.group || undefined,
         nested     : inherited && inherited.nested || undefined
     };
 };
@@ -5567,6 +5642,24 @@ util.underScore = function underScore(str) {
     return str.substring(0,1)
          + str.substring(1)
                .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
+};
+
+/**
+ * Converts the first character of a string to upper case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.ucFirst = function ucFirst(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
+};
+
+/**
+ * Converts the second character of a string to lower case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.lcFirst = function lcFirst(str) {
+    return str.charAt(0).toLowerCase() + str.substring(1);
 };
 
 /**
@@ -6261,24 +6354,18 @@ var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
  * @memberof Writer
  * @constructor
  * @param {function(*, Uint8Array, number)} fn Function to call
- * @param {*} val Value to write
  * @param {number} len Value byte length
+ * @param {*} val Value to write
  * @private
  * @ignore
  */
-function Op(fn, val, len) {
+function Op(fn, len, val) {
 
     /**
      * Function to call.
      * @type {function(Uint8Array, number, *)}
      */
     this.fn = fn;
-
-    /**
-     * Value to write.
-     * @type {*}
-     */
-    this.val = val;
 
     /**
      * Value byte length.
@@ -6288,9 +6375,15 @@ function Op(fn, val, len) {
 
     /**
      * Next operation.
-     * @type {?Writer.Op}
+     * @type {Writer.Op|undefined}
      */
-    this.next = null;
+    // this.next = undefined;
+
+    /**
+     * Value to write.
+     * @type {*}
+     */
+    this.val = val; // type varies
 }
 
 Writer.Op = Op;
@@ -6405,7 +6498,7 @@ var WriterPrototype = Writer.prototype;
  * @returns {Writer} `this`
  */
 WriterPrototype.push = function push(fn, len, val) {
-    this.tail = this.tail.next = new Op(fn, val, len);
+    this.tail = this.tail.next = new Op(fn, len, val);
     this.len += len;
     return this;
 };
@@ -6714,7 +6807,7 @@ WriterPrototype.ldelim = function ldelim(id) {
         tail = this.tail,
         len  = this.len;
     this.reset();
-    if (id)
+    if (typeof id === "number")
         this.uint32((id << 3 | 2) >>> 0);
     this.uint32(len);
     this.tail.next = head.next; // skip noop

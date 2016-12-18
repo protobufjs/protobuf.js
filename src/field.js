@@ -1,14 +1,14 @@
 "use strict";
 module.exports = Field;
 
-Field.className = "Field";
-
 var ReflectionObject = require("./object");
-var Message = require("./message");
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
-var Enum      = require("./enum"),
+Field.className = "Field";
+
+var Message = require("./message"),
+    Enum      = require("./enum"),
     types     = require("./types"),
     util      = require("./util");
 

@@ -90,6 +90,24 @@ util.underScore = function underScore(str) {
 };
 
 /**
+ * Converts the first character of a string to upper case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.ucFirst = function ucFirst(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
+};
+
+/**
+ * Converts the second character of a string to lower case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.lcFirst = function lcFirst(str) {
+    return str.charAt(0).toLowerCase() + str.substring(1);
+};
+
+/**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
  * @returns {Uint8Array} Buffer

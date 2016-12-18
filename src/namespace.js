@@ -1,11 +1,11 @@
 "use strict";
 module.exports = Namespace;
 
-Namespace.className = "Namespace";
-
 var ReflectionObject = require("./object");
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
+
+Namespace.className = "Namespace";
 
 var Enum    = require("./enum"),
     Field   = require("./field"),

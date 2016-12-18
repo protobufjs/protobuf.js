@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
- * Compiled Sat, 17 Dec 2016 12:44:38 UTC
+ * Compiled Sun, 18 Dec 2016 00:20:15 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -531,52 +531,52 @@ ReaderPrototype.sint32 = function read_sint32() {
 /* eslint-disable no-invalid-this */
 
 function readLongVarint() {
+    // tends to deopt with local vars for octet etc.
     var bits = new LongBits(0, 0),
-        i = 0,
-        octet = 0;
+        i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
-            octet= this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
-            if (octet < 128)
+            // 1st..4th
+            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
-        octet = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
-        if (octet < 128)
+        // 5th
+        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
+        if (this.buf[this.pos++] < 128)
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            octet = this.buf[this.pos++]; // 1st..4th
-            bits.lo = (bits.lo | (octet & 127) << i * 7) >>> 0;
-            if (octet < 128)
+            // 1st..4th
+            bits.lo = (bits.lo | (this.buf[this.pos] & 127) << i * 7) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
-        octet = this.buf[this.pos++]; // 5th
-        bits.lo = (bits.lo | (octet & 127) << 28) >>> 0;
-        bits.hi = (bits.hi | (octet & 127) >>  4) >>> 0;
-        if (octet < 128)
+        // 5th
+        bits.lo = (bits.lo | (this.buf[this.pos] & 127) << 28) >>> 0;
+        bits.hi = (bits.hi | (this.buf[this.pos] & 127) >>  4) >>> 0;
+        if (this.buf[this.pos++] < 128)
             return bits;
     }
     if (this.len - this.pos > 4) { // fast route (hi)
         for (i = 0; i < 5; ++i) {
-            octet = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
-            if (octet < 128)
+            // 6th..10th
+            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
     } else {
         for (i = 0; i < 5; ++i) {
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
-            octet = this.buf[this.pos++]; // 6th..10th
-            bits.hi = (bits.hi | (octet & 127) << i * 7 + 3) >>> 0;
-            if (octet < 128)
+            // 6th..10th
+            bits.hi = (bits.hi | (this.buf[this.pos] & 127) << i * 7 + 3) >>> 0;
+            if (this.buf[this.pos++] < 128)
                 return bits;
         }
     }
@@ -1397,24 +1397,18 @@ var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
  * @memberof Writer
  * @constructor
  * @param {function(*, Uint8Array, number)} fn Function to call
- * @param {*} val Value to write
  * @param {number} len Value byte length
+ * @param {*} val Value to write
  * @private
  * @ignore
  */
-function Op(fn, val, len) {
+function Op(fn, len, val) {
 
     /**
      * Function to call.
      * @type {function(Uint8Array, number, *)}
      */
     this.fn = fn;
-
-    /**
-     * Value to write.
-     * @type {*}
-     */
-    this.val = val;
 
     /**
      * Value byte length.
@@ -1424,9 +1418,15 @@ function Op(fn, val, len) {
 
     /**
      * Next operation.
-     * @type {?Writer.Op}
+     * @type {Writer.Op|undefined}
      */
-    this.next = null;
+    // this.next = undefined;
+
+    /**
+     * Value to write.
+     * @type {*}
+     */
+    this.val = val; // type varies
 }
 
 Writer.Op = Op;
@@ -1541,7 +1541,7 @@ var WriterPrototype = Writer.prototype;
  * @returns {Writer} `this`
  */
 WriterPrototype.push = function push(fn, len, val) {
-    this.tail = this.tail.next = new Op(fn, val, len);
+    this.tail = this.tail.next = new Op(fn, len, val);
     this.len += len;
     return this;
 };
@@ -1850,7 +1850,7 @@ WriterPrototype.ldelim = function ldelim(id) {
         tail = this.tail,
         len  = this.len;
     this.reset();
-    if (id)
+    if (typeof id === "number")
         this.uint32((id << 3 | 2) >>> 0);
     this.uint32(len);
     this.tail.next = head.next; // skip noop

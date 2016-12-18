@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sat, 17 Dec 2016 12:44:46 UTC
+// Generated Sun, 18 Dec 2016 00:20:27 UTC
 declare module "protobufjs" {
 
     /**
@@ -2290,6 +2290,20 @@ declare module "protobufjs" {
          * @returns {string} Converted string
          */
         function underScore(str: string): string;
+
+        /**
+         * Converts the first character of a string to upper case.
+         * @param {string} str String to convert
+         * @returns {string} Converted string
+         */
+        function ucFirst(str: string): string;
+
+        /**
+         * Converts the second character of a string to lower case.
+         * @param {string} str String to convert
+         * @returns {string} Converted string
+         */
+        function lcFirst(str: string): string;
 
         /**
          * Creates a new buffer of whatever type supported by the environment.

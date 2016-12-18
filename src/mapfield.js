@@ -1,13 +1,13 @@
 "use strict";
 module.exports = MapField;
 
-MapField.className = "MapField";
-
 var Field = require("./field");
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
 var MapFieldPrototype = Field.extend(MapField);
+
+MapField.className = "MapField";
 
 var Enum    = require("./enum"),
     types   = require("./types"),

@@ -1,11 +1,11 @@
 "use strict";
 module.exports = Root;
 
-Root.className = "Root";
-
 var Namespace = require("./namespace");
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
+
+Root.className = "Root";
 
 var Field  = require("./field"),
     util   = require("./util"),

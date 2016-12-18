@@ -1,0 +1,5 @@
+message Test {
+    required group MyGroup = 1 {
+        required uint32 a = 2;
+    };
+}

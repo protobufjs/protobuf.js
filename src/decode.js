@@ -22,8 +22,13 @@ function decode(readerOrBuffer, length) {
         message = new (this.getCtor())();
     while (reader.pos < limit) {
         var tag      = reader.uint32(),
-            wireType = tag & 7,
-            field    = fields[tag >>> 3].resolve(),
+            wireType = tag & 7;
+
+        // End group
+        if (wireType === 4)
+            break;
+
+        var field    = fields[tag >>> 3].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
         
         // Known fields
@@ -56,13 +61,13 @@ function decode(readerOrBuffer, length) {
 
                 // Non-packed
                 } else if (types.basic[type] === undefined)
-                    values.push(field.resolvedType.decode(reader, reader.uint32()));
+                    values.push(field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32()));
                 else
                     values.push(reader[type]());
 
             // Non-repeated
             } else if (types.basic[type] === undefined)
-                message[field.name] = field.resolvedType.decode(reader, reader.uint32());
+                message[field.name] = field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32());
             else
                 message[field.name] = reader[type]();
 
@@ -90,7 +95,11 @@ decode.generate = function generate(mtype) {
     ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
-        ("var t=r.int32()")
+        ("var t=r.int32()");
+    if (mtype.group) gen
+        ("if((t&7)===4)")
+            ("break");
+    gen
         ("switch(t>>>3){");
     
     for (var i = 0; i < fields.length; ++i) {
@@ -100,6 +109,7 @@ decode.generate = function generate(mtype) {
         gen
             ("case %d:", field.id);
 
+        // Map fields
         if (field.map) {
 
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
@@ -116,27 +126,36 @@ decode.generate = function generate(mtype) {
             else gen
                 ("m%s[k]=r.%s()", prop, type);
 
+        // Repeated fields
         } else if (field.repeated) { gen
 
                 ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
 
+            // Packed
             if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
                         ("m%s.push(r.%s())", prop, type)
                 ("}else");
-            if (types.basic[type] === undefined) gen
-                    ("m%s.push(types[%d].decode(r,r.uint32()))", prop, i, i);
+
+            // Non-packed
+            if (types.basic[type] === undefined) gen(field.resolvedType.group
+                    ? "m%s.push(types[%d].decode(r))"
+                    : "m%s.push(types[%d].decode(r,r.uint32()))", prop, i);
             else gen
                     ("m%s.push(r.%s())", prop, type);
 
-        } else if (types.basic[type] === undefined) gen
-                ("m%s=types[%d].decode(r,r.uint32())", prop, i, i);
+        // Non-repeated
+        } else if (types.basic[type] === undefined) gen(field.resolvedType.group
+                ? "m%s=types[%d].decode(r)"
+                : "m%s=types[%d].decode(r,r.uint32())", prop, i);
         else gen
                 ("m%s=r.%s()", prop, type);
         gen
                 ("break");
+
+    // Unknown fields
     } return gen
             ("default:")
                 ("r.skipType(t&7)")
