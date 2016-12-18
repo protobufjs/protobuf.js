@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sun, 18 Dec 2016 15:30:43 UTC
+// Generated Sun, 18 Dec 2016 17:32:42 UTC
 declare module "protobufjs" {
 
     /**
@@ -1964,12 +1964,12 @@ declare module "protobufjs" {
         function fetch(path: string, callback?: FetchCallback): (Promise<string>|undefined);
 
         /**
-         * Node's fs module if available.
-         * @name fs
+         * Requires a module only if available.
          * @memberof util
-         * @type {Object}
+         * @param {string} moduleName Module to require
+         * @returns {?Object} Required module if available and not empty, otherwise `null`
          */
-        var fs: Object;
+        function inquire(moduleName: string): Object;
 
         /**
          * Constructs new long bits.
@@ -2120,18 +2120,16 @@ declare module "protobufjs" {
         var isNode: boolean;
 
         /**
-         * Optional buffer class to use.
-         * If you assign any compatible buffer implementation to this property, the library will use it.
-         * @type {*}
+         * Node's Buffer class if available.
+         * @type {?function(new: Buffer)}
          */
-        var Buffer: any;
+        var Buffer: () => any;
 
         /**
-         * Optional Long class to use.
-         * If you assign any compatible long implementation to this property, the library will use it.
-         * @type {*}
+         * Long.js's Long class if available.
+         * @type {?function(new: Long)}
          */
-        var Long: any;
+        var Long: () => any;
 
         /**
          * Tests if the specified value is an integer.
@@ -2251,6 +2249,12 @@ declare module "protobufjs" {
              */
             function write(string: string, buffer: Uint8Array, offset: number): number;
         }
+
+        /**
+         * Node's fs module if available.
+         * @type {Object}
+         */
+        var fs: Object;
 
         /**
          * Converts an object's values to an array.

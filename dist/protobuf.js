@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 15:30:35 UTC
+ * Compiled Sun, 18 Dec 2016 17:32:33 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -532,8 +532,10 @@ function extend(ctor) {
 "use strict";
 module.exports = fetch;
 
-var asPromise = require(2);
-var fs        = require(8);
+var asPromise = require(2),
+    inquire   = require(8);
+
+var fs = inquire("fs");
 
 /**
  * Node-style callback as used by {@link util.fetch}.
@@ -554,7 +556,7 @@ var fs        = require(8);
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, this, path); // eslint-disable-line no-invalid-this
-    if (fs.readFile)
+    if (fs && fs.readFile)
         return fs.readFile(path, "utf8", function fetchReadFileCallback(err, contents) {
             return err && typeof XMLHttpRequest !== "undefined"
                 ? fetch_xhr(path, callback)
@@ -581,15 +583,22 @@ function fetch_xhr(path, callback) {
 
 },{"2":2,"8":8}],8:[function(require,module,exports){
 "use strict";
+module.exports = inquire;
 
 /**
- * Node's fs module if available.
- * @name fs
+ * Requires a module only if available.
  * @memberof util
- * @type {Object}
+ * @param {string} moduleName Module to require
+ * @returns {?Object} Required module if available and not empty, otherwise `null`
  */
-/**/
-try { module.exports = eval(["req","uire"].join(""))("fs"); } catch (e) {} // eslint-disable-line no-eval, no-empty
+function inquire(moduleName) {
+    try {
+        var mod = eval("quire".replace(/^/,"re"))(moduleName); // eslint-disable-line no-eval
+        if (mod && (mod.length || Object.keys(mod).length))
+            return mod;
+    } catch (e) {} // eslint-disable-line no-empty
+    return null;
+}
 
 },{}],9:[function(require,module,exports){
 "use strict";
@@ -695,7 +704,7 @@ function pool(alloc, slice, size) {
     var slab   = null;
     var offset = SIZE;
     return function pool_alloc(size) {
-        if (size > MAX)
+        if (size < 1 || size > MAX)
             return alloc(size);
         if (offset + size > SIZE) {
             slab = alloc(SIZE);
@@ -5414,8 +5423,13 @@ util.codegen      = require(4);
 util.EventEmitter = require(5);
 util.extend       = require(6);
 util.fetch        = require(7);
-util.fs           = require(8);
 util.path         = require(9);
+
+/**
+ * Node's fs module if available.
+ * @type {Object}
+ */
+util.fs = util.inquire("fs");
 
 /**
  * Converts an object's values to an array.
@@ -5522,7 +5536,7 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== "undefined" ? Uint8Array : Array)(size);
 };
 
-},{"2":2,"35":35,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}],34:[function(require,module,exports){
+},{"2":2,"35":35,"4":4,"5":5,"6":6,"7":7,"9":9}],34:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
@@ -5729,9 +5743,9 @@ LongBitsPrototype.length = function length() {
 
 var util = exports;
 
-var LongBits =
 util.LongBits = require(34);
 util.base64   = require(3);
+util.inquire  = require(8);
 util.utf8     = require(11);
 util.pool     = require(10);
 
@@ -5740,27 +5754,19 @@ util.pool     = require(10);
  * @memberof util
  * @type {boolean}
  */
-var isNode = util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
- * Optional buffer class to use.
- * If you assign any compatible buffer implementation to this property, the library will use it.
- * @type {*}
+ * Node's Buffer class if available.
+ * @type {?function(new: Buffer)}
  */
-util.Buffer = null;
-
-if (isNode)
-    try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
+util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
 
 /**
- * Optional Long class to use.
- * If you assign any compatible long implementation to this property, the library will use it.
- * @type {*}
+ * Long.js's Long class if available.
+ * @type {?function(new: Long)}
  */
-util.Long = global.dcodeIO && global.dcodeIO.Long || null;
-
-if (!util.Long && isNode)
-    try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
+util.Long = global.dcodeIO && global.dcodeIO.Long || util.inquire("long");
 
 /**
  * Tests if the specified value is an integer.
@@ -5797,7 +5803,7 @@ util.isObject = function isObject(value) {
  */
 util.longToHash = function longToHash(value) {
     return value
-        ? LongBits.from(value).toHash()
+        ? util.LongBits.from(value).toHash()
         : "\0\0\0\0\0\0\0\0";
 };
 
@@ -5808,7 +5814,7 @@ util.longToHash = function longToHash(value) {
  * @returns {Long|number} Original value
  */
 util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = LongBits.fromHash(hash);
+    var bits = util.LongBits.fromHash(hash);
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, unsigned);
     return bits.toNumber(Boolean(unsigned));
@@ -5826,9 +5832,9 @@ util.longNeq = function longNeq(a, b) {
     return typeof a === "number"
          ? typeof b === "number"
             ? a !== b
-            : (a = LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
+            : (a = util.LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
          : typeof b === "number"
-            ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
+            ? (b = util.LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
 };
 
@@ -5899,7 +5905,7 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"3":3,"34":34,"buffer":"buffer","long":"long"}],36:[function(require,module,exports){
+},{"10":10,"11":11,"3":3,"34":34,"8":8}],36:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 

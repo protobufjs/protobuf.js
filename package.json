@@ -43,8 +43,8 @@
     "@protobufjs/codegen": "^1.0.2",
     "@protobufjs/eventemitter": "^1.0.3",
     "@protobufjs/extend": "^1.0.0",
-    "@protobufjs/fetch": "^1.0.1",
-    "@protobufjs/fs": "^1.0.1",
+    "@protobufjs/fetch": "^1.0.2",
+    "@protobufjs/inquire": "^1.0.0",
     "@protobufjs/path": "^1.0.0",
     "@protobufjs/pool": "^1.0.3",
     "@protobufjs/utf8": "^1.0.3"

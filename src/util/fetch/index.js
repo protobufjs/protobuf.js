@@ -1,8 +1,10 @@
 "use strict";
 module.exports = fetch;
 
-var asPromise = require("@protobufjs/aspromise");
-var fs        = require("@protobufjs/fs");
+var asPromise = require("@protobufjs/aspromise"),
+    inquire   = require("@protobufjs/inquire");
+
+var fs = inquire("fs");
 
 /**
  * Node-style callback as used by {@link util.fetch}.
@@ -23,7 +25,7 @@ var fs        = require("@protobufjs/fs");
 function fetch(path, callback) {
     if (!callback)
         return asPromise(fetch, this, path); // eslint-disable-line no-invalid-this
-    if (fs.readFile)
+    if (fs && fs.readFile)
         return fs.readFile(path, "utf8", function fetchReadFileCallback(err, contents) {
             return err && typeof XMLHttpRequest !== "undefined"
                 ? fetch_xhr(path, callback)

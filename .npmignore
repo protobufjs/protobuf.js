@@ -11,7 +11,7 @@ src/util/codegen/
 src/util/eventemitter/
 src/util/extend/
 src/util/fetch/
-src/util/fs/
+src/util/inquire/
 src/util/path/
 src/util/pool/
 src/util/utf8/

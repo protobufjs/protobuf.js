@@ -2,9 +2,9 @@
 
 var util = exports;
 
-var LongBits =
 util.LongBits = require("./longbits");
 util.base64   = require("@protobufjs/base64");
+util.inquire  = require("@protobufjs/inquire");
 util.utf8     = require("@protobufjs/utf8");
 util.pool     = require("@protobufjs/pool");
 
@@ -13,27 +13,19 @@ util.pool     = require("@protobufjs/pool");
  * @memberof util
  * @type {boolean}
  */
-var isNode = util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
- * Optional buffer class to use.
- * If you assign any compatible buffer implementation to this property, the library will use it.
- * @type {*}
+ * Node's Buffer class if available.
+ * @type {?function(new: Buffer)}
  */
-util.Buffer = null;
-
-if (isNode)
-    try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
+util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
 
 /**
- * Optional Long class to use.
- * If you assign any compatible long implementation to this property, the library will use it.
- * @type {*}
+ * Long.js's Long class if available.
+ * @type {?function(new: Long)}
  */
-util.Long = global.dcodeIO && global.dcodeIO.Long || null;
-
-if (!util.Long && isNode)
-    try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
+util.Long = global.dcodeIO && global.dcodeIO.Long || util.inquire("long");
 
 /**
  * Tests if the specified value is an integer.
@@ -70,7 +62,7 @@ util.isObject = function isObject(value) {
  */
 util.longToHash = function longToHash(value) {
     return value
-        ? LongBits.from(value).toHash()
+        ? util.LongBits.from(value).toHash()
         : "\0\0\0\0\0\0\0\0";
 };
 
@@ -81,7 +73,7 @@ util.longToHash = function longToHash(value) {
  * @returns {Long|number} Original value
  */
 util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = LongBits.fromHash(hash);
+    var bits = util.LongBits.fromHash(hash);
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, unsigned);
     return bits.toNumber(Boolean(unsigned));
@@ -99,9 +91,9 @@ util.longNeq = function longNeq(a, b) {
     return typeof a === "number"
          ? typeof b === "number"
             ? a !== b
-            : (a = LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
+            : (a = util.LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
          : typeof b === "number"
-            ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
+            ? (b = util.LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
 };
 

@@ -11,8 +11,13 @@ util.codegen      = require("@protobufjs/codegen");
 util.EventEmitter = require("@protobufjs/eventemitter");
 util.extend       = require("@protobufjs/extend");
 util.fetch        = require("@protobufjs/fetch");
-util.fs           = require("@protobufjs/fs");
 util.path         = require("@protobufjs/path");
+
+/**
+ * Node's fs module if available.
+ * @type {Object}
+ */
+util.fs = util.inquire("fs");
 
 /**
  * Converts an object's values to an array.

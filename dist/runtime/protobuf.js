@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 15:30:35 UTC
+ * Compiled Sun, 18 Dec 2016 17:32:33 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -248,6 +248,25 @@ base64.decode = function decode(string, buffer, offset) {
 
 },{}],3:[function(require,module,exports){
 "use strict";
+module.exports = inquire;
+
+/**
+ * Requires a module only if available.
+ * @memberof util
+ * @param {string} moduleName Module to require
+ * @returns {?Object} Required module if available and not empty, otherwise `null`
+ */
+function inquire(moduleName) {
+    try {
+        var mod = eval("quire".replace(/^/,"re"))(moduleName); // eslint-disable-line no-eval
+        if (mod && (mod.length || Object.keys(mod).length))
+            return mod;
+    } catch (e) {} // eslint-disable-line no-empty
+    return null;
+}
+
+},{}],4:[function(require,module,exports){
+"use strict";
 module.exports = pool;
 
 /**
@@ -283,7 +302,7 @@ function pool(alloc, slice, size) {
     var slab   = null;
     var offset = SIZE;
     return function pool_alloc(size) {
-        if (size > MAX)
+        if (size < 1 || size > MAX)
             return alloc(size);
         if (offset + size > SIZE) {
             slab = alloc(SIZE);
@@ -296,7 +315,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 /**
@@ -400,16 +419,16 @@ utf8.write = function(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
-var Writer = protobuf.Writer = require(9);
+var Writer = protobuf.Writer = require(10);
 protobuf.BufferWriter = Writer.BufferWriter;
-var Reader = protobuf.Reader = require(6);
+var Reader = protobuf.Reader = require(7);
 protobuf.BufferReader = Reader.BufferReader;
-protobuf.util = require(8);
+protobuf.util = require(9);
 protobuf.roots = {};
 protobuf.configure = configure;
 
@@ -427,13 +446,13 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"6":6,"8":8,"9":9}],6:[function(require,module,exports){
+},{"10":10,"7":7,"9":9}],7:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
 Reader.BufferReader = BufferReader;
 
-var util      = require(8),
+var util      = require(9),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
@@ -1001,12 +1020,12 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"8":8}],7:[function(require,module,exports){
+},{"1":1,"9":9}],8:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(8);
+var util = require(9);
 
 /**
  * Any compatible Long instance.
@@ -1202,44 +1221,36 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"8":8}],8:[function(require,module,exports){
+},{"9":9}],9:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-var LongBits =
-util.LongBits = require(7);
+util.LongBits = require(8);
 util.base64   = require(2);
-util.utf8     = require(4);
-util.pool     = require(3);
+util.inquire  = require(3);
+util.utf8     = require(5);
+util.pool     = require(4);
 
 /**
  * Whether running within node or not.
  * @memberof util
  * @type {boolean}
  */
-var isNode = util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
- * Optional buffer class to use.
- * If you assign any compatible buffer implementation to this property, the library will use it.
- * @type {*}
+ * Node's Buffer class if available.
+ * @type {?function(new: Buffer)}
  */
-util.Buffer = null;
-
-if (isNode)
-    try { util.Buffer = require("buffer").Buffer; } catch (e) {} // eslint-disable-line no-empty
+util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
 
 /**
- * Optional Long class to use.
- * If you assign any compatible long implementation to this property, the library will use it.
- * @type {*}
+ * Long.js's Long class if available.
+ * @type {?function(new: Long)}
  */
-util.Long = global.dcodeIO && global.dcodeIO.Long || null;
-
-if (!util.Long && isNode)
-    try { util.Long = require("long"); } catch (e) {} // eslint-disable-line no-empty
+util.Long = global.dcodeIO && global.dcodeIO.Long || util.inquire("long");
 
 /**
  * Tests if the specified value is an integer.
@@ -1276,7 +1287,7 @@ util.isObject = function isObject(value) {
  */
 util.longToHash = function longToHash(value) {
     return value
-        ? LongBits.from(value).toHash()
+        ? util.LongBits.from(value).toHash()
         : "\0\0\0\0\0\0\0\0";
 };
 
@@ -1287,7 +1298,7 @@ util.longToHash = function longToHash(value) {
  * @returns {Long|number} Original value
  */
 util.longFromHash = function longFromHash(hash, unsigned) {
-    var bits = LongBits.fromHash(hash);
+    var bits = util.LongBits.fromHash(hash);
     if (util.Long)
         return util.Long.fromBits(bits.lo, bits.hi, unsigned);
     return bits.toNumber(Boolean(unsigned));
@@ -1305,9 +1316,9 @@ util.longNeq = function longNeq(a, b) {
     return typeof a === "number"
          ? typeof b === "number"
             ? a !== b
-            : (a = LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
+            : (a = util.LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
          : typeof b === "number"
-            ? (b = LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
+            ? (b = util.LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
             : a.low !== b.low || a.high !== b.high;
 };
 
@@ -1378,13 +1389,13 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"2":2,"3":3,"4":4,"7":7,"buffer":"buffer","long":"long"}],9:[function(require,module,exports){
+},{"2":2,"3":3,"4":4,"5":5,"8":8}],10:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
 Writer.BufferWriter = BufferWriter;
 
-var util      = require(8),
+var util      = require(9),
     ieee754   = require(1);
 var LongBits  = util.LongBits,
     base64    = util.base64,
@@ -1977,7 +1988,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"8":8}]},{},[5])
+},{"1":1,"9":9}]},{},[6])
 
 
 //# sourceMappingURL=protobuf.js.map
