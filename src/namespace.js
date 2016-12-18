@@ -283,9 +283,8 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
         return this.getRoot().lookup(path.slice(1), filterType);
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
-    if (found && path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true)))
-        if (!filterType || found instanceof filterType)
-            return found;
+    if (found && path.length === 1 && (!filterType || found instanceof filterType) || found instanceof Namespace && (found = found.lookup(path.slice(1), filterType, true)))
+        return found;
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;
