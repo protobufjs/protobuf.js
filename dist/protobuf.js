@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 00:20:15 UTC
+ * Compiled Sun, 18 Dec 2016 00:55:57 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4697,7 +4697,7 @@ ServicePrototype.remove = function remove(object) {
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl);
     this.getMethodsArray().forEach(function(method) {
-        rpcService[method.name.substring(0, 1).toLowerCase() + method.name.substring(1)] = function callVirtual(request, /* optional */ callback) {
+        rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
             if (!rpcService.$rpc) // already ended?
                 return;
             if (!request)

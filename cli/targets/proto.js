@@ -153,6 +153,8 @@ function buildRanges(keyword, ranges) {
 }
 
 function buildType(type) {
+    if (type.group)
+        return; // built with the sister-field
     push("");
     push("message " + type.name + " {");
     ++indent;
@@ -172,12 +174,16 @@ function buildField(field, passExtend) {
         return;
     if (first)
         first = false, push("");
+    if (field.resolvedType && field.resolvedType.group) {
+        buildGroup(field);
+        return;
+    }
     var sb = [];
     if (field.map)
         sb.push("map<" + field.keyType + ", " + field.type + ">");
     else if (field.repeated)
         sb.push("repeated", field.type);
-    else if (syntax === 2)
+    else if (syntax === 2 || field.parent.group)
         sb.push(field.required ? "required" : "optional", field.type);
     else
         sb.push(field.type);
@@ -186,6 +192,18 @@ function buildField(field, passExtend) {
     if (opts)
         sb.push(opts);
     push(sb.join(" ") + ";");
+}
+
+function buildGroup(field) {
+    push(field.rule + " group " + field.resolvedType.name + " = " + field.id + " {");
+    ++indent;
+    buildOptions(field.resolvedType);
+    first = true;
+    field.resolvedType.fieldsArray.forEach(function(field) {
+        buildField(field);
+    });
+    --indent;
+    push("}");
 }
 
 function buildFieldOptions(field) {

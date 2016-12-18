@@ -350,15 +350,15 @@ $root.vector_tile = (function() {
                             return"invalid value for field .vector_tile.Tile.Value.doubleValue (number expected)"
                     }
                     if(m["intValue"]!==undefined){
-                        if(!(util.isInteger(m["intValue"])||m["intValue"]&&util.isInteger(m["intValue"].low)&&util.isInteger(m["intValue"].high)))
+                        if(!util.isInteger(m["intValue"])&&!(m["intValue"]&&util.isInteger(m["intValue"].low)&&util.isInteger(m["intValue"].high)))
                             return"invalid value for field .vector_tile.Tile.Value.intValue (integer|Long expected)"
                     }
                     if(m["uintValue"]!==undefined){
-                        if(!(util.isInteger(m["uintValue"])||m["uintValue"]&&util.isInteger(m["uintValue"].low)&&util.isInteger(m["uintValue"].high)))
+                        if(!util.isInteger(m["uintValue"])&&!(m["uintValue"]&&util.isInteger(m["uintValue"].low)&&util.isInteger(m["uintValue"].high)))
                             return"invalid value for field .vector_tile.Tile.Value.uintValue (integer|Long expected)"
                     }
                     if(m["sintValue"]!==undefined){
-                        if(!(util.isInteger(m["sintValue"])||m["sintValue"]&&util.isInteger(m["sintValue"].low)&&util.isInteger(m["sintValue"].high)))
+                        if(!util.isInteger(m["sintValue"])&&!(m["sintValue"]&&util.isInteger(m["sintValue"].low)&&util.isInteger(m["sintValue"].high)))
                             return"invalid value for field .vector_tile.Tile.Value.sintValue (integer|Long expected)"
                     }
                     if(m["boolValue"]!==undefined){
@@ -438,18 +438,18 @@ $root.vector_tile = (function() {
                     if(m["id"]!==undefined&&util.longNe(m["id"],0,0))
                         w.uint32(8).uint64(m["id"])
                     if(m["tags"]&&m["tags"].length){
-                        w.fork()
+                        w.uint32(18).fork()
                         for(var i=0;i<m["tags"].length;++i)
                             w.uint32(m["tags"][i])
-                        w.ldelim(2)
+                        w.ldelim()
                     }
                     if(m["type"]!==undefined&&m["type"]!=="UNKNOWN")
                         w.uint32(24).uint32(m["type"])
                     if(m["geometry"]&&m["geometry"].length){
-                        w.fork()
+                        w.uint32(34).fork()
                         for(var i=0;i<m["geometry"].length;++i)
                             w.uint32(m["geometry"][i])
-                        w.ldelim(4)
+                        w.ldelim()
                     }
                     return w
                 }
@@ -539,7 +539,7 @@ $root.vector_tile = (function() {
                 var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.GeomType",null]);
                 return function verify(m) {
                     if(m["id"]!==undefined){
-                        if(!(util.isInteger(m["id"])||m["id"]&&util.isInteger(m["id"].low)&&util.isInteger(m["id"].high)))
+                        if(!util.isInteger(m["id"])&&!(m["id"]&&util.isInteger(m["id"].low)&&util.isInteger(m["id"].high)))
                             return"invalid value for field .vector_tile.Tile.Feature.id (integer|Long expected)"
                     }
                     if(m["tags"]!==undefined){

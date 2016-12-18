@@ -48,9 +48,9 @@ tape.test("legacy groups", function(test) {
 });
 
 function verifyEncode(test, buf) {
-    test.equal(buf.length, 4, "should encode a total of 4 bytes");
-    test.equal(buf[0], 1 << 3 | 3, "should encode id 1, wireType 3");
-    test.equal(buf[1], 2 << 3 | 0, "should encode id 2, wireType 0");
-    test.equal(buf[2], 111, "should encode value 111");
-    test.equal(buf[3], 1 << 3 | 4, "should encode id 1, wireType 4");
+    test.equal(buf.length, 4, "a total of 4 bytes");
+    test.equal(buf[0], 1 << 3 | 3, "id 1, wireType 3");
+    test.equal(buf[1], 2 << 3 | 0, "id 2, wireType 0");
+    test.equal(buf[2], 111, "111");
+    test.equal(buf[3], 1 << 3 | 4, "id 1, wireType 4");
 }
