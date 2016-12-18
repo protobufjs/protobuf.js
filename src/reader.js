@@ -1,12 +1,15 @@
 "use strict";
 module.exports = Reader;
 
-Reader.BufferReader = BufferReader;
-
 var util      = require("./util/runtime"),
     ieee754   = require("../lib/ieee754");
+
+var BufferReader; // cyclic
+
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
+
+/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 function indexOutOfRange(reader, writeLength) {
@@ -46,7 +49,12 @@ function Reader(buffer) {
  * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  */
 Reader.create = function create(buffer) {
-    return new (util.Buffer ? BufferReader : Reader)(buffer);
+    if (util.Buffer) {
+        if (!BufferReader)
+            BufferReader = require("./reader_buffer");
+        return new BufferReader(buffer);
+    }
+    return new Reader(buffer);
 };
 
 /** @alias Reader.prototype */
@@ -461,92 +469,6 @@ ReaderPrototype.finish = function finish(buffer) {
     var remain = this.pos
         ? this._slice.call(this.buf, this.pos)
         : this.buf;
-    this.reset(buffer);
-    return remain;
-};
-
-// One time function to initialize BufferReader with the now-known buffer implementation's slice method
-var initBufferReader = function() {
-    var Buffer = util.Buffer;
-    if (!Buffer)
-        throw Error("Buffer is not supported");
-    BufferReaderPrototype._slice = Buffer.prototype.slice;
-    readStringBuffer = Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
-        ? readStringBuffer_utf8Slice
-        : readStringBuffer_toString;
-    initBufferReader = false;
-};
-
-/**
- * Constructs a new buffer reader instance.
- * @classdesc Wire format reader using node buffers.
- * @extends Reader
- * @constructor
- * @param {Buffer} buffer Buffer to read from
- */
-function BufferReader(buffer) {
-    if (initBufferReader)
-        initBufferReader();
-    Reader.call(this, buffer);
-}
-
-/** @alias BufferReader.prototype */
-var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
-
-BufferReaderPrototype.constructor = BufferReader;
-
-if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferReaderPrototype.float = function read_float_buffer() {
-    if (this.pos + 4 > this.len)
-        throw indexOutOfRange(this, 4);
-    var value = this.buf.readFloatLE(this.pos, true);
-    this.pos += 4;
-    return value;
-};
-
-if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferReaderPrototype.double = function read_double_buffer() {
-    if (this.pos + 8 > this.len)
-        throw indexOutOfRange(this, 8);
-    var value = this.buf.readDoubleLE(this.pos, true);
-    this.pos += 8;
-    return value;
-};
-
-var readStringBuffer;
-
-function readStringBuffer_utf8Slice(buf, start, end) {
-    return buf.utf8Slice(start, end); // fastest
-}
-
-function readStringBuffer_toString(buf, start, end) {
-    return buf.toString("utf8", start, end); // 2nd, again assertions
-}
-
-/**
- * @override
- */
-BufferReaderPrototype.string = function read_string_buffer() {
-    var length = this.uint32(),
-        start  = this.pos,
-        end    = this.pos + length;
-    if (end > this.len)
-        throw indexOutOfRange(this, length);
-    this.pos += length;
-    return readStringBuffer(this.buf, start, end);
-};
-
-/**
- * @override
- */
-BufferReaderPrototype.finish = function finish_buffer(buffer) {
-    var remain = this.pos ? this.buf.slice(this.pos) : this.buf;
     this.reset(buffer);
     return remain;
 };

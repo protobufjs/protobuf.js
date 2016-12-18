@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sun, 18 Dec 2016 17:32:42 UTC
+// Generated Sun, 18 Dec 2016 19:24:12 UTC
 declare module "protobufjs" {
 
     /**
@@ -2526,7 +2526,6 @@ declare module "protobufjs" {
     /**
      * Constructs a new buffer writer instance.
      * @classdesc Wire format writer using node buffers.
-     * @exports BufferWriter
      * @extends Writer
      * @constructor
      */
@@ -2535,7 +2534,6 @@ declare module "protobufjs" {
         /**
          * Constructs a new buffer writer instance.
          * @classdesc Wire format writer using node buffers.
-         * @exports BufferWriter
          * @extends Writer
          * @constructor
          */

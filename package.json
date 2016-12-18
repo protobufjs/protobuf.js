@@ -35,7 +35,7 @@
     "test": "tape tests/*.js | tap-spec",
     "types": "node bin/pbts --name protobufjs --out types/protobuf.js.d.ts src && tsc types/test.ts --lib es2015 --noEmit",
     "zuul": "zuul --ui tape --no-coverage --concurrency 4 -- tests/*.js",
-    "zuul-local": "zuul --ui tape --no-coverage --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js"
+    "zuul-local": "zuul --ui tape --concurrency 1 --local 8080 --disable-tunnel -- tests/*.js"
   },
   "dependencies": {
     "@protobufjs/aspromise": "^1.0.3",

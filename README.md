@@ -487,8 +487,7 @@ Note that JSON is a native binding nowadays and as such is about as fast as it p
 * Reader and writer interfaces configure themselves according to the environment to eliminate redundant conditionals.
 * Node-specific reader and writer subclasses benefit from node's buffer binding.
 * Reflection has built-in code generation that builds type-specific encoders, decoders and verifiers at runtime.
-* Encoders and decoders do not verify that required fields are present (with proto3 this is dead code anyway). There is a `verify` method to check this manually instead - where applicable.
-* For entirely bogus values encoders intentionally rely on runtime errors to be thrown somewhere down the road.
+* Encoders and decoders do not implicitly call `verify` on messages to avoid unnecessary overhead where messages are already known to be valid. It's up to the user to call `verify` where necessary.
 * Quite a bit of V8-specific profiling is accountable for everything else.
 
 You can also run [the benchmark](https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js) ...

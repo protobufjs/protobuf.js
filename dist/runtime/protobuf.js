@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 17:54:03 UTC
+ * Compiled Sun, 18 Dec 2016 19:23:21 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -424,11 +424,11 @@ utf8.write = function(string, buffer, offset) {
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
-var Writer = protobuf.Writer = require(10);
+var Writer = protobuf.Writer = require(11);
 protobuf.BufferWriter = Writer.BufferWriter;
 var Reader = protobuf.Reader = require(7);
 protobuf.BufferReader = Reader.BufferReader;
-protobuf.util = require(9);
+protobuf.util = require(10);
 protobuf.roots = {};
 protobuf.configure = configure;
 
@@ -446,16 +446,19 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"10":10,"7":7,"9":9}],7:[function(require,module,exports){
+},{"10":10,"11":11,"7":7}],7:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-Reader.BufferReader = BufferReader;
-
-var util      = require(9),
+var util      = require(10),
     ieee754   = require(1);
+
+var BufferReader; // cyclic
+
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
+
+/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 function indexOutOfRange(reader, writeLength) {
@@ -495,7 +498,12 @@ function Reader(buffer) {
  * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  */
 Reader.create = function create(buffer) {
-    return new (util.Buffer ? BufferReader : Reader)(buffer);
+    if (util.Buffer) {
+        if (!BufferReader)
+            BufferReader = require(8);
+        return new BufferReader(buffer);
+    }
+    return new Reader(buffer);
 };
 
 /** @alias Reader.prototype */
@@ -914,92 +922,6 @@ ReaderPrototype.finish = function finish(buffer) {
     return remain;
 };
 
-// One time function to initialize BufferReader with the now-known buffer implementation's slice method
-var initBufferReader = function() {
-    var Buffer = util.Buffer;
-    if (!Buffer)
-        throw Error("Buffer is not supported");
-    BufferReaderPrototype._slice = Buffer.prototype.slice;
-    readStringBuffer = Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
-        ? readStringBuffer_utf8Slice
-        : readStringBuffer_toString;
-    initBufferReader = false;
-};
-
-/**
- * Constructs a new buffer reader instance.
- * @classdesc Wire format reader using node buffers.
- * @extends Reader
- * @constructor
- * @param {Buffer} buffer Buffer to read from
- */
-function BufferReader(buffer) {
-    if (initBufferReader)
-        initBufferReader();
-    Reader.call(this, buffer);
-}
-
-/** @alias BufferReader.prototype */
-var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
-
-BufferReaderPrototype.constructor = BufferReader;
-
-if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferReaderPrototype.float = function read_float_buffer() {
-    if (this.pos + 4 > this.len)
-        throw indexOutOfRange(this, 4);
-    var value = this.buf.readFloatLE(this.pos, true);
-    this.pos += 4;
-    return value;
-};
-
-if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferReaderPrototype.double = function read_double_buffer() {
-    if (this.pos + 8 > this.len)
-        throw indexOutOfRange(this, 8);
-    var value = this.buf.readDoubleLE(this.pos, true);
-    this.pos += 8;
-    return value;
-};
-
-var readStringBuffer;
-
-function readStringBuffer_utf8Slice(buf, start, end) {
-    return buf.utf8Slice(start, end); // fastest
-}
-
-function readStringBuffer_toString(buf, start, end) {
-    return buf.toString("utf8", start, end); // 2nd, again assertions
-}
-
-/**
- * @override
- */
-BufferReaderPrototype.string = function read_string_buffer() {
-    var length = this.uint32(),
-        start  = this.pos,
-        end    = this.pos + length;
-    if (end > this.len)
-        throw indexOutOfRange(this, length);
-    this.pos += length;
-    return readStringBuffer(this.buf, start, end);
-};
-
-/**
- * @override
- */
-BufferReaderPrototype.finish = function finish_buffer(buffer) {
-    var remain = this.pos ? this.buf.slice(this.pos) : this.buf;
-    this.reset(buffer);
-    return remain;
-};
-
 function configure() {
     if (util.Long) {
         ReaderPrototype.int64 = read_int64_long;
@@ -1020,12 +942,74 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"9":9}],8:[function(require,module,exports){
+},{"1":1,"10":10,"8":8}],8:[function(require,module,exports){
+"use strict";
+module.exports = BufferReader;
+
+var Reader = require(7);
+/** @alias BufferReader.prototype */
+var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
+BufferReaderPrototype.constructor = BufferReader;
+
+var util = require(10);
+
+// One time function to initialize BufferReader with the now-known buffer implementation's slice method
+var initBufferReader = function() {
+    if (!util.Buffer)
+        throw Error("Buffer is not supported");
+    BufferReaderPrototype._slice = util.Buffer.prototype.slice;
+    readStringBuffer = util.Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
+        ? readStringBuffer_utf8Slice
+        : readStringBuffer_toString;
+    initBufferReader = false;
+};
+
+/**
+ * Constructs a new buffer reader instance.
+ * @classdesc Wire format reader using node buffers.
+ * @extends Reader
+ * @constructor
+ * @param {Buffer} buffer Buffer to read from
+ */
+function BufferReader(buffer) {
+    if (initBufferReader)
+        initBufferReader();
+    Reader.call(this, buffer);
+}
+
+var readStringBuffer;
+
+function readStringBuffer_utf8Slice(buf, start, end) {
+    return buf.utf8Slice(start, end); // fastest
+}
+
+function readStringBuffer_toString(buf, start, end) {
+    return buf.toString("utf8", start, end); // 2nd, again assertions
+}
+
+/**
+ * @override
+ */
+BufferReaderPrototype.string = function read_string_buffer() {
+    var len = this.uint32(); // modifies pos
+    return readStringBuffer(this.buf, this.pos, this.pos = Math.min(this.pos + len, this.len));
+};
+
+/**
+ * @override
+ */
+BufferReaderPrototype.finish = function finish_buffer(buffer) {
+    var remain = this.pos ? this.buf.slice(this.pos) : this.buf;
+    this.reset(buffer);
+    return remain;
+};
+
+},{"10":10,"7":7}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(9);
+var util = require(10);
 
 /**
  * Any compatible Long instance.
@@ -1221,13 +1205,13 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"9":9}],9:[function(require,module,exports){
+},{"10":10}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-util.LongBits = require(8);
+util.LongBits = require(9);
 util.base64   = require(2);
 util.inquire  = require(3);
 util.utf8     = require(5);
@@ -1389,17 +1373,20 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"2":2,"3":3,"4":4,"5":5,"8":8}],10:[function(require,module,exports){
+},{"2":2,"3":3,"4":4,"5":5,"9":9}],11:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-Writer.BufferWriter = BufferWriter;
-
-var util      = require(9),
+var util      = require(10),
     ieee754   = require(1);
+
+var BufferWriter; // cyclic
+
 var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
+
+/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 /**
@@ -1442,6 +1429,7 @@ function Op(fn, len, val) {
 
 Writer.Op = Op;
 
+/* istanbul ignore next */
 function noop() {} // eslint-disable-line no-empty-function
 
 /**
@@ -1525,7 +1513,12 @@ function Writer() {
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
 Writer.create = function create() {
-    return new (util.Buffer ? BufferWriter : Writer);
+    if (util.Buffer) {
+        if (!BufferWriter)
+            BufferWriter = require(12);
+        return new BufferWriter();
+    }
+    return new Writer();
 };
 
 /**
@@ -1539,6 +1532,7 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
+    /* istanbul ignore next */
     Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
 
 /** @alias Writer.prototype */
@@ -1712,6 +1706,7 @@ var writeFloat = typeof Float32Array !== "undefined"
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
         return f8b[3] // already le?
+            /* istanbul ignore next */
             ? function writeFloat_f32(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
@@ -1727,6 +1722,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeFloat_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 23, 4);
     };
@@ -1747,6 +1743,7 @@ var writeDouble = typeof Float64Array !== "undefined"
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
         return f8b[7] // already le?
+            /* istanbul ignore next */
             ? function writeDouble_f64(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
@@ -1770,6 +1767,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeDouble_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 52, 8);
     };
@@ -1788,6 +1786,7 @@ var writeBytes = ArrayImpl.prototype.set
     ? function writeBytes_set(val, buf, pos) {
         buf.set(val, pos);
     }
+    /* istanbul ignore next */
     : function writeBytes_for(val, buf, pos) {
         for (var i = 0; i < val.length; ++i)
             buf[pos + i] = val[i];
@@ -1819,6 +1818,7 @@ WriterPrototype.string = function write_string(value) {
     var len = utf8.length(value);
     return len
         ? this.uint32(len).push(utf8.write, len, value)
+        /* istanbul ignore next */
         : this.push(writeByte, 1, 0);
 };
 
@@ -1887,10 +1887,22 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
+},{"1":1,"10":10,"12":12}],12:[function(require,module,exports){
+"use strict";
+module.exports = BufferWriter;
+
+var Writer = require(11);
+/** @alias BufferWriter.prototype */
+var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
+BufferWriterPrototype.constructor = BufferWriter;
+
+var util = require(10);
+
+var utf8 = util.utf8;
+
 /**
  * Constructs a new buffer writer instance.
  * @classdesc Wire format writer using node buffers.
- * @exports BufferWriter
  * @extends Writer
  * @constructor
  */
@@ -1910,37 +1922,8 @@ BufferWriter.alloc = function alloc_buffer(size) {
     return BufferWriter.alloc(size);
 };
 
-/** @alias BufferWriter.prototype */
-var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
-BufferWriterPrototype.constructor = BufferWriter;
-
-function writeFloatBuffer(val, buf, pos) {
-    buf.writeFloatLE(val, pos, true);
-}
-
-if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferWriterPrototype.float = function write_float_buffer(value) {
-    return this.push(writeFloatBuffer, 4, value);
-};
-
-function writeDoubleBuffer(val, buf, pos) {
-    buf.writeDoubleLE(val, pos, true);
-}
-
-if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferWriterPrototype.double = function write_double_buffer(value) {
-    return this.push(writeDoubleBuffer, 8, value);
-};
-
 function writeBytesBuffer(val, buf, pos) {
-    if (val.length)
-        val.copy(buf, pos, 0, val.length);
+    val.copy(buf, pos, 0, val.length);
 }
 
 var Buffer_from = util.Buffer && util.Buffer.from || function(value, encoding) { return new util.Buffer(value, encoding); };
@@ -1952,9 +1935,10 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     if (typeof value === "string")
         value = Buffer_from(value, "base64");
     var len = value.length >>> 0;
-    return len
-        ? this.uint32(len).push(writeBytesBuffer, len, value)
-        : this.push(writeByte, 1, 0);
+    this.uint32(len);
+    if (len)
+        this.push(writeBytesBuffer, len, value);
+    return this;
 };
 
 var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
@@ -1983,12 +1967,13 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     var len = value.length < 40
         ? utf8.length(value)
         : util.Buffer.byteLength(value);
-    return len
-        ? this.uint32(len).push(writeStringBuffer, len, value)
-        : this.push(writeByte, 1, 0);
+    this.uint32(len);
+    if (len)
+        this.push(writeStringBuffer, len, value);
+    return this;
 };
 
-},{"1":1,"9":9}]},{},[6])
+},{"10":10,"11":11}]},{},[6])
 
 
 //# sourceMappingURL=protobuf.js.map

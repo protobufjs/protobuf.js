@@ -1,13 +1,16 @@
 "use strict";
 module.exports = Writer;
 
-Writer.BufferWriter = BufferWriter;
-
 var util      = require("./util/runtime"),
     ieee754   = require("../lib/ieee754");
+
+var BufferWriter; // cyclic
+
 var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
+
+/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 /**
@@ -50,6 +53,7 @@ function Op(fn, len, val) {
 
 Writer.Op = Op;
 
+/* istanbul ignore next */
 function noop() {} // eslint-disable-line no-empty-function
 
 /**
@@ -133,7 +137,12 @@ function Writer() {
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
 Writer.create = function create() {
-    return new (util.Buffer ? BufferWriter : Writer);
+    if (util.Buffer) {
+        if (!BufferWriter)
+            BufferWriter = require("./writer_buffer");
+        return new BufferWriter();
+    }
+    return new Writer();
 };
 
 /**
@@ -147,6 +156,7 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
+    /* istanbul ignore next */
     Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
 
 /** @alias Writer.prototype */
@@ -320,6 +330,7 @@ var writeFloat = typeof Float32Array !== "undefined"
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
         return f8b[3] // already le?
+            /* istanbul ignore next */
             ? function writeFloat_f32(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
@@ -335,6 +346,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeFloat_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 23, 4);
     };
@@ -355,6 +367,7 @@ var writeDouble = typeof Float64Array !== "undefined"
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
         return f8b[7] // already le?
+            /* istanbul ignore next */
             ? function writeDouble_f64(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
@@ -378,6 +391,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeDouble_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 52, 8);
     };
@@ -396,6 +410,7 @@ var writeBytes = ArrayImpl.prototype.set
     ? function writeBytes_set(val, buf, pos) {
         buf.set(val, pos);
     }
+    /* istanbul ignore next */
     : function writeBytes_for(val, buf, pos) {
         for (var i = 0; i < val.length; ++i)
             buf[pos + i] = val[i];
@@ -427,6 +442,7 @@ WriterPrototype.string = function write_string(value) {
     var len = utf8.length(value);
     return len
         ? this.uint32(len).push(utf8.write, len, value)
+        /* istanbul ignore next */
         : this.push(writeByte, 1, 0);
 };
 
@@ -493,105 +509,4 @@ WriterPrototype.finish = function finish() {
     }
     this.head = this.tail = null; // gc
     return buf;
-};
-
-/**
- * Constructs a new buffer writer instance.
- * @classdesc Wire format writer using node buffers.
- * @exports BufferWriter
- * @extends Writer
- * @constructor
- */
-function BufferWriter() {
-    Writer.call(this);
-}
-
-/**
- * Allocates a buffer of the specified size.
- * @param {number} size Buffer size
- * @returns {Uint8Array} Buffer
- */
-BufferWriter.alloc = function alloc_buffer(size) {
-    BufferWriter.alloc = util.Buffer.allocUnsafe
-        ? util.Buffer.allocUnsafe
-        : function allocUnsafeNew(size) { return new util.Buffer(size); };
-    return BufferWriter.alloc(size);
-};
-
-/** @alias BufferWriter.prototype */
-var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
-BufferWriterPrototype.constructor = BufferWriter;
-
-function writeFloatBuffer(val, buf, pos) {
-    buf.writeFloatLE(val, pos, true);
-}
-
-if (typeof Float32Array === "undefined") // f32 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferWriterPrototype.float = function write_float_buffer(value) {
-    return this.push(writeFloatBuffer, 4, value);
-};
-
-function writeDoubleBuffer(val, buf, pos) {
-    buf.writeDoubleLE(val, pos, true);
-}
-
-if (typeof Float64Array === "undefined") // f64 is faster (node 6.9.1)
-/**
- * @override
- */
-BufferWriterPrototype.double = function write_double_buffer(value) {
-    return this.push(writeDoubleBuffer, 8, value);
-};
-
-function writeBytesBuffer(val, buf, pos) {
-    if (val.length)
-        val.copy(buf, pos, 0, val.length);
-}
-
-var Buffer_from = util.Buffer && util.Buffer.from || function(value, encoding) { return new util.Buffer(value, encoding); };
-
-/**
- * @override
- */
-BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
-    if (typeof value === "string")
-        value = Buffer_from(value, "base64");
-    var len = value.length >>> 0;
-    return len
-        ? this.uint32(len).push(writeBytesBuffer, len, value)
-        : this.push(writeByte, 1, 0);
-};
-
-var writeStringBuffer = (function() { // eslint-disable-line wrap-iife
-    return util.Buffer && util.Buffer.prototype.utf8Write // around forever, but not present in browser buffer
-        ? function writeString_buffer_utf8Write(val, buf, pos) {
-            if (val.length < 40)
-                utf8.write(val, buf, pos);
-            else
-                buf.utf8Write(val, pos);
-        }
-        : function writeString_buffer_write(val, buf, pos) {
-            if (val.length < 40)
-                utf8.write(val, buf, pos);
-            else
-                buf.write(val, pos);
-        };
-    // Note that the plain JS encoder is faster for short strings, probably because of redundant assertions.
-    // For a raw utf8Write, the breaking point is about 20 characters, for write it is around 40 characters.
-    // Unfortunately, this does not translate 1:1 to real use cases, hence the common "good enough" limit of 40.
-})();
-
-/**
- * @override
- */
-BufferWriterPrototype.string = function write_string_buffer(value) {
-    var len = value.length < 40
-        ? utf8.length(value)
-        : util.Buffer.byteLength(value);
-    return len
-        ? this.uint32(len).push(writeStringBuffer, len, value)
-        : this.push(writeByte, 1, 0);
 };
