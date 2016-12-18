@@ -436,11 +436,9 @@ $> npm run types
 
 ### Browserify integration
 
-protobuf.js integrates into any browserify build-process. There are a few possible tweaks:
+By default, protobuf.js integrates into your browserify build-process without requiring any optional modules. Hence:
 
-* If performance is a concern or IE8 support is required, you should make sure to exclude the browserified `buffer` module and let protobuf.js do its thing with Uint8Array/Array instead.
-* If you do not need int64 support, you can explicitly exclude the `long` module. It will be included otherwise.
-* If your application does not rely on the following modules and package size is a concern, you can also exclude `process` , `_process` and `fs`.
+* If you need int64 support, explicitly require the `long` module somewhere in your project. It will be excluded otherwise.
 * If you have any special requirements, there is [the bundler](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js) as a reference.
 
 Performance
