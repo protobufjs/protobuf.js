@@ -90,7 +90,7 @@ MapFieldPrototype.resolve = function resolve() {
     if (keyWireType === undefined) {
         var resolved = this.parent.lookup(this.keyType);
         if (!(resolved instanceof Enum))
-            throw Error("unresolvable map key type: " + this.keyType);
+            throw Error("unresolvable key type: " + this.keyType);
         this.resolvedKeyType = resolved;
     }
 

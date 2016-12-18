@@ -160,10 +160,10 @@ encode.generate = function generate(mtype) {
 
     ("if(m%s)", prop)
         ("for(var i=0;i<m%s.length;++i)", prop);
-                if (wireType !== undefined) gen
-            ("w.uint32(%d).%s(m%s[i])", (field.id << 3 | wireType) >>> 0, type, prop);
-                else
+                if (wireType === undefined)
             genEncodeType(gen, field, i, "m" + prop + "[i]", true);
+                else gen
+            ("w.uint32(%d).%s(m%s[i])", (field.id << 3 | wireType) >>> 0, type, prop);
 
             }
 
@@ -179,10 +179,10 @@ encode.generate = function generate(mtype) {
 
             }
 
-            if (wireType !== undefined) gen
+            if (wireType === undefined)
+        genEncodeType(gen, field, i, "m" + prop);
+            else gen
         ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
-            else
-         genEncodeType(gen, field, i, "m" + prop);
 
         }
     }
@@ -200,10 +200,10 @@ encode.generate = function generate(mtype) {
             gen
             ("case%j:", field.name);
 
-            if (wireType !== undefined) gen
-                ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
-            else
+            if (wireType === undefined)
                 genEncodeType(gen, field, fields.indexOf(field), "m" + prop);
+            else gen
+                ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
 
             gen
                 ("break;");

@@ -8,7 +8,7 @@ ReflectionObject.extend = util.extend;
 
 var Root; // cyclic
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new reflection object instance.
@@ -20,9 +20,9 @@ var _TypeError = util._TypeError;
  */
 function ReflectionObject(name, options) {
     if (!util.isString(name))
-        throw _TypeError("name");
+        throw TypeError("name");
     if (options && !util.isObject(options))
-        throw _TypeError("options", "an object");
+        throw TypeError("options", "an object");
 
     /**
      * Options.

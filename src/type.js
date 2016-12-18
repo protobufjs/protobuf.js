@@ -23,6 +23,8 @@ var encode, // might become cyclic
     decode, // might become cyclic
     verify; // cyclic
 
+var Object_keys = Object.keys;
+
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
@@ -113,7 +115,7 @@ util.props(TypePrototype, {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
-            var names = Object.keys(this.fields);
+            var names = Object_keys(this.fields);
             for (var i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
@@ -207,15 +209,15 @@ Type.fromJSON = function fromJSON(name, json) {
     type.extensions = json.extensions;
     type.reserved = json.reserved;
     if (json.fields)
-        Object.keys(json.fields).forEach(function(fieldName) {
+        Object_keys(json.fields).forEach(function(fieldName) {
             type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
         });
     if (json.oneofs)
-        Object.keys(json.oneofs).forEach(function(oneOfName) {
+        Object_keys(json.oneofs).forEach(function(oneOfName) {
             type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
         });
     if (json.nested)
-        Object.keys(json.nested).forEach(function(nestedName) {
+        Object_keys(json.nested).forEach(function(nestedName) {
             var nested = json.nested[nestedName];
             for (var i = 0; i < nestedTypes.length; ++i) {
                 if (nestedTypes[i].testJSON(nested)) {
@@ -343,21 +345,22 @@ TypePrototype.setup = function setup() {
         decode = require("./decode");
         verify = require("./verify");
     }
-    this.encode = util.codegen.supported
+    var codegen_supported = util.codegen.supported;
+    this.encode = codegen_supported
         ? encode.generate(this).eof(this.getFullName() + "$encode", {
               Writer : Writer,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
         : encode;
-    this.decode = util.codegen.supported
+    this.decode = codegen_supported
         ? decode.generate(this).eof(this.getFullName() + "$decode", {
               Reader : Reader,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
         : decode;
-    this.verify = util.codegen.supported
+    this.verify = codegen_supported
         ? verify.generate(this).eof(this.getFullName() + "$verify", {
               types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util  : util

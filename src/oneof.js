@@ -10,7 +10,7 @@ OneOf.className = "OneOf";
 var Field = require("./field"),
     util  = require("./util");
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new oneof instance.
@@ -28,7 +28,7 @@ function OneOf(name, fieldNames, options) {
     }
     ReflectionObject.call(this, name, options);
     if (fieldNames && !Array.isArray(fieldNames))
-        throw _TypeError("fieldNames", "an Array");
+        throw TypeError("fieldNames", "an Array");
 
     /**
      * Upper cased name for getter/setter calls.
@@ -114,7 +114,7 @@ function addFieldsToParent(oneof) {
  */
 OneOfPrototype.add = function add(field) {
     if (!(field instanceof Field))
-        throw _TypeError("field", "a Field");
+        throw TypeError("field", "a Field");
     if (field.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
@@ -131,7 +131,7 @@ OneOfPrototype.add = function add(field) {
  */
 OneOfPrototype.remove = function remove(field) {
     if (!(field instanceof Field))
-        throw _TypeError("field", "a Field");
+        throw TypeError("field", "a Field");
     var index = this._fieldsArray.indexOf(field);
     if (index < 0)
         throw Error(field + " is not a member of " + this);

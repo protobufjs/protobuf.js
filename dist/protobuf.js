@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 00:55:57 UTC
+ * Compiled Sun, 18 Dec 2016 02:01:31 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -821,7 +821,7 @@ var Message = require(19),
 
 var Type; // cyclic
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a class instance, which is also a message prototype.
@@ -830,23 +830,25 @@ var _TypeError = util._TypeError;
  * @param {Type} type Reflected type
  */
 function Class(type) {
-    return Class.create(type);
+    return create(type);
 }
 
+Class.create =
 /**
  * Constructs a new message prototype for the specified reflected type and sets up its constructor.
+ * @memberof Class
  * @param {Type} type Reflected message type
  * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
  * @returns {Message} Message prototype
  */
-Class.create = function create(type, ctor) {
+function create(type, ctor) {
     if (!Type)
         Type = require(31);
     if (!(type instanceof Type))
-        throw _TypeError("type", "a Type");
+        throw TypeError("type", "a Type");
     if (ctor) {
         if (typeof ctor !== "function")
-            throw _TypeError("ctor", "a function");
+            throw TypeError("ctor", "a function");
     } else
         ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife
             return function Message(properties) {
@@ -1106,15 +1108,16 @@ function decode(readerOrBuffer, length) {
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
-        var tag      = reader.uint32(),
+        var tag = reader.uint32(),
             wireType = tag & 7;
 
         // End group
         if (wireType === 4)
             break;
 
-        var field    = fields[tag >>> 3].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
+        var field = fields[tag >>> 3].resolve(),
+            type = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            resolvedType = field.resolvedType;
         
         // Known fields
         if (field) {
@@ -1131,7 +1134,7 @@ function decode(readerOrBuffer, length) {
                     key = util.longToHash(key);
                 reader.pos++; // assumes id 2
                 message[field.name][key] = types.basic[type] === undefined
-                    ? field.resolvedType.decode(reader, reader.uint32())
+                    ? resolvedType.decode(reader, reader.uint32())
                     : reader[type]();
 
             // Repeated fields
@@ -1146,13 +1149,13 @@ function decode(readerOrBuffer, length) {
 
                 // Non-packed
                 } else if (types.basic[type] === undefined)
-                    values.push(field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32()));
+                    values.push(resolvedType.decode(reader, resolvedType.group ? undefined : reader.uint32()));
                 else
                     values.push(reader[type]());
 
             // Non-repeated
             } else if (types.basic[type] === undefined)
-                message[field.name] = field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32());
+                message[field.name] = resolvedType.decode(reader, resolvedType.group ? undefined : reader.uint32());
             else
                 message[field.name] = reader[type]();
 
@@ -1207,7 +1210,7 @@ decode.generate = function generate(mtype) {
                     ("k=util.longToHash(k)")
                 ("r.pos++");
             if (types.basic[type] === undefined) gen
-                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i);
+                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i); // can't be groups
             else gen
                 ("m%s[k]=r.%s()", prop, type);
 
@@ -1414,10 +1417,10 @@ encode.generate = function generate(mtype) {
 
     ("if(m%s)", prop)
         ("for(var i=0;i<m%s.length;++i)", prop);
-                if (wireType !== undefined) gen
-            ("w.uint32(%d).%s(m%s[i])", (field.id << 3 | wireType) >>> 0, type, prop);
-                else
+                if (wireType === undefined)
             genEncodeType(gen, field, i, "m" + prop + "[i]", true);
+                else gen
+            ("w.uint32(%d).%s(m%s[i])", (field.id << 3 | wireType) >>> 0, type, prop);
 
             }
 
@@ -1433,10 +1436,10 @@ encode.generate = function generate(mtype) {
 
             }
 
-            if (wireType !== undefined) gen
+            if (wireType === undefined)
+        genEncodeType(gen, field, i, "m" + prop);
+            else gen
         ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
-            else
-         genEncodeType(gen, field, i, "m" + prop);
 
         }
     }
@@ -1454,10 +1457,10 @@ encode.generate = function generate(mtype) {
             gen
             ("case%j:", field.name);
 
-            if (wireType !== undefined) gen
-                ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
-            else
+            if (wireType === undefined)
                 genEncodeType(gen, field, fields.indexOf(field), "m" + prop);
+            else gen
+                ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
 
             gen
                 ("break;");
@@ -1483,7 +1486,8 @@ Enum.className = "Enum";
 
 var util = require(33);
 
-var _TypeError = util._TypeError;
+var isString = util.isString,
+    TypeError = util._TypeError;
 
 /**
  * Constructs a new enum instance.
@@ -1586,10 +1590,10 @@ EnumPrototype.toJSON = function toJSON() {
  * @throws {Error} If there is already a value with this name or id
  */
 EnumPrototype.add = function(name, id) {
-    if (!util.isString(name))
-        throw _TypeError("name");
+    if (!isString(name))
+        throw TypeError("name");
     if (!util.isInteger(id) || id < 0)
-        throw _TypeError("id", "a non-negative integer");
+        throw TypeError("id", "a non-negative integer");
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);
     if (this.getValuesById()[id] !== undefined)
@@ -1606,8 +1610,8 @@ EnumPrototype.add = function(name, id) {
  * @throws {Error} If `name` is not a name of this enum
  */
 EnumPrototype.remove = function(name) {
-    if (!util.isString(name))
-        throw _TypeError("name");
+    if (!isString(name))
+        throw TypeError("name");
     if (this.values[name] === undefined)
         throw Error("'" + name + "' is not a name of " + this);
     delete this.values[name];
@@ -1633,7 +1637,9 @@ var Message = require(19),
 var Type,     // cyclic
     MapField; // cyclic
 
-var _TypeError = util._TypeError;
+var isObject = util.isObject,
+    isString = util.isString,
+    TypeError = util._TypeError;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -1648,22 +1654,22 @@ var _TypeError = util._TypeError;
  * @param {Object} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
-    if (util.isObject(rule)) {
+    if (isObject(rule)) {
         options = rule;
         rule = extend = undefined;
-    } else if (util.isObject(extend)) {
+    } else if (isObject(extend)) {
         options = extend;
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
     if (!util.isInteger(id) || id < 0)
-        throw _TypeError("id", "a non-negative integer");
-    if (!util.isString(type))
-        throw _TypeError("type");
-    if (extend !== undefined && !util.isString(extend))
-        throw _TypeError("extend");
+        throw TypeError("id", "a non-negative integer");
+    if (!isString(type))
+        throw TypeError("type");
+    if (extend !== undefined && !isString(extend))
+        throw TypeError("extend");
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
-        throw _TypeError("rule", "a valid rule string");
+        throw TypeError("rule", "a valid rule string");
 
     /**
      * Field rule, if any.
@@ -2009,7 +2015,7 @@ MapFieldPrototype.resolve = function resolve() {
     if (keyWireType === undefined) {
         var resolved = this.parent.lookup(this.keyType);
         if (!(resolved instanceof Enum))
-            throw Error("unresolvable map key type: " + this.keyType);
+            throw Error("unresolvable key type: " + this.keyType);
         this.resolvedKeyType = resolved;
     }
 
@@ -2019,6 +2025,8 @@ MapFieldPrototype.resolve = function resolve() {
 },{"16":16,"17":17,"32":32,"33":33}],19:[function(require,module,exports){
 "use strict";
 module.exports = Message;
+
+var Object_keys = Object.keys;
 
 /**
  * Constructs a new message instance.
@@ -2033,7 +2041,7 @@ module.exports = Message;
  */
 function Message(properties) {
     if (properties) {
-        var keys = Object.keys(properties);
+        var keys = Object_keys(properties);
         for (var i = 0; i < keys.length; ++i)
             this[keys[i]] = properties[keys[i]];
     }
@@ -2065,9 +2073,9 @@ MessagePrototype.asJSON = function asJSON(options) {
         json   = {};
     var keys;
     if (options.defaults) {
-        keys = Object.keys(fields);
+        keys = Object_keys(fields);
     } else
-        keys = Object.keys(this);
+        keys = Object_keys(this);
     for (var i = 0, key; i < keys.length; ++i) {
         var field = fields[key = keys[i]],
             value = this[key];
@@ -2167,7 +2175,9 @@ Method.className = "Method";
 var Type = require(31),
     util = require(33);
 
-var _TypeError = util._TypeError;
+var isObject = util.isObject,
+    isString = util.isString,
+    TypeError = util._TypeError;
 
 /**
  * Constructs a new service method instance.
@@ -2183,19 +2193,19 @@ var _TypeError = util._TypeError;
  * @param {Object} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
-    if (util.isObject(requestStream)) {
+    if (isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
-    } else if (util.isObject(responseStream)) {
+    } else if (isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
     }
-    if (type && !util.isString(type))
-        throw _TypeError("type");
-    if (!util.isString(requestType))
-        throw _TypeError("requestType");
-    if (!util.isString(responseType))
-        throw _TypeError("responseType");
+    if (type && !isString(type))
+        throw TypeError("type");
+    if (!isString(requestType))
+        throw TypeError("requestType");
+    if (!isString(responseType))
+        throw TypeError("responseType");
 
     ReflectionObject.call(this, name, options);
 
@@ -2269,9 +2279,9 @@ MethodPrototype.toJSON = function toJSON() {
     return {
         type           : this.type !== "rpc" && this.type || undefined,
         requestType    : this.requestType,
-        requestStream  : this.requestStream,
+        requestStream  : this.requestStream || undefined,
         responseType   : this.responseType,
-        responseStream : this.responseStream,
+        responseStream : this.responseStream || undefined,
         options        : this.options
     };
 };
@@ -2321,7 +2331,8 @@ function initNested() {
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 }
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError,
+    Object_keys = Object.keys;
 
 /**
  * Constructs a new namespace instance.
@@ -2433,12 +2444,12 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
     if (nestedJson) {
         if (!nestedTypes)
             initNested();
-        Object.keys(nestedJson).forEach(function(nestedName) {
+        Object_keys(nestedJson).forEach(function(nestedName) {
             var nested = nestedJson[nestedName];
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
                     return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
-            throw _TypeError("nested." + nestedName, "JSON for " + nestedError);
+            throw TypeError("nested." + nestedName, "JSON for " + nestedError);
         });
     }
     return this;
@@ -2466,9 +2477,9 @@ NamespacePrototype.add = function add(object) {
     if (!nestedTypes)
         initNested();
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
-        throw _TypeError("object", nestedError);
+        throw TypeError("object", nestedError);
     if (object instanceof Field && object.extend === undefined)
-        throw _TypeError("object", "an extension field when not part of a type");
+        throw TypeError("object", "an extension field when not part of a type");
     if (!this.nested)
         this.nested = {};
     else {
@@ -2505,11 +2516,11 @@ NamespacePrototype.add = function add(object) {
  */
 NamespacePrototype.remove = function remove(object) {
     if (!(object instanceof ReflectionObject))
-        throw _TypeError("object", "a ReflectionObject");
+        throw TypeError("object", "a ReflectionObject");
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);
     delete this.nested[object.name];
-    if (!Object.keys(this.nested).length)
+    if (!Object_keys(this.nested).length)
         this.nested = undefined;
     object.onRemove(this);
     return clearCache(this);
@@ -2627,7 +2638,7 @@ ReflectionObject.extend = util.extend;
 
 var Root; // cyclic
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new reflection object instance.
@@ -2639,9 +2650,9 @@ var _TypeError = util._TypeError;
  */
 function ReflectionObject(name, options) {
     if (!util.isString(name))
-        throw _TypeError("name");
+        throw TypeError("name");
     if (options && !util.isObject(options))
-        throw _TypeError("options", "an object");
+        throw TypeError("options", "an object");
 
     /**
      * Options.
@@ -2826,7 +2837,7 @@ OneOf.className = "OneOf";
 var Field = require(17),
     util  = require(33);
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new oneof instance.
@@ -2844,7 +2855,7 @@ function OneOf(name, fieldNames, options) {
     }
     ReflectionObject.call(this, name, options);
     if (fieldNames && !Array.isArray(fieldNames))
-        throw _TypeError("fieldNames", "an Array");
+        throw TypeError("fieldNames", "an Array");
 
     /**
      * Upper cased name for getter/setter calls.
@@ -2930,7 +2941,7 @@ function addFieldsToParent(oneof) {
  */
 OneOfPrototype.add = function add(field) {
     if (!(field instanceof Field))
-        throw _TypeError("field", "a Field");
+        throw TypeError("field", "a Field");
     if (field.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
@@ -2947,7 +2958,7 @@ OneOfPrototype.add = function add(field) {
  */
 OneOfPrototype.remove = function remove(field) {
     if (!(field instanceof Field))
-        throw _TypeError("field", "a Field");
+        throw TypeError("field", "a Field");
     var index = this._fieldsArray.indexOf(field);
     if (index < 0)
         throw Error(field + " is not a member of " + this);
@@ -4188,6 +4199,8 @@ var Field  = require(17),
 
 var parse; // cyclic
 
+var isString = util.isString;
+
 /**
  * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
@@ -4268,9 +4281,9 @@ RootPrototype.load = function load(filename, options, callback) {
     // Processes a single file
     function process(filename, source) {
         try {
-            if (util.isString(source) && source.charAt(0) === "{")
+            if (isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
-            if (!util.isString(source))
+            if (!isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
                 parse.filename = filename;
@@ -4352,7 +4365,7 @@ RootPrototype.load = function load(filename, options, callback) {
 
     // Assembling the root namespace doesn't require working type
     // references anymore, so we can load everything in parallel
-    if (util.isString(filename))
+    if (isString(filename))
         filename = [ filename ];
     filename.forEach(function(filename) {
         fetch(self.resolvePath("", filename));
@@ -4966,6 +4979,8 @@ var encode, // might become cyclic
     decode, // might become cyclic
     verify; // cyclic
 
+var Object_keys = Object.keys;
+
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
@@ -5056,7 +5071,7 @@ util.props(TypePrototype, {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
-            var names = Object.keys(this.fields);
+            var names = Object_keys(this.fields);
             for (var i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
@@ -5150,15 +5165,15 @@ Type.fromJSON = function fromJSON(name, json) {
     type.extensions = json.extensions;
     type.reserved = json.reserved;
     if (json.fields)
-        Object.keys(json.fields).forEach(function(fieldName) {
+        Object_keys(json.fields).forEach(function(fieldName) {
             type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
         });
     if (json.oneofs)
-        Object.keys(json.oneofs).forEach(function(oneOfName) {
+        Object_keys(json.oneofs).forEach(function(oneOfName) {
             type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
         });
     if (json.nested)
-        Object.keys(json.nested).forEach(function(nestedName) {
+        Object_keys(json.nested).forEach(function(nestedName) {
             var nested = json.nested[nestedName];
             for (var i = 0; i < nestedTypes.length; ++i) {
                 if (nestedTypes[i].testJSON(nested)) {
@@ -5286,21 +5301,22 @@ TypePrototype.setup = function setup() {
         decode = require(14);
         verify = require(36);
     }
-    this.encode = util.codegen.supported
+    var codegen_supported = util.codegen.supported;
+    this.encode = codegen_supported
         ? encode.generate(this).eof(this.getFullName() + "$encode", {
               Writer : Writer,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
         : encode;
-    this.decode = util.codegen.supported
+    this.decode = codegen_supported
         ? decode.generate(this).eof(this.getFullName() + "$decode", {
               Reader : Reader,
               types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util   : util
           })
         : decode;
-    this.verify = util.codegen.supported
+    this.verify = codegen_supported
         ? verify.generate(this).eof(this.getFullName() + "$verify", {
               types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
               util  : util
@@ -6058,7 +6074,9 @@ module.exports = verify;
 var Enum      = require(16),
     Type      = require(31),
     util      = require(33);
-var isInteger = util.isInteger;
+
+var isInteger = util.isInteger,
+    isString  = util.isString;
 
 function invalid(field, expected) {
     return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
@@ -6092,11 +6110,11 @@ function verifyValue(field, value) {
                 return invalid(field, "boolean");
             break;
         case "string":
-            if (!util.isString(value))
+            if (!isString(value))
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!(value && typeof value.length === "number" || util.isString(value)))
+            if (!(value && typeof value.length === "number" || isString(value)))
                 return invalid(field, "buffer");
             break;
         default:
@@ -6195,85 +6213,56 @@ function verify(message) {
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
     /* eslint-disable no-unexpected-multiline */
-    switch (field.type) {
-        case "double":
-        case "float": gen
-            ("if(typeof %s!==\"number\")", ref)
-                ("return%j", invalid(field, "number"));
-            break;
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32": gen
-            ("if(!util.isInteger(%s))", ref)
-                ("return%j", invalid(field, "integer"));
-            break;
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64": gen
-            ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-                ("return%j", invalid(field, "integer|Long"));
-            break;
-        case "bool": gen
-            ("if(typeof %s!==\"boolean\")", ref)
-                ("return%j", invalid(field, "boolean"));
-            break;
-        case "string": gen
-            ("if(!util.isString(%s))", ref)
-                ("return%j", invalid(field, "string"));
-            break;
-        case "bytes": gen
-            ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
-                ("return%j", invalid(field, "buffer"));
-            break;
-        default:
-            if (field.resolvedType instanceof Enum) { gen
-                ("switch(%s){", ref)
-                    ("default:")
-                        ("return%j", invalid(field, "enum value"));
-                var values = util.toArray(field.resolvedType.values);
-                for (var j = 0; j < values.length; ++j) gen
-                    ("case %d:", values[j]);
-                gen
-                        ("break")
-                ("}");
-            } else if (field.resolvedType instanceof Type) { gen
-                ("var r;")
-                ("if(r=types[%d].verify(%s))", fieldIndex, ref)
-                    ("return r");
-            }
-            break;
-    }
+    var type  = field.type,
+        rtype = field.resolvedType;
+    if (!rtype && /32/.test(type)) gen
+        ("if(!util.isInteger(%s))", ref)
+            ("return%j", invalid(field, "integer"));
+    else if (!rtype && /64/.test(type)) gen
+        ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+            ("return%j", invalid(field, "integer|Long"));
+    else if (type === "float" || type === "double") gen
+        ("if(typeof %s!==\"number\")", ref)
+            ("return%j", invalid(field, "number"));
+    else if (type === "bool") gen
+        ("if(typeof %s!==\"boolean\")", ref)
+            ("return%j", invalid(field, "boolean"));
+    else if (type === "string") gen
+        ("if(!util.isString(%s))", ref)
+            ("return%j", invalid(field, "string"));
+    else if (type === "bytes") gen
+        ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
+            ("return%j", invalid(field, "buffer"));
+    else if (field.resolvedType instanceof Enum) { gen
+        ("switch(%s){", ref)
+            ("default:")
+                ("return%j", invalid(field, "enum value"));
+        var values = util.toArray(field.resolvedType.values);
+        for (var j = 0; j < values.length; ++j) gen
+            ("case %d:", values[j]);
+        gen
+                ("break")
+        ("}");
+    } else if (field.resolvedType instanceof Type) gen
+        ("var r;")
+        ("if(r=types[%d].verify(%s))", fieldIndex, ref)
+            ("return r");
     /* eslint-enable no-unexpected-multiline */
 }
 
 function genVerifyKey(gen, field, ref) {
     /* eslint-disable no-unexpected-multiline */
-    switch (field.keyType) {
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64": gen
-            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
-                ("return%j", invalid(field, "integer|Long key"));
-            break;
-        case "int32":
-        case "uint32":
-        case "sint32":
-        case "fixed32":
-        case "sfixed32": gen
-            ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
-                ("return%j", invalid(field, "integer key"));
-            break;
-        case "bool": gen
-            ("if(!/^true|false|0|1$/.test(%s))", ref)
-                ("return%j", invalid(field, "boolean key"));
-            break;
-    }
+    var keyType = field.keyType,
+        rtype   = field.resolvedKeyType;
+    if (!rtype && /32/.test(keyType)) gen
+        ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
+            ("return%j", invalid(field, "integer key"));
+    else if (!rtype && /64/.test(keyType)) gen
+        ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
+            ("return%j", invalid(field, "integer|Long key"));
+    else if (keyType === "bool") gen
+        ("if(!/^true|false|0|1$/.test(%s))", ref)
+            ("return%j", invalid(field, "boolean key"));
     /* eslint-enable no-unexpected-multiline */
 }
 
@@ -6889,12 +6878,14 @@ function writeBytesBuffer(val, buf, pos) {
         val.copy(buf, pos, 0, val.length);
 }
 
+var Buffer_from = util.Buffer && util.Buffer.from || function(value, encoding) { return new util.Buffer(value, encoding); };
+
 /**
  * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     if (typeof value === "string")
-        value = util.Buffer.from ? util.Buffer.from(value, "base64") : new util.Buffer(value, "base64");
+        value = Buffer_from(value, "base64");
     var len = value.length >>> 0;
     return len
         ? this.uint32(len).push(writeBytesBuffer, len, value)
@@ -7014,12 +7005,10 @@ protobuf.tokenize         = require(30);
 protobuf.parse            = require(24);
 
 // Serialization
-var Writer =
-protobuf.Writer           = require(37);
-protobuf.BufferWriter     = Writer.BufferWriter;
-var Reader =
-protobuf.Reader           = require(25);
-protobuf.BufferReader     = Reader.BufferReader;
+protobuf.BufferWriter = (
+protobuf.Writer           = require(37)).BufferWriter;
+protobuf.BufferReader = (
+protobuf.Reader           = require(25)).BufferReader;
 protobuf.encode           = require(15);
 protobuf.decode           = require(14);
 protobuf.verify           = require(36);

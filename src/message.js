@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Message;
 
+var Object_keys = Object.keys;
+
 /**
  * Constructs a new message instance.
  *
@@ -14,7 +16,7 @@ module.exports = Message;
  */
 function Message(properties) {
     if (properties) {
-        var keys = Object.keys(properties);
+        var keys = Object_keys(properties);
         for (var i = 0; i < keys.length; ++i)
             this[keys[i]] = properties[keys[i]];
     }
@@ -46,9 +48,9 @@ MessagePrototype.asJSON = function asJSON(options) {
         json   = {};
     var keys;
     if (options.defaults) {
-        keys = Object.keys(fields);
+        keys = Object_keys(fields);
     } else
-        keys = Object.keys(this);
+        keys = Object_keys(this);
     for (var i = 0, key; i < keys.length; ++i) {
         var field = fields[key = keys[i]],
             value = this[key];

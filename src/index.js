@@ -78,12 +78,10 @@ protobuf.tokenize         = require("./tokenize");
 protobuf.parse            = require("./parse");
 
 // Serialization
-var Writer =
-protobuf.Writer           = require("./writer");
-protobuf.BufferWriter     = Writer.BufferWriter;
-var Reader =
-protobuf.Reader           = require("./reader");
-protobuf.BufferReader     = Reader.BufferReader;
+protobuf.BufferWriter = (
+protobuf.Writer           = require("./writer")).BufferWriter;
+protobuf.BufferReader = (
+protobuf.Reader           = require("./reader")).BufferReader;
 protobuf.encode           = require("./encode");
 protobuf.decode           = require("./decode");
 protobuf.verify           = require("./verify");

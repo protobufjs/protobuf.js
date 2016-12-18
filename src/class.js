@@ -6,7 +6,7 @@ var Message = require("./message"),
 
 var Type; // cyclic
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a class instance, which is also a message prototype.
@@ -15,23 +15,25 @@ var _TypeError = util._TypeError;
  * @param {Type} type Reflected type
  */
 function Class(type) {
-    return Class.create(type);
+    return create(type);
 }
 
+Class.create =
 /**
  * Constructs a new message prototype for the specified reflected type and sets up its constructor.
+ * @memberof Class
  * @param {Type} type Reflected message type
  * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
  * @returns {Message} Message prototype
  */
-Class.create = function create(type, ctor) {
+function create(type, ctor) {
     if (!Type)
         Type = require("./type");
     if (!(type instanceof Type))
-        throw _TypeError("type", "a Type");
+        throw TypeError("type", "a Type");
     if (ctor) {
         if (typeof ctor !== "function")
-            throw _TypeError("ctor", "a function");
+            throw TypeError("ctor", "a function");
     } else
         ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife
             return function Message(properties) {

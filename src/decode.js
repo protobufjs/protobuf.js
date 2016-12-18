@@ -21,15 +21,16 @@ function decode(readerOrBuffer, length) {
         limit   = length === undefined ? reader.len : reader.pos + length,
         message = new (this.getCtor())();
     while (reader.pos < limit) {
-        var tag      = reader.uint32(),
+        var tag = reader.uint32(),
             wireType = tag & 7;
 
         // End group
         if (wireType === 4)
             break;
 
-        var field    = fields[tag >>> 3].resolve(),
-            type     = field.resolvedType instanceof Enum ? "uint32" : field.type;
+        var field = fields[tag >>> 3].resolve(),
+            type = field.resolvedType instanceof Enum ? "uint32" : field.type,
+            resolvedType = field.resolvedType;
         
         // Known fields
         if (field) {
@@ -46,7 +47,7 @@ function decode(readerOrBuffer, length) {
                     key = util.longToHash(key);
                 reader.pos++; // assumes id 2
                 message[field.name][key] = types.basic[type] === undefined
-                    ? field.resolvedType.decode(reader, reader.uint32())
+                    ? resolvedType.decode(reader, reader.uint32())
                     : reader[type]();
 
             // Repeated fields
@@ -61,13 +62,13 @@ function decode(readerOrBuffer, length) {
 
                 // Non-packed
                 } else if (types.basic[type] === undefined)
-                    values.push(field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32()));
+                    values.push(resolvedType.decode(reader, resolvedType.group ? undefined : reader.uint32()));
                 else
                     values.push(reader[type]());
 
             // Non-repeated
             } else if (types.basic[type] === undefined)
-                message[field.name] = field.resolvedType.decode(reader, field.resolvedType.group ? undefined : reader.uint32());
+                message[field.name] = resolvedType.decode(reader, resolvedType.group ? undefined : reader.uint32());
             else
                 message[field.name] = reader[type]();
 
@@ -122,7 +123,7 @@ decode.generate = function generate(mtype) {
                     ("k=util.longToHash(k)")
                 ("r.pos++");
             if (types.basic[type] === undefined) gen
-                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i);
+                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i); // can't be groups
             else gen
                 ("m%s[k]=r.%s()", prop, type);
 

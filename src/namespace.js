@@ -25,7 +25,8 @@ function initNested() {
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 }
 
-var _TypeError = util._TypeError;
+var TypeError = util._TypeError,
+    Object_keys = Object.keys;
 
 /**
  * Constructs a new namespace instance.
@@ -137,12 +138,12 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
     if (nestedJson) {
         if (!nestedTypes)
             initNested();
-        Object.keys(nestedJson).forEach(function(nestedName) {
+        Object_keys(nestedJson).forEach(function(nestedName) {
             var nested = nestedJson[nestedName];
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
                     return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
-            throw _TypeError("nested." + nestedName, "JSON for " + nestedError);
+            throw TypeError("nested." + nestedName, "JSON for " + nestedError);
         });
     }
     return this;
@@ -170,9 +171,9 @@ NamespacePrototype.add = function add(object) {
     if (!nestedTypes)
         initNested();
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
-        throw _TypeError("object", nestedError);
+        throw TypeError("object", nestedError);
     if (object instanceof Field && object.extend === undefined)
-        throw _TypeError("object", "an extension field when not part of a type");
+        throw TypeError("object", "an extension field when not part of a type");
     if (!this.nested)
         this.nested = {};
     else {
@@ -209,11 +210,11 @@ NamespacePrototype.add = function add(object) {
  */
 NamespacePrototype.remove = function remove(object) {
     if (!(object instanceof ReflectionObject))
-        throw _TypeError("object", "a ReflectionObject");
+        throw TypeError("object", "a ReflectionObject");
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);
     delete this.nested[object.name];
-    if (!Object.keys(this.nested).length)
+    if (!Object_keys(this.nested).length)
         this.nested = undefined;
     object.onRemove(this);
     return clearCache(this);

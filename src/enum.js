@@ -9,7 +9,8 @@ Enum.className = "Enum";
 
 var util = require("./util");
 
-var _TypeError = util._TypeError;
+var isString = util.isString,
+    TypeError = util._TypeError;
 
 /**
  * Constructs a new enum instance.
@@ -112,10 +113,10 @@ EnumPrototype.toJSON = function toJSON() {
  * @throws {Error} If there is already a value with this name or id
  */
 EnumPrototype.add = function(name, id) {
-    if (!util.isString(name))
-        throw _TypeError("name");
+    if (!isString(name))
+        throw TypeError("name");
     if (!util.isInteger(id) || id < 0)
-        throw _TypeError("id", "a non-negative integer");
+        throw TypeError("id", "a non-negative integer");
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);
     if (this.getValuesById()[id] !== undefined)
@@ -132,8 +133,8 @@ EnumPrototype.add = function(name, id) {
  * @throws {Error} If `name` is not a name of this enum
  */
 EnumPrototype.remove = function(name) {
-    if (!util.isString(name))
-        throw _TypeError("name");
+    if (!isString(name))
+        throw TypeError("name");
     if (this.values[name] === undefined)
         throw Error("'" + name + "' is not a name of " + this);
     delete this.values[name];

@@ -10,7 +10,9 @@ Method.className = "Method";
 var Type = require("./type"),
     util = require("./util");
 
-var _TypeError = util._TypeError;
+var isObject = util.isObject,
+    isString = util.isString,
+    TypeError = util._TypeError;
 
 /**
  * Constructs a new service method instance.
@@ -26,19 +28,19 @@ var _TypeError = util._TypeError;
  * @param {Object} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
-    if (util.isObject(requestStream)) {
+    if (isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
-    } else if (util.isObject(responseStream)) {
+    } else if (isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
     }
-    if (type && !util.isString(type))
-        throw _TypeError("type");
-    if (!util.isString(requestType))
-        throw _TypeError("requestType");
-    if (!util.isString(responseType))
-        throw _TypeError("responseType");
+    if (type && !isString(type))
+        throw TypeError("type");
+    if (!isString(requestType))
+        throw TypeError("requestType");
+    if (!isString(responseType))
+        throw TypeError("responseType");
 
     ReflectionObject.call(this, name, options);
 
@@ -112,9 +114,9 @@ MethodPrototype.toJSON = function toJSON() {
     return {
         type           : this.type !== "rpc" && this.type || undefined,
         requestType    : this.requestType,
-        requestStream  : this.requestStream,
+        requestStream  : this.requestStream || undefined,
         responseType   : this.responseType,
-        responseStream : this.responseStream,
+        responseStream : this.responseStream || undefined,
         options        : this.options
     };
 };

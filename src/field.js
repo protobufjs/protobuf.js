@@ -15,7 +15,9 @@ var Message = require("./message"),
 var Type,     // cyclic
     MapField; // cyclic
 
-var _TypeError = util._TypeError;
+var isObject = util.isObject,
+    isString = util.isString,
+    TypeError = util._TypeError;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -30,22 +32,22 @@ var _TypeError = util._TypeError;
  * @param {Object} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
-    if (util.isObject(rule)) {
+    if (isObject(rule)) {
         options = rule;
         rule = extend = undefined;
-    } else if (util.isObject(extend)) {
+    } else if (isObject(extend)) {
         options = extend;
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
     if (!util.isInteger(id) || id < 0)
-        throw _TypeError("id", "a non-negative integer");
-    if (!util.isString(type))
-        throw _TypeError("type");
-    if (extend !== undefined && !util.isString(extend))
-        throw _TypeError("extend");
+        throw TypeError("id", "a non-negative integer");
+    if (!isString(type))
+        throw TypeError("type");
+    if (extend !== undefined && !isString(extend))
+        throw TypeError("extend");
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
-        throw _TypeError("rule", "a valid rule string");
+        throw TypeError("rule", "a valid rule string");
 
     /**
      * Field rule, if any.
