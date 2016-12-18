@@ -133,8 +133,11 @@ ServicePrototype.add = function add(object) {
  */
 ServicePrototype.remove = function remove(object) {
     if (object instanceof Method) {
+
+        /* istanbul ignore next */
         if (this.methods[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.methods[object.name];
         object.parent = null;
         return clearCache(this);
@@ -174,8 +177,11 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
         rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
             if (!rpcService.$rpc) // already ended?
                 return;
+
+            /* istanbul ignore next */
             if (!request)
                 throw util._TypeError("request", "not null");
+
             method.resolve();
             var requestData;
             try {

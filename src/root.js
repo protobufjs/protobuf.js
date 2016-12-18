@@ -59,6 +59,7 @@ Root.fromJSON = function fromJSON(json, root) {
 RootPrototype.resolvePath = util.path.resolve;
 
 // A symbol-like function to safely signal synchronous loading
+/* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
 /**

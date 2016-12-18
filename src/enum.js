@@ -112,14 +112,20 @@ EnumPrototype.toJSON = function toJSON() {
  * @throws {Error} If there is already a value with this name or id
  */
 EnumPrototype.add = function(name, id) {
+
+    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name");
+    /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
+    /* istanbul ignore next */
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);
+    /* istanbul ignore next */
     if (this.getValuesById()[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
+
     this.values[name] = id;
     return clearCache(this);
 };

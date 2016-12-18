@@ -9,9 +9,9 @@ var BufferReader; // cyclic
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
 
-/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
+/* istanbul ignore next */
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
 }
@@ -75,6 +75,7 @@ ReaderPrototype.uint32 = function read_uint32() {
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
+    /* istanbul ignore next */
     if ((this.pos += 5) > this.len) {
         this.pos = this.len;
         throw indexOutOfRange(this, 10);
@@ -126,6 +127,7 @@ function readLongVarint() {
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 1st..4th
@@ -133,6 +135,7 @@ function readLongVarint() {
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
+        /* istanbul ignore next */
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
         // 5th
@@ -150,6 +153,7 @@ function readLongVarint() {
         }
     } else {
         for (i = 0; i < 5; ++i) {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 6th..10th
@@ -228,8 +232,11 @@ function readFixed32(buf, end) {
  * @returns {number} Value read
  */
 ReaderPrototype.fixed32 = function read_fixed32() {
+
+    /* istanbul ignore next */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
+
     return readFixed32(this.buf, this.pos += 4);
 };
 
@@ -245,8 +252,11 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 /* eslint-disable no-invalid-this */
 
 function readFixed64(/* this: Reader */) {
+
+    /* istanbul ignore next */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
+
     return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
 }
 
@@ -313,8 +323,11 @@ var readFloat = typeof Float32Array !== "undefined"
  * @returns {number} Value read
  */
 ReaderPrototype.float = function read_float() {
+
+    /* istanbul ignore next */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
+
     var value = readFloat(this.buf, this.pos);
     this.pos += 4;
     return value;
@@ -359,8 +372,11 @@ var readDouble = typeof Float64Array !== "undefined"
  * @returns {number} Value read
  */
 ReaderPrototype.double = function read_double() {
+
+    /* istanbul ignore next */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
+
     var value = readDouble(this.buf, this.pos);
     this.pos += 8;
     return value;
@@ -374,8 +390,11 @@ ReaderPrototype.bytes = function read_bytes() {
     var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
+
+    /* istanbul ignore next */
     if (end > this.len)
         throw indexOutOfRange(this, length);
+
     this.pos += length;
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
         ? new this.buf.constructor(0)
@@ -399,10 +418,12 @@ ReaderPrototype.string = function read_string() {
 ReaderPrototype.skip = function skip(length) {
     if (length === undefined) {
         do {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
     } else {
+        /* istanbul ignore next */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
         this.pos += length;
@@ -437,6 +458,8 @@ ReaderPrototype.skipType = function(wireType) {
         case 5:
             this.skip(4);
             break;
+        
+        /* istanbul ignore next */
         default:
             throw Error("invalid wire type: " + wireType);
     }

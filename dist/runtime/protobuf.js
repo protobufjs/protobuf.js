@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 19:23:21 UTC
+ * Compiled Sun, 18 Dec 2016 20:06:01 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -424,10 +424,10 @@ utf8.write = function(string, buffer, offset) {
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
-var Writer = protobuf.Writer = require(11);
-protobuf.BufferWriter = Writer.BufferWriter;
-var Reader = protobuf.Reader = require(7);
-protobuf.BufferReader = Reader.BufferReader;
+protobuf.Writer = require(11);
+protobuf.BufferWriter = require(12);
+protobuf.Reader = require(7);
+protobuf.BufferReader = require(8);
 protobuf.util = require(10);
 protobuf.roots = {};
 protobuf.configure = configure;
@@ -446,7 +446,7 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"10":10,"11":11,"7":7}],7:[function(require,module,exports){
+},{"10":10,"11":11,"12":12,"7":7,"8":8}],7:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -458,9 +458,9 @@ var BufferReader; // cyclic
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
 
-/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
+/* istanbul ignore next */
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
 }
@@ -524,6 +524,7 @@ ReaderPrototype.uint32 = function read_uint32() {
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
+    /* istanbul ignore next */
     if ((this.pos += 5) > this.len) {
         this.pos = this.len;
         throw indexOutOfRange(this, 10);
@@ -575,6 +576,7 @@ function readLongVarint() {
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 1st..4th
@@ -582,6 +584,7 @@ function readLongVarint() {
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
+        /* istanbul ignore next */
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
         // 5th
@@ -599,6 +602,7 @@ function readLongVarint() {
         }
     } else {
         for (i = 0; i < 5; ++i) {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 6th..10th
@@ -677,8 +681,11 @@ function readFixed32(buf, end) {
  * @returns {number} Value read
  */
 ReaderPrototype.fixed32 = function read_fixed32() {
+
+    /* istanbul ignore next */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
+
     return readFixed32(this.buf, this.pos += 4);
 };
 
@@ -694,8 +701,11 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 /* eslint-disable no-invalid-this */
 
 function readFixed64(/* this: Reader */) {
+
+    /* istanbul ignore next */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
+
     return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
 }
 
@@ -762,8 +772,11 @@ var readFloat = typeof Float32Array !== "undefined"
  * @returns {number} Value read
  */
 ReaderPrototype.float = function read_float() {
+
+    /* istanbul ignore next */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
+
     var value = readFloat(this.buf, this.pos);
     this.pos += 4;
     return value;
@@ -808,8 +821,11 @@ var readDouble = typeof Float64Array !== "undefined"
  * @returns {number} Value read
  */
 ReaderPrototype.double = function read_double() {
+
+    /* istanbul ignore next */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
+
     var value = readDouble(this.buf, this.pos);
     this.pos += 8;
     return value;
@@ -823,8 +839,11 @@ ReaderPrototype.bytes = function read_bytes() {
     var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
+
+    /* istanbul ignore next */
     if (end > this.len)
         throw indexOutOfRange(this, length);
+
     this.pos += length;
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
         ? new this.buf.constructor(0)
@@ -848,10 +867,12 @@ ReaderPrototype.string = function read_string() {
 ReaderPrototype.skip = function skip(length) {
     if (length === undefined) {
         do {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
     } else {
+        /* istanbul ignore next */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
         this.pos += length;
@@ -886,6 +907,8 @@ ReaderPrototype.skipType = function(wireType) {
         case 5:
             this.skip(4);
             break;
+        
+        /* istanbul ignore next */
         default:
             throw Error("invalid wire type: " + wireType);
     }
@@ -955,8 +978,11 @@ var util = require(10);
 
 // One time function to initialize BufferReader with the now-known buffer implementation's slice method
 var initBufferReader = function() {
+
+    /* istanbul ignore next */
     if (!util.Buffer)
         throw Error("Buffer is not supported");
+    
     BufferReaderPrototype._slice = util.Buffer.prototype.slice;
     readStringBuffer = util.Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
         ? readStringBuffer_utf8Slice
@@ -1386,7 +1412,6 @@ var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
 
-/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 /**
@@ -1532,7 +1557,6 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
-    /* istanbul ignore next */
     Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
 
 /** @alias Writer.prototype */
@@ -1706,7 +1730,6 @@ var writeFloat = typeof Float32Array !== "undefined"
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
         return f8b[3] // already le?
-            /* istanbul ignore next */
             ? function writeFloat_f32(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
@@ -1722,7 +1745,6 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    /* istanbul ignore next */
     : function writeFloat_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 23, 4);
     };
@@ -1743,7 +1765,6 @@ var writeDouble = typeof Float64Array !== "undefined"
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
         return f8b[7] // already le?
-            /* istanbul ignore next */
             ? function writeDouble_f64(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
@@ -1767,7 +1788,6 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    /* istanbul ignore next */
     : function writeDouble_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 52, 8);
     };
@@ -1818,7 +1838,6 @@ WriterPrototype.string = function write_string(value) {
     var len = utf8.length(value);
     return len
         ? this.uint32(len).push(utf8.write, len, value)
-        /* istanbul ignore next */
         : this.push(writeByte, 1, 0);
 };
 

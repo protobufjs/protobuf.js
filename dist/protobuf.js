@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 19:23:21 UTC
+ * Compiled Sun, 18 Dec 2016 20:06:01 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -852,9 +852,13 @@ function Class(type) {
 function create(type, ctor) {
     if (!Type)
         Type = require(32);
+
+    /* istanbul ignore next */
     if (!(type instanceof Type))
         throw TypeError("type", "a Type");
+
     if (ctor) {
+        /* istanbul ignore next */
         if (typeof ctor !== "function")
             throw TypeError("ctor", "a function");
     } else
@@ -1428,14 +1432,20 @@ EnumPrototype.toJSON = function toJSON() {
  * @throws {Error} If there is already a value with this name or id
  */
 EnumPrototype.add = function(name, id) {
+
+    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name");
+    /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
+    /* istanbul ignore next */
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);
+    /* istanbul ignore next */
     if (this.getValuesById()[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
+
     this.values[name] = id;
     return clearCache(this);
 };
@@ -1497,12 +1507,17 @@ function Field(name, id, type, rule, extend, options) {
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
+    
+    /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
+    /* istanbul ignore next */
     if (!util.isString(type))
         throw TypeError("type");
+    /* istanbul ignore next */
     if (extend !== undefined && !util.isString(extend))
         throw TypeError("extend");
+    /* istanbul ignore next */
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule", "a valid rule string");
 
@@ -1700,6 +1715,7 @@ FieldPrototype.resolve = function resolve() {
             typeDefault = null;
         else if (this.resolvedType = this.parent.lookup(this.type, Enum))
             typeDefault = 0;
+        /* istanbul ignore next */
         else
             throw Error("unresolvable field type: " + this.type);
     }
@@ -1781,6 +1797,8 @@ var Enum    = require(16),
  */
 function MapField(name, id, keyType, type, options) {
     Field.call(this, name, id, type, options);
+
+    /* istanbul ignore next */
     if (!util.isString(keyType))
         throw util._TypeError("keyType");
     
@@ -2021,10 +2039,14 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         options = responseStream;
         responseStream = undefined;
     }
+
+    /* istanbul ignore next */
     if (type && !util.isString(type))
         throw TypeError("type");
+    /* istanbul ignore next */
     if (!util.isString(requestType))
         throw TypeError("requestType");
+    /* istanbul ignore next */
     if (!util.isString(responseType))
         throw TypeError("responseType");
 
@@ -2114,8 +2136,10 @@ MethodPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
+    /* istanbul ignore next */
     if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
         throw Error("unresolvable request type: " + this.requestType);
+    /* istanbul ignore next */
     if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
         throw Error("unresolvable response type: " + this.requestType);
 
@@ -2142,10 +2166,14 @@ var Type,    // cyclic
 var nestedTypes, // contains cyclics
     nestedError;
 function initNested() {
+
+    /* istanbul ignore next */
     if (!Type)
         Type = require(32);
+    /* istanbul ignore next */
     if (!Service)
         Service = require(30);
+
     nestedTypes = [ Enum, Type, Service, Field, Namespace ];
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 }
@@ -2294,19 +2322,20 @@ NamespacePrototype.get = function get(name) {
 NamespacePrototype.add = function add(object) {
     if (!nestedTypes)
         initNested();
+
+    /* istanbul ignore next */
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw TypeError("object", nestedError);
+    /* istanbul ignore next */
     if (object instanceof Field && object.extend === undefined)
         throw TypeError("object", "an extension field when not part of a type");
+
     if (!this.nested)
         this.nested = {};
     else {
         var prev = this.get(object.name);
         if (prev) {
-            if (!Type)
-                Type = require(32);
-            if (!Service)
-                Service = require(30);
+            // initNested above already initializes Type and Service
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.getNestedArray();
@@ -2316,6 +2345,8 @@ NamespacePrototype.add = function add(object) {
                 if (!this.nested)
                     this.nested = {};
                 object.setOptions(prev.options, true);
+
+            /* istanbul ignore next */
             } else
                 throw Error("duplicate name '" + object.name + "' in " + this);
         }
@@ -2333,10 +2364,14 @@ NamespacePrototype.add = function add(object) {
  * @throws {Error} If `object` is not a member of this namespace
  */
 NamespacePrototype.remove = function remove(object) {
+
+    /* istanbul ignore next */
     if (!(object instanceof ReflectionObject))
         throw TypeError("object", "a ReflectionObject");
+    /* istanbul ignore next */
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);
+    
     delete this.nested[object.name];
     if (!Object.keys(this.nested).length)
         this.nested = undefined;
@@ -2435,8 +2470,11 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
  * @throws {Error} If `path` does not point to a type
  */
 NamespacePrototype.lookupType = function lookupType(path) {
+
+    /* istanbul ignore next */
     if (!Type)
         Type = require(32);
+
     var found = this.lookup(path, Type);
     if (!found)
         throw Error("no such type");
@@ -2451,8 +2489,11 @@ NamespacePrototype.lookupType = function lookupType(path) {
  * @throws {Error} If `path` does not point to a service
  */
 NamespacePrototype.lookupService = function lookupService(path) {
+
+    /* istanbul ignore next */
     if (!Service)
         Service = require(30);
+
     var found = this.lookup(path, Service);
     if (!found)
         throw Error("no such service");
@@ -2495,8 +2536,11 @@ var TypeError = util._TypeError;
  * @abstract
  */
 function ReflectionObject(name, options) {
+
+    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name");
+    /* istanbul ignore next */
     if (options && !util.isObject(options))
         throw TypeError("options", "an object");
 
@@ -2700,6 +2744,8 @@ function OneOf(name, fieldNames, options) {
         fieldNames = undefined;
     }
     ReflectionObject.call(this, name, options);
+
+    /* istanbul ignore next */
     if (fieldNames && !Array.isArray(fieldNames))
         throw TypeError("fieldNames", "an Array");
 
@@ -2786,8 +2832,11 @@ function addFieldsToParent(oneof) {
  * @returns {OneOf} `this`
  */
 OneOfPrototype.add = function add(field) {
+
+    /* istanbul ignore next */
     if (!(field instanceof Field))
         throw TypeError("field", "a Field");
+
     if (field.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
@@ -2803,11 +2852,16 @@ OneOfPrototype.add = function add(field) {
  * @returns {OneOf} `this`
  */
 OneOfPrototype.remove = function remove(field) {
+
+    /* istanbul ignore next */
     if (!(field instanceof Field))
         throw TypeError("field", "a Field");
+
     var index = this._fieldsArray.indexOf(field);
+    /* istanbul ignore next */
     if (index < 0)
         throw Error(field + " is not a member of " + this);
+
     this._fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
     if (index > -1)
@@ -3171,6 +3225,8 @@ function parse(source, root, options) {
                 case "repeated":
                     parseField(type, token);
                     break;
+
+                /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
             }
@@ -3182,16 +3238,21 @@ function parse(source, root, options) {
     function parseMapField(parent) {
         skip("<");
         var keyType = next();
+
+        /* istanbul ignore next */
         if (types.mapKey[keyType] === undefined)
             throw illegal(keyType, "type");
         skip(",");
         var valueType = next();
+        /* istanbul ignore next */
         if (!isTypeRef(valueType))
             throw illegal(valueType, "type");
         skip(">");
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
+
         name = applyCase(name);
         skip("=");
         var id = parseId(next());
@@ -3201,8 +3262,11 @@ function parse(source, root, options) {
 
     function parseOneOf(parent, token) {
         var name = next();
+
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
+
         name = applyCase(name);
         var oneof = new OneOf(name);
         if (skip("{", true)) {
@@ -3223,8 +3287,11 @@ function parse(source, root, options) {
 
     function parseEnum(parent, token) {
         var name = next();
+
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
+
         var values = {};
         var enm = new Enum(name, values);
         if (skip("{", true)) {
@@ -3242,8 +3309,11 @@ function parse(source, root, options) {
     }
 
     function parseEnumField(parent, token) {
+
+        /* istanbul ignore next */
         if (!isName(token))
             throw illegal(token, "name");
+
         var name = token;
         skip("=");
         var value = parseId(next(), true);
@@ -3254,8 +3324,11 @@ function parse(source, root, options) {
     function parseOption(parent, token) {
         var custom = skip("(", true);
         var name = next();
+
+        /* istanbul ignore next */
         if (!isTypeRef(name))
             throw illegal(name, "name");
+
         if (custom) {
             skip(")");
             name = "(" + name + ")";
@@ -3272,8 +3345,11 @@ function parse(source, root, options) {
     function parseOptionValue(parent, name) {
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
+
+                /* istanbul ignore next */
                 if (!isName(token))
                     throw illegal(token, "name");
+
                 name = name + "." + token;
                 if (skip(":", true))
                     setOption(parent, name, readValue(true));
@@ -3305,8 +3381,11 @@ function parse(source, root, options) {
 
     function parseService(parent, token) {
         token = next();
+
+        /* istanbul ignore next */
         if (!isName(token))
             throw illegal(token, "service name");
+
         var name = token;
         var service = new Service(name);
         if (skip("{", true)) {
@@ -3320,6 +3399,8 @@ function parse(source, root, options) {
                     case "rpc":
                         parseMethod(service, tokenLower);
                         break;
+
+                    /* istanbul ignore next */
                     default:
                         throw illegal(token);
                 }
@@ -3333,6 +3414,8 @@ function parse(source, root, options) {
     function parseMethod(parent, token) {
         var type = token;
         var name = next();
+
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
         var requestType, requestStream,
@@ -3341,14 +3424,17 @@ function parse(source, root, options) {
         var st;
         if (skip(st = "stream", true))
             requestStream = true;
+        /* istanbul ignore next */
         if (!isTypeRef(token = next()))
             throw illegal(token);
         requestType = token;
         skip(")"); skip("returns"); skip("(");
         if (skip(st, true))
             responseStream = true;
+        /* istanbul ignore next */
         if (!isTypeRef(token = next()))
             throw illegal(token);
+
         responseType = token;
         skip(")");
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
@@ -3360,6 +3446,8 @@ function parse(source, root, options) {
                         parseOption(method, tokenLower);
                         skip(";");
                         break;
+
+                    /* istanbul ignore next */
                     default:
                         throw illegal(token);
                 }
@@ -3372,8 +3460,11 @@ function parse(source, root, options) {
 
     function parseExtension(parent, token) {
         var reference = next();
+
+        /* istanbul ignore next */
         if (!isTypeRef(reference))
             throw illegal(reference, "reference");
+
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -3384,6 +3475,7 @@ function parse(source, root, options) {
                         parseField(parent, tokenLower, reference);
                         break;
                     default:
+                        /* istanbul ignore next */
                         if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);
                         push(token);
@@ -3402,24 +3494,28 @@ function parse(source, root, options) {
         switch (tokenLower) {
 
             case "package":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parsePackage();
                 break;
 
             case "import":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parseImport();
                 break;
 
             case "syntax":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parseSyntax();
                 break;
 
             case "option":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parseOption(ptr, token);
@@ -3431,6 +3527,7 @@ function parse(source, root, options) {
                     head = false;
                     continue;
                 }
+                /* istanbul ignore next */
                 throw illegal(token);
         }
     }
@@ -3467,9 +3564,9 @@ var BufferReader; // cyclic
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
 
-/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
+/* istanbul ignore next */
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
 }
@@ -3533,6 +3630,7 @@ ReaderPrototype.uint32 = function read_uint32() {
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
+    /* istanbul ignore next */
     if ((this.pos += 5) > this.len) {
         this.pos = this.len;
         throw indexOutOfRange(this, 10);
@@ -3584,6 +3682,7 @@ function readLongVarint() {
             return bits;
     } else {
         for (i = 0; i < 4; ++i) {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 1st..4th
@@ -3591,6 +3690,7 @@ function readLongVarint() {
             if (this.buf[this.pos++] < 128)
                 return bits;
         }
+        /* istanbul ignore next */
         if (this.pos >= this.len)
             throw indexOutOfRange(this);
         // 5th
@@ -3608,6 +3708,7 @@ function readLongVarint() {
         }
     } else {
         for (i = 0; i < 5; ++i) {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
             // 6th..10th
@@ -3686,8 +3787,11 @@ function readFixed32(buf, end) {
  * @returns {number} Value read
  */
 ReaderPrototype.fixed32 = function read_fixed32() {
+
+    /* istanbul ignore next */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
+
     return readFixed32(this.buf, this.pos += 4);
 };
 
@@ -3703,8 +3807,11 @@ ReaderPrototype.sfixed32 = function read_sfixed32() {
 /* eslint-disable no-invalid-this */
 
 function readFixed64(/* this: Reader */) {
+
+    /* istanbul ignore next */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 8);
+
     return new LongBits(readFixed32(this.buf, this.pos += 4), readFixed32(this.buf, this.pos += 4));
 }
 
@@ -3771,8 +3878,11 @@ var readFloat = typeof Float32Array !== "undefined"
  * @returns {number} Value read
  */
 ReaderPrototype.float = function read_float() {
+
+    /* istanbul ignore next */
     if (this.pos + 4 > this.len)
         throw indexOutOfRange(this, 4);
+
     var value = readFloat(this.buf, this.pos);
     this.pos += 4;
     return value;
@@ -3817,8 +3927,11 @@ var readDouble = typeof Float64Array !== "undefined"
  * @returns {number} Value read
  */
 ReaderPrototype.double = function read_double() {
+
+    /* istanbul ignore next */
     if (this.pos + 8 > this.len)
         throw indexOutOfRange(this, 4);
+
     var value = readDouble(this.buf, this.pos);
     this.pos += 8;
     return value;
@@ -3832,8 +3945,11 @@ ReaderPrototype.bytes = function read_bytes() {
     var length = this.uint32(),
         start  = this.pos,
         end    = this.pos + length;
+
+    /* istanbul ignore next */
     if (end > this.len)
         throw indexOutOfRange(this, length);
+
     this.pos += length;
     return start === end // fix for IE 10/Win8 and others' subarray returning array of size 1
         ? new this.buf.constructor(0)
@@ -3857,10 +3973,12 @@ ReaderPrototype.string = function read_string() {
 ReaderPrototype.skip = function skip(length) {
     if (length === undefined) {
         do {
+            /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
     } else {
+        /* istanbul ignore next */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
         this.pos += length;
@@ -3895,6 +4013,8 @@ ReaderPrototype.skipType = function(wireType) {
         case 5:
             this.skip(4);
             break;
+        
+        /* istanbul ignore next */
         default:
             throw Error("invalid wire type: " + wireType);
     }
@@ -3964,8 +4084,11 @@ var util = require(36);
 
 // One time function to initialize BufferReader with the now-known buffer implementation's slice method
 var initBufferReader = function() {
+
+    /* istanbul ignore next */
     if (!util.Buffer)
         throw Error("Buffer is not supported");
+    
     BufferReaderPrototype._slice = util.Buffer.prototype.slice;
     readStringBuffer = util.Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
         ? readStringBuffer_utf8Slice
@@ -4075,6 +4198,7 @@ Root.fromJSON = function fromJSON(json, root) {
 RootPrototype.resolvePath = util.path.resolve;
 
 // A symbol-like function to safely signal synchronous loading
+/* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
 /**
@@ -4500,8 +4624,11 @@ ServicePrototype.add = function add(object) {
  */
 ServicePrototype.remove = function remove(object) {
     if (object instanceof Method) {
+
+        /* istanbul ignore next */
         if (this.methods[object.name] !== object)
             throw Error(object + " is not a member of " + this);
+
         delete this.methods[object.name];
         object.parent = null;
         return clearCache(this);
@@ -4541,8 +4668,11 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
         rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
             if (!rpcService.$rpc) // already ended?
                 return;
+
+            /* istanbul ignore next */
             if (!request)
                 throw util._TypeError("request", "not null");
+
             method.resolve();
             var requestData;
             try {
@@ -4627,6 +4757,7 @@ function tokenize(source) {
 
     var stringDelim = null;
 
+    /* istanbul ignore next */
     /**
      * Creates an error for illegal syntax.
      * @param {string} subject Subject
@@ -4901,8 +5032,11 @@ util.props(TypePrototype, {
             for (var i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
+
+                /* istanbul ignore next */
                 if (this._fieldsById[id])
                     throw Error("duplicate id " + id + " in " + this);
+
                 this._fieldsById[id] = field;
             }
             return this._fieldsById;
@@ -6018,7 +6152,6 @@ var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
 
-/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 /**
@@ -6164,7 +6297,6 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
-    /* istanbul ignore next */
     Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
 
 /** @alias Writer.prototype */
@@ -6338,7 +6470,6 @@ var writeFloat = typeof Float32Array !== "undefined"
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
         return f8b[3] // already le?
-            /* istanbul ignore next */
             ? function writeFloat_f32(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
@@ -6354,7 +6485,6 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    /* istanbul ignore next */
     : function writeFloat_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 23, 4);
     };
@@ -6375,7 +6505,6 @@ var writeDouble = typeof Float64Array !== "undefined"
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
         return f8b[7] // already le?
-            /* istanbul ignore next */
             ? function writeDouble_f64(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
@@ -6399,7 +6528,6 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    /* istanbul ignore next */
     : function writeDouble_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 52, 8);
     };
@@ -6450,7 +6578,6 @@ WriterPrototype.string = function write_string(value) {
     var len = utf8.length(value);
     return len
         ? this.uint32(len).push(utf8.write, len, value)
-        /* istanbul ignore next */
         : this.push(writeByte, 1, 0);
 };
 

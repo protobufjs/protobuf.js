@@ -331,6 +331,8 @@ function parse(source, root, options) {
                 case "repeated":
                     parseField(type, token);
                     break;
+
+                /* istanbul ignore next */
                 default:
                     throw illegal(token); // there are no groups with proto3 semantics
             }
@@ -342,16 +344,21 @@ function parse(source, root, options) {
     function parseMapField(parent) {
         skip("<");
         var keyType = next();
+
+        /* istanbul ignore next */
         if (types.mapKey[keyType] === undefined)
             throw illegal(keyType, "type");
         skip(",");
         var valueType = next();
+        /* istanbul ignore next */
         if (!isTypeRef(valueType))
             throw illegal(valueType, "type");
         skip(">");
         var name = next();
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
+
         name = applyCase(name);
         skip("=");
         var id = parseId(next());
@@ -361,8 +368,11 @@ function parse(source, root, options) {
 
     function parseOneOf(parent, token) {
         var name = next();
+
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
+
         name = applyCase(name);
         var oneof = new OneOf(name);
         if (skip("{", true)) {
@@ -383,8 +393,11 @@ function parse(source, root, options) {
 
     function parseEnum(parent, token) {
         var name = next();
+
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
+
         var values = {};
         var enm = new Enum(name, values);
         if (skip("{", true)) {
@@ -402,8 +415,11 @@ function parse(source, root, options) {
     }
 
     function parseEnumField(parent, token) {
+
+        /* istanbul ignore next */
         if (!isName(token))
             throw illegal(token, "name");
+
         var name = token;
         skip("=");
         var value = parseId(next(), true);
@@ -414,8 +430,11 @@ function parse(source, root, options) {
     function parseOption(parent, token) {
         var custom = skip("(", true);
         var name = next();
+
+        /* istanbul ignore next */
         if (!isTypeRef(name))
             throw illegal(name, "name");
+
         if (custom) {
             skip(")");
             name = "(" + name + ")";
@@ -432,8 +451,11 @@ function parse(source, root, options) {
     function parseOptionValue(parent, name) {
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
+
+                /* istanbul ignore next */
                 if (!isName(token))
                     throw illegal(token, "name");
+
                 name = name + "." + token;
                 if (skip(":", true))
                     setOption(parent, name, readValue(true));
@@ -465,8 +487,11 @@ function parse(source, root, options) {
 
     function parseService(parent, token) {
         token = next();
+
+        /* istanbul ignore next */
         if (!isName(token))
             throw illegal(token, "service name");
+
         var name = token;
         var service = new Service(name);
         if (skip("{", true)) {
@@ -480,6 +505,8 @@ function parse(source, root, options) {
                     case "rpc":
                         parseMethod(service, tokenLower);
                         break;
+
+                    /* istanbul ignore next */
                     default:
                         throw illegal(token);
                 }
@@ -493,6 +520,8 @@ function parse(source, root, options) {
     function parseMethod(parent, token) {
         var type = token;
         var name = next();
+
+        /* istanbul ignore next */
         if (!isName(name))
             throw illegal(name, "name");
         var requestType, requestStream,
@@ -501,14 +530,17 @@ function parse(source, root, options) {
         var st;
         if (skip(st = "stream", true))
             requestStream = true;
+        /* istanbul ignore next */
         if (!isTypeRef(token = next()))
             throw illegal(token);
         requestType = token;
         skip(")"); skip("returns"); skip("(");
         if (skip(st, true))
             responseStream = true;
+        /* istanbul ignore next */
         if (!isTypeRef(token = next()))
             throw illegal(token);
+
         responseType = token;
         skip(")");
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
@@ -520,6 +552,8 @@ function parse(source, root, options) {
                         parseOption(method, tokenLower);
                         skip(";");
                         break;
+
+                    /* istanbul ignore next */
                     default:
                         throw illegal(token);
                 }
@@ -532,8 +566,11 @@ function parse(source, root, options) {
 
     function parseExtension(parent, token) {
         var reference = next();
+
+        /* istanbul ignore next */
         if (!isTypeRef(reference))
             throw illegal(reference, "reference");
+
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -544,6 +581,7 @@ function parse(source, root, options) {
                         parseField(parent, tokenLower, reference);
                         break;
                     default:
+                        /* istanbul ignore next */
                         if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);
                         push(token);
@@ -562,24 +600,28 @@ function parse(source, root, options) {
         switch (tokenLower) {
 
             case "package":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parsePackage();
                 break;
 
             case "import":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parseImport();
                 break;
 
             case "syntax":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parseSyntax();
                 break;
 
             case "option":
+                /* istanbul ignore next */
                 if (!head)
                     throw illegal(token);
                 parseOption(ptr, token);
@@ -591,6 +633,7 @@ function parse(source, root, options) {
                     head = false;
                     continue;
                 }
+                /* istanbul ignore next */
                 throw illegal(token);
         }
     }

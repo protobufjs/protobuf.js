@@ -47,6 +47,7 @@ function tokenize(source) {
 
     var stringDelim = null;
 
+    /* istanbul ignore next */
     /**
      * Creates an error for illegal syntax.
      * @param {string} subject Subject

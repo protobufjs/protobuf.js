@@ -26,6 +26,8 @@ var Enum    = require("./enum"),
  */
 function MapField(name, id, keyType, type, options) {
     Field.call(this, name, id, type, options);
+
+    /* istanbul ignore next */
     if (!util.isString(keyType))
         throw util._TypeError("keyType");
     

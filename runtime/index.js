@@ -2,10 +2,10 @@
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
-var Writer = protobuf.Writer = require("../src/writer");
-protobuf.BufferWriter = Writer.BufferWriter;
-var Reader = protobuf.Reader = require("../src/reader");
-protobuf.BufferReader = Reader.BufferReader;
+protobuf.Writer = require("../src/writer");
+protobuf.BufferWriter = require("../src/writer_buffer");
+protobuf.Reader = require("../src/reader");
+protobuf.BufferReader = require("../src/reader_buffer");
 protobuf.util = require("../src/util/runtime");
 protobuf.roots = {};
 protobuf.configure = configure;

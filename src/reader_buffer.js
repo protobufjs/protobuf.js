@@ -10,8 +10,11 @@ var util = require("./util/runtime");
 
 // One time function to initialize BufferReader with the now-known buffer implementation's slice method
 var initBufferReader = function() {
+
+    /* istanbul ignore next */
     if (!util.Buffer)
         throw Error("Buffer is not supported");
+    
     BufferReaderPrototype._slice = util.Buffer.prototype.slice;
     readStringBuffer = util.Buffer.prototype.utf8Slice // around forever, but not present in browser buffer
         ? readStringBuffer_utf8Slice

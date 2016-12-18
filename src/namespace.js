@@ -17,10 +17,14 @@ var Type,    // cyclic
 var nestedTypes, // contains cyclics
     nestedError;
 function initNested() {
+
+    /* istanbul ignore next */
     if (!Type)
         Type = require("./type");
+    /* istanbul ignore next */
     if (!Service)
         Service = require("./service");
+
     nestedTypes = [ Enum, Type, Service, Field, Namespace ];
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 }
@@ -169,19 +173,20 @@ NamespacePrototype.get = function get(name) {
 NamespacePrototype.add = function add(object) {
     if (!nestedTypes)
         initNested();
+
+    /* istanbul ignore next */
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
         throw TypeError("object", nestedError);
+    /* istanbul ignore next */
     if (object instanceof Field && object.extend === undefined)
         throw TypeError("object", "an extension field when not part of a type");
+
     if (!this.nested)
         this.nested = {};
     else {
         var prev = this.get(object.name);
         if (prev) {
-            if (!Type)
-                Type = require("./type");
-            if (!Service)
-                Service = require("./service");
+            // initNested above already initializes Type and Service
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
                 var nested = prev.getNestedArray();
@@ -191,6 +196,8 @@ NamespacePrototype.add = function add(object) {
                 if (!this.nested)
                     this.nested = {};
                 object.setOptions(prev.options, true);
+
+            /* istanbul ignore next */
             } else
                 throw Error("duplicate name '" + object.name + "' in " + this);
         }
@@ -208,10 +215,14 @@ NamespacePrototype.add = function add(object) {
  * @throws {Error} If `object` is not a member of this namespace
  */
 NamespacePrototype.remove = function remove(object) {
+
+    /* istanbul ignore next */
     if (!(object instanceof ReflectionObject))
         throw TypeError("object", "a ReflectionObject");
+    /* istanbul ignore next */
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);
+    
     delete this.nested[object.name];
     if (!Object.keys(this.nested).length)
         this.nested = undefined;
@@ -310,8 +321,11 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
  * @throws {Error} If `path` does not point to a type
  */
 NamespacePrototype.lookupType = function lookupType(path) {
+
+    /* istanbul ignore next */
     if (!Type)
         Type = require("./type");
+
     var found = this.lookup(path, Type);
     if (!found)
         throw Error("no such type");
@@ -326,8 +340,11 @@ NamespacePrototype.lookupType = function lookupType(path) {
  * @throws {Error} If `path` does not point to a service
  */
 NamespacePrototype.lookupService = function lookupService(path) {
+
+    /* istanbul ignore next */
     if (!Service)
         Service = require("./service");
+
     var found = this.lookup(path, Service);
     if (!found)
         throw Error("no such service");

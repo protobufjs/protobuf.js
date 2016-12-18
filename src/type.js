@@ -117,8 +117,11 @@ util.props(TypePrototype, {
             for (var i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
+
+                /* istanbul ignore next */
                 if (this._fieldsById[id])
                     throw Error("duplicate id " + id + " in " + this);
+
                 this._fieldsById[id] = field;
             }
             return this._fieldsById;

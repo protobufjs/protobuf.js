@@ -33,10 +33,14 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
         options = responseStream;
         responseStream = undefined;
     }
+
+    /* istanbul ignore next */
     if (type && !util.isString(type))
         throw TypeError("type");
+    /* istanbul ignore next */
     if (!util.isString(requestType))
         throw TypeError("requestType");
+    /* istanbul ignore next */
     if (!util.isString(responseType))
         throw TypeError("responseType");
 
@@ -126,8 +130,10 @@ MethodPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
+    /* istanbul ignore next */
     if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
         throw Error("unresolvable request type: " + this.requestType);
+    /* istanbul ignore next */
     if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
         throw Error("unresolvable response type: " + this.requestType);
 

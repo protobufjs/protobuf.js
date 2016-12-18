@@ -10,7 +10,6 @@ var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
 
-/* istanbul ignore next */
 var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
 
 /**
@@ -156,7 +155,6 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
-    /* istanbul ignore next */
     Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
 
 /** @alias Writer.prototype */
@@ -330,7 +328,6 @@ var writeFloat = typeof Float32Array !== "undefined"
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
         return f8b[3] // already le?
-            /* istanbul ignore next */
             ? function writeFloat_f32(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[0];
@@ -346,7 +343,6 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    /* istanbul ignore next */
     : function writeFloat_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 23, 4);
     };
@@ -367,7 +363,6 @@ var writeDouble = typeof Float64Array !== "undefined"
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
         return f8b[7] // already le?
-            /* istanbul ignore next */
             ? function writeDouble_f64(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[0];
@@ -391,7 +386,6 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    /* istanbul ignore next */
     : function writeDouble_ieee754(val, buf, pos) {
         ieee754.write(buf, val, pos, false, 52, 8);
     };
@@ -442,7 +436,6 @@ WriterPrototype.string = function write_string(value) {
     var len = utf8.length(value);
     return len
         ? this.uint32(len).push(utf8.write, len, value)
-        /* istanbul ignore next */
         : this.push(writeByte, 1, 0);
 };
 

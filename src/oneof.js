@@ -27,6 +27,8 @@ function OneOf(name, fieldNames, options) {
         fieldNames = undefined;
     }
     ReflectionObject.call(this, name, options);
+
+    /* istanbul ignore next */
     if (fieldNames && !Array.isArray(fieldNames))
         throw TypeError("fieldNames", "an Array");
 
@@ -113,8 +115,11 @@ function addFieldsToParent(oneof) {
  * @returns {OneOf} `this`
  */
 OneOfPrototype.add = function add(field) {
+
+    /* istanbul ignore next */
     if (!(field instanceof Field))
         throw TypeError("field", "a Field");
+
     if (field.parent)
         field.parent.remove(field);
     this.oneof.push(field.name);
@@ -130,11 +135,16 @@ OneOfPrototype.add = function add(field) {
  * @returns {OneOf} `this`
  */
 OneOfPrototype.remove = function remove(field) {
+
+    /* istanbul ignore next */
     if (!(field instanceof Field))
         throw TypeError("field", "a Field");
+
     var index = this._fieldsArray.indexOf(field);
+    /* istanbul ignore next */
     if (index < 0)
         throw Error(field + " is not a member of " + this);
+
     this._fieldsArray.splice(index, 1);
     index = this.oneof.indexOf(field.name);
     if (index > -1)

@@ -19,8 +19,11 @@ var TypeError = util._TypeError;
  * @abstract
  */
 function ReflectionObject(name, options) {
+
+    /* istanbul ignore next */
     if (!util.isString(name))
         throw TypeError("name");
+    /* istanbul ignore next */
     if (options && !util.isObject(options))
         throw TypeError("options", "an object");
 

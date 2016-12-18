@@ -38,12 +38,17 @@ function Field(name, id, type, rule, extend, options) {
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
+    
+    /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
+    /* istanbul ignore next */
     if (!util.isString(type))
         throw TypeError("type");
+    /* istanbul ignore next */
     if (extend !== undefined && !util.isString(extend))
         throw TypeError("extend");
+    /* istanbul ignore next */
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule", "a valid rule string");
 
@@ -241,6 +246,7 @@ FieldPrototype.resolve = function resolve() {
             typeDefault = null;
         else if (this.resolvedType = this.parent.lookup(this.type, Enum))
             typeDefault = 0;
+        /* istanbul ignore next */
         else
             throw Error("unresolvable field type: " + this.type);
     }
