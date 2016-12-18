@@ -5,7 +5,8 @@ var fs   = require("fs"),
 [
     "tests/data/package.proto",
     "tests/data/rpc.proto",
-    "tests/data/mapbox/vector_tile.proto"
+    "tests/data/mapbox/vector_tile.proto",
+    "tests/data/ambiguous-names.proto"
 ]
 .forEach(function(file) {
     var out = file.replace(/\.proto$/, ".js");

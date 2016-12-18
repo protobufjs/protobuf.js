@@ -351,6 +351,7 @@ $root.Package = (function() {
 
     /**
      * Verifies a Package.
+     * @function
      * @param {Package|Object} message Package or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
@@ -571,6 +572,7 @@ $root.Package = (function() {
 
         /**
          * Verifies a Repository.
+         * @function
          * @param {Package.Repository|Object} message Repository or plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */

@@ -175,6 +175,7 @@ $root.MyRequest = (function() {
 
     /**
      * Verifies a MyRequest.
+     * @function
      * @param {MyRequest|Object} message MyRequest or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
@@ -296,6 +297,7 @@ $root.MyResponse = (function() {
 
     /**
      * Verifies a MyResponse.
+     * @function
      * @param {MyResponse|Object} message MyResponse or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */

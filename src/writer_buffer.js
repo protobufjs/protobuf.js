@@ -27,13 +27,14 @@ function BufferWriter() {
  * @returns {Uint8Array} Buffer
  */
 BufferWriter.alloc = function alloc_buffer(size) {
-    BufferWriter.alloc = Buffer.allocUnsafe
+    return (BufferWriter.alloc = Buffer.allocUnsafe
         ? Buffer.allocUnsafe
-        : function allocUnsafe_new(size) { return new Buffer(size); };
-    return BufferWriter.alloc(size); // overridden
+        : function allocUnsafe_new(size) {
+            return new Buffer(size);
+        })(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.prototype.subarray
+var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name !== "deprecated"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node > 0.12)
     }

@@ -1,6 +1,6 @@
 "use strict"; // eslint-disable-line strict
 
-var $protobuf = require("../../runtime");
+var $protobuf = require("../../../runtime");
 
 // Lazily resolved type references
 var $lazyTypes = [];
@@ -121,6 +121,7 @@ $root.vector_tile = (function() {
 
         /**
          * Verifies a Tile.
+         * @function
          * @param {vector_tile.Tile|Object} message Tile or plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
@@ -329,6 +330,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Value.
+             * @function
              * @param {vector_tile.Tile.Value|Object} message Value or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -530,6 +532,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Feature.
+             * @function
              * @param {vector_tile.Tile.Feature|Object} message Feature or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
@@ -742,6 +745,7 @@ $root.vector_tile = (function() {
 
             /**
              * Verifies a Layer.
+             * @function
              * @param {vector_tile.Tile.Layer|Object} message Layer or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
