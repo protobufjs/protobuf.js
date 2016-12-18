@@ -34,7 +34,7 @@ function pool(alloc, slice, size) {
     var slab   = null;
     var offset = SIZE;
     return function pool_alloc(size) {
-        if (size > MAX)
+        if (size > MAX || size === 0)
             return alloc(size);
         if (offset + size > SIZE) {
             slab = alloc(SIZE);
