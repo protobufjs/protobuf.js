@@ -348,6 +348,7 @@ function buildType(ref, type) {
         push("");
         pushComment([
             "Verifies a " + type.name + ".",
+            "@function",
             "@param {" + fullName + "|Object} message " + type.name + " or plain object to verify",
             "@returns {?string} `null` if valid, otherwise the reason why it is not"
         ]);

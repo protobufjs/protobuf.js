@@ -1,0 +1,52 @@
+syntax = "proto3";
+import "google/protobuf/any.proto";
+
+message Request {
+    enum Action {
+        SELECT = 0;
+        INSERT = 1;
+        UPDATE = 2;
+        DELETE = 3;
+    }
+    Action action = 1;
+    repeated string target = 2;
+    string source = 3;
+    repeated Dict require = 4;
+    repeated Sort sort = 5;
+    int32 limit = 6;
+    int64 offset = 7;
+    google.protobuf.Any args = 8;
+    repeated google.protobuf.Any content = 9;
+}
+
+message Response {
+    int32 code = 1;
+    string msg = 2;
+    google.protobuf.Any result = 4;
+    repeated google.protobuf.Any content = 3;
+}
+
+message Dict {
+    enum Compare {
+        LT = 0;
+        EQ = 1;
+        GT = 2;
+    }
+    string key = 1;
+    string value = 2;
+    Compare compare = 3;
+}
+
+message Sort {
+    enum OrderBy {
+        ASC = 0;
+        DESC = 1;
+    }
+    string column = 1;
+    OrderBy orderBy = 2;
+}
+
+message Arg {
+    repeated string text = 1;
+    repeated google.protobuf.Any obj = 2;
+}
