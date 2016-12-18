@@ -287,7 +287,7 @@ FieldPrototype.jsonConvert = function(value, options) {
             if (options.bytes === Array)
                 return Array.prototype.slice.call(value);
             if (options.bytes === util.Buffer && !util.Buffer.isBuffer(value))
-                return util.Buffer.from ? util.Buffer.from(value) : new Buffer(value);
+                return util.Buffer.from ? util.Buffer.from(value) : new util.Buffer(value);
         }
     }
     return value;
