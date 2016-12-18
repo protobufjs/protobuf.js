@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sun, 18 Dec 2016 19:24:12 UTC
+// Generated Sun, 18 Dec 2016 22:48:04 UTC
 declare module "protobufjs" {
 
     /**
@@ -1073,6 +1073,7 @@ declare module "protobufjs" {
 
         /**
          * Creates a new reader using the specified buffer.
+         * @function
          * @param {Uint8Array} buffer Buffer to read from
          * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
          */
@@ -1193,20 +1194,6 @@ declare module "protobufjs" {
          * @returns {Reader} `this`
          */
         skipType(wireType: number): Reader;
-
-        /**
-         * Resets this instance and frees all resources.
-         * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
-         * @returns {Reader} `this`
-         */
-        reset(buffer?: Uint8Array): Reader;
-
-        /**
-         * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
-         * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
-         * @returns {Uint8Array} Finished buffer
-         */
-        finish(buffer?: Uint8Array): Uint8Array;
     }
 
     /**
@@ -2362,6 +2349,7 @@ declare module "protobufjs" {
 
         /**
          * Creates a new writer.
+         * @function
          * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
          */
         static create(): (BufferWriter|Writer);

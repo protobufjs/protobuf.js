@@ -133,16 +133,20 @@ function Writer() {
 
 /**
  * Creates a new writer.
+ * @function
  * @returns {BufferWriter|Writer} A {@link BufferWriter} when Buffers are supported, otherwise a {@link Writer}
  */
-Writer.create = function create() {
-    if (util.Buffer) {
+Writer.create = util.Buffer
+    ? function create_buffer_setup() {
         if (!BufferWriter)
             BufferWriter = require("./writer_buffer");
-        return new BufferWriter();
+        return (Writer.create = function create_buffer() {
+            return new BufferWriter();
+        })();
     }
-    return new Writer();
-};
+    : function create_array() {
+        return new Writer();
+    };
 
 /**
  * Allocates a buffer of the specified size.

@@ -21,6 +21,10 @@ util.isNode = Boolean(global.process && global.process.versions && global.proces
  */
 util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
 
+// Don't use browser-buffer
+if (util.Buffer && !util.Buffer.prototype.utf8Write)
+    util.Buffer = null;
+
 /**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}

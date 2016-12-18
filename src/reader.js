@@ -45,24 +45,28 @@ function Reader(buffer) {
 
 /**
  * Creates a new reader using the specified buffer.
+ * @function
  * @param {Uint8Array} buffer Buffer to read from
  * @returns {BufferReader|Reader} A {@link BufferReader} if `buffer` is a Buffer, otherwise a {@link Reader}
  */
-Reader.create = function create(buffer) {
-    if (util.Buffer) {
+Reader.create = util.Buffer
+    ? function create_buffer_setup(buffer) {
         if (!BufferReader)
             BufferReader = require("./reader_buffer");
-        return new BufferReader(buffer);
+        return (Reader.create = function create_buffer(buffer) {
+            return new BufferReader(buffer);
+        })(buffer);
     }
-    return new Reader(buffer);
-};
+    : function create_array(buffer) {
+        return new Reader(buffer);
+    };
 
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
-var read_uint32 = 
+(
 /**
  * Reads a varint as an unsigned 32 bit value.
  * @returns {number} Value read
@@ -81,10 +85,9 @@ ReaderPrototype.uint32 = function read_uint32() {
         throw indexOutOfRange(this, 10);
     }
     return value;
-};
-
+}
 // See comment above. While unnecessary code, this prevents crashing with --trace-deopt (node 6.9.1).
-read_uint32.call({
+).call({
     buf: [255,255,255,255,15],
     pos: 0,
     len: 5
@@ -416,17 +419,17 @@ ReaderPrototype.string = function read_string() {
  * @returns {Reader} `this`
  */
 ReaderPrototype.skip = function skip(length) {
-    if (length === undefined) {
+    if (typeof length === 'number') {
+        /* istanbul ignore next */
+        if (this.pos + length > this.len)
+            throw indexOutOfRange(this, length);
+        this.pos += length;
+    } else {
         do {
             /* istanbul ignore next */
             if (this.pos >= this.len)
                 throw indexOutOfRange(this);
         } while (this.buf[this.pos++] & 128);
-    } else {
-        /* istanbul ignore next */
-        if (this.pos + length > this.len)
-            throw indexOutOfRange(this, length);
-        this.pos += length;
     }
     return this;
 };
@@ -449,8 +452,7 @@ ReaderPrototype.skipType = function(wireType) {
             break;
         case 3:
             do { // eslint-disable-line no-constant-condition
-                wireType = this.uint32() & 7;
-                if (wireType === 4)
+                if ((wireType = this.uint32() & 7) === 4)
                     break;
                 this.skipType(wireType);
             } while (true);
@@ -464,36 +466,6 @@ ReaderPrototype.skipType = function(wireType) {
             throw Error("invalid wire type: " + wireType);
     }
     return this;
-};
-
-/**
- * Resets this instance and frees all resources.
- * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
- * @returns {Reader} `this`
- */
-ReaderPrototype.reset = function reset(buffer) {
-    if (buffer) {
-        this.buf = buffer;
-        this.len = buffer.length;
-    } else {
-        this.buf = null; // makes it throw
-        this.len = 0;
-    }
-    this.pos = 0;
-    return this;
-};
-
-/**
- * Finishes the current sequence of read operations, frees all resources and returns the remaining buffer.
- * @param {Uint8Array} [buffer] New buffer for a new sequence of read operations
- * @returns {Uint8Array} Finished buffer
- */
-ReaderPrototype.finish = function finish(buffer) {
-    var remain = this.pos
-        ? this._slice.call(this.buf, this.pos)
-        : this.buf;
-    this.reset(buffer);
-    return remain;
 };
 
 function configure() {
