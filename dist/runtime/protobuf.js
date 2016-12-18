@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 12:57:35 UTC
+ * Compiled Sun, 18 Dec 2016 14:39:44 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -248,56 +248,6 @@ base64.decode = function decode(string, buffer, offset) {
 
 },{}],3:[function(require,module,exports){
 "use strict";
-module.exports = pool;
-
-/**
- * An allocator as used by {@link util.pool}.
- * @typedef PoolAllocator
- * @type {function}
- * @param {number} size Buffer size
- * @returns {Uint8Array} Buffer
- */
-
-/**
- * A slicer as used by {@link util.pool}.
- * @typedef PoolSlicer
- * @type {function}
- * @param {number} start Start offset
- * @param {number} end End offset
- * @returns {Uint8Array} Buffer slice
- * @this {Uint8Array}
- */
-
-/**
- * A general purpose buffer pool.
- * @memberof util
- * @function
- * @param {PoolAllocator} alloc Allocator
- * @param {PoolSlicer} slice Slicer
- * @param {number} [size=8192] Slab size
- * @returns {PoolAllocator} Pooled allocator
- */
-function pool(alloc, slice, size) {
-    var SIZE   = size || 8192;
-    var MAX    = SIZE >>> 1;
-    var slab   = null;
-    var offset = SIZE;
-    return function pool_alloc(size) {
-        if (size > MAX)
-            return alloc(size);
-        if (offset + size > SIZE) {
-            slab = alloc(SIZE);
-            offset = 0;
-        }
-        var buf = slice.call(slab, offset, offset += size);
-        if (offset & 7) // align to 32 bit
-            offset = (offset | 7) + 1;
-        return buf;
-    };
-}
-
-},{}],4:[function(require,module,exports){
-"use strict";
 
 /**
  * A minimal UTF8 implementation for number arrays.
@@ -400,14 +350,14 @@ utf8.write = function(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
 var Writer = protobuf.Writer = require(9);
 protobuf.BufferWriter = Writer.BufferWriter;
-var Reader = protobuf.Reader = require(6);
+var Reader = protobuf.Reader = require(5);
 protobuf.BufferReader = Reader.BufferReader;
 protobuf.util = require(8);
 protobuf.roots = {};
@@ -427,7 +377,7 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"6":6,"8":8,"9":9}],6:[function(require,module,exports){
+},{"5":5,"8":8,"9":9}],5:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -1001,7 +951,7 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"8":8}],7:[function(require,module,exports){
+},{"1":1,"8":8}],6:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
@@ -1202,17 +1152,72 @@ LongBitsPrototype.length = function length() {
     return part2 < 1 << 7 ? 9 : 10;
 };
 
-},{"8":8}],8:[function(require,module,exports){
+},{"8":8}],7:[function(require,module,exports){
+"use strict";
+module.exports = pool;
+
+/**
+ * An allocator as used by {@link util.pool}.
+ * @typedef PoolAllocator
+ * @type {function}
+ * @param {number} size Buffer size
+ * @returns {Uint8Array} Buffer
+ */
+
+/**
+ * A slicer as used by {@link util.pool}.
+ * @typedef PoolSlicer
+ * @type {function}
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Buffer slice
+ * @this {Uint8Array}
+ */
+
+/**
+ * A general purpose buffer pool.
+ * @memberof util
+ * @function
+ * @param {PoolAllocator} alloc Allocator
+ * @param {PoolSlicer} slice Slicer
+ * @param {number} [size=8192] Slab size
+ * @returns {PoolAllocator} Pooled allocator
+ */
+function pool(alloc, slice, size) {
+    var SIZE   = size || 8192;
+    var MAX    = SIZE >>> 1;
+    var slab   = null;
+    var offset = SIZE;
+    var empty  = alloc(0);
+    if (Object.freeze)
+        Object.freeze(empty);
+    return function pool_alloc(size) {
+        if (!size)
+            return empty;
+        if (size > MAX)
+            return alloc(size);
+        if (offset + size > SIZE) {
+            slab = alloc(SIZE);
+            offset = 0;
+        }
+        var buf = slice.call(slab, offset, offset += size);
+        if (offset & 7) // align to 32 bit
+            offset = (offset | 7) + 1;
+        return buf;
+    };
+}
+
+},{}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
 var LongBits =
-util.LongBits = require(7);
+util.LongBits = require(6);
 util.base64   = require(2);
-util.utf8     = require(4);
-util.pool     = require(3);
+util.utf8     = require(3);
+util.pool     = require(7);
 
 /**
  * Whether running within node or not.
@@ -1378,7 +1383,7 @@ util.emptyObject = Object.freeze({});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"2":2,"3":3,"4":4,"7":7,"buffer":"buffer","long":"long"}],9:[function(require,module,exports){
+},{"2":2,"3":3,"6":6,"7":7,"buffer":"buffer","long":"long"}],9:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -1977,7 +1982,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
         : this.push(writeByte, 1, 0);
 };
 
-},{"1":1,"8":8}]},{},[5])
+},{"1":1,"8":8}]},{},[4])
 
 
 //# sourceMappingURL=protobuf.js.map

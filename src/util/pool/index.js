@@ -33,8 +33,13 @@ function pool(alloc, slice, size) {
     var MAX    = SIZE >>> 1;
     var slab   = null;
     var offset = SIZE;
+    var empty  = alloc(0);
+    if (Object.freeze)
+        Object.freeze(empty);
     return function pool_alloc(size) {
-        if (size > MAX || size === 0)
+        if (!size)
+            return empty;
+        if (size > MAX)
             return alloc(size);
         if (offset + size > SIZE) {
             slab = alloc(SIZE);

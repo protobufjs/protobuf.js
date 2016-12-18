@@ -398,7 +398,7 @@ usage: pbts [options] file1.js file2.js ...
 
 ### Descriptors vs. static modules
 
-While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
+While .proto and JSON files require the full library (about 17.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
 
 Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
 
