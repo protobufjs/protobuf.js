@@ -18,7 +18,6 @@ function Class(type) {
     return create(type);
 }
 
-Class.create =
 /**
  * Constructs a new message prototype for the specified reflected type and sets up its constructor.
  * @memberof Class
@@ -89,7 +88,9 @@ function create(type, ctor) {
     type.setCtor(ctor);
 
     return prototype;
-};
+}
+
+Class.create = create;
 
 // Static methods on Message are instance methods on Class and vice versa.
 Class.prototype = Message;

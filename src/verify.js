@@ -5,9 +5,6 @@ var Enum      = require("./enum"),
     Type      = require("./type"),
     util      = require("./util");
 
-var isInteger = util.isInteger,
-    isString  = util.isString;
-
 function invalid(field, expected) {
     return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
 }
@@ -24,7 +21,7 @@ function verifyValue(field, value) {
         case "sint32":
         case "fixed32":
         case "sfixed32":
-            if (!isInteger(value))
+            if (!util.isInteger(value))
                 return invalid(field, "integer");
             break;
         case "int64":
@@ -32,7 +29,7 @@ function verifyValue(field, value) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            if (!isInteger(value) && !(value && isInteger(value.low) && isInteger(value.high)))
+            if (!util.isInteger(value) && !(value && util.isInteger(value.low) && util.isInteger(value.high)))
                 return invalid(field, "integer|Long");
             break;
         case "bool":
@@ -40,11 +37,11 @@ function verifyValue(field, value) {
                 return invalid(field, "boolean");
             break;
         case "string":
-            if (!isString(value))
+            if (!util.isString(value))
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!(value && typeof value.length === "number" || isString(value)))
+            if (!(value && typeof value.length === "number" || util.isString(value)))
                 return invalid(field, "buffer");
             break;
         default:

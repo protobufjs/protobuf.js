@@ -13,8 +13,6 @@ var Field  = require("./field"),
 
 var parse; // cyclic
 
-var isString = util.isString;
-
 /**
  * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
@@ -95,9 +93,9 @@ RootPrototype.load = function load(filename, options, callback) {
     // Processes a single file
     function process(filename, source) {
         try {
-            if (isString(source) && source.charAt(0) === "{")
+            if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
-            if (!isString(source))
+            if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
                 parse.filename = filename;
@@ -179,7 +177,7 @@ RootPrototype.load = function load(filename, options, callback) {
 
     // Assembling the root namespace doesn't require working type
     // references anymore, so we can load everything in parallel
-    if (isString(filename))
+    if (util.isString(filename))
         filename = [ filename ];
     filename.forEach(function(filename) {
         fetch(self.resolvePath("", filename));

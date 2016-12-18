@@ -23,8 +23,6 @@ var encode, // might become cyclic
     decode, // might become cyclic
     verify; // cyclic
 
-var Object_keys = Object.keys;
-
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
@@ -115,7 +113,7 @@ util.props(TypePrototype, {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
-            var names = Object_keys(this.fields);
+            var names = Object.keys(this.fields);
             for (var i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
@@ -209,15 +207,15 @@ Type.fromJSON = function fromJSON(name, json) {
     type.extensions = json.extensions;
     type.reserved = json.reserved;
     if (json.fields)
-        Object_keys(json.fields).forEach(function(fieldName) {
+        Object.keys(json.fields).forEach(function(fieldName) {
             type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
         });
     if (json.oneofs)
-        Object_keys(json.oneofs).forEach(function(oneOfName) {
+        Object.keys(json.oneofs).forEach(function(oneOfName) {
             type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
         });
     if (json.nested)
-        Object_keys(json.nested).forEach(function(nestedName) {
+        Object.keys(json.nested).forEach(function(nestedName) {
             var nested = json.nested[nestedName];
             for (var i = 0; i < nestedTypes.length; ++i) {
                 if (nestedTypes[i].testJSON(nested)) {

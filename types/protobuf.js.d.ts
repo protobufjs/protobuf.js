@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sun, 18 Dec 2016 00:20:27 UTC
+// Generated Sun, 18 Dec 2016 12:27:17 UTC
 declare module "protobufjs" {
 
     /**
@@ -20,6 +20,7 @@ declare module "protobufjs" {
 
         /**
          * Constructs a new message prototype for the specified reflected type and sets up its constructor.
+         * @memberof Class
          * @param {Type} type Reflected message type
          * @param {*} [ctor] Custom constructor to set up, defaults to create a generic one if omitted
          * @returns {Message} Message prototype
@@ -784,8 +785,20 @@ declare module "protobufjs" {
         /**
          * Looks up the reflection object at the specified path, relative to this namespace.
          * @param {string|string[]} path Path to look up
+         * @param {function(new: ReflectionObject)} filterType Filter type, one of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
+         * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
+         * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+         */
+        lookup(path: (string|string[]), filterType: () => any, parentAlreadyChecked?: boolean): ReflectionObject;
+
+        /**
+         * Looks up the reflection object at the specified path, relative to this namespace.
+         * @name Namespace#lookup
+         * @function
+         * @param {string|string[]} path Path to look up
          * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
          * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+         * @variation 2
          */
         lookup(path: (string|string[]), parentAlreadyChecked?: boolean): ReflectionObject;
 
@@ -806,6 +819,15 @@ declare module "protobufjs" {
          * @throws {Error} If `path` does not point to a service
          */
         lookupService(path: (string|string[])): Service;
+
+        /**
+         * Looks up the {@link Enum|enum} at the specified path, relative to this namespace.
+         * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+         * @param {string|string[]} path Path to look up
+         * @returns {Type} Looked up enum
+         * @throws {Error} If `path` does not point to an enum
+         */
+        lookupEnum(path: (string|string[])): Type;
     }
 
     /**

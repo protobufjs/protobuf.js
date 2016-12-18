@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.2.1 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 02:01:31 UTC
+ * Compiled Sun, 18 Dec 2016 12:27:11 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -833,7 +833,6 @@ function Class(type) {
     return create(type);
 }
 
-Class.create =
 /**
  * Constructs a new message prototype for the specified reflected type and sets up its constructor.
  * @memberof Class
@@ -904,7 +903,9 @@ function create(type, ctor) {
     type.setCtor(ctor);
 
     return prototype;
-};
+}
+
+Class.create = create;
 
 // Static methods on Message are instance methods on Class and vice versa.
 Class.prototype = Message;
@@ -1486,8 +1487,7 @@ Enum.className = "Enum";
 
 var util = require(33);
 
-var isString = util.isString,
-    TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new enum instance.
@@ -1590,7 +1590,7 @@ EnumPrototype.toJSON = function toJSON() {
  * @throws {Error} If there is already a value with this name or id
  */
 EnumPrototype.add = function(name, id) {
-    if (!isString(name))
+    if (!util.isString(name))
         throw TypeError("name");
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
@@ -1610,7 +1610,7 @@ EnumPrototype.add = function(name, id) {
  * @throws {Error} If `name` is not a name of this enum
  */
 EnumPrototype.remove = function(name) {
-    if (!isString(name))
+    if (!util.isString(name))
         throw TypeError("name");
     if (this.values[name] === undefined)
         throw Error("'" + name + "' is not a name of " + this);
@@ -1637,9 +1637,7 @@ var Message = require(19),
 var Type,     // cyclic
     MapField; // cyclic
 
-var isObject = util.isObject,
-    isString = util.isString,
-    TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -1654,19 +1652,19 @@ var isObject = util.isObject,
  * @param {Object} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
-    if (isObject(rule)) {
+    if (util.isObject(rule)) {
         options = rule;
         rule = extend = undefined;
-    } else if (isObject(extend)) {
+    } else if (util.isObject(extend)) {
         options = extend;
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
-    if (!isString(type))
+    if (!util.isString(type))
         throw TypeError("type");
-    if (extend !== undefined && !isString(extend))
+    if (extend !== undefined && !util.isString(extend))
         throw TypeError("extend");
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule", "a valid rule string");
@@ -1859,16 +1857,13 @@ FieldPrototype.resolve = function resolve() {
 
     // if not a basic type, resolve it
     if (typeDefault === undefined) {
-        var resolved = this.parent.lookup(this.type);
         if (!Type)
             Type = require(31);
-        if (resolved instanceof Type) {
-            this.resolvedType = resolved;
+        if (this.resolvedType = this.parent.lookup(this.type, Type))
             typeDefault = null;
-        } else if (resolved instanceof Enum) {
-            this.resolvedType = resolved;
+        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
             typeDefault = 0;
-        } else
+        else
             throw Error("unresolvable field type: " + this.type);
     }
 
@@ -2026,8 +2021,6 @@ MapFieldPrototype.resolve = function resolve() {
 "use strict";
 module.exports = Message;
 
-var Object_keys = Object.keys;
-
 /**
  * Constructs a new message instance.
  *
@@ -2041,7 +2034,7 @@ var Object_keys = Object.keys;
  */
 function Message(properties) {
     if (properties) {
-        var keys = Object_keys(properties);
+        var keys = Object.keys(properties);
         for (var i = 0; i < keys.length; ++i)
             this[keys[i]] = properties[keys[i]];
     }
@@ -2073,9 +2066,9 @@ MessagePrototype.asJSON = function asJSON(options) {
         json   = {};
     var keys;
     if (options.defaults) {
-        keys = Object_keys(fields);
+        keys = Object.keys(fields);
     } else
-        keys = Object_keys(this);
+        keys = Object.keys(this);
     for (var i = 0, key; i < keys.length; ++i) {
         var field = fields[key = keys[i]],
             value = this[key];
@@ -2175,9 +2168,7 @@ Method.className = "Method";
 var Type = require(31),
     util = require(33);
 
-var isObject = util.isObject,
-    isString = util.isString,
-    TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new service method instance.
@@ -2193,18 +2184,18 @@ var isObject = util.isObject,
  * @param {Object} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
-    if (isObject(requestStream)) {
+    if (util.isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
-    } else if (isObject(responseStream)) {
+    } else if (util.isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
     }
-    if (type && !isString(type))
+    if (type && !util.isString(type))
         throw TypeError("type");
-    if (!isString(requestType))
+    if (!util.isString(requestType))
         throw TypeError("requestType");
-    if (!isString(responseType))
+    if (!util.isString(responseType))
         throw TypeError("responseType");
 
     ReflectionObject.call(this, name, options);
@@ -2292,14 +2283,12 @@ MethodPrototype.toJSON = function toJSON() {
 MethodPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    var resolved = this.parent.lookup(this.requestType);
-    if (!(resolved && resolved instanceof Type))
+
+    if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
         throw Error("unresolvable request type: " + this.requestType);
-    this.resolvedRequestType = resolved;
-    resolved = this.parent.lookup(this.responseType);
-    if (!(resolved && resolved instanceof Type))
+    if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
         throw Error("unresolvable response type: " + this.requestType);
-    this.resolvedResponseType = resolved;
+
     return ReflectionObject.prototype.resolve.call(this);
 };
 
@@ -2331,8 +2320,7 @@ function initNested() {
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 }
 
-var TypeError = util._TypeError,
-    Object_keys = Object.keys;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new namespace instance.
@@ -2444,7 +2432,7 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
     if (nestedJson) {
         if (!nestedTypes)
             initNested();
-        Object_keys(nestedJson).forEach(function(nestedName) {
+        Object.keys(nestedJson).forEach(function(nestedName) {
             var nested = nestedJson[nestedName];
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
@@ -2520,7 +2508,7 @@ NamespacePrototype.remove = function remove(object) {
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);
     delete this.nested[object.name];
-    if (!Object_keys(this.nested).length)
+    if (!Object.keys(this.nested).length)
         this.nested = undefined;
     object.onRemove(this);
     return clearCache(this);
@@ -2572,28 +2560,43 @@ NamespacePrototype.resolveAll = function resolve() {
 /**
  * Looks up the reflection object at the specified path, relative to this namespace.
  * @param {string|string[]} path Path to look up
- * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
+ * @param {function(new: ReflectionObject)} filterType Filter type, one of `protobuf.Type`, `protobuf.Enum`, `protobuf.Service` etc.
+ * @param {boolean} [parentAlreadyChecked=false] If known, whether the parent has already been checked
  * @returns {?ReflectionObject} Looked up object or `null` if none could be found
  */
-NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
-    if (util.isString(path)) {
-        if (!path.length)
-            return null;
+NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyChecked) {
+    if (typeof filterType === "boolean") {
+        parentAlreadyChecked = filterType;
+        filterType = undefined;
+    }
+    if (util.isString(path) && path.length)
         path = path.split(".");
-    } else if (!path.length)
+    else if (!path.length)
         return null;
     // Start at root if path is absolute
     if (path[0] === "")
-        return this.getRoot().lookup(path.slice(1));
+        return this.getRoot().lookup(path.slice(1), filterType);
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
-    if (found && (path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true))))
-        return found;
+    if (found && path.length === 1 || found instanceof Namespace && (found = found.lookup(path.slice(1), true)))
+        if (!filterType || found instanceof filterType)
+            return found;
     // If there hasn't been a match, try again at the parent
     if (this.parent === null || parentAlreadyChecked)
         return null;
-    return this.parent.lookup(path);
+    return this.parent.lookup(path, filterType);
 };
+
+/**
+ * Looks up the reflection object at the specified path, relative to this namespace.
+ * @name Namespace#lookup
+ * @function
+ * @param {string|string[]} path Path to look up
+ * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
+ * @returns {?ReflectionObject} Looked up object or `null` if none could be found
+ * @variation 2
+ */
+// lookup(path: string, [parentAlreadyChecked: boolean])
 
 /**
  * Looks up the {@link Type|type} at the specified path, relative to this namespace.
@@ -2603,10 +2606,10 @@ NamespacePrototype.lookup = function lookup(path, parentAlreadyChecked) {
  * @throws {Error} If `path` does not point to a type
  */
 NamespacePrototype.lookupType = function lookupType(path) {
-    var found = this.lookup(path);
     if (!Type)
         Type = require(31);
-    if (!(found instanceof Type))
+    var found = this.lookup(path, Type);
+    if (!found)
         throw Error("no such type");
     return found;
 };
@@ -2619,11 +2622,25 @@ NamespacePrototype.lookupType = function lookupType(path) {
  * @throws {Error} If `path` does not point to a service
  */
 NamespacePrototype.lookupService = function lookupService(path) {
-    var found = this.lookup(path);
     if (!Service)
         Service = require(29);
-    if (!(found instanceof Service))
+    var found = this.lookup(path, Service);
+    if (!found)
         throw Error("no such service");
+    return found;
+};
+
+/**
+ * Looks up the {@link Enum|enum} at the specified path, relative to this namespace.
+ * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * @param {string|string[]} path Path to look up
+ * @returns {Type} Looked up enum
+ * @throws {Error} If `path` does not point to an enum
+ */
+NamespacePrototype.lookupEnum = function lookupEnum(path) {
+    var found = this.lookup(path, Enum);
+    if (!found)
+        throw Error("no such enum");
     return found;
 };
 
@@ -4199,8 +4216,6 @@ var Field  = require(17),
 
 var parse; // cyclic
 
-var isString = util.isString;
-
 /**
  * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
@@ -4281,9 +4296,9 @@ RootPrototype.load = function load(filename, options, callback) {
     // Processes a single file
     function process(filename, source) {
         try {
-            if (isString(source) && source.charAt(0) === "{")
+            if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
-            if (!isString(source))
+            if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
             else {
                 parse.filename = filename;
@@ -4365,7 +4380,7 @@ RootPrototype.load = function load(filename, options, callback) {
 
     // Assembling the root namespace doesn't require working type
     // references anymore, so we can load everything in parallel
-    if (isString(filename))
+    if (util.isString(filename))
         filename = [ filename ];
     filename.forEach(function(filename) {
         fetch(self.resolvePath("", filename));
@@ -4979,8 +4994,6 @@ var encode, // might become cyclic
     decode, // might become cyclic
     verify; // cyclic
 
-var Object_keys = Object.keys;
-
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
@@ -5071,7 +5084,7 @@ util.props(TypePrototype, {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
-            var names = Object_keys(this.fields);
+            var names = Object.keys(this.fields);
             for (var i = 0; i < names.length; ++i) {
                 var field = this.fields[names[i]],
                     id = field.id;
@@ -5165,15 +5178,15 @@ Type.fromJSON = function fromJSON(name, json) {
     type.extensions = json.extensions;
     type.reserved = json.reserved;
     if (json.fields)
-        Object_keys(json.fields).forEach(function(fieldName) {
+        Object.keys(json.fields).forEach(function(fieldName) {
             type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
         });
     if (json.oneofs)
-        Object_keys(json.oneofs).forEach(function(oneOfName) {
+        Object.keys(json.oneofs).forEach(function(oneOfName) {
             type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
         });
     if (json.nested)
-        Object_keys(json.nested).forEach(function(nestedName) {
+        Object.keys(json.nested).forEach(function(nestedName) {
             var nested = json.nested[nestedName];
             for (var i = 0; i < nestedTypes.length; ++i) {
                 if (nestedTypes[i].testJSON(nested)) {
@@ -6075,9 +6088,6 @@ var Enum      = require(16),
     Type      = require(31),
     util      = require(33);
 
-var isInteger = util.isInteger,
-    isString  = util.isString;
-
 function invalid(field, expected) {
     return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
 }
@@ -6094,7 +6104,7 @@ function verifyValue(field, value) {
         case "sint32":
         case "fixed32":
         case "sfixed32":
-            if (!isInteger(value))
+            if (!util.isInteger(value))
                 return invalid(field, "integer");
             break;
         case "int64":
@@ -6102,7 +6112,7 @@ function verifyValue(field, value) {
         case "sint64":
         case "fixed64":
         case "sfixed64":
-            if (!isInteger(value) && !(value && isInteger(value.low) && isInteger(value.high)))
+            if (!util.isInteger(value) && !(value && util.isInteger(value.low) && util.isInteger(value.high)))
                 return invalid(field, "integer|Long");
             break;
         case "bool":
@@ -6110,11 +6120,11 @@ function verifyValue(field, value) {
                 return invalid(field, "boolean");
             break;
         case "string":
-            if (!isString(value))
+            if (!util.isString(value))
                 return invalid(field, "string");
             break;
         case "bytes":
-            if (!(value && typeof value.length === "number" || isString(value)))
+            if (!(value && typeof value.length === "number" || util.isString(value)))
                 return invalid(field, "buffer");
             break;
         default:
@@ -7041,7 +7051,7 @@ protobuf.configure        = configure;
  * @returns {undefined}
  */
 function configure() {
-    Reader._configure();
+    protobuf.Reader._configure();
 }
 
 // Be nice to AMD

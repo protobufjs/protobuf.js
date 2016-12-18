@@ -114,7 +114,7 @@ protobuf.configure        = configure;
  * @returns {undefined}
  */
 function configure() {
-    Reader._configure();
+    protobuf.Reader._configure();
 }
 
 // Be nice to AMD

@@ -15,9 +15,7 @@ var Message = require("./message"),
 var Type,     // cyclic
     MapField; // cyclic
 
-var isObject = util.isObject,
-    isString = util.isString,
-    TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
@@ -32,19 +30,19 @@ var isObject = util.isObject,
  * @param {Object} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
-    if (isObject(rule)) {
+    if (util.isObject(rule)) {
         options = rule;
         rule = extend = undefined;
-    } else if (isObject(extend)) {
+    } else if (util.isObject(extend)) {
         options = extend;
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
-    if (!isString(type))
+    if (!util.isString(type))
         throw TypeError("type");
-    if (extend !== undefined && !isString(extend))
+    if (extend !== undefined && !util.isString(extend))
         throw TypeError("extend");
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
         throw TypeError("rule", "a valid rule string");
@@ -237,16 +235,13 @@ FieldPrototype.resolve = function resolve() {
 
     // if not a basic type, resolve it
     if (typeDefault === undefined) {
-        var resolved = this.parent.lookup(this.type);
         if (!Type)
             Type = require("./type");
-        if (resolved instanceof Type) {
-            this.resolvedType = resolved;
+        if (this.resolvedType = this.parent.lookup(this.type, Type))
             typeDefault = null;
-        } else if (resolved instanceof Enum) {
-            this.resolvedType = resolved;
+        else if (this.resolvedType = this.parent.lookup(this.type, Enum))
             typeDefault = 0;
-        } else
+        else
             throw Error("unresolvable field type: " + this.type);
     }
 

@@ -10,9 +10,7 @@ Method.className = "Method";
 var Type = require("./type"),
     util = require("./util");
 
-var isObject = util.isObject,
-    isString = util.isString,
-    TypeError = util._TypeError;
+var TypeError = util._TypeError;
 
 /**
  * Constructs a new service method instance.
@@ -28,18 +26,18 @@ var isObject = util.isObject,
  * @param {Object} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
-    if (isObject(requestStream)) {
+    if (util.isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
-    } else if (isObject(responseStream)) {
+    } else if (util.isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
     }
-    if (type && !isString(type))
+    if (type && !util.isString(type))
         throw TypeError("type");
-    if (!isString(requestType))
+    if (!util.isString(requestType))
         throw TypeError("requestType");
-    if (!isString(responseType))
+    if (!util.isString(responseType))
         throw TypeError("responseType");
 
     ReflectionObject.call(this, name, options);
@@ -127,13 +125,11 @@ MethodPrototype.toJSON = function toJSON() {
 MethodPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    var resolved = this.parent.lookup(this.requestType);
-    if (!(resolved && resolved instanceof Type))
+
+    if (!(this.resolvedRequestType = this.parent.lookup(this.requestType, Type)))
         throw Error("unresolvable request type: " + this.requestType);
-    this.resolvedRequestType = resolved;
-    resolved = this.parent.lookup(this.responseType);
-    if (!(resolved && resolved instanceof Type))
+    if (!(this.resolvedResponseType = this.parent.lookup(this.responseType, Type)))
         throw Error("unresolvable response type: " + this.requestType);
-    this.resolvedResponseType = resolved;
+
     return ReflectionObject.prototype.resolve.call(this);
 };

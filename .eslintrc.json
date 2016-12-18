@@ -39,6 +39,7 @@
         "guard-for-in": 1,
         "no-alert": 1,
         "no-caller": 1,
+        "no-cond-assign": 0,
         "no-div-regex": 1,
         "no-else-return": 1,
         "no-empty-function": 1,
