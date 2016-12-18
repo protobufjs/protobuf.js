@@ -145,6 +145,8 @@
             
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
+                <li data-name="util.inquire"><a href="util.html#.inquire">inquire</a></li>
+            
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
@@ -859,6 +861,10 @@
             
                 <li data-name="Namespace#lookup"><a href="Namespace.html#lookup">lookup</a></li>
             
+                <li data-name="Namespace#lookup(2)"><a href="Namespace.html#lookup2">lookup</a></li>
+            
+                <li data-name="Namespace#lookupEnum"><a href="Namespace.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
             
                 <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
@@ -1129,6 +1135,10 @@
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
             
+                <li data-name="Root#lookup(2)"><a href="Root.html#lookup2">lookup</a></li>
+            
+                <li data-name="Root#lookupEnum"><a href="Root.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
             
                 <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
@@ -1247,6 +1257,10 @@
             
                 <li data-name="Service#lookup"><a href="Service.html#lookup">lookup</a></li>
             
+                <li data-name="Service#lookup(2)"><a href="Service.html#lookup2">lookup</a></li>
+            
+                <li data-name="Service#lookupEnum"><a href="Service.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
             
                 <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
@@ -1351,6 +1365,10 @@
                 <li data-name="Type#getOption"><a href="Type.html#getOption">getOption</a></li>
             
                 <li data-name="Type#lookup"><a href="Type.html#lookup">lookup</a></li>
+            
+                <li data-name="Type#lookup(2)"><a href="Type.html#lookup2">lookup</a></li>
+            
+                <li data-name="Type#lookupEnum"><a href="Type.html#lookupEnum">lookupEnum</a></li>
             
                 <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
             
@@ -1821,9 +1839,9 @@ usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production e
   -o, --out       Saves to a file instead of writing to stdout.
 
 usage: pbts [options] file1.js file2.js ...</code></pre><h3 id="descriptors-vs-static-modules">Descriptors vs. static modules</h3>
-<p>While .proto and JSON files require the full library (about 18kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
+<p>While .proto and JSON files require the full library (about 17.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
 <p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
-<p>Where <code>new Function(...)</code> is supported (it usually is), there is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
+<p>There is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
 <h2 id="building">Building</h2>
 <p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
 <pre class="prettyprint source"><code>$> git clone https://github.com/dcodeIO/protobuf.js.git
@@ -1832,11 +1850,9 @@ $> npm install --dev</code></pre><p>Building the development and production vers
 <pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run types</code></pre><h3 id="browserify-integration">Browserify integration</h3>
-<p>protobuf.js integrates into any browserify build-process. There are a few possible tweaks:</p>
+<p>By default, protobuf.js integrates into your browserify build-process without requiring any optional modules. Hence:</p>
 <ul>
-<li>If performance is a concern or IE8 support is required, you should make sure to exclude the browserified <code>buffer</code> module and let protobuf.js do its thing with Uint8Array/Array instead.</li>
-<li>If you do not need int64 support, you can explicitly exclude the <code>long</code> module. It will be included otherwise.</li>
-<li>If your application does not rely on the following modules and package size is a concern, you can also exclude <code>process</code> , <code>_process</code> and <code>fs</code>.</li>
+<li>If you need int64 support, explicitly require the <code>long</code> module somewhere in your project. It will be excluded otherwise.</li>
 <li>If you have any special requirements, there is <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js">the bundler</a> as a reference.</li>
 </ul>
 <h2 id="performance">Performance</h2>
@@ -1879,11 +1895,9 @@ Type.verify x 5,857,856 ops/sec ±0.82% (91 runs sampled)</code></pre><p>Note th
 <li>Reader and writer interfaces configure themselves according to the environment to eliminate redundant conditionals.</li>
 <li>Node-specific reader and writer subclasses benefit from node's buffer binding.</li>
 <li>Reflection has built-in code generation that builds type-specific encoders, decoders and verifiers at runtime.</li>
-<li>Encoders and decoders do not verify that required fields are present (with proto3 this is dead code anyway). There is a <code>verify</code> method to check this manually instead - where applicable.</li>
-<li>For entirely bogus values encoders intentionally rely on runtime errors to be thrown somewhere down the road.</li>
+<li>Encoders and decoders do not implicitly call <code>verify</code> on messages to avoid unnecessary overhead where messages are already known to be valid. It's up to the user to call <code>verify</code> where necessary.</li>
 <li>Quite a bit of V8-specific profiling is accountable for everything else.</li>
 </ul>
-<p>Note that code generation requires <code>new Function(...)</code> (basically <code>eval</code>) support and that an equivalent but slower fallback will be used where unsupported.</p>
 <p>You can also run <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/index.js">the benchmark</a> ...</p>
 <pre class="prettyprint source"><code>$> npm run bench</code></pre><p>and <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/bench/prof.js">the profiler</a> yourself (the latter requires a recent version of node):</p>
 <pre class="prettyprint source"><code>$> npm run prof &lt;encode|decode|encode-browser|decode-browser> [iterations=10000000]</code></pre><p>Note that as of this writing, the benchmark suite performs significantly slower on node 7.2.0 compared to 6.9.1 because moths.</p>

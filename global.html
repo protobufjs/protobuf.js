@@ -145,6 +145,8 @@
             
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
+                <li data-name="util.inquire"><a href="util.html#.inquire">inquire</a></li>
+            
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
@@ -859,6 +861,10 @@
             
                 <li data-name="Namespace#lookup"><a href="Namespace.html#lookup">lookup</a></li>
             
+                <li data-name="Namespace#lookup(2)"><a href="Namespace.html#lookup2">lookup</a></li>
+            
+                <li data-name="Namespace#lookupEnum"><a href="Namespace.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
             
                 <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
@@ -1129,6 +1135,10 @@
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
             
+                <li data-name="Root#lookup(2)"><a href="Root.html#lookup2">lookup</a></li>
+            
+                <li data-name="Root#lookupEnum"><a href="Root.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
             
                 <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
@@ -1247,6 +1257,10 @@
             
                 <li data-name="Service#lookup"><a href="Service.html#lookup">lookup</a></li>
             
+                <li data-name="Service#lookup(2)"><a href="Service.html#lookup2">lookup</a></li>
+            
+                <li data-name="Service#lookupEnum"><a href="Service.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
             
                 <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
@@ -1351,6 +1365,10 @@
                 <li data-name="Type#getOption"><a href="Type.html#getOption">getOption</a></li>
             
                 <li data-name="Type#lookup"><a href="Type.html#lookup">lookup</a></li>
+            
+                <li data-name="Type#lookup(2)"><a href="Type.html#lookup2">lookup</a></li>
+            
+                <li data-name="Type#lookupEnum"><a href="Type.html#lookupEnum">lookupEnum</a></li>
             
                 <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
             
@@ -1973,7 +1991,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L118">line 118</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L116">line 116</a>
         </div>
         
     </div>
@@ -2066,14 +2084,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="decode">
+        <h4 class="name" id="decoder">
             
-            decode<span class="signature">(readerOrBuffer, <span class="optional">length</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            decoder<span class="signature">(mtype)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decode.js">decode.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decode.js#L17">line 17</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js">decoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decoder.js#L13">line 13</a>
         </div>
         
     </div>
@@ -2084,15 +2102,12 @@
     
     
     <div class="description">
-        <p>General purpose message decoder.</p>
+        <p>Generates a decoder specific to the specified message type.</p>
     </div>
     
 
     
     
-    
-        <h5>This:</h5>
-        <ul><li><a href="Type.html">Type</a></li></ul>
     
     
     
@@ -2118,16 +2133,13 @@
 	
         <tr>
             
-                <td class="name"><code>readerOrBuffer</code></td>
+                <td class="name"><code>mtype</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Reader.html">Reader</a></span>
-|
-
-<span class="param-type">Uint8Array</span>
+<span class="param-type"><a href="Type.html">Type</a></span>
 
 
             
@@ -2137,42 +2149,7 @@
             
             <td class="description last">
                 
-                    
-                    
-                        
-                    
-                
-                <p>Reader or buffer to decode from</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>length</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Length of the message, if known beforehand</p></td>
+                <p>Message type</p></td>
         </tr>
 	
 	
@@ -2182,57 +2159,6 @@
     
     
 <dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>generate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#GenerateDecoder">GenerateDecoder</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Generates a type specific decoder</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
     
         
     
@@ -2284,11 +2210,11 @@
             
             <td class="type">
             
-                        <a href="Message.html">Message</a>
+                        <a href="global.html#Codegen">Codegen</a>
                         
                     
             </td>
-            <td class="description last">Populated runtime message</td>
+            <td class="description last">Codegen instance</td>
         </tr>
     
     </tbody>
@@ -2303,14 +2229,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="encode">
+        <h4 class="name" id="encoder">
             
-            encode<span class="signature">(message, <span class="optional">writer</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Writer.html">Writer</a> }</span>
+            encoder<span class="signature">(mtype)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encode.js">encode.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encode.js#L27">line 27</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encoder.js">encoder.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encoder.js#L23">line 23</a>
         </div>
         
     </div>
@@ -2321,15 +2247,12 @@
     
     
     <div class="description">
-        <p>General purpose message encoder.</p>
+        <p>Generates an encoder specific to the specified message type.</p>
     </div>
     
 
     
     
-    
-        <h5>This:</h5>
-        <ul><li><a href="Type.html">Type</a></li></ul>
     
     
     
@@ -2355,16 +2278,13 @@
 	
         <tr>
             
-                <td class="name"><code>message</code></td>
+                <td class="name"><code>mtype</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
-
-<span class="param-type">Object</span>
+<span class="param-type"><a href="Type.html">Type</a></span>
 
 
             
@@ -2374,42 +2294,7 @@
             
             <td class="description last">
                 
-                    
-                    
-                        
-                    
-                
-                <p>Runtime message or plain object to encode</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>writer</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Writer.html">Writer</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Writer to encode to</p></td>
+                <p>Message type</p></td>
         </tr>
 	
 	
@@ -2419,57 +2304,6 @@
     
     
 <dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>generate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#GenerateEncoder">GenerateEncoder</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Generates a type specific encoder</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
     
         
     
@@ -2521,11 +2355,11 @@
             
             <td class="type">
             
-                        <a href="Writer.html">Writer</a>
+                        <a href="global.html#Codegen">Codegen</a>
                         
                     
             </td>
-            <td class="description last">writer</td>
+            <td class="description last">Codegen instance</td>
         </tr>
     
     </tbody>
@@ -3573,7 +3407,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js#L608">line 608</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js#L651">line 651</a>
         </div>
         
     </div>
@@ -3891,14 +3725,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="verify">
+        <h4 class="name" id="verifier">
             
-            verify<span class="signature">(message)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
+            verifier<span class="signature">(mtype)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verify.js">verify.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verify.js#L95">line 95</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js">verifier.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js#L72">line 72</a>
         </div>
         
     </div>
@@ -3909,15 +3743,12 @@
     
     
     <div class="description">
-        <p>General purpose message verifier.</p>
+        <p>Generates a verifier specific to the specified message type.</p>
     </div>
     
 
     
     
-    
-        <h5>This:</h5>
-        <ul><li>{<a href="Type.html">Type</a>}</li></ul>
     
     
     
@@ -3943,16 +3774,13 @@
 	
         <tr>
             
-                <td class="name"><code>message</code></td>
+                <td class="name"><code>mtype</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
-
-<span class="param-type">Object</span>
+<span class="param-type"><a href="Type.html">Type</a></span>
 
 
             
@@ -3962,7 +3790,7 @@
             
             <td class="description last">
                 
-                <p>Runtime message or plain object to verify</p></td>
+                <p>Message type</p></td>
         </tr>
 	
 	
@@ -3972,57 +3800,6 @@
     
     
 <dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>generate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#GenerateVerifier">GenerateVerifier</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Generates a type specific verifier</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
     
         
     
@@ -4074,11 +3851,11 @@
             
             <td class="type">
             
-                        string
+                        <a href="global.html#Codegen">Codegen</a>
                         
                     
             </td>
-            <td class="description last"><code>null</code> if valid, otherwise the reason why it is not</td>
+            <td class="description last">Codegen instance</td>
         </tr>
     
     </tbody>
@@ -4360,7 +4137,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js">util/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js#L7">line 7</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js">util/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js#L9">line 9</a>
         </div>
         
     </div>
@@ -4521,441 +4298,6 @@
                     
             </td>
             <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="GenerateDecoder">
-            
-            GenerateDecoder<span class="signature">(mtype)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decode.js">decode.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/decode.js#L82">line 82</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Generates a decoder specific to the specified message type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>mtype</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Message type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="global.html#Codegen">Codegen</a>
-                        
-                    
-            </td>
-            <td class="description last">Codegen instance</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="GenerateEncoder">
-            
-            GenerateEncoder<span class="signature">(mtype)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encode.js">encode.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/encode.js#L107">line 107</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Generates an encoder specific to the specified message type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>mtype</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Message type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="global.html#Codegen">Codegen</a>
-                        
-                    
-            </td>
-            <td class="description last">Codegen instance</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="GenerateVerifier">
-            
-            GenerateVerifier<span class="signature">(mtype)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verify.js">verify.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verify.js#L226">line 226</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Generates a verifier specific to the specified message type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>mtype</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Message type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="global.html#Codegen">Codegen</a>
-                        
-                    
-            </td>
-            <td class="description last">Codegen instance</td>
         </tr>
     
     </tbody>
@@ -5931,7 +5273,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L155">line 155</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L158">line 158</a>
         </div>
         
     </div>
@@ -6113,7 +5455,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L145">line 145</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L148">line 148</a>
         </div>
         
     </div>

@@ -145,6 +145,8 @@
             
                 <li data-name="util.fetch"><a href="util.html#.fetch">fetch</a></li>
             
+                <li data-name="util.inquire"><a href="util.html#.inquire">inquire</a></li>
+            
                 <li data-name="util.isInteger"><a href="util.html#.isInteger">isInteger</a></li>
             
                 <li data-name="util.isObject"><a href="util.html#.isObject">isObject</a></li>
@@ -859,6 +861,10 @@
             
                 <li data-name="Namespace#lookup"><a href="Namespace.html#lookup">lookup</a></li>
             
+                <li data-name="Namespace#lookup(2)"><a href="Namespace.html#lookup2">lookup</a></li>
+            
+                <li data-name="Namespace#lookupEnum"><a href="Namespace.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Namespace#lookupService"><a href="Namespace.html#lookupService">lookupService</a></li>
             
                 <li data-name="Namespace#lookupType"><a href="Namespace.html#lookupType">lookupType</a></li>
@@ -1129,6 +1135,10 @@
             
                 <li data-name="Root#lookup"><a href="Root.html#lookup">lookup</a></li>
             
+                <li data-name="Root#lookup(2)"><a href="Root.html#lookup2">lookup</a></li>
+            
+                <li data-name="Root#lookupEnum"><a href="Root.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Root#lookupService"><a href="Root.html#lookupService">lookupService</a></li>
             
                 <li data-name="Root#lookupType"><a href="Root.html#lookupType">lookupType</a></li>
@@ -1247,6 +1257,10 @@
             
                 <li data-name="Service#lookup"><a href="Service.html#lookup">lookup</a></li>
             
+                <li data-name="Service#lookup(2)"><a href="Service.html#lookup2">lookup</a></li>
+            
+                <li data-name="Service#lookupEnum"><a href="Service.html#lookupEnum">lookupEnum</a></li>
+            
                 <li data-name="Service#lookupService"><a href="Service.html#lookupService">lookupService</a></li>
             
                 <li data-name="Service#lookupType"><a href="Service.html#lookupType">lookupType</a></li>
@@ -1351,6 +1365,10 @@
                 <li data-name="Type#getOption"><a href="Type.html#getOption">getOption</a></li>
             
                 <li data-name="Type#lookup"><a href="Type.html#lookup">lookup</a></li>
+            
+                <li data-name="Type#lookup(2)"><a href="Type.html#lookup2">lookup</a></li>
+            
+                <li data-name="Type#lookupEnum"><a href="Type.html#lookupEnum">lookupEnum</a></li>
             
                 <li data-name="Type#lookupService"><a href="Type.html#lookupService">lookupService</a></li>
             
@@ -1629,7 +1647,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".Buffer">util.Buffer <span class="type-signature type">{ * }</span></h4>
+        <h4 class="name" id=".Buffer">util.Buffer <span class="type-signature ">nullable</span><span class="type-signature type">{ function }</span></h4>
     </div>
     
     
@@ -1637,7 +1655,7 @@
 <dd>
     
     <div class="description">
-        <p>Optional buffer class to use.<br>If you assign any compatible buffer implementation to this property, the library will use it.</p>
+        <p>Node's Buffer class if available.</p>
     </div>
     
     
@@ -1854,7 +1872,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".Long">util.Long <span class="type-signature type">{ * }</span></h4>
+        <h4 class="name" id=".Long">util.Long <span class="type-signature ">nullable</span><span class="type-signature type">{ function }</span></h4>
     </div>
     
     
@@ -1862,7 +1880,7 @@
 <dd>
     
     <div class="description">
-        <p>Optional Long class to use.<br>If you assign any compatible long implementation to this property, the library will use it.</p>
+        <p>Long.js's Long class if available.</p>
     </div>
     
     
@@ -2120,7 +2138,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L75">line 75</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L80">line 80</a>
         </div>
         
     </div>
@@ -2651,7 +2669,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js">util/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js#L23">line 23</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js">util/fetch/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/fetch/index.js#L25">line 25</a>
         </div>
         
     </div>
@@ -2827,6 +2845,151 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".inquire">
+            
+            util.inquire<span class="signature">(moduleName)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/inquire/index.js">util/inquire/index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/inquire/index.js#L10">line 10</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Requires a module only if available.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>moduleName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Module to require</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Object
+                        
+                    
+            </td>
+            <td class="description last">Required module if available and not empty, otherwise <code>null</code></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".isInteger">
             
             util.isInteger<span class="signature">(value)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
@@ -2834,7 +2997,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L44">line 44</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L36">line 36</a>
         </div>
         
     </div>
@@ -2979,7 +3142,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L62">line 62</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L54">line 54</a>
         </div>
         
     </div>
@@ -3124,7 +3287,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L53">line 53</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L45">line 45</a>
         </div>
         
     </div>
@@ -3269,7 +3432,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L106">line 106</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L111">line 111</a>
         </div>
         
     </div>
@@ -3414,7 +3577,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L83">line 83</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L75">line 75</a>
         </div>
         
     </div>
@@ -3609,7 +3772,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L115">line 115</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L107">line 107</a>
         </div>
         
     </div>
@@ -3806,7 +3969,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L98">line 98</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L90">line 90</a>
         </div>
         
     </div>
@@ -3989,7 +4152,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L71">line 71</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L63">line 63</a>
         </div>
         
     </div>
@@ -4137,7 +4300,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L51">line 51</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L56">line 56</a>
         </div>
         
     </div>
@@ -4361,7 +4524,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L115">line 115</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L120">line 120</a>
         </div>
         
     </div>
@@ -4745,7 +4908,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L141">line 141</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L133">line 133</a>
         </div>
         
     </div>
@@ -4936,7 +5099,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L128">line 128</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js">util/runtime.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util/runtime.js#L120">line 120</a>
         </div>
         
     </div>
@@ -5104,7 +5267,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L66">line 66</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L71">line 71</a>
         </div>
         
     </div>
@@ -5249,7 +5412,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L22">line 22</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L27">line 27</a>
         </div>
         
     </div>
@@ -5394,7 +5557,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L97">line 97</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L102">line 102</a>
         </div>
         
     </div>
@@ -5539,7 +5702,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L86">line 86</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js">util.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js#L91">line 91</a>
         </div>
         
     </div>
