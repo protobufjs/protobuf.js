@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Mon, 19 Dec 2016 12:17:04 UTC
+// Generated Mon, 19 Dec 2016 22:48:40 UTC
 declare module "protobufjs" {
 
     /**
@@ -140,7 +140,7 @@ declare module "protobufjs" {
         readonly valuesById: { [k: number]: string };
 
         /**
-         * Gets this enum's values by id. This is an alias of {@link Enum#valuesById}'s getter for use within non-ES5 environments.
+         * Gets this enum's values by id. This is an alias of {@link Enum#valuesById|valuesById}'s getter for use within non-ES5 environments.
          * @name Enum#getValuesById
          * @function
          * @returns {Object.<number,string>}
@@ -316,7 +316,7 @@ declare module "protobufjs" {
         readonly packed: boolean;
 
         /**
-         * Determines whether this field is packed. This is an alias of {@link Field#packed}'s getter for use within non-ES5 environments.
+         * Determines whether this field is packed. This is an alias of {@link Field#packed|packed}'s getter for use within non-ES5 environments.
          * @name Field#isPacked
          * @function
          * @returns {boolean}
@@ -408,6 +408,8 @@ declare module "protobufjs" {
 
     /**
      * Named roots.
+     * This is where pbjs stores generated structures (the option `-r, --root` specifies a name).
+     * Can also be used manually to make roots available accross modules.
      * @name roots
      * @type {Object.<string,Root>}
      */
@@ -728,7 +730,7 @@ declare module "protobufjs" {
 
         /**
          * Gets the values of the nested {@link Enum|enum} of the specified name.
-         * This methods differs from {@link Namespace#get} in that it returns an enum's values directly and throws instead of returning `null`.
+         * This methods differs from {@link Namespace#get|get} in that it returns an enum's values directly and throws instead of returning `null`.
          * @param {string} name Nested enum name
          * @returns {Object.<string,number>} Enum values
          * @throws {Error} If there is no such enum
@@ -789,7 +791,7 @@ declare module "protobufjs" {
 
         /**
          * Looks up the {@link Type|type} at the specified path, relative to this namespace.
-         * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+         * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
          * @param {string|string[]} path Path to look up
          * @returns {Type} Looked up type
          * @throws {Error} If `path` does not point to a type
@@ -798,7 +800,7 @@ declare module "protobufjs" {
 
         /**
          * Looks up the {@link Service|service} at the specified path, relative to this namespace.
-         * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+         * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
          * @param {string|string[]} path Path to look up
          * @returns {Service} Looked up service
          * @throws {Error} If `path` does not point to a service
@@ -807,7 +809,7 @@ declare module "protobufjs" {
 
         /**
          * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
-         * Besides its signature, this methods differs from {@link Namespace#lookup} in that it returns the enum's values directly and throws instead of returning `null`.
+         * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it returns the enum's values directly and throws instead of returning `null`.
          * @param {string|string[]} path Path to look up
          * @returns {Object.<string,number>} Enum values
          * @throws {Error} If `path` does not point to an enum
@@ -1295,10 +1297,11 @@ declare module "protobufjs" {
         /**
          * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
          * @param {string|string[]} filename Names of one or multiple files to load
+         * @param {ParseOptions} [options] Parse options
          * @returns {Root} Root namespace
          * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
          */
-        loadSync(filename: (string|string[])): Root;
+        loadSync(filename: (string|string[]), options?: ParseOptions): Root;
     }
 
     /**
@@ -1396,7 +1399,7 @@ declare module "protobufjs" {
 
         /**
          * Creates a runtime service using the specified rpc implementation.
-         * @param {function(Method, Uint8Array, function)} rpcImpl RPC implementation ({@link RPCImpl|see})
+         * @param {function(Method, Uint8Array, function)} rpcImpl {@link RPCImpl|RPC implementation}
          * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
          * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
          * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.
@@ -1573,7 +1576,7 @@ declare module "protobufjs" {
         create(properties?: (Object|any)): Message;
 
         /**
-         * Sets up {@link Type#encode}, {@link Type#decode} and {@link Type#verify}.
+         * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
          * @returns {Type} `this`
          */
         setup(): Type;
@@ -2169,8 +2172,7 @@ declare module "protobufjs" {
          * @param {number|Long} a First value
          * @param {number|Long} b Second value
          * @returns {boolean} `true` if not equal
-         * @deprecated
-         * @see Use {@link util.longNe} instead
+         * @deprecated Use {@link util.longNe|longNe} instead
          */
         function longNeq(a: (number|Long), b: (number|Long)): boolean;
 
@@ -2302,6 +2304,13 @@ declare module "protobufjs" {
          * @returns {string} Converted string
          */
         function lcFirst(str: string): string;
+
+        /**
+         * Tests if the first character of a string is upper case.
+         * @param {string} str String to test
+         * @returns {boolean} `true` if the first character is upper case, otherwise `false`
+         */
+        function isUcFirst(str: string): boolean;
 
         /**
          * Creates a new buffer of whatever type supported by the environment.
@@ -2495,7 +2504,7 @@ declare module "protobufjs" {
 
         /**
          * Forks this writer's state by pushing it to a stack.
-         * Calling {@link Writer#reset} or {@link Writer#ldelim} resets the writer to the previous state.
+         * Calling {@link Writer#reset|reset} or {@link Writer#ldelim|ldelim} resets the writer to the previous state.
          * @returns {Writer} `this`
          */
         fork(): Writer;

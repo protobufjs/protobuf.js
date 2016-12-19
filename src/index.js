@@ -68,6 +68,8 @@ protobuf.loadSync = loadSync;
 
 /**
  * Named roots.
+ * This is where pbjs stores generated structures (the option `-r, --root` specifies a name).
+ * Can also be used manually to make roots available accross modules.
  * @name roots
  * @type {Object.<string,Root>}
  */

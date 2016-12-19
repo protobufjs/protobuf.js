@@ -26,9 +26,10 @@ exports.main = function(args, callback) {
             root   : "r"
         },
         string: [ "target", "out", "path", "wrap", "root" ],
-        boolean: [ "keep-case", "encode", "decode", "verify", "delimited" ],
+        boolean: [ "keep-case", "create", "encode", "decode", "verify", "delimited" ],
         default: {
             target: "json",
+            create: true,
             encode: true,
             decode: true,
             verify: true,
@@ -76,6 +77,7 @@ exports.main = function(args, callback) {
                 "",
                 "  Static targets only:",
                 "",
+                "  --no-create     Does not generate create functions used for runtime compatibility.",
                 "  --no-encode     Does not generate encode functions.",
                 "  --no-decode     Does not generate decode functions.",
                 "  --no-verify     Does not generate verify functions.",
@@ -119,28 +121,31 @@ exports.main = function(args, callback) {
         "keepCase": argv["keep-case"] || false
     };
 
-    root.load(files, parseOptions, function(err) {
+    var root;
+    try {
+        root = root.loadSync(files, parseOptions);
+    } catch (err) {
+        if (callback) {
+            callback(err);
+            return;
+        } else
+            throw err;
+    }
+
+    target(root, argv, function(err, output) {
         if (err) {
             if (callback)
                 return callback(err);
             else
                 throw err;
         }
-        target(root, argv, function(err, output) {
-            if (err) {
-                if (callback)
-                    return callback(err);
-                else
-                    throw err;
-            }
-            if (output !== "") {
-                if (argv.out)
-                    fs.writeFileSync(argv.out, output, { encoding: "utf8" });
-                else
-                    process.stdout.write(output, "utf8");
-            }
-            if (callback)
-                callback(null);
-        });
+        if (output !== "") {
+            if (argv.out)
+                fs.writeFileSync(argv.out, output, { encoding: "utf8" });
+            else
+                process.stdout.write(output, "utf8");
+        }
+        if (callback)
+            return callback(null);
     });
 };

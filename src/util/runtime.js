@@ -56,7 +56,7 @@ util.isString = function isString(value) {
  * @returns {boolean} `true` if the value is a non-null object
  */
 util.isObject = function isObject(value) {
-    return Boolean(value && typeof value === "object");
+    return value && typeof value === "object";
 };
 
 /**
@@ -88,8 +88,7 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @param {number|Long} a First value
  * @param {number|Long} b Second value
  * @returns {boolean} `true` if not equal
- * @deprecated
- * @see Use {@link util.longNe} instead
+ * @deprecated Use {@link util.longNe|longNe} instead
  */
 util.longNeq = function longNeq(a, b) {
     return typeof a === "number"

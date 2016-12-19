@@ -441,7 +441,7 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack.
- * Calling {@link Writer#reset} or {@link Writer#ldelim} resets the writer to the previous state.
+ * Calling {@link Writer#reset|reset} or {@link Writer#ldelim|ldelim} resets the writer to the previous state.
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {

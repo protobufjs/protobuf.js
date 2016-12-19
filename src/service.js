@@ -107,7 +107,7 @@ ServicePrototype.get = function get(name) {
 /**
  * @override
  */
-ServicePrototype.resolveAll = function resolve() {
+ServicePrototype.resolveAll = function resolveAll() {
     var methods = this.getMethodsArray();
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
@@ -166,7 +166,7 @@ ServicePrototype.remove = function remove(object) {
 
 /**
  * Creates a runtime service using the specified rpc implementation.
- * @param {function(Method, Uint8Array, function)} rpcImpl RPC implementation ({@link RPCImpl|see})
+ * @param {function(Method, Uint8Array, function)} rpcImpl {@link RPCImpl|RPC implementation}
  * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.

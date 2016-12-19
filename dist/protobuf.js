@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 19 Dec 2016 12:16:51 UTC
+ * Compiled Mon, 19 Dec 2016 22:48:33 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1381,7 +1381,7 @@ util.props(EnumPrototype, {
     }
 
     /**
-     * Gets this enum's values by id. This is an alias of {@link Enum#valuesById}'s getter for use within non-ES5 environments.
+     * Gets this enum's values by id. This is an alias of {@link Enum#valuesById|valuesById}'s getter for use within non-ES5 environments.
      * @name Enum#getValuesById
      * @function
      * @returns {Object.<number,string>}
@@ -1642,7 +1642,7 @@ util.props(FieldPrototype, {
     }
 
     /**
-     * Determines whether this field is packed. This is an alias of {@link Field#packed}'s getter for use within non-ES5 environments.
+     * Determines whether this field is packed. This is an alias of {@link Field#packed|packed}'s getter for use within non-ES5 environments.
      * @name Field#isPacked
      * @function
      * @returns {boolean}
@@ -2204,10 +2204,20 @@ function Namespace(name, options) {
      * @private
      */
     this._nestedArray = null;
+
+    /**
+     * Properties to remove when cache is cleared.
+     * @type {Array.<string>}
+     * @private
+     */
+    this._clearProperties = [];
 }
 
 function clearCache(namespace) {
     namespace._nestedArray = null;
+    for (var i = 0; i < namespace._clearProperties.length; ++i)
+        delete namespace[namespace._clearProperties[i]];
+    namespace._clearProperties = [];
     return namespace;
 }
 
@@ -2315,7 +2325,7 @@ NamespacePrototype.get = function get(name) {
 
 /**
  * Gets the values of the nested {@link Enum|enum} of the specified name.
- * This methods differs from {@link Namespace#get} in that it returns an enum's values directly and throws instead of returning `null`.
+ * This methods differs from {@link Namespace#get|get} in that it returns an enum's values directly and throws instead of returning `null`.
  * @param {string} name Nested enum name
  * @returns {Object.<string,number>} Enum values
  * @throws {Error} If there is no such enum
@@ -2423,17 +2433,46 @@ NamespacePrototype.define = function define(path, json) {
 };
 
 /**
+ * @override
+ */
+NamespacePrototype.resolve = function resolve() {
+    /* istanbul ignore next */
+    if (!Type)
+        Type = require(32);
+    /* istanbul ignore next */
+    if (!Service)
+        Type = require(30);
+
+    // Add uppercased (and thus conflict-free) nested types, services and enums as properties
+    // of the type just like static code does. This allows using a .d.ts generated for a static
+    // module with reflection-based solutions where the condition is met.
+    var nested = this.getNestedArray();
+    for (var i = 0; i < nested.length; ++i)
+        if (/^[A-Z]/.test(nested[i].name)) {
+            if (nested[i] instanceof Type || nested[i] instanceof Service)
+                this[nested[i].name] = nested[i];
+            else if (nested[i] instanceof Enum)
+                this[nested[i].name] = nested[i].values;
+            else
+                continue;
+            this._clearProperties.push(nested[i].name);
+        }
+
+    return ReflectionObject.prototype.resolve.call(this);
+};
+
+/**
  * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree.
  * @returns {Namespace} `this`
  */
-NamespacePrototype.resolveAll = function resolve() {
+NamespacePrototype.resolveAll = function resolveAll() {
     var nested = this.getNestedArray(), i = 0;
     while (i < nested.length)
         if (nested[i] instanceof Namespace)
             nested[i++].resolveAll();
         else
             nested[i++].resolve();
-    return ReflectionObject.prototype.resolve.call(this);
+    return NamespacePrototype.resolve.call(this);
 };
 
 /**
@@ -2478,7 +2517,7 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
 
 /**
  * Looks up the {@link Type|type} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
  * @returns {Type} Looked up type
  * @throws {Error} If `path` does not point to a type
@@ -2497,7 +2536,7 @@ NamespacePrototype.lookupType = function lookupType(path) {
 
 /**
  * Looks up the {@link Service|service} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
  * @returns {Service} Looked up service
  * @throws {Error} If `path` does not point to a service
@@ -2516,7 +2555,7 @@ NamespacePrototype.lookupService = function lookupService(path) {
 
 /**
  * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it returns the enum's values directly and throws instead of returning `null`.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it returns the enum's values directly and throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
  * @returns {Object.<string,number>} Enum values
  * @throws {Error} If `path` does not point to an enum
@@ -3988,7 +4027,7 @@ ReaderPrototype.string = function read_string() {
  * @returns {Reader} `this`
  */
 ReaderPrototype.skip = function skip(length) {
-    if (typeof length === 'number') {
+    if (typeof length === "number") {
         /* istanbul ignore next */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
@@ -4308,11 +4347,12 @@ RootPrototype.load = function load(filename, options, callback) {
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
  * @param {string|string[]} filename Names of one or multiple files to load
+ * @param {ParseOptions} [options] Parse options
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */
-RootPrototype.loadSync = function loadSync(filename) {
-    return this.load(filename, SYNC);
+RootPrototype.loadSync = function loadSync(filename, options) {
+    return this.load(filename, options, SYNC);
 };
 
 /**
@@ -4552,7 +4592,7 @@ ServicePrototype.get = function get(name) {
 /**
  * @override
  */
-ServicePrototype.resolveAll = function resolve() {
+ServicePrototype.resolveAll = function resolveAll() {
     var methods = this.getMethodsArray();
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
@@ -4611,7 +4651,7 @@ ServicePrototype.remove = function remove(object) {
 
 /**
  * Creates a runtime service using the specified rpc implementation.
- * @param {function(Method, Uint8Array, function)} rpcImpl RPC implementation ({@link RPCImpl|see})
+ * @param {function(Method, Uint8Array, function)} rpcImpl {@link RPCImpl|RPC implementation}
  * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
  * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
  * @returns {rpc.Service} Runtime RPC service. Useful where requests and/or responses are streamed.
@@ -5126,7 +5166,7 @@ TypePrototype.toJSON = function toJSON() {
 /**
  * @override
  */
-TypePrototype.resolveAll = function resolve() {
+TypePrototype.resolveAll = function resolveAll() {
     var fields = this.getFieldsArray(), i = 0;
     while (i < fields.length)
         fields[i++].resolve();
@@ -5205,7 +5245,7 @@ TypePrototype.create = function create(properties) {
 };
 
 /**
- * Sets up {@link Type#encode}, {@link Type#decode} and {@link Type#verify}.
+ * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
  * @returns {Type} `this`
  */
 TypePrototype.setup = function setup() {
@@ -5592,6 +5632,15 @@ util.lcFirst = function lcFirst(str) {
 };
 
 /**
+ * Tests if the first character of a string is upper case.
+ * @param {string} str String to test
+ * @returns {boolean} `true` if the first character is upper case, otherwise `false`
+ */
+util.isUcFirst = function isUcFirst(str) {
+    return /^A-Z/.test(str);
+};
+
+/**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
  * @returns {Uint8Array} Buffer
@@ -5864,7 +5913,7 @@ util.isString = function isString(value) {
  * @returns {boolean} `true` if the value is a non-null object
  */
 util.isObject = function isObject(value) {
-    return Boolean(value && typeof value === "object");
+    return value && typeof value === "object";
 };
 
 /**
@@ -5896,8 +5945,7 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @param {number|Long} a First value
  * @param {number|Long} b Second value
  * @returns {boolean} `true` if not equal
- * @deprecated
- * @see Use {@link util.longNe} instead
+ * @deprecated Use {@link util.longNe|longNe} instead
  */
 util.longNeq = function longNeq(a, b) {
     return typeof a === "number"
@@ -6541,7 +6589,7 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack.
- * Calling {@link Writer#reset} or {@link Writer#ldelim} resets the writer to the previous state.
+ * Calling {@link Writer#reset|reset} or {@link Writer#ldelim|ldelim} resets the writer to the previous state.
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {
@@ -6754,6 +6802,8 @@ protobuf.loadSync = loadSync;
 
 /**
  * Named roots.
+ * This is where pbjs stores generated structures (the option `-r, --root` specifies a name).
+ * Can also be used manually to make roots available accross modules.
  * @name roots
  * @type {Object.<string,Root>}
  */

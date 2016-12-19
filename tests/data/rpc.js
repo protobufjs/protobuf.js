@@ -102,6 +102,15 @@ $root.MyRequest = (function() {
     $prototype["path"] = "";
 
     /**
+     * Creates a new MyRequest instance using the specified properties.
+     * @param {Object} [properties] Properties to set
+     * @returns {MyRequest} MyRequest instance
+     */
+    MyRequest.create = function create(properties) {
+        return new MyRequest(properties);
+    };
+
+    /**
      * Encodes the specified MyRequest.
      * @function
      * @param {MyRequest|Object} message MyRequest or plain object to encode
@@ -222,6 +231,15 @@ $root.MyResponse = (function() {
      * @type {number}
      */
     $prototype["status"] = 0;
+
+    /**
+     * Creates a new MyResponse instance using the specified properties.
+     * @param {Object} [properties] Properties to set
+     * @returns {MyResponse} MyResponse instance
+     */
+    MyResponse.create = function create(properties) {
+        return new MyResponse(properties);
+    };
 
     /**
      * Encodes the specified MyResponse.

@@ -113,6 +113,15 @@ util.lcFirst = function lcFirst(str) {
 };
 
 /**
+ * Tests if the first character of a string is upper case.
+ * @param {string} str String to test
+ * @returns {boolean} `true` if the first character is upper case, otherwise `false`
+ */
+util.isUcFirst = function isUcFirst(str) {
+    return /^A-Z/.test(str);
+};
+
+/**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
  * @returns {Uint8Array} Buffer

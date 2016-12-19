@@ -55,10 +55,20 @@ function Namespace(name, options) {
      * @private
      */
     this._nestedArray = null;
+
+    /**
+     * Properties to remove when cache is cleared.
+     * @type {Array.<string>}
+     * @private
+     */
+    this._clearProperties = [];
 }
 
 function clearCache(namespace) {
     namespace._nestedArray = null;
+    for (var i = 0; i < namespace._clearProperties.length; ++i)
+        delete namespace[namespace._clearProperties[i]];
+    namespace._clearProperties = [];
     return namespace;
 }
 
@@ -166,7 +176,7 @@ NamespacePrototype.get = function get(name) {
 
 /**
  * Gets the values of the nested {@link Enum|enum} of the specified name.
- * This methods differs from {@link Namespace#get} in that it returns an enum's values directly and throws instead of returning `null`.
+ * This methods differs from {@link Namespace#get|get} in that it returns an enum's values directly and throws instead of returning `null`.
  * @param {string} name Nested enum name
  * @returns {Object.<string,number>} Enum values
  * @throws {Error} If there is no such enum
@@ -274,17 +284,46 @@ NamespacePrototype.define = function define(path, json) {
 };
 
 /**
+ * @override
+ */
+NamespacePrototype.resolve = function resolve() {
+    /* istanbul ignore next */
+    if (!Type)
+        Type = require("./type");
+    /* istanbul ignore next */
+    if (!Service)
+        Type = require("./service");
+
+    // Add uppercased (and thus conflict-free) nested types, services and enums as properties
+    // of the type just like static code does. This allows using a .d.ts generated for a static
+    // module with reflection-based solutions where the condition is met.
+    var nested = this.getNestedArray();
+    for (var i = 0; i < nested.length; ++i)
+        if (/^[A-Z]/.test(nested[i].name)) {
+            if (nested[i] instanceof Type || nested[i] instanceof Service)
+                this[nested[i].name] = nested[i];
+            else if (nested[i] instanceof Enum)
+                this[nested[i].name] = nested[i].values;
+            else
+                continue;
+            this._clearProperties.push(nested[i].name);
+        }
+
+    return ReflectionObject.prototype.resolve.call(this);
+};
+
+/**
  * Resolves this namespace's and all its nested objects' type references. Useful to validate a reflection tree.
  * @returns {Namespace} `this`
  */
-NamespacePrototype.resolveAll = function resolve() {
+NamespacePrototype.resolveAll = function resolveAll() {
     var nested = this.getNestedArray(), i = 0;
     while (i < nested.length)
         if (nested[i] instanceof Namespace)
             nested[i++].resolveAll();
         else
             nested[i++].resolve();
-    return ReflectionObject.prototype.resolve.call(this);
+    return NamespacePrototype.resolve.call(this);
 };
 
 /**
@@ -329,7 +368,7 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
 
 /**
  * Looks up the {@link Type|type} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
  * @returns {Type} Looked up type
  * @throws {Error} If `path` does not point to a type
@@ -348,7 +387,7 @@ NamespacePrototype.lookupType = function lookupType(path) {
 
 /**
  * Looks up the {@link Service|service} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
  * @returns {Service} Looked up service
  * @throws {Error} If `path` does not point to a service
@@ -367,7 +406,7 @@ NamespacePrototype.lookupService = function lookupService(path) {
 
 /**
  * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it returns the enum's values directly and throws instead of returning `null`.
+ * Besides its signature, this methods differs from {@link Namespace#lookup|lookup} in that it returns the enum's values directly and throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
  * @returns {Object.<string,number>} Enum values
  * @throws {Error} If `path` does not point to an enum

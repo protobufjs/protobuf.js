@@ -270,10 +270,23 @@ function buildType(ref, type) {
         --indent;
         push("});");
     });
+
+    if (config.create) {
+        push("");
+        pushComment([
+            "Creates a new " + type.name + " instance using the specified properties.",
+            "@param {Object} [properties] Properties to set",
+            "@returns {" + fullName + "} " + type.name + " instance"
+        ]);
+        push(name(type.name) + ".create = function create(properties) {");
+            ++indent;
+            push("return new " + name(type.name) + "(properties);");
+            --indent;
+        push("};");
+    }
+
     
     if (config.encode) {
-
-        // #encode
         push("");
         pushComment([
             "Encodes the specified " + type.name + ".",
@@ -288,8 +301,6 @@ function buildType(ref, type) {
         });
 
         if (config.delimited) {
-
-            // #encodeDelimited
             push("");
             pushComment([
                 "Encodes the specified " + type.name + ", length delimited.",
@@ -308,8 +319,6 @@ function buildType(ref, type) {
     }
 
     if (config.decode) {
-
-        // #decode
         push("");
         pushComment([
             "Decodes a " + type.name + " from the specified reader or buffer.",
@@ -324,8 +333,6 @@ function buildType(ref, type) {
         });
 
         if (config.delimited) {
-
-            // #decodeDelimited
             push("");
             pushComment([
                 "Decodes a " + type.name + " from the specified reader or buffer, length delimited.",
@@ -343,8 +350,6 @@ function buildType(ref, type) {
     }
 
     if (config.verify) {
-
-        // #verify
         push("");
         pushComment([
             "Verifies a " + type.name + ".",

@@ -257,7 +257,7 @@ TypePrototype.toJSON = function toJSON() {
 /**
  * @override
  */
-TypePrototype.resolveAll = function resolve() {
+TypePrototype.resolveAll = function resolveAll() {
     var fields = this.getFieldsArray(), i = 0;
     while (i < fields.length)
         fields[i++].resolve();
@@ -336,7 +336,7 @@ TypePrototype.create = function create(properties) {
 };
 
 /**
- * Sets up {@link Type#encode}, {@link Type#decode} and {@link Type#verify}.
+ * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
  * @returns {Type} `this`
  */
 TypePrototype.setup = function setup() {

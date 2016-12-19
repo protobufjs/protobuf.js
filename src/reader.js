@@ -419,7 +419,7 @@ ReaderPrototype.string = function read_string() {
  * @returns {Reader} `this`
  */
 ReaderPrototype.skip = function skip(length) {
-    if (typeof length === 'number') {
+    if (typeof length === "number") {
         /* istanbul ignore next */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);

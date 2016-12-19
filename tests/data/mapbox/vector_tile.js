@@ -1,6 +1,6 @@
 "use strict"; // eslint-disable-line strict
 
-var $protobuf = require("../../../runtime");
+var $protobuf = require("../../runtime");
 
 // Lazily resolved type references
 var $lazyTypes = [];
@@ -44,6 +44,15 @@ $root.vector_tile = (function() {
          * @type {Array.<vector_tile.Tile.Layer>}
          */
         $prototype["layers"] = $protobuf.util.emptyArray;
+
+        /**
+         * Creates a new Tile instance using the specified properties.
+         * @param {Object} [properties] Properties to set
+         * @returns {vector_tile.Tile} Tile instance
+         */
+        Tile.create = function create(properties) {
+            return new Tile(properties);
+        };
 
         /**
          * Encodes the specified Tile.
@@ -225,6 +234,15 @@ $root.vector_tile = (function() {
              * @type {boolean}
              */
             $prototype["boolValue"] = false;
+
+            /**
+             * Creates a new Value instance using the specified properties.
+             * @param {Object} [properties] Properties to set
+             * @returns {vector_tile.Tile.Value} Value instance
+             */
+            Value.create = function create(properties) {
+                return new Value(properties);
+            };
 
             /**
              * Encodes the specified Value.
@@ -422,6 +440,15 @@ $root.vector_tile = (function() {
              * @type {Array.<number>}
              */
             $prototype["geometry"] = $protobuf.util.emptyArray;
+
+            /**
+             * Creates a new Feature instance using the specified properties.
+             * @param {Object} [properties] Properties to set
+             * @returns {vector_tile.Tile.Feature} Feature instance
+             */
+            Feature.create = function create(properties) {
+                return new Feature(properties);
+            };
 
             /**
              * Encodes the specified Feature.
@@ -641,6 +668,15 @@ $root.vector_tile = (function() {
              * @type {number}
              */
             $prototype["extent"] = 4096;
+
+            /**
+             * Creates a new Layer instance using the specified properties.
+             * @param {Object} [properties] Properties to set
+             * @returns {vector_tile.Tile.Layer} Layer instance
+             */
+            Layer.create = function create(properties) {
+                return new Layer(properties);
+            };
 
             /**
              * Encodes the specified Layer.

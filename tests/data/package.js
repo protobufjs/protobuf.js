@@ -141,6 +141,15 @@ $root.Package = (function() {
     $prototype["types"] = "";
 
     /**
+     * Creates a new Package instance using the specified properties.
+     * @param {Object} [properties] Properties to set
+     * @returns {Package} Package instance
+     */
+    Package.create = function create(properties) {
+        return new Package(properties);
+    };
+
+    /**
      * Encodes the specified Package.
      * @function
      * @param {Package|Object} message Package or plain object to encode
@@ -492,6 +501,15 @@ $root.Package = (function() {
          * @type {string}
          */
         $prototype["url"] = "";
+
+        /**
+         * Creates a new Repository instance using the specified properties.
+         * @param {Object} [properties] Properties to set
+         * @returns {Package.Repository} Repository instance
+         */
+        Repository.create = function create(properties) {
+            return new Repository(properties);
+        };
 
         /**
          * Encodes the specified Repository.

@@ -20,7 +20,7 @@ var protobuf  = require(".."),
 // To experience the impact by yourself, increase string lengths within bench.json.
 
 var root = protobuf.loadSync(require.resolve("./bench.proto"));
-var Test = root.lookup("Test");
+var Test = root.resolveAll().lookup("Test");
 
 // protobuf.util.codegen.verbose = true;
 

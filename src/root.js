@@ -215,11 +215,12 @@ RootPrototype.load = function load(filename, options, callback) {
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
  * @param {string|string[]} filename Names of one or multiple files to load
+ * @param {ParseOptions} [options] Parse options
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */
-RootPrototype.loadSync = function loadSync(filename) {
-    return this.load(filename, SYNC);
+RootPrototype.loadSync = function loadSync(filename, options) {
+    return this.load(filename, options, SYNC);
 };
 
 /**

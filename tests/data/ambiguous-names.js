@@ -36,6 +36,15 @@ $root.A = (function() {
     $prototype["whatever"] = "";
 
     /**
+     * Creates a new A instance using the specified properties.
+     * @param {Object} [properties] Properties to set
+     * @returns {A} A instance
+     */
+    A.create = function create(properties) {
+        return new A(properties);
+    };
+
+    /**
      * Encodes the specified A.
      * @function
      * @param {A|Object} message A or plain object to encode
@@ -156,6 +165,15 @@ $root.B = (function() {
      * @type {A}
      */
     $prototype["A"] = null;
+
+    /**
+     * Creates a new B instance using the specified properties.
+     * @param {Object} [properties] Properties to set
+     * @returns {B} B instance
+     */
+    B.create = function create(properties) {
+        return new B(properties);
+    };
 
     /**
      * Encodes the specified B.

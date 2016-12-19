@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 19 Dec 2016 12:16:51 UTC
+ * Compiled Mon, 19 Dec 2016 22:48:33 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -868,7 +868,7 @@ ReaderPrototype.string = function read_string() {
  * @returns {Reader} `this`
  */
 ReaderPrototype.skip = function skip(length) {
-    if (typeof length === 'number') {
+    if (typeof length === "number") {
         /* istanbul ignore next */
         if (this.pos + length > this.len)
             throw indexOutOfRange(this, length);
@@ -1231,7 +1231,7 @@ util.isString = function isString(value) {
  * @returns {boolean} `true` if the value is a non-null object
  */
 util.isObject = function isObject(value) {
-    return Boolean(value && typeof value === "object");
+    return value && typeof value === "object";
 };
 
 /**
@@ -1263,8 +1263,7 @@ util.longFromHash = function longFromHash(hash, unsigned) {
  * @param {number|Long} a First value
  * @param {number|Long} b Second value
  * @returns {boolean} `true` if not equal
- * @deprecated
- * @see Use {@link util.longNe} instead
+ * @deprecated Use {@link util.longNe|longNe} instead
  */
 util.longNeq = function longNeq(a, b) {
     return typeof a === "number"
@@ -1787,7 +1786,7 @@ WriterPrototype.string = function write_string(value) {
 
 /**
  * Forks this writer's state by pushing it to a stack.
- * Calling {@link Writer#reset} or {@link Writer#ldelim} resets the writer to the previous state.
+ * Calling {@link Writer#reset|reset} or {@link Writer#ldelim|ldelim} resets the writer to the previous state.
  * @returns {Writer} `this`
  */
 WriterPrototype.fork = function fork() {
