@@ -87,7 +87,6 @@ function buildNamespace(ref, ns) {
         return;
     if (ns.name !== "") {
         push("");
-        push("/** @alias " + ns.fullName.substring(1) + " */");
         push(name(ref) + "." + name(ns.name) + " = (function() {");
         ++indent;
     }

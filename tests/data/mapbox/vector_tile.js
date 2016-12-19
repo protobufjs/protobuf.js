@@ -8,7 +8,6 @@ var $lazyTypes = [];
 // Exported root namespace
 var $root = {};
 
-/** @alias vector_tile */
 $root.vector_tile = (function() {
 
     /**
@@ -18,7 +17,6 @@ $root.vector_tile = (function() {
      */
     var vector_tile = {};
 
-    /** @alias vector_tile.Tile */
     vector_tile.Tile = (function() {
 
         /**
@@ -166,7 +164,6 @@ $root.vector_tile = (function() {
             POLYGON: 3
         };
 
-        /** @alias vector_tile.Tile.Value */
         Tile.Value = (function() {
 
             /**
@@ -393,7 +390,6 @@ $root.vector_tile = (function() {
             return Value;
         })();
 
-        /** @alias vector_tile.Tile.Feature */
         Tile.Feature = (function() {
 
             /**
@@ -607,7 +603,6 @@ $root.vector_tile = (function() {
             return Feature;
         })();
 
-        /** @alias vector_tile.Tile.Layer */
         Tile.Layer = (function() {
 
             /**

@@ -8,7 +8,6 @@ var $lazyTypes = [];
 // Exported root namespace
 var $root = {};
 
-/** @alias MyService */
 $root.MyService = (function() {
 
     /**
@@ -74,7 +73,6 @@ $root.MyService = (function() {
     return MyService;
 })();
 
-/** @alias MyRequest */
 $root.MyRequest = (function() {
 
     /**
@@ -205,7 +203,6 @@ $root.MyRequest = (function() {
     return MyRequest;
 })();
 
-/** @alias MyResponse */
 $root.MyResponse = (function() {
 
     /**

@@ -8,7 +8,6 @@ var $lazyTypes = [];
 // Exported root namespace
 var $root = {};
 
-/** @alias A */
 $root.A = (function() {
 
     /**
@@ -139,7 +138,6 @@ $root.A = (function() {
     return A;
 })();
 
-/** @alias B */
 $root.B = (function() {
 
     /**

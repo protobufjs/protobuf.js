@@ -8,7 +8,6 @@ var $lazyTypes = [];
 // Exported root namespace
 var $root = {};
 
-/** @alias Package */
 $root.Package = (function() {
 
     /**
@@ -468,7 +467,6 @@ $root.Package = (function() {
         /* eslint-enable */
     })();
 
-    /** @alias Package.Repository */
     Package.Repository = (function() {
 
         /**
