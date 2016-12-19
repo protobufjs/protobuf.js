@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 23:33:26 UTC
+ * Compiled Mon, 19 Dec 2016 12:16:51 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2165,6 +2165,7 @@ var Type,    // cyclic
 
 var nestedTypes, // contains cyclics
     nestedError;
+
 function initNested() {
 
     /* istanbul ignore next */
@@ -2310,6 +2311,19 @@ NamespacePrototype.get = function get(name) {
     if (this.nested === undefined) // prevents deopt
         return null;
     return this.nested[name] || null;
+};
+
+/**
+ * Gets the values of the nested {@link Enum|enum} of the specified name.
+ * This methods differs from {@link Namespace#get} in that it returns an enum's values directly and throws instead of returning `null`.
+ * @param {string} name Nested enum name
+ * @returns {Object.<string,number>} Enum values
+ * @throws {Error} If there is no such enum
+ */
+NamespacePrototype.getEnum = function getEnum(name) {
+    if (this.nested && this.nested[name] instanceof Enum)
+        return this.nested[name].values;
+    throw Error("no such enum");
 };
 
 /**
@@ -2501,17 +2515,17 @@ NamespacePrototype.lookupService = function lookupService(path) {
 };
 
 /**
- * Looks up the {@link Enum|enum} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
+ * Besides its signature, this methods differs from {@link Namespace#lookup} in that it returns the enum's values directly and throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
- * @returns {Type} Looked up enum
+ * @returns {Object.<string,number>} Enum values
  * @throws {Error} If `path` does not point to an enum
  */
 NamespacePrototype.lookupEnum = function lookupEnum(path) {
     var found = this.lookup(path, Enum);
     if (!found)
         throw Error("no such enum");
-    return found;
+    return found.values;
 };
 
 },{"16":16,"17":17,"22":22,"30":30,"32":32,"34":34}],22:[function(require,module,exports){
@@ -6136,8 +6150,6 @@ function Op(fn, len, val) {
     this.val = val; // type varies
 }
 
-Writer.Op = Op;
-
 /* istanbul ignore next */
 function noop() {} // eslint-disable-line no-empty-function
 
@@ -6176,8 +6188,6 @@ function State(writer) {
      */
     this.next = writer.states;
 }
-
-Writer.State = State;
 
 /**
  * Constructs a new writer instance.
@@ -6245,7 +6255,7 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
-    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
+    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray);
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
@@ -6590,7 +6600,7 @@ WriterPrototype.finish = function finish() {
         pos += head.len;
         head = head.next;
     }
-    this.head = this.tail = null; // gc
+    // this.head = this.tail = null;
     return buf;
 };
 
@@ -6631,7 +6641,7 @@ BufferWriter.alloc = function alloc_buffer(size) {
         })(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name !== "deprecated"
+var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name[0] === "s" // node v4: set.name == "deprecated"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node > 0.12)
     }

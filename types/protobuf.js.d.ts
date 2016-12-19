@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sun, 18 Dec 2016 22:48:04 UTC
+// Generated Mon, 19 Dec 2016 12:17:04 UTC
 declare module "protobufjs" {
 
     /**
@@ -727,6 +727,15 @@ declare module "protobufjs" {
         get(name: string): ReflectionObject;
 
         /**
+         * Gets the values of the nested {@link Enum|enum} of the specified name.
+         * This methods differs from {@link Namespace#get} in that it returns an enum's values directly and throws instead of returning `null`.
+         * @param {string} name Nested enum name
+         * @returns {Object.<string,number>} Enum values
+         * @throws {Error} If there is no such enum
+         */
+        getEnum(name: string): { [k: string]: number };
+
+        /**
          * Adds a nested object to this namespace.
          * @param {ReflectionObject} object Nested object to add
          * @returns {Namespace} `this`
@@ -797,13 +806,13 @@ declare module "protobufjs" {
         lookupService(path: (string|string[])): Service;
 
         /**
-         * Looks up the {@link Enum|enum} at the specified path, relative to this namespace.
-         * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+         * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
+         * Besides its signature, this methods differs from {@link Namespace#lookup} in that it returns the enum's values directly and throws instead of returning `null`.
          * @param {string|string[]} path Path to look up
-         * @returns {Type} Looked up enum
+         * @returns {Object.<string,number>} Enum values
          * @throws {Error} If `path` does not point to an enum
          */
-        lookupEnum(path: (string|string[])): Type;
+        lookupEnum(path: (string|string[])): { [k: string]: number };
     }
 
     /**

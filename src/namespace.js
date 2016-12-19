@@ -16,6 +16,7 @@ var Type,    // cyclic
 
 var nestedTypes, // contains cyclics
     nestedError;
+
 function initNested() {
 
     /* istanbul ignore next */
@@ -161,6 +162,19 @@ NamespacePrototype.get = function get(name) {
     if (this.nested === undefined) // prevents deopt
         return null;
     return this.nested[name] || null;
+};
+
+/**
+ * Gets the values of the nested {@link Enum|enum} of the specified name.
+ * This methods differs from {@link Namespace#get} in that it returns an enum's values directly and throws instead of returning `null`.
+ * @param {string} name Nested enum name
+ * @returns {Object.<string,number>} Enum values
+ * @throws {Error} If there is no such enum
+ */
+NamespacePrototype.getEnum = function getEnum(name) {
+    if (this.nested && this.nested[name] instanceof Enum)
+        return this.nested[name].values;
+    throw Error("no such enum");
 };
 
 /**
@@ -352,15 +366,15 @@ NamespacePrototype.lookupService = function lookupService(path) {
 };
 
 /**
- * Looks up the {@link Enum|enum} at the specified path, relative to this namespace.
- * Besides its signature, this methods differs from {@link Namespace#lookup} in that it throws instead of returning `null`.
+ * Looks up the values of the {@link Enum|enum} at the specified path, relative to this namespace.
+ * Besides its signature, this methods differs from {@link Namespace#lookup} in that it returns the enum's values directly and throws instead of returning `null`.
  * @param {string|string[]} path Path to look up
- * @returns {Type} Looked up enum
+ * @returns {Object.<string,number>} Enum values
  * @throws {Error} If `path` does not point to an enum
  */
 NamespacePrototype.lookupEnum = function lookupEnum(path) {
     var found = this.lookup(path, Enum);
     if (!found)
         throw Error("no such enum");
-    return found;
+    return found.values;
 };

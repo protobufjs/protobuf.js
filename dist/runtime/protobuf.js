@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Sun, 18 Dec 2016 23:33:26 UTC
+ * Compiled Mon, 19 Dec 2016 12:16:51 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1396,8 +1396,6 @@ function Op(fn, len, val) {
     this.val = val; // type varies
 }
 
-Writer.Op = Op;
-
 /* istanbul ignore next */
 function noop() {} // eslint-disable-line no-empty-function
 
@@ -1436,8 +1434,6 @@ function State(writer) {
      */
     this.next = writer.states;
 }
-
-Writer.State = State;
 
 /**
  * Constructs a new writer instance.
@@ -1505,7 +1501,7 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
-    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
+    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray);
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
@@ -1850,7 +1846,7 @@ WriterPrototype.finish = function finish() {
         pos += head.len;
         head = head.next;
     }
-    this.head = this.tail = null; // gc
+    // this.head = this.tail = null;
     return buf;
 };
 
@@ -1891,7 +1887,7 @@ BufferWriter.alloc = function alloc_buffer(size) {
         })(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name !== "deprecated"
+var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name[0] === "s" // node v4: set.name == "deprecated"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node > 0.12)
     }

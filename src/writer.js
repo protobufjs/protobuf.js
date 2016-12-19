@@ -50,8 +50,6 @@ function Op(fn, len, val) {
     this.val = val; // type varies
 }
 
-Writer.Op = Op;
-
 /* istanbul ignore next */
 function noop() {} // eslint-disable-line no-empty-function
 
@@ -90,8 +88,6 @@ function State(writer) {
      */
     this.next = writer.states;
 }
-
-Writer.State = State;
 
 /**
  * Constructs a new writer instance.
@@ -159,7 +155,7 @@ Writer.alloc = function alloc(size) {
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
 if (ArrayImpl !== Array)
-    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice);
+    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray);
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
@@ -504,6 +500,6 @@ WriterPrototype.finish = function finish() {
         pos += head.len;
         head = head.next;
     }
-    this.head = this.tail = null; // gc
+    // this.head = this.tail = null;
     return buf;
 };

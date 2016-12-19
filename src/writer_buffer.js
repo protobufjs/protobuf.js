@@ -34,7 +34,7 @@ BufferWriter.alloc = function alloc_buffer(size) {
         })(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name !== "deprecated"
+var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name[0] === "s" // node v4: set.name == "deprecated"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node > 0.12)
     }
