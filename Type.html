@@ -853,6 +853,8 @@
             
                 <li data-name="Namespace#get"><a href="Namespace.html#get">get</a></li>
             
+                <li data-name="Namespace#getEnum"><a href="Namespace.html#getEnum">getEnum</a></li>
+            
                 <li data-name="Namespace#getOption"><a href="Namespace.html#getOption">getOption</a></li>
             
                 <li data-name="Namespace#lookup"><a href="Namespace.html#lookup">lookup</a></li>
@@ -1117,6 +1119,8 @@
             
                 <li data-name="Root#get"><a href="Root.html#get">get</a></li>
             
+                <li data-name="Root#getEnum"><a href="Root.html#getEnum">getEnum</a></li>
+            
                 <li data-name="Root#getOption"><a href="Root.html#getOption">getOption</a></li>
             
                 <li data-name="Root#load"><a href="Root.html#load">load</a></li>
@@ -1245,6 +1249,8 @@
             
                 <li data-name="Service#get"><a href="Service.html#get">get</a></li>
             
+                <li data-name="Service#getEnum"><a href="Service.html#getEnum">getEnum</a></li>
+            
                 <li data-name="Service#getOption"><a href="Service.html#getOption">getOption</a></li>
             
                 <li data-name="Service#lookup"><a href="Service.html#lookup">lookup</a></li>
@@ -1353,6 +1359,8 @@
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
+            
+                <li data-name="Type#getEnum"><a href="Type.html#getEnum">getEnum</a></li>
             
                 <li data-name="Type#getOption"><a href="Type.html#getOption">getOption</a></li>
             
@@ -3035,7 +3043,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L139">line 139</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L140">line 140</a>
         </div>
         
     </div>
@@ -3668,7 +3676,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L239">line 239</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L253">line 253</a>
         </div>
         
     </div>
@@ -4219,7 +4227,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L160">line 160</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L161">line 161</a>
         </div>
         
     </div>
@@ -4343,6 +4351,181 @@
                     
             </td>
             <td class="description last">The reflection object or <code>null</code> if it doesn't exist</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
+        <h4 class="name" id="getEnum">
+            
+                <span class="inherited"><a href="Namespace.html#getEnum">inherited</a></span>
+            
+            getEnum<span class="signature">(name)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object&lt;string, number> }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L174">line 174</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the values of the nested <a href="Enum.html">enum</a> of the specified name.<br>This methods differs from <a href="Namespace.html#get">Namespace#get</a> in that it returns an enum's values directly and throws instead of returning <code>null</code>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Nested enum name</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+
+<table class="params">
+    <thead>
+	<tr>
+		<th>Type</th>	
+		<th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="type">
+            
+<span class="param-type">Error</span>
+
+
+        </td>
+        <td class="description last">
+            <p>If there is no such enum</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Object.&lt;string, number>
+                        
+                    
+            </td>
+            <td class="description last">Enum values</td>
         </tr>
     
     </tbody>
@@ -4513,7 +4696,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L283">line 283</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L297">line 297</a>
         </div>
         
     </div>
@@ -4742,7 +4925,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L305">line 305</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L319">line 319</a>
         </div>
         
     </div>
@@ -4934,12 +5117,12 @@
             
                 <span class="inherited"><a href="Namespace.html#lookupEnum">inherited</a></span>
             
-            lookupEnum<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Type.html">Type</a> }</span>
+            lookupEnum<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object&lt;string, number> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L361">line 361</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L375">line 375</a>
         </div>
         
     </div>
@@ -4950,7 +5133,7 @@
     
     
     <div class="description">
-        <p>Looks up the <a href="Enum.html">enum</a> at the specified path, relative to this namespace.<br>Besides its signature, this methods differs from <a href="Namespace.html#lookup">Namespace#lookup</a> in that it throws instead of returning <code>null</code>.</p>
+        <p>Looks up the values of the <a href="Enum.html">enum</a> at the specified path, relative to this namespace.<br>Besides its signature, this methods differs from <a href="Namespace.html#lookup">Namespace#lookup</a> in that it returns the enum's values directly and throws instead of returning <code>null</code>.</p>
     </div>
     
 
@@ -5089,11 +5272,11 @@
             
             <td class="type">
             
-                        <a href="Type.html">Type</a>
+                        Object.&lt;string, number>
                         
                     
             </td>
-            <td class="description last">Looked up enum</td>
+            <td class="description last">Enum values</td>
         </tr>
     
     </tbody>
@@ -5117,7 +5300,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L342">line 342</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L356">line 356</a>
         </div>
         
     </div>
@@ -5295,7 +5478,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L323">line 323</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L337">line 337</a>
         </div>
         
     </div>
@@ -6068,7 +6251,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L266">line 266</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L280">line 280</a>
         </div>
         
     </div>
