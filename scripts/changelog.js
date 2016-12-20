@@ -68,16 +68,17 @@ gitSemverTags(function(err, tags) {
     });
 
     commits.on("data", function(chunk) {
-        chunk.toString("utf8").trim().split(";").forEach(function(message) {
+        var message = chunk.toString("utf8").trim();
+        var match = /#([0-9a-f]{40})$/.exec(message);
+        var hash;
+        if (match) {
+            message = message.substring(0, message.length - match[1].length).trim();
+            hash = match[1];
+        }
+        message.split(";").forEach(function(message) {
             if (/^(Merge pull request |Post\-merge)/.test(message))
                 return;
-            var match = /#([0-9a-f]{40})$/.exec(message);
-            var hash;
-            if (match) {
-                message = message.substring(0, message.length - match[1].length).trim();
-                hash = match[1];
-            }
-            match = /^(\w+):/i.exec(message = message.trim());
+            var match = /^(\w+):/i.exec(message = message.trim());
             var category;
             if (match && match[1] in validCategories) {
                 category = match[1];
