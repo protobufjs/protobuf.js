@@ -166,6 +166,7 @@ util.props(FieldPrototype, {
      */
     packed: {
         get: FieldPrototype.isPacked = function() {
+            // defaults to packed=true if not explicity set to false
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;

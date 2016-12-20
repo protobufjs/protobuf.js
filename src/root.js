@@ -122,7 +122,7 @@ RootPrototype.load = function load(filename, options, callback) {
     function fetch(filename, weak) {
 
         // Strip path if this file references a bundled definition
-        var idx = filename.indexOf("google/protobuf/");
+        var idx = filename.lastIndexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
             if (altname in common)

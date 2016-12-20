@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 20 Dec 2016 21:38:15 UTC
+ * Compiled Tue, 20 Dec 2016 23:35:43 UTC
  * Licensed under the BSD-3-Clause license
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1280,7 +1280,7 @@ function Op(fn, len, val) {
      * Next operation.
      * @type {Writer.Op|undefined}
      */
-    // this.next = undefined;
+    this.next = undefined;
 
     /**
      * Value to write.

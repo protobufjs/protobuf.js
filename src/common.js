@@ -13,6 +13,7 @@ module.exports = common;
  * @property {Object} google/protobuf/empty.proto Empty
  * @property {Object} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
  * @property {Object} google/protobuf/timestamp.proto Timestamp
+ * @property {Object} google/protobuf/wrappers.proto Wrappers
  */
 function common(name, json) {
     if (!/\/|\./.test(name)) {
@@ -27,7 +28,6 @@ function common(name, json) {
 // - google/protobuf/field_mask.proto
 // - google/protobuf/source_context.proto
 // - google/protobuf/type.proto
-// - google/protobuf/wrappers.proto
 
 common("any", {
     Any: {
@@ -124,6 +124,81 @@ common("struct", {
             values: {
                 rule: "repeated",
                 type: "Value",
+                id: 1
+            }
+        }
+    }
+});
+
+common("wrappers", {
+    DoubleValue: {
+        fields: {
+            value: {
+                type: "double",
+                id: 1
+            }
+        }
+    },
+    FloatValue: {
+        fields: {
+            value: {
+                type: "float",
+                id: 1
+            }
+        }
+    },
+    Int64Value: {
+        fields: {
+            value: {
+                type: "int64",
+                id: 1
+            }
+        }
+    },
+    UInt64Value: {
+        fields: {
+            value: {
+                type: "uint64",
+                id: 1
+            }
+        }
+    },
+    Int32Value: {
+        fields: {
+            value: {
+                type: "int32",
+                id: 1
+            }
+        }
+    },
+    UInt32Value: {
+        fields: {
+            value: {
+                type: "uint32",
+                id: 1
+            }
+        }
+    },
+    BoolValue: {
+        fields: {
+            value: {
+                type: "bool",
+                id: 1
+            }
+        }
+    },
+    StringValue: {
+        fields: {
+            value: {
+                type: "string",
+                id: 1
+            }
+        }
+    },
+    BytesValue: {
+        fields: {
+            value: {
+                type: "bytes",
                 id: 1
             }
         }

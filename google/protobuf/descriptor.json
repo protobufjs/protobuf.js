@@ -3,24 +3,13 @@
     "google": {
       "nested": {
         "protobuf": {
-          "options": {
-            "go_package": "descriptor",
-            "java_package": "com.google.protobuf",
-            "java_outer_classname": "DescriptorProtos",
-            "csharp_namespace": "Google.Protobuf.Reflection",
-            "objc_class_prefix": "GPB",
-            "optimize_for": "SPEED"
-          },
           "nested": {
             "FileDescriptorSet": {
               "fields": {
                 "file": {
                   "rule": "repeated",
                   "type": "FileDescriptorProto",
-                  "id": 1,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 1
                 }
               }
             },
@@ -37,10 +26,7 @@
                 "dependency": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 3,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 3
                 },
                 "publicDependency": {
                   "rule": "repeated",
@@ -61,34 +47,22 @@
                 "messageType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 4,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 4
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 5,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 5
                 },
                 "service": {
                   "rule": "repeated",
                   "type": "ServiceDescriptorProto",
-                  "id": 6,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 6
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 7,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 7
                 },
                 "options": {
                   "type": "FileOptions",
@@ -113,50 +87,32 @@
                 "field": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 2,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 2
                 },
                 "extension": {
                   "rule": "repeated",
                   "type": "FieldDescriptorProto",
-                  "id": 6,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 6
                 },
                 "nestedType": {
                   "rule": "repeated",
                   "type": "DescriptorProto",
-                  "id": 3,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 3
                 },
                 "enumType": {
                   "rule": "repeated",
                   "type": "EnumDescriptorProto",
-                  "id": 4,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 4
                 },
                 "extensionRange": {
                   "rule": "repeated",
                   "type": "ExtensionRange",
-                  "id": 5,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 5
                 },
                 "oneofDecl": {
                   "rule": "repeated",
                   "type": "OneofDescriptorProto",
-                  "id": 8,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 8
                 },
                 "options": {
                   "type": "MessageOptions",
@@ -165,18 +121,12 @@
                 "reservedRange": {
                   "rule": "repeated",
                   "type": "ReservedRange",
-                  "id": 9,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 9
                 },
                 "reservedName": {
                   "rule": "repeated",
                   "type": "string",
-                  "id": 10,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 10
                 }
               },
               "nested": {
@@ -302,10 +252,7 @@
                 "value": {
                   "rule": "repeated",
                   "type": "EnumValueDescriptorProto",
-                  "id": 2,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 2
                 },
                 "options": {
                   "type": "EnumOptions",
@@ -338,10 +285,7 @@
                 "method": {
                   "rule": "repeated",
                   "type": "MethodDescriptorProto",
-                  "id": 2,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 2
                 },
                 "options": {
                   "type": "ServiceOptions",
@@ -369,17 +313,11 @@
                 },
                 "clientStreaming": {
                   "type": "bool",
-                  "id": 5,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 5
                 },
                 "serverStreaming": {
                   "type": "bool",
-                  "id": 6,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 6
                 }
               }
             },
@@ -395,10 +333,7 @@
                 },
                 "javaMultipleFiles": {
                   "type": "bool",
-                  "id": 10,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 10
                 },
                 "javaGenerateEqualsAndHash": {
                   "type": "bool",
@@ -409,10 +344,7 @@
                 },
                 "javaStringCheckUtf8": {
                   "type": "bool",
-                  "id": 27,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 27
                 },
                 "optimizeFor": {
                   "type": "OptimizeMode",
@@ -427,38 +359,23 @@
                 },
                 "ccGenericServices": {
                   "type": "bool",
-                  "id": 16,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 16
                 },
                 "javaGenericServices": {
                   "type": "bool",
-                  "id": 17,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 17
                 },
                 "pyGenericServices": {
                   "type": "bool",
-                  "id": 18,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 18
                 },
                 "deprecated": {
                   "type": "bool",
-                  "id": 23,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 23
                 },
                 "ccEnableArenas": {
                   "type": "bool",
-                  "id": 31,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 31
                 },
                 "objcClassPrefix": {
                   "type": "string",
@@ -471,10 +388,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -503,24 +417,15 @@
               "fields": {
                 "messageSetWireFormat": {
                   "type": "bool",
-                  "id": 1,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 1
                 },
                 "noStandardDescriptorAccessor": {
                   "type": "bool",
-                  "id": 2,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 2
                 },
                 "deprecated": {
                   "type": "bool",
-                  "id": 3,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 3
                 },
                 "mapEntry": {
                   "type": "bool",
@@ -529,10 +434,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -570,32 +472,20 @@
                 },
                 "lazy": {
                   "type": "bool",
-                  "id": 5,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 5
                 },
                 "deprecated": {
                   "type": "bool",
-                  "id": 3,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 3
                 },
                 "weak": {
                   "type": "bool",
-                  "id": 10,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 10
                 },
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -632,10 +522,7 @@
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -653,18 +540,12 @@
                 },
                 "deprecated": {
                   "type": "bool",
-                  "id": 3,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 3
                 },
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -678,18 +559,12 @@
               "fields": {
                 "deprecated": {
                   "type": "bool",
-                  "id": 1,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 1
                 },
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -703,18 +578,12 @@
               "fields": {
                 "deprecated": {
                   "type": "bool",
-                  "id": 33,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 33
                 },
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -728,18 +597,12 @@
               "fields": {
                 "deprecated": {
                   "type": "bool",
-                  "id": 33,
-                  "options": {
-                    "default": false
-                  }
+                  "id": 33
                 },
                 "uninterpretedOption": {
                   "rule": "repeated",
                   "type": "UninterpretedOption",
-                  "id": 999,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 999
                 }
               },
               "extensions": [
@@ -754,10 +617,7 @@
                 "name": {
                   "rule": "repeated",
                   "type": "NamePart",
-                  "id": 2,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 2
                 },
                 "identifierValue": {
                   "type": "string",
@@ -806,10 +666,7 @@
                 "location": {
                   "rule": "repeated",
                   "type": "Location",
-                  "id": 1,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 1
                 }
               },
               "nested": {
@@ -842,10 +699,7 @@
                     "leadingDetachedComments": {
                       "rule": "repeated",
                       "type": "string",
-                      "id": 6,
-                      "options": {
-                        "packed": false
-                      }
+                      "id": 6
                     }
                   }
                 }
@@ -856,10 +710,7 @@
                 "annotation": {
                   "rule": "repeated",
                   "type": "Annotation",
-                  "id": 1,
-                  "options": {
-                    "packed": false
-                  }
+                  "id": 1
                 }
               },
               "nested": {

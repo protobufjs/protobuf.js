@@ -40,7 +40,7 @@ function Op(fn, len, val) {
      * Next operation.
      * @type {Writer.Op|undefined}
      */
-    // this.next = undefined;
+    this.next = undefined;
 
     /**
      * Value to write.

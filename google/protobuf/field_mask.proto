@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package google.protobuf;
+
+message FieldMask {
+    repeated string paths = 1;
+}

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 20 Dec 2016 21:38:15 UTC
+ * Compiled Tue, 20 Dec 2016 23:35:43 UTC
  * Licensed under the BSD-3-Clause license
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -861,6 +861,7 @@ module.exports = common;
  * @property {Object} google/protobuf/empty.proto Empty
  * @property {Object} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
  * @property {Object} google/protobuf/timestamp.proto Timestamp
+ * @property {Object} google/protobuf/wrappers.proto Wrappers
  */
 function common(name, json) {
     if (!/\/|\./.test(name)) {
@@ -875,7 +876,6 @@ function common(name, json) {
 // - google/protobuf/field_mask.proto
 // - google/protobuf/source_context.proto
 // - google/protobuf/type.proto
-// - google/protobuf/wrappers.proto
 
 common("any", {
     Any: {
@@ -978,6 +978,80 @@ common("struct", {
     }
 });
 
+common("wrappers", {
+    DoubleValue: {
+        fields: {
+            value: {
+                type: "double",
+                id: 1
+            }
+        }
+    },
+    FloatValue: {
+        fields: {
+            value: {
+                type: "float",
+                id: 1
+            }
+        }
+    },
+    Int64Value: {
+        fields: {
+            value: {
+                type: "int64",
+                id: 1
+            }
+        }
+    },
+    UInt64Value: {
+        fields: {
+            value: {
+                type: "uint64",
+                id: 1
+            }
+        }
+    },
+    Int32Value: {
+        fields: {
+            value: {
+                type: "int32",
+                id: 1
+            }
+        }
+    },
+    UInt32Value: {
+        fields: {
+            value: {
+                type: "uint32",
+                id: 1
+            }
+        }
+    },
+    BoolValue: {
+        fields: {
+            value: {
+                type: "bool",
+                id: 1
+            }
+        }
+    },
+    StringValue: {
+        fields: {
+            value: {
+                type: "string",
+                id: 1
+            }
+        }
+    },
+    BytesValue: {
+        fields: {
+            value: {
+                type: "bytes",
+                id: 1
+            }
+        }
+    }
+});
 },{}],13:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
@@ -1515,6 +1589,7 @@ util.props(FieldPrototype, {
      */
     packed: {
         get: FieldPrototype.isPacked = function() {
+            // defaults to packed=true if not explicity set to false
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
@@ -3123,8 +3198,10 @@ function parse(source, root, options) {
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new Field(name, id, type, rule, extend));
-        if (field.repeated)
-            field.setOption("packed", isProto3, /* ifNotSet */ true);
+        // JSON defaults to packed=true if not set so we have to set packed=false explicity when
+        // parsing proto2 descriptors without the option, where applicable.
+        if (field.repeated && types.packed[type] !== undefined && !isProto3)
+            field.setOption("packed", false, /* ifNotSet */ true);
         parent.add(field);
     }
 
@@ -4144,7 +4221,7 @@ RootPrototype.load = function load(filename, options, callback) {
     function fetch(filename, weak) {
 
         // Strip path if this file references a bundled definition
-        var idx = filename.indexOf("google/protobuf/");
+        var idx = filename.lastIndexOf("google/protobuf/");
         if (idx > -1) {
             var altname = filename.substring(idx);
             if (altname in common)
@@ -6097,7 +6174,7 @@ function Op(fn, len, val) {
      * Next operation.
      * @type {Writer.Op|undefined}
      */
-    // this.next = undefined;
+    this.next = undefined;
 
     /**
      * Value to write.

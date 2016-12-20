@@ -302,8 +302,10 @@ function parse(source, root, options) {
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new Field(name, id, type, rule, extend));
-        if (field.repeated)
-            field.setOption("packed", isProto3, /* ifNotSet */ true);
+        // JSON defaults to packed=true if not set so we have to set packed=false explicity when
+        // parsing proto2 descriptors without the option, where applicable.
+        if (field.repeated && types.packed[type] !== undefined && !isProto3)
+            field.setOption("packed", false, /* ifNotSet */ true);
         parent.add(field);
     }
 

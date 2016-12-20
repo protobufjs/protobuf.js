@@ -16,6 +16,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ea7ba8b83890084d61012cb5386dc11dadfb3908) Fixed release links in README files<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9078a37fbf7bff8ba829d979073e3df91f1bcfc5) Updated non-bundled common google types folder with field_mask, source_context, type and wrappers<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0b0de2458a1ade1ccd4ceb789697be13290f856b) Replaced the ieee754 implementation for old browsers with a faster, use-case specific one + simple test case<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Added .create to statically generated types and uppercase nested elements to reflection namespaces, see [#576](https://github.com/dcodeIO/protobuf.js/issues/576)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Also added Namespace#getEnum for completeness, see [#576](https://github.com/dcodeIO/protobuf.js/issues/576)<br />
@@ -31,6 +32,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Made pbjs use loadSync for deterministic outputs, see [#573](https://github.com/dcodeIO/protobuf.js/issues/573)<br />
 
 ## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c59647a7542cbc4292248787e5f32bb99a9b8d46) Fixed an issue with the changelog generator skipping some commits<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/24f2c03af9f13f5404259866fdc8fed33bfaae25) Added notes on how to use pbjs and pbts programmatically<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3544576116146b209246d71c7f7a9ed687950b26) Manually sorted old changelog entries<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/d5812571f335bae68f924aa1098519683a9f3e44) Initial changelog generator, see [#574](https://github.com/dcodeIO/protobuf.js/issues/574)<br />
@@ -38,6 +40,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7939a4bd8baca5f7e07530fc93f27911a6d91c6f) Updated README and bundler according to dynamic require calls<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c59647a7542cbc4292248787e5f32bb99a9b8d46) Updated / added additional LICENSE files where appropriate<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/333f0221814be976874862dc83d0b216e07d4012) Integrated changelog into build process, now also has 'npm run make' for everything, see [#574](https://github.com/dcodeIO/protobuf.js/issues/574)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ab3e236a967a032a98267a648f84d129fdb4d4a6) Minor optimizations through providing type-hints<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ab3e236a967a032a98267a648f84d129fdb4d4a6) Reverted shortened switch statements in verifier<br />
