@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 19 Dec 2016 23:08:12 UTC
+ * Compiled Tue, 20 Dec 2016 00:35:06 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -515,32 +515,28 @@ var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
-(
 /**
  * Reads a varint as an unsigned 32 bit value.
+ * @function
  * @returns {number} Value read
  */
-ReaderPrototype.uint32 = function read_uint32() {
-    // FIXME: tends to soft-deopt with "Insufficient type feedback for generic named access", which
-    // is not a problem, but with --trace-deopt, node v4-v7 always crashes when the above happens.
-    var value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
+ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
+    var value = 0xffffffff >>> 0; // optimizer type-hint, tends to deopt otherwise (?!)
+    return function read_uint32() {
+        value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
-    /* istanbul ignore next */
-    if ((this.pos += 5) > this.len) {
-        this.pos = this.len;
-        throw indexOutOfRange(this, 10);
-    }
-    return value;
-}
-// See comment above. While unnecessary code, this prevents crashing with --trace-deopt (node 6.9.1).
-).call({
-    buf: [255,255,255,255,15],
-    pos: 0,
-    len: 5
-});
+        
+        /* istanbul ignore next */
+        if ((this.pos += 5) > this.len) {
+            this.pos = this.len;
+            throw indexOutOfRange(this, 10);
+        }
+        return value;
+    };
+})();
 
 /**
  * Reads a varint as a signed 32 bit value.
@@ -563,8 +559,8 @@ ReaderPrototype.sint32 = function read_sint32() {
 
 function readLongVarint() {
     // tends to deopt with local vars for octet etc.
-    var bits = new LongBits(0, 0),
-        i = 0;
+    var bits = new LongBits(0 >>> 0, 0 >>> 0);
+    var i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
             // 1st..4th
@@ -1087,8 +1083,8 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
  */
 LongBitsPrototype.toLong = function toLong(unsigned) {
     return util.Long
-        ? new util.Long(this.lo, this.hi, unsigned)
-        : { low: this.lo, high: this.hi, unsigned: Boolean(unsigned) };
+        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+        : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
 
 var charCodeAt = String.prototype.charCodeAt;
@@ -1121,11 +1117,11 @@ LongBitsPrototype.toHash = function toHash() {
         this.lo        & 255,
         this.lo >>> 8  & 255,
         this.lo >>> 16 & 255,
-        this.lo >>> 24 & 255,
+        this.lo >>> 24      ,
         this.hi        & 255,
         this.hi >>> 8  & 255,
         this.hi >>> 16 & 255,
-        this.hi >>> 24 & 255
+        this.hi >>> 24
     );
 };
 
@@ -1159,16 +1155,15 @@ LongBitsPrototype.length = function length() {
     var part0 =  this.lo,
         part1 = (this.lo >>> 28 | this.hi << 4) >>> 0,
         part2 =  this.hi >>> 24;
-    if (part2 === 0) {
-        if (part1 === 0)
-            return part0 < 1 << 14
-                ? part0 < 1 << 7 ? 1 : 2
-                : part0 < 1 << 21 ? 3 : 4;
-        return part1 < 1 << 14
-            ? part1 < 1 << 7 ? 5 : 6
-            : part1 < 1 << 21 ? 7 : 8;
-    }
-    return part2 < 1 << 7 ? 9 : 10;
+    return part2 === 0
+         ? part1 === 0
+           ? part0 < 16384
+             ? part0 < 128 ? 1 : 2
+             : part0 < 2097152 ? 3 : 4
+           : part1 < 16384
+             ? part1 < 128 ? 5 : 6
+             : part1 < 2097152 ? 7 : 8
+         : part2 < 128 ? 9 : 10;
 };
 
 },{"10":10}],10:[function(require,module,exports){

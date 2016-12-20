@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Mon, 19 Dec 2016 23:08:12 UTC
+ * Compiled Tue, 20 Dec 2016 00:35:06 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1119,7 +1119,7 @@ function decoder(mtype) {
     ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
-        ("var t=r.int32()");
+        ("var t=r.uint32()");
     if (mtype.group) gen
         ("if((t&7)===4)")
             ("break");
@@ -1858,9 +1858,9 @@ MapFieldPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     
-    // Besides a value type, map fields possibily have an enum as its key type to resolve
-    if (types.mapKey[this.keyType] === undefined && !(this.resolvedKeyType = this.parent.lookup(this.keyType, Enum)))
-        throw Error("unresolvable key type: " + this.keyType);
+    // Besides a value type, map fields have a key type that may be "any scalar type except for floating point types and bytes"
+    if (types.mapKey[this.keyType] === undefined)
+        throw Error("invalid key type: " + this.keyType);
 
     return FieldPrototype.resolve.call(this);
 };
@@ -3674,32 +3674,28 @@ var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
-(
 /**
  * Reads a varint as an unsigned 32 bit value.
+ * @function
  * @returns {number} Value read
  */
-ReaderPrototype.uint32 = function read_uint32() {
-    // FIXME: tends to soft-deopt with "Insufficient type feedback for generic named access", which
-    // is not a problem, but with --trace-deopt, node v4-v7 always crashes when the above happens.
-    var value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
+ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
+    var value = 0xffffffff >>> 0; // optimizer type-hint, tends to deopt otherwise (?!)
+    return function read_uint32() {
+        value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
-    /* istanbul ignore next */
-    if ((this.pos += 5) > this.len) {
-        this.pos = this.len;
-        throw indexOutOfRange(this, 10);
-    }
-    return value;
-}
-// See comment above. While unnecessary code, this prevents crashing with --trace-deopt (node 6.9.1).
-).call({
-    buf: [255,255,255,255,15],
-    pos: 0,
-    len: 5
-});
+        
+        /* istanbul ignore next */
+        if ((this.pos += 5) > this.len) {
+            this.pos = this.len;
+            throw indexOutOfRange(this, 10);
+        }
+        return value;
+    };
+})();
 
 /**
  * Reads a varint as a signed 32 bit value.
@@ -3722,8 +3718,8 @@ ReaderPrototype.sint32 = function read_sint32() {
 
 function readLongVarint() {
     // tends to deopt with local vars for octet etc.
-    var bits = new LongBits(0, 0),
-        i = 0;
+    var bits = new LongBits(0 >>> 0, 0 >>> 0);
+    var i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
             // 1st..4th
@@ -5632,15 +5628,6 @@ util.lcFirst = function lcFirst(str) {
 };
 
 /**
- * Tests if the first character of a string is upper case.
- * @param {string} str String to test
- * @returns {boolean} `true` if the first character is upper case, otherwise `false`
- */
-util.isUcFirst = function isUcFirst(str) {
-    return /^A-Z/.test(str);
-};
-
-/**
  * Creates a new buffer of whatever type supported by the environment.
  * @param {number} [size=0] Buffer size
  * @returns {Uint8Array} Buffer
@@ -5769,8 +5756,8 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
  */
 LongBitsPrototype.toLong = function toLong(unsigned) {
     return util.Long
-        ? new util.Long(this.lo, this.hi, unsigned)
-        : { low: this.lo, high: this.hi, unsigned: Boolean(unsigned) };
+        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+        : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
 
 var charCodeAt = String.prototype.charCodeAt;
@@ -5803,11 +5790,11 @@ LongBitsPrototype.toHash = function toHash() {
         this.lo        & 255,
         this.lo >>> 8  & 255,
         this.lo >>> 16 & 255,
-        this.lo >>> 24 & 255,
+        this.lo >>> 24      ,
         this.hi        & 255,
         this.hi >>> 8  & 255,
         this.hi >>> 16 & 255,
-        this.hi >>> 24 & 255
+        this.hi >>> 24
     );
 };
 
@@ -5841,16 +5828,15 @@ LongBitsPrototype.length = function length() {
     var part0 =  this.lo,
         part1 = (this.lo >>> 28 | this.hi << 4) >>> 0,
         part2 =  this.hi >>> 24;
-    if (part2 === 0) {
-        if (part1 === 0)
-            return part0 < 1 << 14
-                ? part0 < 1 << 7 ? 1 : 2
-                : part0 < 1 << 21 ? 3 : 4;
-        return part1 < 1 << 14
-            ? part1 < 1 << 7 ? 5 : 6
-            : part1 < 1 << 21 ? 7 : 8;
-    }
-    return part2 < 1 << 7 ? 9 : 10;
+    return part2 === 0
+         ? part1 === 0
+           ? part0 < 16384
+             ? part0 < 128 ? 1 : 2
+             : part0 < 2097152 ? 3 : 4
+           : part1 < 16384
+             ? part1 < 128 ? 5 : 6
+             : part1 < 2097152 ? 7 : 8
+         : part2 < 128 ? 9 : 10;
 };
 
 },{"36":36}],36:[function(require,module,exports){
@@ -6038,56 +6024,85 @@ function invalid(field, expected) {
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
     /* eslint-disable no-unexpected-multiline */
-    var type  = field.type,
-        rtype = field.resolvedType;
-    if (!rtype && /32/.test(type)) gen
-        ("if(!util.isInteger(%s))", ref)
-            ("return%j", invalid(field, "integer"));
-    else if (!rtype && /64/.test(type)) gen
-        ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-            ("return%j", invalid(field, "integer|Long"));
-    else if (type === "float" || type === "double") gen
-        ("if(typeof %s!==\"number\")", ref)
-            ("return%j", invalid(field, "number"));
-    else if (type === "bool") gen
-        ("if(typeof %s!==\"boolean\")", ref)
-            ("return%j", invalid(field, "boolean"));
-    else if (type === "string") gen
-        ("if(!util.isString(%s))", ref)
-            ("return%j", invalid(field, "string"));
-    else if (type === "bytes") gen
-        ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
-            ("return%j", invalid(field, "buffer"));
-    else if (field.resolvedType instanceof Enum) { gen
-        ("switch(%s){", ref)
-            ("default:")
-                ("return%j", invalid(field, "enum value"));
-        var values = util.toArray(field.resolvedType.values);
-        for (var j = 0; j < values.length; ++j) gen
-            ("case %d:", values[j]);
-        gen
-                ("break")
-        ("}");
-    } else if (field.resolvedType instanceof Type) gen
-        ("var r;")
-        ("if(r=types[%d].verify(%s))", fieldIndex, ref)
-            ("return r");
+    if (field.resolvedType) {
+        if (field.resolvedType instanceof Enum) { gen
+            ("switch(%s){", ref)
+                ("default:")
+                    ("return%j", invalid(field, "enum value"));
+            var values = util.toArray(field.resolvedType.values);
+            for (var j = 0; j < values.length; ++j) gen
+                ("case %d:", values[j]);
+            gen
+                    ("break")
+            ("}");
+        } else if (field.resolvedType instanceof Type) gen
+            ("var r;")
+            ("if(r=types[%d].verify(%s))", fieldIndex, ref)
+                ("return r");
+    } else {
+        switch (field.type) {
+            case "int32":
+            case "uint32":
+            case "sint32":
+            case "fixed32":
+            case "sfixed32": gen
+                ("if(!util.isInteger(%s))", ref)
+                    ("return%j", invalid(field, "integer"));
+                break;
+            case "int64":
+            case "uint64":
+            case "sint64":
+            case "fixed64":
+            case "sfixed64": gen
+                ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+                    ("return%j", invalid(field, "integer|Long"));
+                break;
+            case "float":
+            case "double": gen
+                ("if(typeof %s!==\"number\")", ref)
+                    ("return%j", invalid(field, "number"));
+                break;
+            case "bool": gen
+                ("if(typeof %s!==\"boolean\")", ref)
+                    ("return%j", invalid(field, "boolean"));
+                break;
+            case "string": gen
+                ("if(!util.isString(%s))", ref)
+                    ("return%j", invalid(field, "string"));
+                break;
+            case "bytes": gen
+                ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
+                    ("return%j", invalid(field, "buffer"));
+                break;
+        }
+    }
     /* eslint-enable no-unexpected-multiline */
 }
 
 function genVerifyKey(gen, field, ref) {
     /* eslint-disable no-unexpected-multiline */
-    var keyType = field.keyType,
-        rtype   = field.resolvedKeyType;
-    if (!rtype && /32/.test(keyType)) gen
-        ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
-            ("return%j", invalid(field, "integer key"));
-    else if (!rtype && /64/.test(keyType)) gen
-        ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
-            ("return%j", invalid(field, "integer|Long key"));
-    else if (keyType === "bool") gen
-        ("if(!/^true|false|0|1$/.test(%s))", ref)
-            ("return%j", invalid(field, "boolean key"));
+    switch (field.keyType) {
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32": gen
+            ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer key"));
+            break;
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64": gen
+            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer|Long key"));
+            break;
+        case "bool": gen
+            ("if(!/^true|false|0|1$/.test(%s))", ref)
+                ("return%j", invalid(field, "boolean key"));
+            break;
+    }
     /* eslint-enable no-unexpected-multiline */
 }
 

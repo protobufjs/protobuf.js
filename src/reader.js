@@ -66,32 +66,28 @@ var ReaderPrototype = Reader.prototype;
 
 ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
 
-(
 /**
  * Reads a varint as an unsigned 32 bit value.
+ * @function
  * @returns {number} Value read
  */
-ReaderPrototype.uint32 = function read_uint32() {
-    // FIXME: tends to soft-deopt with "Insufficient type feedback for generic named access", which
-    // is not a problem, but with --trace-deopt, node v4-v7 always crashes when the above happens.
-    var value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
+ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
+    var value = 0xffffffff >>> 0; // optimizer type-hint, tends to deopt otherwise (?!)
+    return function read_uint32() {
+        value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
-    /* istanbul ignore next */
-    if ((this.pos += 5) > this.len) {
-        this.pos = this.len;
-        throw indexOutOfRange(this, 10);
-    }
-    return value;
-}
-// See comment above. While unnecessary code, this prevents crashing with --trace-deopt (node 6.9.1).
-).call({
-    buf: [255,255,255,255,15],
-    pos: 0,
-    len: 5
-});
+        
+        /* istanbul ignore next */
+        if ((this.pos += 5) > this.len) {
+            this.pos = this.len;
+            throw indexOutOfRange(this, 10);
+        }
+        return value;
+    };
+})();
 
 /**
  * Reads a varint as a signed 32 bit value.
@@ -114,8 +110,8 @@ ReaderPrototype.sint32 = function read_sint32() {
 
 function readLongVarint() {
     // tends to deopt with local vars for octet etc.
-    var bits = new LongBits(0, 0),
-        i = 0;
+    var bits = new LongBits(0 >>> 0, 0 >>> 0);
+    var i = 0;
     if (this.len - this.pos > 4) { // fast route (lo)
         for (i = 0; i < 4; ++i) {
             // 1st..4th

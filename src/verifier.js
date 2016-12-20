@@ -11,56 +11,85 @@ function invalid(field, expected) {
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
     /* eslint-disable no-unexpected-multiline */
-    var type  = field.type,
-        rtype = field.resolvedType;
-    if (!rtype && /32/.test(type)) gen
-        ("if(!util.isInteger(%s))", ref)
-            ("return%j", invalid(field, "integer"));
-    else if (!rtype && /64/.test(type)) gen
-        ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
-            ("return%j", invalid(field, "integer|Long"));
-    else if (type === "float" || type === "double") gen
-        ("if(typeof %s!==\"number\")", ref)
-            ("return%j", invalid(field, "number"));
-    else if (type === "bool") gen
-        ("if(typeof %s!==\"boolean\")", ref)
-            ("return%j", invalid(field, "boolean"));
-    else if (type === "string") gen
-        ("if(!util.isString(%s))", ref)
-            ("return%j", invalid(field, "string"));
-    else if (type === "bytes") gen
-        ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
-            ("return%j", invalid(field, "buffer"));
-    else if (field.resolvedType instanceof Enum) { gen
-        ("switch(%s){", ref)
-            ("default:")
-                ("return%j", invalid(field, "enum value"));
-        var values = util.toArray(field.resolvedType.values);
-        for (var j = 0; j < values.length; ++j) gen
-            ("case %d:", values[j]);
-        gen
-                ("break")
-        ("}");
-    } else if (field.resolvedType instanceof Type) gen
-        ("var r;")
-        ("if(r=types[%d].verify(%s))", fieldIndex, ref)
-            ("return r");
+    if (field.resolvedType) {
+        if (field.resolvedType instanceof Enum) { gen
+            ("switch(%s){", ref)
+                ("default:")
+                    ("return%j", invalid(field, "enum value"));
+            var values = util.toArray(field.resolvedType.values);
+            for (var j = 0; j < values.length; ++j) gen
+                ("case %d:", values[j]);
+            gen
+                    ("break")
+            ("}");
+        } else if (field.resolvedType instanceof Type) gen
+            ("var r;")
+            ("if(r=types[%d].verify(%s))", fieldIndex, ref)
+                ("return r");
+    } else {
+        switch (field.type) {
+            case "int32":
+            case "uint32":
+            case "sint32":
+            case "fixed32":
+            case "sfixed32": gen
+                ("if(!util.isInteger(%s))", ref)
+                    ("return%j", invalid(field, "integer"));
+                break;
+            case "int64":
+            case "uint64":
+            case "sint64":
+            case "fixed64":
+            case "sfixed64": gen
+                ("if(!util.isInteger(%s)&&!(%s&&util.isInteger(%s.low)&&util.isInteger(%s.high)))", ref, ref, ref, ref)
+                    ("return%j", invalid(field, "integer|Long"));
+                break;
+            case "float":
+            case "double": gen
+                ("if(typeof %s!==\"number\")", ref)
+                    ("return%j", invalid(field, "number"));
+                break;
+            case "bool": gen
+                ("if(typeof %s!==\"boolean\")", ref)
+                    ("return%j", invalid(field, "boolean"));
+                break;
+            case "string": gen
+                ("if(!util.isString(%s))", ref)
+                    ("return%j", invalid(field, "string"));
+                break;
+            case "bytes": gen
+                ("if(!(%s&&typeof %s.length===\"number\"||util.isString(%s)))", ref, ref, ref)
+                    ("return%j", invalid(field, "buffer"));
+                break;
+        }
+    }
     /* eslint-enable no-unexpected-multiline */
 }
 
 function genVerifyKey(gen, field, ref) {
     /* eslint-disable no-unexpected-multiline */
-    var keyType = field.keyType,
-        rtype   = field.resolvedKeyType;
-    if (!rtype && /32/.test(keyType)) gen
-        ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
-            ("return%j", invalid(field, "integer key"));
-    else if (!rtype && /64/.test(keyType)) gen
-        ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
-            ("return%j", invalid(field, "integer|Long key"));
-    else if (keyType === "bool") gen
-        ("if(!/^true|false|0|1$/.test(%s))", ref)
-            ("return%j", invalid(field, "boolean key"));
+    switch (field.keyType) {
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32": gen
+            ("if(!/^-?(?:0|[1-9]\\d*)$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer key"));
+            break;
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64": gen
+            ("if(!/^(?:[\\x00-\\xff]{8}|-?(?:0|[1-9]\\d*))$/.test(%s))", ref)
+                ("return%j", invalid(field, "integer|Long key"));
+            break;
+        case "bool": gen
+            ("if(!/^true|false|0|1$/.test(%s))", ref)
+                ("return%j", invalid(field, "boolean key"));
+            break;
+    }
     /* eslint-enable no-unexpected-multiline */
 }
 

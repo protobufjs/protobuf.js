@@ -7,6 +7,9 @@ tape.test("google.protobuf.Any type", function(test) {
         if (err)
             return test.fail(err.message);
 
+        var google_protobuf = root.resolveAll().lookup("google.protobuf");
+        test.ok(google_protobuf.Any, "should expose Any as a property on the reflected google.protobuf namespace");
+
         var Any = root.lookup("google.protobuf.Any");
 
         test.ok(Any instanceof protobuf.Type, "should extend Type");

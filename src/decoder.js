@@ -18,7 +18,7 @@ function decoder(mtype) {
     ("r instanceof Reader||(r=Reader.create(r))")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
-        ("var t=r.int32()");
+        ("var t=r.uint32()");
     if (mtype.group) gen
         ("if((t&7)===4)")
             ("break");

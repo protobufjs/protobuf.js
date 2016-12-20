@@ -12,17 +12,23 @@ var validCategories = [
 ];
 
 gitSemverTags(function(err, tags) {
+    if (err)
+        throw err;
     var commits = gitRawCommits({ from: tags[0], to: 'HEAD' });
+    commits.on("error", function(err) {
+        throw err;
+    });
     commits.on("data", function(chunk) {
-        var message = chunk.toString("utf8").trim();
-        var match = /(\w+): (.*)/.exec(message);
-        var category;
-        if (match && validCategories.indexOf(match[1]) > -1) {
-            category = match[1];
-            message = match[2].trim();
-        } else
-            category = "Other";
-        (categories[category] || (categories[category] = [])).push(message);
+        chunk.toString("utf8").trim().split(";").forEach(function(message) {
+            var match = /(\w+): (.*)/.exec(message = message.trim());
+            var category;
+            if (match && validCategories.indexOf(match[1]) > -1) {
+                category = match[1];
+                message = match[2].trim();
+            } else
+                category = "Other";
+            (categories[category] || (categories[category] = [])).push(message);
+        });
     });
     commits.on("end", function() {
         console.log(categories);

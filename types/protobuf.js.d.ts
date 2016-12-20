@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Mon, 19 Dec 2016 23:08:18 UTC
+// Generated Tue, 20 Dec 2016 00:04:16 UTC
 declare module "protobufjs" {
 
     /**
@@ -1092,6 +1092,7 @@ declare module "protobufjs" {
 
         /**
          * Reads a varint as an unsigned 32 bit value.
+         * @function
          * @returns {number} Value read
          */
         uint32(): number;
@@ -2304,13 +2305,6 @@ declare module "protobufjs" {
          * @returns {string} Converted string
          */
         function lcFirst(str: string): string;
-
-        /**
-         * Tests if the first character of a string is upper case.
-         * @param {string} str String to test
-         * @returns {boolean} `true` if the first character is upper case, otherwise `false`
-         */
-        function isUcFirst(str: string): boolean;
 
         /**
          * Creates a new buffer of whatever type supported by the environment.

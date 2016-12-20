@@ -87,9 +87,9 @@ MapFieldPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     
-    // Besides a value type, map fields possibily have an enum as its key type to resolve
-    if (types.mapKey[this.keyType] === undefined && !(this.resolvedKeyType = this.parent.lookup(this.keyType, Enum)))
-        throw Error("unresolvable key type: " + this.keyType);
+    // Besides a value type, map fields have a key type that may be "any scalar type except for floating point types and bytes"
+    if (types.mapKey[this.keyType] === undefined)
+        throw Error("invalid key type: " + this.keyType);
 
     return FieldPrototype.resolve.call(this);
 };

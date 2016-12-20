@@ -123,7 +123,7 @@ exports.main = function(args, callback) {
 
     var root;
     try {
-        root = root.loadSync(files, parseOptions);
+        root = root.loadSync(files, parseOptions); // sync is deterministic while async is not
     } catch (err) {
         if (callback) {
             callback(err);

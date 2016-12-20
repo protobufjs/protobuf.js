@@ -114,8 +114,8 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
  */
 LongBitsPrototype.toLong = function toLong(unsigned) {
     return util.Long
-        ? new util.Long(this.lo, this.hi, unsigned)
-        : { low: this.lo, high: this.hi, unsigned: Boolean(unsigned) };
+        ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+        : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
 
 var charCodeAt = String.prototype.charCodeAt;
@@ -148,11 +148,11 @@ LongBitsPrototype.toHash = function toHash() {
         this.lo        & 255,
         this.lo >>> 8  & 255,
         this.lo >>> 16 & 255,
-        this.lo >>> 24 & 255,
+        this.lo >>> 24      ,
         this.hi        & 255,
         this.hi >>> 8  & 255,
         this.hi >>> 16 & 255,
-        this.hi >>> 24 & 255
+        this.hi >>> 24
     );
 };
 
@@ -186,14 +186,13 @@ LongBitsPrototype.length = function length() {
     var part0 =  this.lo,
         part1 = (this.lo >>> 28 | this.hi << 4) >>> 0,
         part2 =  this.hi >>> 24;
-    if (part2 === 0) {
-        if (part1 === 0)
-            return part0 < 1 << 14
-                ? part0 < 1 << 7 ? 1 : 2
-                : part0 < 1 << 21 ? 3 : 4;
-        return part1 < 1 << 14
-            ? part1 < 1 << 7 ? 5 : 6
-            : part1 < 1 << 21 ? 7 : 8;
-    }
-    return part2 < 1 << 7 ? 9 : 10;
+    return part2 === 0
+         ? part1 === 0
+           ? part0 < 16384
+             ? part0 < 128 ? 1 : 2
+             : part0 < 2097152 ? 3 : 4
+           : part1 < 16384
+             ? part1 < 128 ? 5 : 6
+             : part1 < 2097152 ? 7 : 8
+         : part2 < 128 ? 9 : 10;
 };
