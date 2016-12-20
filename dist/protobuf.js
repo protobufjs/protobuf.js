@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 20 Dec 2016 00:35:06 UTC
+ * Compiled Tue, 20 Dec 2016 13:19:05 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1780,8 +1780,7 @@ var MapFieldPrototype = Field.extend(MapField);
 
 MapField.className = "MapField";
 
-var Enum    = require(16),
-    types   = require(33),
+var types   = require(33),
     util    = require(34);
 
 /**
@@ -1865,7 +1864,7 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"16":16,"17":17,"33":33,"34":34}],19:[function(require,module,exports){
+},{"17":17,"33":33,"34":34}],19:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 

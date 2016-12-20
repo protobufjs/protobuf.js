@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Tue, 20 Dec 2016 00:04:16 UTC
+// Generated Tue, 20 Dec 2016 13:19:01 UTC
 declare module "protobufjs" {
 
     /**

@@ -9,8 +9,7 @@ var MapFieldPrototype = Field.extend(MapField);
 
 MapField.className = "MapField";
 
-var Enum    = require("./enum"),
-    types   = require("./types"),
+var types   = require("./types"),
     util    = require("./util");
 
 /**
