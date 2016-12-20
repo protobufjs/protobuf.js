@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 20 Dec 2016 13:19:05 UTC
+ * Compiled Tue, 20 Dec 2016 16:44:00 UTC
  * Licensed under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1911,21 +1911,16 @@ MessagePrototype.asJSON = function asJSON(options) {
         options = {};
     var fields = this.$type.fields,
         json   = {};
-    var keys;
-    if (options.defaults) {
-        keys = Object.keys(fields);
-    } else
-        keys = Object.keys(this);
+    var keys = Object.keys(options.defaults ? fields : this);
     for (var i = 0, key; i < keys.length; ++i) {
         var field = fields[key = keys[i]],
             value = this[key];
         if (field) {
             if (field.repeated) {
                 if (value && (value.length || options.defaults)) {
-                    var array = new Array(value.length);
+                    json[key] = [];
                     for (var j = 0, l = value.length; j < l; ++j)
-                        array[j] = field.jsonConvert(value[j], options);
-                    json[key] = array;
+                        json[key].push(field.jsonConvert(value[j], options));
                 }
             } else
                 json[key] = field.jsonConvert(value, options);

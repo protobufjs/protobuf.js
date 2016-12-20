@@ -313,7 +313,7 @@ Documentation
 
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
 
-* [protobuf.js API Documentation](http://dcode.io/protobuf.js/)
+* [protobuf.js API Documentation](http://dcode.io/protobuf.js/) and [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
 
 * [Questions and answers on StackOverflow](http://stackoverflow.com/questions/tagged/protobuf.js)
 
@@ -394,6 +394,20 @@ Generates TypeScript definitions from annotated JavaScript files.
   -o, --out       Saves to a file instead of writing to stdout.
 
 usage: pbts [options] file1.js file2.js ...
+```
+
+### Using pbjs and pbts programmatically
+
+Both utilities can be used programmatically by providing command line arguments and a callback to their respective `main` functions:
+
+```js
+var pbjs = require("protobufjs/cli/pbjs");
+
+pbjs.main([ "--target", "json-module", "path/to/myproto.proto" ], function(err, output) {
+    if (err)
+        throw err;
+    // do something with output
+});
 ```
 
 ### Descriptors vs. static modules

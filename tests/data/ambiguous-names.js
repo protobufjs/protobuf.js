@@ -90,7 +90,7 @@ $root.A = (function() {
             r instanceof Reader||(r=Reader.create(r))
             var c=l===undefined?r.len:r.pos+l,m=new $root.A
             while(r.pos<c){
-                var t=r.int32()
+                var t=r.uint32()
                 switch(t>>>3){
                     case 1:
                         m["whatever"]=r.string()
@@ -220,7 +220,7 @@ $root.B = (function() {
             r instanceof Reader||(r=Reader.create(r))
             var c=l===undefined?r.len:r.pos+l,m=new $root.B
             while(r.pos<c){
-                var t=r.int32()
+                var t=r.uint32()
                 switch(t>>>3){
                     case 1:
                         m["A"]=types[0].decode(r,r.uint32())

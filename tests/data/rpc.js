@@ -155,7 +155,7 @@ $root.MyRequest = (function() {
             r instanceof Reader||(r=Reader.create(r))
             var c=l===undefined?r.len:r.pos+l,m=new $root.MyRequest
             while(r.pos<c){
-                var t=r.int32()
+                var t=r.uint32()
                 switch(t>>>3){
                     case 1:
                         m["path"]=r.string()
@@ -285,7 +285,7 @@ $root.MyResponse = (function() {
             r instanceof Reader||(r=Reader.create(r))
             var c=l===undefined?r.len:r.pos+l,m=new $root.MyResponse
             while(r.pos<c){
-                var t=r.int32()
+                var t=r.uint32()
                 switch(t>>>3){
                     case 2:
                         m["status"]=r.int32()

@@ -251,7 +251,7 @@ $root.Package = (function() {
             r instanceof Reader||(r=Reader.create(r))
             var c=l===undefined?r.len:r.pos+l,m=new $root.Package
             while(r.pos<c){
-                var t=r.int32()
+                var t=r.uint32()
                 switch(t>>>3){
                     case 1:
                         m["name"]=r.string()
@@ -558,7 +558,7 @@ $root.Package = (function() {
                 r instanceof Reader||(r=Reader.create(r))
                 var c=l===undefined?r.len:r.pos+l,m=new $root.Package.Repository
                 while(r.pos<c){
-                    var t=r.int32()
+                    var t=r.uint32()
                     switch(t>>>3){
                         case 1:
                             m["type"]=r.string()

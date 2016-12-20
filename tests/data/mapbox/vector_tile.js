@@ -100,7 +100,7 @@ $root.vector_tile = (function() {
                 r instanceof Reader||(r=Reader.create(r))
                 var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile
                 while(r.pos<c){
-                    var t=r.int32()
+                    var t=r.uint32()
                     switch(t>>>3){
                         case 3:
                             m["layers"]&&m["layers"].length?m["layers"]:m["layers"]=[]
@@ -300,7 +300,7 @@ $root.vector_tile = (function() {
                     r instanceof Reader||(r=Reader.create(r))
                     var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile.Value
                     while(r.pos<c){
-                        var t=r.int32()
+                        var t=r.uint32()
                         switch(t>>>3){
                             case 1:
                                 m["stringValue"]=r.string()
@@ -507,7 +507,7 @@ $root.vector_tile = (function() {
                     r instanceof Reader||(r=Reader.create(r))
                     var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile.Feature
                     while(r.pos<c){
-                        var t=r.int32()
+                        var t=r.uint32()
                         switch(t>>>3){
                             case 1:
                                 m["id"]=r.uint64()
@@ -731,7 +731,7 @@ $root.vector_tile = (function() {
                     r instanceof Reader||(r=Reader.create(r))
                     var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile.Layer
                     while(r.pos<c){
-                        var t=r.int32()
+                        var t=r.uint32()
                         switch(t>>>3){
                             case 15:
                                 m["version"]=r.uint32()
