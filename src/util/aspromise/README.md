@@ -10,4 +10,4 @@ API
 * **asPromise(fn: `function`, ctx: `Object`, ...params: `*`): `Promise<*>`**<br />
   Returns a promise from a node-style callback function.
 
-**License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+**License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

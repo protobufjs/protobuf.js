@@ -16,4 +16,4 @@ API
 * **codegen#eof([name?: `string`], [scope: `Object`]): `function`**<br />
   Ends generation and builds the function whilst applying a scope.
 
-**License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+**License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

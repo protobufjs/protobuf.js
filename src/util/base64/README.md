@@ -16,4 +16,4 @@ API
 * **base64.decode(string: `string`, buffer: `Uint8Array`, offset: `number`): `number`**<br />
   Decodes a base64 encoded string to a buffer.
 
-**License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+**License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

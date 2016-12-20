@@ -1,130 +1,10 @@
 /*!
- * protobuf.js v6.3.0 (c) 2016 Daniel Wirtz
- * Compiled Tue, 20 Dec 2016 16:44:00 UTC
- * Licensed under the Apache License, Version 2.0
+ * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
+ * Compiled Tue, 20 Dec 2016 21:38:15 UTC
+ * Licensed under the BSD-3-Clause license
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// Copyright (c) 2008, Fair Oaks Labs, Inc.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-//  * Redistributions of source code must retain the above copyright notice,
-//    this list of conditions and the following disclaimer.
-//
-//  * Redistributions in binary form must reproduce the above copyright notice,
-//    this list of conditions and the following disclaimer in the documentation
-//    and/or other materials provided with the distribution.
-//
-//  * Neither the name of Fair Oaks Labs, Inc. nor the names of its contributors
-//    may be used to endorse or promote products derived from this software
-//    without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-// POSSIBILITY OF SUCH DAMAGE.
-//
-//
-// Modifications to writeIEEE754 to support negative zeroes made by Brian White
-
-// ref: https://github.com/nodejs/node/blob/87286cc7371886d9856edf424785aaa890ba05a9/lib/buffer_ieee754.js
-
-exports.read = function readIEEE754(buffer, offset, isBE, mLen, nBytes) {
-    var e, m,
-        eLen = nBytes * 8 - mLen - 1,
-        eMax = (1 << eLen) - 1,
-        eBias = eMax >> 1,
-        nBits = -7,
-        i = isBE ? 0 : (nBytes - 1),
-        d = isBE ? 1 : -1,
-        s = buffer[offset + i];
-
-    i += d;
-
-    e = s & ((1 << (-nBits)) - 1);
-    s >>= (-nBits);
-    nBits += eLen;
-    for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8);
-
-    m = e & ((1 << (-nBits)) - 1);
-    e >>= (-nBits);
-    nBits += mLen;
-    for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8);
-
-    if (e === 0) {
-        e = 1 - eBias;
-    } else if (e === eMax) {
-        return m ? NaN : ((s ? -1 : 1) * Infinity);
-    } else {
-        m = m + Math.pow(2, mLen);
-        e = e - eBias;
-    }
-    return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
-};
-
-exports.write = function writeIEEE754(buffer, value, offset, isBE, mLen, nBytes) {
-    var e, m, c,
-        eLen = nBytes * 8 - mLen - 1,
-        eMax = (1 << eLen) - 1,
-        eBias = eMax >> 1,
-        rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0),
-        i = isBE ? (nBytes - 1) : 0,
-        d = isBE ? -1 : 1,
-        s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
-
-    value = Math.abs(value);
-
-    if (isNaN(value) || value === Infinity) {
-        m = isNaN(value) ? 1 : 0;
-        e = eMax;
-    } else {
-        e = Math.floor(Math.log(value) / Math.LN2);
-        if (value * (c = Math.pow(2, -e)) < 1) {
-            e--;
-            c *= 2;
-        }
-        if (e + eBias >= 1) {
-            value += rt / c;
-        } else {
-            value += rt * Math.pow(2, 1 - eBias);
-        }
-        if (value * c >= 2) {
-            e++;
-            c /= 2;
-        }
-
-        if (e + eBias >= eMax) {
-            m = 0;
-            e = eMax;
-        } else if (e + eBias >= 1) {
-            m = (value * c - 1) * Math.pow(2, mLen);
-            e = e + eBias;
-        } else {
-            m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
-            e = 0;
-        }
-    }
-
-    for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8);
-
-    e = (e << mLen) | m;
-    eLen += mLen;
-    for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
-
-    buffer[offset + i - d] |= s * 128;
-};
-
-},{}],2:[function(require,module,exports){
 "use strict";
 
 /**
@@ -246,7 +126,7 @@ base64.decode = function decode(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 module.exports = inquire;
 
@@ -265,7 +145,7 @@ function inquire(moduleName) {
     return null;
 }
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -315,7 +195,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 /**
@@ -419,16 +299,16 @@ utf8.write = function(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 var protobuf = exports;
 
-protobuf.Writer = require(11);
-protobuf.BufferWriter = require(12);
-protobuf.Reader = require(7);
-protobuf.BufferReader = require(8);
-protobuf.util = require(10);
+protobuf.Writer = require(10);
+protobuf.BufferWriter = require(11);
+protobuf.Reader = require(6);
+protobuf.BufferReader = require(7);
+protobuf.util = require(9);
 protobuf.roots = {};
 protobuf.configure = configure;
 
@@ -446,12 +326,11 @@ if (typeof define === "function" && define.amd)
         return protobuf;
     });
 
-},{"10":10,"11":11,"12":12,"7":7,"8":8}],7:[function(require,module,exports){
+},{"10":10,"11":11,"6":6,"7":7,"9":9}],6:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-var util      = require(10),
-    ieee754   = require(1);
+var util      = require(9);
 
 var BufferReader; // cyclic
 
@@ -501,7 +380,7 @@ function Reader(buffer) {
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
         if (!BufferReader)
-            BufferReader = require(8);
+            BufferReader = require(7);
         return (Reader.create = function create_buffer(buffer) {
             return new BufferReader(buffer);
         })(buffer);
@@ -669,10 +548,10 @@ ReaderPrototype.bool = function read_bool() {
 };
 
 function readFixed32(buf, end) {
-    return buf[end - 4]
-         | buf[end - 3] << 8
-         | buf[end - 2] << 16
-         | buf[end - 1] << 24;
+    return (buf[end - 4]
+          | buf[end - 3] << 8
+          | buf[end - 2] << 16
+          | buf[end - 1] << 24) >>> 0;
 }
 
 /**
@@ -762,7 +641,17 @@ var readFloat = typeof Float32Array !== "undefined"
             };
     })()
     : function readFloat_ieee754(buf, pos) {
-        return ieee754.read(buf, pos, false, 23, 4);
+        var uint = readFixed32(buf, pos + 4),
+            sign = (uint >> 31) * 2 + 1,
+            exponent = uint >>> 23 & 255,
+            mantissa = uint & 8388607;
+        return exponent === 255
+            ? mantissa
+              ? NaN
+              : sign * Infinity
+            : exponent === 0 // denormal
+              ? sign * 1.401298464324817e-45 * mantissa
+              : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
     };
 
 /**
@@ -811,7 +700,18 @@ var readDouble = typeof Float64Array !== "undefined"
             };
     })()
     : function readDouble_ieee754(buf, pos) {
-        return ieee754.read(buf, pos, false, 52, 8);
+        var lo = readFixed32(buf, pos + 4),
+            hi = readFixed32(buf, pos + 8);
+        var sign = (hi >> 31) * 2 + 1,
+            exponent = hi >>> 20 & 2047,
+            mantissa = 4294967296 * (hi & 1048575) + lo;
+        return exponent === 2047
+            ? mantissa
+              ? NaN
+              : sign * Infinity
+            : exponent === 0 // denormal
+              ? sign * 5e-324 * mantissa
+              : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
     };
 
 /**
@@ -933,16 +833,16 @@ Reader._configure = configure;
 
 configure();
 
-},{"1":1,"10":10,"8":8}],8:[function(require,module,exports){
+},{"7":7,"9":9}],7:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
-var Reader = require(7);
+var Reader = require(6);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require(10);
+var util = require(9);
 
 /**
  * Constructs a new buffer reader instance.
@@ -966,12 +866,12 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"10":10,"7":7}],9:[function(require,module,exports){
+},{"6":6,"9":9}],8:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(10);
+var util = require(9);
 
 /**
  * Any compatible Long instance.
@@ -1166,17 +1066,17 @@ LongBitsPrototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"10":10}],10:[function(require,module,exports){
+},{"9":9}],9:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-util.LongBits = require(9);
-util.base64   = require(2);
-util.inquire  = require(3);
-util.utf8     = require(5);
-util.pool     = require(4);
+util.LongBits = require(8);
+util.base64   = require(1);
+util.inquire  = require(2);
+util.utf8     = require(4);
+util.pool     = require(3);
 
 /**
  * Whether running within node or not.
@@ -1327,22 +1227,21 @@ util.prop = function prop(target, key, descriptor) {
  * @memberof util
  * @type {Array.<*>}
  */
-util.emptyArray = Object.freeze([]);
+util.emptyArray = Object.freeze ? Object.freeze([]) : [];
 
 /**
  * An immutable empty object.
  * @type {Object}
  */
-util.emptyObject = Object.freeze({});
+util.emptyObject = Object.freeze ? Object.freeze({}) : {};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"2":2,"3":3,"4":4,"5":5,"9":9}],11:[function(require,module,exports){
+},{"1":1,"2":2,"3":3,"4":4,"8":8}],10:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(10),
-    ieee754   = require(1);
+var util      = require(9);
 
 var BufferWriter; // cyclic
 
@@ -1475,7 +1374,7 @@ function Writer() {
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
         if (!BufferWriter)
-            BufferWriter = require(12);
+            BufferWriter = require(11);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -1683,8 +1582,23 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    : function writeFloat_ieee754(val, buf, pos) {
-        ieee754.write(buf, val, pos, false, 23, 4);
+    : function writeFloat_ieee754(value, buf, pos) {
+        var sign = value < 0 ? 1 : 0;
+        if (sign)
+            value = -value;
+        if (value === 0)
+            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 0x80000000, buf, pos);
+        else if (isNaN(value))
+            writeFixed32(0x7fffffff, buf, pos);
+        else if (value > 3.4028234663852886e+38) // +-Infinity
+            writeFixed32((sign << 31 | 0x7f800000) >>> 0, buf, pos);
+        else if (value < 1.1754943508222875e-38) // denormal
+            writeFixed32((sign << 31 | Math.round(value / 1.401298464324817e-45)) >>> 0, buf, pos);
+        else {
+            var exponent = Math.floor(Math.log(value) / Math.LN2),
+                mantissa = Math.round(value * Math.pow(2, -exponent) * 8388608) & 0x7fffff;
+            writeFixed32((sign << 31 | exponent + 127 << 23 | mantissa) >>> 0, buf, pos);
+        }
     };
 
 /**
@@ -1726,8 +1640,34 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
-    : function writeDouble_ieee754(val, buf, pos) {
-        ieee754.write(buf, val, pos, false, 52, 8);
+    : function writeDouble_ieee754(value, buf, pos) {
+        var sign = value < 0 ? 1 : 0;
+        if (sign)
+            value = -value;
+        if (value === 0) {
+            writeFixed32(0, buf, pos);
+            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 0x80000000, buf, pos + 4);
+        } else if (isNaN(value)) {
+            writeFixed32(0xFFFFFFFF, buf, pos);
+            writeFixed32(0x7FFFFFFF, buf, pos + 4);
+        } else if (value > 1.7976931348623157e+308) { // +-Infinity
+            writeFixed32(0, buf, pos);
+            writeFixed32((sign << 31 | 0x7FF00000) >>> 0, buf, pos + 4);
+        } else {
+            var mantissa;
+            if (value < 2.2250738585072014e-308) { // denormal
+                mantissa = value / 5e-324;
+                writeFixed32(mantissa >>> 0, buf, pos);
+                writeFixed32((sign << 31 | mantissa / 4294967296) >>> 0, buf, pos + 4);
+            } else {
+                var exponent = Math.floor(Math.log(value) / Math.LN2);
+                if (exponent === 1024)
+                    exponent = 1023;
+                mantissa = value * Math.pow(2, -exponent);
+                writeFixed32(mantissa * 4503599627370496 >>> 0, buf, pos);
+                writeFixed32((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 0xFFFFF) >>> 0, buf, pos + 4);
+            }
+        }
     };
 
 /**
@@ -1844,16 +1784,16 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
-},{"1":1,"10":10,"12":12}],12:[function(require,module,exports){
+},{"11":11,"9":9}],11:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
-var Writer = require(11);
+var Writer = require(10);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require(10);
+var util = require(9);
 
 var utf8   = util.utf8,
     Buffer = util.Buffer;
@@ -1922,7 +1862,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"10":10,"11":11}]},{},[6])
+},{"10":10,"9":9}]},{},[5])
 
 
 //# sourceMappingURL=protobuf.js.map

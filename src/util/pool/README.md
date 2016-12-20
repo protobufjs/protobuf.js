@@ -10,4 +10,4 @@ API
 * **pool(alloc: `function(size: number): Uint8Array`, slice: `function(this: Uint8Array, start: number, end: number): Uint8Array`, [size=8192: `number`]): `function(size: number): Uint8Array`**<br />
   Creates a pooled allocator.
 
-**License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+**License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

@@ -17,4 +17,4 @@ API
   Writes a string as UTF8 bytes.
 
 
-**License:** [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+**License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

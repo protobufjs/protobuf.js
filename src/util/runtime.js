@@ -157,10 +157,10 @@ util.prop = function prop(target, key, descriptor) {
  * @memberof util
  * @type {Array.<*>}
  */
-util.emptyArray = Object.freeze([]);
+util.emptyArray = Object.freeze ? Object.freeze([]) : [];
 
 /**
  * An immutable empty object.
  * @type {Object}
  */
-util.emptyObject = Object.freeze({});
+util.emptyObject = Object.freeze ? Object.freeze({}) : {};

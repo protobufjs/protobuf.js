@@ -3,7 +3,7 @@
   "version": "6.3.0",
   "description": "Protocol Buffers for JavaScript (& TypeScript).",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
-  "license": "Apache-2.0",
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "https://github.com/dcodeIO/protobuf.js.git"
@@ -41,16 +41,16 @@
     "release": "npm run make && npm run changelog"
   },
   "dependencies": {
-    "@protobufjs/aspromise": "^1.0.3",
-    "@protobufjs/base64": "^1.0.3",
-    "@protobufjs/codegen": "^1.0.2",
-    "@protobufjs/eventemitter": "^1.0.3",
-    "@protobufjs/extend": "^1.0.0",
-    "@protobufjs/fetch": "^1.0.2",
-    "@protobufjs/inquire": "^1.0.0",
-    "@protobufjs/path": "^1.0.0",
-    "@protobufjs/pool": "^1.0.3",
-    "@protobufjs/utf8": "^1.0.3"
+    "@protobufjs/aspromise": "^1.0.4",
+    "@protobufjs/base64": "^1.0.4",
+    "@protobufjs/codegen": "^1.0.3",
+    "@protobufjs/eventemitter": "^1.0.4",
+    "@protobufjs/extend": "^1.0.1",
+    "@protobufjs/fetch": "^1.0.3",
+    "@protobufjs/inquire": "^1.0.1",
+    "@protobufjs/path": "^1.0.1",
+    "@protobufjs/pool": "^1.0.4",
+    "@protobufjs/utf8": "^1.0.4"
   },
   "optionalDependencies": {
     "long": "^3.2.0"

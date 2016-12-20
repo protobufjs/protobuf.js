@@ -17,9 +17,9 @@ var source     = require('vinyl-source-stream');
 var pkg = require(__dirname + '/../package.json');
 var license = [
     "/*!",
-    " * protobuf.js v${version} (c) 2016 Daniel Wirtz",
+    " * protobuf.js v${version} (c) 2016, Daniel Wirtz",
     " * Compiled ${date}",
-    " * Licensed under the Apache License, Version 2.0",
+    " * Licensed under the BSD-3-Clause license",
     " * see: https://github.com/dcodeIO/protobuf.js for details",
     " */"
 ].join('\n') + '\n';
@@ -38,7 +38,6 @@ function bundle(compress, runtime) {
     })
     return bundler
     .external("long")
-    .external("buffer")
     .exclude("process")
     .exclude("_process")
     .plugin(require('bundle-collapser/plugin'))

@@ -1,8 +1,7 @@
 "use strict";
 module.exports = Reader;
 
-var util      = require("./util/runtime"),
-    ieee754   = require("../lib/ieee754");
+var util      = require("./util/runtime");
 
 var BufferReader; // cyclic
 
@@ -220,10 +219,10 @@ ReaderPrototype.bool = function read_bool() {
 };
 
 function readFixed32(buf, end) {
-    return buf[end - 4]
-         | buf[end - 3] << 8
-         | buf[end - 2] << 16
-         | buf[end - 1] << 24;
+    return (buf[end - 4]
+          | buf[end - 3] << 8
+          | buf[end - 2] << 16
+          | buf[end - 1] << 24) >>> 0;
 }
 
 /**
@@ -313,7 +312,17 @@ var readFloat = typeof Float32Array !== "undefined"
             };
     })()
     : function readFloat_ieee754(buf, pos) {
-        return ieee754.read(buf, pos, false, 23, 4);
+        var uint = readFixed32(buf, pos + 4),
+            sign = (uint >> 31) * 2 + 1,
+            exponent = uint >>> 23 & 255,
+            mantissa = uint & 8388607;
+        return exponent === 255
+            ? mantissa
+              ? NaN
+              : sign * Infinity
+            : exponent === 0 // denormal
+              ? sign * 1.401298464324817e-45 * mantissa
+              : sign * Math.pow(2, exponent - 150) * (mantissa + 8388608);
     };
 
 /**
@@ -362,7 +371,18 @@ var readDouble = typeof Float64Array !== "undefined"
             };
     })()
     : function readDouble_ieee754(buf, pos) {
-        return ieee754.read(buf, pos, false, 52, 8);
+        var lo = readFixed32(buf, pos + 4),
+            hi = readFixed32(buf, pos + 8);
+        var sign = (hi >> 31) * 2 + 1,
+            exponent = hi >>> 20 & 2047,
+            mantissa = 4294967296 * (hi & 1048575) + lo;
+        return exponent === 2047
+            ? mantissa
+              ? NaN
+              : sign * Infinity
+            : exponent === 0 // denormal
+              ? sign * 5e-324 * mantissa
+              : sign * Math.pow(2, exponent - 1075) * (mantissa + 4503599627370496);
     };
 
 /**

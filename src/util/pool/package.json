@@ -1,11 +1,11 @@
 {
   "name": "@protobufjs/pool",
   "description": "A general purpose buffer pool.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
     "url": "https://github.com/dcodeIO/protobuf.js.git"
   },
-  "license": "Apache-2.0"
+  "license": "BSD-3-Clause"
 }
