@@ -16,7 +16,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ea7ba8b83890084d61012cb5386dc11dadfb3908) Fixed release links in README files<br />
 
 ## New
-[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9078a37fbf7bff8ba829d979073e3df91f1bcfc5) Updated non-bundled common google types folder with field_mask, source_context, type and wrappers<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/aed134aa1cd7edd801de77c736cf5efe6fa61cb0) Updated non-bundled google types folder with missing descriptors and added wrappers to core<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0b0de2458a1ade1ccd4ceb789697be13290f856b) Replaced the ieee754 implementation for old browsers with a faster, use-case specific one + simple test case<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Added .create to statically generated types and uppercase nested elements to reflection namespaces, see [#576](https://github.com/dcodeIO/protobuf.js/issues/576)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Also added Namespace#getEnum for completeness, see [#576](https://github.com/dcodeIO/protobuf.js/issues/576)<br />

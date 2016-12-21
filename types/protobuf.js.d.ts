@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Tue, 20 Dec 2016 21:38:11 UTC
+// Generated Wed, 21 Dec 2016 00:40:53 UTC
 declare module "protobufjs" {
 
     /**
@@ -86,6 +86,7 @@ declare module "protobufjs" {
      * @property {Object} google/protobuf/empty.proto Empty
      * @property {Object} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
      * @property {Object} google/protobuf/timestamp.proto Timestamp
+     * @property {Object} google/protobuf/wrappers.proto Wrappers
      */
     function common(name: string, json: Object): void;
 

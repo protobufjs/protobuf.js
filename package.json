@@ -76,6 +76,7 @@
     "jaguarjs-jsdoc": "dcodeIO/jaguarjs-jsdoc",
     "jsdoc": "^3.4.2",
     "minimist": "^1.2.0",
+    "node-zopfli": "^2.0.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "typescript": "^2.1.4",

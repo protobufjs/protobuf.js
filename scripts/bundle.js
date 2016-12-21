@@ -1,28 +1,28 @@
 module.exports = bundle;
 
-var path       = require('path');
+var path       = require("path");
 
-var browserify = require('browserify');
+var browserify = require("browserify");
 
-var header     = require('gulp-header');
-var gulpif     = require('gulp-if');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify     = require('gulp-uglify');
-var gutil      = require('gulp-util');
+var header     = require("gulp-header");
+var gulpif     = require("gulp-if");
+var sourcemaps = require("gulp-sourcemaps");
+var uglify     = require("gulp-uglify");
+var gutil      = require("gulp-util");
 
-var buffer     = require('vinyl-buffer');
-var vinylfs    = require('vinyl-fs');
-var source     = require('vinyl-source-stream');
+var buffer     = require("vinyl-buffer");
+var vinylfs    = require("vinyl-fs");
+var source     = require("vinyl-source-stream");
 
-var pkg = require(__dirname + '/../package.json');
+var pkg = require(__dirname + "/../package.json");
 var license = [
     "/*!",
     " * protobuf.js v${version} (c) 2016, Daniel Wirtz",
     " * Compiled ${date}",
-    " * Licensed under the BSD-3-Clause license",
+    " * Licensed under the BSD-3-Clause License",
     " * see: https://github.com/dcodeIO/protobuf.js for details",
     " */"
-].join('\n') + '\n';
+].join("\n") + "\n";
 
 function bundle(compress, runtime) {
     var src = runtime
@@ -40,9 +40,9 @@ function bundle(compress, runtime) {
     .external("long")
     .exclude("process")
     .exclude("_process")
-    .plugin(require('bundle-collapser/plugin'))
+    .plugin(require("bundle-collapser/plugin"))
     .bundle()
-    .pipe(source(compress ? 'protobuf.min.js' : 'protobuf.js'))
+    .pipe(source(compress ? "protobuf.min.js" : "protobuf.js"))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(
@@ -53,11 +53,25 @@ function bundle(compress, runtime) {
                 }))
             )
             .pipe(header(license, {
-                date: (new Date()).toUTCString().replace('GMT', 'UTC'),
+                date: (new Date()).toUTCString().replace("GMT", "UTC"),
                 version: pkg.version
             }))
-    .pipe(sourcemaps.write('.', { sourceRoot: '' }))
+    .pipe(sourcemaps.write(".", { sourceRoot: "" }))
     .pipe(vinylfs.dest(dst))
     .on("log", gutil.log)
     .on("error", gutil.log);
 }
+
+var fs     = require("fs");
+var zopfli = require("node-zopfli");
+
+bundle.compress = function compress(sourceFile, destinationFile, callback) {
+    var src = fs.createReadStream(sourceFile);
+    var dst = fs.createWriteStream(destinationFile);
+    src.on("error", callback);
+    dst.on("error", callback);
+    dst.on("close", function() {
+        callback(null);
+    });
+    src.pipe(zopfli.createGzip()).pipe(dst);
+};
