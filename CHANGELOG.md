@@ -16,6 +16,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ea7ba8b83890084d61012cb5386dc11dadfb3908) Fixed release links in README files<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/bfee1cc3624d0fa21f9553c2f6ce2fcf7fcc09b7) Now compresses .gz files using zopfli to make them useful beyond being just a reference<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/aed134aa1cd7edd801de77c736cf5efe6fa61cb0) Updated non-bundled google types folder with missing descriptors and added wrappers to core<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0b0de2458a1ade1ccd4ceb789697be13290f856b) Replaced the ieee754 implementation for old browsers with a faster, use-case specific one + simple test case<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Added .create to statically generated types and uppercase nested elements to reflection namespaces, see [#576](https://github.com/dcodeIO/protobuf.js/issues/576)<br />
@@ -40,6 +41,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7939a4bd8baca5f7e07530fc93f27911a6d91c6f) Updated README and bundler according to dynamic require calls<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/948ca2e3c5c62fedcd918d75539c261abf1a7347) Updated travis config to use C++11<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c59647a7542cbc4292248787e5f32bb99a9b8d46) Updated / added additional LICENSE files where appropriate<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/333f0221814be976874862dc83d0b216e07d4012) Integrated changelog into build process, now also has 'npm run make' for everything, see [#574](https://github.com/dcodeIO/protobuf.js/issues/574)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ab3e236a967a032a98267a648f84d129fdb4d4a6) Minor optimizations through providing type-hints<br />

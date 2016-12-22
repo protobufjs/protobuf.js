@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Wed, 21 Dec 2016 00:40:56 UTC
+ * Compiled Thu, 22 Dec 2016 13:18:46 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -302,18 +302,19 @@ utf8.write = function(string, buffer, offset) {
 },{}],5:[function(require,module,exports){
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
+"use strict";
 var protobuf = exports;
 
-protobuf.Writer = require(10);
+protobuf.Writer       = require(10);
 protobuf.BufferWriter = require(11);
-protobuf.Reader = require(6);
+protobuf.Reader       = require(6);
 protobuf.BufferReader = require(7);
-protobuf.util = require(9);
-protobuf.roots = {};
-protobuf.configure = configure;
+protobuf.util         = require(9);
+protobuf.roots        = {};
+protobuf.configure    = configure;
 
 function configure() {
-    Reader._configure();
+    protobuf.Reader._configure();
 }
 
 // Be nice to AMD
@@ -1091,9 +1092,14 @@ util.isNode = Boolean(global.process && global.process.versions && global.proces
  */
 util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
 
-// Don't use browser-buffer
-if (util.Buffer && !util.Buffer.prototype.utf8Write)
-    util.Buffer = null;
+if (util.Buffer) {
+    // Don't use browser-buffer for performance
+    if (!util.Buffer.prototype.utf8Write)
+        util.Buffer = null;
+    // Polyfill Buffer.from
+    else if (!util.Buffer.from)
+        util.Buffer.from = function from(value, encoding) { return new util.Buffer(value, encoding); };
+}
 
 /**
  * Long.js's Long class if available.
@@ -1185,6 +1191,15 @@ util.longNe = function longNe(val, lo, hi) {
 };
 
 /**
+ * Converts the first character of a string to upper case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
+    return str.charAt(0).toUpperCase() + str.substring(1);
+};
+
+/**
  * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
  * @param {Object} target Target object
  * @param {Object} descriptors Property descriptors
@@ -1205,7 +1220,7 @@ util.props = function props(target, descriptors) {
  */
 util.prop = function prop(target, key, descriptor) {
     var ie8 = !-[1,];
-    var ucKey = key.substring(0, 1).toUpperCase() + key.substring(1);
+    var ucKey = util.ucFirst(key);
     if (descriptor.get)
         target["get" + ucKey] = descriptor.get;
     if (descriptor.set)
@@ -1821,22 +1836,20 @@ BufferWriter.alloc = function alloc_buffer(size) {
         })(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name[0] === "s" // node v4: set.name == "deprecated"
+var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array
     ? function writeBytesBuffer_set(val, buf, pos) {
-        buf.set(val, pos); // faster than copy (requires node > 0.12)
+        buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array)
     }
     : function writeBytesBuffer_copy(val, buf, pos) {
         val.copy(buf, pos, 0, val.length);
     };
-
-var Buffer_from = Buffer && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
 
 /**
  * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     if (typeof value === "string")
-        value = Buffer_from(value, "base64");
+        value = Buffer.from(value, "base64"); // polyfilled
     var len = value.length >>> 0;
     this.uint32(len);
     if (len)

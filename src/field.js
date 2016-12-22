@@ -7,8 +7,7 @@ var FieldPrototype = ReflectionObject.extend(Field);
 
 Field.className = "Field";
 
-var Message = require("./message"),
-    Enum      = require("./enum"),
+var Enum      = require("./enum"),
     types     = require("./types"),
     util      = require("./util");
 
@@ -252,50 +251,23 @@ FieldPrototype.resolve = function resolve() {
             throw Error("unresolvable field type: " + this.type);
     }
 
-    // when everything is resolved determine the default value
-    var optionDefault;
+    // when everything is resolved, determine the default value
     if (this.map)
         this.defaultValue = {};
     else if (this.repeated)
         this.defaultValue = [];
-    else if (this.options && (optionDefault = this.options["default"]) !== undefined) // eslint-disable-line dot-notation
-        this.defaultValue = optionDefault;
-    else
-        this.defaultValue = typeDefault;
-
-    if (this.long)
-        this.defaultValue = util.Long.fromValue(this.defaultValue);
-
-    return ReflectionObject.prototype.resolve.call(this);
-};
-
-/**
- * Converts a field value to JSON using the specified options. Note that this method does not account for repeated fields and must be called once for each repeated element instead.
- * @param {*} value Field value
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {*} Converted value
- * @see {@link Message#asJSON}
- */
-FieldPrototype.jsonConvert = function(value, options) {
-    if (options) {
-        if (value instanceof Message)
-            return value.asJSON(options);
-        if (this.resolvedType instanceof Enum && options["enum"] === String) // eslint-disable-line dot-notation
-            return this.resolvedType.getValuesById()[value];
-        if (options.long && this.long)
-            return options.long === Number
-                ? typeof value === "number"
-                    ? value
-                    : util.LongBits.from(value).toNumber(this.type.charAt(0) === "u")
-                : util.Long.fromValue(value, this.type.charAt(0) === "u").toString();
-        if (options.bytes && this.bytes) {
-            if (options.bytes === String)
-                return util.base64.encode(value, 0, value.length);
-            if (options.bytes === Array)
-                return Array.prototype.slice.call(value);
-            if (options.bytes === util.Buffer && !util.Buffer.isBuffer(value))
-                return util.Buffer.from ? util.Buffer.from(value) : new util.Buffer(value);
+    else {
+        if (this.options && this.options["default"] !== undefined)
+            this.defaultValue = this.options["default"];
+        else
+            this.defaultValue = typeDefault;
+        
+        if (this.long) {
+            this.defaultValue = util.Long.fromNumber(this.defaultValue, this.type.charAt(0) === "u");
+            if (Object.freeze)
+                Object.freeze(this.defaultValue); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
         }
     }
-    return value;
+
+    return ReflectionObject.prototype.resolve.call(this);
 };

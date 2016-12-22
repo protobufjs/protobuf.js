@@ -36,7 +36,7 @@ function OneOf(name, fieldNames, options) {
      * Upper cased name for getter/setter calls.
      * @type {string}
      */
-    this.ucName = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
+    this.ucName = util.ucFirst(this.name);
 
     /**
      * Field names that belong to this oneof.

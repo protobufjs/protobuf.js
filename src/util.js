@@ -95,20 +95,11 @@ util.underScore = function underScore(str) {
 };
 
 /**
- * Converts the first character of a string to upper case.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.ucFirst = function ucFirst(str) {
-    return str.charAt(0).toUpperCase() + str.substring(1);
-};
-
-/**
  * Converts the second character of a string to lower case.
  * @param {string} str String to convert
  * @returns {string} Converted string
  */
-util.lcFirst = function lcFirst(str) {
+util.lcFirst = function lcFirst(str) { // ucFirst counterpart is in runtime util
     return str.charAt(0).toLowerCase() + str.substring(1);
 };
 

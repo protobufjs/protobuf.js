@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Wed, 21 Dec 2016 00:40:53 UTC
+// Generated Thu, 22 Dec 2016 13:18:42 UTC
 declare module "protobufjs" {
 
     /**
@@ -89,6 +89,64 @@ declare module "protobufjs" {
      * @property {Object} google/protobuf/wrappers.proto Wrappers
      */
     function common(name: string, json: Object): void;
+
+    /**
+     * A converter as used by {@link convert}.
+     * @typedef Converter
+     * @type {function}
+     * @param {Field} field Reflected field
+     * @param {*} value Value to convert
+     * @param {Object.<string,*>} options Conversion options
+     * @returns {*} Converted value
+     */
+    type Converter = (field: Field, value: any, options: { [k: string]: any }) => any;
+
+    /**
+     * Converts between JSON objects and messages, based on reflection information.
+     * @param {Type} type Type
+     * @param {*} source Source object
+     * @param {*} destination Destination object
+     * @param {Object.<string,*>} options Conversion options
+     * @param {Converter} converter Conversion function
+     * @returns {*} `destination`
+     * @property {Converter} toJson To JSON converter using {@link JSONConversionOptions}
+     * @property {Converter} toMessage To message converter using {@link MessageConversionOptions}
+     */
+    function convert(type: Type, source: any, destination: any, options: { [k: string]: any }, converter: Converter): any;
+
+    /**
+     * JSON conversion options as used by {@link Message#asJSON} with {@link convert}.
+     * @typedef JSONConversionOptions
+     * @type {Object}
+     * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
+     * @property {function} [long] Long conversion type. Only relevant with a long library.
+     * Valid values are `String` and `Number` (the global types).
+     * Defaults to a possibly unsafe number without, and a `Long` with a long library.
+     * @property {function} [enum=Number] Enum value conversion type.
+     * Valid values are `String` and `Number` (the global types).
+     * Defaults to the numeric ids.
+     * @property {function} [bytes] Bytes value conversion type.
+     * Valid values are `Array` and `String` (the global types).
+     * Defaults to return the underlying buffer type.
+     * @property {boolean} [defaults=false] Also sets default values on the resulting object
+     */
+    interface JSONConversionOptions {
+        fieldsOnly: boolean;
+        long: () => any;
+        enum: () => any;
+        bytes: () => any;
+        defaults: boolean;
+    }
+
+    /**
+     * Message conversion options as used by {@link Message.from} and {@link Type#from} with {@link convert}.
+     * @typedef MessageConversionOptions
+     * @type {Object}
+     * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
+     */
+    interface MessageConversionOptions {
+        fieldsOnly: boolean;
+    }
 
     /**
      * Generates a decoder specific to the specified message type.
@@ -346,15 +404,6 @@ declare module "protobufjs" {
          * @throws {Error} If any reference cannot be resolved
          */
         resolve(): Field;
-
-        /**
-         * Converts a field value to JSON using the specified options. Note that this method does not account for repeated fields and must be called once for each repeated element instead.
-         * @param {*} value Field value
-         * @param {Object.<string,*>} [options] Conversion options
-         * @returns {*} Converted value
-         * @see {@link Message#asJSON}
-         */
-        jsonConvert(value: any, options?: { [k: string]: any }): any;
     }
 
     /**
@@ -491,24 +540,6 @@ declare module "protobufjs" {
     abstract class Message extends Object {
 
         /**
-         * Converts this message to a JSON object.
-         * @param {Object.<string,*>} [options] Conversion options
-         * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
-         * @param {*} [options.long] Long conversion type. Only relevant with a long library.
-         * Valid values are `String` and `Number` (the global types).
-         * Defaults to a possibly unsafe number without, and a `Long` with a long library.
-         * @param {*} [options.enum=Number] Enum value conversion type.
-         * Valid values are `String` and `Number` (the global types).
-         * Defaults to the numeric ids.
-         * @param {*} [options.bytes] Bytes value conversion type.
-         * Valid values are `Array` and `String` (the global types).
-         * Defaults to return the underlying buffer type.
-         * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
-         * @returns {Object.<string,*>} JSON object
-         */
-        asJSON(options?: { [k: string]: any }): { [k: string]: any };
-
-        /**
          * Reference to the reflected type.
          * @name Message.$type
          * @type {Type}
@@ -523,6 +554,21 @@ declare module "protobufjs" {
          * @readonly
          */
         readonly $type: Type;
+
+        /**
+         * Converts this message to a JSON object.
+         * @param {JSONConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} JSON object
+         */
+        asJSON(options?: JSONConversionOptions): { [k: string]: any };
+
+        /**
+         * Creates a message from a JSON object by converting strings and numbers to their respective field types.
+         * @param {Object.<string,*>} object JSON object
+         * @param {MessageConversionOptions} [options] Options
+         * @returns {Message} Message instance
+         */
+        static from(object: { [k: string]: any }, options?: MessageConversionOptions): Message;
 
         /**
          * Encodes a message of this type.
@@ -1572,10 +1618,18 @@ declare module "protobufjs" {
 
         /**
          * Creates a new message of this type using the specified properties.
-         * @param {Object|*} [properties] Properties to set
+         * @param {Object} [properties] Properties to set
          * @returns {Message} Runtime message
          */
-        create(properties?: (Object|any)): Message;
+        create(properties?: Object): Message;
+
+        /**
+         * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
+         * @param {Object} object JSON object
+         * @param {MessageConversionOptions} [options] Conversion options
+         * @returns {Message} Runtime message
+         */
+        from(object: Object, options?: MessageConversionOptions): Message;
 
         /**
          * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
@@ -2188,6 +2242,13 @@ declare module "protobufjs" {
         function longNe(val: (number|string|Long), lo: number, hi: number): boolean;
 
         /**
+         * Converts the first character of a string to upper case.
+         * @param {string} str String to convert
+         * @returns {string} Converted string
+         */
+        function ucFirst(str: string): string;
+
+        /**
          * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
          * @param {Object} target Target object
          * @param {Object} descriptors Property descriptors
@@ -2292,13 +2353,6 @@ declare module "protobufjs" {
          * @returns {string} Converted string
          */
         function underScore(str: string): string;
-
-        /**
-         * Converts the first character of a string to upper case.
-         * @param {string} str String to convert
-         * @returns {string} Converted string
-         */
-        function ucFirst(str: string): string;
 
         /**
          * Converts the second character of a string to lower case.

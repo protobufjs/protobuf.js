@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+message Message {
+
+    string string_val = 1;
+    repeated string string_repeated = 2;
+
+    uint64 uint64_val = 3;
+    repeated uint64 uint64_repeated = 4;
+
+    bytes bytes_val = 5;
+    repeated bytes bytes_repeated = 6;
+
+    SomeEnum enum_val = 7;
+    repeated SomeEnum enum_repeated = 8;
+
+    enum SomeEnum {
+        ONE = 1;
+        TWO = 2;
+    }
+}

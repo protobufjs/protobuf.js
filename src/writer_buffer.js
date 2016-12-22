@@ -34,22 +34,20 @@ BufferWriter.alloc = function alloc_buffer(size) {
         })(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.from && Buffer.prototype.set.name[0] === "s" // node v4: set.name == "deprecated"
+var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array
     ? function writeBytesBuffer_set(val, buf, pos) {
-        buf.set(val, pos); // faster than copy (requires node > 0.12)
+        buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array)
     }
     : function writeBytesBuffer_copy(val, buf, pos) {
         val.copy(buf, pos, 0, val.length);
     };
-
-var Buffer_from = Buffer && Buffer.from || function(value, encoding) { return new Buffer(value, encoding); };
 
 /**
  * @override
  */
 BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
     if (typeof value === "string")
-        value = Buffer_from(value, "base64");
+        value = Buffer.from(value, "base64"); // polyfilled
     var len = value.length >>> 0;
     this.uint32(len);
     if (len)

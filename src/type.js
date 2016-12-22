@@ -17,6 +17,7 @@ var Enum      = require("./enum"),
     Message   = require("./message"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
+    convert   = require("./convert"),
     util      = require("./util");
 
 var encoder,  // might become cyclic
@@ -176,6 +177,8 @@ util.props(TypePrototype, {
         set: function setCtor(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
                 throw util._TypeError("ctor", "a Message constructor");
+            if (!ctor.from)
+                ctor.from = Message.from;
             this._ctor = ctor;
         }
     }
@@ -328,11 +331,21 @@ TypePrototype.remove = function remove(object) {
 
 /**
  * Creates a new message of this type using the specified properties.
- * @param {Object|*} [properties] Properties to set
+ * @param {Object} [properties] Properties to set
  * @returns {Message} Runtime message
  */
 TypePrototype.create = function create(properties) {
     return new (this.getCtor())(properties);
+};
+
+/**
+ * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
+ * @param {Object} object JSON object
+ * @param {MessageConversionOptions} [options] Conversion options
+ * @returns {Message} Runtime message
+ */
+TypePrototype.from = function from(object, options) {
+    return convert(this, object, new (this.getCtor())(), options, convert.toMessage);
 };
 
 /**

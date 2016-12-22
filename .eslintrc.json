@@ -34,7 +34,7 @@
         "curly": 0,                         // sometimes more braces than code
         "default-case": 0,                  // just forces unnecessary code
         "dot-location": 0,                  // looks nicer for chainables
-        "dot-notation": 1,
+        "dot-notation": 0,                  // not compatible with reserved properties
         "eqeqeq": 1,
         "guard-for-in": 1,
         "no-alert": 1,

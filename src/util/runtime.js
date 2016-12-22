@@ -21,9 +21,14 @@ util.isNode = Boolean(global.process && global.process.versions && global.proces
  */
 util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
 
-// Don't use browser-buffer
-if (util.Buffer && !util.Buffer.prototype.utf8Write)
-    util.Buffer = null;
+if (util.Buffer) {
+    // Don't use browser-buffer for performance
+    if (!util.Buffer.prototype.utf8Write)
+        util.Buffer = null;
+    // Polyfill Buffer.from
+    else if (!util.Buffer.from)
+        util.Buffer.from = function from(value, encoding) { return new util.Buffer(value, encoding); };
+}
 
 /**
  * Long.js's Long class if available.
@@ -115,6 +120,15 @@ util.longNe = function longNe(val, lo, hi) {
 };
 
 /**
+ * Converts the first character of a string to upper case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
+    return str.charAt(0).toUpperCase() + str.substring(1);
+};
+
+/**
  * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
  * @param {Object} target Target object
  * @param {Object} descriptors Property descriptors
@@ -135,7 +149,7 @@ util.props = function props(target, descriptors) {
  */
 util.prop = function prop(target, key, descriptor) {
     var ie8 = !-[1,];
-    var ucKey = key.substring(0, 1).toUpperCase() + key.substring(1);
+    var ucKey = util.ucFirst(key);
     if (descriptor.get)
         target["get" + ucKey] = descriptor.get;
     if (descriptor.set)

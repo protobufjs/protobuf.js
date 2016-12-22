@@ -29,7 +29,7 @@
     "build": "gulp",
     "changelog": "node scripts/changelog -w",
     "docs": "jsdoc -c jsdoc.docs.json -R README.md",
-    "lint": "eslint src",
+    "lint": "eslint src runtime",
     "pages": "node scripts/pages",
     "prepublish": "node scripts/prepublish",
     "prof": "node bench/prof",

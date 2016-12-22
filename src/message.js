@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Message;
 
+var convert = require("./convert");
+
 /**
  * Constructs a new message instance.
  *
@@ -20,49 +22,6 @@ function Message(properties) {
     }
 }
 
-/** @alias Message.prototype */
-var MessagePrototype = Message.prototype;
-
-/**
- * Converts this message to a JSON object.
- * @param {Object.<string,*>} [options] Conversion options
- * @param {boolean} [options.fieldsOnly=false] Converts only properties that reference a field
- * @param {*} [options.long] Long conversion type. Only relevant with a long library.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to a possibly unsafe number without, and a `Long` with a long library.
- * @param {*} [options.enum=Number] Enum value conversion type.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to the numeric ids.
- * @param {*} [options.bytes] Bytes value conversion type.
- * Valid values are `Array` and `String` (the global types).
- * Defaults to return the underlying buffer type.
- * @param {boolean} [options.defaults=false] Also sets default values on the resulting object
- * @returns {Object.<string,*>} JSON object
- */
-MessagePrototype.asJSON = function asJSON(options) {
-    if (!options)
-        options = {};
-    var fields = this.$type.fields,
-        json   = {};
-    var keys = Object.keys(options.defaults ? fields : this);
-    for (var i = 0, key; i < keys.length; ++i) {
-        var field = fields[key = keys[i]],
-            value = this[key];
-        if (field) {
-            if (field.repeated) {
-                if (value && (value.length || options.defaults)) {
-                    json[key] = [];
-                    for (var j = 0, l = value.length; j < l; ++j)
-                        json[key].push(field.jsonConvert(value[j], options));
-                }
-            } else
-                json[key] = field.jsonConvert(value, options);
-        } else if (!options.fieldsOnly)
-            json[key] = value;
-    }
-    return json;
-};
-
 /**
  * Reference to the reflected type.
  * @name Message.$type
@@ -70,12 +29,34 @@ MessagePrototype.asJSON = function asJSON(options) {
  * @readonly
  */
 
+/** @alias Message.prototype */
+var MessagePrototype = Message.prototype;
+
 /**
  * Reference to the reflected type.
  * @name Message#$type
  * @type {Type}
  * @readonly
  */
+
+/**
+ * Converts this message to a JSON object.
+ * @param {JSONConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} JSON object
+ */
+MessagePrototype.asJSON = function asJSON(options) {
+    return convert(this.$type, this, {}, options, convert.toJson);
+};
+
+/**
+ * Creates a message from a JSON object by converting strings and numbers to their respective field types.
+ * @param {Object.<string,*>} object JSON object
+ * @param {MessageConversionOptions} [options] Options
+ * @returns {Message} Message instance
+ */
+Message.from = function from(object, options) {
+    return convert(this.$type, object, new this.constructor(), options, convert.toMessage);
+};
 
 /**
  * Encodes a message of this type.

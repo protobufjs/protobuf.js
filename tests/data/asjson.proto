@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package test;
-
-message TestRepeatedDefaults {
-  required string aString = 1;
-  repeated string repeatString = 2;
-}
