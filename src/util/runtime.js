@@ -16,6 +16,13 @@ util.pool     = require("@protobufjs/pool");
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
+ * Whether running within IE8 or not.
+ * @memberof util
+ * @type {boolean}
+ */
+util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-disable-line no-eval, no-empty
+
+/**
  * Node's Buffer class if available.
  * @type {?function(new: Buffer)}
  */
@@ -148,18 +155,17 @@ util.props = function props(target, descriptors) {
  * @returns {undefined}
  */
 util.prop = function prop(target, key, descriptor) {
-    var ie8 = !-[1,];
     var ucKey = util.ucFirst(key);
     if (descriptor.get)
         target["get" + ucKey] = descriptor.get;
     if (descriptor.set)
-        target["set" + ucKey] = ie8
+        target["set" + ucKey] = util.isIE8
             ? function(value) {
                   descriptor.set.call(this, value);
                   this[key] = value;
               }
             : descriptor.set;
-    if (ie8) {
+    if (util.isIE8) {
         if (descriptor.value !== undefined)
             target[key] = descriptor.value;
     } else

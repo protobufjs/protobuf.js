@@ -18,7 +18,7 @@ tape.test("RPC", function(test) {
             test.test("should call the rpc impl with", function(test) {
                 test.equal(method, MyMethod, "the reflected method");
                 test.ok(requestData.length, "a buffer");
-                test.ok(typeof callback === 'function', "a callback function");
+                test.ok(typeof callback === "function", "a callback function");
                 test.end();
             });
             test.test("should call with a buffer that contains", function(test) {
@@ -36,7 +36,7 @@ tape.test("RPC", function(test) {
             });
         }
         
-        var MyService = root.lookup("MyService");
+        MyService = root.lookup("MyService");
         var service = MyService.create(rpc, true, false);
         
         service.myMethod(MyRequest.create({
@@ -44,7 +44,7 @@ tape.test("RPC", function(test) {
         }), function(err, response) {
             if (err)
                 return test.fail(err.message);
-            test.ok(response instanceof MyResponse.ctor, "should return an instance of MyResponse");
+            test.ok(response instanceof MyResponse.getCtor(), "should return an instance of MyResponse");
             test.deepEqual(response, {
                 status: 200
             }, "should return status 200");

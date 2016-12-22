@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 22 Dec 2016 13:29:38 UTC
+ * Compiled Thu, 22 Dec 2016 22:26:03 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1087,6 +1087,13 @@ util.pool     = require(3);
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
+ * Whether running within IE8 or not.
+ * @memberof util
+ * @type {boolean}
+ */
+util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-disable-line no-eval, no-empty
+
+/**
  * Node's Buffer class if available.
  * @type {?function(new: Buffer)}
  */
@@ -1219,18 +1226,17 @@ util.props = function props(target, descriptors) {
  * @returns {undefined}
  */
 util.prop = function prop(target, key, descriptor) {
-    var ie8 = !-[1,];
     var ucKey = util.ucFirst(key);
     if (descriptor.get)
         target["get" + ucKey] = descriptor.get;
     if (descriptor.set)
-        target["set" + ucKey] = ie8
+        target["set" + ucKey] = util.isIE8
             ? function(value) {
                   descriptor.set.call(this, value);
                   this[key] = value;
               }
             : descriptor.set;
-    if (ie8) {
+    if (util.isIE8) {
         if (descriptor.value !== undefined)
             target[key] = descriptor.value;
     } else

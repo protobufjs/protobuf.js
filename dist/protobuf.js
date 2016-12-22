@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 22 Dec 2016 13:29:38 UTC
+ * Compiled Thu, 22 Dec 2016 22:26:03 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -789,6 +789,7 @@ function create(type, ctor) {
                     if (keys[i] !== value)
                         delete this[keys[i]];
             }
+            // see util.prop for IE8 support
         });
     });
 
@@ -1118,13 +1119,13 @@ function convert(type, source, destination, options, converter) {
  * @typedef JSONConversionOptions
  * @type {Object}
  * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
- * @property {function} [long] Long conversion type. Only relevant with a long library.
+ * @property {*} [longs] Long conversion type. Only relevant with a long library.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to a possibly unsafe number without, and a `Long` with a long library.
- * @property {function} [enum=Number] Enum value conversion type.
+ * @property {*} [enums=Number] Enum value conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to the numeric ids.
- * @property {function} [bytes] Bytes value conversion type.
+ * @property {*} [bytes] Bytes value conversion type.
  * Valid values are `Array` and `String` (the global types).
  * Defaults to return the underlying buffer type.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
@@ -1139,19 +1140,19 @@ convert.toJson = function toJson(field, value, options) {
         return convert(value.$type, value, {}, options, toJson);
 
     // Enums as strings
-    if (options["enum"] && field.resolvedType instanceof Enum)
-        return options["enum"] === String
+    if (options.enums && field.resolvedType instanceof Enum)
+        return options.enums === String
             ? field.resolvedType.getValuesById()[value]
             : value | 0;
 
     // Longs as numbers or strings
-    if (options.long && field.long) {
+    if (options.longs && field.long) {
         var unsigned = field.type.charAt(0) === "u";
-        if (options.long === Number)
+        if (options.longs === Number)
             return typeof value === "number"
                 ? value
                 : util.LongBits.from(value).toNumber(unsigned);
-        if (options.long === String) {
+        if (options.longs === String) {
             if(typeof value === "number")
                 return util.Long.fromNumber(value, unsigned).toString();
             value = util.Long.fromValue(value); // TODO: fromValue is missing an unsigned option (long.js 3.2.0)
@@ -5952,6 +5953,13 @@ util.pool     = require(9);
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
 
 /**
+ * Whether running within IE8 or not.
+ * @memberof util
+ * @type {boolean}
+ */
+util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-disable-line no-eval, no-empty
+
+/**
  * Node's Buffer class if available.
  * @type {?function(new: Buffer)}
  */
@@ -6084,18 +6092,17 @@ util.props = function props(target, descriptors) {
  * @returns {undefined}
  */
 util.prop = function prop(target, key, descriptor) {
-    var ie8 = !-[1,];
     var ucKey = util.ucFirst(key);
     if (descriptor.get)
         target["get" + ucKey] = descriptor.get;
     if (descriptor.set)
-        target["set" + ucKey] = ie8
+        target["set" + ucKey] = util.isIE8
             ? function(value) {
                   descriptor.set.call(this, value);
                   this[key] = value;
               }
             : descriptor.set;
-    if (ie8) {
+    if (util.isIE8) {
         if (descriptor.value !== undefined)
             target[key] = descriptor.value;
     } else

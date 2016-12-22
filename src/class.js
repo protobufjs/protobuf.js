@@ -85,6 +85,7 @@ function create(type, ctor) {
                     if (keys[i] !== value)
                         delete this[keys[i]];
             }
+            // see util.prop for IE8 support
         });
     });
 

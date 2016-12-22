@@ -59,15 +59,15 @@ tape.test("convert", function(test) {
                     enumRepeated: [1, 2]
                 });
 
-                test.equal(msg.asJSON({ long: Number }).uint64Val, 1, "longs to numbers");
-                test.equal(msg.asJSON({ long: String }).uint64Val, "1", "longs to strings");
+                test.equal(msg.asJSON({ longs: Number }).uint64Val, 1, "longs to numbers");
+                test.equal(msg.asJSON({ longs: String }).uint64Val, "1", "longs to strings");
 
                 test.equal(Object.prototype.toString.call(msg.asJSON({ bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
                 test.equal(msg.asJSON({ bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");
                 if (protobuf.util.isNode)
                     test.ok(Buffer.isBuffer(msg.asJSON({ bytes: Buffer }).bytesVal), "bytes to buffers");
 
-                test.equal(msg.asJSON({ enum: String }).enumVal, "ONE", "enums to strings");
+                test.equal(msg.asJSON({ enums: String }).enumVal, "ONE", "enums to strings");
 
                 test.end();
             });

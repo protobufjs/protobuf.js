@@ -63,13 +63,13 @@ function convert(type, source, destination, options, converter) {
  * @typedef JSONConversionOptions
  * @type {Object}
  * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
- * @property {function} [long] Long conversion type. Only relevant with a long library.
+ * @property {*} [longs] Long conversion type. Only relevant with a long library.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to a possibly unsafe number without, and a `Long` with a long library.
- * @property {function} [enum=Number] Enum value conversion type.
+ * @property {*} [enums=Number] Enum value conversion type.
  * Valid values are `String` and `Number` (the global types).
  * Defaults to the numeric ids.
- * @property {function} [bytes] Bytes value conversion type.
+ * @property {*} [bytes] Bytes value conversion type.
  * Valid values are `Array` and `String` (the global types).
  * Defaults to return the underlying buffer type.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
@@ -84,19 +84,19 @@ convert.toJson = function toJson(field, value, options) {
         return convert(value.$type, value, {}, options, toJson);
 
     // Enums as strings
-    if (options["enum"] && field.resolvedType instanceof Enum)
-        return options["enum"] === String
+    if (options.enums && field.resolvedType instanceof Enum)
+        return options.enums === String
             ? field.resolvedType.getValuesById()[value]
             : value | 0;
 
     // Longs as numbers or strings
-    if (options.long && field.long) {
+    if (options.longs && field.long) {
         var unsigned = field.type.charAt(0) === "u";
-        if (options.long === Number)
+        if (options.longs === Number)
             return typeof value === "number"
                 ? value
                 : util.LongBits.from(value).toNumber(unsigned);
-        if (options.long === String) {
+        if (options.longs === String) {
             if(typeof value === "number")
                 return util.Long.fromNumber(value, unsigned).toString();
             value = util.Long.fromValue(value); // TODO: fromValue is missing an unsigned option (long.js 3.2.0)

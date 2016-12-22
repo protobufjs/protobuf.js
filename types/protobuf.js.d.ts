@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 22 Dec 2016 13:18:42 UTC
+// Generated Thu, 22 Dec 2016 22:25:58 UTC
 declare module "protobufjs" {
 
     /**
@@ -119,22 +119,22 @@ declare module "protobufjs" {
      * @typedef JSONConversionOptions
      * @type {Object}
      * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
-     * @property {function} [long] Long conversion type. Only relevant with a long library.
+     * @property {*} [longs] Long conversion type. Only relevant with a long library.
      * Valid values are `String` and `Number` (the global types).
      * Defaults to a possibly unsafe number without, and a `Long` with a long library.
-     * @property {function} [enum=Number] Enum value conversion type.
+     * @property {*} [enums=Number] Enum value conversion type.
      * Valid values are `String` and `Number` (the global types).
      * Defaults to the numeric ids.
-     * @property {function} [bytes] Bytes value conversion type.
+     * @property {*} [bytes] Bytes value conversion type.
      * Valid values are `Array` and `String` (the global types).
      * Defaults to return the underlying buffer type.
      * @property {boolean} [defaults=false] Also sets default values on the resulting object
      */
     interface JSONConversionOptions {
         fieldsOnly: boolean;
-        long: () => any;
-        enum: () => any;
-        bytes: () => any;
+        longs: any;
+        enums: any;
+        bytes: any;
         defaults: boolean;
     }
 
@@ -2173,6 +2173,13 @@ declare module "protobufjs" {
          * @type {boolean}
          */
         var isNode: boolean;
+
+        /**
+         * Whether running within IE8 or not.
+         * @memberof util
+         * @type {boolean}
+         */
+        var isIE8: boolean;
 
         /**
          * Node's Buffer class if available.
