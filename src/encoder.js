@@ -88,7 +88,7 @@ function encoder(mtype) {
             }
 
             if (wireType === undefined)
-        genEncodeType(gen, field, i, "m" + prop);
+        genEncodeType(gen, field, i, "m" + prop, true);
             else gen
         ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
 
