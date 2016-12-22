@@ -34,9 +34,9 @@ BufferWriter.alloc = function alloc_buffer(size) {
         })(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array
+var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name[0] === "s"
     ? function writeBytesBuffer_set(val, buf, pos) {
-        buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array)
+        buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
     }
     : function writeBytesBuffer_copy(val, buf, pos) {
         val.copy(buf, pos, 0, val.length);

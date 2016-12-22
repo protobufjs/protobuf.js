@@ -20,7 +20,7 @@ tape.test("convert", function(test) {
                 test.same(obj.uint64Val, { low: 0, high: 0, unsigned: true }, "should set uint64Val");
                 test.same(obj.uint64Repeated, [], "should set uint64Repeated");
 
-                test.same(obj.bytesVal, protobuf.util.newBuffer(0), "should set bytesVal");
+                test.same(obj.bytesVal, [], "should set bytesVal");
                 test.same(obj.bytesRepeated, [], "should set bytesRepeated");
 
                 test.equal(obj.enumVal, 0, "should set enumVal");

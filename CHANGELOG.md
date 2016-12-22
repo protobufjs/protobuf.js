@@ -1,6 +1,7 @@
 # [6.3.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.0)
 
 ## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5b9ade428dca2df6a13277522f2916e22092a98b) Moved JSON/Message conversion to its own source file and added Message/Type.from + test case, see [#575](https://github.com/dcodeIO/protobuf.js/issues/575)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0b0de2458a1ade1ccd4ceb789697be13290f856b) Relicensed the library and its components to BSD-3-Clause to match the official implementation (again)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/22a64c641d4897965035cc80e92667bd243f182f) Dropped support for browser buffer entirely (is an Uint8Array anyway), ensures performance and makes things simpler<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/22a64c641d4897965035cc80e92667bd243f182f) Removed dead parts of the Reader API<br />
@@ -8,6 +9,9 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/bfac0ea9afa3dbaf5caf79ddf0600c3c7772a538) Stripped out fallback encoder/decoder/verifier completely (even IE8 supports codegen), significantly reduces bundle size, can use static codegen elsewhere<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/33706cdc201bc863774c4af6ac2c38ad96a276e6) Properly set long defaults on prototypes<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0ea2740f0774b4c5c349b9c303f3fb2c2743c37b) Fixed reference error in minimal runtime, see [#580](https://github.com/dcodeIO/protobuf.js/issues/580)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/741b6d8fde84d9574676a729a29a428d99f0a0a0) Non-repeated empty messages are always present on the wire, see [#581](https://github.com/dcodeIO/protobuf.js/issues/581)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7fac9d6a39bf42d316c1676082a2d0804bc55934) Properly check Buffer.prototype.set with node v4<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3ad8108eab57e2b061ee6f1fddf964abe3f4cbc7) Prevent NRE and properly annotate verify signature in tsd-jsdoc, fixed [#572](https://github.com/dcodeIO/protobuf.js/issues/572)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/6c2415d599847cbdadc17dee3cdf369fc9facade) Fix directly using Buffer instead of util.Buffer<br />
@@ -41,6 +45,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7939a4bd8baca5f7e07530fc93f27911a6d91c6f) Updated README and bundler according to dynamic require calls<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/99dc5faa7b39fdad8ebc102de4463f8deb7f48ff) Added assumptions to float test case<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/948ca2e3c5c62fedcd918d75539c261abf1a7347) Updated travis config to use C++11<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c59647a7542cbc4292248787e5f32bb99a9b8d46) Updated / added additional LICENSE files where appropriate<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/333f0221814be976874862dc83d0b216e07d4012) Integrated changelog into build process, now also has 'npm run make' for everything, see [#574](https://github.com/dcodeIO/protobuf.js/issues/574)<br />
