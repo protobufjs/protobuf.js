@@ -8,6 +8,9 @@ var protobuf = require("..");
 
 tape.test("floats", function(test) {
 
+    test.equal(1.401298464324817e-45, Math.pow(2, -149), "literal 2^-149 should match calculated");
+    test.equal(5e-324, Math.pow(2, -1074), "literal 2^-1074 should match calculated");
+    
     var common = [
         0,
         -0,
