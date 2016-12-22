@@ -11,10 +11,29 @@ var $root = {};
 $root.MyService = (function() {
 
     /**
+     * RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.
+     * @typedef RPCImpl
+     * @type {function}
+     * @param {Method} method Reflected method being called
+     * @param {Uint8Array} requestData Request data
+     * @param {RPCCallback} callback Callback function
+     * @returns {undefined}
+     */
+
+    /**
+     * Node-style callback as used by {@link RPCImpl}.
+     * @typedef RPCCallback
+     * @type {function}
+     * @param {?Error} error Error, if any, otherwise `null`
+     * @param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error
+     * @returns {undefined}
+     */
+
+    /**
      * Constructs a new MyService.
      * @exports MyService
      * @constructor
-     * @param {function(function, Uint8Array, function)} rpc RPC implementation
+     * @param {RPCImpl} rpc RPC implementation
      * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
      * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
      */
@@ -22,7 +41,7 @@ $root.MyService = (function() {
 
         /**
          * RPC implementation.
-         * @type {function(function, Uint8Array, function)}
+         * @type {RPCImpl}
          */
         this.rpc = rpc;
 
@@ -40,9 +59,17 @@ $root.MyService = (function() {
     };
 
     /**
+     * Callback as used by {@link MyService#myMethod}.
+     * @typedef MyService_myMethod_Callback
+     * @type {function}
+     * @param {?Error} error Error, if any
+     * @param {MyResponse} [response] MyResponse
+     */
+
+    /**
      * Calls MyMethod.
      * @param {MyRequest|Object} request MyRequest or plain object
-     * @param {function(?Error, MyResponse=)} callback Node-style callback called with the error, if any, and MyResponse
+     * @param {MyService_myMethod_Callback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      */
     MyService.prototype["myMethod"] = function myMethod(request, callback) {

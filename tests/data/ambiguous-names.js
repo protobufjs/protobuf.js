@@ -188,7 +188,7 @@ $root.B = (function() {
         return function encode(m, w) {
             w||(w=Writer.create())
             if(m["A"]!==undefined&&m["A"]!==null)
-                types[0].encode(m["A"],w.fork()).len&&w.ldelim(1)||w.reset()
+                types[0].encode(m["A"],w.uint32(10).fork()).ldelim()
             return w
         }
         /* eslint-enable */

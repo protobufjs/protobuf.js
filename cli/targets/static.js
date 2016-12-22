@@ -14,6 +14,7 @@ var Type      = protobuf.Type,
 var out = [];
 var indent = 0;
 var config = {};
+var firstService = true;
 
 static_target.description = "Static code without reflection";
 
@@ -47,13 +48,14 @@ function static_target(root, options, callback) {
             push("});");
             --indent;
         push("});");
-        callback(null, out.join('\n'));
+        return callback(null, out.join("\n"));
     } catch (err) {
-        callback(err);
+        return callback(err);
     } finally {
         out = [];
         indent = 0;
         config = {};
+        firstService = true;
     }
 }
 
@@ -63,12 +65,12 @@ function push(line) {
     var ind = "";
     for (var i = 0; i < indent; ++i)
         ind += "    ";
-    out.push(ind + line);
+    return out.push(ind + line);
 }
 
 function pushComment(lines) {
     push("/**");
-    lines.forEach(function(line, i) {
+    lines.forEach(function(line) {
         push(" * " + line);
     });
     push(" */");
@@ -133,7 +135,7 @@ function buildFunction(type, functionName, gen, scope) {
         return field.resolve().resolvedType
             ? JSON.stringify(field.resolvedType.fullName.substring(1))
             : "null";
-    }).join(',') + "]);");
+    }).join(",") + "]);");
     push("return " + lines[0]);
     lines.slice(1).forEach(function(line) {
         var prev = indent;
@@ -366,21 +368,47 @@ function buildType(ref, type) {
 function buildService(ref, service) {
     var fullName = service.fullName.substring(1);
 
+    if (firstService) {
+        firstService = false;
+
+        push("");
+        pushComment([
+             "RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.",
+             "@typedef RPCImpl",
+             "@type {function}",
+             "@param {Method} method Reflected method being called",
+             "@param {Uint8Array} requestData Request data",
+             "@param {RPCCallback} callback Callback function",
+             "@returns {undefined}"
+        ]);
+
+        push("");
+        pushComment([
+             "Node-style callback as used by {@link RPCImpl}.",
+             "@typedef RPCCallback",
+             "@type {function}",
+             "@param {?Error} error Error, if any, otherwise `null`",
+             "@param {Uint8Array} [responseData] Response data or `null` to signal end of stream, if there hasn't been an error",
+             "@returns {undefined}"
+        ]);
+    }
+
     push("");
     pushComment([
         "Constructs a new " + service.name + ".",
         "@exports " + fullName,
         "@constructor",
-        "@param {function(function, Uint8Array, function)} rpc RPC implementation",
+        "@param {RPCImpl} rpc RPC implementation",
         "@param {boolean} [requestDelimited=false] Whether requests are length-delimited",
         "@param {boolean} [responseDelimited=false] Whether responses are length-delimited"
     ]);
     push("function " + name(service.name) + "(rpc, requestDelimited, responseDelimited) {");
     ++indent;
+    
     push("");
     pushComment([
         "RPC implementation.",
-        "@type {function(function, Uint8Array, function)}"
+        "@type {RPCImpl}"
     ]);
     push("this.rpc = rpc;");
     push("");
@@ -397,14 +425,24 @@ function buildService(ref, service) {
     push("this.responseDelimited = Boolean(responseDelimited);");
     --indent;
     push("};");
+
     service.getMethodsArray().forEach(function(method) {
         method.resolve();
         var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
         push("");
+        var cbName = name(service.name) + "_" + name(lcName) + "_Callback";
+        pushComment([
+            "Callback as used by {@link " + name(service.name) + "#" + name(lcName) + "}.",
+            "@typedef " + cbName,
+            "@type {function}",
+            "@param {?Error} error Error, if any",
+            "@param {" + method.resolvedResponseType.fullName.substring(1) + "} [response] " + method.resolvedResponseType.name
+        ]);
+        push("");
         pushComment([
             "Calls " + method.name + ".",
             "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " or plain object",
-            "@param {function(?Error, " + method.resolvedResponseType.fullName.substring(1) + "=)} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
+            "@param {" + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}"
         ]);
         push(name(service.name) + ".prototype[" + JSON.stringify(lcName) + "] = function " + name(lcName) + "(request, callback) {");

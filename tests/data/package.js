@@ -173,7 +173,7 @@ $root.Package = (function() {
             if(m["license"]!==undefined&&m["license"]!=="")
                 w.uint32(42).string(m["license"])
             if(m["repository"]!==undefined&&m["repository"]!==null)
-                types[5].encode(m["repository"],w.fork()).len&&w.ldelim(6)||w.reset()
+                types[5].encode(m["repository"],w.uint32(50).fork()).ldelim()
             if(m["bugs"]!==undefined&&m["bugs"]!=="")
                 w.uint32(58).string(m["bugs"])
             if(m["homepage"]!==undefined&&m["homepage"]!=="")
