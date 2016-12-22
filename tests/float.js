@@ -8,8 +8,12 @@ var protobuf = require("..");
 
 tape.test("floats", function(test) {
 
-    test.equal(1.401298464324817e-45, Math.pow(2, -149), "literal 2^-149 should match calculated");
-    test.equal(5e-324, Math.pow(2, -1074), "literal 2^-1074 should match calculated");
+    // The following assertions were meant to validate that using float literals instead of pre-calculated
+    // vars is safe. Turned out that these tests pass on all platforms except Edge 13/14 (which doesn't even
+    // use the float fallback), where it failed because of the complete opposite: Math.pow(2, -1074) => 0
+
+    // test.equal(1.401298464324817e-45, Math.pow(2, -149), "literal 2^-149 should match calculated");
+    // test.equal(5e-324, Math.pow(2, -1074), "literal 2^-1074 should match calculated");
     
     var common = [
         0,
