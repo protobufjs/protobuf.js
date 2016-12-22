@@ -65,9 +65,9 @@ function create(type, ctor) {
         // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
         prototype[field.name] = Array.isArray(field.resolve().defaultValue)
             ? util.emptyArray
-            : util.isObject(field.defaultValue)
-            ? util.emptyObject
-            : field.defaultValue;
+            : util.isObject(field.defaultValue) && !field.long
+              ? util.emptyObject
+              : field.defaultValue;
     });
 
     // Messages have non-enumerable getters and setters for each virtual oneof field
