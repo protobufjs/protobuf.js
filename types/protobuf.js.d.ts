@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 22 Dec 2016 22:25:58 UTC
+// Generated Thu, 22 Dec 2016 22:48:48 UTC
 declare module "protobufjs" {
 
     /**
@@ -2186,6 +2186,12 @@ declare module "protobufjs" {
          * @type {?function(new: Buffer)}
          */
         var Buffer: () => any;
+
+        /**
+         * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
+         * @type {?function(new: Uint8Array, *)}
+         */
+        var Array: () => any;
 
         /**
          * Long.js's Long class if available.

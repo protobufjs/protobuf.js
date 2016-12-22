@@ -8,8 +8,6 @@ var BufferReader; // cyclic
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
 
-var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
-
 /* istanbul ignore next */
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
@@ -63,7 +61,7 @@ Reader.create = util.Buffer
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
+ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.slice;
 
 /**
  * Reads a varint as an unsigned 32 bit value.

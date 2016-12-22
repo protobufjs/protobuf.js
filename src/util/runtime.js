@@ -38,6 +38,12 @@ if (util.Buffer) {
 }
 
 /**
+ * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
+ * @type {?function(new: Uint8Array, *)}
+ */
+util.Array = typeof Uint8Array === "undefined" ? Array : Uint8Array;
+
+/**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */

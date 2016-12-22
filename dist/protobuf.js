@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 22 Dec 2016 22:26:03 UTC
+ * Compiled Thu, 22 Dec 2016 22:48:52 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1188,10 +1188,14 @@ convert.toMessage = function toMessage(field, value, options) {
             if (value) {
                 if (field.resolvedType instanceof Type)
                     return convert(field.resolvedType, value, new (field.resolvedType.getCtor())(), options, toMessage);
-                if (field.type === "bytes") {
-                    if (util.Buffer && !util.Buffer.isBuffer(value))
-                        return util.Buffer.from(value); // polyfilled
-                }
+                if (field.type === "bytes")
+                    return util.Buffer
+                        ? util.Buffer.isBuffer(value)
+                          ? value
+                          : util.Buffer.from(value) // polyfilled
+                        : value instanceof util.Array
+                          ? value
+                          : new util.Array(value);
             }
             break;
 
@@ -3686,8 +3690,6 @@ var BufferReader; // cyclic
 var LongBits  = util.LongBits,
     utf8      = util.utf8;
 
-var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
-
 /* istanbul ignore next */
 function indexOutOfRange(reader, writeLength) {
     return RangeError("index out of range: " + reader.pos + " + " + (writeLength || 1) + " > " + reader.len);
@@ -3741,7 +3743,7 @@ Reader.create = util.Buffer
 /** @alias Reader.prototype */
 var ReaderPrototype = Reader.prototype;
 
-ReaderPrototype._slice = ArrayImpl.prototype.subarray || ArrayImpl.prototype.slice;
+ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.slice;
 
 /**
  * Reads a varint as an unsigned 32 bit value.
@@ -5975,6 +5977,12 @@ if (util.Buffer) {
 }
 
 /**
+ * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
+ * @type {?function(new: Uint8Array, *)}
+ */
+util.Array = typeof Uint8Array === "undefined" ? Array : Uint8Array;
+
+/**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
@@ -6286,8 +6294,6 @@ var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
 
-var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
-
 /**
  * Constructs a new writer operation instance.
  * @classdesc Scheduled writer operation.
@@ -6426,12 +6432,12 @@ Writer.create = util.Buffer
  * @returns {Uint8Array} Buffer
  */
 Writer.alloc = function alloc(size) {
-    return new ArrayImpl(size);
+    return new util.Array(size);
 };
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
-if (ArrayImpl !== Array)
-    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray);
+if (util.Array !== Array)
+    Writer.alloc = util.pool(Writer.alloc, util.Array.prototype.subarray);
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
@@ -6717,7 +6723,7 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
-var writeBytes = ArrayImpl.prototype.set
+var writeBytes = util.Array.prototype.set
     ? function writeBytes_set(val, buf, pos) {
         buf.set(val, pos);
     }

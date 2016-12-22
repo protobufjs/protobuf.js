@@ -1,6 +1,7 @@
 # [6.3.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.0)
 
 ## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c144e7386529b53235a4a5bdd8383bdb322f2825) Renamed asJSON option keys (enum to enums, long to longs) because enum is a reserved keyword<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/5b9ade428dca2df6a13277522f2916e22092a98b) Moved JSON/Message conversion to its own source file and added Message/Type.from + test case, see [#575](https://github.com/dcodeIO/protobuf.js/issues/575)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0b0de2458a1ade1ccd4ceb789697be13290f856b) Relicensed the library and its components to BSD-3-Clause to match the official implementation (again)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/22a64c641d4897965035cc80e92667bd243f182f) Dropped support for browser buffer entirely (is an Uint8Array anyway), ensures performance and makes things simpler<br />
@@ -33,6 +34,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/9c9a66bf393d9d6927f35a9c18abf5d1c31db912) Added asJSON bytes as Buffer, see [#566](https://github.com/dcodeIO/protobuf.js/issues/566)<br />
 
 ## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c60cd397e902ae6851c017f2c298520b8336cbee) Annotated callback types in pbjs-generated services, see [#582](https://github.com/dcodeIO/protobuf.js/issues/582)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3e7e4fc59e6d2d6c862410b4b427fbedccdb237b) Removed type/ns alias comment in static target to not confuse jsdoc unnecessarily<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Made pbjs use loadSync for deterministic outputs, see [#573](https://github.com/dcodeIO/protobuf.js/issues/573)<br />
 
@@ -45,6 +47,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7939a4bd8baca5f7e07530fc93f27911a6d91c6f) Updated README and bundler according to dynamic require calls<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b1b6a813c93da4c7459755186aa02ef2f3765c94) Updated test cases<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99dc5faa7b39fdad8ebc102de4463f8deb7f48ff) Added assumptions to float test case<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/948ca2e3c5c62fedcd918d75539c261abf1a7347) Updated travis config to use C++11<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c59647a7542cbc4292248787e5f32bb99a9b8d46) Updated / added additional LICENSE files where appropriate<br />

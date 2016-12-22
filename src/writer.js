@@ -9,8 +9,6 @@ var LongBits  = util.LongBits,
     base64    = util.base64,
     utf8      = util.utf8;
 
-var ArrayImpl = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
-
 /**
  * Constructs a new writer operation instance.
  * @classdesc Scheduled writer operation.
@@ -149,12 +147,12 @@ Writer.create = util.Buffer
  * @returns {Uint8Array} Buffer
  */
 Writer.alloc = function alloc(size) {
-    return new ArrayImpl(size);
+    return new util.Array(size);
 };
 
 // Use Uint8Array buffer pool in the browser, just like node does with buffers
-if (ArrayImpl !== Array)
-    Writer.alloc = util.pool(Writer.alloc, ArrayImpl.prototype.subarray);
+if (util.Array !== Array)
+    Writer.alloc = util.pool(Writer.alloc, util.Array.prototype.subarray);
 
 /** @alias Writer.prototype */
 var WriterPrototype = Writer.prototype;
@@ -440,7 +438,7 @@ WriterPrototype.double = function write_double(value) {
     return this.push(writeDouble, 8, value);
 };
 
-var writeBytes = ArrayImpl.prototype.set
+var writeBytes = util.Array.prototype.set
     ? function writeBytes_set(val, buf, pos) {
         buf.set(val, pos);
     }

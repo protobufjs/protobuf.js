@@ -132,10 +132,14 @@ convert.toMessage = function toMessage(field, value, options) {
             if (value) {
                 if (field.resolvedType instanceof Type)
                     return convert(field.resolvedType, value, new (field.resolvedType.getCtor())(), options, toMessage);
-                if (field.type === "bytes") {
-                    if (util.Buffer && !util.Buffer.isBuffer(value))
-                        return util.Buffer.from(value); // polyfilled
-                }
+                if (field.type === "bytes")
+                    return util.Buffer
+                        ? util.Buffer.isBuffer(value)
+                          ? value
+                          : util.Buffer.from(value) // polyfilled
+                        : value instanceof util.Array
+                          ? value
+                          : new util.Array(value);
             }
             break;
 
