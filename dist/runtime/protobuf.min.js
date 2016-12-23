@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 23 Dec 2016 10:37:02 UTC
+ * Compiled Fri, 23 Dec 2016 11:04:05 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */

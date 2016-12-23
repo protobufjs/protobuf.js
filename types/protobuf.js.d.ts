@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Thu, 22 Dec 2016 22:48:48 UTC
+// Generated Fri, 23 Dec 2016 11:04:01 UTC
 declare module "protobufjs" {
 
     /**
@@ -2352,20 +2352,6 @@ declare module "protobufjs" {
          * @returns {string} Safe accessor
          */
         function safeProp(prop: string): string;
-
-        /**
-         * Converts a string to camel case notation.
-         * @param {string} str String to convert
-         * @returns {string} Converted string
-         */
-        function camelCase(str: string): string;
-
-        /**
-         * Converts a string to underscore notation.
-         * @param {string} str String to convert
-         * @returns {string} Converted string
-         */
-        function underScore(str: string): string;
 
         /**
          * Converts the second character of a string to lower case.

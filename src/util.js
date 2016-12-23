@@ -73,28 +73,6 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Converts a string to camel case notation.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.camelCase = function camelCase(str) {
-    return str.substring(0,1)
-         + str.substring(1)
-               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
-};
-
-/**
- * Converts a string to underscore notation.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.underScore = function underScore(str) {
-    return str.substring(0,1)
-         + str.substring(1)
-               .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
-};
-
-/**
  * Converts the second character of a string to lower case.
  * @param {string} str String to convert
  * @returns {string} Converted string

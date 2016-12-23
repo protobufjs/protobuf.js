@@ -21,6 +21,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/ea7ba8b83890084d61012cb5386dc11dadfb3908) Fixed release links in README files<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/442471363f99e67fa97044f234a47b3c9b929dfa) Added a noparse build for completeness<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/bfee1cc3624d0fa21f9553c2f6ce2fcf7fcc09b7) Now compresses .gz files using zopfli to make them useful beyond being just a reference<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/aed134aa1cd7edd801de77c736cf5efe6fa61cb0) Updated non-bundled google types folder with missing descriptors and added wrappers to core<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0b0de2458a1ade1ccd4ceb789697be13290f856b) Replaced the ieee754 implementation for old browsers with a faster, use-case specific one + simple test case<br />
@@ -39,6 +40,7 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99ad9cc08721b834a197d4bbb67fa152d7ad79aa) Made pbjs use loadSync for deterministic outputs, see [#573](https://github.com/dcodeIO/protobuf.js/issues/573)<br />
 
 ## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/4d1f5facfcaaf5f2ab6a70b12443ff1b66e7b94e) Updated documentation on runtime and noparse builds<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c59647a7542cbc4292248787e5f32bb99a9b8d46) Fixed an issue with the changelog generator skipping some commits<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/24f2c03af9f13f5404259866fdc8fed33bfaae25) Added notes on how to use pbjs and pbts programmatically<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3544576116146b209246d71c7f7a9ed687950b26) Manually sorted old changelog entries<br />
@@ -47,6 +49,8 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7939a4bd8baca5f7e07530fc93f27911a6d91c6f) Updated README and bundler according to dynamic require calls<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/deb2e82ed7eda41d065a09d120e91c0f7ecf1e6a) Commented out float assertions in float test including explanation<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/d3ebd5745b024033fbc2410ecad4d4e02abd67db) Expose array implementation used with (older) browsers on util for tests<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/b1b6a813c93da4c7459755186aa02ef2f3765c94) Updated test cases<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/99dc5faa7b39fdad8ebc102de4463f8deb7f48ff) Added assumptions to float test case<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/948ca2e3c5c62fedcd918d75539c261abf1a7347) Updated travis config to use C++11<br />

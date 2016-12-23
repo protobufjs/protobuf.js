@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 23 Dec 2016 10:37:02 UTC
+ * Compiled Fri, 23 Dec 2016 11:04:05 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3622,7 +3622,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
 var initParser = function() { // excluded (throws) in noparse builds
     try { parse = require("./parse"); } catch (e) {} // eslint-disable-line no-empty
     initParser = null;
-}
+};
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
@@ -4827,28 +4827,6 @@ util.merge = function merge(dst, src, ifNotSet) {
  */
 util.safeProp = function safeProp(prop) {
     return "[\"" + prop.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"]";
-};
-
-/**
- * Converts a string to camel case notation.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.camelCase = function camelCase(str) {
-    return str.substring(0,1)
-         + str.substring(1)
-               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
-};
-
-/**
- * Converts a string to underscore notation.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.underScore = function underScore(str) {
-    return str.substring(0,1)
-         + str.substring(1)
-               .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
 };
 
 /**

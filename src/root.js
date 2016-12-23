@@ -65,7 +65,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
 var initParser = function() { // excluded (throws) in noparse builds
     try { parse = require("./parse"); } catch (e) {} // eslint-disable-line no-empty
     initParser = null;
-}
+};
 
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.

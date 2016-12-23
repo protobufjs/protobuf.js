@@ -14,7 +14,12 @@ var Namespace  = protobuf.Namespace,
     Method     = protobuf.Method,
     types      = protobuf.types,
     util       = protobuf.util;
-var underScore = protobuf.util.underScore;
+
+function underScore(str) {
+    return str.substring(0,1)
+         + str.substring(1)
+               .replace(/([A-Z])(?=[a-z]|$)/g, function($0, $1) { return "_" + $1.toLowerCase(); });
+}
 
 var out = [];
 var indent = 0;

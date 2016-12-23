@@ -29,6 +29,12 @@ function lower(token) {
     return token === null ? null : token.toLowerCase();
 }
 
+function camelCase(str) {
+    return str.substring(0,1)
+         + str.substring(1)
+               .replace(/_([a-z])(?=[a-z]|$)/g, function($0, $1) { return $1.toUpperCase(); });
+}
+
 /**
  * Result object returned from {@link parse}.
  * @typedef ParserResult
@@ -82,7 +88,7 @@ function parse(source, root, options) {
 
     var ptr = root;
 
-    var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
+    var applyCase = options.keepCase ? function(name) { return name; } : camelCase;
 
     function illegal(token, name) {
         var filename = parse.filename;
