@@ -1,6 +1,4 @@
-This folder contains prebuilt browser versions of [protobuf.js](https://github.com/dcodeIO/protobuf.js)'s minimal runtime for statically generated code. When sending pull requests, it is not required to update these.
-
-**NOTE:** The minimal runtime includes just the bare minimum required to work with statically generated code - and *nothing else*. Where applicable, it can be used as a drop-in replacement for the full library as it has the same general structure.
+The minimal runtime includes just the bare minimum required to work with statically generated code - and *nothing else*. Where applicable, it can be used as a drop-in replacement for the full library as it has the same general structure. To achieve the same with browserify, simply depend on `protobufjs/runtime` instead of `protobufjs`.
 
 Prebuilt files are in source control to enable pain-free frontend respectively CDN usage:
 
