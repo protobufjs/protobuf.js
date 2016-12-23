@@ -62,6 +62,11 @@ RootPrototype.resolvePath = util.path.resolve;
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
+var initParser = function() { // excluded (throws) in noparse builds
+    try { parse = require("./parse"); } catch (e) {} // eslint-disable-line no-empty
+    initParser = null;
+}
+
 /**
  * Loads one or multiple .proto or preprocessed .json files into this root namespace and calls the callback.
  * @param {string|string[]} filename Names of one or multiple files to load
@@ -70,8 +75,8 @@ function SYNC() {} // eslint-disable-line no-empty-function
  * @returns {undefined}
  */
 RootPrototype.load = function load(filename, options, callback) {
-    if (!parse)
-        parse = require("./parse");
+    if (initParser)
+        initParser();
     if (typeof options === "function") {
         callback = options;
         options = undefined;
@@ -94,7 +99,7 @@ RootPrototype.load = function load(filename, options, callback) {
     // Processes a single file
     function process(filename, source) {
         try {
-            if (util.isString(source) && source.charAt(0) === "{")
+            if (util.isString(source) && source.charAt(0) === "{" || !parse)
                 source = JSON.parse(source);
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);

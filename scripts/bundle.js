@@ -1,7 +1,5 @@
 module.exports = bundle;
 
-var path       = require("path");
-
 var browserify = require("browserify");
 
 var header     = require("gulp-header");
@@ -24,29 +22,35 @@ var license = [
     " */"
 ].join("\n") + "\n";
 
-function bundle(compress, runtime) {
-    var src = runtime
-        ? path.join(__dirname, "..", "runtime")
-        : path.join(__dirname, "..", "src");
-    var dst = runtime
-        ? path.join(__dirname, "..", "dist", "runtime")
-        : path.join(__dirname, "..", "dist");
-
+/**
+ * Bundles the library.
+ * @param {Object} options Bundler options
+ * @param {string} options.entry Entry file
+ * @param {string} options.target Target directory
+ * @param {boolean} [options.compress=false] Whether to minify or not
+ * @param {string[]} [options.exclude] Excluded source files
+ */
+function bundle(options) {
+    if (!options || !options.entry || !options.target)
+        throw TypeError("missing options");
     var bundler = browserify({
-        entries: src,
+        entries: options.entry,
         debug: true
     })
-    return bundler
+    bundler
     .external("long")
     .exclude("process")
-    .exclude("_process")
+    .exclude("_process");
+    if (options.exclude)
+        options.exclude.forEach(bundler.exclude, bundler);
+    return bundler
     .plugin(require("bundle-collapser/plugin"))
     .bundle()
-    .pipe(source(compress ? "protobuf.min.js" : "protobuf.js"))
+    .pipe(source(options.compress ? "protobuf.min.js" : "protobuf.js"))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(
-                gulpif(compress, uglify({
+                gulpif(options.compress, uglify({
                     mangleProperties: {
                         regex: /^_/
                     }
@@ -57,7 +61,7 @@ function bundle(compress, runtime) {
                 version: pkg.version
             }))
     .pipe(sourcemaps.write(".", { sourceRoot: "" }))
-    .pipe(vinylfs.dest(dst))
+    .pipe(vinylfs.dest(options.target))
     .on("log", gutil.log)
     .on("error", gutil.log);
 }
@@ -65,6 +69,12 @@ function bundle(compress, runtime) {
 var fs     = require("fs");
 var zopfli = require("node-zopfli");
 
+/**
+ * Compresses a file using zopfli gzip.
+ * @param {string} sourceFile Source file
+ * @param {string} destinationFile Destination file
+ * @param {function(?Error)} callback Node-style callback
+ */
 bundle.compress = function compress(sourceFile, destinationFile, callback) {
     var src = fs.createReadStream(sourceFile);
     var dst = fs.createWriteStream(destinationFile);

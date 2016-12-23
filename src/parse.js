@@ -159,7 +159,7 @@ function parse(source, root, options) {
     function parseId(token, acceptNegative) {
         var tokenLower = lower(token);
         switch (tokenLower) {
-            case "max": return 0x1FFFFFFF;
+            case "max": return 536870911;
             case "0": return 0;
         }
         if (token.charAt(0) === "-" && !acceptNegative)

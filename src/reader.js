@@ -69,7 +69,7 @@ ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.s
  * @returns {number} Value read
  */
 ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
-    var value = 0xffffffff >>> 0; // optimizer type-hint, tends to deopt otherwise (?!)
+    var value = 4294967295; // optimizer type-hint, tends to deopt otherwise (?!)
     return function read_uint32() {
         value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;

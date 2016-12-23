@@ -706,7 +706,7 @@ utf8.write = function(string, buffer, offset) {
 module.exports = Class;
 
 var Message = require(19),
-    util    = require(34);
+    util    = require(32);
 
 var Type; // cyclic
 
@@ -731,7 +731,7 @@ function Class(type) {
  */
 function create(type, ctor) {
     if (!Type)
-        Type = require(32);
+        Type = require(30);
 
     /* istanbul ignore next */
     if (!(type instanceof Type))
@@ -846,7 +846,7 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-},{"19":19,"32":32,"34":34}],12:[function(require,module,exports){
+},{"19":19,"30":30,"32":32}],12:[function(require,module,exports){
 "use strict";
 
 module.exports = common;
@@ -1058,7 +1058,7 @@ common("wrappers", {
 module.exports = convert;
 
 var Enum    = require(16),
-    util    = require(34);
+    util    = require(32);
 
 var Type,    // cyclic
     Message;
@@ -1087,7 +1087,7 @@ var Type,    // cyclic
 function convert(type, source, destination, options, converter) {
 
     if (!Type) { // require this here already so it is available within the converters below
-        Type = require(32);
+        Type = require(30);
         Message = require(19);
     }
 
@@ -1222,13 +1222,13 @@ convert.toMessage = function toMessage(field, value, options) {
     return value;
 };
 
-},{"16":16,"19":19,"32":32,"34":34}],14:[function(require,module,exports){
+},{"16":16,"19":19,"30":30,"32":32}],14:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
 
 var Enum    = require(16),
-    types   = require(33),
-    util    = require(34);
+    types   = require(31),
+    util    = require(32);
 
 /**
  * Generates a decoder specific to the specified message type.
@@ -1314,13 +1314,13 @@ function decoder(mtype) {
     /* eslint-enable no-unexpected-multiline */
 }
 
-},{"16":16,"33":33,"34":34}],15:[function(require,module,exports){
+},{"16":16,"31":31,"32":32}],15:[function(require,module,exports){
 "use strict";
 module.exports = encoder;
 
 var Enum     = require(16),
-    types    = require(33),
-    util     = require(34);
+    types    = require(31),
+    util     = require(32);
 
 var safeProp = util.safeProp;
 
@@ -1441,7 +1441,7 @@ function encoder(mtype) {
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
-},{"16":16,"33":33,"34":34}],16:[function(require,module,exports){
+},{"16":16,"31":31,"32":32}],16:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
@@ -1451,7 +1451,7 @@ var EnumPrototype = ReflectionObject.extend(Enum);
 
 Enum.className = "Enum";
 
-var util = require(34);
+var util = require(32);
 
 var TypeError = util._TypeError;
 
@@ -1590,7 +1590,7 @@ EnumPrototype.remove = function(name) {
     return clearCache(this);
 };
 
-},{"22":22,"34":34}],17:[function(require,module,exports){
+},{"22":22,"32":32}],17:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
@@ -1601,8 +1601,8 @@ var FieldPrototype = ReflectionObject.extend(Field);
 Field.className = "Field";
 
 var Enum      = require(16),
-    types     = require(33),
-    util      = require(34);
+    types     = require(31),
+    util      = require(32);
 
 var Type,     // cyclic
     MapField; // cyclic
@@ -1834,7 +1834,7 @@ FieldPrototype.resolve = function resolve() {
     // if not a basic type, resolve it
     if (typeDefault === undefined) {
         if (!Type)
-            Type = require(32);
+            Type = require(30);
         if (this.resolvedType = this.parent.lookup(this.type, Type))
             typeDefault = null;
         else if (this.resolvedType = this.parent.lookup(this.type, Enum))
@@ -1865,7 +1865,7 @@ FieldPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"16":16,"18":18,"22":22,"32":32,"33":33,"34":34}],18:[function(require,module,exports){
+},{"16":16,"18":18,"22":22,"30":30,"31":31,"32":32}],18:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
@@ -1877,8 +1877,8 @@ var MapFieldPrototype = Field.extend(MapField);
 
 MapField.className = "MapField";
 
-var types   = require(33),
-    util    = require(34);
+var types   = require(31),
+    util    = require(32);
 
 /**
  * Constructs a new map field instance.
@@ -1961,7 +1961,7 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"17":17,"33":33,"34":34}],19:[function(require,module,exports){
+},{"17":17,"31":31,"32":32}],19:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 
@@ -2085,8 +2085,8 @@ var MethodPrototype = ReflectionObject.extend(Method);
 
 Method.className = "Method";
 
-var Type = require(32),
-    util = require(34);
+var Type = require(30),
+    util = require(32);
 
 var TypeError = util._TypeError;
 
@@ -2218,7 +2218,7 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"22":22,"32":32,"34":34}],21:[function(require,module,exports){
+},{"22":22,"30":30,"32":32}],21:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
@@ -2230,7 +2230,7 @@ Namespace.className = "Namespace";
 
 var Enum    = require(16),
     Field   = require(17),
-    util    = require(34);
+    util    = require(32);
 
 var Type,    // cyclic
     Service; // cyclic
@@ -2242,10 +2242,10 @@ function initNested() {
 
     /* istanbul ignore next */
     if (!Type)
-        Type = require(32);
+        Type = require(30);
     /* istanbul ignore next */
     if (!Service)
-        Service = require(30);
+        Service = require(29);
 
     nestedTypes = [ Enum, Type, Service, Field, Namespace ];
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
@@ -2510,10 +2510,10 @@ NamespacePrototype.define = function define(path, json) {
 NamespacePrototype.resolve = function resolve() {
     /* istanbul ignore next */
     if (!Type)
-        Type = require(32);
+        Type = require(30);
     /* istanbul ignore next */
     if (!Service)
-        Type = require(30);
+        Type = require(29);
 
     // Add uppercased (and thus conflict-free) nested types, services and enums as properties
     // of the type just like static code does. This allows using a .d.ts generated for a static
@@ -2598,7 +2598,7 @@ NamespacePrototype.lookupType = function lookupType(path) {
 
     /* istanbul ignore next */
     if (!Type)
-        Type = require(32);
+        Type = require(30);
 
     var found = this.lookup(path, Type);
     if (!found)
@@ -2617,7 +2617,7 @@ NamespacePrototype.lookupService = function lookupService(path) {
 
     /* istanbul ignore next */
     if (!Service)
-        Service = require(30);
+        Service = require(29);
 
     var found = this.lookup(path, Service);
     if (!found)
@@ -2639,11 +2639,11 @@ NamespacePrototype.lookupEnum = function lookupEnum(path) {
     return found.values;
 };
 
-},{"16":16,"17":17,"22":22,"30":30,"32":32,"34":34}],22:[function(require,module,exports){
+},{"16":16,"17":17,"22":22,"29":29,"30":30,"32":32}],22:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
-var util = require(34);
+var util = require(32);
 
 ReflectionObject.className = "ReflectionObject";
 ReflectionObject.extend = util.extend;
@@ -2754,7 +2754,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
     this.resolved = false;
     var root = parent.getRoot();
     if (!Root)
-        Root = require(27);
+        Root = require(26);
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -2767,7 +2767,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     var root = parent.getRoot();
     if (!Root)
-        Root = require(27);
+        Root = require(26);
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
@@ -2783,7 +2783,7 @@ ReflectionObjectPrototype.resolve = function resolve() {
         return this;
     var root = this.getRoot();
     if (!Root)
-        Root = require(27);
+        Root = require(26);
     if (root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
@@ -2839,7 +2839,7 @@ ReflectionObjectPrototype.toString = function toString() {
     return className;
 };
 
-},{"27":27,"34":34}],23:[function(require,module,exports){
+},{"26":26,"32":32}],23:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
@@ -2850,7 +2850,7 @@ var OneOfPrototype = ReflectionObject.extend(OneOf);
 OneOf.className = "OneOf";
 
 var Field = require(17),
-    util  = require(34);
+    util  = require(32);
 
 var TypeError = util._TypeError;
 
@@ -3016,674 +3016,11 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"17":17,"22":22,"34":34}],24:[function(require,module,exports){
-"use strict";
-module.exports = parse;
-
-var tokenize  = require(31),
-    Root      = require(27),
-    Type      = require(32),
-    Field     = require(17),
-    MapField  = require(18),
-    OneOf     = require(23),
-    Enum      = require(16),
-    Service   = require(30),
-    Method    = require(20),
-    types     = require(33),
-    util      = require(34);
-
-function isName(token) {
-    return /^[a-zA-Z_][a-zA-Z_0-9]*$/.test(token);
-}
-
-function isTypeRef(token) {
-    return /^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/.test(token);
-}
-
-function isFqTypeRef(token) {
-    return /^(?:\.[a-zA-Z][a-zA-Z_0-9]*)+$/.test(token);
-}
-
-function lower(token) {
-    return token === null ? null : token.toLowerCase();
-}
-
-/**
- * Result object returned from {@link parse}.
- * @typedef ParserResult
- * @type {Object}
- * @property {string|undefined} package Package name, if declared
- * @property {string[]|undefined} imports Imports, if any
- * @property {string[]|undefined} weakImports Weak imports, if any
- * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
- * @property {Root} root Populated root instance
- */
-
-/**
- * Options modifying the behavior of {@link parse}.
- * @typedef ParseOptions
- * @type {Object}
- * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
- */
-
-/**
- * Parses the given .proto source and returns an object with the parsed contents.
- * @function
- * @param {string} source Source contents
- * @param {Root} root Root to populate
- * @param {ParseOptions} [options] Parse options
- * @returns {ParserResult} Parser result
- * @property {string} filename=null Currently processing file name for error reporting, if known
- */
-function parse(source, root, options) {
-    /* eslint-disable callback-return */
-    if (!(root instanceof Root)) {
-        root = new Root();
-        options = root || {};
-    } else if (!options)
-        options = {};
-
-    var tn = tokenize(source),
-        next = tn.next,
-        push = tn.push,
-        peek = tn.peek,
-        skip = tn.skip;
-
-    var head = true,
-        pkg,
-        imports,
-        weakImports,
-        syntax,
-        isProto3 = false;
-
-    if (!root)
-        root = new Root();
-
-    var ptr = root;
-
-    var applyCase = options.keepCase ? function(name) { return name; } : util.camelCase;
-
-    function illegal(token, name) {
-        var filename = parse.filename;
-        parse.filename = null;
-        return Error("illegal " + (name || "token") + " '" + token + "' (" + (filename ? filename + ", " : "") + "line " + tn.line() + ")");
-    }
-
-    function readString() {
-        var values = [],
-            token;
-        do {
-            if ((token = next()) !== "\"" && token !== "'")
-                throw illegal(token);
-            values.push(next());
-            skip(token);
-            token = peek();
-        } while (token === "\"" || token === "'");
-        return values.join("");
-    }
-
-    function readValue(acceptTypeRef) {
-        var token = next();
-        switch (lower(token)) {
-            case "'":
-            case "\"":
-                push(token);
-                return readString();
-            case "true":
-                return true;
-            case "false":
-                return false;
-        }
-        try {
-            return parseNumber(token);
-        } catch (e) {
-            if (acceptTypeRef && isTypeRef(token))
-                return token;
-            throw illegal(token, "value");
-        }
-    }
-
-    function readRange() {
-        var start = parseId(next());
-        var end = start;
-        if (skip("to", true))
-            end = parseId(next());
-        skip(";");
-        return [ start, end ];
-    }
-
-    function parseNumber(token) {
-        var sign = 1;
-        if (token.charAt(0) === "-") {
-            sign = -1;
-            token = token.substring(1);
-        }
-        var tokenLower = lower(token);
-        switch (tokenLower) {
-            case "inf": return sign * Infinity;
-            case "nan": return NaN;
-            case "0": return 0;
-        }
-        if (/^[1-9][0-9]*$/.test(token))
-            return sign * parseInt(token, 10);
-        if (/^0[x][0-9a-f]+$/.test(tokenLower))
-            return sign * parseInt(token, 16);
-        if (/^0[0-7]+$/.test(token))
-            return sign * parseInt(token, 8);
-        if (/^(?!e)[0-9]*(?:\.[0-9]*)?(?:[e][+-]?[0-9]+)?$/.test(tokenLower))
-            return sign * parseFloat(token);
-        throw illegal(token, "number");
-    }
-
-    function parseId(token, acceptNegative) {
-        var tokenLower = lower(token);
-        switch (tokenLower) {
-            case "max": return 536870911;
-            case "0": return 0;
-        }
-        if (token.charAt(0) === "-" && !acceptNegative)
-            throw illegal(token, "id");
-        if (/^-?[1-9][0-9]*$/.test(token))
-            return parseInt(token, 10);
-        if (/^-?0[x][0-9a-f]+$/.test(tokenLower))
-            return parseInt(token, 16);
-        if (/^-?0[0-7]+$/.test(token))
-            return parseInt(token, 8);
-        throw illegal(token, "id");
-    }
-
-    function parsePackage() {
-        if (pkg !== undefined)
-            throw illegal("package");
-        pkg = next();
-        if (!isTypeRef(pkg))
-            throw illegal(pkg, "name");
-        ptr = ptr.define(pkg);
-        skip(";");
-    }
-
-    function parseImport() {
-        var token = peek();
-        var whichImports;
-        switch (token) {
-            case "weak":
-                whichImports = weakImports || (weakImports = []);
-                next();
-                break;
-            case "public":
-                next();
-                // eslint-disable-line no-fallthrough
-            default:
-                whichImports = imports || (imports = []);
-                break;
-        }
-        token = readString();
-        skip(";");
-        whichImports.push(token);
-    }
-
-    function parseSyntax() {
-        skip("=");
-        syntax = lower(readString());
-        isProto3 = syntax === "proto3";
-        if (!isProto3 && syntax !== "proto2")
-            throw illegal(syntax, "syntax");
-        skip(";");
-    }
-
-    function parseCommon(parent, token) {
-        switch (token) {
-
-            case "option":
-                parseOption(parent, token);
-                skip(";");
-                return true;
-
-            case "message":
-                parseType(parent, token);
-                return true;
-
-            case "enum":
-                parseEnum(parent, token);
-                return true;
-
-            case "service":
-                parseService(parent, token);
-                return true;
-
-            case "extend":
-                parseExtension(parent, token);
-                return true;
-        }
-        return false;
-    }
-
-    function parseType(parent, token) {
-        var name = next();
-        if (!isName(name))
-            throw illegal(name, "type name");
-        var type = new Type(name);
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                if (parseCommon(type, token))
-                    continue;
-                switch (tokenLower) {
-
-                    case "map":
-                        parseMapField(type, tokenLower);
-                        break;
-
-                    case "required":
-                    case "optional":
-                    case "repeated":
-                        parseField(type, tokenLower);
-                        break;
-
-                    case "oneof":
-                        parseOneOf(type, tokenLower);
-                        break;
-
-                    case "extensions":
-                        (type.extensions || (type.extensions = [])).push(readRange(type, tokenLower));
-                        break;
-
-                    case "reserved":
-                        (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
-                        break;
-                        
-                    default:
-                        if (!isProto3 || !isTypeRef(token))
-                            throw illegal(token);
-                        push(token);
-                        parseField(type, "optional");
-                        break;
-                }
-            }
-            skip(";", true);
-        } else
-            skip(";");
-        parent.add(type);
-    }
-
-    function parseField(parent, rule, extend) {
-        var type = next();
-        if (lower(type) === "group") {
-            parseGroup(parent, rule);
-            return;
-        }
-        if (!isTypeRef(type))
-            throw illegal(type, "type");
-        var name = next();
-        if (!isName(name))
-            throw illegal(name, "name");
-        name = applyCase(name);
-        skip("=");
-        var id = parseId(next());
-        var field = parseInlineOptions(new Field(name, id, type, rule, extend));
-        // JSON defaults to packed=true if not set so we have to set packed=false explicity when
-        // parsing proto2 descriptors without the option, where applicable.
-        if (field.repeated && types.packed[type] !== undefined && !isProto3)
-            field.setOption("packed", false, /* ifNotSet */ true);
-        parent.add(field);
-    }
-
-    function parseGroup(parent, rule) {
-        var name = next();
-        if (!isName(name))
-            throw illegal(name, "name");
-        var fieldName = util.lcFirst(name);
-        if (name === fieldName)
-            name = util.ucFirst(name);
-        skip("=");
-        var id = parseId(next());
-        var type = new Type(name);
-        type.group = true;
-        var field = new Field(fieldName, id, name, rule);
-        skip("{");
-        while ((token = next()) !== "}") {
-            switch (token = lower(token)) {
-                case "option":
-                    parseOption(type, token);
-                    skip(";");
-                    break;
-                case "required":
-                case "optional":
-                case "repeated":
-                    parseField(type, token);
-                    break;
-
-                /* istanbul ignore next */
-                default:
-                    throw illegal(token); // there are no groups with proto3 semantics
-            }
-        }
-        skip(";", true);
-        parent.add(type).add(field);
-    }
-
-    function parseMapField(parent) {
-        skip("<");
-        var keyType = next();
-
-        /* istanbul ignore next */
-        if (types.mapKey[keyType] === undefined)
-            throw illegal(keyType, "type");
-        skip(",");
-        var valueType = next();
-        /* istanbul ignore next */
-        if (!isTypeRef(valueType))
-            throw illegal(valueType, "type");
-        skip(">");
-        var name = next();
-        /* istanbul ignore next */
-        if (!isName(name))
-            throw illegal(name, "name");
-
-        name = applyCase(name);
-        skip("=");
-        var id = parseId(next());
-        var field = parseInlineOptions(new MapField(name, id, keyType, valueType));
-        parent.add(field);
-    }
-
-    function parseOneOf(parent, token) {
-        var name = next();
-
-        /* istanbul ignore next */
-        if (!isName(name))
-            throw illegal(name, "name");
-
-        name = applyCase(name);
-        var oneof = new OneOf(name);
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                if (token === "option") {
-                    parseOption(oneof, token);
-                    skip(";");
-                } else {
-                    push(token);
-                    parseField(oneof, "optional");
-                }
-            }
-            skip(";", true);
-        } else
-            skip(";");
-        parent.add(oneof);
-    }
-
-    function parseEnum(parent, token) {
-        var name = next();
-
-        /* istanbul ignore next */
-        if (!isName(name))
-            throw illegal(name, "name");
-
-        var values = {};
-        var enm = new Enum(name, values);
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                if (lower(token) === "option") {
-                    parseOption(enm, token);
-                    skip(";");
-                } else
-                    parseEnumField(enm, token);
-            }
-            skip(";", true);
-        } else
-            skip(";");
-        parent.add(enm);
-    }
-
-    function parseEnumField(parent, token) {
-
-        /* istanbul ignore next */
-        if (!isName(token))
-            throw illegal(token, "name");
-
-        var name = token;
-        skip("=");
-        var value = parseId(next(), true);
-        parent.values[name] = value;
-        parseInlineOptions({}); // skips enum value options
-    }
-
-    function parseOption(parent, token) {
-        var custom = skip("(", true);
-        var name = next();
-
-        /* istanbul ignore next */
-        if (!isTypeRef(name))
-            throw illegal(name, "name");
-
-        if (custom) {
-            skip(")");
-            name = "(" + name + ")";
-            token = peek();
-            if (!isFqTypeRef(token)) {
-                name += token;
-                next();
-            }
-        }
-        skip("=");
-        parseOptionValue(parent, name);
-    }
-
-    function parseOptionValue(parent, name) {
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-
-                /* istanbul ignore next */
-                if (!isName(token))
-                    throw illegal(token, "name");
-
-                name = name + "." + token;
-                if (skip(":", true))
-                    setOption(parent, name, readValue(true));
-                else
-                    parseOptionValue(parent, name);
-            }
-        } else
-            setOption(parent, name, readValue(true));
-        // Does not enforce a delimiter to be universal
-    }
-
-    function setOption(parent, name, value) {
-        if (parent.setOption)
-            parent.setOption(name, value);
-        else
-            parent[name] = value;
-    }
-
-    function parseInlineOptions(parent) {
-        if (skip("[", true)) {
-            do {
-                parseOption(parent, "option");
-            } while (skip(",", true));
-            skip("]");
-        }
-        skip(";");
-        return parent;
-    }
-
-    function parseService(parent, token) {
-        token = next();
-
-        /* istanbul ignore next */
-        if (!isName(token))
-            throw illegal(token, "service name");
-
-        var name = token;
-        var service = new Service(name);
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
-                    case "option":
-                        parseOption(service, tokenLower);
-                        skip(";");
-                        break;
-                    case "rpc":
-                        parseMethod(service, tokenLower);
-                        break;
-
-                    /* istanbul ignore next */
-                    default:
-                        throw illegal(token);
-                }
-            }
-            skip(";", true);
-        } else
-            skip(";");
-        parent.add(service);
-    }
-
-    function parseMethod(parent, token) {
-        var type = token;
-        var name = next();
-
-        /* istanbul ignore next */
-        if (!isName(name))
-            throw illegal(name, "name");
-        var requestType, requestStream,
-            responseType, responseStream;
-        skip("(");
-        var st;
-        if (skip(st = "stream", true))
-            requestStream = true;
-        /* istanbul ignore next */
-        if (!isTypeRef(token = next()))
-            throw illegal(token);
-        requestType = token;
-        skip(")"); skip("returns"); skip("(");
-        if (skip(st, true))
-            responseStream = true;
-        /* istanbul ignore next */
-        if (!isTypeRef(token = next()))
-            throw illegal(token);
-
-        responseType = token;
-        skip(")");
-        var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
-                    case "option":
-                        parseOption(method, tokenLower);
-                        skip(";");
-                        break;
-
-                    /* istanbul ignore next */
-                    default:
-                        throw illegal(token);
-                }
-            }
-            skip(";", true);
-        } else
-            skip(";");
-        parent.add(method);
-    }
-
-    function parseExtension(parent, token) {
-        var reference = next();
-
-        /* istanbul ignore next */
-        if (!isTypeRef(reference))
-            throw illegal(reference, "reference");
-
-        if (skip("{", true)) {
-            while ((token = next()) !== "}") {
-                var tokenLower = lower(token);
-                switch (tokenLower) {
-                    case "required":
-                    case "repeated":
-                    case "optional":
-                        parseField(parent, tokenLower, reference);
-                        break;
-                    default:
-                        /* istanbul ignore next */
-                        if (!isProto3 || !isTypeRef(token))
-                            throw illegal(token);
-                        push(token);
-                        parseField(parent, "optional", reference);
-                        break;
-                }
-            }
-            skip(";", true);
-        } else
-            skip(";");
-    }
-
-    var token;
-    while ((token = next()) !== null) {
-        var tokenLower = lower(token);
-        switch (tokenLower) {
-
-            case "package":
-                /* istanbul ignore next */
-                if (!head)
-                    throw illegal(token);
-                parsePackage();
-                break;
-
-            case "import":
-                /* istanbul ignore next */
-                if (!head)
-                    throw illegal(token);
-                parseImport();
-                break;
-
-            case "syntax":
-                /* istanbul ignore next */
-                if (!head)
-                    throw illegal(token);
-                parseSyntax();
-                break;
-
-            case "option":
-                /* istanbul ignore next */
-                if (!head)
-                    throw illegal(token);
-                parseOption(ptr, token);
-                skip(";");
-                break;
-
-            default:
-                if (parseCommon(ptr, token)) {
-                    head = false;
-                    continue;
-                }
-                /* istanbul ignore next */
-                throw illegal(token);
-        }
-    }
-
-    parse.filename = null;
-    return {
-        "package"     : pkg,
-        "imports"     : imports,
-         weakImports  : weakImports,
-         syntax       : syntax,
-         root         : root
-    };
-}
-
-/**
- * Parses the given .proto source and returns an object with the parsed contents.
- * @name parse
- * @function
- * @param {string} source Source contents
- * @param {ParseOptions} [options] Parse options
- * @returns {ParserResult} Parser result
- * @variation 2
- */
-
-},{"16":16,"17":17,"18":18,"20":20,"23":23,"27":27,"30":30,"31":31,"32":32,"33":33,"34":34}],25:[function(require,module,exports){
+},{"17":17,"22":22,"32":32}],24:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-var util      = require(36);
+var util      = require(34);
 
 var BufferReader; // cyclic
 
@@ -3731,7 +3068,7 @@ function Reader(buffer) {
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
         if (!BufferReader)
-            BufferReader = require(26);
+            BufferReader = require(25);
         return (Reader.create = function create_buffer(buffer) {
             return new BufferReader(buffer);
         })(buffer);
@@ -4184,16 +3521,16 @@ Reader._configure = configure;
 
 configure();
 
-},{"26":26,"36":36}],26:[function(require,module,exports){
+},{"25":25,"34":34}],25:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
-var Reader = require(25);
+var Reader = require(24);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require(36);
+var util = require(34);
 
 /**
  * Constructs a new buffer reader instance.
@@ -4217,7 +3554,7 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"25":25,"36":36}],27:[function(require,module,exports){
+},{"24":24,"34":34}],26:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
@@ -4228,7 +3565,7 @@ var RootPrototype = Namespace.extend(Root);
 Root.className = "Root";
 
 var Field  = require(17),
-    util   = require(34),
+    util   = require(32),
     common = require(12);
 
 var parse; // cyclic
@@ -4283,7 +3620,7 @@ RootPrototype.resolvePath = util.path.resolve;
 function SYNC() {} // eslint-disable-line no-empty-function
 
 var initParser = function() { // excluded (throws) in noparse builds
-    try { parse = require(24); } catch (e) {} // eslint-disable-line no-empty
+    try { parse = require("./parse"); } catch (e) {} // eslint-disable-line no-empty
     initParser = null;
 }
 
@@ -4520,7 +3857,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
     }
 };
 
-},{"12":12,"17":17,"21":21,"24":24,"34":34}],28:[function(require,module,exports){
+},{"12":12,"17":17,"21":21,"32":32,"undefined":undefined}],27:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4529,13 +3866,13 @@ RootPrototype._handleRemove = function handleRemove(object) {
  */
 var rpc = exports;
 
-rpc.Service = require(29);
+rpc.Service = require(28);
 
-},{"29":29}],29:[function(require,module,exports){
+},{"28":28}],28:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var util         = require(34);
+var util         = require(32);
 var EventEmitter = util.EventEmitter;
 
 /**
@@ -4575,7 +3912,7 @@ ServicePrototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"34":34}],30:[function(require,module,exports){
+},{"32":32}],29:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
@@ -4588,8 +3925,8 @@ var ServicePrototype = Namespace.extend(Service);
 Service.className = "Service";
 
 var Method = require(20),
-    util   = require(34),
-    rpc    = require(28);
+    util   = require(32),
+    rpc    = require(27);
 
 /**
  * Constructs a new service instance.
@@ -4794,212 +4131,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     return rpcService;
 };
 
-},{"20":20,"21":21,"28":28,"34":34}],31:[function(require,module,exports){
-"use strict";
-module.exports = tokenize;
-
-var delimRe        = /[\s{}=;:[\],'"()<>]/g,
-    stringDoubleRe = /(?:"([^"\\]*(?:\\.[^"\\]*)*)")/g,
-    stringSingleRe = /(?:'([^'\\]*(?:\\.[^'\\]*)*)')/g;
-
-function unescape(str) {
-    return str.replace(/\\(.?)/g, function($0, $1) {
-        switch ($1) {
-            case "\\":
-            case "":
-                return $1;
-            case "0":
-                return "\u0000";
-            default:
-                return $1;
-        }
-    });
-}
-
-/**
- * Handle object returned from {@link tokenize}.
- * @typedef {Object} TokenizerHandle
- * @property {function():number} line Gets the current line number
- * @property {function():?string} next Gets the next token and advances (`null` on eof)
- * @property {function():?string} peek Peeks for the next token (`null` on eof)
- * @property {function(string)} push Pushes a token back to the stack
- * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- */
-/**/
-
-/**
- * Tokenizes the given .proto source and returns an object with useful utility functions.
- * @param {string} source Source contents
- * @returns {TokenizerHandle} Tokenizer handle
- */
-function tokenize(source) {
-    /* eslint-disable callback-return */
-    source = source.toString();
-    
-    var offset = 0,
-        length = source.length,
-        line = 1;
-    
-    var stack = [];
-
-    var stringDelim = null;
-
-    /* istanbul ignore next */
-    /**
-     * Creates an error for illegal syntax.
-     * @param {string} subject Subject
-     * @returns {Error} Error created
-     * @inner
-     */
-    function illegal(subject) {
-        return Error("illegal " + subject + " (line " + line + ")");
-    }
-
-    /**
-     * Reads a string till its end.
-     * @returns {string} String read
-     * @inner
-     */
-    function readString() {
-        var re = stringDelim === "'" ? stringSingleRe : stringDoubleRe;
-        re.lastIndex = offset - 1;
-        var match = re.exec(source);
-        if (!match)
-            throw illegal("string");
-        offset = re.lastIndex;
-        push(stringDelim);
-        stringDelim = null;
-        return unescape(match[1]);
-    }
-
-    /**
-     * Gets the character at `pos` within the source.
-     * @param {number} pos Position
-     * @returns {string} Character
-     * @inner
-     */
-    function charAt(pos) {
-        return source.charAt(pos);
-    }
-
-    /**
-     * Obtains the next token.
-     * @returns {?string} Next token or `null` on eof
-     * @inner
-     */
-    function next() {
-        if (stack.length > 0)
-            return stack.shift();
-        if (stringDelim)
-            return readString();
-        var repeat,
-            prev,
-            curr;
-        do {
-            if (offset === length)
-                return null;
-            repeat = false;
-            while (/\s/.test(curr = charAt(offset))) {
-                if (curr === "\n")
-                    ++line;
-                if (++offset === length)
-                    return null;
-            }
-            if (charAt(offset) === "/") {
-                if (++offset === length)
-                    throw illegal("comment");
-                if (charAt(offset) === "/") { // Line
-                    while (charAt(++offset) !== "\n")
-                        if (offset === length)
-                            return null;
-                    ++offset;
-                    ++line;
-                    repeat = true;
-                } else if ((curr = charAt(offset)) === "*") { /* Block */
-                    do {
-                        if (curr === "\n")
-                            ++line;
-                        if (++offset === length)
-                            return null;
-                        prev = curr;
-                        curr = charAt(offset);
-                    } while (prev !== "*" || curr !== "/");
-                    ++offset;
-                    repeat = true;
-                } else
-                    return "/";
-            }
-        } while (repeat);
-
-        if (offset === length)
-            return null;
-        var end = offset;
-        delimRe.lastIndex = 0;
-        var delim = delimRe.test(charAt(end++));
-        if (!delim)
-            while (end < length && !delimRe.test(charAt(end)))
-                ++end;
-        var token = source.substring(offset, offset = end);
-        if (token === "\"" || token === "'")
-            stringDelim = token;
-        return token;
-    }
-
-    /**
-     * Pushes a token back to the stack.
-     * @param {string} token Token
-     * @returns {undefined}
-     * @inner
-     */
-    function push(token) {
-        stack.push(token);
-    }
-
-    /**
-     * Peeks for the next token.
-     * @returns {?string} Token or `null` on eof
-     * @inner
-     */
-    function peek() {
-        if (!stack.length) {
-            var token = next();
-            if (token === null)
-                return null;
-            push(token);
-        }
-        return stack[0];
-    }
-
-    /**
-     * Skips a token.
-     * @param {string} expected Expected token
-     * @param {boolean} [optional=false] Whether the token is optional
-     * @returns {boolean} `true` when skipped, `false` if not
-     * @throws {Error} When a required token is not present
-     * @inner
-     */
-    function skip(expected, optional) {
-        var actual = peek(),
-            equals = actual === expected;
-        if (equals) {
-            next();
-            return true;
-        }
-        if (!optional)
-            throw illegal("token '" + actual + "', '" + expected + "' expected");
-        return false;
-    }
-
-    return {
-        line: function() { return line; },
-        next: next,
-        peek: peek,
-        push: push,
-        skip: skip
-    };
-    /* eslint-enable callback-return */
-}
-},{}],32:[function(require,module,exports){
+},{"20":20,"21":21,"27":27,"32":32}],30:[function(require,module,exports){
 "use strict";
 module.exports = Type; 
 
@@ -5014,13 +4146,13 @@ Type.className = "Type";
 var Enum      = require(16),
     OneOf     = require(23),
     Field     = require(17),
-    Service   = require(30),
+    Service   = require(29),
     Class     = require(11),
     Message   = require(19),
-    Reader    = require(25),
-    Writer    = require(38),
+    Reader    = require(24),
+    Writer    = require(36),
     convert   = require(13),
-    util      = require(34);
+    util      = require(32);
 
 var encoder,  // might become cyclic
     decoder,  // might become cyclic
@@ -5360,7 +4492,7 @@ TypePrototype.setup = function setup() {
     if (!encoder) {
         encoder  = require(15);
         decoder  = require(14);
-        verifier = require(37);
+        verifier = require(35);
     }
     this.encode = encoder(this).eof(this.getFullName() + "$encode", {
         Writer : Writer,
@@ -5428,7 +4560,7 @@ TypePrototype.verify = function verify_setup(message) {
     return this.setup().verify(message); // overrides this method
 };
 
-},{"11":11,"13":13,"14":14,"15":15,"16":16,"17":17,"19":19,"21":21,"23":23,"25":25,"30":30,"34":34,"37":37,"38":38}],33:[function(require,module,exports){
+},{"11":11,"13":13,"14":14,"15":15,"16":16,"17":17,"19":19,"21":21,"23":23,"24":24,"29":29,"32":32,"35":35,"36":36}],31:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5437,7 +4569,7 @@ TypePrototype.verify = function verify_setup(message) {
  */
 var types = exports;
 
-var util = require(34);
+var util = require(32);
 
 var s = [
     "double",   // 0
@@ -5622,14 +4754,14 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"34":34}],34:[function(require,module,exports){
+},{"32":32}],32:[function(require,module,exports){
 "use strict";
 
 /**
  * Various utility functions.
  * @namespace
  */
-var util = module.exports = require(36);
+var util = module.exports = require(34);
 
 util.asPromise    = require(1);
 util.codegen      = require(3);
@@ -5740,12 +4872,12 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== "undefined" ? Uint8Array : Array)(size);
 };
 
-},{"1":1,"3":3,"36":36,"4":4,"5":5,"6":6,"8":8}],35:[function(require,module,exports){
+},{"1":1,"3":3,"34":34,"4":4,"5":5,"6":6,"8":8}],33:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(36);
+var util = require(34);
 
 /**
  * Any compatible Long instance.
@@ -5940,13 +5072,13 @@ LongBitsPrototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"36":36}],36:[function(require,module,exports){
+},{"34":34}],34:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-util.LongBits = require(35);
+util.LongBits = require(33);
 util.base64   = require(2);
 util.inquire  = require(7);
 util.utf8     = require(10);
@@ -6137,13 +5269,13 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : {};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"2":2,"35":35,"7":7,"9":9}],37:[function(require,module,exports){
+},{"10":10,"2":2,"33":33,"7":7,"9":9}],35:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
 var Enum      = require(16),
-    Type      = require(32),
-    util      = require(34);
+    Type      = require(30),
+    util      = require(32);
 
 function invalid(field, expected) {
     return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
@@ -6287,11 +5419,11 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
-},{"16":16,"32":32,"34":34}],38:[function(require,module,exports){
+},{"16":16,"30":30,"32":32}],36:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(36);
+var util      = require(34);
 
 var BufferWriter; // cyclic
 
@@ -6422,7 +5554,7 @@ function Writer() {
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
         if (!BufferWriter)
-            BufferWriter = require(39);
+            BufferWriter = require(37);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -6832,16 +5964,16 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
-},{"36":36,"39":39}],39:[function(require,module,exports){
+},{"34":34,"37":37}],37:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
-var Writer = require(38);
+var Writer = require(36);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require(36);
+var util = require(34);
 
 var utf8   = util.utf8,
     Buffer = util.Buffer;
@@ -6908,7 +6040,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"36":36,"38":38}],40:[function(require,module,exports){
+},{"34":34,"36":36}],38:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6988,28 +6120,28 @@ protobuf.loadSync = loadSync;
 protobuf.roots = {};
 
 // Parser
-protobuf.tokenize         = require(31);
-protobuf.parse            = require(24);
+protobuf.tokenize         = require("./tokenize");
+protobuf.parse            = require("./parse");
 
 // Serialization
-protobuf.Writer           = require(38);
-protobuf.BufferWriter     = require(39);
-protobuf.Reader           = require(25);
-protobuf.BufferReader     = require(26);
+protobuf.Writer           = require(36);
+protobuf.BufferWriter     = require(37);
+protobuf.Reader           = require(24);
+protobuf.BufferReader     = require(25);
 protobuf.encoder          = require(15);
 protobuf.decoder          = require(14);
-protobuf.verifier         = require(37);
+protobuf.verifier         = require(35);
 
 // Reflection
 protobuf.ReflectionObject = require(22);
 protobuf.Namespace        = require(21);
-protobuf.Root             = require(27);
+protobuf.Root             = require(26);
 protobuf.Enum             = require(16);
-protobuf.Type             = require(32);
+protobuf.Type             = require(30);
 protobuf.Field            = require(17);
 protobuf.OneOf            = require(23);
 protobuf.MapField         = require(18);
-protobuf.Service          = require(30);
+protobuf.Service          = require(29);
 protobuf.Method           = require(20);
 
 // Runtime
@@ -7017,10 +6149,10 @@ protobuf.Class            = require(11);
 protobuf.Message          = require(19);
 
 // Utility
-protobuf.types            = require(33);
+protobuf.types            = require(31);
 protobuf.common           = require(12);
-protobuf.rpc              = require(28);
-protobuf.util             = require(34);
+protobuf.rpc              = require(27);
+protobuf.util             = require(32);
 protobuf.configure        = configure;
 
 /**
@@ -7043,7 +6175,7 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"11":11,"12":12,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"27":27,"28":28,"30":30,"31":31,"32":32,"33":33,"34":34,"37":37,"38":38,"39":39}]},{},[40])
+},{"11":11,"12":12,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"27":27,"29":29,"30":30,"31":31,"32":32,"35":35,"36":36,"37":37,"undefined":undefined}]},{},[38])
 
 
 //# sourceMappingURL=protobuf.js.map

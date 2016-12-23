@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 22 Dec 2016 22:48:52 UTC
+ * Compiled Fri, 23 Dec 2016 10:37:02 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -399,7 +399,7 @@ ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.s
  * @returns {number} Value read
  */
 ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
-    var value = 0xffffffff >>> 0; // optimizer type-hint, tends to deopt otherwise (?!)
+    var value = 4294967295; // optimizer type-hint, tends to deopt otherwise (?!)
     return function read_uint32() {
         value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;
@@ -1610,16 +1610,16 @@ var writeFloat = typeof Float32Array !== "undefined"
         if (sign)
             value = -value;
         if (value === 0)
-            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 0x80000000, buf, pos);
+            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos);
         else if (isNaN(value))
-            writeFixed32(0x7fffffff, buf, pos);
+            writeFixed32(2147483647, buf, pos);
         else if (value > 3.4028234663852886e+38) // +-Infinity
-            writeFixed32((sign << 31 | 0x7f800000) >>> 0, buf, pos);
+            writeFixed32((sign << 31 | 2139095040) >>> 0, buf, pos);
         else if (value < 1.1754943508222875e-38) // denormal
             writeFixed32((sign << 31 | Math.round(value / 1.401298464324817e-45)) >>> 0, buf, pos);
         else {
             var exponent = Math.floor(Math.log(value) / Math.LN2),
-                mantissa = Math.round(value * Math.pow(2, -exponent) * 8388608) & 0x7fffff;
+                mantissa = Math.round(value * Math.pow(2, -exponent) * 8388608) & 8388607;
             writeFixed32((sign << 31 | exponent + 127 << 23 | mantissa) >>> 0, buf, pos);
         }
     };
@@ -1669,13 +1669,13 @@ var writeDouble = typeof Float64Array !== "undefined"
             value = -value;
         if (value === 0) {
             writeFixed32(0, buf, pos);
-            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 0x80000000, buf, pos + 4);
+            writeFixed32(1 / value > 0 ? /* positive */ 0 : /* negative 0 */ 2147483648, buf, pos + 4);
         } else if (isNaN(value)) {
-            writeFixed32(0xFFFFFFFF, buf, pos);
-            writeFixed32(0x7FFFFFFF, buf, pos + 4);
+            writeFixed32(4294967295, buf, pos);
+            writeFixed32(2147483647, buf, pos + 4);
         } else if (value > 1.7976931348623157e+308) { // +-Infinity
             writeFixed32(0, buf, pos);
-            writeFixed32((sign << 31 | 0x7FF00000) >>> 0, buf, pos + 4);
+            writeFixed32((sign << 31 | 2146435072) >>> 0, buf, pos + 4);
         } else {
             var mantissa;
             if (value < 2.2250738585072014e-308) { // denormal
@@ -1688,7 +1688,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                     exponent = 1023;
                 mantissa = value * Math.pow(2, -exponent);
                 writeFixed32(mantissa * 4503599627370496 >>> 0, buf, pos);
-                writeFixed32((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 0xFFFFF) >>> 0, buf, pos + 4);
+                writeFixed32((sign << 31 | exponent + 1023 << 20 | mantissa * 1048576 & 1048575) >>> 0, buf, pos + 4);
             }
         }
     };
