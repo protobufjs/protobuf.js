@@ -1,24 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head><script src="../dist/protobuf.min.js"></script></head>
+<head><script src="../dist/noparse/protobuf.min.js"></script></head>
 <body>
 <script>
-protobuf.util.fetch("browser.html")
-.then(function(source) {
-    var pre = document.createElement("pre");
-    pre.innerText = source;
-    document.body.appendChild(pre);
-    console.log("success");
-})
-.catch(function(err) {
-    console.log("error", err);
-});
-
-var root = new protobuf.Root();
-console.log(root.toString());
-var message = new protobuf.Type("Message");
-root.add(message);
-console.log(message.toString());
+console.log(protobuf);
 </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 23 Dec 2016 11:04:05 UTC
+ * Compiled Sat, 24 Dec 2016 00:17:18 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -4234,10 +4234,10 @@ var RootPrototype = Namespace.extend(Root);
 Root.className = "Root";
 
 var Field  = require(17),
-    util   = require(34),
-    common = require(12);
+    util   = require(34);
 
-var parse; // cyclic
+var parse,  // cyclic, might be excluded
+    common; // might be excluded
 
 /**
  * Constructs a new root namespace instance.
@@ -4288,8 +4288,11 @@ RootPrototype.resolvePath = util.path.resolve;
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
-var initParser = function() { // excluded (throws) in noparse builds
-    try { parse = require(24); } catch (e) {} // eslint-disable-line no-empty
+var initParser = function() {
+    try { // excluded in noparse builds
+        parse  = require(24);
+        common = require(12);
+    } catch (e) {} // eslint-disable-line no-empty
     initParser = null;
 };
 
@@ -4325,7 +4328,7 @@ RootPrototype.load = function load(filename, options, callback) {
     // Processes a single file
     function process(filename, source) {
         try {
-            if (util.isString(source) && source.charAt(0) === "{" || !parse)
+            if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
@@ -6971,9 +6974,12 @@ protobuf.loadSync = loadSync;
  */
 protobuf.roots = {};
 
-// Parser
-protobuf.tokenize         = require(31);
-protobuf.parse            = require(24);
+// Parser (if not excluded)
+try {
+    protobuf.tokenize     = require(31);
+    protobuf.parse        = require(24);
+    protobuf.common       = require(12);
+} catch (e) {} // eslint-disable-line no-empty
 
 // Serialization
 protobuf.Writer           = require(38);
@@ -7002,7 +7008,6 @@ protobuf.Message          = require(19);
 
 // Utility
 protobuf.types            = require(33);
-protobuf.common           = require(12);
 protobuf.rpc              = require(28);
 protobuf.util             = require(34);
 protobuf.configure        = configure;

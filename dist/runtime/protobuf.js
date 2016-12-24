@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 23 Dec 2016 11:04:05 UTC
+ * Compiled Sat, 24 Dec 2016 00:17:18 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -300,10 +300,11 @@ utf8.write = function(string, buffer, offset) {
 };
 
 },{}],5:[function(require,module,exports){
+(function (global){
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
 "use strict";
-var protobuf = exports;
+var protobuf = global.protobuf = exports;
 
 protobuf.Writer       = require(10);
 protobuf.BufferWriter = require(11);
@@ -326,6 +327,8 @@ if (typeof define === "function" && define.amd)
         }
         return protobuf;
     });
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"10":10,"11":11,"6":6,"7":7,"9":9}],6:[function(require,module,exports){
 "use strict";

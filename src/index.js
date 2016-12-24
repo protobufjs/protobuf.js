@@ -75,9 +75,12 @@ protobuf.loadSync = loadSync;
  */
 protobuf.roots = {};
 
-// Parser
-protobuf.tokenize         = require("./tokenize");
-protobuf.parse            = require("./parse");
+// Parser (if not excluded)
+try {
+    protobuf.tokenize     = require("./tokenize");
+    protobuf.parse        = require("./parse");
+    protobuf.common       = require("./common");
+} catch (e) {} // eslint-disable-line no-empty
 
 // Serialization
 protobuf.Writer           = require("./writer");
@@ -106,7 +109,6 @@ protobuf.Message          = require("./message");
 
 // Utility
 protobuf.types            = require("./types");
-protobuf.common           = require("./common");
 protobuf.rpc              = require("./rpc");
 protobuf.util             = require("./util");
 protobuf.configure        = configure;

@@ -55,13 +55,13 @@ gulp.task("gzip-production-runtime", [ "bundle-production-runtime" ], function(c
 gulp.task("bundle-development-noparse", bundle.bind(this, {
     entry    : "./src",
     target   : "./dist/noparse",
-    exclude  : [ "./tokenize", "./parse" ]
+    exclude  : [ "./tokenize", "./parse", "./common" ]
 }));
 
 gulp.task("bundle-production-noparse" , bundle.bind(this, {
     entry    : "./src",
     target   : "./dist/noparse",
-    exclude  : [ "./tokenize", "./parse" ],
+    exclude  : [ "./tokenize", "./parse", "./common" ],
     compress : true
 }));
 

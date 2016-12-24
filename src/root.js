@@ -8,10 +8,10 @@ var RootPrototype = Namespace.extend(Root);
 Root.className = "Root";
 
 var Field  = require("./field"),
-    util   = require("./util"),
-    common = require("./common");
+    util   = require("./util");
 
-var parse; // cyclic
+var parse,  // cyclic, might be excluded
+    common; // might be excluded
 
 /**
  * Constructs a new root namespace instance.
@@ -62,8 +62,11 @@ RootPrototype.resolvePath = util.path.resolve;
 /* istanbul ignore next */
 function SYNC() {} // eslint-disable-line no-empty-function
 
-var initParser = function() { // excluded (throws) in noparse builds
-    try { parse = require("./parse"); } catch (e) {} // eslint-disable-line no-empty
+var initParser = function() {
+    try { // excluded in noparse builds
+        parse  = require("./parse");
+        common = require("./common");
+    } catch (e) {} // eslint-disable-line no-empty
     initParser = null;
 };
 
@@ -99,7 +102,7 @@ RootPrototype.load = function load(filename, options, callback) {
     // Processes a single file
     function process(filename, source) {
         try {
-            if (util.isString(source) && source.charAt(0) === "{" || !parse)
+            if (util.isString(source) && source.charAt(0) === "{")
                 source = JSON.parse(source);
             if (!util.isString(source))
                 self.setOptions(source.options).addJSON(source.nested);
