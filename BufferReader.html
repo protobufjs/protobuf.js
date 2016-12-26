@@ -115,6 +115,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="util.Array"><a href="util.html#.Array">Array</a></li>
+            
                 <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
             
                 <li data-name="util.emptyArray"><a href="util.html#.emptyArray">emptyArray</a></li>
@@ -122,6 +124,8 @@
                 <li data-name="util.emptyObject"><a href="util.html#.emptyObject">emptyObject</a></li>
             
                 <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
+            
+                <li data-name="util.isIE8"><a href="util.html#.isIE8">isIE8</a></li>
             
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
@@ -136,8 +140,6 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
-            
-                <li data-name="util.camelCase"><a href="util.html#.camelCase">camelCase</a></li>
             
                 <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
             
@@ -178,8 +180,6 @@
                 <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
             
                 <li data-name="util.ucFirst"><a href="util.html#.ucFirst">ucFirst</a></li>
-            
-                <li data-name="util.underScore"><a href="util.html#.underScore">underScore</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -579,8 +579,6 @@
             
                 <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
-                <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
                 <li data-name="Field#onRemove"><a href="Field.html#onRemove">onRemove</a></li>
@@ -676,8 +674,6 @@
             
                 <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
             
-                <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -726,6 +722,8 @@
                 <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
             
                 <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Message.from"><a href="Message.html#.from">from</a></li>
             
                 <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
             
@@ -1358,6 +1356,8 @@
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
+                <li data-name="Type#from"><a href="Type.html#from">from</a></li>
+            
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
                 <li data-name="Type#getEnum"><a href="Type.html#getEnum">getEnum</a></li>
@@ -1866,7 +1866,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L222">line 222</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L219">line 219</a>
         </div>
         
     </div>
@@ -1968,7 +1968,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L392">line 392</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L416">line 416</a>
         </div>
         
     </div>
@@ -2070,7 +2070,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L377">line 377</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L401">line 401</a>
         </div>
         
     </div>
@@ -2172,7 +2172,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L237">line 237</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L234">line 234</a>
         </div>
         
     </div>
@@ -2274,7 +2274,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L284">line 284</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L283">line 283</a>
         </div>
         
     </div>
@@ -2379,7 +2379,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L328">line 328</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L339">line 339</a>
         </div>
         
     </div>
@@ -2481,7 +2481,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L100">line 100</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L94">line 94</a>
         </div>
         
     </div>
@@ -2583,7 +2583,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L197">line 197</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L194">line 194</a>
         </div>
         
     </div>
@@ -2688,7 +2688,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L250">line 250</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L247">line 247</a>
         </div>
         
     </div>
@@ -2790,7 +2790,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L291">line 291</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L290">line 290</a>
         </div>
         
     </div>
@@ -2895,7 +2895,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L108">line 108</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L102">line 102</a>
         </div>
         
     </div>
@@ -2997,7 +2997,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L211">line 211</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L208">line 208</a>
         </div>
         
     </div>
@@ -3102,7 +3102,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L421">line 421</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L445">line 445</a>
         </div>
         
     </div>
@@ -3256,7 +3256,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L442">line 442</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L466">line 466</a>
         </div>
         
     </div>
@@ -3403,7 +3403,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L411">line 411</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L435">line 435</a>
         </div>
         
     </div>
@@ -3505,7 +3505,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L74">line 74</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L72">line 72</a>
         </div>
         
     </div>
@@ -3607,7 +3607,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L204">line 204</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js">reader.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js#L201">line 201</a>
         </div>
         
     </div>

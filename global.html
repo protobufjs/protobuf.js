@@ -115,6 +115,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="util.Array"><a href="util.html#.Array">Array</a></li>
+            
                 <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
             
                 <li data-name="util.emptyArray"><a href="util.html#.emptyArray">emptyArray</a></li>
@@ -122,6 +124,8 @@
                 <li data-name="util.emptyObject"><a href="util.html#.emptyObject">emptyObject</a></li>
             
                 <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
+            
+                <li data-name="util.isIE8"><a href="util.html#.isIE8">isIE8</a></li>
             
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
@@ -136,8 +140,6 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
-            
-                <li data-name="util.camelCase"><a href="util.html#.camelCase">camelCase</a></li>
             
                 <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
             
@@ -178,8 +180,6 @@
                 <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
             
                 <li data-name="util.ucFirst"><a href="util.html#.ucFirst">ucFirst</a></li>
-            
-                <li data-name="util.underScore"><a href="util.html#.underScore">underScore</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -579,8 +579,6 @@
             
                 <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
-                <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
                 <li data-name="Field#onRemove"><a href="Field.html#onRemove">onRemove</a></li>
@@ -676,8 +674,6 @@
             
                 <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
             
-                <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -726,6 +722,8 @@
                 <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
             
                 <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Message.from"><a href="Message.html#.from">from</a></li>
             
                 <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
             
@@ -1358,6 +1356,8 @@
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
+                <li data-name="Type#from"><a href="Type.html#from">from</a></li>
+            
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
                 <li data-name="Type#getEnum"><a href="Type.html#getEnum">getEnum</a></li>
@@ -1630,7 +1630,7 @@
 <dd>
     
     <div class="description">
-        <p>Named roots.</p>
+        <p>Named roots.<br>This is where pbjs stores generated structures (the option <code>-r, --root</code> specifies a name).<br>Can also be used manually to make roots available accross modules.</p>
     </div>
     
     
@@ -1680,7 +1680,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">common.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js#L17">line 17</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">common.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js#L18">line 18</a>
         </div>
         
     </div>
@@ -1911,6 +1911,29 @@
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>google/protobuf/wrappers.proto</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Wrappers</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table></dl>
         
@@ -1991,7 +2014,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L116">line 116</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js">index.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js#L120">line 120</a>
         </div>
         
     </div>
@@ -2070,6 +2093,317 @@
                     
             </td>
             <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="convert">
+            
+            convert<span class="signature">(type, source, destination, options, converter)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ * }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/convert.js">convert.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/convert.js#L31">line 31</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Converts between JSON objects and messages, based on reflection information.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Type.html">Type</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Type</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Source object</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>destination</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Destination object</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Conversion options</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>converter</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Converter">Converter</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Conversion function</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>toJson</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Converter">Converter</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>To JSON converter using <a href="global.html#JSONConversionOptions">JSONConversionOptions</a></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>toMessage</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Converter">Converter</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>To message converter using <a href="global.html#MessageConversionOptions">MessageConversionOptions</a></p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        *
+                        
+                    
+            </td>
+            <td class="description last"><code>destination</code></td>
         </tr>
     
     </tbody>
@@ -3140,7 +3474,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js#L59">line 59</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js#L65">line 65</a>
         </div>
         
     </div>
@@ -3407,7 +3741,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js#L651">line 651</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js">parse.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js#L659">line 659</a>
         </div>
         
     </div>
@@ -3732,7 +4066,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js">verifier.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js#L72">line 72</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js">verifier.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/verifier.js#L101">line 101</a>
         </div>
         
     </div>
@@ -4130,6 +4464,197 @@
                 
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="Converter">
+            
+            Converter<span class="signature">(field, value, options)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ * }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/convert.js">convert.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/convert.js#L10">line 10</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A converter as used by <a href="global.html#convert">convert</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Field.html">Field</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Reflected field</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Value to convert</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Conversion options</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        *
+                        
+                    
+            </td>
+            <td class="description last">Converted value</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="FetchCallback">
             
             FetchCallback<span class="signature">(error, <span class="optional">contents</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ undefined }</span>
@@ -4304,6 +4829,264 @@
 </table>
 
     
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="JSONConversionOptions">JSONConversionOptions <span class="type-signature type">{ Object }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>JSON conversion options as used by <a href="Message.html#asJSON">Message#asJSON</a> with <a href="global.html#convert">convert</a>.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fieldsOnly</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last"><p>Keeps only properties that reference a field</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>longs</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"><p>Long conversion type. Only relevant with a long library.<br>Valid values are <code>String</code> and <code>Number</code> (the global types).<br>Defaults to a possibly unsafe number without, and a <code>Long</code> with a long library.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>enums</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    Number
+                
+                </td>
+            
+            
+            <td class="description last"><p>Enum value conversion type.<br>Valid values are <code>String</code> and <code>Number</code> (the global types).<br>Defaults to the numeric ids.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>bytes</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"><p>Bytes value conversion type.<br>Valid values are <code>Array</code> and <code>String</code> (the global types).<br>Defaults to return the underlying buffer type.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>defaults</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last"><p>Also sets default values on the resulting object</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
     
     
 </dd>
@@ -4599,6 +5382,120 @@
             
             
             <td class="description last"><p>Whether unsigned or not</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="MessageConversionOptions">MessageConversionOptions <span class="type-signature type">{ Object }</span></h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Message conversion options as used by <a href="Message.html#.from">Message.from</a> and <a href="Type.html#from">Type#from</a> with <a href="global.html#convert">convert</a>.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fieldsOnly</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last"><p>Keeps only properties that reference a field</p></td>
         </tr>
 	
 	
@@ -5273,7 +6170,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L158">line 158</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L159">line 159</a>
         </div>
         
     </div>
@@ -5455,7 +6352,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L148">line 148</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js">service.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js#L149">line 149</a>
         </div>
         
     </div>

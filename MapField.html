@@ -115,6 +115,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="util.Array"><a href="util.html#.Array">Array</a></li>
+            
                 <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
             
                 <li data-name="util.emptyArray"><a href="util.html#.emptyArray">emptyArray</a></li>
@@ -122,6 +124,8 @@
                 <li data-name="util.emptyObject"><a href="util.html#.emptyObject">emptyObject</a></li>
             
                 <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
+            
+                <li data-name="util.isIE8"><a href="util.html#.isIE8">isIE8</a></li>
             
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
@@ -136,8 +140,6 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
-            
-                <li data-name="util.camelCase"><a href="util.html#.camelCase">camelCase</a></li>
             
                 <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
             
@@ -178,8 +180,6 @@
                 <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
             
                 <li data-name="util.ucFirst"><a href="util.html#.ucFirst">ucFirst</a></li>
-            
-                <li data-name="util.underScore"><a href="util.html#.underScore">underScore</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -579,8 +579,6 @@
             
                 <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
-                <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
                 <li data-name="Field#onRemove"><a href="Field.html#onRemove">onRemove</a></li>
@@ -676,8 +674,6 @@
             
                 <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
             
-                <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -726,6 +722,8 @@
                 <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
             
                 <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Message.from"><a href="Message.html#.from">from</a></li>
             
                 <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
             
@@ -1358,6 +1356,8 @@
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
+                <li data-name="Type#from"><a href="Type.html#from">from</a></li>
+            
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
                 <li data-name="Type#getEnum"><a href="Type.html#getEnum">getEnum</a></li>
@@ -1585,7 +1585,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js">mapfield.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js#L27">line 27</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js">mapfield.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js#L26">line 26</a>
         </div>
         
     </div>
@@ -2973,7 +2973,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js">mapfield.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js#L66">line 66</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js">mapfield.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js#L65">line 65</a>
         </div>
         
     </div>
@@ -3169,7 +3169,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js">mapfield.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js#L55">line 55</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js">mapfield.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js#L54">line 54</a>
         </div>
         
     </div>
@@ -3542,195 +3542,6 @@
                     
             </td>
             <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="jsonConvert">
-            
-                <span class="inherited"><a href="Field.html#jsonConvert">inherited</a></span>
-            
-            jsonConvert<span class="signature">(value, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ * }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js">field.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js#L278">line 278</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Converts a field value to JSON using the specified options. Note that this method does not account for repeated fields and must be called once for each repeated element instead.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Field value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="Message.html#asJSON">Message#asJSON</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        *
-                        
-                    
-            </td>
-            <td class="description last">Converted value</td>
         </tr>
     
     </tbody>

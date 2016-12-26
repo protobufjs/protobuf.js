@@ -115,6 +115,8 @@
             
             <span class="subtitle">Members</span>
             
+                <li data-name="util.Array"><a href="util.html#.Array">Array</a></li>
+            
                 <li data-name="util.Buffer"><a href="util.html#.Buffer">Buffer</a></li>
             
                 <li data-name="util.emptyArray"><a href="util.html#.emptyArray">emptyArray</a></li>
@@ -122,6 +124,8 @@
                 <li data-name="util.emptyObject"><a href="util.html#.emptyObject">emptyObject</a></li>
             
                 <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
+            
+                <li data-name="util.isIE8"><a href="util.html#.isIE8">isIE8</a></li>
             
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
@@ -136,8 +140,6 @@
             <span class="subtitle">Methods</span>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
-            
-                <li data-name="util.camelCase"><a href="util.html#.camelCase">camelCase</a></li>
             
                 <li data-name="util.codegen"><a href="util.html#.codegen">codegen</a></li>
             
@@ -178,8 +180,6 @@
                 <li data-name="util.toArray"><a href="util.html#.toArray">toArray</a></li>
             
                 <li data-name="util.ucFirst"><a href="util.html#.ucFirst">ucFirst</a></li>
-            
-                <li data-name="util.underScore"><a href="util.html#.underScore">underScore</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -579,8 +579,6 @@
             
                 <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
-                <li data-name="Field#jsonConvert"><a href="Field.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
                 <li data-name="Field#onRemove"><a href="Field.html#onRemove">onRemove</a></li>
@@ -676,8 +674,6 @@
             
                 <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
             
-                <li data-name="MapField#jsonConvert"><a href="MapField.html#jsonConvert">jsonConvert</a></li>
-            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -726,6 +722,8 @@
                 <li data-name="Message.encode"><a href="Message.html#.encode">encode</a></li>
             
                 <li data-name="Message.encodeDelimited"><a href="Message.html#.encodeDelimited">encodeDelimited</a></li>
+            
+                <li data-name="Message.from"><a href="Message.html#.from">from</a></li>
             
                 <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
             
@@ -1358,6 +1356,8 @@
             
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
+                <li data-name="Type#from"><a href="Type.html#from">from</a></li>
+            
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
                 <li data-name="Type#getEnum"><a href="Type.html#getEnum">getEnum</a></li>
@@ -1782,7 +1782,7 @@ import * as protobuf from &quot;protobufjs&quot;;
 <ul>
 <li><p><a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">Google's Developer Guide</a></p>
 </li>
-<li><p><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a></p>
+<li><p><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a> and <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md">CHANGELOG</a></p>
 </li>
 <li><p><a target="_blank" href="http://stackoverflow.com/questions/tagged/protobuf.js">Questions and answers on StackOverflow</a></p>
 </li>
@@ -1838,10 +1838,24 @@ usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production e
 
   -o, --out       Saves to a file instead of writing to stdout.
 
-usage: pbts [options] file1.js file2.js ...</code></pre><h3 id="descriptors-vs-static-modules">Descriptors vs. static modules</h3>
+usage: pbts [options] file1.js file2.js ...</code></pre><h3 id="using-pbjs-and-pbts-programmatically">Using pbjs and pbts programmatically</h3>
+<p>Both utilities can be used programmatically by providing command line arguments and a callback to their respective <code>main</code> functions:</p>
+<pre class="prettyprint source lang-js"><code>var pbjs = require(&quot;protobufjs/cli/pbjs&quot;);
+
+pbjs.main([ &quot;--target&quot;, &quot;json-module&quot;, &quot;path/to/myproto.proto&quot; ], function(err, output) {
+    if (err)
+        throw err;
+    // do something with output
+});</code></pre><h3 id="descriptors-vs-static-modules">Descriptors vs. static modules</h3>
 <p>While .proto and JSON files require the full library (about 17.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.</p>
 <p>Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.</p>
 <p>There is no difference performance-wise as the code generated statically is pretty much the same as generated at runtime.</p>
+<p>Additionally, JSON modules can be used with TypeScript definitions generated for their static counterparts as long as the following conditions are met:</p>
+<ol>
+<li>Always use <code>SomeMessage.create(...)</code> instead of <code>new SomeMessage(...)</code> because reflection does not provide such a constructor.</li>
+<li>Types, services and enums must start with an uppercase letter to become available on the reflected types as well.</li>
+<li>When using a TypeScript definition with code not generated by pbjs, <code>resolveAll()</code> must be called once on the root instance to populate these additional properties (JSON modules do this automatically).</li>
+</ol>
 <h2 id="building">Building</h2>
 <p>To build the library or its components yourself, clone it from GitHub and install the development<br>dependencies:</p>
 <pre class="prettyprint source"><code>$> git clone https://github.com/dcodeIO/protobuf.js.git
@@ -1909,8 +1923,7 @@ Type.verify x 5,857,856 ops/sec ±0.82% (91 runs sampled)</code></pre><p>Note th
 <li>Support for pre-ES5 environments like IE8 can be achieved by <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js">using a polyfill</a> and, instead of using property getters and setters on reflection objects, calling the respective functions prefixed with <code>get</code>, <code>set</code> or <code>is</code> directly (i.e. calling <code>Type#getFieldsById()</code> instead of accessing <code>Type#fieldsById</code>). Note that this also applies to virtual oneof properties (use <code>getKind</code>, <code>setKind</code> for example if the oneof is named <code>kind</code>).</li>
 <li>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install <a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. All 64 bit numbers will then be returned as a <code>Long</code> instance instead of a possibly unsafe JavaScript number (<a target="_blank" href="https://github.com/dcodeIO/long.js">see</a>).</li>
 </ul>
-<p><strong>License:</strong> <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License, Version 2.0</a>, bundled external libraries may have <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/tree/master/lib">their own license</a></p>
-<p><a target="_blank" href="https://github.com/igrigorik/ga-beacon"><img src="https://ga-beacon.appspot.com/UA-40277577-2/dcodeIO/protobuf.js" alt="Analytics"></a></p></article>
+<p><strong>License:</strong> <a target="_blank" href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</a></p></article>
     </section>
 
 
