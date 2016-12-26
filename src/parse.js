@@ -447,7 +447,7 @@ function parse(source, root, options) {
             skip(")");
             name = "(" + name + ")";
             token = peek();
-            if (!isFqTypeRef(token)) {
+            if (isFqTypeRef(token)) {
                 name += token;
                 next();
             }
