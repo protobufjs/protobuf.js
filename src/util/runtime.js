@@ -26,16 +26,29 @@ util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-
  * Node's Buffer class if available.
  * @type {?function(new: Buffer)}
  */
-util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
+util.Buffer = (function() {
+    try {
+        var Buffer = util.inquire("buffer").Buffer;
 
-if (util.Buffer) {
-    // Don't use browser-buffer for performance
-    if (!util.Buffer.prototype.utf8Write)
-        util.Buffer = null;
-    // Polyfill Buffer.from
-    else if (!util.Buffer.from)
-        util.Buffer.from = function from(value, encoding) { return new util.Buffer(value, encoding); };
-}
+        /* istanbul ignore next */
+        if (!Buffer.prototype.utf8Write) // refuse to use non-node buffers (performance)
+            return null;
+
+        /* istanbul ignore next */
+        if (!Buffer.from)
+            Buffer.from = function from(value, encoding) { return new Buffer(value, encoding); };
+
+        /* istanbul ignore next */
+        if (!Buffer.allocUnsafe)
+            Buffer.allocUnsafe = function allocUnsafe(size) { return new Buffer(size); };
+
+        return Buffer;
+
+    /* istanbul ignore next */
+    } catch (e) {
+        return null;
+    }
+})();
 
 /**
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
