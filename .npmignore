@@ -4,6 +4,7 @@
 npm-debug.*
 node_modules/
 docs/
+coverage/
 examples/
 src/util/aspromise/
 src/util/base64/

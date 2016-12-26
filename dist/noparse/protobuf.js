@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 24 Dec 2016 00:17:18 UTC
+ * Compiled Mon, 26 Dec 2016 17:57:31 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -742,7 +742,7 @@ function create(type, ctor) {
         if (typeof ctor !== "function")
             throw TypeError("ctor", "a function");
     } else
-        ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife
+        ctor = (function(MessageCtor) {
             return function Message(properties) {
                 MessageCtor.call(this, properties);
             };
@@ -1046,7 +1046,7 @@ function decoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            prop  = util.safeProp(field.name);
+            ref   = "m" + util.safeProp(field.name);
         gen
             ("case %d:", field.id);
 
@@ -1055,44 +1055,44 @@ function decoder(mtype) {
 
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("r.skip().pos++")
-                ("if(m%s===util.emptyObject)", prop)
-                    ("m%s={}", prop)
+                ("r.skip().pos++") // assumes id 1 + key wireType
+                ("if(%s===util.emptyObject)", ref)
+                    ("%s={}", ref)
                 ("var k=r.%s()", keyType)
                 ("if(typeof k===\"object\")")
                     ("k=util.longToHash(k)")
-                ("r.pos++");
+                ("r.pos++"); // assumes id 2 + value wireType
             if (types.basic[type] === undefined) gen
-                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i); // can't be groups
+                ("%s[k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
             else gen
-                ("m%s[k]=r.%s()", prop, type);
+                ("%s[k]=r.%s()", ref, type);
 
         // Repeated fields
         } else if (field.repeated) { gen
 
-                ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
+                ("%s&&%s.length||(%s=[])", ref, ref, ref);
 
             // Packed
             if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
-                        ("m%s.push(r.%s())", prop, type)
+                        ("%s.push(r.%s())", ref, type)
                 ("}else");
 
             // Non-packed
             if (types.basic[type] === undefined) gen(field.resolvedType.group
-                    ? "m%s.push(types[%d].decode(r))"
-                    : "m%s.push(types[%d].decode(r,r.uint32()))", prop, i);
+                    ? "%s.push(types[%d].decode(r))"
+                    : "%s.push(types[%d].decode(r,r.uint32()))", ref, i);
             else gen
-                    ("m%s.push(r.%s())", prop, type);
+                    ("%s.push(r.%s())", ref, type);
 
         // Non-repeated
         } else if (types.basic[type] === undefined) gen(field.resolvedType.group
-                ? "m%s=types[%d].decode(r)"
-                : "m%s=types[%d].decode(r,r.uint32())", prop, i);
+                ? "%s=types[%d].decode(r)"
+                : "%s=types[%d].decode(r,r.uint32())", ref, i);
         else gen
-                ("m%s=r.%s()", prop, type);
+                ("%s=r.%s()", ref, type);
         gen
                 ("break");
 
@@ -1137,24 +1137,24 @@ function encoder(mtype) {
     var gen = util.codegen("m", "w")
     ("w||(w=Writer.create())");
 
-    var i;
+    var i, ref;
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.basic[type],
-            prop     = safeProp(field.name);
+            wireType = types.basic[type];
+            ref      = "m" + safeProp(field.name);
 
         // Map fields
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-    ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
-        ("for(var ks=Object.keys(m%s),i=0;i<ks.length;++i){", prop)
+    ("if(%s&&%s!==util.emptyObject){", ref, ref)
+        ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(m%s[ks[i]],w.uint32(18).fork()).ldelim()", i, prop); // can't be groups
+            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim()", i, ref); // can't be groups
             else gen
-            ("w.uint32(%d).%s(m%s[ks[i]])", 16 | wireType, type, prop);
+            ("w.uint32(%d).%s(%s[ks[i]])", 16 | wireType, type, ref);
             gen
             ("w.ldelim()")
         ("}")
@@ -1166,22 +1166,22 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-    ("if(m%s&&m%s.length){", prop, prop)
+    ("if(%s&&%s.length){", ref, ref)
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
-        ("for(var i=0;i<m%s.length;++i)", prop)
-            ("w.%s(m%s[i])", type, prop)
+        ("for(var i=0;i<%s.length;++i)", ref)
+            ("w.%s(%s[i])", type, ref)
         ("w.ldelim()", field.id)
     ("}");
 
             // Non-packed
             } else { gen
 
-    ("if(m%s)", prop)
-        ("for(var i=0;i<m%s.length;++i)", prop);
+    ("if(%s)", ref)
+        ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
-            genEncodeType(gen, field, i, "m" + prop + "[i]", true);
+            genEncodeType(gen, field, i, ref + "[i]", true);
                 else gen
-            ("w.uint32(%d).%s(m%s[i])", (field.id << 3 | wireType) >>> 0, type, prop);
+            ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
 
             }
 
@@ -1191,37 +1191,36 @@ function encoder(mtype) {
 
                 if (field.long) {
                     gen
-    ("if(m%s!==undefined&&util.longNe(m%s,%d,%d))", prop, prop, field.defaultValue.low, field.defaultValue.high);
+    ("if(%s!==undefined&&util.longNe(%s,%d,%d))", ref, ref, field.defaultValue.low, field.defaultValue.high);
                 } else gen
-    ("if(m%s!==undefined&&m%s!==%j)", prop, prop, field.defaultValue);
+    ("if(%s!==undefined&&%s!==%j)", ref, ref, field.defaultValue);
 
             }
 
             if (wireType === undefined)
-        genEncodeType(gen, field, i, "m" + prop, true);
+        genEncodeType(gen, field, i, ref, true);
             else gen
-        ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
+        ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
         }
     }
     for (var i = 0; i < oneofs.length; ++i) {
-        var oneof = oneofs[i],
-            prop  = safeProp(oneof.name);
+        var oneof = oneofs[i];
         gen
-        ("switch(m%s){", prop);
+        ("switch(%s){", "m" + safeProp(oneof.name));
         var oneofFields = oneof.getFieldsArray();
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-                wireType = types.basic[type],
-                prop     = safeProp(field.name);
+                wireType = types.basic[type];
+                ref      = "m" + safeProp(field.name);
             gen
             ("case%j:", field.name);
 
             if (wireType === undefined)
-                genEncodeType(gen, field, fields.indexOf(field), "m" + prop);
+                genEncodeType(gen, field, fields.indexOf(field), ref);
             else gen
-                ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
+                ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
             gen
                 ("break;");
@@ -2866,6 +2865,7 @@ Reader.create = util.Buffer
             return new BufferReader(buffer);
         })(buffer);
     }
+    /* istanbul ignore next */
     : function create_array(buffer) {
         return new Reader(buffer);
     };
@@ -2880,7 +2880,7 @@ ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.s
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
+ReaderPrototype.uint32 = (function read_uint32_setup() {
     var value = 4294967295; // optimizer type-hint, tends to deopt otherwise (?!)
     return function read_uint32() {
         value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
@@ -2977,6 +2977,7 @@ function read_int64_long() {
     return readLongVarint.call(this).toLong();
 }
 
+/* istanbul ignore next */
 function read_int64_number() {
     return readLongVarint.call(this).toNumber();
 }
@@ -2985,6 +2986,7 @@ function read_uint64_long() {
     return readLongVarint.call(this).toLong(true);
 }
 
+/* istanbul ignore next */
 function read_uint64_number() {
     return readLongVarint.call(this).toNumber(true);
 }
@@ -2993,6 +2995,7 @@ function read_sint64_long() {
     return readLongVarint.call(this).zzDecode().toLong();
 }
 
+/* istanbul ignore next */
 function read_sint64_number() {
     return readLongVarint.call(this).zzDecode().toNumber();
 }
@@ -3072,6 +3075,7 @@ function read_fixed64_long() {
     return readFixed64.call(this).toLong(true);
 }
 
+/* istanbul ignore next */
 function read_fixed64_number() {
     return readFixed64.call(this).toNumber(true);
 }
@@ -3080,6 +3084,7 @@ function read_sfixed64_long() {
     return readFixed64.call(this).zzDecode().toLong();
 }
 
+/* istanbul ignore next */
 function read_sfixed64_number() {
     return readFixed64.call(this).zzDecode().toNumber();
 }
@@ -3101,7 +3106,7 @@ function read_sfixed64_number() {
  */
 
 var readFloat = typeof Float32Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
@@ -3113,6 +3118,7 @@ var readFloat = typeof Float32Array !== "undefined"
                 f8b[3] = buf[pos + 3];
                 return f32[0];
             }
+            /* istanbul ignore next */
             : function readFloat_f32_le(buf, pos) {
                 f8b[3] = buf[pos    ];
                 f8b[2] = buf[pos + 1];
@@ -3121,6 +3127,7 @@ var readFloat = typeof Float32Array !== "undefined"
                 return f32[0];
             };
     })()
+    /* istanbul ignore next */
     : function readFloat_ieee754(buf, pos) {
         var uint = readFixed32(buf, pos + 4),
             sign = (uint >> 31) * 2 + 1,
@@ -3152,7 +3159,7 @@ ReaderPrototype.float = function read_float() {
 };
 
 var readDouble = typeof Float64Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
@@ -3168,6 +3175,7 @@ var readDouble = typeof Float64Array !== "undefined"
                 f8b[7] = buf[pos + 7];
                 return f64[0];
             }
+            /* istanbul ignore next */
             : function readDouble_f64_le(buf, pos) {
                 f8b[7] = buf[pos    ];
                 f8b[6] = buf[pos + 1];
@@ -3180,6 +3188,7 @@ var readDouble = typeof Float64Array !== "undefined"
                 return f64[0];
             };
     })()
+    /* istanbul ignore next */
     : function readDouble_ieee754(buf, pos) {
         var lo = readFixed32(buf, pos + 4),
             hi = readFixed32(buf, pos + 8);
@@ -3295,6 +3304,7 @@ ReaderPrototype.skipType = function(wireType) {
 };
 
 function configure() {
+    /* istanbul ignore else */
     if (util.Long) {
         ReaderPrototype.int64 = read_int64_long;
         ReaderPrototype.uint64 = read_uint64_long;
@@ -3829,6 +3839,7 @@ ServicePrototype.resolveAll = function resolveAll() {
  * @override
  */
 ServicePrototype.add = function add(object) {
+    /* istanbul ignore next */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Method) {
@@ -4642,7 +4653,7 @@ util.lcFirst = function lcFirst(str) { // ucFirst counterpart is in runtime util
 util.newBuffer = function newBuffer(size) {
     size = size || 0;
     return util.Buffer
-        ? util.Buffer.allocUnsafe ? util.Buffer.allocUnsafe(size) : new util.Buffer(size)
+        ? util.Buffer.allocUnsafe(size)
         : new (typeof Uint8Array !== "undefined" ? Uint8Array : Array)(size);
 };
 
@@ -4876,16 +4887,29 @@ util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-
  * Node's Buffer class if available.
  * @type {?function(new: Buffer)}
  */
-util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
+util.Buffer = (function() {
+    try {
+        var Buffer = util.inquire("buffer").Buffer;
 
-if (util.Buffer) {
-    // Don't use browser-buffer for performance
-    if (!util.Buffer.prototype.utf8Write)
-        util.Buffer = null;
-    // Polyfill Buffer.from
-    else if (!util.Buffer.from)
-        util.Buffer.from = function from(value, encoding) { return new util.Buffer(value, encoding); };
-}
+        /* istanbul ignore next */
+        if (!Buffer.prototype.utf8Write) // refuse to use non-node buffers (performance)
+            return null;
+
+        /* istanbul ignore next */
+        if (!Buffer.from)
+            Buffer.from = function from(value, encoding) { return new Buffer(value, encoding); };
+
+        /* istanbul ignore next */
+        if (!Buffer.allocUnsafe)
+            Buffer.allocUnsafe = function allocUnsafe(size) { return new Buffer(size); };
+
+        return Buffer;
+
+    /* istanbul ignore next */
+    } catch (e) {
+        return null;
+    }
+})();
 
 /**
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
@@ -5151,28 +5175,28 @@ function verifier(mtype) {
 
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
-            prop  = util.safeProp(field.name);
+            ref   = "m" + util.safeProp(field.name);
 
         // map fields
         if (field.map) { gen
-            ("if(m%s!==undefined){", prop)
-                ("if(!util.isObject(m%s))", prop)
+            ("if(%s!==undefined){", ref)
+                ("if(!util.isObject(%s))", ref)
                     ("return%j", invalid(field, "object"))
-                ("var k=Object.keys(m%s)", prop)
+                ("var k=Object.keys(%s)", ref)
                 ("for(var i=0;i<k.length;++i){");
                     genVerifyKey(gen, field, "k[i]");
-                    genVerifyValue(gen, field, i, "m" + prop + "[k[i]]");
+                    genVerifyValue(gen, field, i, ref + "[k[i]]");
                 gen
                 ("}")
             ("}");
 
         // repeated fields
         } else if (field.repeated) { gen
-            ("if(m%s!==undefined){", prop)
-                ("if(!Array.isArray(m%s))", prop)
+            ("if(%s!==undefined){", ref)
+                ("if(!Array.isArray(%s))", ref)
                     ("return%j", invalid(field, "array"))
-                ("for(var i=0;i<m%s.length;++i){", prop);
-                    genVerifyValue(gen, field, i, "m" + prop + "[i]"); gen
+                ("for(var i=0;i<%s.length;++i){", ref);
+                    genVerifyValue(gen, field, i, ref + "[i]"); gen
                 ("}")
             ("}");
 
@@ -5180,11 +5204,11 @@ function verifier(mtype) {
         } else {
             if (!field.required) {
                 if (field.resolvedType instanceof Type) gen
-            ("if(m%s!==undefined&&m%s!==null){", prop, prop);
+            ("if(%s!==undefined&&%s!==null){", ref, ref);
                 else gen
-            ("if(m%s!==undefined){", prop);
+            ("if(%s!==undefined){", ref);
             }
-                genVerifyValue(gen, field, i, "m" + prop);
+                genVerifyValue(gen, field, i, ref);
             if (!field.required) gen
             ("}");
         }
@@ -5333,6 +5357,7 @@ Writer.create = util.Buffer
             return new BufferWriter();
         })();
     }
+    /* istanbul ignore next */
     : function create_array() {
         return new Writer();
     };
@@ -5516,7 +5541,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 };
 
 var writeFloat = typeof Float32Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
@@ -5528,6 +5553,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos++] = f8b[2];
                 buf[pos  ] = f8b[3];
             }
+            /* istanbul ignore next */
             : function writeFloat_f32_le(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[3];
@@ -5536,6 +5562,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeFloat_ieee754(value, buf, pos) {
         var sign = value < 0 ? 1 : 0;
         if (sign)
@@ -5566,7 +5593,7 @@ WriterPrototype.float = function write_float(value) {
 };
 
 var writeDouble = typeof Float64Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
@@ -5582,6 +5609,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos++] = f8b[6];
                 buf[pos  ] = f8b[7];
             }
+            /* istanbul ignore next */
             : function writeDouble_f64_le(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[7];
@@ -5594,6 +5622,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeDouble_ieee754(value, buf, pos) {
         var sign = value < 0 ? 1 : 0;
         if (sign)
@@ -5768,17 +5797,14 @@ function BufferWriter() {
  * @returns {Uint8Array} Buffer
  */
 BufferWriter.alloc = function alloc_buffer(size) {
-    return (BufferWriter.alloc = Buffer.allocUnsafe
-        ? Buffer.allocUnsafe
-        : function allocUnsafe_new(size) {
-            return new Buffer(size);
-        })(size);
+    return (BufferWriter.alloc = Buffer.allocUnsafe)(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name[0] === "s"
+var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name === "set"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
     }
+    /* istanbul ignore next */
     : function writeBytesBuffer_copy(val, buf, pos) {
         val.copy(buf, pos, 0, val.length);
     };

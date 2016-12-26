@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 24 Dec 2016 00:17:18 UTC
+ * Compiled Mon, 26 Dec 2016 17:57:31 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -387,6 +387,7 @@ Reader.create = util.Buffer
             return new BufferReader(buffer);
         })(buffer);
     }
+    /* istanbul ignore next */
     : function create_array(buffer) {
         return new Reader(buffer);
     };
@@ -401,7 +402,7 @@ ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.s
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
+ReaderPrototype.uint32 = (function read_uint32_setup() {
     var value = 4294967295; // optimizer type-hint, tends to deopt otherwise (?!)
     return function read_uint32() {
         value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
@@ -498,6 +499,7 @@ function read_int64_long() {
     return readLongVarint.call(this).toLong();
 }
 
+/* istanbul ignore next */
 function read_int64_number() {
     return readLongVarint.call(this).toNumber();
 }
@@ -506,6 +508,7 @@ function read_uint64_long() {
     return readLongVarint.call(this).toLong(true);
 }
 
+/* istanbul ignore next */
 function read_uint64_number() {
     return readLongVarint.call(this).toNumber(true);
 }
@@ -514,6 +517,7 @@ function read_sint64_long() {
     return readLongVarint.call(this).zzDecode().toLong();
 }
 
+/* istanbul ignore next */
 function read_sint64_number() {
     return readLongVarint.call(this).zzDecode().toNumber();
 }
@@ -593,6 +597,7 @@ function read_fixed64_long() {
     return readFixed64.call(this).toLong(true);
 }
 
+/* istanbul ignore next */
 function read_fixed64_number() {
     return readFixed64.call(this).toNumber(true);
 }
@@ -601,6 +606,7 @@ function read_sfixed64_long() {
     return readFixed64.call(this).zzDecode().toLong();
 }
 
+/* istanbul ignore next */
 function read_sfixed64_number() {
     return readFixed64.call(this).zzDecode().toNumber();
 }
@@ -622,7 +628,7 @@ function read_sfixed64_number() {
  */
 
 var readFloat = typeof Float32Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
@@ -634,6 +640,7 @@ var readFloat = typeof Float32Array !== "undefined"
                 f8b[3] = buf[pos + 3];
                 return f32[0];
             }
+            /* istanbul ignore next */
             : function readFloat_f32_le(buf, pos) {
                 f8b[3] = buf[pos    ];
                 f8b[2] = buf[pos + 1];
@@ -642,6 +649,7 @@ var readFloat = typeof Float32Array !== "undefined"
                 return f32[0];
             };
     })()
+    /* istanbul ignore next */
     : function readFloat_ieee754(buf, pos) {
         var uint = readFixed32(buf, pos + 4),
             sign = (uint >> 31) * 2 + 1,
@@ -673,7 +681,7 @@ ReaderPrototype.float = function read_float() {
 };
 
 var readDouble = typeof Float64Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
@@ -689,6 +697,7 @@ var readDouble = typeof Float64Array !== "undefined"
                 f8b[7] = buf[pos + 7];
                 return f64[0];
             }
+            /* istanbul ignore next */
             : function readDouble_f64_le(buf, pos) {
                 f8b[7] = buf[pos    ];
                 f8b[6] = buf[pos + 1];
@@ -701,6 +710,7 @@ var readDouble = typeof Float64Array !== "undefined"
                 return f64[0];
             };
     })()
+    /* istanbul ignore next */
     : function readDouble_ieee754(buf, pos) {
         var lo = readFixed32(buf, pos + 4),
             hi = readFixed32(buf, pos + 8);
@@ -816,6 +826,7 @@ ReaderPrototype.skipType = function(wireType) {
 };
 
 function configure() {
+    /* istanbul ignore else */
     if (util.Long) {
         ReaderPrototype.int64 = read_int64_long;
         ReaderPrototype.uint64 = read_uint64_long;
@@ -1098,16 +1109,29 @@ util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-
  * Node's Buffer class if available.
  * @type {?function(new: Buffer)}
  */
-util.Buffer = (util.Buffer = util.inquire("buffer")) && util.Buffer.Buffer || null;
+util.Buffer = (function() {
+    try {
+        var Buffer = util.inquire("buffer").Buffer;
 
-if (util.Buffer) {
-    // Don't use browser-buffer for performance
-    if (!util.Buffer.prototype.utf8Write)
-        util.Buffer = null;
-    // Polyfill Buffer.from
-    else if (!util.Buffer.from)
-        util.Buffer.from = function from(value, encoding) { return new util.Buffer(value, encoding); };
-}
+        /* istanbul ignore next */
+        if (!Buffer.prototype.utf8Write) // refuse to use non-node buffers (performance)
+            return null;
+
+        /* istanbul ignore next */
+        if (!Buffer.from)
+            Buffer.from = function from(value, encoding) { return new Buffer(value, encoding); };
+
+        /* istanbul ignore next */
+        if (!Buffer.allocUnsafe)
+            Buffer.allocUnsafe = function allocUnsafe(size) { return new Buffer(size); };
+
+        return Buffer;
+
+    /* istanbul ignore next */
+    } catch (e) {
+        return null;
+    }
+})();
 
 /**
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
@@ -1405,6 +1429,7 @@ Writer.create = util.Buffer
             return new BufferWriter();
         })();
     }
+    /* istanbul ignore next */
     : function create_array() {
         return new Writer();
     };
@@ -1588,7 +1613,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 };
 
 var writeFloat = typeof Float32Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
@@ -1600,6 +1625,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos++] = f8b[2];
                 buf[pos  ] = f8b[3];
             }
+            /* istanbul ignore next */
             : function writeFloat_f32_le(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[3];
@@ -1608,6 +1634,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeFloat_ieee754(value, buf, pos) {
         var sign = value < 0 ? 1 : 0;
         if (sign)
@@ -1638,7 +1665,7 @@ WriterPrototype.float = function write_float(value) {
 };
 
 var writeDouble = typeof Float64Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
@@ -1654,6 +1681,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos++] = f8b[6];
                 buf[pos  ] = f8b[7];
             }
+            /* istanbul ignore next */
             : function writeDouble_f64_le(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[7];
@@ -1666,6 +1694,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeDouble_ieee754(value, buf, pos) {
         var sign = value < 0 ? 1 : 0;
         if (sign)
@@ -1840,17 +1869,14 @@ function BufferWriter() {
  * @returns {Uint8Array} Buffer
  */
 BufferWriter.alloc = function alloc_buffer(size) {
-    return (BufferWriter.alloc = Buffer.allocUnsafe
-        ? Buffer.allocUnsafe
-        : function allocUnsafe_new(size) {
-            return new Buffer(size);
-        })(size);
+    return (BufferWriter.alloc = Buffer.allocUnsafe)(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name[0] === "s"
+var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name === "set"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
     }
+    /* istanbul ignore next */
     : function writeBytesBuffer_copy(val, buf, pos) {
         val.copy(buf, pos, 0, val.length);
     };

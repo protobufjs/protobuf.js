@@ -89,4 +89,16 @@ setTimeout(function() {
     })
     .run();
 
+    var dataMessage = Test.from(data);
+    var dataJson = dataMessage.asJSON();
+
+    newSuite("converting")
+    .add("Message.from", function() {
+        Test.from(dataJson);
+    })
+    .add("Message#asJSON", function() {
+        dataMessage.asJSON();
+    })
+    .run();
+
 }, 3000);

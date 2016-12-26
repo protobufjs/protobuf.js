@@ -38,7 +38,7 @@ function create(type, ctor) {
         if (typeof ctor !== "function")
             throw TypeError("ctor", "a function");
     } else
-        ctor = (function(MessageCtor) { // eslint-disable-line wrap-iife
+        ctor = (function(MessageCtor) {
             return function Message(properties) {
                 MessageCtor.call(this, properties);
             };

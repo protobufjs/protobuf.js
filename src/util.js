@@ -89,6 +89,6 @@ util.lcFirst = function lcFirst(str) { // ucFirst counterpart is in runtime util
 util.newBuffer = function newBuffer(size) {
     size = size || 0;
     return util.Buffer
-        ? util.Buffer.allocUnsafe ? util.Buffer.allocUnsafe(size) : new util.Buffer(size)
+        ? util.Buffer.allocUnsafe(size)
         : new (typeof Uint8Array !== "undefined" ? Uint8Array : Array)(size);
 };

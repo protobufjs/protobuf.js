@@ -81,7 +81,7 @@
         "no-with": 1,
         "radix": 1,
         "vars-on-top": 0,                   // makes code harder to read, not faster
-        "wrap-iife": 1,
+        "wrap-iife": 0,                     // used frequently where polyfilling
         "yoda": 1,
 
         // Strict mode

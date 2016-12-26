@@ -105,28 +105,28 @@ function verifier(mtype) {
 
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
-            prop  = util.safeProp(field.name);
+            ref   = "m" + util.safeProp(field.name);
 
         // map fields
         if (field.map) { gen
-            ("if(m%s!==undefined){", prop)
-                ("if(!util.isObject(m%s))", prop)
+            ("if(%s!==undefined){", ref)
+                ("if(!util.isObject(%s))", ref)
                     ("return%j", invalid(field, "object"))
-                ("var k=Object.keys(m%s)", prop)
+                ("var k=Object.keys(%s)", ref)
                 ("for(var i=0;i<k.length;++i){");
                     genVerifyKey(gen, field, "k[i]");
-                    genVerifyValue(gen, field, i, "m" + prop + "[k[i]]");
+                    genVerifyValue(gen, field, i, ref + "[k[i]]");
                 gen
                 ("}")
             ("}");
 
         // repeated fields
         } else if (field.repeated) { gen
-            ("if(m%s!==undefined){", prop)
-                ("if(!Array.isArray(m%s))", prop)
+            ("if(%s!==undefined){", ref)
+                ("if(!Array.isArray(%s))", ref)
                     ("return%j", invalid(field, "array"))
-                ("for(var i=0;i<m%s.length;++i){", prop);
-                    genVerifyValue(gen, field, i, "m" + prop + "[i]"); gen
+                ("for(var i=0;i<%s.length;++i){", ref);
+                    genVerifyValue(gen, field, i, ref + "[i]"); gen
                 ("}")
             ("}");
 
@@ -134,11 +134,11 @@ function verifier(mtype) {
         } else {
             if (!field.required) {
                 if (field.resolvedType instanceof Type) gen
-            ("if(m%s!==undefined&&m%s!==null){", prop, prop);
+            ("if(%s!==undefined&&%s!==null){", ref, ref);
                 else gen
-            ("if(m%s!==undefined){", prop);
+            ("if(%s!==undefined){", ref);
             }
-                genVerifyValue(gen, field, i, "m" + prop);
+                genVerifyValue(gen, field, i, ref);
             if (!field.required) gen
             ("}");
         }

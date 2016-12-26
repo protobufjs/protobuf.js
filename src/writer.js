@@ -137,6 +137,7 @@ Writer.create = util.Buffer
             return new BufferWriter();
         })();
     }
+    /* istanbul ignore next */
     : function create_array() {
         return new Writer();
     };
@@ -320,7 +321,7 @@ WriterPrototype.sfixed64 = function write_sfixed64(value) {
 };
 
 var writeFloat = typeof Float32Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
@@ -332,6 +333,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos++] = f8b[2];
                 buf[pos  ] = f8b[3];
             }
+            /* istanbul ignore next */
             : function writeFloat_f32_le(val, buf, pos) {
                 f32[0] = val;
                 buf[pos++] = f8b[3];
@@ -340,6 +342,7 @@ var writeFloat = typeof Float32Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeFloat_ieee754(value, buf, pos) {
         var sign = value < 0 ? 1 : 0;
         if (sign)
@@ -370,7 +373,7 @@ WriterPrototype.float = function write_float(value) {
 };
 
 var writeDouble = typeof Float64Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
@@ -386,6 +389,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos++] = f8b[6];
                 buf[pos  ] = f8b[7];
             }
+            /* istanbul ignore next */
             : function writeDouble_f64_le(val, buf, pos) {
                 f64[0] = val;
                 buf[pos++] = f8b[7];
@@ -398,6 +402,7 @@ var writeDouble = typeof Float64Array !== "undefined"
                 buf[pos  ] = f8b[0];
             };
     })()
+    /* istanbul ignore next */
     : function writeDouble_ieee754(value, buf, pos) {
         var sign = value < 0 ? 1 : 0;
         if (sign)

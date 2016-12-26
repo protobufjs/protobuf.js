@@ -28,7 +28,7 @@ function decoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            prop  = util.safeProp(field.name);
+            ref   = "m" + util.safeProp(field.name);
         gen
             ("case %d:", field.id);
 
@@ -37,44 +37,44 @@ function decoder(mtype) {
 
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-                ("r.skip().pos++")
-                ("if(m%s===util.emptyObject)", prop)
-                    ("m%s={}", prop)
+                ("r.skip().pos++") // assumes id 1 + key wireType
+                ("if(%s===util.emptyObject)", ref)
+                    ("%s={}", ref)
                 ("var k=r.%s()", keyType)
                 ("if(typeof k===\"object\")")
                     ("k=util.longToHash(k)")
-                ("r.pos++");
+                ("r.pos++"); // assumes id 2 + value wireType
             if (types.basic[type] === undefined) gen
-                ("m%s[k]=types[%d].decode(r,r.uint32())", prop, i); // can't be groups
+                ("%s[k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
             else gen
-                ("m%s[k]=r.%s()", prop, type);
+                ("%s[k]=r.%s()", ref, type);
 
         // Repeated fields
         } else if (field.repeated) { gen
 
-                ("m%s&&m%s.length?m%s:m%s=[]", prop, prop, prop, prop);
+                ("%s&&%s.length||(%s=[])", ref, ref, ref);
 
             // Packed
             if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var e=r.uint32()+r.pos")
                     ("while(r.pos<e)")
-                        ("m%s.push(r.%s())", prop, type)
+                        ("%s.push(r.%s())", ref, type)
                 ("}else");
 
             // Non-packed
             if (types.basic[type] === undefined) gen(field.resolvedType.group
-                    ? "m%s.push(types[%d].decode(r))"
-                    : "m%s.push(types[%d].decode(r,r.uint32()))", prop, i);
+                    ? "%s.push(types[%d].decode(r))"
+                    : "%s.push(types[%d].decode(r,r.uint32()))", ref, i);
             else gen
-                    ("m%s.push(r.%s())", prop, type);
+                    ("%s.push(r.%s())", ref, type);
 
         // Non-repeated
         } else if (types.basic[type] === undefined) gen(field.resolvedType.group
-                ? "m%s=types[%d].decode(r)"
-                : "m%s=types[%d].decode(r,r.uint32())", prop, i);
+                ? "%s=types[%d].decode(r)"
+                : "%s=types[%d].decode(r,r.uint32())", ref, i);
         else gen
-                ("m%s=r.%s()", prop, type);
+                ("%s=r.%s()", ref, type);
         gen
                 ("break");
 

@@ -27,24 +27,24 @@ function encoder(mtype) {
     var gen = util.codegen("m", "w")
     ("w||(w=Writer.create())");
 
-    var i;
+    var i, ref;
     for (var i = 0; i < fields.length; ++i) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            wireType = types.basic[type],
-            prop     = safeProp(field.name);
+            wireType = types.basic[type];
+            ref      = "m" + safeProp(field.name);
 
         // Map fields
         if (field.map) {
             var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
             gen
-    ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
-        ("for(var ks=Object.keys(m%s),i=0;i<ks.length;++i){", prop)
+    ("if(%s&&%s!==util.emptyObject){", ref, ref)
+        ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(m%s[ks[i]],w.uint32(18).fork()).ldelim()", i, prop); // can't be groups
+            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim()", i, ref); // can't be groups
             else gen
-            ("w.uint32(%d).%s(m%s[ks[i]])", 16 | wireType, type, prop);
+            ("w.uint32(%d).%s(%s[ks[i]])", 16 | wireType, type, ref);
             gen
             ("w.ldelim()")
         ("}")
@@ -56,22 +56,22 @@ function encoder(mtype) {
             // Packed repeated
             if (field.packed && types.packed[type] !== undefined) { gen
 
-    ("if(m%s&&m%s.length){", prop, prop)
+    ("if(%s&&%s.length){", ref, ref)
         ("w.uint32(%d).fork()", (field.id << 3 | 2) >>> 0)
-        ("for(var i=0;i<m%s.length;++i)", prop)
-            ("w.%s(m%s[i])", type, prop)
+        ("for(var i=0;i<%s.length;++i)", ref)
+            ("w.%s(%s[i])", type, ref)
         ("w.ldelim()", field.id)
     ("}");
 
             // Non-packed
             } else { gen
 
-    ("if(m%s)", prop)
-        ("for(var i=0;i<m%s.length;++i)", prop);
+    ("if(%s)", ref)
+        ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
-            genEncodeType(gen, field, i, "m" + prop + "[i]", true);
+            genEncodeType(gen, field, i, ref + "[i]", true);
                 else gen
-            ("w.uint32(%d).%s(m%s[i])", (field.id << 3 | wireType) >>> 0, type, prop);
+            ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
 
             }
 
@@ -81,37 +81,36 @@ function encoder(mtype) {
 
                 if (field.long) {
                     gen
-    ("if(m%s!==undefined&&util.longNe(m%s,%d,%d))", prop, prop, field.defaultValue.low, field.defaultValue.high);
+    ("if(%s!==undefined&&util.longNe(%s,%d,%d))", ref, ref, field.defaultValue.low, field.defaultValue.high);
                 } else gen
-    ("if(m%s!==undefined&&m%s!==%j)", prop, prop, field.defaultValue);
+    ("if(%s!==undefined&&%s!==%j)", ref, ref, field.defaultValue);
 
             }
 
             if (wireType === undefined)
-        genEncodeType(gen, field, i, "m" + prop, true);
+        genEncodeType(gen, field, i, ref, true);
             else gen
-        ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
+        ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
         }
     }
     for (var i = 0; i < oneofs.length; ++i) {
-        var oneof = oneofs[i],
-            prop  = safeProp(oneof.name);
+        var oneof = oneofs[i];
         gen
-        ("switch(m%s){", prop);
+        ("switch(%s){", "m" + safeProp(oneof.name));
         var oneofFields = oneof.getFieldsArray();
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
-                wireType = types.basic[type],
-                prop     = safeProp(field.name);
+                wireType = types.basic[type];
+                ref      = "m" + safeProp(field.name);
             gen
             ("case%j:", field.name);
 
             if (wireType === undefined)
-                genEncodeType(gen, field, fields.indexOf(field), "m" + prop);
+                genEncodeType(gen, field, fields.indexOf(field), ref);
             else gen
-                ("w.uint32(%d).%s(m%s)", (field.id << 3 | wireType) >>> 0, type, prop);
+                ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
             gen
                 ("break;");

@@ -118,6 +118,7 @@ ServicePrototype.resolveAll = function resolveAll() {
  * @override
  */
 ServicePrototype.add = function add(object) {
+    /* istanbul ignore next */
     if (this.get(object.name))
         throw Error("duplicate name '" + object.name + "' in " + this);
     if (object instanceof Method) {

@@ -27,17 +27,14 @@ function BufferWriter() {
  * @returns {Uint8Array} Buffer
  */
 BufferWriter.alloc = function alloc_buffer(size) {
-    return (BufferWriter.alloc = Buffer.allocUnsafe
-        ? Buffer.allocUnsafe
-        : function allocUnsafe_new(size) {
-            return new Buffer(size);
-        })(size);
+    return (BufferWriter.alloc = Buffer.allocUnsafe)(size);
 };
 
-var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name[0] === "s"
+var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name === "set"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
     }
+    /* istanbul ignore next */
     : function writeBytesBuffer_copy(val, buf, pos) {
         val.copy(buf, pos, 0, val.length);
     };

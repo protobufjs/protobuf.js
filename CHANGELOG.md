@@ -1,6 +1,7 @@
 # [6.3.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.0)
 
 ## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a97956b1322b6ee62d4fc9af885658cd5855e521) Moved camelCase/underScore away from util to where actually used<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c144e7386529b53235a4a5bdd8383bdb322f2825) Renamed asJSON option keys (enum to enums, long to longs) because enum is a reserved keyword<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/5b9ade428dca2df6a13277522f2916e22092a98b) Moved JSON/Message conversion to its own source file and added Message/Type.from + test case, see [#575](https://github.com/dcodeIO/protobuf.js/issues/575)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0b0de2458a1ade1ccd4ceb789697be13290f856b) Relicensed the library and its components to BSD-3-Clause to match the official implementation (again)<br />
@@ -10,6 +11,8 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/bfac0ea9afa3dbaf5caf79ddf0600c3c7772a538) Stripped out fallback encoder/decoder/verifier completely (even IE8 supports codegen), significantly reduces bundle size, can use static codegen elsewhere<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c3023a2f51fc74547f6c6e53cf75feed60f3a25c) Actually concatenate mixed custom options when parsing<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0d66b839df0acec2aea0566d2c0bbcec46c3cd1d) Fixed a couple of issues with alternative browser builds<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/33706cdc201bc863774c4af6ac2c38ad96a276e6) Properly set long defaults on prototypes<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0ea2740f0774b4c5c349b9c303f3fb2c2743c37b) Fixed reference error in minimal runtime, see [#580](https://github.com/dcodeIO/protobuf.js/issues/580)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/741b6d8fde84d9574676a729a29a428d99f0a0a0) Non-repeated empty messages are always present on the wire, see [#581](https://github.com/dcodeIO/protobuf.js/issues/581)<br />
@@ -49,6 +52,9 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7939a4bd8baca5f7e07530fc93f27911a6d91c6f) Updated README and bundler according to dynamic require calls<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/93e04f1db4a9ef3accff8d071c75be3d74c0cd4a) Added basic services test case<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b5a068f5b79b6f00c4b05d9ac458878650ffa09a) Just polyfill Buffer.from / .allocUnsafe for good<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/4375a485789e14f7bf24bece819001154a03dca2) Added a test case to find out if all the fallbacks are just for IE8<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/deb2e82ed7eda41d065a09d120e91c0f7ecf1e6a) Commented out float assertions in float test including explanation<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/d3ebd5745b024033fbc2410ecad4d4e02abd67db) Expose array implementation used with (older) browsers on util for tests<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/b1b6a813c93da4c7459755186aa02ef2f3765c94) Updated test cases<br />

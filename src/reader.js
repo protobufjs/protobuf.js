@@ -54,6 +54,7 @@ Reader.create = util.Buffer
             return new BufferReader(buffer);
         })(buffer);
     }
+    /* istanbul ignore next */
     : function create_array(buffer) {
         return new Reader(buffer);
     };
@@ -68,7 +69,7 @@ ReaderPrototype._slice = util.Array.prototype.subarray || util.Array.prototype.s
  * @function
  * @returns {number} Value read
  */
-ReaderPrototype.uint32 = (function read_uint32_setup() { // eslint-disable-line wrap-iife
+ReaderPrototype.uint32 = (function read_uint32_setup() {
     var value = 4294967295; // optimizer type-hint, tends to deopt otherwise (?!)
     return function read_uint32() {
         value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
@@ -165,6 +166,7 @@ function read_int64_long() {
     return readLongVarint.call(this).toLong();
 }
 
+/* istanbul ignore next */
 function read_int64_number() {
     return readLongVarint.call(this).toNumber();
 }
@@ -173,6 +175,7 @@ function read_uint64_long() {
     return readLongVarint.call(this).toLong(true);
 }
 
+/* istanbul ignore next */
 function read_uint64_number() {
     return readLongVarint.call(this).toNumber(true);
 }
@@ -181,6 +184,7 @@ function read_sint64_long() {
     return readLongVarint.call(this).zzDecode().toLong();
 }
 
+/* istanbul ignore next */
 function read_sint64_number() {
     return readLongVarint.call(this).zzDecode().toNumber();
 }
@@ -260,6 +264,7 @@ function read_fixed64_long() {
     return readFixed64.call(this).toLong(true);
 }
 
+/* istanbul ignore next */
 function read_fixed64_number() {
     return readFixed64.call(this).toNumber(true);
 }
@@ -268,6 +273,7 @@ function read_sfixed64_long() {
     return readFixed64.call(this).zzDecode().toLong();
 }
 
+/* istanbul ignore next */
 function read_sfixed64_number() {
     return readFixed64.call(this).zzDecode().toNumber();
 }
@@ -289,7 +295,7 @@ function read_sfixed64_number() {
  */
 
 var readFloat = typeof Float32Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f32 = new Float32Array(1),
             f8b = new Uint8Array(f32.buffer);
         f32[0] = -0;
@@ -301,6 +307,7 @@ var readFloat = typeof Float32Array !== "undefined"
                 f8b[3] = buf[pos + 3];
                 return f32[0];
             }
+            /* istanbul ignore next */
             : function readFloat_f32_le(buf, pos) {
                 f8b[3] = buf[pos    ];
                 f8b[2] = buf[pos + 1];
@@ -309,6 +316,7 @@ var readFloat = typeof Float32Array !== "undefined"
                 return f32[0];
             };
     })()
+    /* istanbul ignore next */
     : function readFloat_ieee754(buf, pos) {
         var uint = readFixed32(buf, pos + 4),
             sign = (uint >> 31) * 2 + 1,
@@ -340,7 +348,7 @@ ReaderPrototype.float = function read_float() {
 };
 
 var readDouble = typeof Float64Array !== "undefined"
-    ? (function() { // eslint-disable-line wrap-iife
+    ? (function() {
         var f64 = new Float64Array(1),
             f8b = new Uint8Array(f64.buffer);
         f64[0] = -0;
@@ -356,6 +364,7 @@ var readDouble = typeof Float64Array !== "undefined"
                 f8b[7] = buf[pos + 7];
                 return f64[0];
             }
+            /* istanbul ignore next */
             : function readDouble_f64_le(buf, pos) {
                 f8b[7] = buf[pos    ];
                 f8b[6] = buf[pos + 1];
@@ -368,6 +377,7 @@ var readDouble = typeof Float64Array !== "undefined"
                 return f64[0];
             };
     })()
+    /* istanbul ignore next */
     : function readDouble_ieee754(buf, pos) {
         var lo = readFixed32(buf, pos + 4),
             hi = readFixed32(buf, pos + 8);
@@ -483,6 +493,7 @@ ReaderPrototype.skipType = function(wireType) {
 };
 
 function configure() {
+    /* istanbul ignore else */
     if (util.Long) {
         ReaderPrototype.int64 = read_int64_long;
         ReaderPrototype.uint64 = read_uint64_long;

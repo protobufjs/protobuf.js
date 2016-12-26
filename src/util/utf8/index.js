@@ -41,7 +41,7 @@ utf8.read = function(buffer, start, end) {
     var len = end - start;
     if (len < 1)
         return "";
-    var parts = [],
+    var parts = null,
         chunk = [],
         i = 0, // char offset
         t;     // temporary
@@ -58,13 +58,16 @@ utf8.read = function(buffer, start, end) {
         } else
             chunk[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
         if (i > 8191) {
-            parts.push(String.fromCharCode.apply(String, chunk));
+            (parts || (parts = [])).push(String.fromCharCode.apply(String, chunk));
             i = 0;
         }
     }
-    if (i)
-        parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
-    return parts.join("");
+    if (parts) {
+        if (i)
+            parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
+        return parts.join("");
+    }
+    return i ? String.fromCharCode.apply(String, chunk.slice(0, i)) : "";
 };
 
 /**
