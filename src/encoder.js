@@ -7,12 +7,10 @@ var Enum     = require("./enum"),
 
 var safeProp = util.safeProp;
 
-function genEncodeType(gen, field, fieldIndex, ref, alwaysRequired) {
-    if (field.resolvedType.group)
-        return gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0);
-    return alwaysRequired || field.required
-      ? gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0)
-      : gen("types[%d].encode(%s,w.fork()).len&&w.ldelim(%d)||w.reset()", fieldIndex, ref, field.id);
+function genEncodeType(gen, field, fieldIndex, ref) {
+    return field.resolvedType.group
+        ? gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
+        : gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
 }
 
 /**
@@ -69,7 +67,7 @@ function encoder(mtype) {
     ("if(%s)", ref)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
-            genEncodeType(gen, field, i, ref + "[i]", true);
+            genEncodeType(gen, field, i, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
 
@@ -88,7 +86,7 @@ function encoder(mtype) {
             }
 
             if (wireType === undefined)
-        genEncodeType(gen, field, i, ref, true);
+        genEncodeType(gen, field, i, ref);
             else gen
         ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 

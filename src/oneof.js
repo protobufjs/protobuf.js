@@ -102,11 +102,12 @@ OneOfPrototype.toJSON = function toJSON() {
  * @ignore
  */
 function addFieldsToParent(oneof) {
-    if (oneof.parent)
+    if (oneof.parent) {
         oneof._fieldsArray.forEach(function(field) {
             if (!field.parent)
                 oneof.parent.add(field);
         });
+    }
 }
 
 /**
@@ -160,6 +161,16 @@ OneOfPrototype.remove = function remove(field) {
  */
 OneOfPrototype.onAdd = function onAdd(parent) {
     ReflectionObject.prototype.onAdd.call(this, parent);
+    var self = this;
+    // Collect present fields
+    this.oneof.forEach(function(fieldName) {
+        var field = parent.get(fieldName);
+        if (field && !field.partOf) {
+            field.partOf = self;
+            self._fieldsArray.push(field);
+        }
+    });
+    // Add not yet present fields
     addFieldsToParent(this);
 };
 

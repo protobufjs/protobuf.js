@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.3.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 26 Dec 2016 17:57:31 UTC
+ * protobuf.js v6.3.1 (c) 2016, Daniel Wirtz
+ * Compiled Tue, 27 Dec 2016 12:23:42 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1117,12 +1117,10 @@ var Enum     = require(15),
 
 var safeProp = util.safeProp;
 
-function genEncodeType(gen, field, fieldIndex, ref, alwaysRequired) {
-    if (field.resolvedType.group)
-        return gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0);
-    return alwaysRequired || field.required
-      ? gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0)
-      : gen("types[%d].encode(%s,w.fork()).len&&w.ldelim(%d)||w.reset()", fieldIndex, ref, field.id);
+function genEncodeType(gen, field, fieldIndex, ref) {
+    return field.resolvedType.group
+        ? gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
+        : gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
 }
 
 /**
@@ -1179,7 +1177,7 @@ function encoder(mtype) {
     ("if(%s)", ref)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
-            genEncodeType(gen, field, i, ref + "[i]", true);
+            genEncodeType(gen, field, i, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
 
@@ -1198,7 +1196,7 @@ function encoder(mtype) {
             }
 
             if (wireType === undefined)
-        genEncodeType(gen, field, i, ref, true);
+        genEncodeType(gen, field, i, ref);
             else gen
         ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
@@ -2736,11 +2734,12 @@ OneOfPrototype.toJSON = function toJSON() {
  * @ignore
  */
 function addFieldsToParent(oneof) {
-    if (oneof.parent)
+    if (oneof.parent) {
         oneof._fieldsArray.forEach(function(field) {
             if (!field.parent)
                 oneof.parent.add(field);
         });
+    }
 }
 
 /**
@@ -2794,6 +2793,16 @@ OneOfPrototype.remove = function remove(field) {
  */
 OneOfPrototype.onAdd = function onAdd(parent) {
     ReflectionObject.prototype.onAdd.call(this, parent);
+    var self = this;
+    // Collect present fields
+    this.oneof.forEach(function(fieldName) {
+        var field = parent.get(fieldName);
+        if (field && !field.partOf) {
+            field.partOf = self;
+            self._fieldsArray.push(field);
+        }
+    });
+    // Add not yet present fields
     addFieldsToParent(this);
 };
 
@@ -5733,17 +5742,14 @@ WriterPrototype.reset = function reset() {
 
 /**
  * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
- * @param {number} [id] Id with wire type 2 to prepend as a tag where applicable
  * @returns {Writer} `this`
  */
-WriterPrototype.ldelim = function ldelim(id) {
+WriterPrototype.ldelim = function ldelim() {
     var head = this.head,
         tail = this.tail,
         len  = this.len;
-    this.reset();
-    if (typeof id === "number")
-        this.uint32((id << 3 | 2) >>> 0);
-    this.uint32(len);
+    this.reset()
+        .uint32(len);
     this.tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;

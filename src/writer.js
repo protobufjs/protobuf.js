@@ -513,17 +513,14 @@ WriterPrototype.reset = function reset() {
 
 /**
  * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
- * @param {number} [id] Id with wire type 2 to prepend as a tag where applicable
  * @returns {Writer} `this`
  */
-WriterPrototype.ldelim = function ldelim(id) {
+WriterPrototype.ldelim = function ldelim() {
     var head = this.head,
         tail = this.tail,
         len  = this.len;
-    this.reset();
-    if (typeof id === "number")
-        this.uint32((id << 3 | 2) >>> 0);
-    this.uint32(len);
+    this.reset()
+        .uint32(len);
     this.tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;
