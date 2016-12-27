@@ -395,6 +395,8 @@ Generates TypeScript definitions from annotated JavaScript files.
 
   -o, --out       Saves to a file instead of writing to stdout.
 
+  --no-comments   Does not output any JSDoc comments.
+
 usage: pbts [options] file1.js file2.js ...
 ```
 

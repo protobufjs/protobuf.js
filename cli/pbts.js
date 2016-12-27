@@ -24,7 +24,11 @@ exports.main = function(args, callback) {
             name: "n",
             out : "o"
         },
-        string: [ "name", "out" ]
+        string: [ "name", "out" ],
+        boolean: [ "comments" ],
+        default: {
+            comments: true
+        }
     });
 
     var files  = argv._;
@@ -41,6 +45,8 @@ exports.main = function(args, callback) {
                 "  -n, --name      Wraps everything in a module of the specified name.",
                 "",
                 "  -o, --out       Saves to a file instead of writing to stdout.",
+                "",
+                "  --no-comments   Does not output any JSDoc comments.",
                 "",
                 "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..."
             ].join("\n"));
@@ -62,7 +68,7 @@ exports.main = function(args, callback) {
     // There is no proper API for jsdoc, so this executes the CLI and pipes the output
     var basedir = path.join(__dirname, "..");
     var moduleName = argv.name || "null";
-    var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" -q \"module=" + encodeURIComponent(moduleName) + "\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
+    var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
         cwd: process.cwd(),
         argv0: "node",
         stdio: "pipe",
