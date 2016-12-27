@@ -30,7 +30,7 @@ function Root(options) {
     this.deferred = [];
 
     /**
-     * Resolved file names of loaded files. 
+     * Resolved file names of loaded files.
      * @type {string[]}
      */
     this.files = [];

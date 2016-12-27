@@ -95,7 +95,7 @@ function encoder(mtype) {
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i];
         gen
-        ("switch(%s){", "m" + safeProp(oneof.name));
+        ("switch(%s){", "m.get" + oneof.ucName + "()");
         var oneofFields = oneof.getFieldsArray();
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
@@ -114,7 +114,7 @@ function encoder(mtype) {
                 ("break;");
 
         } gen
-        ("}");        
+        ("}");
     }
 
     return gen

@@ -38,11 +38,11 @@ function unescape(str) {
 function tokenize(source) {
     /* eslint-disable callback-return */
     source = source.toString();
-    
+
     var offset = 0,
         length = source.length,
         line = 1;
-    
+
     var stack = [];
 
     var stringDelim = null;

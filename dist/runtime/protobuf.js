@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 27 Dec 2016 12:23:42 UTC
+ * Compiled Tue, 27 Dec 2016 12:46:56 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -353,7 +353,7 @@ function indexOutOfRange(reader, writeLength) {
  * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
-    
+
     /**
      * Read buffer.
      * @type {Uint8Array}
@@ -410,7 +410,7 @@ ReaderPrototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
-        
+
         /* istanbul ignore next */
         if ((this.pos += 5) > this.len) {
             this.pos = this.len;
@@ -817,7 +817,7 @@ ReaderPrototype.skipType = function(wireType) {
         case 5:
             this.skip(4);
             break;
-        
+
         /* istanbul ignore next */
         default:
             throw Error("invalid wire type: " + wireType);
@@ -1812,8 +1812,8 @@ WriterPrototype.ldelim = function ldelim() {
         tail = this.tail,
         len  = this.len;
     this.reset()
-        .uint32(len);
-    this.tail.next = head.next; // skip noop
+        .uint32(len)
+        .tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;
     return this;

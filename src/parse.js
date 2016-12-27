@@ -278,7 +278,7 @@ function parse(source, root, options) {
                     case "reserved":
                         (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
                         break;
-                        
+
                     default:
                         if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);

@@ -37,7 +37,7 @@ function Field(name, id, type, rule, extend, options) {
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
-    
+
     /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
@@ -261,7 +261,7 @@ FieldPrototype.resolve = function resolve() {
             this.defaultValue = this.options["default"];
         else
             this.defaultValue = typeDefault;
-        
+
         if (this.long) {
             this.defaultValue = util.Long.fromNumber(this.defaultValue, this.type.charAt(0) === "u");
             if (Object.freeze)

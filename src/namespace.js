@@ -246,7 +246,7 @@ NamespacePrototype.remove = function remove(object) {
     /* istanbul ignore next */
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);
-    
+
     delete this.nested[object.name];
     if (!Object.keys(this.nested).length)
         this.nested = undefined;

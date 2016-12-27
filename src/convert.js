@@ -19,7 +19,7 @@ var Type,    // cyclic
 
 /**
  * Converts between JSON objects and messages, based on reflection information.
- * @param {Type} type Type 
+ * @param {Type} type Type
  * @param {*} source Source object
  * @param {*} destination Destination object
  * @param {Object.<string,*>} options Conversion options
@@ -78,7 +78,7 @@ function convert(type, source, destination, options, converter) {
 convert.toJson = function toJson(field, value, options) {
     if (!options)
         options = {};
-    
+
     // Recurse into inner messages
     if (value instanceof Message)
         return convert(value.$type, value, {}, options, toJson);

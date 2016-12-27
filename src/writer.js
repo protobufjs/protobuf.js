@@ -520,8 +520,8 @@ WriterPrototype.ldelim = function ldelim() {
         tail = this.tail,
         len  = this.len;
     this.reset()
-        .uint32(len);
-    this.tail.next = head.next; // skip noop
+        .uint32(len)
+        .tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;
     return this;

@@ -20,7 +20,7 @@ var fs = inquire("fs");
  * @memberof util
  * @param {string} path File path or url
  * @param {FetchCallback} [callback] Callback function
- * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted 
+ * @returns {Promise<string>|undefined} A Promise if `callback` has been omitted
  */
 function fetch(path, callback) {
     if (!callback)

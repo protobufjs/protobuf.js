@@ -20,7 +20,7 @@ function indexOutOfRange(reader, writeLength) {
  * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
-    
+
     /**
      * Read buffer.
      * @type {Uint8Array}
@@ -77,7 +77,7 @@ ReaderPrototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
-        
+
         /* istanbul ignore next */
         if ((this.pos += 5) > this.len) {
             this.pos = this.len;
@@ -484,7 +484,7 @@ ReaderPrototype.skipType = function(wireType) {
         case 5:
             this.skip(4);
             break;
-        
+
         /* istanbul ignore next */
         default:
             throw Error("invalid wire type: " + wireType);

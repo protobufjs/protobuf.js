@@ -51,7 +51,7 @@ function codegen() {
                 level = ++indent; // keep
             else if (branchRe.test(prev))
                 ++level; // once
-            
+
             // casing
             if (casingRe.test(prev) && !casingRe.test(line)) {
                 level = ++indent;

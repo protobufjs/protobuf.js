@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 27 Dec 2016 12:23:42 UTC
+ * Compiled Tue, 27 Dec 2016 12:46:56 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -750,7 +750,7 @@ function create(type, ctor) {
 
     // Let's pretend...
     ctor.constructor = Class;
-    
+
     // new Class() -> Message.prototype
     var prototype = ctor.prototype = new Message();
     prototype.constructor = ctor;
@@ -1075,7 +1075,7 @@ var Type,    // cyclic
 
 /**
  * Converts between JSON objects and messages, based on reflection information.
- * @param {Type} type Type 
+ * @param {Type} type Type
  * @param {*} source Source object
  * @param {*} destination Destination object
  * @param {Object.<string,*>} options Conversion options
@@ -1134,7 +1134,7 @@ function convert(type, source, destination, options, converter) {
 convert.toJson = function toJson(field, value, options) {
     if (!options)
         options = {};
-    
+
     // Recurse into inner messages
     if (value instanceof Message)
         return convert(value.$type, value, {}, options, toJson);
@@ -1237,7 +1237,7 @@ var Enum    = require(16),
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();    
+    var fields = mtype.getFieldsArray();
     var gen = util.codegen("r", "l")
 
     ("r instanceof Reader||(r=Reader.create(r))")
@@ -1249,7 +1249,7 @@ function decoder(mtype) {
             ("break");
     gen
         ("switch(t>>>3){");
-    
+
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -1412,7 +1412,7 @@ function encoder(mtype) {
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i];
         gen
-        ("switch(%s){", "m" + safeProp(oneof.name));
+        ("switch(%s){", "m.get" + oneof.ucName + "()");
         var oneofFields = oneof.getFieldsArray();
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
@@ -1431,7 +1431,7 @@ function encoder(mtype) {
                 ("break;");
 
         } gen
-        ("}");        
+        ("}");
     }
 
     return gen
@@ -1627,7 +1627,7 @@ function Field(name, id, type, rule, extend, options) {
         extend = undefined;
     }
     ReflectionObject.call(this, name, options);
-    
+
     /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
         throw TypeError("id", "a non-negative integer");
@@ -1851,7 +1851,7 @@ FieldPrototype.resolve = function resolve() {
             this.defaultValue = this.options["default"];
         else
             this.defaultValue = typeDefault;
-        
+
         if (this.long) {
             this.defaultValue = util.Long.fromNumber(this.defaultValue, this.type.charAt(0) === "u");
             if (Object.freeze)
@@ -1894,7 +1894,7 @@ function MapField(name, id, keyType, type, options) {
     /* istanbul ignore next */
     if (!util.isString(keyType))
         throw util._TypeError("keyType");
-    
+
     /**
      * Key type.
      * @type {string}
@@ -1950,7 +1950,7 @@ MapFieldPrototype.toJSON = function toJSON() {
 MapFieldPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    
+
     // Besides a value type, map fields have a key type that may be "any scalar type except for floating point types and bytes"
     if (types.mapKey[this.keyType] === undefined)
         throw Error("invalid key type: " + this.keyType);
@@ -2464,7 +2464,7 @@ NamespacePrototype.remove = function remove(object) {
     /* istanbul ignore next */
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);
-    
+
     delete this.nested[object.name];
     if (!Object.keys(this.nested).length)
         this.nested = undefined;
@@ -3305,7 +3305,7 @@ function parse(source, root, options) {
                     case "reserved":
                         (type.reserved || (type.reserved = [])).push(readRange(type, tokenLower));
                         break;
-                        
+
                     default:
                         if (!isProto3 || !isTypeRef(token))
                             throw illegal(token);
@@ -3716,7 +3716,7 @@ function indexOutOfRange(reader, writeLength) {
  * @param {Uint8Array} buffer Buffer to read from
  */
 function Reader(buffer) {
-    
+
     /**
      * Read buffer.
      * @type {Uint8Array}
@@ -3773,7 +3773,7 @@ ReaderPrototype.uint32 = (function read_uint32_setup() {
         value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
         value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
-        
+
         /* istanbul ignore next */
         if ((this.pos += 5) > this.len) {
             this.pos = this.len;
@@ -4180,7 +4180,7 @@ ReaderPrototype.skipType = function(wireType) {
         case 5:
             this.skip(4);
             break;
-        
+
         /* istanbul ignore next */
         default:
             throw Error("invalid wire type: " + wireType);
@@ -4275,7 +4275,7 @@ function Root(options) {
     this.deferred = [];
 
     /**
-     * Resolved file names of loaded files. 
+     * Resolved file names of loaded files.
      * @type {string[]}
      */
     this.files = [];
@@ -4864,11 +4864,11 @@ function unescape(str) {
 function tokenize(source) {
     /* eslint-disable callback-return */
     source = source.toString();
-    
+
     var offset = 0,
         length = source.length,
         line = 1;
-    
+
     var stack = [];
 
     var stringDelim = null;
@@ -5030,7 +5030,7 @@ function tokenize(source) {
 }
 },{}],32:[function(require,module,exports){
 "use strict";
-module.exports = Type; 
+module.exports = Type;
 
 var Namespace = require(21);
 /** @alias Namespace.prototype */
@@ -6830,8 +6830,8 @@ WriterPrototype.ldelim = function ldelim() {
         tail = this.tail,
         len  = this.len;
     this.reset()
-        .uint32(len);
-    this.tail.next = head.next; // skip noop
+        .uint32(len)
+        .tail.next = head.next; // skip noop
     this.tail = tail;
     this.len += len;
     return this;

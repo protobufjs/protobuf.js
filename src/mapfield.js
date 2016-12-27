@@ -29,7 +29,7 @@ function MapField(name, id, keyType, type, options) {
     /* istanbul ignore next */
     if (!util.isString(keyType))
         throw util._TypeError("keyType");
-    
+
     /**
      * Key type.
      * @type {string}
@@ -85,7 +85,7 @@ MapFieldPrototype.toJSON = function toJSON() {
 MapFieldPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    
+
     // Besides a value type, map fields have a key type that may be "any scalar type except for floating point types and bytes"
     if (types.mapKey[this.keyType] === undefined)
         throw Error("invalid key type: " + this.keyType);

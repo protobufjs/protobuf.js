@@ -46,7 +46,7 @@ function create(type, ctor) {
 
     // Let's pretend...
     ctor.constructor = Class;
-    
+
     // new Class() -> Message.prototype
     var prototype = ctor.prototype = new Message();
     prototype.constructor = ctor;
