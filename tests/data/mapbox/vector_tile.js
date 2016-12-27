@@ -38,10 +38,9 @@ $root.vector_tile = (function() {
 
         /**
          * Tile layers.
-         * @name vector_tile.Tile#layers
          * @type {Array.<vector_tile.Tile.Layer>}
          */
-        $prototype["layers"] = $protobuf.util.emptyArray;
+        $prototype.layers = $protobuf.util.emptyArray;
 
         /**
          * Creates a new Tile instance using the specified properties.
@@ -185,52 +184,45 @@ $root.vector_tile = (function() {
 
             /**
              * Value stringValue.
-             * @name vector_tile.Tile.Value#stringValue
              * @type {string}
              */
-            $prototype["stringValue"] = "";
+            $prototype.stringValue = "";
 
             /**
              * Value floatValue.
-             * @name vector_tile.Tile.Value#floatValue
              * @type {number}
              */
-            $prototype["floatValue"] = 0;
+            $prototype.floatValue = 0;
 
             /**
              * Value doubleValue.
-             * @name vector_tile.Tile.Value#doubleValue
              * @type {number}
              */
-            $prototype["doubleValue"] = 0;
+            $prototype.doubleValue = 0;
 
             /**
              * Value intValue.
-             * @name vector_tile.Tile.Value#intValue
              * @type {number|Long}
              */
-            $prototype["intValue"] = $protobuf.util.emptyObject;
+            $prototype.intValue = $protobuf.util.emptyObject;
 
             /**
              * Value uintValue.
-             * @name vector_tile.Tile.Value#uintValue
              * @type {number|Long}
              */
-            $prototype["uintValue"] = $protobuf.util.emptyObject;
+            $prototype.uintValue = $protobuf.util.emptyObject;
 
             /**
              * Value sintValue.
-             * @name vector_tile.Tile.Value#sintValue
              * @type {number|Long}
              */
-            $prototype["sintValue"] = $protobuf.util.emptyObject;
+            $prototype.sintValue = $protobuf.util.emptyObject;
 
             /**
              * Value boolValue.
-             * @name vector_tile.Tile.Value#boolValue
              * @type {boolean}
              */
-            $prototype["boolValue"] = false;
+            $prototype.boolValue = false;
 
             /**
              * Creates a new Value instance using the specified properties.
@@ -411,31 +403,27 @@ $root.vector_tile = (function() {
 
             /**
              * Feature id.
-             * @name vector_tile.Tile.Feature#id
              * @type {number|Long}
              */
-            $prototype["id"] = $protobuf.util.emptyObject;
+            $prototype.id = $protobuf.util.emptyObject;
 
             /**
              * Feature tags.
-             * @name vector_tile.Tile.Feature#tags
              * @type {Array.<number>}
              */
-            $prototype["tags"] = $protobuf.util.emptyArray;
+            $prototype.tags = $protobuf.util.emptyArray;
 
             /**
              * Feature type.
-             * @name vector_tile.Tile.Feature#type
              * @type {number}
              */
-            $prototype["type"] = "UNKNOWN";
+            $prototype.type = "UNKNOWN";
 
             /**
              * Feature geometry.
-             * @name vector_tile.Tile.Feature#geometry
              * @type {Array.<number>}
              */
-            $prototype["geometry"] = $protobuf.util.emptyArray;
+            $prototype.geometry = $protobuf.util.emptyArray;
 
             /**
              * Creates a new Feature instance using the specified properties.
@@ -624,45 +612,39 @@ $root.vector_tile = (function() {
 
             /**
              * Layer version.
-             * @name vector_tile.Tile.Layer#version
              * @type {number}
              */
-            $prototype["version"] = 1;
+            $prototype.version = 1;
 
             /**
              * Layer name.
-             * @name vector_tile.Tile.Layer#name
              * @type {string}
              */
-            $prototype["name"] = "";
+            $prototype.name = "";
 
             /**
              * Layer features.
-             * @name vector_tile.Tile.Layer#features
              * @type {Array.<vector_tile.Tile.Feature>}
              */
-            $prototype["features"] = $protobuf.util.emptyArray;
+            $prototype.features = $protobuf.util.emptyArray;
 
             /**
              * Layer keys.
-             * @name vector_tile.Tile.Layer#keys
              * @type {Array.<string>}
              */
-            $prototype["keys"] = $protobuf.util.emptyArray;
+            $prototype.keys = $protobuf.util.emptyArray;
 
             /**
              * Layer values.
-             * @name vector_tile.Tile.Layer#values
              * @type {Array.<vector_tile.Tile.Value>}
              */
-            $prototype["values"] = $protobuf.util.emptyArray;
+            $prototype.values = $protobuf.util.emptyArray;
 
             /**
              * Layer extent.
-             * @name vector_tile.Tile.Layer#extent
              * @type {number}
              */
-            $prototype["extent"] = 4096;
+            $prototype.extent = 4096;
 
             /**
              * Creates a new Layer instance using the specified properties.

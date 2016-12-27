@@ -72,6 +72,8 @@ function push(line) {
 function pushComment(lines) {
     push("/**");
     lines.forEach(function(line) {
+        if (line === null)
+            return;
         push(" * " + line);
     });
     push(" */");
@@ -88,7 +90,7 @@ function name(name) {
 // library itself because the reserved words check requires a rather longish regex.
 util.safeProp = (function(safeProp) {
     return function safeProp_dn(name) {
-        return /^[$\w]+$/.test(name) && cliUtil.reserved(name)
+        return !/^[$\w]+$/.test(name) || cliUtil.reserved(name)
             ? safeProp(name)
             : "." + name;
     }
@@ -233,17 +235,18 @@ function buildType(ref, type) {
         if (field.repeated)
             jsType = "Array.<" + jsType + ">";
         push("");
+        var prop = util.safeProp(field.name);
         pushComment([
             type.name + " " + field.name + ".",
-            "@name " + fullName + "#" + name(field.name),
+            prop.charAt(0) !== "." ? "@name " + fullName + "#" + name(field.name) : null,
             "@type {" + jsType + "}"
         ]);
         if (Array.isArray(field.defaultValue)) {
-            push("$prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyArray;");
+            push("$prototype" + prop + " = $protobuf.util.emptyArray;");
         } else if (util.isObject(field.defaultValue))
-            push("$prototype[" + JSON.stringify(field.name) + "] = $protobuf.util.emptyObject;");
+            push("$prototype" + prop + " = $protobuf.util.emptyObject;");
         else
-            push("$prototype[" + JSON.stringify(field.name) + "] = " + JSON.stringify(field.defaultValue) + ";");
+            push("$prototype" + prop + " = " + JSON.stringify(field.defaultValue) + ";");
     });
 
     // virtual oneof fields

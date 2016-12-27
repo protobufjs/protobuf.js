@@ -29,10 +29,9 @@ $root.A = (function() {
 
     /**
      * A whatever.
-     * @name A#whatever
      * @type {string}
      */
-    $prototype["whatever"] = "";
+    $prototype.whatever = "";
 
     /**
      * Creates a new A instance using the specified properties.
@@ -159,10 +158,9 @@ $root.B = (function() {
 
     /**
      * B A.
-     * @name B#A
      * @type {A}
      */
-    $prototype["A"] = null;
+    $prototype.A = null;
 
     /**
      * Creates a new B instance using the specified properties.

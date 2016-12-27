@@ -121,10 +121,9 @@ $root.MyRequest = (function() {
 
     /**
      * MyRequest path.
-     * @name MyRequest#path
      * @type {string}
      */
-    $prototype["path"] = "";
+    $prototype.path = "";
 
     /**
      * Creates a new MyRequest instance using the specified properties.
@@ -251,10 +250,9 @@ $root.MyResponse = (function() {
 
     /**
      * MyResponse status.
-     * @name MyResponse#status
      * @type {number}
      */
-    $prototype["status"] = 0;
+    $prototype.status = 0;
 
     /**
      * Creates a new MyResponse instance using the specified properties.

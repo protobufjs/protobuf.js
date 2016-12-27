@@ -29,115 +29,99 @@ $root.Package = (function() {
 
     /**
      * Package name.
-     * @name Package#name
      * @type {string}
      */
-    $prototype["name"] = "";
+    $prototype.name = "";
 
     /**
      * Package version.
-     * @name Package#version
      * @type {string}
      */
-    $prototype["version"] = "";
+    $prototype.version = "";
 
     /**
      * Package description.
-     * @name Package#description
      * @type {string}
      */
-    $prototype["description"] = "";
+    $prototype.description = "";
 
     /**
      * Package author.
-     * @name Package#author
      * @type {string}
      */
-    $prototype["author"] = "";
+    $prototype.author = "";
 
     /**
      * Package license.
-     * @name Package#license
      * @type {string}
      */
-    $prototype["license"] = "";
+    $prototype.license = "";
 
     /**
      * Package repository.
-     * @name Package#repository
      * @type {Package.Repository}
      */
-    $prototype["repository"] = null;
+    $prototype.repository = null;
 
     /**
      * Package bugs.
-     * @name Package#bugs
      * @type {string}
      */
-    $prototype["bugs"] = "";
+    $prototype.bugs = "";
 
     /**
      * Package homepage.
-     * @name Package#homepage
      * @type {string}
      */
-    $prototype["homepage"] = "";
+    $prototype.homepage = "";
 
     /**
      * Package keywords.
-     * @name Package#keywords
      * @type {Array.<string>}
      */
-    $prototype["keywords"] = $protobuf.util.emptyArray;
+    $prototype.keywords = $protobuf.util.emptyArray;
 
     /**
      * Package main.
-     * @name Package#main
      * @type {string}
      */
-    $prototype["main"] = "";
+    $prototype.main = "";
 
     /**
      * Package bin.
-     * @name Package#bin
      * @type {string}
      */
-    $prototype["bin"] = $protobuf.util.emptyObject;
+    $prototype.bin = $protobuf.util.emptyObject;
 
     /**
      * Package scripts.
-     * @name Package#scripts
      * @type {string}
      */
-    $prototype["scripts"] = $protobuf.util.emptyObject;
+    $prototype.scripts = $protobuf.util.emptyObject;
 
     /**
      * Package dependencies.
-     * @name Package#dependencies
      * @type {string}
      */
-    $prototype["dependencies"] = $protobuf.util.emptyObject;
+    $prototype.dependencies = $protobuf.util.emptyObject;
 
     /**
      * Package optionalDependencies.
-     * @name Package#optionalDependencies
      * @type {string}
      */
-    $prototype["optionalDependencies"] = $protobuf.util.emptyObject;
+    $prototype.optionalDependencies = $protobuf.util.emptyObject;
 
     /**
      * Package devDependencies.
-     * @name Package#devDependencies
      * @type {string}
      */
-    $prototype["devDependencies"] = $protobuf.util.emptyObject;
+    $prototype.devDependencies = $protobuf.util.emptyObject;
 
     /**
      * Package types.
-     * @name Package#types
      * @type {string}
      */
-    $prototype["types"] = "";
+    $prototype.types = "";
 
     /**
      * Creates a new Package instance using the specified properties.
@@ -488,17 +472,15 @@ $root.Package = (function() {
 
         /**
          * Repository type.
-         * @name Package.Repository#type
          * @type {string}
          */
-        $prototype["type"] = "";
+        $prototype.type = "";
 
         /**
          * Repository url.
-         * @name Package.Repository#url
          * @type {string}
          */
-        $prototype["url"] = "";
+        $prototype.url = "";
 
         /**
          * Creates a new Repository instance using the specified properties.

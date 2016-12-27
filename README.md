@@ -356,6 +356,7 @@ Consolidates imports and converts between file formats.
 
   Static targets only:
 
+  --no-create     Does not generate create functions used for runtime compatibility.
   --no-encode     Does not generate encode functions.
   --no-decode     Does not generate decode functions.
   --no-verify     Does not generate verify functions.
