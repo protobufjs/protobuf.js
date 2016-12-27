@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 27 Dec 2016 12:46:56 UTC
+ * Compiled Tue, 27 Dec 2016 16:55:50 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -641,7 +641,7 @@ utf8.read = function(buffer, start, end) {
     var len = end - start;
     if (len < 1)
         return "";
-    var parts = [],
+    var parts = null,
         chunk = [],
         i = 0, // char offset
         t;     // temporary
@@ -658,13 +658,16 @@ utf8.read = function(buffer, start, end) {
         } else
             chunk[i++] = (t & 15) << 12 | (buffer[start++] & 63) << 6 | buffer[start++] & 63;
         if (i > 8191) {
-            parts.push(String.fromCharCode.apply(String, chunk));
+            (parts || (parts = [])).push(String.fromCharCode.apply(String, chunk));
             i = 0;
         }
     }
-    if (i)
-        parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
-    return parts.join("");
+    if (parts) {
+        if (i)
+            parts.push(String.fromCharCode.apply(String, chunk.slice(0, i)));
+        return parts.join("");
+    }
+    return i ? String.fromCharCode.apply(String, chunk.slice(0, i)) : "";
 };
 
 /**
@@ -1322,8 +1325,6 @@ var Enum     = require(16),
     types    = require(33),
     util     = require(34);
 
-var safeProp = util.safeProp;
-
 function genEncodeType(gen, field, fieldIndex, ref) {
     return field.resolvedType.group
         ? gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
@@ -1347,7 +1348,7 @@ function encoder(mtype) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
-            ref      = "m" + safeProp(field.name);
+            ref      = "m" + util.safeProp(field.name);
 
         // Map fields
         if (field.map) {
@@ -1418,7 +1419,7 @@ function encoder(mtype) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
-                ref      = "m" + safeProp(field.name);
+                ref      = "m" + util.safeProp(field.name);
             gen
             ("case%j:", field.name);
 

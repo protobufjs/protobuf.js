@@ -149,8 +149,8 @@ $root.MyRequest = (function() {
         var types; $lazyTypes.push(types = [null]);
         return function encode(m, w) {
             w||(w=Writer.create())
-            if(m["path"]!==undefined&&m["path"]!=="")
-                w.uint32(10).string(m["path"])
+            if(m.path!==undefined&&m.path!=="")
+                w.uint32(10).string(m.path)
             return w
         }
         /* eslint-enable */
@@ -185,7 +185,7 @@ $root.MyRequest = (function() {
                 var t=r.uint32()
                 switch(t>>>3){
                     case 1:
-                        m["path"]=r.string()
+                        m.path=r.string()
                         break
                     default:
                         r.skipType(t&7)
@@ -218,8 +218,8 @@ $root.MyRequest = (function() {
         var util = $protobuf.util;
         var types; $lazyTypes.push(types = [null]);
         return function verify(m) {
-            if(m["path"]!==undefined){
-                if(!util.isString(m["path"]))
+            if(m.path!==undefined){
+                if(!util.isString(m.path))
                     return"invalid value for field .MyRequest.path (string expected)"
             }
             return null
@@ -279,8 +279,8 @@ $root.MyResponse = (function() {
         var types; $lazyTypes.push(types = [null]);
         return function encode(m, w) {
             w||(w=Writer.create())
-            if(m["status"]!==undefined&&m["status"]!==0)
-                w.uint32(16).int32(m["status"])
+            if(m.status!==undefined&&m.status!==0)
+                w.uint32(16).int32(m.status)
             return w
         }
         /* eslint-enable */
@@ -315,7 +315,7 @@ $root.MyResponse = (function() {
                 var t=r.uint32()
                 switch(t>>>3){
                     case 2:
-                        m["status"]=r.int32()
+                        m.status=r.int32()
                         break
                     default:
                         r.skipType(t&7)
@@ -348,8 +348,8 @@ $root.MyResponse = (function() {
         var util = $protobuf.util;
         var types; $lazyTypes.push(types = [null]);
         return function verify(m) {
-            if(m["status"]!==undefined){
-                if(!util.isInteger(m["status"]))
+            if(m.status!==undefined){
+                if(!util.isInteger(m.status))
                     return"invalid value for field .MyResponse.status (integer expected)"
             }
             return null

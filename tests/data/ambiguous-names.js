@@ -57,8 +57,8 @@ $root.A = (function() {
         var types; $lazyTypes.push(types = [null]);
         return function encode(m, w) {
             w||(w=Writer.create())
-            if(m["whatever"]!==undefined&&m["whatever"]!=="")
-                w.uint32(10).string(m["whatever"])
+            if(m.whatever!==undefined&&m.whatever!=="")
+                w.uint32(10).string(m.whatever)
             return w
         }
         /* eslint-enable */
@@ -93,7 +93,7 @@ $root.A = (function() {
                 var t=r.uint32()
                 switch(t>>>3){
                     case 1:
-                        m["whatever"]=r.string()
+                        m.whatever=r.string()
                         break
                     default:
                         r.skipType(t&7)
@@ -126,8 +126,8 @@ $root.A = (function() {
         var util = $protobuf.util;
         var types; $lazyTypes.push(types = [null]);
         return function verify(m) {
-            if(m["whatever"]!==undefined){
-                if(!util.isString(m["whatever"]))
+            if(m.whatever!==undefined){
+                if(!util.isString(m.whatever))
                     return"invalid value for field .A.whatever (string expected)"
             }
             return null
@@ -187,8 +187,8 @@ $root.B = (function() {
         var types; $lazyTypes.push(types = ["A"]);
         return function encode(m, w) {
             w||(w=Writer.create())
-            if(m["A"]!==undefined&&m["A"]!==null)
-                types[0].encode(m["A"],w.uint32(10).fork()).ldelim()
+            if(m.A!==undefined&&m.A!==null)
+                types[0].encode(m.A,w.uint32(10).fork()).ldelim()
             return w
         }
         /* eslint-enable */
@@ -223,7 +223,7 @@ $root.B = (function() {
                 var t=r.uint32()
                 switch(t>>>3){
                     case 1:
-                        m["A"]=types[0].decode(r,r.uint32())
+                        m.A=types[0].decode(r,r.uint32())
                         break
                     default:
                         r.skipType(t&7)
@@ -256,9 +256,9 @@ $root.B = (function() {
         var util = $protobuf.util;
         var types; $lazyTypes.push(types = ["A"]);
         return function verify(m) {
-            if(m["A"]!==undefined&&m["A"]!==null){
+            if(m.A!==undefined&&m.A!==null){
                 var r;
-                if(r=types[0].verify(m["A"]))
+                if(r=types[0].verify(m.A))
                     return r
             }
             return null

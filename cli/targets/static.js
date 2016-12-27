@@ -3,7 +3,8 @@ module.exports = static_target;
 
 // - Static code does not have any reflection or JSON features.
 
-var protobuf = require("../..");
+var protobuf = require("../.."),
+    cliUtil  = require("../util");
 
 var Type      = protobuf.Type,
     Service   = protobuf.Service,
@@ -76,13 +77,22 @@ function pushComment(lines) {
     push(" */");
 }
 
-var reservedRe = /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
-
 function name(name) {
     if (!name)
         return "$root";
-    return reservedRe.test(name) ? name + "_" : name;
+    return cliUtil.reserved(name) ? name + "_" : name;
 }
+
+// generate dot-notation property accessors where possible. this saves a few chars (i.e. m.hello
+// instead of m["hello"]) but has no measurable performance impact (on V8). not present within the
+// library itself because the reserved words check requires a rather longish regex.
+util.safeProp = (function(safeProp) {
+    return function safeProp_dn(name) {
+        return /^[$\w]+$/.test(name) && cliUtil.reserved(name)
+            ? safeProp(name)
+            : "." + name;
+    }
+})(util.safeProp);
 
 function buildNamespace(ref, ns) {
     if (!ns)

@@ -121,23 +121,21 @@ exports.main = function(args, callback) {
         "keepCase": argv["keep-case"] || false
     };
 
-    var root;
     try {
-        root = root.loadSync(files, parseOptions); // sync is deterministic while async is not
+        root.loadSync(files, parseOptions); // sync is deterministic while async is not
     } catch (err) {
         if (callback) {
             callback(err);
-            return;
-        } else
-            throw err;
+            return undefined;
+        }
+        throw err;
     }
 
-    target(root, argv, function(err, output) {
+    target(root, argv, function targetCallback(err, output) {
         if (err) {
             if (callback)
                 return callback(err);
-            else
-                throw err;
+            throw err;
         }
         if (output !== "") {
             if (argv.out)
@@ -145,7 +143,8 @@ exports.main = function(args, callback) {
             else
                 process.stdout.write(output, "utf8");
         }
-        if (callback)
-            return callback(null);
+        return callback 
+            ? callback(null)
+            : undefined;
     });
 };

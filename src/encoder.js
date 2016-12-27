@@ -5,8 +5,6 @@ var Enum     = require("./enum"),
     types    = require("./types"),
     util     = require("./util");
 
-var safeProp = util.safeProp;
-
 function genEncodeType(gen, field, fieldIndex, ref) {
     return field.resolvedType.group
         ? gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
@@ -30,7 +28,7 @@ function encoder(mtype) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
-            ref      = "m" + safeProp(field.name);
+            ref      = "m" + util.safeProp(field.name);
 
         // Map fields
         if (field.map) {
@@ -101,7 +99,7 @@ function encoder(mtype) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
-                ref      = "m" + safeProp(field.name);
+                ref      = "m" + util.safeProp(field.name);
             gen
             ("case%j:", field.name);
 

@@ -162,64 +162,64 @@ $root.Package = (function() {
         var types; $lazyTypes.push(types = [null,null,null,null,null,"Package.Repository",null,null,null,null,null,null,null,null,null,null]);
         return function encode(m, w) {
             w||(w=Writer.create())
-            if(m["name"]!==undefined&&m["name"]!=="")
-                w.uint32(10).string(m["name"])
-            if(m["version"]!==undefined&&m["version"]!=="")
-                w.uint32(18).string(m["version"])
-            if(m["description"]!==undefined&&m["description"]!=="")
-                w.uint32(26).string(m["description"])
-            if(m["author"]!==undefined&&m["author"]!=="")
-                w.uint32(34).string(m["author"])
-            if(m["license"]!==undefined&&m["license"]!=="")
-                w.uint32(42).string(m["license"])
-            if(m["repository"]!==undefined&&m["repository"]!==null)
-                types[5].encode(m["repository"],w.uint32(50).fork()).ldelim()
-            if(m["bugs"]!==undefined&&m["bugs"]!=="")
-                w.uint32(58).string(m["bugs"])
-            if(m["homepage"]!==undefined&&m["homepage"]!=="")
-                w.uint32(66).string(m["homepage"])
-            if(m["keywords"])
-                for(var i=0;i<m["keywords"].length;++i)
-                w.uint32(74).string(m["keywords"][i])
-            if(m["main"]!==undefined&&m["main"]!=="")
-                w.uint32(82).string(m["main"])
-            if(m["bin"]&&m["bin"]!==util.emptyObject){
-                for(var ks=Object.keys(m["bin"]),i=0;i<ks.length;++i){
+            if(m.name!==undefined&&m.name!=="")
+                w.uint32(10).string(m.name)
+            if(m.version!==undefined&&m.version!=="")
+                w.uint32(18).string(m.version)
+            if(m.description!==undefined&&m.description!=="")
+                w.uint32(26).string(m.description)
+            if(m.author!==undefined&&m.author!=="")
+                w.uint32(34).string(m.author)
+            if(m.license!==undefined&&m.license!=="")
+                w.uint32(42).string(m.license)
+            if(m.repository!==undefined&&m.repository!==null)
+                types[5].encode(m.repository,w.uint32(50).fork()).ldelim()
+            if(m.bugs!==undefined&&m.bugs!=="")
+                w.uint32(58).string(m.bugs)
+            if(m.homepage!==undefined&&m.homepage!=="")
+                w.uint32(66).string(m.homepage)
+            if(m.keywords)
+                for(var i=0;i<m.keywords.length;++i)
+                w.uint32(74).string(m.keywords[i])
+            if(m.main!==undefined&&m.main!=="")
+                w.uint32(82).string(m.main)
+            if(m.bin&&m.bin!==util.emptyObject){
+                for(var ks=Object.keys(m.bin),i=0;i<ks.length;++i){
                     w.uint32(90).fork().uint32(10).string(ks[i])
-                    w.uint32(18).string(m["bin"][ks[i]])
+                    w.uint32(18).string(m.bin[ks[i]])
                     w.ldelim()
                 }
             }
-            if(m["scripts"]&&m["scripts"]!==util.emptyObject){
-                for(var ks=Object.keys(m["scripts"]),i=0;i<ks.length;++i){
+            if(m.scripts&&m.scripts!==util.emptyObject){
+                for(var ks=Object.keys(m.scripts),i=0;i<ks.length;++i){
                     w.uint32(98).fork().uint32(10).string(ks[i])
-                    w.uint32(18).string(m["scripts"][ks[i]])
+                    w.uint32(18).string(m.scripts[ks[i]])
                     w.ldelim()
                 }
             }
-            if(m["dependencies"]&&m["dependencies"]!==util.emptyObject){
-                for(var ks=Object.keys(m["dependencies"]),i=0;i<ks.length;++i){
+            if(m.dependencies&&m.dependencies!==util.emptyObject){
+                for(var ks=Object.keys(m.dependencies),i=0;i<ks.length;++i){
                     w.uint32(106).fork().uint32(10).string(ks[i])
-                    w.uint32(18).string(m["dependencies"][ks[i]])
+                    w.uint32(18).string(m.dependencies[ks[i]])
                     w.ldelim()
                 }
             }
-            if(m["optionalDependencies"]&&m["optionalDependencies"]!==util.emptyObject){
-                for(var ks=Object.keys(m["optionalDependencies"]),i=0;i<ks.length;++i){
+            if(m.optionalDependencies&&m.optionalDependencies!==util.emptyObject){
+                for(var ks=Object.keys(m.optionalDependencies),i=0;i<ks.length;++i){
                     w.uint32(114).fork().uint32(10).string(ks[i])
-                    w.uint32(18).string(m["optionalDependencies"][ks[i]])
+                    w.uint32(18).string(m.optionalDependencies[ks[i]])
                     w.ldelim()
                 }
             }
-            if(m["devDependencies"]&&m["devDependencies"]!==util.emptyObject){
-                for(var ks=Object.keys(m["devDependencies"]),i=0;i<ks.length;++i){
+            if(m.devDependencies&&m.devDependencies!==util.emptyObject){
+                for(var ks=Object.keys(m.devDependencies),i=0;i<ks.length;++i){
                     w.uint32(122).fork().uint32(10).string(ks[i])
-                    w.uint32(18).string(m["devDependencies"][ks[i]])
+                    w.uint32(18).string(m.devDependencies[ks[i]])
                     w.ldelim()
                 }
             }
-            if(m["types"]!==undefined&&m["types"]!=="")
-                w.uint32(138).string(m["types"])
+            if(m.types!==undefined&&m.types!=="")
+                w.uint32(138).string(m.types)
             return w
         }
         /* eslint-enable */
@@ -254,88 +254,88 @@ $root.Package = (function() {
                 var t=r.uint32()
                 switch(t>>>3){
                     case 1:
-                        m["name"]=r.string()
+                        m.name=r.string()
                         break
                     case 2:
-                        m["version"]=r.string()
+                        m.version=r.string()
                         break
                     case 3:
-                        m["description"]=r.string()
+                        m.description=r.string()
                         break
                     case 4:
-                        m["author"]=r.string()
+                        m.author=r.string()
                         break
                     case 5:
-                        m["license"]=r.string()
+                        m.license=r.string()
                         break
                     case 6:
-                        m["repository"]=types[5].decode(r,r.uint32())
+                        m.repository=types[5].decode(r,r.uint32())
                         break
                     case 7:
-                        m["bugs"]=r.string()
+                        m.bugs=r.string()
                         break
                     case 8:
-                        m["homepage"]=r.string()
+                        m.homepage=r.string()
                         break
                     case 9:
-                        m["keywords"]&&m["keywords"].length?m["keywords"]:m["keywords"]=[]
-                        m["keywords"].push(r.string())
+                        m.keywords&&m.keywords.length||(m.keywords=[])
+                        m.keywords.push(r.string())
                         break
                     case 10:
-                        m["main"]=r.string()
+                        m.main=r.string()
                         break
                     case 11:
                         r.skip().pos++
-                        if(m["bin"]===util.emptyObject)
-                            m["bin"]={}
+                        if(m.bin===util.emptyObject)
+                            m.bin={}
                         var k=r.string()
                         if(typeof k==="object")
                             k=util.longToHash(k)
                         r.pos++
-                        m["bin"][k]=r.string()
+                        m.bin[k]=r.string()
                         break
                     case 12:
                         r.skip().pos++
-                        if(m["scripts"]===util.emptyObject)
-                            m["scripts"]={}
+                        if(m.scripts===util.emptyObject)
+                            m.scripts={}
                         var k=r.string()
                         if(typeof k==="object")
                             k=util.longToHash(k)
                         r.pos++
-                        m["scripts"][k]=r.string()
+                        m.scripts[k]=r.string()
                         break
                     case 13:
                         r.skip().pos++
-                        if(m["dependencies"]===util.emptyObject)
-                            m["dependencies"]={}
+                        if(m.dependencies===util.emptyObject)
+                            m.dependencies={}
                         var k=r.string()
                         if(typeof k==="object")
                             k=util.longToHash(k)
                         r.pos++
-                        m["dependencies"][k]=r.string()
+                        m.dependencies[k]=r.string()
                         break
                     case 14:
                         r.skip().pos++
-                        if(m["optionalDependencies"]===util.emptyObject)
-                            m["optionalDependencies"]={}
+                        if(m.optionalDependencies===util.emptyObject)
+                            m.optionalDependencies={}
                         var k=r.string()
                         if(typeof k==="object")
                             k=util.longToHash(k)
                         r.pos++
-                        m["optionalDependencies"][k]=r.string()
+                        m.optionalDependencies[k]=r.string()
                         break
                     case 15:
                         r.skip().pos++
-                        if(m["devDependencies"]===util.emptyObject)
-                            m["devDependencies"]={}
+                        if(m.devDependencies===util.emptyObject)
+                            m.devDependencies={}
                         var k=r.string()
                         if(typeof k==="object")
                             k=util.longToHash(k)
                         r.pos++
-                        m["devDependencies"][k]=r.string()
+                        m.devDependencies[k]=r.string()
                         break
                     case 17:
-                        m["types"]=r.string()
+                        m.types=r.string()
                         break
                     default:
                         r.skipType(t&7)
@@ -368,98 +368,98 @@ $root.Package = (function() {
         var util = $protobuf.util;
         var types; $lazyTypes.push(types = [null,null,null,null,null,"Package.Repository",null,null,null,null,null,null,null,null,null,null]);
         return function verify(m) {
-            if(m["name"]!==undefined){
-                if(!util.isString(m["name"]))
+            if(m.name!==undefined){
+                if(!util.isString(m.name))
                     return"invalid value for field .Package.name (string expected)"
             }
-            if(m["version"]!==undefined){
-                if(!util.isString(m["version"]))
+            if(m.version!==undefined){
+                if(!util.isString(m.version))
                     return"invalid value for field .Package.version (string expected)"
             }
-            if(m["description"]!==undefined){
-                if(!util.isString(m["description"]))
+            if(m.description!==undefined){
+                if(!util.isString(m.description))
                     return"invalid value for field .Package.description (string expected)"
             }
-            if(m["author"]!==undefined){
-                if(!util.isString(m["author"]))
+            if(m.author!==undefined){
+                if(!util.isString(m.author))
                     return"invalid value for field .Package.author (string expected)"
             }
-            if(m["license"]!==undefined){
-                if(!util.isString(m["license"]))
+            if(m.license!==undefined){
+                if(!util.isString(m.license))
                     return"invalid value for field .Package.license (string expected)"
             }
-            if(m["repository"]!==undefined&&m["repository"]!==null){
+            if(m.repository!==undefined&&m.repository!==null){
                 var r;
-                if(r=types[5].verify(m["repository"]))
+                if(r=types[5].verify(m.repository))
                     return r
             }
-            if(m["bugs"]!==undefined){
-                if(!util.isString(m["bugs"]))
+            if(m.bugs!==undefined){
+                if(!util.isString(m.bugs))
                     return"invalid value for field .Package.bugs (string expected)"
             }
-            if(m["homepage"]!==undefined){
-                if(!util.isString(m["homepage"]))
+            if(m.homepage!==undefined){
+                if(!util.isString(m.homepage))
                     return"invalid value for field .Package.homepage (string expected)"
             }
-            if(m["keywords"]!==undefined){
-                if(!Array.isArray(m["keywords"]))
+            if(m.keywords!==undefined){
+                if(!Array.isArray(m.keywords))
                     return"invalid value for field .Package.keywords (array expected)"
-                for(var i=0;i<m["keywords"].length;++i){
-                    if(!util.isString(m["keywords"][i]))
+                for(var i=0;i<m.keywords.length;++i){
+                    if(!util.isString(m.keywords[i]))
                         return"invalid value for field .Package.keywords (string[] expected)"
                 }
             }
-            if(m["main"]!==undefined){
-                if(!util.isString(m["main"]))
+            if(m.main!==undefined){
+                if(!util.isString(m.main))
                     return"invalid value for field .Package.main (string expected)"
             }
-            if(m["bin"]!==undefined){
-                if(!util.isObject(m["bin"]))
+            if(m.bin!==undefined){
+                if(!util.isObject(m.bin))
                     return"invalid value for field .Package.bin (object expected)"
-                var k=Object.keys(m["bin"])
+                var k=Object.keys(m.bin)
                 for(var i=0;i<k.length;++i){
-                    if(!util.isString(m["bin"][k[i]]))
+                    if(!util.isString(m.bin[k[i]]))
                         return"invalid value for field .Package.bin (string{k:string} expected)"
                 }
             }
-            if(m["scripts"]!==undefined){
-                if(!util.isObject(m["scripts"]))
+            if(m.scripts!==undefined){
+                if(!util.isObject(m.scripts))
                     return"invalid value for field .Package.scripts (object expected)"
-                var k=Object.keys(m["scripts"])
+                var k=Object.keys(m.scripts)
                 for(var i=0;i<k.length;++i){
-                    if(!util.isString(m["scripts"][k[i]]))
+                    if(!util.isString(m.scripts[k[i]]))
                         return"invalid value for field .Package.scripts (string{k:string} expected)"
                 }
             }
-            if(m["dependencies"]!==undefined){
-                if(!util.isObject(m["dependencies"]))
+            if(m.dependencies!==undefined){
+                if(!util.isObject(m.dependencies))
                     return"invalid value for field .Package.dependencies (object expected)"
-                var k=Object.keys(m["dependencies"])
+                var k=Object.keys(m.dependencies)
                 for(var i=0;i<k.length;++i){
-                    if(!util.isString(m["dependencies"][k[i]]))
+                    if(!util.isString(m.dependencies[k[i]]))
                         return"invalid value for field .Package.dependencies (string{k:string} expected)"
                 }
             }
-            if(m["optionalDependencies"]!==undefined){
-                if(!util.isObject(m["optionalDependencies"]))
+            if(m.optionalDependencies!==undefined){
+                if(!util.isObject(m.optionalDependencies))
                     return"invalid value for field .Package.optionalDependencies (object expected)"
-                var k=Object.keys(m["optionalDependencies"])
+                var k=Object.keys(m.optionalDependencies)
                 for(var i=0;i<k.length;++i){
-                    if(!util.isString(m["optionalDependencies"][k[i]]))
+                    if(!util.isString(m.optionalDependencies[k[i]]))
                         return"invalid value for field .Package.optionalDependencies (string{k:string} expected)"
                 }
             }
-            if(m["devDependencies"]!==undefined){
-                if(!util.isObject(m["devDependencies"]))
+            if(m.devDependencies!==undefined){
+                if(!util.isObject(m.devDependencies))
                     return"invalid value for field .Package.devDependencies (object expected)"
-                var k=Object.keys(m["devDependencies"])
+                var k=Object.keys(m.devDependencies)
                 for(var i=0;i<k.length;++i){
-                    if(!util.isString(m["devDependencies"][k[i]]))
+                    if(!util.isString(m.devDependencies[k[i]]))
                         return"invalid value for field .Package.devDependencies (string{k:string} expected)"
                 }
             }
-            if(m["types"]!==undefined){
-                if(!util.isString(m["types"]))
+            if(m.types!==undefined){
+                if(!util.isString(m.types))
                     return"invalid value for field .Package.types (string expected)"
             }
             return null
@@ -523,10 +523,10 @@ $root.Package = (function() {
             var types; $lazyTypes.push(types = [null,null]);
             return function encode(m, w) {
                 w||(w=Writer.create())
-                if(m["type"]!==undefined&&m["type"]!=="")
-                    w.uint32(10).string(m["type"])
-                if(m["url"]!==undefined&&m["url"]!=="")
-                    w.uint32(18).string(m["url"])
+                if(m.type!==undefined&&m.type!=="")
+                    w.uint32(10).string(m.type)
+                if(m.url!==undefined&&m.url!=="")
+                    w.uint32(18).string(m.url)
                 return w
             }
             /* eslint-enable */
@@ -561,10 +561,10 @@ $root.Package = (function() {
                     var t=r.uint32()
                     switch(t>>>3){
                         case 1:
-                            m["type"]=r.string()
+                            m.type=r.string()
                             break
                         case 2:
-                            m["url"]=r.string()
+                            m.url=r.string()
                             break
                         default:
                             r.skipType(t&7)
@@ -597,12 +597,12 @@ $root.Package = (function() {
             var util = $protobuf.util;
             var types; $lazyTypes.push(types = [null,null]);
             return function verify(m) {
-                if(m["type"]!==undefined){
-                    if(!util.isString(m["type"]))
+                if(m.type!==undefined){
+                    if(!util.isString(m.type))
                         return"invalid value for field .Package.Repository.type (string expected)"
                 }
-                if(m["url"]!==undefined){
-                    if(!util.isString(m["url"]))
+                if(m.url!==undefined){
+                    if(!util.isString(m.url))
                         return"invalid value for field .Package.Repository.url (string expected)"
                 }
                 return null

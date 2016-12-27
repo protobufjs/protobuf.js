@@ -66,9 +66,9 @@ $root.vector_tile = (function() {
             var types; $lazyTypes.push(types = ["vector_tile.Tile.Layer"]);
             return function encode(m, w) {
                 w||(w=Writer.create())
-                if(m["layers"])
-                    for(var i=0;i<m["layers"].length;++i)
-                    types[0].encode(m["layers"][i],w.uint32(26).fork()).ldelim()
+                if(m.layers)
+                    for(var i=0;i<m.layers.length;++i)
+                    types[0].encode(m.layers[i],w.uint32(26).fork()).ldelim()
                 return w
             }
             /* eslint-enable */
@@ -103,8 +103,8 @@ $root.vector_tile = (function() {
                     var t=r.uint32()
                     switch(t>>>3){
                         case 3:
-                            m["layers"]&&m["layers"].length?m["layers"]:m["layers"]=[]
-                            m["layers"].push(types[0].decode(r,r.uint32()))
+                            m.layers&&m.layers.length||(m.layers=[])
+                            m.layers.push(types[0].decode(r,r.uint32()))
                             break
                         default:
                             r.skipType(t&7)
@@ -137,12 +137,12 @@ $root.vector_tile = (function() {
             var util = $protobuf.util;
             var types; $lazyTypes.push(types = ["vector_tile.Tile.Layer"]);
             return function verify(m) {
-                if(m["layers"]!==undefined){
-                    if(!Array.isArray(m["layers"]))
+                if(m.layers!==undefined){
+                    if(!Array.isArray(m.layers))
                         return"invalid value for field .vector_tile.Tile.layers (array expected)"
-                    for(var i=0;i<m["layers"].length;++i){
+                    for(var i=0;i<m.layers.length;++i){
                         var r;
-                        if(r=types[0].verify(m["layers"][i]))
+                        if(r=types[0].verify(m.layers[i]))
                             return r
                     }
                 }
@@ -255,20 +255,20 @@ $root.vector_tile = (function() {
                 var types; $lazyTypes.push(types = [null,null,null,null,null,null,null]);
                 return function encode(m, w) {
                     w||(w=Writer.create())
-                    if(m["stringValue"]!==undefined&&m["stringValue"]!=="")
-                        w.uint32(10).string(m["stringValue"])
-                    if(m["floatValue"]!==undefined&&m["floatValue"]!==0)
-                        w.uint32(21).float(m["floatValue"])
-                    if(m["doubleValue"]!==undefined&&m["doubleValue"]!==0)
-                        w.uint32(25).double(m["doubleValue"])
-                    if(m["intValue"]!==undefined&&util.longNe(m["intValue"],0,0))
-                        w.uint32(32).int64(m["intValue"])
-                    if(m["uintValue"]!==undefined&&util.longNe(m["uintValue"],0,0))
-                        w.uint32(40).uint64(m["uintValue"])
-                    if(m["sintValue"]!==undefined&&util.longNe(m["sintValue"],0,0))
-                        w.uint32(48).sint64(m["sintValue"])
-                    if(m["boolValue"]!==undefined&&m["boolValue"]!==false)
-                        w.uint32(56).bool(m["boolValue"])
+                    if(m.stringValue!==undefined&&m.stringValue!=="")
+                        w.uint32(10).string(m.stringValue)
+                    if(m.floatValue!==undefined&&m.floatValue!==0)
+                        w.uint32(21).float(m.floatValue)
+                    if(m.doubleValue!==undefined&&m.doubleValue!==0)
+                        w.uint32(25).double(m.doubleValue)
+                    if(m.intValue!==undefined&&util.longNe(m.intValue,0,0))
+                        w.uint32(32).int64(m.intValue)
+                    if(m.uintValue!==undefined&&util.longNe(m.uintValue,0,0))
+                        w.uint32(40).uint64(m.uintValue)
+                    if(m.sintValue!==undefined&&util.longNe(m.sintValue,0,0))
+                        w.uint32(48).sint64(m.sintValue)
+                    if(m.boolValue!==undefined&&m.boolValue!==false)
+                        w.uint32(56).bool(m.boolValue)
                     return w
                 }
                 /* eslint-enable */
@@ -303,25 +303,25 @@ $root.vector_tile = (function() {
                         var t=r.uint32()
                         switch(t>>>3){
                             case 1:
-                                m["stringValue"]=r.string()
+                                m.stringValue=r.string()
                                 break
                             case 2:
-                                m["floatValue"]=r.float()
+                                m.floatValue=r.float()
                                 break
                             case 3:
-                                m["doubleValue"]=r.double()
+                                m.doubleValue=r.double()
                                 break
                             case 4:
-                                m["intValue"]=r.int64()
+                                m.intValue=r.int64()
                                 break
                             case 5:
-                                m["uintValue"]=r.uint64()
+                                m.uintValue=r.uint64()
                                 break
                             case 6:
-                                m["sintValue"]=r.sint64()
+                                m.sintValue=r.sint64()
                                 break
                             case 7:
-                                m["boolValue"]=r.bool()
+                                m.boolValue=r.bool()
                                 break
                             default:
                                 r.skipType(t&7)
@@ -354,32 +354,32 @@ $root.vector_tile = (function() {
                 var util = $protobuf.util;
                 var types; $lazyTypes.push(types = [null,null,null,null,null,null,null]);
                 return function verify(m) {
-                    if(m["stringValue"]!==undefined){
-                        if(!util.isString(m["stringValue"]))
+                    if(m.stringValue!==undefined){
+                        if(!util.isString(m.stringValue))
                             return"invalid value for field .vector_tile.Tile.Value.stringValue (string expected)"
                     }
-                    if(m["floatValue"]!==undefined){
-                        if(typeof m["floatValue"]!=="number")
+                    if(m.floatValue!==undefined){
+                        if(typeof m.floatValue!=="number")
                             return"invalid value for field .vector_tile.Tile.Value.floatValue (number expected)"
                     }
-                    if(m["doubleValue"]!==undefined){
-                        if(typeof m["doubleValue"]!=="number")
+                    if(m.doubleValue!==undefined){
+                        if(typeof m.doubleValue!=="number")
                             return"invalid value for field .vector_tile.Tile.Value.doubleValue (number expected)"
                     }
-                    if(m["intValue"]!==undefined){
-                        if(!util.isInteger(m["intValue"])&&!(m["intValue"]&&util.isInteger(m["intValue"].low)&&util.isInteger(m["intValue"].high)))
+                    if(m.intValue!==undefined){
+                        if(!util.isInteger(m.intValue)&&!(m.intValue&&util.isInteger(m.intValue.low)&&util.isInteger(m.intValue.high)))
                             return"invalid value for field .vector_tile.Tile.Value.intValue (integer|Long expected)"
                     }
-                    if(m["uintValue"]!==undefined){
-                        if(!util.isInteger(m["uintValue"])&&!(m["uintValue"]&&util.isInteger(m["uintValue"].low)&&util.isInteger(m["uintValue"].high)))
+                    if(m.uintValue!==undefined){
+                        if(!util.isInteger(m.uintValue)&&!(m.uintValue&&util.isInteger(m.uintValue.low)&&util.isInteger(m.uintValue.high)))
                             return"invalid value for field .vector_tile.Tile.Value.uintValue (integer|Long expected)"
                     }
-                    if(m["sintValue"]!==undefined){
-                        if(!util.isInteger(m["sintValue"])&&!(m["sintValue"]&&util.isInteger(m["sintValue"].low)&&util.isInteger(m["sintValue"].high)))
+                    if(m.sintValue!==undefined){
+                        if(!util.isInteger(m.sintValue)&&!(m.sintValue&&util.isInteger(m.sintValue.low)&&util.isInteger(m.sintValue.high)))
                             return"invalid value for field .vector_tile.Tile.Value.sintValue (integer|Long expected)"
                     }
-                    if(m["boolValue"]!==undefined){
-                        if(typeof m["boolValue"]!=="boolean")
+                    if(m.boolValue!==undefined){
+                        if(typeof m.boolValue!=="boolean")
                             return"invalid value for field .vector_tile.Tile.Value.boolValue (boolean expected)"
                     }
                     return null
@@ -460,20 +460,20 @@ $root.vector_tile = (function() {
                 var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.GeomType",null]);
                 return function encode(m, w) {
                     w||(w=Writer.create())
-                    if(m["id"]!==undefined&&util.longNe(m["id"],0,0))
-                        w.uint32(8).uint64(m["id"])
-                    if(m["tags"]&&m["tags"].length){
+                    if(m.id!==undefined&&util.longNe(m.id,0,0))
+                        w.uint32(8).uint64(m.id)
+                    if(m.tags&&m.tags.length){
                         w.uint32(18).fork()
-                        for(var i=0;i<m["tags"].length;++i)
-                            w.uint32(m["tags"][i])
+                        for(var i=0;i<m.tags.length;++i)
+                            w.uint32(m.tags[i])
                         w.ldelim()
                     }
-                    if(m["type"]!==undefined&&m["type"]!=="UNKNOWN")
-                        w.uint32(24).uint32(m["type"])
-                    if(m["geometry"]&&m["geometry"].length){
+                    if(m.type!==undefined&&m.type!=="UNKNOWN")
+                        w.uint32(24).uint32(m.type)
+                    if(m.geometry&&m.geometry.length){
                         w.uint32(34).fork()
-                        for(var i=0;i<m["geometry"].length;++i)
-                            w.uint32(m["geometry"][i])
+                        for(var i=0;i<m.geometry.length;++i)
+                            w.uint32(m.geometry[i])
                         w.ldelim()
                     }
                     return w
@@ -510,28 +510,28 @@ $root.vector_tile = (function() {
                         var t=r.uint32()
                         switch(t>>>3){
                             case 1:
-                                m["id"]=r.uint64()
+                                m.id=r.uint64()
                                 break
                             case 2:
-                                m["tags"]&&m["tags"].length?m["tags"]:m["tags"]=[]
+                                m.tags&&m.tags.length||(m.tags=[])
                                 if((t&7)===2){
                                     var e=r.uint32()+r.pos
                                     while(r.pos<e)
-                                        m["tags"].push(r.uint32())
+                                        m.tags.push(r.uint32())
                                 }else
-                                    m["tags"].push(r.uint32())
+                                    m.tags.push(r.uint32())
                                 break
                             case 3:
-                                m["type"]=r.uint32()
+                                m.type=r.uint32()
                                 break
                             case 4:
-                                m["geometry"]&&m["geometry"].length?m["geometry"]:m["geometry"]=[]
+                                m.geometry&&m.geometry.length||(m.geometry=[])
                                 if((t&7)===2){
                                     var e=r.uint32()+r.pos
                                     while(r.pos<e)
-                                        m["geometry"].push(r.uint32())
+                                        m.geometry.push(r.uint32())
                                 }else
-                                    m["geometry"].push(r.uint32())
+                                    m.geometry.push(r.uint32())
                                 break
                             default:
                                 r.skipType(t&7)
@@ -564,20 +564,20 @@ $root.vector_tile = (function() {
                 var util = $protobuf.util;
                 var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.GeomType",null]);
                 return function verify(m) {
-                    if(m["id"]!==undefined){
-                        if(!util.isInteger(m["id"])&&!(m["id"]&&util.isInteger(m["id"].low)&&util.isInteger(m["id"].high)))
+                    if(m.id!==undefined){
+                        if(!util.isInteger(m.id)&&!(m.id&&util.isInteger(m.id.low)&&util.isInteger(m.id.high)))
                             return"invalid value for field .vector_tile.Tile.Feature.id (integer|Long expected)"
                     }
-                    if(m["tags"]!==undefined){
-                        if(!Array.isArray(m["tags"]))
+                    if(m.tags!==undefined){
+                        if(!Array.isArray(m.tags))
                             return"invalid value for field .vector_tile.Tile.Feature.tags (array expected)"
-                        for(var i=0;i<m["tags"].length;++i){
-                            if(!util.isInteger(m["tags"][i]))
+                        for(var i=0;i<m.tags.length;++i){
+                            if(!util.isInteger(m.tags[i]))
                                 return"invalid value for field .vector_tile.Tile.Feature.tags (integer[] expected)"
                         }
                     }
-                    if(m["type"]!==undefined){
-                        switch(m["type"]){
+                    if(m.type!==undefined){
+                        switch(m.type){
                             default:
                                 return"invalid value for field .vector_tile.Tile.Feature.type (enum value expected)"
                             case 0:
@@ -587,11 +587,11 @@ $root.vector_tile = (function() {
                                 break
                         }
                     }
-                    if(m["geometry"]!==undefined){
-                        if(!Array.isArray(m["geometry"]))
+                    if(m.geometry!==undefined){
+                        if(!Array.isArray(m.geometry))
                             return"invalid value for field .vector_tile.Tile.Feature.geometry (array expected)"
-                        for(var i=0;i<m["geometry"].length;++i){
-                            if(!util.isInteger(m["geometry"][i]))
+                        for(var i=0;i<m.geometry.length;++i){
+                            if(!util.isInteger(m.geometry[i]))
                                 return"invalid value for field .vector_tile.Tile.Feature.geometry (integer[] expected)"
                         }
                     }
@@ -687,19 +687,19 @@ $root.vector_tile = (function() {
                 var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.Feature",null,"vector_tile.Tile.Value",null]);
                 return function encode(m, w) {
                     w||(w=Writer.create())
-                    w.uint32(120).uint32(m["version"])
-                    w.uint32(10).string(m["name"])
-                    if(m["features"])
-                        for(var i=0;i<m["features"].length;++i)
-                        types[2].encode(m["features"][i],w.uint32(18).fork()).ldelim()
-                    if(m["keys"])
-                        for(var i=0;i<m["keys"].length;++i)
-                        w.uint32(26).string(m["keys"][i])
-                    if(m["values"])
-                        for(var i=0;i<m["values"].length;++i)
-                        types[4].encode(m["values"][i],w.uint32(34).fork()).ldelim()
-                    if(m["extent"]!==undefined&&m["extent"]!==4096)
-                        w.uint32(40).uint32(m["extent"])
+                    w.uint32(120).uint32(m.version)
+                    w.uint32(10).string(m.name)
+                    if(m.features)
+                        for(var i=0;i<m.features.length;++i)
+                        types[2].encode(m.features[i],w.uint32(18).fork()).ldelim()
+                    if(m.keys)
+                        for(var i=0;i<m.keys.length;++i)
+                        w.uint32(26).string(m.keys[i])
+                    if(m.values)
+                        for(var i=0;i<m.values.length;++i)
+                        types[4].encode(m.values[i],w.uint32(34).fork()).ldelim()
+                    if(m.extent!==undefined&&m.extent!==4096)
+                        w.uint32(40).uint32(m.extent)
                     return w
                 }
                 /* eslint-enable */
@@ -734,25 +734,25 @@ $root.vector_tile = (function() {
                         var t=r.uint32()
                         switch(t>>>3){
                             case 15:
-                                m["version"]=r.uint32()
+                                m.version=r.uint32()
                                 break
                             case 1:
-                                m["name"]=r.string()
+                                m.name=r.string()
                                 break
                             case 2:
-                                m["features"]&&m["features"].length?m["features"]:m["features"]=[]
-                                m["features"].push(types[2].decode(r,r.uint32()))
+                                m.features&&m.features.length||(m.features=[])
+                                m.features.push(types[2].decode(r,r.uint32()))
                                 break
                             case 3:
-                                m["keys"]&&m["keys"].length?m["keys"]:m["keys"]=[]
-                                m["keys"].push(r.string())
+                                m.keys&&m.keys.length||(m.keys=[])
+                                m.keys.push(r.string())
                                 break
                             case 4:
-                                m["values"]&&m["values"].length?m["values"]:m["values"]=[]
-                                m["values"].push(types[4].decode(r,r.uint32()))
+                                m.values&&m.values.length||(m.values=[])
+                                m.values.push(types[4].decode(r,r.uint32()))
                                 break
                             case 5:
-                                m["extent"]=r.uint32()
+                                m.extent=r.uint32()
                                 break
                             default:
                                 r.skipType(t&7)
@@ -785,38 +785,38 @@ $root.vector_tile = (function() {
                 var util = $protobuf.util;
                 var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.Feature",null,"vector_tile.Tile.Value",null]);
                 return function verify(m) {
-                    if(!util.isInteger(m["version"]))
+                    if(!util.isInteger(m.version))
                         return"invalid value for field .vector_tile.Tile.Layer.version (integer expected)"
-                    if(!util.isString(m["name"]))
+                    if(!util.isString(m.name))
                         return"invalid value for field .vector_tile.Tile.Layer.name (string expected)"
-                    if(m["features"]!==undefined){
-                        if(!Array.isArray(m["features"]))
+                    if(m.features!==undefined){
+                        if(!Array.isArray(m.features))
                             return"invalid value for field .vector_tile.Tile.Layer.features (array expected)"
-                        for(var i=0;i<m["features"].length;++i){
+                        for(var i=0;i<m.features.length;++i){
                             var r;
-                            if(r=types[2].verify(m["features"][i]))
+                            if(r=types[2].verify(m.features[i]))
                                 return r
                         }
                     }
-                    if(m["keys"]!==undefined){
-                        if(!Array.isArray(m["keys"]))
+                    if(m.keys!==undefined){
+                        if(!Array.isArray(m.keys))
                             return"invalid value for field .vector_tile.Tile.Layer.keys (array expected)"
-                        for(var i=0;i<m["keys"].length;++i){
-                            if(!util.isString(m["keys"][i]))
+                        for(var i=0;i<m.keys.length;++i){
+                            if(!util.isString(m.keys[i]))
                                 return"invalid value for field .vector_tile.Tile.Layer.keys (string[] expected)"
                         }
                     }
-                    if(m["values"]!==undefined){
-                        if(!Array.isArray(m["values"]))
+                    if(m.values!==undefined){
+                        if(!Array.isArray(m.values))
                             return"invalid value for field .vector_tile.Tile.Layer.values (array expected)"
-                        for(var i=0;i<m["values"].length;++i){
+                        for(var i=0;i<m.values.length;++i){
                             var r;
-                            if(r=types[4].verify(m["values"][i]))
+                            if(r=types[4].verify(m.values[i]))
                                 return r
                         }
                     }
-                    if(m["extent"]!==undefined){
-                        if(!util.isInteger(m["extent"]))
+                    if(m.extent!==undefined){
+                        if(!util.isInteger(m.extent))
                             return"invalid value for field .vector_tile.Tile.Layer.extent (integer expected)"
                     }
                     return null

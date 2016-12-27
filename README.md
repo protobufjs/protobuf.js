@@ -1,6 +1,6 @@
 protobuf.js
 ===========
-[![travis][travis-image]][travis-url] [![npm][npm-dl-image]][npm-url] [![npm][npm-image]][npm-url] [![donate][paypal-image]][paypal-url]
+[![travis][travis-image]][travis-url] [![david][david-image]][david-url] [![npm][npm-dl-image]][npm-url] [![npm][npm-image]][npm-url] [![donate][paypal-image]][paypal-url]
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
@@ -8,6 +8,8 @@ protobuf.js
 
 [travis-image]: https://img.shields.io/travis/dcodeIO/protobuf.js.svg
 [travis-url]: https://travis-ci.org/dcodeIO/protobuf.js
+[david-url]: https://david-dm.org/dcodeIO/protobuf.js
+[david-image]: https://img.shields.io/david/dcodeIO/protobuf.js.svg
 [npm-image]: https://img.shields.io/npm/v/protobufjs.svg
 [npm-url]: https://npmjs.org/package/protobufjs
 [npm-dl-image]: https://img.shields.io/npm/dm/protobufjs.svg
