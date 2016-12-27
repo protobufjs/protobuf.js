@@ -65,7 +65,8 @@ exports.main = function(args, callback) {
     var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" -q \"module=" + encodeURIComponent(moduleName) + "\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
         cwd: process.cwd(),
         argv0: "node",
-        stdio: "pipe"
+        stdio: "pipe",
+        maxBuffer: 1 << 24 // 16mb
     });
     var out = [];
     child.stdout.on("data", function(data) {
