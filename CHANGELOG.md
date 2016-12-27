@@ -1,5 +1,16 @@
 # [6.3.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.1)
 
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/95ed6e9e8268711db24f44f0d7e58dd278ddac4c) Empty inner messages are always present on the wire + test case + removed now unused Writer#ldelim parameter, see [#585](https://github.com/dcodeIO/protobuf.js/issues/585)<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e8a4d5373b1a00cc6eafa5b201b91d0e250cc00b) Expose tsd-jsdoc's comments option to pbts as --no-comments, see [#587](https://github.com/dcodeIO/protobuf.js/issues/587)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/6fe099259b5985d873ba5bec88c049d7491a11cc) Increase child process max buffer when running jsdoc from pbts, see [#587](https://github.com/dcodeIO/protobuf.js/issues/587)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3d84ecdb4788d71b5d3928e74db78e8e54695f0a) pbjs now generates more convenient dot-notation property accessors<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1e0ebc064e4f2566cebf525d526d0b701447bd6a) And fixed IE8 again (should probably just drop IE8 for good)<br />
+
 # [6.3.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.0)
 
 ## Breaking
