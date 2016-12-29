@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.3.2 (c) 2016, Daniel Wirtz
- * Compiled Thu, 29 Dec 2016 16:24:03 UTC
+ * Compiled Thu, 29 Dec 2016 16:39:28 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1397,7 +1397,7 @@ function encoder(mtype) {
 
                 if (field.long) {
                     gen
-    ("if(%s!==undefined&&util.longNe(%s,%d,%d))", ref, ref, field.defaultValue.low, field.defaultValue.high);
+    ("if(%s!==undefined&&%s!==null&&util.longNe(%s,%d,%d))", ref, ref, ref, field.defaultValue.low, field.defaultValue.high);
                 } else gen
     ("if(%s!==undefined&&%s!==%j)", ref, ref, field.defaultValue);
 

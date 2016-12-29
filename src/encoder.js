@@ -77,7 +77,7 @@ function encoder(mtype) {
 
                 if (field.long) {
                     gen
-    ("if(%s!==undefined&&util.longNe(%s,%d,%d))", ref, ref, field.defaultValue.low, field.defaultValue.high);
+    ("if(%s!==undefined&&%s!==null&&util.longNe(%s,%d,%d))", ref, ref, ref, field.defaultValue.low, field.defaultValue.high);
                 } else gen
     ("if(%s!==undefined&&%s!==%j)", ref, ref, field.defaultValue);
 
