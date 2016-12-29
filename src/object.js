@@ -15,7 +15,7 @@ var TypeError = util._TypeError;
  * @classdesc Base class of all reflection objects.
  * @constructor
  * @param {string} name Object name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  * @abstract
  */
 function ReflectionObject(name, options) {
@@ -93,7 +93,7 @@ util.props(ReflectionObjectPrototype, {
 
 /**
  * Converts this reflection object to its JSON representation.
- * @returns {Object} JSON object
+ * @returns {Object.<string,*>} JSON object
  * @abstract
  */
 ReflectionObjectPrototype.toJSON = function toJSON() {

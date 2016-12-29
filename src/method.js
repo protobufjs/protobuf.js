@@ -21,14 +21,16 @@ var TypeError = util._TypeError;
  * @param {string|undefined} type Method type, usually `"rpc"`
  * @param {string} requestType Request message type
  * @param {string} responseType Response message type
- * @param {boolean|Object} [requestStream] Whether the request is streamed
- * @param {boolean|Object} [responseStream] Whether the response is streamed
- * @param {Object} [options] Declared options
+ * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
+ * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
+    /* istanbul ignore next */
     if (util.isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
+    /* istanbul ignore next */
     } else if (util.isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
@@ -91,7 +93,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
 /**
  * Tests if the specified JSON object describes a service method.
- * @param {Object} json JSON object
+ * @param {*} json JSON object
  * @returns {boolean} `true` if the object describes a map field
  */
 Method.testJSON = function testJSON(json) {
@@ -101,7 +103,7 @@ Method.testJSON = function testJSON(json) {
 /**
  * Constructs a service method from JSON.
  * @param {string} name Method name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Method} Created method
  * @throws {TypeError} If arguments are invalid
  */

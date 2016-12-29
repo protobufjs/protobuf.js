@@ -38,7 +38,7 @@ function camelCase(str) {
 /**
  * Result object returned from {@link parse}.
  * @typedef ParserResult
- * @type {Object}
+ * @type {Object.<string,*>}
  * @property {string|undefined} package Package name, if declared
  * @property {string[]|undefined} imports Imports, if any
  * @property {string[]|undefined} weakImports Weak imports, if any
@@ -49,7 +49,7 @@ function camelCase(str) {
 /**
  * Options modifying the behavior of {@link parse}.
  * @typedef ParseOptions
- * @type {Object}
+ * @type {Object.<string,*>}
  * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
  */
 

@@ -19,7 +19,7 @@ var TypeError = util._TypeError;
  * @constructor
  * @param {string} name Oneof name
  * @param {string[]|Object} [fieldNames] Field names
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function OneOf(name, fieldNames, options) {
     if (!Array.isArray(fieldNames)) {
@@ -76,7 +76,7 @@ OneOf.testJSON = function testJSON(json) {
 /**
  * Constructs a oneof from JSON.
  * @param {string} name Oneof name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {MapField} Created oneof
  * @throws {TypeError} If arguments are invalid
  */

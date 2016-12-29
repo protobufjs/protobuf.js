@@ -1,11 +1,7 @@
 "use strict";
 module.exports = json_module;
 
-var path = require("path"),
-    fs   = require("fs"),
-    util = require("../util");
-
-var protobuf = require("../..");
+var util = require("../util");
 
 json_module.description = "JSON representation as a module"
 
@@ -17,6 +13,7 @@ function json_module(root, options, callback) {
             callback(null, output);
         });
     } catch (e) {
-        callback(e);
+        return callback(e);
     }
+    return undefined;
 }

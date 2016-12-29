@@ -1,5 +1,5 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Sat, 24 Dec 2016 00:17:06 UTC
+// Generated Thu, 29 Dec 2016 16:24:14 UTC
 declare module "protobufjs" {
 
     /**
@@ -79,16 +79,16 @@ declare module "protobufjs" {
      * Provides common type definitions.
      * Can also be used to provide additional google types or your own custom types.
      * @param {string} name Short name as in `google/protobuf/[name].proto` or full file name
-     * @param {Object} json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
+     * @param {Object.<string,*>} json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
      * @returns {undefined}
-     * @property {Object} google/protobuf/any.proto Any
-     * @property {Object} google/protobuf/duration.proto Duration
-     * @property {Object} google/protobuf/empty.proto Empty
-     * @property {Object} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
-     * @property {Object} google/protobuf/timestamp.proto Timestamp
-     * @property {Object} google/protobuf/wrappers.proto Wrappers
+     * @property {Object.<string,*>} google/protobuf/any.proto Any
+     * @property {Object.<string,*>} google/protobuf/duration.proto Duration
+     * @property {Object.<string,*>} google/protobuf/empty.proto Empty
+     * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
+     * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
+     * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
      */
-    function common(name: string, json: Object): void;
+    function common(name: string, json: { [k: string]: any }): void;
 
     /**
      * A converter as used by {@link convert}.
@@ -169,7 +169,7 @@ declare module "protobufjs" {
      * @constructor
      * @param {string} name Unique name within its namespace
      * @param {Object.<string,number>} [values] Enum values as an object, by name
-     * @param {Object} [options] Declared options
+     * @param {Object.<string,*>} [options] Declared options
      */
     class Enum extends ReflectionObject {
 
@@ -180,9 +180,9 @@ declare module "protobufjs" {
          * @constructor
          * @param {string} name Unique name within its namespace
          * @param {Object.<string,number>} [values] Enum values as an object, by name
-         * @param {Object} [options] Declared options
+         * @param {Object.<string,*>} [options] Declared options
          */
-        constructor(name: string, values?: { [k: string]: number }, options?: Object);
+        constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any });
 
         /**
          * Enum values by name.
@@ -250,9 +250,9 @@ declare module "protobufjs" {
      * @param {string} name Unique name within its namespace
      * @param {number} id Unique id within its namespace
      * @param {string} type Value type
-     * @param {string|Object} [rule="optional"] Field rule
-     * @param {string|Object} [extend] Extended type if different from parent
-     * @param {Object} [options] Declared options
+     * @param {string|Object.<string,*>} [rule="optional"] Field rule
+     * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+     * @param {Object.<string,*>} [options] Declared options
      */
     class Field extends ReflectionObject {
 
@@ -264,11 +264,11 @@ declare module "protobufjs" {
          * @param {string} name Unique name within its namespace
          * @param {number} id Unique id within its namespace
          * @param {string} type Value type
-         * @param {string|Object} [rule="optional"] Field rule
-         * @param {string|Object} [extend] Extended type if different from parent
-         * @param {Object} [options] Declared options
+         * @param {string|Object.<string,*>} [rule="optional"] Field rule
+         * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+         * @param {Object.<string,*>} [options] Declared options
          */
-        constructor(name: string, id: number, type: string, rule?: (string|Object), extend?: (string|Object), options?: Object);
+        constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any });
 
         /**
          * Field rule, if any.
@@ -392,11 +392,11 @@ declare module "protobufjs" {
         /**
          * Constructs a field from JSON.
          * @param {string} name Field name
-         * @param {Object} json JSON object
+         * @param {Object.<string,*>} json JSON object
          * @returns {Field} Created field
          * @throws {TypeError} If arguments are invalid
          */
-        static fromJSON(name: string, json: Object): Field;
+        static fromJSON(name: string, json: { [k: string]: any }): Field;
 
         /**
          * Resolves this field's type references.
@@ -480,7 +480,7 @@ declare module "protobufjs" {
      * @param {number} id Unique id within its namespace
      * @param {string} keyType Key type
      * @param {string} type Value type
-     * @param {Object} [options] Declared options
+     * @param {Object.<string,*>} [options] Declared options
      */
     class MapField extends Field {
 
@@ -493,9 +493,9 @@ declare module "protobufjs" {
          * @param {number} id Unique id within its namespace
          * @param {string} keyType Key type
          * @param {string} type Value type
-         * @param {Object} [options] Declared options
+         * @param {Object.<string,*>} [options] Declared options
          */
-        constructor(name: string, id: number, keyType: string, type: string, options?: Object);
+        constructor(name: string, id: number, keyType: string, type: string, options?: { [k: string]: any });
 
         /**
          * Key type.
@@ -511,33 +511,42 @@ declare module "protobufjs" {
 
         /**
          * Tests if the specified JSON object describes a map field.
-         * @param {Object} json JSON object to test
+         * @param {*} json JSON object to test
          * @returns {boolean} `true` if the object describes a field
          */
-        static testJSON(json: Object): boolean;
+        static testJSON(json: any): boolean;
 
         /**
          * Constructs a map field from JSON.
          * @param {string} name Field name
-         * @param {Object} json JSON object
+         * @param {Object.<string,*>} json JSON object
          * @returns {MapField} Created map field
          * @throws {TypeError} If arguments are invalid
          */
-        static fromJSON(name: string, json: Object): MapField;
+        static fromJSON(name: string, json: { [k: string]: any }): MapField;
     }
 
     /**
      * Constructs a new message instance.
      *
-     * This method should be called from your custom constructors, i.e. `Message.call(this, properties)`.
+     * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
      * @classdesc Abstract runtime message.
-     * @extends {Object}
      * @constructor
      * @param {Object.<string,*>} [properties] Properties to set
-     * @abstract
      * @see {@link Class.create}
      */
-    abstract class Message extends Object {
+    class Message {
+
+        /**
+         * Constructs a new message instance.
+         *
+         * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
+         * @classdesc Abstract runtime message.
+         * @constructor
+         * @param {Object.<string,*>} [properties] Properties to set
+         * @see {@link Class.create}
+         */
+        constructor(properties?: { [k: string]: any });
 
         /**
          * Reference to the reflected type.
@@ -623,9 +632,9 @@ declare module "protobufjs" {
      * @param {string|undefined} type Method type, usually `"rpc"`
      * @param {string} requestType Request message type
      * @param {string} responseType Response message type
-     * @param {boolean|Object} [requestStream] Whether the request is streamed
-     * @param {boolean|Object} [responseStream] Whether the response is streamed
-     * @param {Object} [options] Declared options
+     * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
+     * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
+     * @param {Object.<string,*>} [options] Declared options
      */
     class Method extends ReflectionObject {
 
@@ -638,11 +647,11 @@ declare module "protobufjs" {
          * @param {string|undefined} type Method type, usually `"rpc"`
          * @param {string} requestType Request message type
          * @param {string} responseType Response message type
-         * @param {boolean|Object} [requestStream] Whether the request is streamed
-         * @param {boolean|Object} [responseStream] Whether the response is streamed
-         * @param {Object} [options] Declared options
+         * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
+         * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
+         * @param {Object.<string,*>} [options] Declared options
          */
-        constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|Object), responseStream?: (boolean|Object), options?: Object);
+        constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any });
 
         /**
          * Method type.
@@ -688,19 +697,19 @@ declare module "protobufjs" {
 
         /**
          * Tests if the specified JSON object describes a service method.
-         * @param {Object} json JSON object
+         * @param {*} json JSON object
          * @returns {boolean} `true` if the object describes a map field
          */
-        static testJSON(json: Object): boolean;
+        static testJSON(json: any): boolean;
 
         /**
          * Constructs a service method from JSON.
          * @param {string} name Method name
-         * @param {Object} json JSON object
+         * @param {Object.<string,*>} json JSON object
          * @returns {Method} Created method
          * @throws {TypeError} If arguments are invalid
          */
-        static fromJSON(name: string, json: Object): Method;
+        static fromJSON(name: string, json: { [k: string]: any }): Method;
     }
 
     /**
@@ -709,7 +718,7 @@ declare module "protobufjs" {
      * @extends ReflectionObject
      * @constructor
      * @param {string} name Namespace name
-     * @param {Object} [options] Declared options
+     * @param {Object.<string,*>} [options] Declared options
      */
     class Namespace extends ReflectionObject {
 
@@ -719,9 +728,9 @@ declare module "protobufjs" {
          * @extends ReflectionObject
          * @constructor
          * @param {string} name Namespace name
-         * @param {Object} [options] Declared options
+         * @param {Object.<string,*>} [options] Declared options
          */
-        constructor(name: string, options?: Object);
+        constructor(name: string, options?: { [k: string]: any });
 
         /**
          * Nested objects by name.
@@ -747,11 +756,11 @@ declare module "protobufjs" {
         /**
          * Constructs a namespace from JSON.
          * @param {string} name Namespace name
-         * @param {Object} json JSON object
+         * @param {Object.<string,*>} json JSON object
          * @returns {Namespace} Created namespace
          * @throws {TypeError} If arguments are invalid
          */
-        static fromJSON(name: string, json: Object): Namespace;
+        static fromJSON(name: string, json: { [k: string]: any }): Namespace;
 
         /**
          * Converts an array of reflection objects to JSON.
@@ -869,7 +878,7 @@ declare module "protobufjs" {
      * @classdesc Base class of all reflection objects.
      * @constructor
      * @param {string} name Object name
-     * @param {Object} [options] Declared options
+     * @param {Object.<string,*>} [options] Declared options
      * @abstract
      */
     abstract class ReflectionObject {
@@ -916,10 +925,10 @@ declare module "protobufjs" {
 
         /**
          * Converts this reflection object to its JSON representation.
-         * @returns {Object} JSON object
+         * @returns {Object.<string,*>} JSON object
          * @abstract
          */
-        toJSON(): Object;
+        toJSON(): { [k: string]: any };
 
         /**
          * Called when this object is added to a parent.
@@ -979,7 +988,7 @@ declare module "protobufjs" {
      * @constructor
      * @param {string} name Oneof name
      * @param {string[]|Object} [fieldNames] Field names
-     * @param {Object} [options] Declared options
+     * @param {Object.<string,*>} [options] Declared options
      */
     class OneOf extends ReflectionObject {
 
@@ -990,9 +999,9 @@ declare module "protobufjs" {
          * @constructor
          * @param {string} name Oneof name
          * @param {string[]|Object} [fieldNames] Field names
-         * @param {Object} [options] Declared options
+         * @param {Object.<string,*>} [options] Declared options
          */
-        constructor(name: string, fieldNames?: (string[]|Object), options?: Object);
+        constructor(name: string, fieldNames?: (string[]|Object), options?: { [k: string]: any });
 
         /**
          * Upper cased name for getter/setter calls.
@@ -1024,11 +1033,11 @@ declare module "protobufjs" {
         /**
          * Constructs a oneof from JSON.
          * @param {string} name Oneof name
-         * @param {Object} json JSON object
+         * @param {Object.<string,*>} json JSON object
          * @returns {MapField} Created oneof
          * @throws {TypeError} If arguments are invalid
          */
-        static fromJSON(name: string, json: Object): MapField;
+        static fromJSON(name: string, json: { [k: string]: any }): MapField;
 
         /**
          * Adds a field to this oneof.
@@ -1048,30 +1057,22 @@ declare module "protobufjs" {
     /**
      * Result object returned from {@link parse}.
      * @typedef ParserResult
-     * @type {Object}
+     * @type {Object.<string,*>}
      * @property {string|undefined} package Package name, if declared
      * @property {string[]|undefined} imports Imports, if any
      * @property {string[]|undefined} weakImports Weak imports, if any
      * @property {string|undefined} syntax Syntax, if specified (either `"proto2"` or `"proto3"`)
      * @property {Root} root Populated root instance
      */
-    interface ParserResult {
-        package: (string|undefined);
-        imports: (string[]|undefined);
-        weakImports: (string[]|undefined);
-        syntax: (string|undefined);
-        root: Root;
-    }
+    type ParserResult = { [k: string]: any };
 
     /**
      * Options modifying the behavior of {@link parse}.
      * @typedef ParseOptions
-     * @type {Object}
+     * @type {Object.<string,*>}
      * @property {boolean} [keepCase=false] Keeps field casing instead of converting to camel case
      */
-    interface ParseOptions {
-        keepCase: boolean;
-    }
+    type ParseOptions = { [k: string]: any };
 
     /**
      * Parses the given .proto source and returns an object with the parsed contents.
@@ -1279,7 +1280,7 @@ declare module "protobufjs" {
      * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
      * @extends Namespace
      * @constructor
-     * @param {Object} [options] Top level options
+     * @param {Object.<string,*>} [options] Top level options
      */
     class Root extends Namespace {
 
@@ -1288,9 +1289,9 @@ declare module "protobufjs" {
          * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
          * @extends Namespace
          * @constructor
-         * @param {Object} [options] Top level options
+         * @param {Object.<string,*>} [options] Top level options
          */
-        constructor(options?: Object);
+        constructor(options?: { [k: string]: any });
 
         /**
          * Deferred extension fields.
@@ -1306,11 +1307,11 @@ declare module "protobufjs" {
 
         /**
          * Loads a JSON definition into a root namespace.
-         * @param {*} json JSON definition
+         * @param {Object.<string,*>|*} json JSON definition
          * @param {Root} [root] Root namespace, defaults to create a new one if omitted
          * @returns {Root} Root namespace
          */
-        static fromJSON(json: any, root?: Root): Root;
+        static fromJSON(json: ({ [k: string]: any }|any), root?: Root): Root;
 
         /**
          * Resolves the path of an imported file, relative to the importing origin.
@@ -1431,19 +1432,19 @@ declare module "protobufjs" {
 
         /**
          * Tests if the specified JSON object describes a service.
-         * @param {Object} json JSON object to test
+         * @param {*} json JSON object to test
          * @returns {boolean} `true` if the object describes a service
          */
-        static testJSON(json: Object): boolean;
+        static testJSON(json: any): boolean;
 
         /**
          * Constructs a service from JSON.
          * @param {string} name Service name
-         * @param {Object} json JSON object
+         * @param {Object.<string,*>} json JSON object
          * @returns {Service} Created service
          * @throws {TypeError} If arguments are invalid
          */
-        static fromJSON(name: string, json: Object): Service;
+        static fromJSON(name: string, json: { [k: string]: any }): Service;
 
         /**
          * Creates a runtime service using the specified rpc implementation.
@@ -1478,20 +1479,14 @@ declare module "protobufjs" {
 
     /**
      * Handle object returned from {@link tokenize}.
-     * @typedef {Object} TokenizerHandle
+     * @typedef {Object.<string,*>} TokenizerHandle
      * @property {function():number} line Gets the current line number
      * @property {function():?string} next Gets the next token and advances (`null` on eof)
      * @property {function():?string} peek Peeks for the next token (`null` on eof)
      * @property {function(string)} push Pushes a token back to the stack
      * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
      */
-    interface TokenizerHandle {
-        line: () => any;
-        next: () => any;
-        peek: () => any;
-        push: () => any;
-        skip: () => any;
-    }
+    type TokenizerHandle = { [k: string]: any };
 
     /**
      * Tokenizes the given .proto source and returns an object with useful utility functions.
@@ -1506,7 +1501,7 @@ declare module "protobufjs" {
      * @extends Namespace
      * @constructor
      * @param {string} name Message name
-     * @param {Object} [options] Declared options
+     * @param {Object.<string,*>} [options] Declared options
      */
     class Type extends Namespace {
 
@@ -1516,9 +1511,9 @@ declare module "protobufjs" {
          * @extends Namespace
          * @constructor
          * @param {string} name Message name
-         * @param {Object} [options] Declared options
+         * @param {Object.<string,*>} [options] Declared options
          */
-        constructor(name: string, options?: Object);
+        constructor(name: string, options?: { [k: string]: any });
 
         /**
          * Message fields.
@@ -1593,10 +1588,10 @@ declare module "protobufjs" {
         /**
          * Creates a type from JSON.
          * @param {string} name Message name
-         * @param {Object} json JSON object
+         * @param {Object.<string,*>} json JSON object
          * @returns {Type} Created message type
          */
-        static fromJSON(name: string, json: Object): Type;
+        static fromJSON(name: string, json: { [k: string]: any }): Type;
 
         /**
          * Adds a nested object to this type.
@@ -1618,18 +1613,18 @@ declare module "protobufjs" {
 
         /**
          * Creates a new message of this type using the specified properties.
-         * @param {Object} [properties] Properties to set
+         * @param {Object.<string,*>} [properties] Properties to set
          * @returns {Message} Runtime message
          */
-        create(properties?: Object): Message;
+        create(properties?: { [k: string]: any }): Message;
 
         /**
          * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
-         * @param {Object} object JSON object
+         * @param {Object.<string,*>} object JSON object
          * @param {MessageConversionOptions} [options] Conversion options
          * @returns {Message} Runtime message
          */
-        from(object: Object, options?: MessageConversionOptions): Message;
+        from(object: { [k: string]: any }, options?: MessageConversionOptions): Message;
 
         /**
          * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
@@ -1906,11 +1901,11 @@ declare module "protobufjs" {
          * Returns a promise from a node-style callback function.
          * @memberof util
          * @param {function(?Error, ...*)} fn Function to call
-         * @param {Object} ctx Function context
+         * @param {*} ctx Function context
          * @param {...*} params Function arguments
          * @returns {Promise<*>} Promisified function
          */
-        function asPromise(fn: () => any, ctx: Object, params: any): Promise<any>;
+        function asPromise(fn: () => any, ctx: any, params: any): Promise<any>;
 
         /**
          * A minimal base64 implementation for number arrays.
@@ -1978,10 +1973,10 @@ declare module "protobufjs" {
              * Registers an event listener.
              * @param {string} evt Event name
              * @param {function} fn Listener
-             * @param {Object} [ctx] Listener context
+             * @param {*} [ctx] Listener context
              * @returns {util.EventEmitter} `this`
              */
-            on(evt: string, fn: () => any, ctx?: Object): util.EventEmitter;
+            on(evt: string, fn: () => any, ctx?: any): util.EventEmitter;
 
             /**
              * Removes an event listener or any matching listeners if arguments are omitted.
@@ -2004,10 +1999,10 @@ declare module "protobufjs" {
          * Lets the specified constructor extend `this` class.
          * @memberof util
          * @param {*} ctor Extending constructor
-         * @returns {Object} Constructor prototype
+         * @returns {Object.<string,*>} Constructor prototype
          * @this Function
          */
-        function extend(this: Function, ctor: any): Object;
+        function extend(this: Function, ctor: any): { [k: string]: any };
 
         /**
          * Fetches the contents of a file.
@@ -2064,6 +2059,13 @@ declare module "protobufjs" {
              * @type {util.LongBits}
              */
             static zero: util.LongBits;
+
+            /**
+             * Zero hash.
+             * @memberof util.LongBits
+             * @type {string}
+             */
+            static zeroHash: string;
 
             /**
              * Constructs new long bits from the specified number.
@@ -2264,19 +2266,19 @@ declare module "protobufjs" {
         /**
          * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
          * @param {Object} target Target object
-         * @param {Object} descriptors Property descriptors
+         * @param {Object.<string,*>} descriptors Property descriptors
          * @returns {undefined}
          */
-        function props(target: Object, descriptors: Object): void;
+        function props(target: Object, descriptors: { [k: string]: any }): void;
 
         /**
          * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
          * @param {Object} target Target object
          * @param {string} key Property name
-         * @param {Object} descriptor Property descriptor
+         * @param {Object.<string,*>} descriptor Property descriptor
          * @returns {undefined}
          */
-        function prop(target: Object, key: string, descriptor: Object): void;
+        function prop(target: Object, key: string, descriptor: { [k: string]: any }): void;
 
         /**
          * An immuable empty array.
@@ -2326,9 +2328,9 @@ declare module "protobufjs" {
 
         /**
          * Node's fs module if available.
-         * @type {Object}
+         * @type {Object.<string,*>}
          */
-        var fs: Object;
+        var fs: { [k: string]: any };
 
         /**
          * Converts an object's values to an array.
@@ -2339,12 +2341,12 @@ declare module "protobufjs" {
 
         /**
          * Merges the properties of the source object into the destination object.
-         * @param {Object} dst Destination object
-         * @param {Object} src Source object
+         * @param {Object.<string,*>} dst Destination object
+         * @param {Object.<string,*>} src Source object
          * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
-         * @returns {Object} Destination object
+         * @returns {Object.<string,*>} Destination object
          */
-        function merge(dst: Object, src: Object, ifNotSet?: boolean): Object;
+        function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
 
         /**
          * Returns a safe property accessor for the specified properly name.
@@ -2565,10 +2567,9 @@ declare module "protobufjs" {
 
         /**
          * Resets to the last state and appends the fork state's current write length as a varint followed by its operations.
-         * @param {number} [id] Id with wire type 2 to prepend as a tag where applicable
          * @returns {Writer} `this`
          */
-        ldelim(id?: number): Writer;
+        ldelim(): Writer;
 
         /**
          * Finishes the write operation.

@@ -15,7 +15,7 @@ util.path         = require("@protobufjs/path");
 
 /**
  * Node's fs module if available.
- * @type {Object}
+ * @type {Object.<string,*>}
  */
 util.fs = util.inquire("fs");
 
@@ -48,10 +48,10 @@ util._TypeError = function(name, description) {
 
 /**
  * Merges the properties of the source object into the destination object.
- * @param {Object} dst Destination object
- * @param {Object} src Source object
+ * @param {Object.<string,*>} dst Destination object
+ * @param {Object.<string,*>} src Source object
  * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
- * @returns {Object} Destination object
+ * @returns {Object.<string,*>} Destination object
  */
 util.merge = function merge(dst, src, ifNotSet) {
     if (src) {

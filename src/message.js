@@ -6,12 +6,10 @@ var convert = require("./convert");
 /**
  * Constructs a new message instance.
  *
- * This method should be called from your custom constructors, i.e. `Message.call(this, properties)`.
+ * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
  * @classdesc Abstract runtime message.
- * @extends {Object}
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
- * @abstract
  * @see {@link Class.create}
  */
 function Message(properties) {

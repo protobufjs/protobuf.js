@@ -6,14 +6,14 @@ module.exports = common;
  * Provides common type definitions.
  * Can also be used to provide additional google types or your own custom types.
  * @param {string} name Short name as in `google/protobuf/[name].proto` or full file name
- * @param {Object} json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
+ * @param {Object.<string,*>} json JSON definition within `google.protobuf` if a short name, otherwise the file's root definition
  * @returns {undefined}
- * @property {Object} google/protobuf/any.proto Any
- * @property {Object} google/protobuf/duration.proto Duration
- * @property {Object} google/protobuf/empty.proto Empty
- * @property {Object} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
- * @property {Object} google/protobuf/timestamp.proto Timestamp
- * @property {Object} google/protobuf/wrappers.proto Wrappers
+ * @property {Object.<string,*>} google/protobuf/any.proto Any
+ * @property {Object.<string,*>} google/protobuf/duration.proto Duration
+ * @property {Object.<string,*>} google/protobuf/empty.proto Empty
+ * @property {Object.<string,*>} google/protobuf/struct.proto Struct, Value, NullValue and ListValue
+ * @property {Object.<string,*>} google/protobuf/timestamp.proto Timestamp
+ * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
  */
 function common(name, json) {
     if (!/\/|\./.test(name)) {

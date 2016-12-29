@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.3.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 27 Dec 2016 16:55:50 UTC
+ * protobuf.js v6.3.2 (c) 2016, Daniel Wirtz
+ * Compiled Thu, 29 Dec 2016 16:24:03 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -951,7 +951,7 @@ convert.toJson = function toJson(field, value, options) {
         if (options.longs === String) {
             if(typeof value === "number")
                 return util.Long.fromNumber(value, unsigned).toString();
-            value = util.Long.fromValue(value); // TODO: fromValue is missing an unsigned option (long.js 3.2.0)
+            value = util.Long.fromValue(value); // has no unsigned option
             value.unsigned = unsigned;
             return value.toString();
         }
@@ -1253,7 +1253,7 @@ var TypeError = util._TypeError;
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {Object.<string,number>} [values] Enum values as an object, by name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
@@ -1408,9 +1408,9 @@ var TypeError = util._TypeError;
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
  * @param {string} type Value type
- * @param {string|Object} [rule="optional"] Field rule
- * @param {string|Object} [extend] Extended type if different from parent
- * @param {Object} [options] Declared options
+ * @param {string|Object.<string,*>} [rule="optional"] Field rule
+ * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
     if (util.isObject(rule)) {
@@ -1585,7 +1585,7 @@ Field.testJSON = function testJSON(json) {
 /**
  * Constructs a field from JSON.
  * @param {string} name Field name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Field} Created field
  * @throws {TypeError} If arguments are invalid
  */
@@ -1680,7 +1680,7 @@ var types   = require(30),
  * @param {number} id Unique id within its namespace
  * @param {string} keyType Key type
  * @param {string} type Value type
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function MapField(name, id, keyType, type, options) {
     Field.call(this, name, id, type, options);
@@ -1707,7 +1707,7 @@ function MapField(name, id, keyType, type, options) {
 
 /**
  * Tests if the specified JSON object describes a map field.
- * @param {Object} json JSON object to test
+ * @param {*} json JSON object to test
  * @returns {boolean} `true` if the object describes a field
  */
 MapField.testJSON = function testJSON(json) {
@@ -1717,7 +1717,7 @@ MapField.testJSON = function testJSON(json) {
 /**
  * Constructs a map field from JSON.
  * @param {string} name Field name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {MapField} Created map field
  * @throws {TypeError} If arguments are invalid
  */
@@ -1761,12 +1761,10 @@ var convert = require(12);
 /**
  * Constructs a new message instance.
  *
- * This method should be called from your custom constructors, i.e. `Message.call(this, properties)`.
+ * This function should also be called from your custom constructors, i.e. `Message.call(this, properties)`.
  * @classdesc Abstract runtime message.
- * @extends {Object}
  * @constructor
  * @param {Object.<string,*>} [properties] Properties to set
- * @abstract
  * @see {@link Class.create}
  */
 function Message(properties) {
@@ -1890,14 +1888,16 @@ var TypeError = util._TypeError;
  * @param {string|undefined} type Method type, usually `"rpc"`
  * @param {string} requestType Request message type
  * @param {string} responseType Response message type
- * @param {boolean|Object} [requestStream] Whether the request is streamed
- * @param {boolean|Object} [responseStream] Whether the response is streamed
- * @param {Object} [options] Declared options
+ * @param {boolean|Object.<string,*>} [requestStream] Whether the request is streamed
+ * @param {boolean|Object.<string,*>} [responseStream] Whether the response is streamed
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Method(name, type, requestType, responseType, requestStream, responseStream, options) {
+    /* istanbul ignore next */
     if (util.isObject(requestStream)) {
         options = requestStream;
         requestStream = responseStream = undefined;
+    /* istanbul ignore next */
     } else if (util.isObject(responseStream)) {
         options = responseStream;
         responseStream = undefined;
@@ -1960,7 +1960,7 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
 /**
  * Tests if the specified JSON object describes a service method.
- * @param {Object} json JSON object
+ * @param {*} json JSON object
  * @returns {boolean} `true` if the object describes a map field
  */
 Method.testJSON = function testJSON(json) {
@@ -1970,7 +1970,7 @@ Method.testJSON = function testJSON(json) {
 /**
  * Constructs a service method from JSON.
  * @param {string} name Method name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Method} Created method
  * @throws {TypeError} If arguments are invalid
  */
@@ -2050,7 +2050,7 @@ var TypeError = util._TypeError;
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Namespace name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Namespace(name, options) {
     ReflectionObject.call(this, name, options);
@@ -2119,7 +2119,7 @@ Namespace.testJSON = function testJSON(json) {
 /**
  * Constructs a namespace from JSON.
  * @param {string} name Namespace name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Namespace} Created namespace
  * @throws {TypeError} If arguments are invalid
  */
@@ -2448,7 +2448,7 @@ var TypeError = util._TypeError;
  * @classdesc Base class of all reflection objects.
  * @constructor
  * @param {string} name Object name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  * @abstract
  */
 function ReflectionObject(name, options) {
@@ -2526,7 +2526,7 @@ util.props(ReflectionObjectPrototype, {
 
 /**
  * Converts this reflection object to its JSON representation.
- * @returns {Object} JSON object
+ * @returns {Object.<string,*>} JSON object
  * @abstract
  */
 ReflectionObjectPrototype.toJSON = function toJSON() {
@@ -2652,7 +2652,7 @@ var TypeError = util._TypeError;
  * @constructor
  * @param {string} name Oneof name
  * @param {string[]|Object} [fieldNames] Field names
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function OneOf(name, fieldNames, options) {
     if (!Array.isArray(fieldNames)) {
@@ -2709,7 +2709,7 @@ OneOf.testJSON = function testJSON(json) {
 /**
  * Constructs a oneof from JSON.
  * @param {string} name Oneof name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {MapField} Created oneof
  * @throws {TypeError} If arguments are invalid
  */
@@ -3388,7 +3388,7 @@ var parse,  // cyclic, might be excluded
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
  * @extends Namespace
  * @constructor
- * @param {Object} [options] Top level options
+ * @param {Object.<string,*>} [options] Top level options
  */
 function Root(options) {
     Namespace.call(this, "", options);
@@ -3408,11 +3408,12 @@ function Root(options) {
 
 /**
  * Loads a JSON definition into a root namespace.
- * @param {*} json JSON definition
+ * @param {Object.<string,*>|*} json JSON definition
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */
 Root.fromJSON = function fromJSON(json, root) {
+    // note that `json` actually must be of type `Object.<string,*>` but TypeScript
     if (!root)
         root = new Root();
     return root.setOptions(json.options).addJSON(json.nested);
@@ -3793,7 +3794,7 @@ function clearCache(service) {
 
 /**
  * Tests if the specified JSON object describes a service.
- * @param {Object} json JSON object to test
+ * @param {*} json JSON object to test
  * @returns {boolean} `true` if the object describes a service
  */
 Service.testJSON = function testJSON(json) {
@@ -3803,7 +3804,7 @@ Service.testJSON = function testJSON(json) {
 /**
  * Constructs a service from JSON.
  * @param {string} name Service name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Service} Created service
  * @throws {TypeError} If arguments are invalid
  */
@@ -3981,7 +3982,7 @@ var encoder,  // might become cyclic
  * @extends Namespace
  * @constructor
  * @param {string} name Message name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Type(name, options) {
     Namespace.call(this, name, options);
@@ -4157,7 +4158,7 @@ var nestedTypes = [ Enum, Type, Field, Service ];
 /**
  * Creates a type from JSON.
  * @param {string} name Message name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json) {
@@ -4282,7 +4283,7 @@ TypePrototype.remove = function remove(object) {
 
 /**
  * Creates a new message of this type using the specified properties.
- * @param {Object} [properties] Properties to set
+ * @param {Object.<string,*>} [properties] Properties to set
  * @returns {Message} Runtime message
  */
 TypePrototype.create = function create(properties) {
@@ -4291,7 +4292,7 @@ TypePrototype.create = function create(properties) {
 
 /**
  * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
- * @param {Object} object JSON object
+ * @param {Object.<string,*>} object JSON object
  * @param {MessageConversionOptions} [options] Conversion options
  * @returns {Message} Runtime message
  */
@@ -4589,7 +4590,7 @@ util.path         = require(8);
 
 /**
  * Node's fs module if available.
- * @type {Object}
+ * @type {Object.<string,*>}
  */
 util.fs = util.inquire("fs");
 
@@ -4622,10 +4623,10 @@ util._TypeError = function(name, description) {
 
 /**
  * Merges the properties of the source object into the destination object.
- * @param {Object} dst Destination object
- * @param {Object} src Source object
+ * @param {Object.<string,*>} dst Destination object
+ * @param {Object.<string,*>} src Source object
  * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
- * @returns {Object} Destination object
+ * @returns {Object.<string,*>} Destination object
  */
 util.merge = function merge(dst, src, ifNotSet) {
     if (src) {
@@ -4721,6 +4722,13 @@ zero.zzEncode = zero.zzDecode = function() { return this; };
 zero.length = function() { return 1; };
 
 /**
+ * Zero hash.
+ * @memberof util.LongBits
+ * @type {string}
+ */
+var zeroHash = LongBits.zeroHash = "\0\0\0\0\0\0\0\0";
+
+/**
  * Constructs new long bits from the specified number.
  * @param {number} value Value
  * @returns {util.LongBits} Instance
@@ -4728,10 +4736,11 @@ zero.length = function() { return 1; };
 LongBits.fromNumber = function fromNumber(value) {
     if (value === 0)
         return zero;
-    var sign  = value < 0;
-        value = Math.abs(value);
+    var sign = value < 0;
+    if (sign)
+        value = -value;
     var lo = value >>> 0,
-        hi = (value - lo) / 4294967296 >>> 0;
+        hi = (value - lo) / 4294967296 >>> 0; 
     if (sign) {
         hi = ~hi >>> 0;
         lo = ~lo >>> 0;
@@ -4753,6 +4762,7 @@ LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
     if (typeof value === "string") {
+        /* istanbul ignore else */
         if (util.Long)
             value = util.Long.fromString(value);
         else
@@ -4768,11 +4778,11 @@ LongBits.from = function from(value) {
  */
 LongBitsPrototype.toNumber = function toNumber(unsigned) {
     if (!unsigned && this.hi >>> 31) {
-        this.lo = ~this.lo + 1 >>> 0;
-        this.hi = ~this.hi     >>> 0;
-        if (!this.lo)
-            this.hi = this.hi + 1 >>> 0;
-        return -(this.lo + this.hi * 4294967296);
+        var lo = ~this.lo + 1 >>> 0,
+            hi = ~this.hi     >>> 0;
+        if (!lo)
+            hi = hi + 1 >>> 0;
+        return -(lo + hi * 4294967296);
     }
     return this.lo + this.hi * 4294967296;
 };
@@ -4785,6 +4795,7 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
 LongBitsPrototype.toLong = function toLong(unsigned) {
     return util.Long
         ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+        /* istanbul ignore next */
         : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
 
@@ -4796,6 +4807,8 @@ var charCodeAt = String.prototype.charCodeAt;
  * @returns {util.LongBits} Bits
  */
 LongBits.fromHash = function fromHash(hash) {
+    if (hash === zeroHash)
+        return zero;
     return new LongBits(
         ( charCodeAt.call(hash, 0)
         | charCodeAt.call(hash, 1) << 8
@@ -4969,7 +4982,7 @@ util.isObject = function isObject(value) {
 util.longToHash = function longToHash(value) {
     return value
         ? util.LongBits.from(value).toHash()
-        : "\0\0\0\0\0\0\0\0";
+        : util.LongBits.zeroHash;
 };
 
 /**
@@ -5028,7 +5041,7 @@ util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
 /**
  * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
  * @param {Object} target Target object
- * @param {Object} descriptors Property descriptors
+ * @param {Object.<string,*>} descriptors Property descriptors
  * @returns {undefined}
  */
 util.props = function props(target, descriptors) {
@@ -5041,7 +5054,7 @@ util.props = function props(target, descriptors) {
  * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
  * @param {Object} target Target object
  * @param {string} key Property name
- * @param {Object} descriptor Property descriptor
+ * @param {Object.<string,*>} descriptor Property descriptor
  * @returns {undefined}
  */
 util.prop = function prop(target, key, descriptor) {
@@ -5964,6 +5977,7 @@ protobuf.rpc              = require(26);
 protobuf.util             = require(31);
 protobuf.configure        = configure;
 
+/* istanbul ignore next */
 /**
  * Reconfigures the library according to the environment.
  * @returns {undefined}
@@ -5972,6 +5986,7 @@ function configure() {
     protobuf.Reader._configure();
 }
 
+/* istanbul ignore next */
 // Be nice to AMD
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {

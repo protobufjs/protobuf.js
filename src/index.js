@@ -113,6 +113,7 @@ protobuf.rpc              = require("./rpc");
 protobuf.util             = require("./util");
 protobuf.configure        = configure;
 
+/* istanbul ignore next */
 /**
  * Reconfigures the library according to the environment.
  * @returns {undefined}
@@ -121,6 +122,7 @@ function configure() {
     protobuf.Reader._configure();
 }
 
+/* istanbul ignore next */
 // Be nice to AMD
 if (typeof define === "function" && define.amd)
     define(["long"], function(Long) {

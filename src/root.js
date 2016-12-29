@@ -18,7 +18,7 @@ var parse,  // cyclic, might be excluded
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
  * @extends Namespace
  * @constructor
- * @param {Object} [options] Top level options
+ * @param {Object.<string,*>} [options] Top level options
  */
 function Root(options) {
     Namespace.call(this, "", options);
@@ -38,11 +38,12 @@ function Root(options) {
 
 /**
  * Loads a JSON definition into a root namespace.
- * @param {*} json JSON definition
+ * @param {Object.<string,*>|*} json JSON definition
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */
 Root.fromJSON = function fromJSON(json, root) {
+    // note that `json` actually must be of type `Object.<string,*>` but TypeScript
     if (!root)
         root = new Root();
     return root.setOptions(json.options).addJSON(json.nested);

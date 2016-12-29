@@ -8,7 +8,7 @@ export const proto = {"nested":{"Hello":{"fields":{"value":{"rule":"required","t
 const root = protobuf.Root.fromJSON(proto);
 
 export class Hello extends protobuf.Message {
-    constructor (properties?: any) {
+    constructor (properties?: { [k: string]: any }) {
         super(properties);
     }
 

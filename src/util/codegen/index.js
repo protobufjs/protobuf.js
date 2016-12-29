@@ -86,7 +86,7 @@ function codegen() {
     /**
      * Ends generation and builds the function whilst applying a scope.
      * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @param {Object} [scope] Function scope
+     * @param {Object.<string,*>} [scope] Function scope
      * @returns {function} The generated function, with scope applied if specified
      * @inner
      */

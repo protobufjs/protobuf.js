@@ -618,21 +618,21 @@ $root.jspb = (function() {
 
             /**
              * SpecialCases default.
-             * @name jspb.test.SpecialCases#default_
+             * @name jspb.test.SpecialCases#default
              * @type {string}
              */
             $prototype["default"] = "";
 
             /**
              * SpecialCases function.
-             * @name jspb.test.SpecialCases#function_
+             * @name jspb.test.SpecialCases#function
              * @type {string}
              */
             $prototype["function"] = "";
 
             /**
              * SpecialCases var.
-             * @name jspb.test.SpecialCases#var_
+             * @name jspb.test.SpecialCases#var
              * @type {string}
              */
             $prototype["var"] = "";
@@ -5066,7 +5066,7 @@ $root.google = (function() {
 
             /**
              * FileDescriptorProto package.
-             * @name google.protobuf.FileDescriptorProto#package_
+             * @name google.protobuf.FileDescriptorProto#package
              * @type {string}
              */
             $prototype["package"] = "";

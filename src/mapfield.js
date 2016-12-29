@@ -21,7 +21,7 @@ var types   = require("./types"),
  * @param {number} id Unique id within its namespace
  * @param {string} keyType Key type
  * @param {string} type Value type
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function MapField(name, id, keyType, type, options) {
     Field.call(this, name, id, type, options);
@@ -48,7 +48,7 @@ function MapField(name, id, keyType, type, options) {
 
 /**
  * Tests if the specified JSON object describes a map field.
- * @param {Object} json JSON object to test
+ * @param {*} json JSON object to test
  * @returns {boolean} `true` if the object describes a field
  */
 MapField.testJSON = function testJSON(json) {
@@ -58,7 +58,7 @@ MapField.testJSON = function testJSON(json) {
 /**
  * Constructs a map field from JSON.
  * @param {string} name Field name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {MapField} Created map field
  * @throws {TypeError} If arguments are invalid
  */

@@ -24,9 +24,9 @@ var TypeError = util._TypeError;
  * @param {string} name Unique name within its namespace
  * @param {number} id Unique id within its namespace
  * @param {string} type Value type
- * @param {string|Object} [rule="optional"] Field rule
- * @param {string|Object} [extend] Extended type if different from parent
- * @param {Object} [options] Declared options
+ * @param {string|Object.<string,*>} [rule="optional"] Field rule
+ * @param {string|Object.<string,*>} [extend] Extended type if different from parent
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Field(name, id, type, rule, extend, options) {
     if (util.isObject(rule)) {
@@ -201,7 +201,7 @@ Field.testJSON = function testJSON(json) {
 /**
  * Constructs a field from JSON.
  * @param {string} name Field name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Field} Created field
  * @throws {TypeError} If arguments are invalid
  */

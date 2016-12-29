@@ -62,7 +62,7 @@ function clearCache(service) {
 
 /**
  * Tests if the specified JSON object describes a service.
- * @param {Object} json JSON object to test
+ * @param {*} json JSON object to test
  * @returns {boolean} `true` if the object describes a service
  */
 Service.testJSON = function testJSON(json) {
@@ -72,7 +72,7 @@ Service.testJSON = function testJSON(json) {
 /**
  * Constructs a service from JSON.
  * @param {string} name Service name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Service} Created service
  * @throws {TypeError} If arguments are invalid
  */

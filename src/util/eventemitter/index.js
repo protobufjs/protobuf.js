@@ -24,7 +24,7 @@ var EventEmitterPrototype = EventEmitter.prototype;
  * Registers an event listener.
  * @param {string} evt Event name
  * @param {function} fn Listener
- * @param {Object} [ctx] Listener context
+ * @param {*} [ctx] Listener context
  * @returns {util.EventEmitter} `this`
  */
 EventEmitterPrototype.on = function on(evt, fn, ctx) {

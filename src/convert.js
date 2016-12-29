@@ -99,7 +99,7 @@ convert.toJson = function toJson(field, value, options) {
         if (options.longs === String) {
             if(typeof value === "number")
                 return util.Long.fromNumber(value, unsigned).toString();
-            value = util.Long.fromValue(value); // TODO: fromValue is missing an unsigned option (long.js 3.2.0)
+            value = util.Long.fromValue(value); // has no unsigned option
             value.unsigned = unsigned;
             return value.toString();
         }

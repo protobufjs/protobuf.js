@@ -5,7 +5,7 @@ module.exports = extend;
  * Lets the specified constructor extend `this` class.
  * @memberof util
  * @param {*} ctor Extending constructor
- * @returns {Object} Constructor prototype
+ * @returns {Object.<string,*>} Constructor prototype
  * @this Function
  */
 function extend(ctor) {

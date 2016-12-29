@@ -38,7 +38,7 @@ var TypeError = util._TypeError;
  * @extends ReflectionObject
  * @constructor
  * @param {string} name Namespace name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Namespace(name, options) {
     ReflectionObject.call(this, name, options);
@@ -107,7 +107,7 @@ Namespace.testJSON = function testJSON(json) {
 /**
  * Constructs a namespace from JSON.
  * @param {string} name Namespace name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Namespace} Created namespace
  * @throws {TypeError} If arguments are invalid
  */

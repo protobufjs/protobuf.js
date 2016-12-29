@@ -98,7 +98,7 @@ util.isObject = function isObject(value) {
 util.longToHash = function longToHash(value) {
     return value
         ? util.LongBits.from(value).toHash()
-        : "\0\0\0\0\0\0\0\0";
+        : util.LongBits.zeroHash;
 };
 
 /**
@@ -157,7 +157,7 @@ util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
 /**
  * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
  * @param {Object} target Target object
- * @param {Object} descriptors Property descriptors
+ * @param {Object.<string,*>} descriptors Property descriptors
  * @returns {undefined}
  */
 util.props = function props(target, descriptors) {
@@ -170,7 +170,7 @@ util.props = function props(target, descriptors) {
  * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
  * @param {Object} target Target object
  * @param {string} key Property name
- * @param {Object} descriptor Property descriptor
+ * @param {Object.<string,*>} descriptor Property descriptor
  * @returns {undefined}
  */
 util.prop = function prop(target, key, descriptor) {

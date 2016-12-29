@@ -18,7 +18,7 @@ var TypeError = util._TypeError;
  * @constructor
  * @param {string} name Unique name within its namespace
  * @param {Object.<string,number>} [values] Enum values as an object, by name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);

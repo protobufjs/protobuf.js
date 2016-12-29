@@ -30,7 +30,7 @@ var encoder,  // might become cyclic
  * @extends Namespace
  * @constructor
  * @param {string} name Message name
- * @param {Object} [options] Declared options
+ * @param {Object.<string,*>} [options] Declared options
  */
 function Type(name, options) {
     Namespace.call(this, name, options);
@@ -206,7 +206,7 @@ var nestedTypes = [ Enum, Type, Field, Service ];
 /**
  * Creates a type from JSON.
  * @param {string} name Message name
- * @param {Object} json JSON object
+ * @param {Object.<string,*>} json JSON object
  * @returns {Type} Created message type
  */
 Type.fromJSON = function fromJSON(name, json) {
@@ -331,7 +331,7 @@ TypePrototype.remove = function remove(object) {
 
 /**
  * Creates a new message of this type using the specified properties.
- * @param {Object} [properties] Properties to set
+ * @param {Object.<string,*>} [properties] Properties to set
  * @returns {Message} Runtime message
  */
 TypePrototype.create = function create(properties) {
@@ -340,7 +340,7 @@ TypePrototype.create = function create(properties) {
 
 /**
  * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
- * @param {Object} object JSON object
+ * @param {Object.<string,*>} object JSON object
  * @param {MessageConversionOptions} [options] Conversion options
  * @returns {Message} Runtime message
  */

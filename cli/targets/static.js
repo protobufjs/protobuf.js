@@ -238,7 +238,7 @@ function buildType(ref, type) {
         var prop = util.safeProp(field.name);
         pushComment([
             type.name + " " + field.name + ".",
-            prop.charAt(0) !== "." ? "@name " + fullName + "#" + name(field.name) : null,
+            prop.charAt(0) !== "." ? "@name " + fullName + "#" + field.name : null,
             "@type {" + jsType + "}"
         ]);
         if (Array.isArray(field.defaultValue)) {

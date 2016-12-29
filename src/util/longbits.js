@@ -51,6 +51,13 @@ zero.zzEncode = zero.zzDecode = function() { return this; };
 zero.length = function() { return 1; };
 
 /**
+ * Zero hash.
+ * @memberof util.LongBits
+ * @type {string}
+ */
+var zeroHash = LongBits.zeroHash = "\0\0\0\0\0\0\0\0";
+
+/**
  * Constructs new long bits from the specified number.
  * @param {number} value Value
  * @returns {util.LongBits} Instance
@@ -58,10 +65,11 @@ zero.length = function() { return 1; };
 LongBits.fromNumber = function fromNumber(value) {
     if (value === 0)
         return zero;
-    var sign  = value < 0;
-        value = Math.abs(value);
+    var sign = value < 0;
+    if (sign)
+        value = -value;
     var lo = value >>> 0,
-        hi = (value - lo) / 4294967296 >>> 0;
+        hi = (value - lo) / 4294967296 >>> 0; 
     if (sign) {
         hi = ~hi >>> 0;
         lo = ~lo >>> 0;
@@ -83,6 +91,7 @@ LongBits.from = function from(value) {
     if (typeof value === "number")
         return LongBits.fromNumber(value);
     if (typeof value === "string") {
+        /* istanbul ignore else */
         if (util.Long)
             value = util.Long.fromString(value);
         else
@@ -98,11 +107,11 @@ LongBits.from = function from(value) {
  */
 LongBitsPrototype.toNumber = function toNumber(unsigned) {
     if (!unsigned && this.hi >>> 31) {
-        this.lo = ~this.lo + 1 >>> 0;
-        this.hi = ~this.hi     >>> 0;
-        if (!this.lo)
-            this.hi = this.hi + 1 >>> 0;
-        return -(this.lo + this.hi * 4294967296);
+        var lo = ~this.lo + 1 >>> 0,
+            hi = ~this.hi     >>> 0;
+        if (!lo)
+            hi = hi + 1 >>> 0;
+        return -(lo + hi * 4294967296);
     }
     return this.lo + this.hi * 4294967296;
 };
@@ -115,6 +124,7 @@ LongBitsPrototype.toNumber = function toNumber(unsigned) {
 LongBitsPrototype.toLong = function toLong(unsigned) {
     return util.Long
         ? new util.Long(this.lo | 0, this.hi | 0, Boolean(unsigned))
+        /* istanbul ignore next */
         : { low: this.lo | 0, high: this.hi | 0, unsigned: Boolean(unsigned) };
 };
 
@@ -126,6 +136,8 @@ var charCodeAt = String.prototype.charCodeAt;
  * @returns {util.LongBits} Bits
  */
 LongBits.fromHash = function fromHash(hash) {
+    if (hash === zeroHash)
+        return zero;
     return new LongBits(
         ( charCodeAt.call(hash, 0)
         | charCodeAt.call(hash, 1) << 8

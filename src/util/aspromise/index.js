@@ -5,7 +5,7 @@ module.exports = asPromise;
  * Returns a promise from a node-style callback function.
  * @memberof util
  * @param {function(?Error, ...*)} fn Function to call
- * @param {Object} ctx Function context
+ * @param {*} ctx Function context
  * @param {...*} params Function arguments
  * @returns {Promise<*>} Promisified function
  */

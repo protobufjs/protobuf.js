@@ -21,7 +21,7 @@ function unescape(str) {
 
 /**
  * Handle object returned from {@link tokenize}.
- * @typedef {Object} TokenizerHandle
+ * @typedef {Object.<string,*>} TokenizerHandle
  * @property {function():number} line Gets the current line number
  * @property {function():?string} next Gets the next token and advances (`null` on eof)
  * @property {function():?string} peek Peeks for the next token (`null` on eof)
