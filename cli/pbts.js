@@ -98,7 +98,7 @@ exports.main = function(args, callback) {
         if (argv.name !== "protobufjs")
             output.push(
                 "",
-                "import { Reader, Writer } from \"protobufjs\";",
+                "import { Reader, Writer, Method } from \"protobufjs\";",
                 ""
             );
         output = output.join('\n') + "\n" + out.join('');
