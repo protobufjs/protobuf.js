@@ -1,5 +1,6 @@
 // $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Fri, 30 Dec 2016 00:51:27 UTC
+// Generated Fri, 30 Dec 2016 12:09:31 UTC
+
 declare module "protobufjs" {
 
     /**
@@ -131,11 +132,11 @@ declare module "protobufjs" {
      * @property {boolean} [defaults=false] Also sets default values on the resulting object
      */
     interface JSONConversionOptions {
-        fieldsOnly: boolean;
-        longs: any;
-        enums: any;
-        bytes: any;
-        defaults: boolean;
+        fieldsOnly?: boolean;
+        longs?: any;
+        enums?: any;
+        bytes?: any;
+        defaults?: boolean;
     }
 
     /**
@@ -145,7 +146,7 @@ declare module "protobufjs" {
      * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
      */
     interface MessageConversionOptions {
-        fieldsOnly: boolean;
+        fieldsOnly?: boolean;
     }
 
     /**
