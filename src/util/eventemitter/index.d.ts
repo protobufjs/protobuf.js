@@ -39,5 +39,5 @@ declare class EventEmitter {
      * @param {...*} args Arguments
      * @returns {util.EventEmitter} `this`
      */
-    emit(evt: string, args: any): EventEmitter;
+    emit(evt: string, ...args: any[]): EventEmitter;
 }

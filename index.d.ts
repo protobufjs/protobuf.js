@@ -1,5 +1,5 @@
 // $> pbts --name protobuf --out index.d.ts src
-// Generated Fri, 30 Dec 2016 16:29:57 UTC
+// Generated Fri, 30 Dec 2016 20:40:44 UTC
 
 export = protobuf;
 export as namespace protobuf;
@@ -1851,7 +1851,7 @@ declare namespace protobuf {
      * @property {function(string=):string} str Stringifies the so far generated function source.
      * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
      */
-    type Codegen = (format: string, args: any) => Codegen;
+    type Codegen = (format: string, ...args: any[]) => Codegen;
 
     /**
      * Node-style callback as used by {@link util.fetch}.
@@ -1911,7 +1911,7 @@ declare namespace protobuf {
          * @param {...*} params Function arguments
          * @returns {Promise<*>} Promisified function
          */
-        function asPromise(fn: () => any, ctx: any, params: any): Promise<any>;
+        function asPromise(fn: () => any, ctx: any, ...params: any[]): Promise<any>;
 
         /**
          * A minimal base64 implementation for number arrays.
@@ -1957,7 +1957,7 @@ declare namespace protobuf {
          * @property {boolean} supported Whether code generation is supported by the environment.
          * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
          */
-        function codegen(params: string): Codegen;
+        function codegen(...params: string[]): Codegen;
 
         /**
          * Constructs a new event emitter instance.
@@ -1998,7 +1998,7 @@ declare namespace protobuf {
              * @param {...*} args Arguments
              * @returns {util.EventEmitter} `this`
              */
-            emit(evt: string, args: any): util.EventEmitter;
+            emit(evt: string, ...args: any[]): util.EventEmitter;
         }
 
         /**
