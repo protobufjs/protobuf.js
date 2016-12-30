@@ -1,13 +1,18 @@
 import * as protobuf from "..";
+import * as Long from "long";
 
 export const proto = {
     nested: {
         Hello: {
             fields: {
-                value: {
+                aString: {
                     rule: "required",
                     type: "string",
-                    id:1
+                    id: 1
+                },
+                aLong: {
+                    type: "uint64",
+                    id: 2
                 }
             }
         }
@@ -20,17 +25,15 @@ export class Hello extends protobuf.Message {
     constructor (properties?: { [k: string]: any }) {
         super(properties);
     }
-
-    foo() {
-        this["value"] = "hi";
-        return this;
-    }
 }
-protobuf.Class.create(root.lookup("Hello") as protobuf.Type, Hello);
+protobuf.Class.create(root.lookupType("Hello"), Hello);
 
-var hello = new Hello();
+var hello = new Hello({
+    aString: "hi",
+    aLong: Long.fromNumber(123)
+});
 
-var buf = Hello.encode(hello.foo()).finish();
+var buf = Hello.encode(hello).finish();
 
 var hello2 = Hello.decode(buf) as Hello;
-console.log(hello2.foo().asJSON());
+console.log(hello2.asJSON());

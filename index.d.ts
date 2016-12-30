@@ -1,5 +1,5 @@
 // $> pbts --name protobuf --out index.d.ts src
-// Generated Fri, 30 Dec 2016 15:32:08 UTC
+// Generated Fri, 30 Dec 2016 16:29:57 UTC
 
 export = protobuf;
 export as namespace protobuf;
@@ -122,17 +122,18 @@ declare namespace protobuf {
      * JSON conversion options as used by {@link Message#asJSON} with {@link convert}.
      * @typedef JSONConversionOptions
      * @type {Object}
-     * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
+     * @property {boolean} [fieldsOnly=false] If `true`, keeps only properties that reference a field.
      * @property {*} [longs] Long conversion type. Only relevant with a long library.
      * Valid values are `String` and `Number` (the global types).
      * Defaults to a possibly unsafe number without, and a `Long` with a long library.
      * @property {*} [enums=Number] Enum value conversion type.
      * Valid values are `String` and `Number` (the global types).
-     * Defaults to the numeric ids.
+     * Defaults to `Number`, which sets the numeric ids.
      * @property {*} [bytes] Bytes value conversion type.
      * Valid values are `Array` and `String` (the global types).
-     * Defaults to return the underlying buffer type.
-     * @property {boolean} [defaults=false] Also sets default values on the resulting object
+     * Defaults to return the underlying buffer type, which usually is an `Uint8Array` in the browser and a `Buffer` under node.
+     * @property {boolean} [defaults=false] If `true`, sets default values on the resulting object including empty arrays for repeated fields
+     * @property {boolean} [arrays=false] If `true`, always initializes empty arrays for repeated fields. Only relevant with `defaults=false`.
      */
     interface JSONConversionOptions {
         fieldsOnly?: boolean;
@@ -140,6 +141,7 @@ declare namespace protobuf {
         enums?: any;
         bytes?: any;
         defaults?: boolean;
+        arrays?: boolean;
     }
 
     /**
