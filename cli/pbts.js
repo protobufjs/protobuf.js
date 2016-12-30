@@ -92,11 +92,11 @@ exports.main = function(args, callback) {
         }
 
         var output = [
-            "// $> pbts " + process.argv.slice(2).join(" "),
+            "// $> pbts " + args.join(" "),
             "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
             ""
         ];
-        if (argv.name !== "protobufjs")
+        if (argv.name !== "protobuf")
             output.push(
                 "import * as $protobuf from \"protobufjs\";",
                 ""
@@ -108,6 +108,8 @@ exports.main = function(args, callback) {
                 fs.writeFileSync(argv.out, output);
             else
                 process.stdout.write(output, "utf8");
+            if (callback)
+                callback(null);
         } catch (err) {
             if (callback)
                 callback(err);

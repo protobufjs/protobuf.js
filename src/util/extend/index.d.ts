@@ -1,3 +1,5 @@
+export = extend;
+
 /**
  * Lets the specified constructor extend `this` class.
  * @memberof util

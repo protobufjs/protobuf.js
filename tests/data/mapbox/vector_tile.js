@@ -1,6 +1,6 @@
 "use strict"; // eslint-disable-line strict
 
-var $protobuf = require("../../runtime");
+var $protobuf = require("../../../runtime");
 
 // Lazily resolved type references
 var $lazyTypes = [];

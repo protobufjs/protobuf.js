@@ -237,12 +237,22 @@ There is also an [example for streaming RPC](https://github.com/dcodeIO/protobuf
 
 ### Usage with TypeScript
 
-```ts
-/// <reference path="node_modules/protobufjs/types/protobuf.js.d.ts" />
+Under node.js:
 
+```ts
 import * as protobuf from "protobufjs";
 ...
 ```
+
+In the browser:
+
+```ts
+/// <reference path="path/to/protobuf/index.d.ts" />
+import * as protobuf from "path/to/protobuf.js";
+...
+```
+
+If you need long support, there is also a [TypeScript definition](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/types-2.0/long/index.d.ts) for that (on npm: [@types/long](https://www.npmjs.com/package/@types/long)).
 
 See also: [Generating your own TypeScript definitions](https://github.com/dcodeIO/protobuf.js#generating-typescript-definitions-from-static-modules)
 
@@ -453,7 +463,7 @@ Building the documentation to `docs/`:
 $> npm run docs
 ```
 
-Building the TypeScript definition to `types/`:
+Building the TypeScript definition to `index.d.ts`:
 
 ```
 $> npm run types

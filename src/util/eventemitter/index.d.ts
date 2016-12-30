@@ -1,3 +1,5 @@
+export = EventEmitter;
+
 /**
  * Constructs a new event emitter instance.
  * @classdesc A minimal event emitter.

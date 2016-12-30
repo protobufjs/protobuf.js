@@ -1,9 +1,18 @@
-/// <reference path="./protobuf.js.d.ts" />
-/// <reference path="../node_modules/@types/long/index.d.ts" />
+import * as protobuf from "..";
 
-import * as protobuf from "protobufjs";
-
-export const proto = {"nested":{"Hello":{"fields":{"value":{"rule":"required","type":"string","id":1}}}}};
+export const proto = {
+    nested: {
+        Hello: {
+            fields: {
+                value: {
+                    rule: "required",
+                    type: "string",
+                    id:1
+                }
+            }
+        }
+    }
+};
 
 const root = protobuf.Root.fromJSON(proto);
 

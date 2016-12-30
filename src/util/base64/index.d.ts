@@ -1,9 +1,11 @@
+export = base64;
+
 /**
  * A minimal base64 implementation for number arrays.
  * @memberof util
  * @namespace
  */
-declare module base64 {
+declare namespace base64 {
 
     /**
      * Calculates the byte length of a base64 encoded string.

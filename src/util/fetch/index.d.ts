@@ -1,3 +1,5 @@
+export = fetch;
+
 /**
  * Node-style callback as used by {@link util.fetch}.
  * @typedef FetchCallback

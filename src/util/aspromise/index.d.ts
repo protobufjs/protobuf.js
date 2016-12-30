@@ -1,3 +1,5 @@
+export = asPromise;
+
 /**
  * Returns a promise from a node-style callback function.
  * @memberof util

@@ -1,9 +1,11 @@
+export = utf8;
+
 /**
  * A minimal UTF8 implementation for number arrays.
  * @memberof util
  * @namespace
  */
-declare module utf8 {
+declare namespace utf8 {
 
     /**
      * Calculates the UTF8 byte length of a string.

@@ -1,9 +1,11 @@
+export = path;
+
 /**
  * A minimal path module to resolve Unix, Windows and URL paths alike.
  * @memberof util
  * @namespace
  */
-declare module path {
+declare namespace path {
 
     /**
      * Tests if the specified path is absolute.

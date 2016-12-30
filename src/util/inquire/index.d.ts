@@ -1,3 +1,5 @@
+export = inquire;
+
 /**
  * Requires a module only if available.
  * @memberof util

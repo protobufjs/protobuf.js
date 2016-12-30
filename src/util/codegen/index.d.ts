@@ -1,3 +1,5 @@
+export = codegen;
+
 /**
  * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
  * @typedef Codegen

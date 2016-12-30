@@ -1,3 +1,5 @@
+export = pool;
+
 /**
  * An allocator as used by {@link util.pool}.
  * @typedef PoolAllocator

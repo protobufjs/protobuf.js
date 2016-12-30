@@ -1,7 +1,10 @@
-// $> pbts --name protobufjs --out types/protobuf.js.d.ts src
-// Generated Fri, 30 Dec 2016 12:21:10 UTC
+// $> pbts --name protobuf --out index.d.ts src
+// Generated Fri, 30 Dec 2016 15:32:08 UTC
 
-declare module "protobufjs" {
+export = protobuf;
+export as namespace protobuf;
+
+declare namespace protobuf {
 
     /**
      * Constructs a class instance, which is also a message prototype.
@@ -1358,7 +1361,7 @@ declare module "protobufjs" {
      * Streaming RPC helpers.
      * @namespace
      */
-    module rpc {
+    namespace rpc {
 
         /**
          * Constructs a new RPC service instance.
@@ -1676,7 +1679,7 @@ declare module "protobufjs" {
      * Common type constants.
      * @namespace
      */
-    module types {
+    namespace types {
 
         /**
          * Basic type wire types.
@@ -1896,7 +1899,7 @@ declare module "protobufjs" {
      * Various utility functions.
      * @namespace
      */
-    module util {
+    namespace util {
 
         /**
          * Returns a promise from a node-style callback function.
@@ -1913,7 +1916,7 @@ declare module "protobufjs" {
          * @memberof util
          * @namespace
          */
-        module base64 {
+        namespace base64 {
 
             /**
              * Calculates the byte length of a base64 encoded string.
@@ -2133,7 +2136,7 @@ declare module "protobufjs" {
          * @memberof util
          * @namespace
          */
-        module path {
+        namespace path {
 
             /**
              * Tests if the specified path is absolute.
@@ -2299,7 +2302,7 @@ declare module "protobufjs" {
          * @memberof util
          * @namespace
          */
-        module utf8 {
+        namespace utf8 {
 
             /**
              * Calculates the UTF8 byte length of a string.
