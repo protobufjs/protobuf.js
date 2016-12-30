@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message A {
+    message B {
+        message One {
+            extensions 1000 to max;
+        }
+    }
+    message C {
+        message Two {
+            extend B.One {
+                Two two = 1000;
+            }
+        }
+    }
+}

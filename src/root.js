@@ -233,6 +233,17 @@ RootPrototype.loadSync = function loadSync(filename, options) {
 };
 
 /**
+ * @override
+ */
+RootPrototype.resolveAll = function resolveAll() {
+    if (this.deferred.length)
+        throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
+            return "'extend " + field.extend + "' in " + field.parent.getFullName();
+        }).join(", "));
+    return Namespace.prototype.resolveAll.call(this);
+};
+
+/**
  * Handles a deferred declaring extension field by creating a sister field to represent it within its extended type.
  * @param {Field} field Declaring extension field witin the declaring type
  * @returns {boolean} `true` if successfully added to the extended type, `false` otherwise
