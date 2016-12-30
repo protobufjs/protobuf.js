@@ -1,7 +1,7 @@
 {
   "name": "@protobufjs/fetch",
   "description": "Fetches the contents of a file accross node and browsers.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
@@ -11,5 +11,7 @@
     "@protobufjs/aspromise": "^1.0.4",
     "@protobufjs/inquire": "^1.0.1"
   },
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "main": "index.js",
+  "types": "index.d.ts"
 }

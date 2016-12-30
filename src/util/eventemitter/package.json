@@ -1,11 +1,13 @@
 {
   "name": "@protobufjs/eventemitter",
   "description": "A minimal event emitter.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",
     "url": "https://github.com/dcodeIO/protobuf.js.git"
   },
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "main": "index.js",
+  "types": "index.d.ts"
 }
