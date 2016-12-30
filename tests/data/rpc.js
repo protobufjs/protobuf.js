@@ -14,7 +14,7 @@ $root.MyService = (function() {
      * RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.
      * @typedef RPCImpl
      * @type {function}
-     * @param {Method} method Reflected method being called
+     * @param {$protobuf.Method} method Reflected method being called
      * @param {Uint8Array} requestData Request data
      * @param {RPCCallback} callback Callback function
      * @returns {undefined}
@@ -138,8 +138,8 @@ $root.MyRequest = (function() {
      * Encodes the specified MyRequest.
      * @function
      * @param {MyRequest|Object} message MyRequest or plain object to encode
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} Writer
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encode = (function() {
         /* eslint-disable */
@@ -158,8 +158,8 @@ $root.MyRequest = (function() {
     /**
      * Encodes the specified MyRequest, length delimited.
      * @param {MyRequest|Object} message MyRequest or plain object to encode
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} Writer
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
      */
     MyRequest.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
@@ -168,7 +168,7 @@ $root.MyRequest = (function() {
     /**
      * Decodes a MyRequest from the specified reader or buffer.
      * @function
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyRequest} MyRequest
      */
@@ -198,7 +198,7 @@ $root.MyRequest = (function() {
 
     /**
      * Decodes a MyRequest from the specified reader or buffer, length delimited.
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {MyRequest} MyRequest
      */
     MyRequest.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -267,8 +267,8 @@ $root.MyResponse = (function() {
      * Encodes the specified MyResponse.
      * @function
      * @param {MyResponse|Object} message MyResponse or plain object to encode
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} Writer
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encode = (function() {
         /* eslint-disable */
@@ -287,8 +287,8 @@ $root.MyResponse = (function() {
     /**
      * Encodes the specified MyResponse, length delimited.
      * @param {MyResponse|Object} message MyResponse or plain object to encode
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} Writer
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
      */
     MyResponse.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
@@ -297,7 +297,7 @@ $root.MyResponse = (function() {
     /**
      * Decodes a MyResponse from the specified reader or buffer.
      * @function
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyResponse} MyResponse
      */
@@ -327,7 +327,7 @@ $root.MyResponse = (function() {
 
     /**
      * Decodes a MyResponse from the specified reader or buffer, length delimited.
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {MyResponse} MyResponse
      */
     MyResponse.decodeDelimited = function decodeDelimited(readerOrBuffer) {

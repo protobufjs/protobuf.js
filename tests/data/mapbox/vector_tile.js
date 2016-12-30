@@ -55,8 +55,8 @@ $root.vector_tile = (function() {
          * Encodes the specified Tile.
          * @function
          * @param {vector_tile.Tile|Object} message Tile or plain object to encode
-         * @param {Writer} [writer] Writer to encode to
-         * @returns {Writer} Writer
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
          */
         Tile.encode = (function() {
             /* eslint-disable */
@@ -76,8 +76,8 @@ $root.vector_tile = (function() {
         /**
          * Encodes the specified Tile, length delimited.
          * @param {vector_tile.Tile|Object} message Tile or plain object to encode
-         * @param {Writer} [writer] Writer to encode to
-         * @returns {Writer} Writer
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
          */
         Tile.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
@@ -86,7 +86,7 @@ $root.vector_tile = (function() {
         /**
          * Decodes a Tile from the specified reader or buffer.
          * @function
-         * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {vector_tile.Tile} Tile
          */
@@ -117,7 +117,7 @@ $root.vector_tile = (function() {
 
         /**
          * Decodes a Tile from the specified reader or buffer, length delimited.
-         * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @returns {vector_tile.Tile} Tile
          */
         Tile.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -237,8 +237,8 @@ $root.vector_tile = (function() {
              * Encodes the specified Value.
              * @function
              * @param {vector_tile.Tile.Value|Object} message Value or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Value.encode = (function() {
                 /* eslint-disable */
@@ -253,11 +253,11 @@ $root.vector_tile = (function() {
                         w.uint32(21).float(m.floatValue)
                     if(m.doubleValue!==undefined&&m.doubleValue!==0)
                         w.uint32(25).double(m.doubleValue)
-                    if(m.intValue!==undefined&&util.longNe(m.intValue,0,0))
+                    if(m.intValue!==undefined&&m.intValue!==null&&util.longNe(m.intValue,0,0))
                         w.uint32(32).int64(m.intValue)
-                    if(m.uintValue!==undefined&&util.longNe(m.uintValue,0,0))
+                    if(m.uintValue!==undefined&&m.uintValue!==null&&util.longNe(m.uintValue,0,0))
                         w.uint32(40).uint64(m.uintValue)
-                    if(m.sintValue!==undefined&&util.longNe(m.sintValue,0,0))
+                    if(m.sintValue!==undefined&&m.sintValue!==null&&util.longNe(m.sintValue,0,0))
                         w.uint32(48).sint64(m.sintValue)
                     if(m.boolValue!==undefined&&m.boolValue!==false)
                         w.uint32(56).bool(m.boolValue)
@@ -269,8 +269,8 @@ $root.vector_tile = (function() {
             /**
              * Encodes the specified Value, length delimited.
              * @param {vector_tile.Tile.Value|Object} message Value or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Value.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -279,7 +279,7 @@ $root.vector_tile = (function() {
             /**
              * Decodes a Value from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Value} Value
              */
@@ -327,7 +327,7 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Value from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {vector_tile.Tile.Value} Value
              */
             Value.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -438,8 +438,8 @@ $root.vector_tile = (function() {
              * Encodes the specified Feature.
              * @function
              * @param {vector_tile.Tile.Feature|Object} message Feature or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Feature.encode = (function() {
                 /* eslint-disable */
@@ -448,7 +448,7 @@ $root.vector_tile = (function() {
                 var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.GeomType",null]);
                 return function encode(m, w) {
                     w||(w=Writer.create())
-                    if(m.id!==undefined&&util.longNe(m.id,0,0))
+                    if(m.id!==undefined&&m.id!==null&&util.longNe(m.id,0,0))
                         w.uint32(8).uint64(m.id)
                     if(m.tags&&m.tags.length){
                         w.uint32(18).fork()
@@ -472,8 +472,8 @@ $root.vector_tile = (function() {
             /**
              * Encodes the specified Feature, length delimited.
              * @param {vector_tile.Tile.Feature|Object} message Feature or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Feature.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -482,7 +482,7 @@ $root.vector_tile = (function() {
             /**
              * Decodes a Feature from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Feature} Feature
              */
@@ -533,7 +533,7 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Feature from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {vector_tile.Tile.Feature} Feature
              */
             Feature.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -659,8 +659,8 @@ $root.vector_tile = (function() {
              * Encodes the specified Layer.
              * @function
              * @param {vector_tile.Tile.Layer|Object} message Layer or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Layer.encode = (function() {
                 /* eslint-disable */
@@ -690,8 +690,8 @@ $root.vector_tile = (function() {
             /**
              * Encodes the specified Layer, length delimited.
              * @param {vector_tile.Tile.Layer|Object} message Layer or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Layer.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -700,7 +700,7 @@ $root.vector_tile = (function() {
             /**
              * Decodes a Layer from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Layer} Layer
              */
@@ -748,7 +748,7 @@ $root.vector_tile = (function() {
 
             /**
              * Decodes a Layer from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {vector_tile.Tile.Layer} Layer
              */
             Layer.decodeDelimited = function decodeDelimited(readerOrBuffer) {

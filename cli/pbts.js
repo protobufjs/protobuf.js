@@ -92,13 +92,13 @@ exports.main = function(args, callback) {
         }
 
         var output = [
-            "// $> pbts " + process.argv.slice(2).join(' '),
-            "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC")
+            "// $> pbts " + process.argv.slice(2).join(" "),
+            "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
+            ""
         ];
         if (argv.name !== "protobufjs")
             output.push(
-                "",
-                "import { Reader, Writer, Method } from \"protobufjs\";",
+                "import * as $protobuf from \"protobufjs\";",
                 ""
             );
         output = output.join('\n') + "\n" + out.join('');

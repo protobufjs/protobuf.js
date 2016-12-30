@@ -1,3 +1,20 @@
+# [6.3.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.2)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7eb3d456370d7d66b0856e32b2d2602abf598516) Respect optional properties when writing interfaces in tsd-jsdoc, fixes [#598](https://github.com/dcodeIO/protobuf.js/issues/598)<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1f18453c7bfcce65c258fa98a3e3d4577d2e550f) Emit an error on resolveAll() if any extension fields cannot be resolved, see [#595](https://github.com/dcodeIO/protobuf.js/issues/595) + test case<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/39a2ea361c50d7f4aaa0408a0d55bb13823b906c) Removed now unnecessary comment lines in generated static code<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/46ec8209b21cf9ff09ae8674e2a5bbc49fd4991b) Reference dependencies as imports in generated typescript definitions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c0ab94c2e469c0fbf790e4807f24fddd6370e342) Reference dependencies as imports in generated typescript definitions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3bab132b871798c7c50c60a4c14c2effdffa372e) Allow null values on optional long fields, see [#590](https://github.com/dcodeIO/protobuf.js/issues/590)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/31da56c177f1e11ffe0072ad5f58a55e3f8008fd) Various jsdoc improvements and a workaround for d.ts generation, see [#592](https://github.com/dcodeIO/protobuf.js/issues/592)<br />
+
 # [6.3.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.1)
 
 ## Fixed

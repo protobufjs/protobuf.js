@@ -55,8 +55,8 @@ $root.jspb = (function() {
              * Encodes the specified Empty.
              * @function
              * @param {jspb.test.Empty|Object} message Empty or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Empty.encode = (function() {
                 /* eslint-disable */
@@ -73,8 +73,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified Empty, length delimited.
              * @param {jspb.test.Empty|Object} message Empty or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Empty.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -83,7 +83,7 @@ $root.jspb = (function() {
             /**
              * Decodes a Empty from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Empty} Empty
              */
@@ -110,7 +110,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Empty from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Empty} Empty
              */
             Empty.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -186,8 +186,8 @@ $root.jspb = (function() {
              * Encodes the specified EnumContainer.
              * @function
              * @param {jspb.test.EnumContainer|Object} message EnumContainer or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumContainer.encode = (function() {
                 /* eslint-disable */
@@ -206,8 +206,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified EnumContainer, length delimited.
              * @param {jspb.test.EnumContainer|Object} message EnumContainer or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumContainer.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -216,7 +216,7 @@ $root.jspb = (function() {
             /**
              * Decodes a EnumContainer from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
@@ -246,7 +246,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a EnumContainer from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
             EnumContainer.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -332,8 +332,8 @@ $root.jspb = (function() {
              * Encodes the specified Simple1.
              * @function
              * @param {jspb.test.Simple1|Object} message Simple1 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Simple1.encode = (function() {
                 /* eslint-disable */
@@ -356,8 +356,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified Simple1, length delimited.
              * @param {jspb.test.Simple1|Object} message Simple1 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Simple1.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -366,7 +366,7 @@ $root.jspb = (function() {
             /**
              * Decodes a Simple1 from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple1} Simple1
              */
@@ -403,7 +403,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple1 from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Simple1} Simple1
              */
             Simple1.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -488,8 +488,8 @@ $root.jspb = (function() {
              * Encodes the specified Simple2.
              * @function
              * @param {jspb.test.Simple2|Object} message Simple2 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Simple2.encode = (function() {
                 /* eslint-disable */
@@ -510,8 +510,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified Simple2, length delimited.
              * @param {jspb.test.Simple2|Object} message Simple2 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Simple2.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -520,7 +520,7 @@ $root.jspb = (function() {
             /**
              * Decodes a Simple2 from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple2} Simple2
              */
@@ -554,7 +554,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Simple2 from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Simple2} Simple2
              */
             Simple2.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -650,8 +650,8 @@ $root.jspb = (function() {
              * Encodes the specified SpecialCases.
              * @function
              * @param {jspb.test.SpecialCases|Object} message SpecialCases or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             SpecialCases.encode = (function() {
                 /* eslint-disable */
@@ -672,8 +672,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified SpecialCases, length delimited.
              * @param {jspb.test.SpecialCases|Object} message SpecialCases or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             SpecialCases.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -682,7 +682,7 @@ $root.jspb = (function() {
             /**
              * Decodes a SpecialCases from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
@@ -721,7 +721,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a SpecialCases from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
             SpecialCases.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -818,8 +818,8 @@ $root.jspb = (function() {
              * Encodes the specified OptionalFields.
              * @function
              * @param {jspb.test.OptionalFields|Object} message OptionalFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OptionalFields.encode = (function() {
                 /* eslint-disable */
@@ -847,8 +847,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified OptionalFields, length delimited.
              * @param {jspb.test.OptionalFields|Object} message OptionalFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OptionalFields.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -857,7 +857,7 @@ $root.jspb = (function() {
             /**
              * Decodes a OptionalFields from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
@@ -901,7 +901,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a OptionalFields from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
             OptionalFields.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -991,8 +991,8 @@ $root.jspb = (function() {
                  * Encodes the specified Nested.
                  * @function
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encode = (function() {
                     /* eslint-disable */
@@ -1011,8 +1011,8 @@ $root.jspb = (function() {
                 /**
                  * Encodes the specified Nested, length delimited.
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -1021,7 +1021,7 @@ $root.jspb = (function() {
                 /**
                  * Decodes a Nested from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
@@ -1051,7 +1051,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
                 Nested.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -1177,8 +1177,8 @@ $root.jspb = (function() {
              * Encodes the specified HasExtensions.
              * @function
              * @param {jspb.test.HasExtensions|Object} message HasExtensions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             HasExtensions.encode = (function() {
                 /* eslint-disable */
@@ -1215,8 +1215,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified HasExtensions, length delimited.
              * @param {jspb.test.HasExtensions|Object} message HasExtensions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             HasExtensions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -1225,7 +1225,7 @@ $root.jspb = (function() {
             /**
              * Decodes a HasExtensions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
@@ -1281,7 +1281,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a HasExtensions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
             HasExtensions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -1418,8 +1418,8 @@ $root.jspb = (function() {
              * Encodes the specified Complex.
              * @function
              * @param {jspb.test.Complex|Object} message Complex or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Complex.encode = (function() {
                 /* eslint-disable */
@@ -1446,8 +1446,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified Complex, length delimited.
              * @param {jspb.test.Complex|Object} message Complex or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Complex.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -1456,7 +1456,7 @@ $root.jspb = (function() {
             /**
              * Decodes a Complex from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Complex} Complex
              */
@@ -1500,7 +1500,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Complex from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Complex} Complex
              */
             Complex.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -1588,8 +1588,8 @@ $root.jspb = (function() {
                  * Encodes the specified Nested.
                  * @function
                  * @param {jspb.test.Complex.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encode = (function() {
                     /* eslint-disable */
@@ -1607,8 +1607,8 @@ $root.jspb = (function() {
                 /**
                  * Encodes the specified Nested, length delimited.
                  * @param {jspb.test.Complex.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -1617,7 +1617,7 @@ $root.jspb = (function() {
                 /**
                  * Decodes a Nested from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
@@ -1647,7 +1647,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
                 Nested.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -1708,8 +1708,8 @@ $root.jspb = (function() {
              * Encodes the specified OuterMessage.
              * @function
              * @param {jspb.test.OuterMessage|Object} message OuterMessage or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OuterMessage.encode = (function() {
                 /* eslint-disable */
@@ -1726,8 +1726,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified OuterMessage, length delimited.
              * @param {jspb.test.OuterMessage|Object} message OuterMessage or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OuterMessage.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -1736,7 +1736,7 @@ $root.jspb = (function() {
             /**
              * Decodes a OuterMessage from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
@@ -1763,7 +1763,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a OuterMessage from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
             OuterMessage.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -1825,8 +1825,8 @@ $root.jspb = (function() {
                  * Encodes the specified Complex.
                  * @function
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Complex.encode = (function() {
                     /* eslint-disable */
@@ -1845,8 +1845,8 @@ $root.jspb = (function() {
                 /**
                  * Encodes the specified Complex, length delimited.
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Complex.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -1855,7 +1855,7 @@ $root.jspb = (function() {
                 /**
                  * Decodes a Complex from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
@@ -1885,7 +1885,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Complex from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
                 Complex.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -1957,8 +1957,8 @@ $root.jspb = (function() {
              * Encodes the specified IsExtension.
              * @function
              * @param {jspb.test.IsExtension|Object} message IsExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             IsExtension.encode = (function() {
                 /* eslint-disable */
@@ -1977,8 +1977,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified IsExtension, length delimited.
              * @param {jspb.test.IsExtension|Object} message IsExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             IsExtension.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -1987,7 +1987,7 @@ $root.jspb = (function() {
             /**
              * Decodes a IsExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IsExtension} IsExtension
              */
@@ -2017,7 +2017,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a IsExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.IsExtension} IsExtension
              */
             IsExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -2077,8 +2077,8 @@ $root.jspb = (function() {
              * Encodes the specified IndirectExtension.
              * @function
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             IndirectExtension.encode = (function() {
                 /* eslint-disable */
@@ -2095,8 +2095,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified IndirectExtension, length delimited.
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             IndirectExtension.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -2105,7 +2105,7 @@ $root.jspb = (function() {
             /**
              * Decodes a IndirectExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
@@ -2132,7 +2132,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a IndirectExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
             IndirectExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -2227,8 +2227,8 @@ $root.jspb = (function() {
              * Encodes the specified DefaultValues.
              * @function
              * @param {jspb.test.DefaultValues|Object} message DefaultValues or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             DefaultValues.encode = (function() {
                 /* eslint-disable */
@@ -2241,7 +2241,7 @@ $root.jspb = (function() {
                         w.uint32(10).string(m.stringField)
                     if(m.boolField!==undefined&&m.boolField!==true)
                         w.uint32(16).bool(m.boolField)
-                    if(m.intField!==undefined&&util.longNe(m.intField,11,0))
+                    if(m.intField!==undefined&&m.intField!==null&&util.longNe(m.intField,11,0))
                         w.uint32(24).int64(m.intField)
                     if(m.enumField!==undefined&&m.enumField!=="E1")
                         w.uint32(32).uint32(m.enumField)
@@ -2257,8 +2257,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified DefaultValues, length delimited.
              * @param {jspb.test.DefaultValues|Object} message DefaultValues or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             DefaultValues.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -2267,7 +2267,7 @@ $root.jspb = (function() {
             /**
              * Decodes a DefaultValues from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
@@ -2312,7 +2312,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a DefaultValues from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
             DefaultValues.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -2459,8 +2459,8 @@ $root.jspb = (function() {
              * Encodes the specified FloatingPointFields.
              * @function
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FloatingPointFields.encode = (function() {
                 /* eslint-disable */
@@ -2493,8 +2493,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified FloatingPointFields, length delimited.
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FloatingPointFields.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -2503,7 +2503,7 @@ $root.jspb = (function() {
             /**
              * Decodes a FloatingPointFields from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
@@ -2556,7 +2556,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a FloatingPointFields from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
             FloatingPointFields.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -2688,8 +2688,8 @@ $root.jspb = (function() {
              * Encodes the specified TestClone.
              * @function
              * @param {jspb.test.TestClone|Object} message TestClone or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestClone.encode = (function() {
                 /* eslint-disable */
@@ -2719,8 +2719,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified TestClone, length delimited.
              * @param {jspb.test.TestClone|Object} message TestClone or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestClone.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -2729,7 +2729,7 @@ $root.jspb = (function() {
             /**
              * Decodes a TestClone from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestClone} TestClone
              */
@@ -2775,7 +2775,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestClone from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestClone} TestClone
              */
             TestClone.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -2871,8 +2871,8 @@ $root.jspb = (function() {
              * Encodes the specified CloneExtension.
              * @function
              * @param {jspb.test.CloneExtension|Object} message CloneExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             CloneExtension.encode = (function() {
                 /* eslint-disable */
@@ -2891,8 +2891,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified CloneExtension, length delimited.
              * @param {jspb.test.CloneExtension|Object} message CloneExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             CloneExtension.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -2901,7 +2901,7 @@ $root.jspb = (function() {
             /**
              * Decodes a CloneExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
@@ -2931,7 +2931,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a CloneExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
             CloneExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -3012,8 +3012,8 @@ $root.jspb = (function() {
              * Encodes the specified TestGroup.
              * @function
              * @param {jspb.test.TestGroup|Object} message TestGroup or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestGroup.encode = (function() {
                 /* eslint-disable */
@@ -3035,8 +3035,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified TestGroup, length delimited.
              * @param {jspb.test.TestGroup|Object} message TestGroup or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestGroup.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -3045,7 +3045,7 @@ $root.jspb = (function() {
             /**
              * Decodes a TestGroup from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestGroup} TestGroup
              */
@@ -3081,7 +3081,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestGroup from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestGroup} TestGroup
              */
             TestGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -3165,8 +3165,8 @@ $root.jspb = (function() {
              * Encodes the specified TestReservedNames.
              * @function
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestReservedNames.encode = (function() {
                 /* eslint-disable */
@@ -3187,8 +3187,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified TestReservedNames, length delimited.
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestReservedNames.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -3197,7 +3197,7 @@ $root.jspb = (function() {
             /**
              * Decodes a TestReservedNames from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
@@ -3230,7 +3230,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNames from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
             TestReservedNames.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -3294,8 +3294,8 @@ $root.jspb = (function() {
              * Encodes the specified TestReservedNamesExtension.
              * @function
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestReservedNamesExtension.encode = (function() {
                 /* eslint-disable */
@@ -3312,8 +3312,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified TestReservedNamesExtension, length delimited.
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestReservedNamesExtension.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -3322,7 +3322,7 @@ $root.jspb = (function() {
             /**
              * Decodes a TestReservedNamesExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
@@ -3349,7 +3349,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestReservedNamesExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
             TestReservedNamesExtension.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -3552,8 +3552,8 @@ $root.jspb = (function() {
              * Encodes the specified TestMessageWithOneof.
              * @function
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestMessageWithOneof.encode = (function() {
                 /* eslint-disable */
@@ -3607,8 +3607,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified TestMessageWithOneof, length delimited.
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestMessageWithOneof.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -3617,7 +3617,7 @@ $root.jspb = (function() {
             /**
              * Decodes a TestMessageWithOneof from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
@@ -3675,7 +3675,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMessageWithOneof from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
             TestMessageWithOneof.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -3791,8 +3791,8 @@ $root.jspb = (function() {
              * Encodes the specified TestEndsWithBytes.
              * @function
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestEndsWithBytes.encode = (function() {
                 /* eslint-disable */
@@ -3813,8 +3813,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified TestEndsWithBytes, length delimited.
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestEndsWithBytes.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -3823,7 +3823,7 @@ $root.jspb = (function() {
             /**
              * Decodes a TestEndsWithBytes from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
@@ -3856,7 +3856,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestEndsWithBytes from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
             TestEndsWithBytes.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -3995,8 +3995,8 @@ $root.jspb = (function() {
              * Encodes the specified TestMapFieldsNoBinary.
              * @function
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestMapFieldsNoBinary.encode = (function() {
                 /* eslint-disable */
@@ -4092,8 +4092,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified TestMapFieldsNoBinary, length delimited.
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             TestMapFieldsNoBinary.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -4102,7 +4102,7 @@ $root.jspb = (function() {
             /**
              * Decodes a TestMapFieldsNoBinary from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
@@ -4242,7 +4242,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a TestMapFieldsNoBinary from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
             TestMapFieldsNoBinary.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -4437,8 +4437,8 @@ $root.jspb = (function() {
              * Encodes the specified MapValueMessageNoBinary.
              * @function
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MapValueMessageNoBinary.encode = (function() {
                 /* eslint-disable */
@@ -4457,8 +4457,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified MapValueMessageNoBinary, length delimited.
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MapValueMessageNoBinary.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -4467,7 +4467,7 @@ $root.jspb = (function() {
             /**
              * Decodes a MapValueMessageNoBinary from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
@@ -4497,7 +4497,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a MapValueMessageNoBinary from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
             MapValueMessageNoBinary.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -4557,8 +4557,8 @@ $root.jspb = (function() {
              * Encodes the specified Deeply.
              * @function
              * @param {jspb.test.Deeply|Object} message Deeply or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Deeply.encode = (function() {
                 /* eslint-disable */
@@ -4575,8 +4575,8 @@ $root.jspb = (function() {
             /**
              * Encodes the specified Deeply, length delimited.
              * @param {jspb.test.Deeply|Object} message Deeply or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             Deeply.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -4585,7 +4585,7 @@ $root.jspb = (function() {
             /**
              * Decodes a Deeply from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Deeply} Deeply
              */
@@ -4612,7 +4612,7 @@ $root.jspb = (function() {
 
             /**
              * Decodes a Deeply from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Deeply} Deeply
              */
             Deeply.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -4665,8 +4665,8 @@ $root.jspb = (function() {
                  * Encodes the specified Nested.
                  * @function
                  * @param {jspb.test.Deeply.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encode = (function() {
                     /* eslint-disable */
@@ -4683,8 +4683,8 @@ $root.jspb = (function() {
                 /**
                  * Encodes the specified Nested, length delimited.
                  * @param {jspb.test.Deeply.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Nested.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -4693,7 +4693,7 @@ $root.jspb = (function() {
                 /**
                  * Decodes a Nested from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
@@ -4720,7 +4720,7 @@ $root.jspb = (function() {
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
                 Nested.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -4782,8 +4782,8 @@ $root.jspb = (function() {
                      * Encodes the specified Message.
                      * @function
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message or plain object to encode
-                     * @param {Writer} [writer] Writer to encode to
-                     * @returns {Writer} Writer
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
                      */
                     Message.encode = (function() {
                         /* eslint-disable */
@@ -4802,8 +4802,8 @@ $root.jspb = (function() {
                     /**
                      * Encodes the specified Message, length delimited.
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message or plain object to encode
-                     * @param {Writer} [writer] Writer to encode to
-                     * @returns {Writer} Writer
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
                      */
                     Message.encodeDelimited = function encodeDelimited(message, writer) {
                         return this.encode(message, writer).ldelim();
@@ -4812,7 +4812,7 @@ $root.jspb = (function() {
                     /**
                      * Decodes a Message from the specified reader or buffer.
                      * @function
-                     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                      * @param {number} [length] Message length if known beforehand
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
@@ -4842,7 +4842,7 @@ $root.jspb = (function() {
 
                     /**
                      * Decodes a Message from the specified reader or buffer, length delimited.
-                     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
                     Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -4941,8 +4941,8 @@ $root.google = (function() {
              * Encodes the specified FileDescriptorSet.
              * @function
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorSet.encode = (function() {
                 /* eslint-disable */
@@ -4962,8 +4962,8 @@ $root.google = (function() {
             /**
              * Encodes the specified FileDescriptorSet, length delimited.
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorSet.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -4972,7 +4972,7 @@ $root.google = (function() {
             /**
              * Decodes a FileDescriptorSet from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
@@ -5003,7 +5003,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorSet from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
             FileDescriptorSet.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -5144,8 +5144,8 @@ $root.google = (function() {
              * Encodes the specified FileDescriptorProto.
              * @function
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -5193,8 +5193,8 @@ $root.google = (function() {
             /**
              * Encodes the specified FileDescriptorProto, length delimited.
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FileDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -5203,7 +5203,7 @@ $root.google = (function() {
             /**
              * Decodes a FileDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
@@ -5273,7 +5273,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
             FileDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -5474,8 +5474,8 @@ $root.google = (function() {
              * Encodes the specified DescriptorProto.
              * @function
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             DescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -5520,8 +5520,8 @@ $root.google = (function() {
             /**
              * Encodes the specified DescriptorProto, length delimited.
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             DescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -5530,7 +5530,7 @@ $root.google = (function() {
             /**
              * Decodes a DescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
@@ -5595,7 +5595,7 @@ $root.google = (function() {
 
             /**
              * Decodes a DescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
             DescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -5743,8 +5743,8 @@ $root.google = (function() {
                  * Encodes the specified ExtensionRange.
                  * @function
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 ExtensionRange.encode = (function() {
                     /* eslint-disable */
@@ -5765,8 +5765,8 @@ $root.google = (function() {
                 /**
                  * Encodes the specified ExtensionRange, length delimited.
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 ExtensionRange.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -5775,7 +5775,7 @@ $root.google = (function() {
                 /**
                  * Decodes a ExtensionRange from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
@@ -5808,7 +5808,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a ExtensionRange from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
                 ExtensionRange.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -5887,8 +5887,8 @@ $root.google = (function() {
                  * Encodes the specified ReservedRange.
                  * @function
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 ReservedRange.encode = (function() {
                     /* eslint-disable */
@@ -5909,8 +5909,8 @@ $root.google = (function() {
                 /**
                  * Encodes the specified ReservedRange, length delimited.
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 ReservedRange.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -5919,7 +5919,7 @@ $root.google = (function() {
                 /**
                  * Decodes a ReservedRange from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
@@ -5952,7 +5952,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a ReservedRange from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
                 ReservedRange.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -6082,8 +6082,8 @@ $root.google = (function() {
              * Encodes the specified FieldDescriptorProto.
              * @function
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FieldDescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -6120,8 +6120,8 @@ $root.google = (function() {
             /**
              * Encodes the specified FieldDescriptorProto, length delimited.
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FieldDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -6130,7 +6130,7 @@ $root.google = (function() {
             /**
              * Decodes a FieldDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
@@ -6187,7 +6187,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
             FieldDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -6365,8 +6365,8 @@ $root.google = (function() {
              * Encodes the specified OneofDescriptorProto.
              * @function
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OneofDescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -6387,8 +6387,8 @@ $root.google = (function() {
             /**
              * Encodes the specified OneofDescriptorProto, length delimited.
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OneofDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -6397,7 +6397,7 @@ $root.google = (function() {
             /**
              * Decodes a OneofDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
@@ -6430,7 +6430,7 @@ $root.google = (function() {
 
             /**
              * Decodes a OneofDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
             OneofDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -6516,8 +6516,8 @@ $root.google = (function() {
              * Encodes the specified EnumDescriptorProto.
              * @function
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumDescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -6541,8 +6541,8 @@ $root.google = (function() {
             /**
              * Encodes the specified EnumDescriptorProto, length delimited.
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -6551,7 +6551,7 @@ $root.google = (function() {
             /**
              * Decodes a EnumDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
@@ -6588,7 +6588,7 @@ $root.google = (function() {
 
             /**
              * Decodes a EnumDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
             EnumDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -6683,8 +6683,8 @@ $root.google = (function() {
              * Encodes the specified EnumValueDescriptorProto.
              * @function
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumValueDescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -6707,8 +6707,8 @@ $root.google = (function() {
             /**
              * Encodes the specified EnumValueDescriptorProto, length delimited.
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumValueDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -6717,7 +6717,7 @@ $root.google = (function() {
             /**
              * Decodes a EnumValueDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
@@ -6753,7 +6753,7 @@ $root.google = (function() {
 
             /**
              * Decodes a EnumValueDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
             EnumValueDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -6843,8 +6843,8 @@ $root.google = (function() {
              * Encodes the specified ServiceDescriptorProto.
              * @function
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             ServiceDescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -6868,8 +6868,8 @@ $root.google = (function() {
             /**
              * Encodes the specified ServiceDescriptorProto, length delimited.
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             ServiceDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -6878,7 +6878,7 @@ $root.google = (function() {
             /**
              * Decodes a ServiceDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
@@ -6915,7 +6915,7 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
             ServiceDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -7028,8 +7028,8 @@ $root.google = (function() {
              * Encodes the specified MethodDescriptorProto.
              * @function
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MethodDescriptorProto.encode = (function() {
                 /* eslint-disable */
@@ -7058,8 +7058,8 @@ $root.google = (function() {
             /**
              * Encodes the specified MethodDescriptorProto, length delimited.
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MethodDescriptorProto.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -7068,7 +7068,7 @@ $root.google = (function() {
             /**
              * Decodes a MethodDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
@@ -7113,7 +7113,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
             MethodDescriptorProto.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -7287,8 +7287,8 @@ $root.google = (function() {
              * Encodes the specified FileOptions.
              * @function
              * @param {google.protobuf.FileOptions|Object} message FileOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FileOptions.encode = (function() {
                 /* eslint-disable */
@@ -7336,8 +7336,8 @@ $root.google = (function() {
             /**
              * Encodes the specified FileOptions, length delimited.
              * @param {google.protobuf.FileOptions|Object} message FileOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FileOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -7346,7 +7346,7 @@ $root.google = (function() {
             /**
              * Decodes a FileOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileOptions} FileOptions
              */
@@ -7419,7 +7419,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FileOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FileOptions} FileOptions
              */
             FileOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -7591,8 +7591,8 @@ $root.google = (function() {
              * Encodes the specified MessageOptions.
              * @function
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MessageOptions.encode = (function() {
                 /* eslint-disable */
@@ -7620,8 +7620,8 @@ $root.google = (function() {
             /**
              * Encodes the specified MessageOptions, length delimited.
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MessageOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -7630,7 +7630,7 @@ $root.google = (function() {
             /**
              * Decodes a MessageOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
@@ -7673,7 +7673,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MessageOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
             MessageOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -7799,8 +7799,8 @@ $root.google = (function() {
              * Encodes the specified FieldOptions.
              * @function
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FieldOptions.encode = (function() {
                 /* eslint-disable */
@@ -7832,8 +7832,8 @@ $root.google = (function() {
             /**
              * Encodes the specified FieldOptions, length delimited.
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             FieldOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -7842,7 +7842,7 @@ $root.google = (function() {
             /**
              * Decodes a FieldOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
@@ -7891,7 +7891,7 @@ $root.google = (function() {
 
             /**
              * Decodes a FieldOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
             FieldOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -8025,8 +8025,8 @@ $root.google = (function() {
              * Encodes the specified OneofOptions.
              * @function
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OneofOptions.encode = (function() {
                 /* eslint-disable */
@@ -8046,8 +8046,8 @@ $root.google = (function() {
             /**
              * Encodes the specified OneofOptions, length delimited.
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             OneofOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -8056,7 +8056,7 @@ $root.google = (function() {
             /**
              * Decodes a OneofOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
@@ -8087,7 +8087,7 @@ $root.google = (function() {
 
             /**
              * Decodes a OneofOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
             OneofOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -8180,8 +8180,8 @@ $root.google = (function() {
              * Encodes the specified EnumOptions.
              * @function
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumOptions.encode = (function() {
                 /* eslint-disable */
@@ -8207,8 +8207,8 @@ $root.google = (function() {
             /**
              * Encodes the specified EnumOptions, length delimited.
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -8217,7 +8217,7 @@ $root.google = (function() {
             /**
              * Decodes a EnumOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
@@ -8257,7 +8257,7 @@ $root.google = (function() {
 
             /**
              * Decodes a EnumOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
             EnumOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -8349,8 +8349,8 @@ $root.google = (function() {
              * Encodes the specified EnumValueOptions.
              * @function
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumValueOptions.encode = (function() {
                 /* eslint-disable */
@@ -8372,8 +8372,8 @@ $root.google = (function() {
             /**
              * Encodes the specified EnumValueOptions, length delimited.
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             EnumValueOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -8382,7 +8382,7 @@ $root.google = (function() {
             /**
              * Decodes a EnumValueOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
@@ -8416,7 +8416,7 @@ $root.google = (function() {
 
             /**
              * Decodes a EnumValueOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
             EnumValueOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -8500,8 +8500,8 @@ $root.google = (function() {
              * Encodes the specified ServiceOptions.
              * @function
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             ServiceOptions.encode = (function() {
                 /* eslint-disable */
@@ -8523,8 +8523,8 @@ $root.google = (function() {
             /**
              * Encodes the specified ServiceOptions, length delimited.
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             ServiceOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -8533,7 +8533,7 @@ $root.google = (function() {
             /**
              * Decodes a ServiceOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
@@ -8567,7 +8567,7 @@ $root.google = (function() {
 
             /**
              * Decodes a ServiceOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
             ServiceOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -8657,8 +8657,8 @@ $root.google = (function() {
              * Encodes the specified MethodOptions.
              * @function
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MethodOptions.encode = (function() {
                 /* eslint-disable */
@@ -8682,8 +8682,8 @@ $root.google = (function() {
             /**
              * Encodes the specified MethodOptions, length delimited.
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             MethodOptions.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -8692,7 +8692,7 @@ $root.google = (function() {
             /**
              * Decodes a MethodOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
@@ -8729,7 +8729,7 @@ $root.google = (function() {
 
             /**
              * Decodes a MethodOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
             MethodOptions.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -8865,8 +8865,8 @@ $root.google = (function() {
              * Encodes the specified UninterpretedOption.
              * @function
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             UninterpretedOption.encode = (function() {
                 /* eslint-disable */
@@ -8880,9 +8880,9 @@ $root.google = (function() {
                         types[0].encode(m.name[i],w.uint32(18).fork()).ldelim()
                     if(m.identifierValue!==undefined&&m.identifierValue!=="")
                         w.uint32(26).string(m.identifierValue)
-                    if(m.positiveIntValue!==undefined&&util.longNe(m.positiveIntValue,0,0))
+                    if(m.positiveIntValue!==undefined&&m.positiveIntValue!==null&&util.longNe(m.positiveIntValue,0,0))
                         w.uint32(32).uint64(m.positiveIntValue)
-                    if(m.negativeIntValue!==undefined&&util.longNe(m.negativeIntValue,0,0))
+                    if(m.negativeIntValue!==undefined&&m.negativeIntValue!==null&&util.longNe(m.negativeIntValue,0,0))
                         w.uint32(40).int64(m.negativeIntValue)
                     if(m.doubleValue!==undefined&&m.doubleValue!==0)
                         w.uint32(49).double(m.doubleValue)
@@ -8898,8 +8898,8 @@ $root.google = (function() {
             /**
              * Encodes the specified UninterpretedOption, length delimited.
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             UninterpretedOption.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -8908,7 +8908,7 @@ $root.google = (function() {
             /**
              * Decodes a UninterpretedOption from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
@@ -8957,7 +8957,7 @@ $root.google = (function() {
 
             /**
              * Decodes a UninterpretedOption from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
             UninterpretedOption.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -9058,8 +9058,8 @@ $root.google = (function() {
                  * Encodes the specified NamePart.
                  * @function
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 NamePart.encode = (function() {
                     /* eslint-disable */
@@ -9078,8 +9078,8 @@ $root.google = (function() {
                 /**
                  * Encodes the specified NamePart, length delimited.
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 NamePart.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -9088,7 +9088,7 @@ $root.google = (function() {
                 /**
                  * Decodes a NamePart from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
@@ -9121,7 +9121,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a NamePart from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
                 NamePart.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -9193,8 +9193,8 @@ $root.google = (function() {
              * Encodes the specified SourceCodeInfo.
              * @function
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             SourceCodeInfo.encode = (function() {
                 /* eslint-disable */
@@ -9214,8 +9214,8 @@ $root.google = (function() {
             /**
              * Encodes the specified SourceCodeInfo, length delimited.
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             SourceCodeInfo.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -9224,7 +9224,7 @@ $root.google = (function() {
             /**
              * Decodes a SourceCodeInfo from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
@@ -9255,7 +9255,7 @@ $root.google = (function() {
 
             /**
              * Decodes a SourceCodeInfo from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
             SourceCodeInfo.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -9350,8 +9350,8 @@ $root.google = (function() {
                  * Encodes the specified Location.
                  * @function
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Location.encode = (function() {
                     /* eslint-disable */
@@ -9387,8 +9387,8 @@ $root.google = (function() {
                 /**
                  * Encodes the specified Location, length delimited.
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Location.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -9397,7 +9397,7 @@ $root.google = (function() {
                 /**
                  * Decodes a Location from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
@@ -9452,7 +9452,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a Location from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
                 Location.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -9552,8 +9552,8 @@ $root.google = (function() {
              * Encodes the specified GeneratedCodeInfo.
              * @function
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             GeneratedCodeInfo.encode = (function() {
                 /* eslint-disable */
@@ -9573,8 +9573,8 @@ $root.google = (function() {
             /**
              * Encodes the specified GeneratedCodeInfo, length delimited.
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
             GeneratedCodeInfo.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
@@ -9583,7 +9583,7 @@ $root.google = (function() {
             /**
              * Decodes a GeneratedCodeInfo from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
@@ -9614,7 +9614,7 @@ $root.google = (function() {
 
             /**
              * Decodes a GeneratedCodeInfo from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
             GeneratedCodeInfo.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -9703,8 +9703,8 @@ $root.google = (function() {
                  * Encodes the specified Annotation.
                  * @function
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Annotation.encode = (function() {
                     /* eslint-disable */
@@ -9733,8 +9733,8 @@ $root.google = (function() {
                 /**
                  * Encodes the specified Annotation, length delimited.
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
                 Annotation.encodeDelimited = function encodeDelimited(message, writer) {
                     return this.encode(message, writer).ldelim();
@@ -9743,7 +9743,7 @@ $root.google = (function() {
                 /**
                  * Decodes a Annotation from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
@@ -9788,7 +9788,7 @@ $root.google = (function() {
 
                 /**
                  * Decodes a Annotation from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
                 Annotation.decodeDelimited = function decodeDelimited(readerOrBuffer) {

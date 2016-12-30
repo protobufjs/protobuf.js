@@ -306,8 +306,8 @@ function buildType(ref, type) {
             "Encodes the specified " + type.name + ".",
             "@function",
             "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
-            "@param {Writer} [writer] Writer to encode to",
-            "@returns {Writer} Writer"
+            "@param {$protobuf.Writer} [writer] Writer to encode to",
+            "@returns {$protobuf.Writer} Writer"
         ]);
         buildFunction(type, "encode", protobuf.encoder(type), {
             Writer : "$protobuf.Writer",
@@ -319,8 +319,8 @@ function buildType(ref, type) {
             pushComment([
                 "Encodes the specified " + type.name + ", length delimited.",
                 "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
-                "@param {Writer} [writer] Writer to encode to",
-                "@returns {Writer} Writer"
+                "@param {$protobuf.Writer} [writer] Writer to encode to",
+                "@returns {$protobuf.Writer} Writer"
             ]);
             push(name(type.name) + ".encodeDelimited = function encodeDelimited(message, writer) {");
             ++indent;
@@ -337,7 +337,7 @@ function buildType(ref, type) {
         pushComment([
             "Decodes a " + type.name + " from the specified reader or buffer.",
             "@function",
-            "@param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
+            "@param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
             "@param {number} [length] Message length if known beforehand",
             "@returns {" + fullName + "} " + type.name
         ]);
@@ -350,7 +350,7 @@ function buildType(ref, type) {
             push("");
             pushComment([
                 "Decodes a " + type.name + " from the specified reader or buffer, length delimited.",
-                "@param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
+                "@param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
                 "@returns {" + fullName + "} " + type.name
             ]);
             push(name(type.name) + ".decodeDelimited = function decodeDelimited(readerOrBuffer) {");
@@ -389,7 +389,7 @@ function buildService(ref, service) {
              "RPC implementation passed to services performing a service request on network level, i.e. by utilizing http requests or websockets.",
              "@typedef RPCImpl",
              "@type {function}",
-             "@param {Method} method Reflected method being called",
+             "@param {$protobuf.Method} method Reflected method being called",
              "@param {Uint8Array} requestData Request data",
              "@param {RPCCallback} callback Callback function",
              "@returns {undefined}"

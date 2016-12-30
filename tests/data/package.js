@@ -136,8 +136,8 @@ $root.Package = (function() {
      * Encodes the specified Package.
      * @function
      * @param {Package|Object} message Package or plain object to encode
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} Writer
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
      */
     Package.encode = (function() {
         /* eslint-disable */
@@ -212,8 +212,8 @@ $root.Package = (function() {
     /**
      * Encodes the specified Package, length delimited.
      * @param {Package|Object} message Package or plain object to encode
-     * @param {Writer} [writer] Writer to encode to
-     * @returns {Writer} Writer
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
      */
     Package.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
@@ -222,7 +222,7 @@ $root.Package = (function() {
     /**
      * Decodes a Package from the specified reader or buffer.
      * @function
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Package} Package
      */
@@ -333,7 +333,7 @@ $root.Package = (function() {
 
     /**
      * Decodes a Package from the specified reader or buffer, length delimited.
-     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {Package} Package
      */
     Package.decodeDelimited = function decodeDelimited(readerOrBuffer) {
@@ -495,8 +495,8 @@ $root.Package = (function() {
          * Encodes the specified Repository.
          * @function
          * @param {Package.Repository|Object} message Repository or plain object to encode
-         * @param {Writer} [writer] Writer to encode to
-         * @returns {Writer} Writer
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
          */
         Repository.encode = (function() {
             /* eslint-disable */
@@ -517,8 +517,8 @@ $root.Package = (function() {
         /**
          * Encodes the specified Repository, length delimited.
          * @param {Package.Repository|Object} message Repository or plain object to encode
-         * @param {Writer} [writer] Writer to encode to
-         * @returns {Writer} Writer
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
          */
         Repository.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
@@ -527,7 +527,7 @@ $root.Package = (function() {
         /**
          * Decodes a Repository from the specified reader or buffer.
          * @function
-         * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {Package.Repository} Repository
          */
@@ -560,7 +560,7 @@ $root.Package = (function() {
 
         /**
          * Decodes a Repository from the specified reader or buffer, length delimited.
-         * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+         * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @returns {Package.Repository} Repository
          */
         Repository.decodeDelimited = function decodeDelimited(readerOrBuffer) {

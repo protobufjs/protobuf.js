@@ -1,6 +1,8 @@
-/// <reference path="../../types/protobuf.js.d.ts" />
 // $> pbts tests\data\test.js
-// Generated Tue, 27 Dec 2016 22:59:45 UTC
+// Generated Fri, 30 Dec 2016 12:22:12 UTC
+
+import * as $protobuf from "protobufjs";
+
 /**
  * Namespace jspb.
  * @exports jspb
@@ -42,34 +44,34 @@ declare module jspb {
              * Encodes the specified Empty.
              * @function
              * @param {jspb.test.Empty|Object} message Empty or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.Empty|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.Empty|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified Empty, length delimited.
              * @param {jspb.test.Empty|Object} message Empty or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.Empty|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.Empty|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a Empty from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Empty} Empty
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Empty;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Empty;
 
             /**
              * Decodes a Empty from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Empty} Empty
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Empty;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Empty;
 
             /**
              * Verifies a Empty.
@@ -113,34 +115,34 @@ declare module jspb {
              * Encodes the specified EnumContainer.
              * @function
              * @param {jspb.test.EnumContainer|Object} message EnumContainer or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.EnumContainer|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.EnumContainer|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified EnumContainer, length delimited.
              * @param {jspb.test.EnumContainer|Object} message EnumContainer or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.EnumContainer|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.EnumContainer|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a EnumContainer from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.EnumContainer;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.EnumContainer;
 
             /**
              * Decodes a EnumContainer from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.EnumContainer;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.EnumContainer;
 
             /**
              * Verifies a EnumContainer.
@@ -196,34 +198,34 @@ declare module jspb {
              * Encodes the specified Simple1.
              * @function
              * @param {jspb.test.Simple1|Object} message Simple1 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.Simple1|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.Simple1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified Simple1, length delimited.
              * @param {jspb.test.Simple1|Object} message Simple1 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.Simple1|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.Simple1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a Simple1 from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple1} Simple1
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Simple1;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple1;
 
             /**
              * Decodes a Simple1 from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Simple1} Simple1
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Simple1;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Simple1;
 
             /**
              * Verifies a Simple1.
@@ -273,34 +275,34 @@ declare module jspb {
              * Encodes the specified Simple2.
              * @function
              * @param {jspb.test.Simple2|Object} message Simple2 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.Simple2|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.Simple2|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified Simple2, length delimited.
              * @param {jspb.test.Simple2|Object} message Simple2 or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.Simple2|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.Simple2|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a Simple2 from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple2} Simple2
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Simple2;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple2;
 
             /**
              * Decodes a Simple2 from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Simple2} Simple2
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Simple2;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Simple2;
 
             /**
              * Verifies a Simple2.
@@ -365,34 +367,34 @@ declare module jspb {
              * Encodes the specified SpecialCases.
              * @function
              * @param {jspb.test.SpecialCases|Object} message SpecialCases or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.SpecialCases|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.SpecialCases|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified SpecialCases, length delimited.
              * @param {jspb.test.SpecialCases|Object} message SpecialCases or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.SpecialCases|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.SpecialCases|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a SpecialCases from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.SpecialCases;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.SpecialCases;
 
             /**
              * Decodes a SpecialCases from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.SpecialCases;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.SpecialCases;
 
             /**
              * Verifies a SpecialCases.
@@ -460,34 +462,34 @@ declare module jspb {
              * Encodes the specified OptionalFields.
              * @function
              * @param {jspb.test.OptionalFields|Object} message OptionalFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.OptionalFields|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.OptionalFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified OptionalFields, length delimited.
              * @param {jspb.test.OptionalFields|Object} message OptionalFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.OptionalFields|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.OptionalFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a OptionalFields from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.OptionalFields;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OptionalFields;
 
             /**
              * Decodes a OptionalFields from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.OptionalFields;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.OptionalFields;
 
             /**
              * Verifies a OptionalFields.
@@ -540,34 +542,34 @@ declare module jspb {
                  * Encodes the specified Nested.
                  * @function
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (jspb.test.OptionalFields.Nested|Object), writer?: Writer): Writer;
+                static encode(message: (jspb.test.OptionalFields.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified Nested, length delimited.
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (jspb.test.OptionalFields.Nested|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (jspb.test.OptionalFields.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a Nested from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.OptionalFields.Nested;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OptionalFields.Nested;
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.OptionalFields.Nested;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.OptionalFields.Nested;
 
                 /**
                  * Verifies a Nested.
@@ -624,34 +626,34 @@ declare module jspb {
              * Encodes the specified HasExtensions.
              * @function
              * @param {jspb.test.HasExtensions|Object} message HasExtensions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.HasExtensions|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.HasExtensions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified HasExtensions, length delimited.
              * @param {jspb.test.HasExtensions|Object} message HasExtensions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.HasExtensions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.HasExtensions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a HasExtensions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.HasExtensions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.HasExtensions;
 
             /**
              * Decodes a HasExtensions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.HasExtensions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.HasExtensions;
 
             /**
              * Verifies a HasExtensions.
@@ -719,34 +721,34 @@ declare module jspb {
              * Encodes the specified Complex.
              * @function
              * @param {jspb.test.Complex|Object} message Complex or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.Complex|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified Complex, length delimited.
              * @param {jspb.test.Complex|Object} message Complex or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.Complex|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a Complex from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Complex} Complex
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Complex;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Complex;
 
             /**
              * Decodes a Complex from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Complex} Complex
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Complex;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Complex;
 
             /**
              * Verifies a Complex.
@@ -799,34 +801,34 @@ declare module jspb {
                  * Encodes the specified Nested.
                  * @function
                  * @param {jspb.test.Complex.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (jspb.test.Complex.Nested|Object), writer?: Writer): Writer;
+                static encode(message: (jspb.test.Complex.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified Nested, length delimited.
                  * @param {jspb.test.Complex.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (jspb.test.Complex.Nested|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (jspb.test.Complex.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a Nested from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Complex.Nested;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Complex.Nested;
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Complex.Nested;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Complex.Nested;
 
                 /**
                  * Verifies a Nested.
@@ -865,34 +867,34 @@ declare module jspb {
              * Encodes the specified OuterMessage.
              * @function
              * @param {jspb.test.OuterMessage|Object} message OuterMessage or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.OuterMessage|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.OuterMessage|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified OuterMessage, length delimited.
              * @param {jspb.test.OuterMessage|Object} message OuterMessage or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.OuterMessage|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.OuterMessage|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a OuterMessage from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.OuterMessage;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage;
 
             /**
              * Decodes a OuterMessage from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.OuterMessage;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.OuterMessage;
 
             /**
              * Verifies a OuterMessage.
@@ -945,34 +947,34 @@ declare module jspb {
                  * Encodes the specified Complex.
                  * @function
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (jspb.test.OuterMessage.Complex|Object), writer?: Writer): Writer;
+                static encode(message: (jspb.test.OuterMessage.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified Complex, length delimited.
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (jspb.test.OuterMessage.Complex|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (jspb.test.OuterMessage.Complex|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a Complex from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.OuterMessage.Complex;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage.Complex;
 
                 /**
                  * Decodes a Complex from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.OuterMessage.Complex;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.OuterMessage.Complex;
 
                 /**
                  * Verifies a Complex.
@@ -1017,34 +1019,34 @@ declare module jspb {
              * Encodes the specified IsExtension.
              * @function
              * @param {jspb.test.IsExtension|Object} message IsExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.IsExtension|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.IsExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified IsExtension, length delimited.
              * @param {jspb.test.IsExtension|Object} message IsExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.IsExtension|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.IsExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a IsExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IsExtension} IsExtension
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.IsExtension;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IsExtension;
 
             /**
              * Decodes a IsExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.IsExtension} IsExtension
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.IsExtension;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.IsExtension;
 
             /**
              * Verifies a IsExtension.
@@ -1082,34 +1084,34 @@ declare module jspb {
              * Encodes the specified IndirectExtension.
              * @function
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.IndirectExtension|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.IndirectExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified IndirectExtension, length delimited.
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.IndirectExtension|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.IndirectExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a IndirectExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.IndirectExtension;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IndirectExtension;
 
             /**
              * Decodes a IndirectExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.IndirectExtension;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.IndirectExtension;
 
             /**
              * Verifies a IndirectExtension.
@@ -1183,34 +1185,34 @@ declare module jspb {
              * Encodes the specified DefaultValues.
              * @function
              * @param {jspb.test.DefaultValues|Object} message DefaultValues or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.DefaultValues|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.DefaultValues|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified DefaultValues, length delimited.
              * @param {jspb.test.DefaultValues|Object} message DefaultValues or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.DefaultValues|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.DefaultValues|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a DefaultValues from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.DefaultValues;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.DefaultValues;
 
             /**
              * Decodes a DefaultValues from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.DefaultValues;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.DefaultValues;
 
             /**
              * Verifies a DefaultValues.
@@ -1296,34 +1298,34 @@ declare module jspb {
              * Encodes the specified FloatingPointFields.
              * @function
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.FloatingPointFields|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.FloatingPointFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified FloatingPointFields, length delimited.
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.FloatingPointFields|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.FloatingPointFields|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a FloatingPointFields from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.FloatingPointFields;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.FloatingPointFields;
 
             /**
              * Decodes a FloatingPointFields from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.FloatingPointFields;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.FloatingPointFields;
 
             /**
              * Verifies a FloatingPointFields.
@@ -1391,34 +1393,34 @@ declare module jspb {
              * Encodes the specified TestClone.
              * @function
              * @param {jspb.test.TestClone|Object} message TestClone or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.TestClone|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.TestClone|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified TestClone, length delimited.
              * @param {jspb.test.TestClone|Object} message TestClone or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.TestClone|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.TestClone|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a TestClone from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestClone} TestClone
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.TestClone;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestClone;
 
             /**
              * Decodes a TestClone from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestClone} TestClone
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.TestClone;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestClone;
 
             /**
              * Verifies a TestClone.
@@ -1462,34 +1464,34 @@ declare module jspb {
              * Encodes the specified CloneExtension.
              * @function
              * @param {jspb.test.CloneExtension|Object} message CloneExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.CloneExtension|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.CloneExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified CloneExtension, length delimited.
              * @param {jspb.test.CloneExtension|Object} message CloneExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.CloneExtension|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.CloneExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a CloneExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.CloneExtension;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.CloneExtension;
 
             /**
              * Decodes a CloneExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.CloneExtension;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.CloneExtension;
 
             /**
              * Verifies a CloneExtension.
@@ -1545,34 +1547,34 @@ declare module jspb {
              * Encodes the specified TestGroup.
              * @function
              * @param {jspb.test.TestGroup|Object} message TestGroup or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.TestGroup|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.TestGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified TestGroup, length delimited.
              * @param {jspb.test.TestGroup|Object} message TestGroup or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.TestGroup|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.TestGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a TestGroup from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestGroup} TestGroup
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.TestGroup;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup;
 
             /**
              * Decodes a TestGroup from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestGroup} TestGroup
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.TestGroup;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup;
 
             /**
              * Verifies a TestGroup.
@@ -1616,34 +1618,34 @@ declare module jspb {
              * Encodes the specified TestReservedNames.
              * @function
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.TestReservedNames|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.TestReservedNames|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified TestReservedNames, length delimited.
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.TestReservedNames|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.TestReservedNames|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a TestReservedNames from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.TestReservedNames;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNames;
 
             /**
              * Decodes a TestReservedNames from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.TestReservedNames;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestReservedNames;
 
             /**
              * Verifies a TestReservedNames.
@@ -1681,34 +1683,34 @@ declare module jspb {
              * Encodes the specified TestReservedNamesExtension.
              * @function
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.TestReservedNamesExtension|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.TestReservedNamesExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified TestReservedNamesExtension, length delimited.
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.TestReservedNamesExtension|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.TestReservedNamesExtension|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a TestReservedNamesExtension from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.TestReservedNamesExtension;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNamesExtension;
 
             /**
              * Decodes a TestReservedNamesExtension from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.TestReservedNamesExtension;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestReservedNamesExtension;
 
             /**
              * Verifies a TestReservedNamesExtension.
@@ -1834,34 +1836,34 @@ declare module jspb {
              * Encodes the specified TestMessageWithOneof.
              * @function
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.TestMessageWithOneof|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.TestMessageWithOneof|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified TestMessageWithOneof, length delimited.
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.TestMessageWithOneof|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.TestMessageWithOneof|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a TestMessageWithOneof from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.TestMessageWithOneof;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestMessageWithOneof;
 
             /**
              * Decodes a TestMessageWithOneof from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.TestMessageWithOneof;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestMessageWithOneof;
 
             /**
              * Verifies a TestMessageWithOneof.
@@ -1911,34 +1913,34 @@ declare module jspb {
              * Encodes the specified TestEndsWithBytes.
              * @function
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.TestEndsWithBytes|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.TestEndsWithBytes|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified TestEndsWithBytes, length delimited.
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.TestEndsWithBytes|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.TestEndsWithBytes|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a TestEndsWithBytes from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.TestEndsWithBytes;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestEndsWithBytes;
 
             /**
              * Decodes a TestEndsWithBytes from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.TestEndsWithBytes;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestEndsWithBytes;
 
             /**
              * Verifies a TestEndsWithBytes.
@@ -2048,34 +2050,34 @@ declare module jspb {
              * Encodes the specified TestMapFieldsNoBinary.
              * @function
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified TestMapFieldsNoBinary, length delimited.
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a TestMapFieldsNoBinary from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.TestMapFieldsNoBinary;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestMapFieldsNoBinary;
 
             /**
              * Decodes a TestMapFieldsNoBinary from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.TestMapFieldsNoBinary;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestMapFieldsNoBinary;
 
             /**
              * Verifies a TestMapFieldsNoBinary.
@@ -2119,34 +2121,34 @@ declare module jspb {
              * Encodes the specified MapValueMessageNoBinary.
              * @function
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.MapValueMessageNoBinary|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.MapValueMessageNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified MapValueMessageNoBinary, length delimited.
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.MapValueMessageNoBinary|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.MapValueMessageNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a MapValueMessageNoBinary from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.MapValueMessageNoBinary;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.MapValueMessageNoBinary;
 
             /**
              * Decodes a MapValueMessageNoBinary from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.MapValueMessageNoBinary;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.MapValueMessageNoBinary;
 
             /**
              * Verifies a MapValueMessageNoBinary.
@@ -2184,34 +2186,34 @@ declare module jspb {
              * Encodes the specified Deeply.
              * @function
              * @param {jspb.test.Deeply|Object} message Deeply or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (jspb.test.Deeply|Object), writer?: Writer): Writer;
+            static encode(message: (jspb.test.Deeply|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified Deeply, length delimited.
              * @param {jspb.test.Deeply|Object} message Deeply or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (jspb.test.Deeply|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (jspb.test.Deeply|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a Deeply from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Deeply} Deeply
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Deeply;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply;
 
             /**
              * Decodes a Deeply from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {jspb.test.Deeply} Deeply
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Deeply;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply;
 
             /**
              * Verifies a Deeply.
@@ -2258,34 +2260,34 @@ declare module jspb {
                  * Encodes the specified Nested.
                  * @function
                  * @param {jspb.test.Deeply.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (jspb.test.Deeply.Nested|Object), writer?: Writer): Writer;
+                static encode(message: (jspb.test.Deeply.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified Nested, length delimited.
                  * @param {jspb.test.Deeply.Nested|Object} message Nested or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (jspb.test.Deeply.Nested|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (jspb.test.Deeply.Nested|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a Nested from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested;
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Deeply.Nested;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply.Nested;
 
                 /**
                  * Verifies a Nested.
@@ -2338,34 +2340,34 @@ declare module jspb {
                      * Encodes the specified Message.
                      * @function
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message or plain object to encode
-                     * @param {Writer} [writer] Writer to encode to
-                     * @returns {Writer} Writer
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
                      */
-                    static encode(message: (jspb.test.Deeply.Nested.Message|Object), writer?: Writer): Writer;
+                    static encode(message: (jspb.test.Deeply.Nested.Message|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Encodes the specified Message, length delimited.
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message or plain object to encode
-                     * @param {Writer} [writer] Writer to encode to
-                     * @returns {Writer} Writer
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
                      */
-                    static encodeDelimited(message: (jspb.test.Deeply.Nested.Message|Object), writer?: Writer): Writer;
+                    static encodeDelimited(message: (jspb.test.Deeply.Nested.Message|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a Message from the specified reader or buffer.
                      * @function
-                     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                      * @param {number} [length] Message length if known beforehand
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
-                    static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested.Message;
+                    static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested.Message;
 
                     /**
                      * Decodes a Message from the specified reader or buffer, length delimited.
-                     * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                     * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
-                    static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): jspb.test.Deeply.Nested.Message;
+                    static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply.Nested.Message;
 
                     /**
                      * Verifies a Message.
@@ -2427,34 +2429,34 @@ declare module google {
              * Encodes the specified FileDescriptorSet.
              * @function
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.FileDescriptorSet|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.FileDescriptorSet|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified FileDescriptorSet, length delimited.
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.FileDescriptorSet|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.FileDescriptorSet|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a FileDescriptorSet from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorSet;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorSet;
 
             /**
              * Decodes a FileDescriptorSet from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.FileDescriptorSet;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.FileDescriptorSet;
 
             /**
              * Verifies a FileDescriptorSet.
@@ -2565,34 +2567,34 @@ declare module google {
              * Encodes the specified FileDescriptorProto.
              * @function
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.FileDescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.FileDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified FileDescriptorProto, length delimited.
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.FileDescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.FileDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a FileDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileDescriptorProto;
 
             /**
              * Decodes a FileDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.FileDescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.FileDescriptorProto;
 
             /**
              * Verifies a FileDescriptorProto.
@@ -2690,34 +2692,34 @@ declare module google {
              * Encodes the specified DescriptorProto.
              * @function
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.DescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.DescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified DescriptorProto, length delimited.
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.DescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.DescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a DescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto;
 
             /**
              * Decodes a DescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.DescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto;
 
             /**
              * Verifies a DescriptorProto.
@@ -2776,34 +2778,34 @@ declare module google {
                  * Encodes the specified ExtensionRange.
                  * @function
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (google.protobuf.DescriptorProto.ExtensionRange|Object), writer?: Writer): Writer;
+                static encode(message: (google.protobuf.DescriptorProto.ExtensionRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified ExtensionRange, length delimited.
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (google.protobuf.DescriptorProto.ExtensionRange|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (google.protobuf.DescriptorProto.ExtensionRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a ExtensionRange from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ExtensionRange;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ExtensionRange;
 
                 /**
                  * Decodes a ExtensionRange from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.DescriptorProto.ExtensionRange;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto.ExtensionRange;
 
                 /**
                  * Verifies a ExtensionRange.
@@ -2853,34 +2855,34 @@ declare module google {
                  * Encodes the specified ReservedRange.
                  * @function
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (google.protobuf.DescriptorProto.ReservedRange|Object), writer?: Writer): Writer;
+                static encode(message: (google.protobuf.DescriptorProto.ReservedRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified ReservedRange, length delimited.
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (google.protobuf.DescriptorProto.ReservedRange|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (google.protobuf.DescriptorProto.ReservedRange|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a ReservedRange from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ReservedRange;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ReservedRange;
 
                 /**
                  * Decodes a ReservedRange from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.DescriptorProto.ReservedRange;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto.ReservedRange;
 
                 /**
                  * Verifies a ReservedRange.
@@ -2979,34 +2981,34 @@ declare module google {
              * Encodes the specified FieldDescriptorProto.
              * @function
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.FieldDescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.FieldDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified FieldDescriptorProto, length delimited.
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.FieldDescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.FieldDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a FieldDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.FieldDescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldDescriptorProto;
 
             /**
              * Decodes a FieldDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.FieldDescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldDescriptorProto;
 
             /**
              * Verifies a FieldDescriptorProto.
@@ -3056,34 +3058,34 @@ declare module google {
              * Encodes the specified OneofDescriptorProto.
              * @function
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.OneofDescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.OneofDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified OneofDescriptorProto, length delimited.
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.OneofDescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.OneofDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a OneofDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.OneofDescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.OneofDescriptorProto;
 
             /**
              * Decodes a OneofDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.OneofDescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.OneofDescriptorProto;
 
             /**
              * Verifies a OneofDescriptorProto.
@@ -3139,34 +3141,34 @@ declare module google {
              * Encodes the specified EnumDescriptorProto.
              * @function
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.EnumDescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.EnumDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified EnumDescriptorProto, length delimited.
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.EnumDescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.EnumDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a EnumDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.EnumDescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumDescriptorProto;
 
             /**
              * Decodes a EnumDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.EnumDescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumDescriptorProto;
 
             /**
              * Verifies a EnumDescriptorProto.
@@ -3222,34 +3224,34 @@ declare module google {
              * Encodes the specified EnumValueDescriptorProto.
              * @function
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.EnumValueDescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.EnumValueDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified EnumValueDescriptorProto, length delimited.
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.EnumValueDescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.EnumValueDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a EnumValueDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.EnumValueDescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumValueDescriptorProto;
 
             /**
              * Decodes a EnumValueDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.EnumValueDescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumValueDescriptorProto;
 
             /**
              * Verifies a EnumValueDescriptorProto.
@@ -3305,34 +3307,34 @@ declare module google {
              * Encodes the specified ServiceDescriptorProto.
              * @function
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.ServiceDescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.ServiceDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified ServiceDescriptorProto, length delimited.
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.ServiceDescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.ServiceDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a ServiceDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.ServiceDescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ServiceDescriptorProto;
 
             /**
              * Decodes a ServiceDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.ServiceDescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.ServiceDescriptorProto;
 
             /**
              * Verifies a ServiceDescriptorProto.
@@ -3406,34 +3408,34 @@ declare module google {
              * Encodes the specified MethodDescriptorProto.
              * @function
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.MethodDescriptorProto|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.MethodDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified MethodDescriptorProto, length delimited.
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.MethodDescriptorProto|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.MethodDescriptorProto|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a MethodDescriptorProto from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.MethodDescriptorProto;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MethodDescriptorProto;
 
             /**
              * Decodes a MethodDescriptorProto from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.MethodDescriptorProto;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.MethodDescriptorProto;
 
             /**
              * Verifies a MethodDescriptorProto.
@@ -3561,34 +3563,34 @@ declare module google {
              * Encodes the specified FileOptions.
              * @function
              * @param {google.protobuf.FileOptions|Object} message FileOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.FileOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.FileOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified FileOptions, length delimited.
              * @param {google.protobuf.FileOptions|Object} message FileOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.FileOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.FileOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a FileOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileOptions} FileOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.FileOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FileOptions;
 
             /**
              * Decodes a FileOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FileOptions} FileOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.FileOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.FileOptions;
 
             /**
              * Verifies a FileOptions.
@@ -3656,34 +3658,34 @@ declare module google {
              * Encodes the specified MessageOptions.
              * @function
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.MessageOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.MessageOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified MessageOptions, length delimited.
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.MessageOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.MessageOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a MessageOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.MessageOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MessageOptions;
 
             /**
              * Decodes a MessageOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.MessageOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.MessageOptions;
 
             /**
              * Verifies a MessageOptions.
@@ -3763,34 +3765,34 @@ declare module google {
              * Encodes the specified FieldOptions.
              * @function
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.FieldOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.FieldOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified FieldOptions, length delimited.
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.FieldOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.FieldOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a FieldOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.FieldOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldOptions;
 
             /**
              * Decodes a FieldOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.FieldOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldOptions;
 
             /**
              * Verifies a FieldOptions.
@@ -3834,34 +3836,34 @@ declare module google {
              * Encodes the specified OneofOptions.
              * @function
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.OneofOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.OneofOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified OneofOptions, length delimited.
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.OneofOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.OneofOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a OneofOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.OneofOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.OneofOptions;
 
             /**
              * Decodes a OneofOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.OneofOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.OneofOptions;
 
             /**
              * Verifies a OneofOptions.
@@ -3917,34 +3919,34 @@ declare module google {
              * Encodes the specified EnumOptions.
              * @function
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.EnumOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.EnumOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified EnumOptions, length delimited.
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.EnumOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.EnumOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a EnumOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.EnumOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumOptions;
 
             /**
              * Decodes a EnumOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.EnumOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumOptions;
 
             /**
              * Verifies a EnumOptions.
@@ -3994,34 +3996,34 @@ declare module google {
              * Encodes the specified EnumValueOptions.
              * @function
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.EnumValueOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.EnumValueOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified EnumValueOptions, length delimited.
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.EnumValueOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.EnumValueOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a EnumValueOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.EnumValueOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.EnumValueOptions;
 
             /**
              * Decodes a EnumValueOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.EnumValueOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.EnumValueOptions;
 
             /**
              * Verifies a EnumValueOptions.
@@ -4071,34 +4073,34 @@ declare module google {
              * Encodes the specified ServiceOptions.
              * @function
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.ServiceOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.ServiceOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified ServiceOptions, length delimited.
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.ServiceOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.ServiceOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a ServiceOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.ServiceOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ServiceOptions;
 
             /**
              * Decodes a ServiceOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.ServiceOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.ServiceOptions;
 
             /**
              * Verifies a ServiceOptions.
@@ -4154,34 +4156,34 @@ declare module google {
              * Encodes the specified MethodOptions.
              * @function
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.MethodOptions|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.MethodOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified MethodOptions, length delimited.
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.MethodOptions|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.MethodOptions|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a MethodOptions from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.MethodOptions;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.MethodOptions;
 
             /**
              * Decodes a MethodOptions from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.MethodOptions;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.MethodOptions;
 
             /**
              * Verifies a MethodOptions.
@@ -4261,34 +4263,34 @@ declare module google {
              * Encodes the specified UninterpretedOption.
              * @function
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.UninterpretedOption|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.UninterpretedOption|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified UninterpretedOption, length delimited.
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.UninterpretedOption|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.UninterpretedOption|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a UninterpretedOption from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption;
 
             /**
              * Decodes a UninterpretedOption from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.UninterpretedOption;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.UninterpretedOption;
 
             /**
              * Verifies a UninterpretedOption.
@@ -4347,34 +4349,34 @@ declare module google {
                  * Encodes the specified NamePart.
                  * @function
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (google.protobuf.UninterpretedOption.NamePart|Object), writer?: Writer): Writer;
+                static encode(message: (google.protobuf.UninterpretedOption.NamePart|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified NamePart, length delimited.
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (google.protobuf.UninterpretedOption.NamePart|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (google.protobuf.UninterpretedOption.NamePart|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a NamePart from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption.NamePart;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption.NamePart;
 
                 /**
                  * Decodes a NamePart from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.UninterpretedOption.NamePart;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.UninterpretedOption.NamePart;
 
                 /**
                  * Verifies a NamePart.
@@ -4419,34 +4421,34 @@ declare module google {
              * Encodes the specified SourceCodeInfo.
              * @function
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.SourceCodeInfo|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.SourceCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified SourceCodeInfo, length delimited.
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.SourceCodeInfo|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.SourceCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a SourceCodeInfo from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo;
 
             /**
              * Decodes a SourceCodeInfo from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.SourceCodeInfo;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.SourceCodeInfo;
 
             /**
              * Verifies a SourceCodeInfo.
@@ -4523,34 +4525,34 @@ declare module google {
                  * Encodes the specified Location.
                  * @function
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (google.protobuf.SourceCodeInfo.Location|Object), writer?: Writer): Writer;
+                static encode(message: (google.protobuf.SourceCodeInfo.Location|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified Location, length delimited.
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (google.protobuf.SourceCodeInfo.Location|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (google.protobuf.SourceCodeInfo.Location|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a Location from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo.Location;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo.Location;
 
                 /**
                  * Decodes a Location from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.SourceCodeInfo.Location;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.SourceCodeInfo.Location;
 
                 /**
                  * Verifies a Location.
@@ -4595,34 +4597,34 @@ declare module google {
              * Encodes the specified GeneratedCodeInfo.
              * @function
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encode(message: (google.protobuf.GeneratedCodeInfo|Object), writer?: Writer): Writer;
+            static encode(message: (google.protobuf.GeneratedCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Encodes the specified GeneratedCodeInfo, length delimited.
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo or plain object to encode
-             * @param {Writer} [writer] Writer to encode to
-             * @returns {Writer} Writer
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
              */
-            static encodeDelimited(message: (google.protobuf.GeneratedCodeInfo|Object), writer?: Writer): Writer;
+            static encodeDelimited(message: (google.protobuf.GeneratedCodeInfo|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
              * Decodes a GeneratedCodeInfo from the specified reader or buffer.
              * @function
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
-            static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo;
 
             /**
              * Decodes a GeneratedCodeInfo from the specified reader or buffer, length delimited.
-             * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
-            static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.GeneratedCodeInfo;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.GeneratedCodeInfo;
 
             /**
              * Verifies a GeneratedCodeInfo.
@@ -4693,34 +4695,34 @@ declare module google {
                  * Encodes the specified Annotation.
                  * @function
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encode(message: (google.protobuf.GeneratedCodeInfo.Annotation|Object), writer?: Writer): Writer;
+                static encode(message: (google.protobuf.GeneratedCodeInfo.Annotation|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Encodes the specified Annotation, length delimited.
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation or plain object to encode
-                 * @param {Writer} [writer] Writer to encode to
-                 * @returns {Writer} Writer
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
                  */
-                static encodeDelimited(message: (google.protobuf.GeneratedCodeInfo.Annotation|Object), writer?: Writer): Writer;
+                static encodeDelimited(message: (google.protobuf.GeneratedCodeInfo.Annotation|Object), writer?: $protobuf.Writer): $protobuf.Writer;
 
                 /**
                  * Decodes a Annotation from the specified reader or buffer.
                  * @function
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
-                static decode(readerOrBuffer: (Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo.Annotation;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo.Annotation;
 
                 /**
                  * Decodes a Annotation from the specified reader or buffer, length delimited.
-                 * @param {Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
-                static decodeDelimited(readerOrBuffer: (Reader|Uint8Array)): google.protobuf.GeneratedCodeInfo.Annotation;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.GeneratedCodeInfo.Annotation;
 
                 /**
                  * Verifies a Annotation.
