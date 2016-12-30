@@ -474,45 +474,37 @@ The package includes a benchmark that tries to compare performance to native JSO
 ```
 benchmarking encoding performance ...
 
-Type.encode to buffer x 553,499 ops/sec ±0.33% (91 runs sampled)
-JSON.stringify to string x 313,354 ops/sec ±0.84% (89 runs sampled)
-JSON.stringify to buffer x 177,932 ops/sec ±0.78% (88 runs sampled)
+Type.encode to buffer x 521,803 ops/sec ±0.84% (88 runs sampled)
+JSON.stringify to string x 300,362 ops/sec ±1.11% (86 runs sampled)
+JSON.stringify to buffer x 169,413 ops/sec ±1.49% (86 runs sampled)
 
       Type.encode to buffer was fastest
-   JSON.stringify to string was 43.7% slower
-   JSON.stringify to buffer was 68.0% slower
+   JSON.stringify to string was 42.6% slower
+   JSON.stringify to buffer was 67.7% slower
 
 benchmarking decoding performance ...
 
-Type.decode from buffer x 1,352,868 ops/sec ±0.66% (89 runs sampled)
-JSON.parse from string x 293,883 ops/sec ±0.55% (92 runs sampled)
-JSON.parse from buffer x 267,287 ops/sec ±0.83% (91 runs sampled)
+Type.decode from buffer x 1,325,308 ops/sec ±1.46% (88 runs sampled)
+JSON.parse from string x 283,907 ops/sec ±1.39% (86 runs sampled)
+JSON.parse from buffer x 255,372 ops/sec ±1.28% (88 runs sampled)
 
     Type.decode from buffer was fastest
-     JSON.parse from string was 78.3% slower
-     JSON.parse from buffer was 80.3% slower
+     JSON.parse from string was 78.6% slower
+     JSON.parse from buffer was 80.7% slower
 
 benchmarking combined performance ...
 
-Type to/from buffer x 267,534 ops/sec ±0.88% (91 runs sampled)
-JSON to/from string x 129,143 ops/sec ±0.66% (92 runs sampled)
-JSON to/from buffer x 91,789 ops/sec ±0.73% (87 runs sampled)
+Type to/from buffer x 269,719 ops/sec ±0.87% (91 runs sampled)
+JSON to/from string x 122,878 ops/sec ±1.59% (87 runs sampled)
+JSON to/from buffer x 89,310 ops/sec ±1.01% (88 runs sampled)
 
         Type to/from buffer was fastest
-        JSON to/from string was 51.6% slower
-        JSON to/from buffer was 65.6% slower
+        JSON to/from string was 54.8% slower
+        JSON to/from buffer was 66.9% slower
 
 benchmarking verifying performance ...
 
-Type.verify x 6,431,917 ops/sec ±0.49% (91 runs sampled)
-
-benchmarking converting performance ...
-
-Message.from x 629,785 ops/sec ±0.62% (94 runs sampled)
-Message#asJSON x 609,017 ops/sec ±0.74% (93 runs sampled)
-
-               Message.from was fastest
-             Message#asJSON was 3.4% slower
+Type.verify x 5,857,856 ops/sec ±0.82% (91 runs sampled)
 ```
 
 Note that JSON is a native binding nowadays and as such is about as fast as it possibly can get. So, how can protobuf.js be faster?
