@@ -22,12 +22,15 @@ exports.main = function(args, callback) {
     var argv = minimist(args, {
         alias: {
             name: "n",
-            out : "o"
+            out : "o",
+            main: "m",
+            global: "g"
         },
-        string: [ "name", "out" ],
-        boolean: [ "comments" ],
+        string: [ "name", "out", "global" ],
+        boolean: [ "comments", "main" ],
         default: {
-            comments: true
+            comments: true,
+            main: false
         }
     });
 
@@ -43,9 +46,9 @@ exports.main = function(args, callback) {
                 "Generates TypeScript definitions from annotated JavaScript files.",
                 "",
                 "  -n, --name      Wraps everything in a module of the specified name.",
-                "",
                 "  -o, --out       Saves to a file instead of writing to stdout.",
-                "",
+                "  -m, --main      Whether building the main library without any imports.",
+                "  -g, --global    Name of the global object in browser environments, if any.",
                 "  --no-comments   Does not output any JSDoc comments.",
                 "",
                 "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..."
@@ -96,7 +99,12 @@ exports.main = function(args, callback) {
             "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
             ""
         ];
-        if (argv.name !== "protobuf")
+        if (argv.global)
+            output.push(
+                "export as namespace " + argv.global + ";",
+                ""
+            );
+        if (!argv.main)
             output.push(
                 "import * as $protobuf from \"protobufjs\";",
                 ""

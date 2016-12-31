@@ -26,7 +26,7 @@ export class Hello extends protobuf.Message {
         return this;
     }
 }
-protobuf.Class.create(root.lookup("Hello") as protobuf.Type, Hello);
+protobuf.Class.create(root.lookupType("Hello"), Hello);
 
 var hello = new Hello();
 

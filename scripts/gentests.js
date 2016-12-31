@@ -33,8 +33,8 @@ var fs   = require("fs"),
 .forEach(function(file) {
     var out = file.replace(/\.js$/, ".d.ts");
     pbts.main([
-        "--name", path.basename(out, ".d.ts"),
         "--out", out,
+        "--no-comments",
         file
     ], function(err) {
         if (err)
