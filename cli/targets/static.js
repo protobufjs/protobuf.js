@@ -138,7 +138,7 @@ function slightlyBeautify(generatedCode) {
         .replace(/(!?[=<>|&%?:]+)([^\s])/g, " $1 $2") // a!==b, a&&b, a?b:c etc.
         .replace(/\b([+-])\b/g," $1 ") // a+b
         .replace(/\b(if|else|else if|for|while|do|switch)\(/g, "$1 (") // if(a)
-        .replace(/\breturn"/g, "return \"") // return"error"
+        .replace(/\b(return|case)"/g, "$1 \"") // return"error", case"one"
         .replace(/([;,])([^\s])/g, "$1 $2") // cond(var a=0;a<b;++b), var a=1,b;
         .replace(/{$/mg, " {")
         .replace(/\br\b/g, "reader")
@@ -148,7 +148,12 @@ function slightlyBeautify(generatedCode) {
         .replace(/\bl\b/g, "length")
         .replace(/\bc\b/g, "end")
         .replace(/\bk\b/g, "key")
-        .replace(/\bks\b/g, "keys");
+        .replace(/\bks\b/g, "keys")
+        .replace(/\bs\b/g, "reason")
+        .replace(/(uint32)\((\d+)\)/g, function($0, $1, $2) {
+            var tag = parseInt($2, 10);
+            return $1 + "(" + tag + "/*= id " + (tag >>> 3) + ", wireType " + (tag & 7) + " */)";
+        });
 }
 
 function buildFunction(type, functionName, gen, scope) {

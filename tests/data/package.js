@@ -142,63 +142,63 @@ $root.Package = (function() {
     Package.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
         writer || (writer = Writer.create())
         if (message.name !== undefined && message.name !== "")
-            writer.uint32(10).string(message.name)
+            writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
         if (message.version !== undefined && message.version !== "")
-            writer.uint32(18).string(message.version)
+            writer.uint32(18/*= id 2, wireType 2 */).string(message.version)
         if (message.description !== undefined && message.description !== "")
-            writer.uint32(26).string(message.description)
+            writer.uint32(26/*= id 3, wireType 2 */).string(message.description)
         if (message.author !== undefined && message.author !== "")
-            writer.uint32(34).string(message.author)
+            writer.uint32(34/*= id 4, wireType 2 */).string(message.author)
         if (message.license !== undefined && message.license !== "")
-            writer.uint32(42).string(message.license)
+            writer.uint32(42/*= id 5, wireType 2 */).string(message.license)
         if (message.repository !== undefined && message.repository !== null)
-            types[5].encode(message.repository, writer.uint32(50).fork()).ldelim()
+            types[5].encode(message.repository, writer.uint32(50/*= id 6, wireType 2 */).fork()).ldelim()
         if (message.bugs !== undefined && message.bugs !== "")
-            writer.uint32(58).string(message.bugs)
+            writer.uint32(58/*= id 7, wireType 2 */).string(message.bugs)
         if (message.homepage !== undefined && message.homepage !== "")
-            writer.uint32(66).string(message.homepage)
+            writer.uint32(66/*= id 8, wireType 2 */).string(message.homepage)
         if (message.keywords)
             for (var i = 0; i < message.keywords.length; ++i)
-            writer.uint32(74).string(message.keywords[i])
+            writer.uint32(74/*= id 9, wireType 2 */).string(message.keywords[i])
         if (message.main !== undefined && message.main !== "")
-            writer.uint32(82).string(message.main)
+            writer.uint32(82/*= id 10, wireType 2 */).string(message.main)
         if (message.bin && message.bin !== util.emptyObject) {
             for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i) {
-                writer.uint32(90).fork().uint32(10).string(keys[i])
-                writer.uint32(18).string(message.bin[keys[i]])
+                writer.uint32(90/*= id 11, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                writer.uint32(18/*= id 2, wireType 2 */).string(message.bin[keys[i]])
                 writer.ldelim()
             }
         }
         if (message.scripts && message.scripts !== util.emptyObject) {
             for (var keys = Object.keys(message.scripts), i = 0; i < keys.length; ++i) {
-                writer.uint32(98).fork().uint32(10).string(keys[i])
-                writer.uint32(18).string(message.scripts[keys[i]])
+                writer.uint32(98/*= id 12, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                writer.uint32(18/*= id 2, wireType 2 */).string(message.scripts[keys[i]])
                 writer.ldelim()
             }
         }
         if (message.dependencies && message.dependencies !== util.emptyObject) {
             for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(106).fork().uint32(10).string(keys[i])
-                writer.uint32(18).string(message.dependencies[keys[i]])
+                writer.uint32(106/*= id 13, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                writer.uint32(18/*= id 2, wireType 2 */).string(message.dependencies[keys[i]])
                 writer.ldelim()
             }
         }
         if (message.optionalDependencies && message.optionalDependencies !== util.emptyObject) {
             for (var keys = Object.keys(message.optionalDependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(114).fork().uint32(10).string(keys[i])
-                writer.uint32(18).string(message.optionalDependencies[keys[i]])
+                writer.uint32(114/*= id 14, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                writer.uint32(18/*= id 2, wireType 2 */).string(message.optionalDependencies[keys[i]])
                 writer.ldelim()
             }
         }
         if (message.devDependencies && message.devDependencies !== util.emptyObject) {
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(122).fork().uint32(10).string(keys[i])
-                writer.uint32(18).string(message.devDependencies[keys[i]])
+                writer.uint32(122/*= id 15, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                writer.uint32(18/*= id 2, wireType 2 */).string(message.devDependencies[keys[i]])
                 writer.ldelim()
             }
         }
         if (message.types !== undefined && message.types !== "")
-            writer.uint32(138).string(message.types)
+            writer.uint32(138/*= id 17, wireType 2 */).string(message.types)
         return writer
     }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null]); /* eslint-enable */
 
@@ -355,9 +355,9 @@ $root.Package = (function() {
                 return "invalid value for field .Package.license (string expected)"
         }
         if (message.repository !== undefined && message.repository !== null) {
-            var s;
-            if (s = types[5].verify(message.repository))
-                return s
+            var reason;
+            if (reason = types[5].verify(message.repository))
+                return reason
         }
         if (message.bugs !== undefined) {
             if (!util.isString(message.bugs))
@@ -481,9 +481,9 @@ $root.Package = (function() {
         Repository.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
             writer || (writer = Writer.create())
             if (message.type !== undefined && message.type !== "")
-                writer.uint32(10).string(message.type)
+                writer.uint32(10/*= id 1, wireType 2 */).string(message.type)
             if (message.url !== undefined && message.url !== "")
-                writer.uint32(18).string(message.url)
+                writer.uint32(18/*= id 2, wireType 2 */).string(message.url)
             return writer
         }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 

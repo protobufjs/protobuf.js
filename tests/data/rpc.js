@@ -144,7 +144,7 @@ $root.MyRequest = (function() {
     MyRequest.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
         writer || (writer = Writer.create())
         if (message.path !== undefined && message.path !== "")
-            writer.uint32(10).string(message.path)
+            writer.uint32(10/*= id 1, wireType 2 */).string(message.path)
         return writer
     }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -253,7 +253,7 @@ $root.MyResponse = (function() {
     MyResponse.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
         writer || (writer = Writer.create())
         if (message.status !== undefined && message.status !== 0)
-            writer.uint32(16).int32(message.status)
+            writer.uint32(16/*= id 2, wireType 0 */).int32(message.status)
         return writer
     }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 

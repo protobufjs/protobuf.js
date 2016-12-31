@@ -172,7 +172,7 @@ $root.jspb = (function() {
             EnumContainer.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.outerEnum !== undefined && message.outerEnum !== 0)
-                    writer.uint32(8).uint32(message.outerEnum)
+                    writer.uint32(8/*= id 1, wireType 0 */).uint32(message.outerEnum)
                 return writer
             }})($protobuf.Writer, $protobuf.util, ["jspb.test.OuterEnum"]); /* eslint-enable */
 
@@ -297,12 +297,12 @@ $root.jspb = (function() {
              */
             Simple1.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
-                writer.uint32(10).string(message.aString)
+                writer.uint32(10/*= id 1, wireType 2 */).string(message.aString)
                 if (message.aRepeatedString)
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
-                    writer.uint32(18).string(message.aRepeatedString[i])
+                    writer.uint32(18/*= id 2, wireType 2 */).string(message.aRepeatedString[i])
                 if (message.aBoolean !== undefined && message.aBoolean !== false)
-                    writer.uint32(24).bool(message.aBoolean)
+                    writer.uint32(24/*= id 3, wireType 0 */).bool(message.aBoolean)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null]); /* eslint-enable */
 
@@ -433,10 +433,10 @@ $root.jspb = (function() {
              */
             Simple2.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
-                writer.uint32(10).string(message.aString)
+                writer.uint32(10/*= id 1, wireType 2 */).string(message.aString)
                 if (message.aRepeatedString)
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
-                    writer.uint32(18).string(message.aRepeatedString[i])
+                    writer.uint32(18/*= id 2, wireType 2 */).string(message.aRepeatedString[i])
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
@@ -575,10 +575,10 @@ $root.jspb = (function() {
              */
             SpecialCases.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
-                writer.uint32(10).string(message.normal)
-                writer.uint32(18).string(message["default"])
-                writer.uint32(26).string(message["function"])
-                writer.uint32(34).string(message["var"])
+                writer.uint32(10/*= id 1, wireType 2 */).string(message.normal)
+                writer.uint32(18/*= id 2, wireType 2 */).string(message["default"])
+                writer.uint32(26/*= id 3, wireType 2 */).string(message["function"])
+                writer.uint32(34/*= id 4, wireType 2 */).string(message["var"])
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, null]); /* eslint-enable */
 
@@ -724,16 +724,16 @@ $root.jspb = (function() {
             OptionalFields.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.aString !== undefined && message.aString !== "")
-                    writer.uint32(10).string(message.aString)
-                writer.uint32(16).bool(message.aBool)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.aString)
+                writer.uint32(16/*= id 2, wireType 0 */).bool(message.aBool)
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null)
-                    types[2].encode(message.aNestedMessage, writer.uint32(26).fork()).ldelim()
+                    types[2].encode(message.aNestedMessage, writer.uint32(26/*= id 3, wireType 2 */).fork()).ldelim()
                 if (message.aRepeatedMessage)
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i)
-                    types[3].encode(message.aRepeatedMessage[i], writer.uint32(34).fork()).ldelim()
+                    types[3].encode(message.aRepeatedMessage[i], writer.uint32(34/*= id 4, wireType 2 */).fork()).ldelim()
                 if (message.aRepeatedString)
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
-                    writer.uint32(42).string(message.aRepeatedString[i])
+                    writer.uint32(42/*= id 5, wireType 2 */).string(message.aRepeatedString[i])
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, "jspb.test.OptionalFields.Nested", "jspb.test.OptionalFields.Nested", null]); /* eslint-enable */
 
@@ -809,17 +809,17 @@ $root.jspb = (function() {
                 if (typeof message.aBool !== "boolean")
                     return "invalid value for field .jspb.test.OptionalFields.aBool (boolean expected)"
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    var s;
-                    if (s = types[2].verify(message.aNestedMessage))
-                        return s
+                    var reason;
+                    if (reason = types[2].verify(message.aNestedMessage))
+                        return reason
                 }
                 if (message.aRepeatedMessage !== undefined) {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "invalid value for field .jspb.test.OptionalFields.aRepeatedMessage (array expected)"
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        var s;
-                        if (s = types[3].verify(message.aRepeatedMessage[i]))
-                            return s
+                        var reason;
+                        if (reason = types[3].verify(message.aRepeatedMessage[i]))
+                            return reason
                     }
                 }
                 if (message.aRepeatedString !== undefined) {
@@ -877,7 +877,7 @@ $root.jspb = (function() {
                 Nested.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
                     if (message.anInt !== undefined && message.anInt !== 0)
-                        writer.uint32(8).int32(message.anInt)
+                        writer.uint32(8/*= id 1, wireType 0 */).int32(message.anInt)
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -1043,25 +1043,25 @@ $root.jspb = (function() {
             HasExtensions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.str1 !== undefined && message.str1 !== "")
-                    writer.uint32(10).string(message.str1)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.str1)
                 if (message.str2 !== undefined && message.str2 !== "")
-                    writer.uint32(18).string(message.str2)
+                    writer.uint32(18/*= id 2, wireType 2 */).string(message.str2)
                 if (message.str3 !== undefined && message.str3 !== "")
-                    writer.uint32(26).string(message.str3)
+                    writer.uint32(26/*= id 3, wireType 2 */).string(message.str3)
                 if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null)
-                    types[3].encode(message[".jspb.test.IsExtension.extField"], writer.uint32(802).fork()).ldelim()
+                    types[3].encode(message[".jspb.test.IsExtension.extField"], writer.uint32(802/*= id 100, wireType 2 */).fork()).ldelim()
                 if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null)
-                    types[4].encode(message[".jspb.test.IndirectExtension.simple"], writer.uint32(810).fork()).ldelim()
+                    types[4].encode(message[".jspb.test.IndirectExtension.simple"], writer.uint32(810/*= id 101, wireType 2 */).fork()).ldelim()
                 if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== "")
-                    writer.uint32(818).string(message[".jspb.test.IndirectExtension.str"])
+                    writer.uint32(818/*= id 102, wireType 2 */).string(message[".jspb.test.IndirectExtension.str"])
                 if (message[".jspb.test.IndirectExtension.repeatedStr"])
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
-                    writer.uint32(826).string(message[".jspb.test.IndirectExtension.repeatedStr"][i])
+                    writer.uint32(826/*= id 103, wireType 2 */).string(message[".jspb.test.IndirectExtension.repeatedStr"][i])
                 if (message[".jspb.test.IndirectExtension.repeatedSimple"])
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i)
-                    types[7].encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(834).fork()).ldelim()
+                    types[7].encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(834/*= id 104, wireType 2 */).fork()).ldelim()
                 if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null)
-                    types[8].encode(message[".jspb.test.simple1"], writer.uint32(842).fork()).ldelim()
+                    types[8].encode(message[".jspb.test.simple1"], writer.uint32(842/*= id 105, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, "jspb.test.IsExtension", "jspb.test.Simple1", null, null, "jspb.test.Simple1", "jspb.test.Simple1"]); /* eslint-enable */
 
@@ -1155,14 +1155,14 @@ $root.jspb = (function() {
                         return "invalid value for field .jspb.test.HasExtensions.str3 (string expected)"
                 }
                 if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
-                    var s;
-                    if (s = types[3].verify(message[".jspb.test.IsExtension.extField"]))
-                        return s
+                    var reason;
+                    if (reason = types[3].verify(message[".jspb.test.IsExtension.extField"]))
+                        return reason
                 }
                 if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
-                    var s;
-                    if (s = types[4].verify(message[".jspb.test.IndirectExtension.simple"]))
-                        return s
+                    var reason;
+                    if (reason = types[4].verify(message[".jspb.test.IndirectExtension.simple"]))
+                        return reason
                 }
                 if (message[".jspb.test.IndirectExtension.str"] !== undefined) {
                     if (!util.isString(message[".jspb.test.IndirectExtension.str"]))
@@ -1180,15 +1180,15 @@ $root.jspb = (function() {
                     if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedSimple"]))
                         return "invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple (array expected)"
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        var s;
-                        if (s = types[7].verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]))
-                            return s
+                        var reason;
+                        if (reason = types[7].verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]))
+                            return reason
                     }
                 }
                 if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
-                    var s;
-                    if (s = types[8].verify(message[".jspb.test.simple1"]))
-                        return s
+                    var reason;
+                    if (reason = types[8].verify(message[".jspb.test.simple1"]))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, null, null, "jspb.test.IsExtension", "jspb.test.Simple1", null, null, "jspb.test.Simple1", "jspb.test.Simple1"]); /* eslint-enable */
@@ -1263,16 +1263,16 @@ $root.jspb = (function() {
              */
             Complex.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
-                writer.uint32(10).string(message.aString)
-                writer.uint32(72).bool(message.anOutOfOrderBool)
+                writer.uint32(10/*= id 1, wireType 2 */).string(message.aString)
+                writer.uint32(72/*= id 9, wireType 0 */).bool(message.anOutOfOrderBool)
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null)
-                    types[2].encode(message.aNestedMessage, writer.uint32(34).fork()).ldelim()
+                    types[2].encode(message.aNestedMessage, writer.uint32(34/*= id 4, wireType 2 */).fork()).ldelim()
                 if (message.aRepeatedMessage)
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i)
-                    types[3].encode(message.aRepeatedMessage[i], writer.uint32(42).fork()).ldelim()
+                    types[3].encode(message.aRepeatedMessage[i], writer.uint32(42/*= id 5, wireType 2 */).fork()).ldelim()
                 if (message.aRepeatedString)
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
-                    writer.uint32(58).string(message.aRepeatedString[i])
+                    writer.uint32(58/*= id 7, wireType 2 */).string(message.aRepeatedString[i])
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, "jspb.test.Complex.Nested", "jspb.test.Complex.Nested", null]); /* eslint-enable */
 
@@ -1346,17 +1346,17 @@ $root.jspb = (function() {
                 if (typeof message.anOutOfOrderBool !== "boolean")
                     return "invalid value for field .jspb.test.Complex.anOutOfOrderBool (boolean expected)"
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    var s;
-                    if (s = types[2].verify(message.aNestedMessage))
-                        return s
+                    var reason;
+                    if (reason = types[2].verify(message.aNestedMessage))
+                        return reason
                 }
                 if (message.aRepeatedMessage !== undefined) {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "invalid value for field .jspb.test.Complex.aRepeatedMessage (array expected)"
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        var s;
-                        if (s = types[3].verify(message.aRepeatedMessage[i]))
-                            return s
+                        var reason;
+                        if (reason = types[3].verify(message.aRepeatedMessage[i]))
+                            return reason
                     }
                 }
                 if (message.aRepeatedString !== undefined) {
@@ -1413,7 +1413,7 @@ $root.jspb = (function() {
                  */
                 Nested.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
-                    writer.uint32(16).int32(message.anInt)
+                    writer.uint32(16/*= id 2, wireType 0 */).int32(message.anInt)
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -1611,7 +1611,7 @@ $root.jspb = (function() {
                 Complex.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
                     if (message.innerComplexField !== undefined && message.innerComplexField !== 0)
-                        writer.uint32(8).int32(message.innerComplexField)
+                        writer.uint32(8/*= id 1, wireType 0 */).int32(message.innerComplexField)
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -1723,7 +1723,7 @@ $root.jspb = (function() {
             IsExtension.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.ext1 !== undefined && message.ext1 !== "")
-                    writer.uint32(10).string(message.ext1)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.ext1)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -1953,17 +1953,17 @@ $root.jspb = (function() {
             DefaultValues.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.stringField !== undefined && message.stringField !== "default <> '\"abc")
-                    writer.uint32(10).string(message.stringField)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.stringField)
                 if (message.boolField !== undefined && message.boolField !== true)
-                    writer.uint32(16).bool(message.boolField)
+                    writer.uint32(16/*= id 2, wireType 0 */).bool(message.boolField)
                 if (message.intField !== undefined && message.intField !== null && util.longNe(message.intField, 11, 0))
-                    writer.uint32(24).int64(message.intField)
+                    writer.uint32(24/*= id 3, wireType 0 */).int64(message.intField)
                 if (message.enumField !== undefined && message.enumField !== "E1")
-                    writer.uint32(32).uint32(message.enumField)
+                    writer.uint32(32/*= id 4, wireType 0 */).uint32(message.enumField)
                 if (message.emptyField !== undefined && message.emptyField !== "")
-                    writer.uint32(50).string(message.emptyField)
+                    writer.uint32(50/*= id 6, wireType 2 */).string(message.emptyField)
                 if (message.bytesField !== undefined && message.bytesField !== "moo")
-                    writer.uint32(66).bytes(message.bytesField)
+                    writer.uint32(66/*= id 8, wireType 2 */).bytes(message.bytesField)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, "jspb.test.DefaultValues.Enum", null, null]); /* eslint-enable */
 
@@ -2165,21 +2165,21 @@ $root.jspb = (function() {
             FloatingPointFields.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.optionalFloatField !== undefined && message.optionalFloatField !== 0)
-                    writer.uint32(13).float(message.optionalFloatField)
-                writer.uint32(21).float(message.requiredFloatField)
+                    writer.uint32(13/*= id 1, wireType 5 */).float(message.optionalFloatField)
+                writer.uint32(21/*= id 2, wireType 5 */).float(message.requiredFloatField)
                 if (message.repeatedFloatField)
                     for (var i = 0; i < message.repeatedFloatField.length; ++i)
-                    writer.uint32(29).float(message.repeatedFloatField[i])
+                    writer.uint32(29/*= id 3, wireType 5 */).float(message.repeatedFloatField[i])
                 if (message.defaultFloatField !== undefined && message.defaultFloatField !== 2)
-                    writer.uint32(37).float(message.defaultFloatField)
+                    writer.uint32(37/*= id 4, wireType 5 */).float(message.defaultFloatField)
                 if (message.optionalDoubleField !== undefined && message.optionalDoubleField !== 0)
-                    writer.uint32(41).double(message.optionalDoubleField)
-                writer.uint32(49).double(message.requiredDoubleField)
+                    writer.uint32(41/*= id 5, wireType 1 */).double(message.optionalDoubleField)
+                writer.uint32(49/*= id 6, wireType 1 */).double(message.requiredDoubleField)
                 if (message.repeatedDoubleField)
                     for (var i = 0; i < message.repeatedDoubleField.length; ++i)
-                    writer.uint32(57).double(message.repeatedDoubleField[i])
+                    writer.uint32(57/*= id 7, wireType 1 */).double(message.repeatedDoubleField[i])
                 if (message.defaultDoubleField !== undefined && message.defaultDoubleField !== 2)
-                    writer.uint32(65).double(message.defaultDoubleField)
+                    writer.uint32(65/*= id 8, wireType 1 */).double(message.defaultDoubleField)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, null, null, null]); /* eslint-enable */
 
@@ -2374,18 +2374,18 @@ $root.jspb = (function() {
             TestClone.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.str !== undefined && message.str !== "")
-                    writer.uint32(10).string(message.str)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.str)
                 if (message.simple1 !== undefined && message.simple1 !== null)
-                    types[1].encode(message.simple1, writer.uint32(26).fork()).ldelim()
+                    types[1].encode(message.simple1, writer.uint32(26/*= id 3, wireType 2 */).fork()).ldelim()
                 if (message.simple2)
                     for (var i = 0; i < message.simple2.length; ++i)
-                    types[2].encode(message.simple2[i], writer.uint32(42).fork()).ldelim()
+                    types[2].encode(message.simple2[i], writer.uint32(42/*= id 5, wireType 2 */).fork()).ldelim()
                 if (message.bytesField !== undefined && message.bytesField !== [])
-                    writer.uint32(50).bytes(message.bytesField)
+                    writer.uint32(50/*= id 6, wireType 2 */).bytes(message.bytesField)
                 if (message.unused !== undefined && message.unused !== "")
-                    writer.uint32(58).string(message.unused)
+                    writer.uint32(58/*= id 7, wireType 2 */).string(message.unused)
                 if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null)
-                    types[5].encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(802).fork()).ldelim()
+                    types[5].encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(802/*= id 100, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "jspb.test.Simple1", "jspb.test.Simple1", null, null, "jspb.test.CloneExtension"]); /* eslint-enable */
 
@@ -2461,17 +2461,17 @@ $root.jspb = (function() {
                         return "invalid value for field .jspb.test.TestClone.str (string expected)"
                 }
                 if (message.simple1 !== undefined && message.simple1 !== null) {
-                    var s;
-                    if (s = types[1].verify(message.simple1))
-                        return s
+                    var reason;
+                    if (reason = types[1].verify(message.simple1))
+                        return reason
                 }
                 if (message.simple2 !== undefined) {
                     if (!Array.isArray(message.simple2))
                         return "invalid value for field .jspb.test.TestClone.simple2 (array expected)"
                     for (var i = 0; i < message.simple2.length; ++i) {
-                        var s;
-                        if (s = types[2].verify(message.simple2[i]))
-                            return s
+                        var reason;
+                        if (reason = types[2].verify(message.simple2[i]))
+                            return reason
                     }
                 }
                 if (message.bytesField !== undefined) {
@@ -2483,9 +2483,9 @@ $root.jspb = (function() {
                         return "invalid value for field .jspb.test.TestClone.unused (string expected)"
                 }
                 if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
-                    var s;
-                    if (s = types[5].verify(message[".jspb.test.CloneExtension.extField"]))
-                        return s
+                    var reason;
+                    if (reason = types[5].verify(message[".jspb.test.CloneExtension.extField"]))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, "jspb.test.Simple1", "jspb.test.Simple1", null, null, "jspb.test.CloneExtension"]); /* eslint-enable */
@@ -2537,7 +2537,7 @@ $root.jspb = (function() {
             CloneExtension.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.ext !== undefined && message.ext !== "")
-                    writer.uint32(18).string(message.ext)
+                    writer.uint32(18/*= id 2, wireType 2 */).string(message.ext)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -2658,10 +2658,10 @@ $root.jspb = (function() {
             TestGroup.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.id !== undefined && message.id !== "")
-                    writer.uint32(34).string(message.id)
-                types[1].encode(message.requiredSimple, writer.uint32(42).fork()).ldelim()
+                    writer.uint32(34/*= id 4, wireType 2 */).string(message.id)
+                types[1].encode(message.requiredSimple, writer.uint32(42/*= id 5, wireType 2 */).fork()).ldelim()
                 if (message.optionalSimple !== undefined && message.optionalSimple !== null)
-                    types[2].encode(message.optionalSimple, writer.uint32(50).fork()).ldelim()
+                    types[2].encode(message.optionalSimple, writer.uint32(50/*= id 6, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "jspb.test.Simple2", "jspb.test.Simple2"]); /* eslint-enable */
 
@@ -2726,13 +2726,13 @@ $root.jspb = (function() {
                     if (!util.isString(message.id))
                         return "invalid value for field .jspb.test.TestGroup.id (string expected)"
                 }
-                var s;
-                if (s = types[1].verify(message.requiredSimple))
-                    return s
+                var reason;
+                if (reason = types[1].verify(message.requiredSimple))
+                    return reason
                 if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
-                    var s;
-                    if (s = types[2].verify(message.optionalSimple))
-                        return s
+                    var reason;
+                    if (reason = types[2].verify(message.optionalSimple))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, "jspb.test.Simple2", "jspb.test.Simple2"]); /* eslint-enable */
@@ -2791,9 +2791,9 @@ $root.jspb = (function() {
             TestReservedNames.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.extension !== undefined && message.extension !== 0)
-                    writer.uint32(8).int32(message.extension)
+                    writer.uint32(8/*= id 1, wireType 0 */).int32(message.extension)
                 if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== 0)
-                    writer.uint32(80).int32(message[".jspb.test.TestReservedNamesExtension.foo"])
+                    writer.uint32(80/*= id 10, wireType 0 */).int32(message[".jspb.test.TestReservedNamesExtension.foo"])
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
@@ -3138,40 +3138,40 @@ $root.jspb = (function() {
             TestMessageWithOneof.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.normalField !== undefined && message.normalField !== false)
-                    writer.uint32(64).bool(message.normalField)
+                    writer.uint32(64/*= id 8, wireType 0 */).bool(message.normalField)
                 if (message.repeatedField)
                     for (var i = 0; i < message.repeatedField.length; ++i)
-                    writer.uint32(74).string(message.repeatedField[i])
+                    writer.uint32(74/*= id 9, wireType 2 */).string(message.repeatedField[i])
                 switch (message.getPartialOneof()) {
-                    case"pone":
-                        writer.uint32(26).string(message.pone)
+                    case "pone":
+                        writer.uint32(26/*= id 3, wireType 2 */).string(message.pone)
                         break;
-                    case"pthree":
-                        writer.uint32(42).string(message.pthree)
+                    case "pthree":
+                        writer.uint32(42/*= id 5, wireType 2 */).string(message.pthree)
                         break;
                 }
                 switch (message.getRecursiveOneof()) {
-                    case"rone":
-                        types[2].encode(message.rone, writer.uint32(50).fork()).ldelim()
+                    case "rone":
+                        types[2].encode(message.rone, writer.uint32(50/*= id 6, wireType 2 */).fork()).ldelim()
                         break;
-                    case"rtwo":
-                        writer.uint32(58).string(message.rtwo)
+                    case "rtwo":
+                        writer.uint32(58/*= id 7, wireType 2 */).string(message.rtwo)
                         break;
                 }
                 switch (message.getDefaultOneofA()) {
-                    case"aone":
-                        writer.uint32(80).int32(message.aone)
+                    case "aone":
+                        writer.uint32(80/*= id 10, wireType 0 */).int32(message.aone)
                         break;
-                    case"atwo":
-                        writer.uint32(88).int32(message.atwo)
+                    case "atwo":
+                        writer.uint32(88/*= id 11, wireType 0 */).int32(message.atwo)
                         break;
                 }
                 switch (message.getDefaultOneofB()) {
-                    case"bone":
-                        writer.uint32(96).int32(message.bone)
+                    case "bone":
+                        writer.uint32(96/*= id 12, wireType 0 */).int32(message.bone)
                         break;
-                    case"btwo":
-                        writer.uint32(104).int32(message.btwo)
+                    case "btwo":
+                        writer.uint32(104/*= id 13, wireType 0 */).int32(message.btwo)
                         break;
                 }
                 return writer
@@ -3265,9 +3265,9 @@ $root.jspb = (function() {
                         return "invalid value for field .jspb.test.TestMessageWithOneof.pthree (string expected)"
                 }
                 if (message.rone !== undefined && message.rone !== null) {
-                    var s;
-                    if (s = types[2].verify(message.rone))
-                        return s
+                    var reason;
+                    if (reason = types[2].verify(message.rone))
+                        return reason
                 }
                 if (message.rtwo !== undefined) {
                     if (!util.isString(message.rtwo))
@@ -3357,9 +3357,9 @@ $root.jspb = (function() {
             TestEndsWithBytes.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.value !== undefined && message.value !== 0)
-                    writer.uint32(8).int32(message.value)
+                    writer.uint32(8/*= id 1, wireType 0 */).int32(message.value)
                 if (message.data !== undefined && message.data !== [])
-                    writer.uint32(18).bytes(message.data)
+                    writer.uint32(18/*= id 2, wireType 2 */).bytes(message.data)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
@@ -3542,80 +3542,80 @@ $root.jspb = (function() {
                 writer || (writer = Writer.create())
                 if (message.mapStringString && message.mapStringString !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringString), i = 0; i < keys.length; ++i) {
-                        writer.uint32(10).fork().uint32(10).string(keys[i])
-                        writer.uint32(18).string(message.mapStringString[keys[i]])
+                        writer.uint32(10/*= id 1, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        writer.uint32(18/*= id 2, wireType 2 */).string(message.mapStringString[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapStringInt32 && message.mapStringInt32 !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringInt32), i = 0; i < keys.length; ++i) {
-                        writer.uint32(18).fork().uint32(10).string(keys[i])
-                        writer.uint32(16).int32(message.mapStringInt32[keys[i]])
+                        writer.uint32(18/*= id 2, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        writer.uint32(16/*= id 2, wireType 0 */).int32(message.mapStringInt32[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapStringInt64 && message.mapStringInt64 !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringInt64), i = 0; i < keys.length; ++i) {
-                        writer.uint32(26).fork().uint32(10).string(keys[i])
-                        writer.uint32(16).int64(message.mapStringInt64[keys[i]])
+                        writer.uint32(26/*= id 3, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        writer.uint32(16/*= id 2, wireType 0 */).int64(message.mapStringInt64[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapStringBool && message.mapStringBool !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringBool), i = 0; i < keys.length; ++i) {
-                        writer.uint32(34).fork().uint32(10).string(keys[i])
-                        writer.uint32(16).bool(message.mapStringBool[keys[i]])
+                        writer.uint32(34/*= id 4, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        writer.uint32(16/*= id 2, wireType 0 */).bool(message.mapStringBool[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapStringDouble && message.mapStringDouble !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringDouble), i = 0; i < keys.length; ++i) {
-                        writer.uint32(42).fork().uint32(10).string(keys[i])
-                        writer.uint32(17).double(message.mapStringDouble[keys[i]])
+                        writer.uint32(42/*= id 5, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        writer.uint32(17/*= id 2, wireType 1 */).double(message.mapStringDouble[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapStringEnum && message.mapStringEnum !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringEnum), i = 0; i < keys.length; ++i) {
-                        writer.uint32(50).fork().uint32(10).string(keys[i])
-                        writer.uint32(16).uint32(message.mapStringEnum[keys[i]])
+                        writer.uint32(50/*= id 6, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        writer.uint32(16/*= id 2, wireType 0 */).uint32(message.mapStringEnum[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapStringMsg && message.mapStringMsg !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringMsg), i = 0; i < keys.length; ++i) {
-                        writer.uint32(58).fork().uint32(10).string(keys[i])
-                        types[6].encode(message.mapStringMsg[keys[i]], writer.uint32(18).fork()).ldelim()
+                        writer.uint32(58/*= id 7, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        types[6].encode(message.mapStringMsg[keys[i]], writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                         writer.ldelim()
                     }
                 }
                 if (message.mapInt32String && message.mapInt32String !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapInt32String), i = 0; i < keys.length; ++i) {
-                        writer.uint32(66).fork().uint32(8).int32(keys[i])
-                        writer.uint32(18).string(message.mapInt32String[keys[i]])
+                        writer.uint32(66/*= id 8, wireType 2 */).fork().uint32(8/*= id 1, wireType 0 */).int32(keys[i])
+                        writer.uint32(18/*= id 2, wireType 2 */).string(message.mapInt32String[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapInt64String && message.mapInt64String !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapInt64String), i = 0; i < keys.length; ++i) {
-                        writer.uint32(74).fork().uint32(8).int64(keys[i])
-                        writer.uint32(18).string(message.mapInt64String[keys[i]])
+                        writer.uint32(74/*= id 9, wireType 2 */).fork().uint32(8/*= id 1, wireType 0 */).int64(keys[i])
+                        writer.uint32(18/*= id 2, wireType 2 */).string(message.mapInt64String[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.mapBoolString && message.mapBoolString !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapBoolString), i = 0; i < keys.length; ++i) {
-                        writer.uint32(82).fork().uint32(8).bool(keys[i])
-                        writer.uint32(18).string(message.mapBoolString[keys[i]])
+                        writer.uint32(82/*= id 10, wireType 2 */).fork().uint32(8/*= id 1, wireType 0 */).bool(keys[i])
+                        writer.uint32(18/*= id 2, wireType 2 */).string(message.mapBoolString[keys[i]])
                         writer.ldelim()
                     }
                 }
                 if (message.testMapFields !== undefined && message.testMapFields !== null)
-                    types[10].encode(message.testMapFields, writer.uint32(90).fork()).ldelim()
+                    types[10].encode(message.testMapFields, writer.uint32(90/*= id 11, wireType 2 */).fork()).ldelim()
                 if (message.mapStringTestmapfields && message.mapStringTestmapfields !== util.emptyObject) {
                     for (var keys = Object.keys(message.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
-                        writer.uint32(98).fork().uint32(10).string(keys[i])
-                        types[11].encode(message.mapStringTestmapfields[keys[i]], writer.uint32(18).fork()).ldelim()
+                        writer.uint32(98/*= id 12, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
+                        types[11].encode(message.mapStringTestmapfields[keys[i]], writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                         writer.ldelim()
                     }
                 }
@@ -3848,9 +3848,9 @@ $root.jspb = (function() {
                         return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringMsg (object expected)"
                     var key = Object.keys(message.mapStringMsg)
                     for (var i = 0; i < key.length; ++i) {
-                        var s;
-                        if (s = types[6].verify(message.mapStringMsg[key[i]]))
-                            return s
+                        var reason;
+                        if (reason = types[6].verify(message.mapStringMsg[key[i]]))
+                            return reason
                     }
                 }
                 if (message.mapInt32String !== undefined) {
@@ -3887,18 +3887,18 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.testMapFields !== undefined && message.testMapFields !== null) {
-                    var s;
-                    if (s = types[10].verify(message.testMapFields))
-                        return s
+                    var reason;
+                    if (reason = types[10].verify(message.testMapFields))
+                        return reason
                 }
                 if (message.mapStringTestmapfields !== undefined) {
                     if (!util.isObject(message.mapStringTestmapfields))
                         return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields (object expected)"
                     var key = Object.keys(message.mapStringTestmapfields)
                     for (var i = 0; i < key.length; ++i) {
-                        var s;
-                        if (s = types[11].verify(message.mapStringTestmapfields[key[i]]))
-                            return s
+                        var reason;
+                        if (reason = types[11].verify(message.mapStringTestmapfields[key[i]]))
+                            return reason
                     }
                 }
                 return null
@@ -3963,7 +3963,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.foo !== undefined && message.foo !== 0)
-                    writer.uint32(8).int32(message.foo)
+                    writer.uint32(8/*= id 1, wireType 0 */).int32(message.foo)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -4248,7 +4248,7 @@ $root.jspb = (function() {
                     Message.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                         writer || (writer = Writer.create())
                         if (message.count !== undefined && message.count !== 0)
-                            writer.uint32(8).int32(message.count)
+                            writer.uint32(8/*= id 1, wireType 0 */).int32(message.count)
                         return writer
                     }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -4388,7 +4388,7 @@ $root.google = (function() {
                 writer || (writer = Writer.create())
                 if (message.file)
                     for (var i = 0; i < message.file.length; ++i)
-                    types[0].encode(message.file[i], writer.uint32(10).fork()).ldelim()
+                    types[0].encode(message.file[i], writer.uint32(10/*= id 1, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, ["google.protobuf.FileDescriptorProto"]); /* eslint-enable */
 
@@ -4448,9 +4448,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.file))
                         return "invalid value for field .google.protobuf.FileDescriptorSet.file (array expected)"
                     for (var i = 0; i < message.file.length; ++i) {
-                        var s;
-                        if (s = types[0].verify(message.file[i]))
-                            return s
+                        var reason;
+                        if (reason = types[0].verify(message.file[i]))
+                            return reason
                     }
                 }
                 return null
@@ -4570,36 +4570,36 @@ $root.google = (function() {
             FileDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message["package"] !== undefined && message["package"] !== "")
-                    writer.uint32(18).string(message["package"])
+                    writer.uint32(18/*= id 2, wireType 2 */).string(message["package"])
                 if (message.dependency)
                     for (var i = 0; i < message.dependency.length; ++i)
-                    writer.uint32(26).string(message.dependency[i])
+                    writer.uint32(26/*= id 3, wireType 2 */).string(message.dependency[i])
                 if (message.publicDependency)
                     for (var i = 0; i < message.publicDependency.length; ++i)
-                    writer.uint32(80).int32(message.publicDependency[i])
+                    writer.uint32(80/*= id 10, wireType 0 */).int32(message.publicDependency[i])
                 if (message.weakDependency)
                     for (var i = 0; i < message.weakDependency.length; ++i)
-                    writer.uint32(88).int32(message.weakDependency[i])
+                    writer.uint32(88/*= id 11, wireType 0 */).int32(message.weakDependency[i])
                 if (message.messageType)
                     for (var i = 0; i < message.messageType.length; ++i)
-                    types[5].encode(message.messageType[i], writer.uint32(34).fork()).ldelim()
+                    types[5].encode(message.messageType[i], writer.uint32(34/*= id 4, wireType 2 */).fork()).ldelim()
                 if (message.enumType)
                     for (var i = 0; i < message.enumType.length; ++i)
-                    types[6].encode(message.enumType[i], writer.uint32(42).fork()).ldelim()
+                    types[6].encode(message.enumType[i], writer.uint32(42/*= id 5, wireType 2 */).fork()).ldelim()
                 if (message.service)
                     for (var i = 0; i < message.service.length; ++i)
-                    types[7].encode(message.service[i], writer.uint32(50).fork()).ldelim()
+                    types[7].encode(message.service[i], writer.uint32(50/*= id 6, wireType 2 */).fork()).ldelim()
                 if (message.extension)
                     for (var i = 0; i < message.extension.length; ++i)
-                    types[8].encode(message.extension[i], writer.uint32(58).fork()).ldelim()
+                    types[8].encode(message.extension[i], writer.uint32(58/*= id 7, wireType 2 */).fork()).ldelim()
                 if (message.options !== undefined && message.options !== null)
-                    types[9].encode(message.options, writer.uint32(66).fork()).ldelim()
+                    types[9].encode(message.options, writer.uint32(66/*= id 8, wireType 2 */).fork()).ldelim()
                 if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null)
-                    types[10].encode(message.sourceCodeInfo, writer.uint32(74).fork()).ldelim()
+                    types[10].encode(message.sourceCodeInfo, writer.uint32(74/*= id 9, wireType 2 */).fork()).ldelim()
                 if (message.syntax !== undefined && message.syntax !== "")
-                    writer.uint32(98).string(message.syntax)
+                    writer.uint32(98/*= id 12, wireType 2 */).string(message.syntax)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.ServiceDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.FileOptions", "google.protobuf.SourceCodeInfo", null]); /* eslint-enable */
 
@@ -4730,47 +4730,47 @@ $root.google = (function() {
                     if (!Array.isArray(message.messageType))
                         return "invalid value for field .google.protobuf.FileDescriptorProto.messageType (array expected)"
                     for (var i = 0; i < message.messageType.length; ++i) {
-                        var s;
-                        if (s = types[5].verify(message.messageType[i]))
-                            return s
+                        var reason;
+                        if (reason = types[5].verify(message.messageType[i]))
+                            return reason
                     }
                 }
                 if (message.enumType !== undefined) {
                     if (!Array.isArray(message.enumType))
                         return "invalid value for field .google.protobuf.FileDescriptorProto.enumType (array expected)"
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        var s;
-                        if (s = types[6].verify(message.enumType[i]))
-                            return s
+                        var reason;
+                        if (reason = types[6].verify(message.enumType[i]))
+                            return reason
                     }
                 }
                 if (message.service !== undefined) {
                     if (!Array.isArray(message.service))
                         return "invalid value for field .google.protobuf.FileDescriptorProto.service (array expected)"
                     for (var i = 0; i < message.service.length; ++i) {
-                        var s;
-                        if (s = types[7].verify(message.service[i]))
-                            return s
+                        var reason;
+                        if (reason = types[7].verify(message.service[i]))
+                            return reason
                     }
                 }
                 if (message.extension !== undefined) {
                     if (!Array.isArray(message.extension))
                         return "invalid value for field .google.protobuf.FileDescriptorProto.extension (array expected)"
                     for (var i = 0; i < message.extension.length; ++i) {
-                        var s;
-                        if (s = types[8].verify(message.extension[i]))
-                            return s
+                        var reason;
+                        if (reason = types[8].verify(message.extension[i]))
+                            return reason
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[9].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[9].verify(message.options))
+                        return reason
                 }
                 if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
-                    var s;
-                    if (s = types[10].verify(message.sourceCodeInfo))
-                        return s
+                    var reason;
+                    if (reason = types[10].verify(message.sourceCodeInfo))
+                        return reason
                 }
                 if (message.syntax !== undefined) {
                     if (!util.isString(message.syntax))
@@ -4880,33 +4880,33 @@ $root.google = (function() {
             DescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.field)
                     for (var i = 0; i < message.field.length; ++i)
-                    types[1].encode(message.field[i], writer.uint32(18).fork()).ldelim()
+                    types[1].encode(message.field[i], writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                 if (message.extension)
                     for (var i = 0; i < message.extension.length; ++i)
-                    types[2].encode(message.extension[i], writer.uint32(50).fork()).ldelim()
+                    types[2].encode(message.extension[i], writer.uint32(50/*= id 6, wireType 2 */).fork()).ldelim()
                 if (message.nestedType)
                     for (var i = 0; i < message.nestedType.length; ++i)
-                    types[3].encode(message.nestedType[i], writer.uint32(26).fork()).ldelim()
+                    types[3].encode(message.nestedType[i], writer.uint32(26/*= id 3, wireType 2 */).fork()).ldelim()
                 if (message.enumType)
                     for (var i = 0; i < message.enumType.length; ++i)
-                    types[4].encode(message.enumType[i], writer.uint32(34).fork()).ldelim()
+                    types[4].encode(message.enumType[i], writer.uint32(34/*= id 4, wireType 2 */).fork()).ldelim()
                 if (message.extensionRange)
                     for (var i = 0; i < message.extensionRange.length; ++i)
-                    types[5].encode(message.extensionRange[i], writer.uint32(42).fork()).ldelim()
+                    types[5].encode(message.extensionRange[i], writer.uint32(42/*= id 5, wireType 2 */).fork()).ldelim()
                 if (message.oneofDecl)
                     for (var i = 0; i < message.oneofDecl.length; ++i)
-                    types[6].encode(message.oneofDecl[i], writer.uint32(66).fork()).ldelim()
+                    types[6].encode(message.oneofDecl[i], writer.uint32(66/*= id 8, wireType 2 */).fork()).ldelim()
                 if (message.options !== undefined && message.options !== null)
-                    types[7].encode(message.options, writer.uint32(58).fork()).ldelim()
+                    types[7].encode(message.options, writer.uint32(58/*= id 7, wireType 2 */).fork()).ldelim()
                 if (message.reservedRange)
                     for (var i = 0; i < message.reservedRange.length; ++i)
-                    types[8].encode(message.reservedRange[i], writer.uint32(74).fork()).ldelim()
+                    types[8].encode(message.reservedRange[i], writer.uint32(74/*= id 9, wireType 2 */).fork()).ldelim()
                 if (message.reservedName)
                     for (var i = 0; i < message.reservedName.length; ++i)
-                    writer.uint32(82).string(message.reservedName[i])
+                    writer.uint32(82/*= id 10, wireType 2 */).string(message.reservedName[i])
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.FieldDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.DescriptorProto.ExtensionRange", "google.protobuf.OneofDescriptorProto", "google.protobuf.MessageOptions", "google.protobuf.DescriptorProto.ReservedRange", null]); /* eslint-enable */
 
@@ -5004,68 +5004,68 @@ $root.google = (function() {
                     if (!Array.isArray(message.field))
                         return "invalid value for field .google.protobuf.DescriptorProto.field (array expected)"
                     for (var i = 0; i < message.field.length; ++i) {
-                        var s;
-                        if (s = types[1].verify(message.field[i]))
-                            return s
+                        var reason;
+                        if (reason = types[1].verify(message.field[i]))
+                            return reason
                     }
                 }
                 if (message.extension !== undefined) {
                     if (!Array.isArray(message.extension))
                         return "invalid value for field .google.protobuf.DescriptorProto.extension (array expected)"
                     for (var i = 0; i < message.extension.length; ++i) {
-                        var s;
-                        if (s = types[2].verify(message.extension[i]))
-                            return s
+                        var reason;
+                        if (reason = types[2].verify(message.extension[i]))
+                            return reason
                     }
                 }
                 if (message.nestedType !== undefined) {
                     if (!Array.isArray(message.nestedType))
                         return "invalid value for field .google.protobuf.DescriptorProto.nestedType (array expected)"
                     for (var i = 0; i < message.nestedType.length; ++i) {
-                        var s;
-                        if (s = types[3].verify(message.nestedType[i]))
-                            return s
+                        var reason;
+                        if (reason = types[3].verify(message.nestedType[i]))
+                            return reason
                     }
                 }
                 if (message.enumType !== undefined) {
                     if (!Array.isArray(message.enumType))
                         return "invalid value for field .google.protobuf.DescriptorProto.enumType (array expected)"
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        var s;
-                        if (s = types[4].verify(message.enumType[i]))
-                            return s
+                        var reason;
+                        if (reason = types[4].verify(message.enumType[i]))
+                            return reason
                     }
                 }
                 if (message.extensionRange !== undefined) {
                     if (!Array.isArray(message.extensionRange))
                         return "invalid value for field .google.protobuf.DescriptorProto.extensionRange (array expected)"
                     for (var i = 0; i < message.extensionRange.length; ++i) {
-                        var s;
-                        if (s = types[5].verify(message.extensionRange[i]))
-                            return s
+                        var reason;
+                        if (reason = types[5].verify(message.extensionRange[i]))
+                            return reason
                     }
                 }
                 if (message.oneofDecl !== undefined) {
                     if (!Array.isArray(message.oneofDecl))
                         return "invalid value for field .google.protobuf.DescriptorProto.oneofDecl (array expected)"
                     for (var i = 0; i < message.oneofDecl.length; ++i) {
-                        var s;
-                        if (s = types[6].verify(message.oneofDecl[i]))
-                            return s
+                        var reason;
+                        if (reason = types[6].verify(message.oneofDecl[i]))
+                            return reason
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[7].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[7].verify(message.options))
+                        return reason
                 }
                 if (message.reservedRange !== undefined) {
                     if (!Array.isArray(message.reservedRange))
                         return "invalid value for field .google.protobuf.DescriptorProto.reservedRange (array expected)"
                     for (var i = 0; i < message.reservedRange.length; ++i) {
-                        var s;
-                        if (s = types[8].verify(message.reservedRange[i]))
-                            return s
+                        var reason;
+                        if (reason = types[8].verify(message.reservedRange[i]))
+                            return reason
                     }
                 }
                 if (message.reservedName !== undefined) {
@@ -5129,9 +5129,9 @@ $root.google = (function() {
                 ExtensionRange.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
                     if (message.start !== undefined && message.start !== 0)
-                        writer.uint32(8).int32(message.start)
+                        writer.uint32(8/*= id 1, wireType 0 */).int32(message.start)
                     if (message.end !== undefined && message.end !== 0)
-                        writer.uint32(16).int32(message.end)
+                        writer.uint32(16/*= id 2, wireType 0 */).int32(message.end)
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
@@ -5253,9 +5253,9 @@ $root.google = (function() {
                 ReservedRange.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
                     if (message.start !== undefined && message.start !== 0)
-                        writer.uint32(8).int32(message.start)
+                        writer.uint32(8/*= id 1, wireType 0 */).int32(message.start)
                     if (message.end !== undefined && message.end !== 0)
-                        writer.uint32(16).int32(message.end)
+                        writer.uint32(16/*= id 2, wireType 0 */).int32(message.end)
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
@@ -5428,25 +5428,25 @@ $root.google = (function() {
             FieldDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.number !== undefined && message.number !== 0)
-                    writer.uint32(24).int32(message.number)
+                    writer.uint32(24/*= id 3, wireType 0 */).int32(message.number)
                 if (message.label !== undefined && message.label !== 0)
-                    writer.uint32(32).uint32(message.label)
+                    writer.uint32(32/*= id 4, wireType 0 */).uint32(message.label)
                 if (message.type !== undefined && message.type !== 0)
-                    writer.uint32(40).uint32(message.type)
+                    writer.uint32(40/*= id 5, wireType 0 */).uint32(message.type)
                 if (message.typeName !== undefined && message.typeName !== "")
-                    writer.uint32(50).string(message.typeName)
+                    writer.uint32(50/*= id 6, wireType 2 */).string(message.typeName)
                 if (message.extendee !== undefined && message.extendee !== "")
-                    writer.uint32(18).string(message.extendee)
+                    writer.uint32(18/*= id 2, wireType 2 */).string(message.extendee)
                 if (message.defaultValue !== undefined && message.defaultValue !== "")
-                    writer.uint32(58).string(message.defaultValue)
+                    writer.uint32(58/*= id 7, wireType 2 */).string(message.defaultValue)
                 if (message.oneofIndex !== undefined && message.oneofIndex !== 0)
-                    writer.uint32(72).int32(message.oneofIndex)
+                    writer.uint32(72/*= id 9, wireType 0 */).int32(message.oneofIndex)
                 if (message.jsonName !== undefined && message.jsonName !== "")
-                    writer.uint32(82).string(message.jsonName)
+                    writer.uint32(82/*= id 10, wireType 2 */).string(message.jsonName)
                 if (message.options !== undefined && message.options !== null)
-                    types[9].encode(message.options, writer.uint32(66).fork()).ldelim()
+                    types[9].encode(message.options, writer.uint32(66/*= id 8, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, "google.protobuf.FieldDescriptorProto.Label", "google.protobuf.FieldDescriptorProto.Type", null, null, null, null, null, "google.protobuf.FieldOptions"]); /* eslint-enable */
 
@@ -5592,9 +5592,9 @@ $root.google = (function() {
                         return "invalid value for field .google.protobuf.FieldDescriptorProto.jsonName (string expected)"
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[9].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[9].verify(message.options))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, null, "google.protobuf.FieldDescriptorProto.Label", "google.protobuf.FieldDescriptorProto.Type", null, null, null, null, null, "google.protobuf.FieldOptions"]); /* eslint-enable */
@@ -5691,9 +5691,9 @@ $root.google = (function() {
             OneofDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.options !== undefined && message.options !== null)
-                    types[1].encode(message.options, writer.uint32(18).fork()).ldelim()
+                    types[1].encode(message.options, writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.OneofOptions"]); /* eslint-enable */
 
@@ -5756,9 +5756,9 @@ $root.google = (function() {
                         return "invalid value for field .google.protobuf.OneofDescriptorProto.name (string expected)"
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[1].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[1].verify(message.options))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, "google.protobuf.OneofOptions"]); /* eslint-enable */
@@ -5822,12 +5822,12 @@ $root.google = (function() {
             EnumDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.value)
                     for (var i = 0; i < message.value.length; ++i)
-                    types[1].encode(message.value[i], writer.uint32(18).fork()).ldelim()
+                    types[1].encode(message.value[i], writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                 if (message.options !== undefined && message.options !== null)
-                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim()
+                    types[2].encode(message.options, writer.uint32(26/*= id 3, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.EnumValueDescriptorProto", "google.protobuf.EnumOptions"]); /* eslint-enable */
 
@@ -5897,15 +5897,15 @@ $root.google = (function() {
                     if (!Array.isArray(message.value))
                         return "invalid value for field .google.protobuf.EnumDescriptorProto.value (array expected)"
                     for (var i = 0; i < message.value.length; ++i) {
-                        var s;
-                        if (s = types[1].verify(message.value[i]))
-                            return s
+                        var reason;
+                        if (reason = types[1].verify(message.value[i]))
+                            return reason
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[2].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[2].verify(message.options))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, "google.protobuf.EnumValueDescriptorProto", "google.protobuf.EnumOptions"]); /* eslint-enable */
@@ -5969,11 +5969,11 @@ $root.google = (function() {
             EnumValueDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.number !== undefined && message.number !== 0)
-                    writer.uint32(16).int32(message.number)
+                    writer.uint32(16/*= id 2, wireType 0 */).int32(message.number)
                 if (message.options !== undefined && message.options !== null)
-                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim()
+                    types[2].encode(message.options, writer.uint32(26/*= id 3, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, "google.protobuf.EnumValueOptions"]); /* eslint-enable */
 
@@ -6043,9 +6043,9 @@ $root.google = (function() {
                         return "invalid value for field .google.protobuf.EnumValueDescriptorProto.number (integer expected)"
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[2].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[2].verify(message.options))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, null, "google.protobuf.EnumValueOptions"]); /* eslint-enable */
@@ -6109,12 +6109,12 @@ $root.google = (function() {
             ServiceDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.method)
                     for (var i = 0; i < message.method.length; ++i)
-                    types[1].encode(message.method[i], writer.uint32(18).fork()).ldelim()
+                    types[1].encode(message.method[i], writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                 if (message.options !== undefined && message.options !== null)
-                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim()
+                    types[2].encode(message.options, writer.uint32(26/*= id 3, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.MethodDescriptorProto", "google.protobuf.ServiceOptions"]); /* eslint-enable */
 
@@ -6184,15 +6184,15 @@ $root.google = (function() {
                     if (!Array.isArray(message.method))
                         return "invalid value for field .google.protobuf.ServiceDescriptorProto.method (array expected)"
                     for (var i = 0; i < message.method.length; ++i) {
-                        var s;
-                        if (s = types[1].verify(message.method[i]))
-                            return s
+                        var reason;
+                        if (reason = types[1].verify(message.method[i]))
+                            return reason
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[2].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[2].verify(message.options))
+                        return reason
                 }
                 return null
             }})($protobuf.util, [null, "google.protobuf.MethodDescriptorProto", "google.protobuf.ServiceOptions"]); /* eslint-enable */
@@ -6274,17 +6274,17 @@ $root.google = (function() {
             MethodDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.name !== undefined && message.name !== "")
-                    writer.uint32(10).string(message.name)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.inputType !== undefined && message.inputType !== "")
-                    writer.uint32(18).string(message.inputType)
+                    writer.uint32(18/*= id 2, wireType 2 */).string(message.inputType)
                 if (message.outputType !== undefined && message.outputType !== "")
-                    writer.uint32(26).string(message.outputType)
+                    writer.uint32(26/*= id 3, wireType 2 */).string(message.outputType)
                 if (message.options !== undefined && message.options !== null)
-                    types[3].encode(message.options, writer.uint32(34).fork()).ldelim()
+                    types[3].encode(message.options, writer.uint32(34/*= id 4, wireType 2 */).fork()).ldelim()
                 if (message.clientStreaming !== undefined && message.clientStreaming !== false)
-                    writer.uint32(40).bool(message.clientStreaming)
+                    writer.uint32(40/*= id 5, wireType 0 */).bool(message.clientStreaming)
                 if (message.serverStreaming !== undefined && message.serverStreaming !== false)
-                    writer.uint32(48).bool(message.serverStreaming)
+                    writer.uint32(48/*= id 6, wireType 0 */).bool(message.serverStreaming)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, "google.protobuf.MethodOptions", null, null]); /* eslint-enable */
 
@@ -6367,9 +6367,9 @@ $root.google = (function() {
                         return "invalid value for field .google.protobuf.MethodDescriptorProto.outputType (string expected)"
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var s;
-                    if (s = types[3].verify(message.options))
-                        return s
+                    var reason;
+                    if (reason = types[3].verify(message.options))
+                        return reason
                 }
                 if (message.clientStreaming !== undefined) {
                     if (typeof message.clientStreaming !== "boolean")
@@ -6513,36 +6513,36 @@ $root.google = (function() {
             FileOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.javaPackage !== undefined && message.javaPackage !== "")
-                    writer.uint32(10).string(message.javaPackage)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.javaPackage)
                 if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== "")
-                    writer.uint32(66).string(message.javaOuterClassname)
+                    writer.uint32(66/*= id 8, wireType 2 */).string(message.javaOuterClassname)
                 if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== false)
-                    writer.uint32(80).bool(message.javaMultipleFiles)
+                    writer.uint32(80/*= id 10, wireType 0 */).bool(message.javaMultipleFiles)
                 if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== false)
-                    writer.uint32(160).bool(message.javaGenerateEqualsAndHash)
+                    writer.uint32(160/*= id 20, wireType 0 */).bool(message.javaGenerateEqualsAndHash)
                 if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== false)
-                    writer.uint32(216).bool(message.javaStringCheckUtf8)
+                    writer.uint32(216/*= id 27, wireType 0 */).bool(message.javaStringCheckUtf8)
                 if (message.optimizeFor !== undefined && message.optimizeFor !== "SPEED")
-                    writer.uint32(72).uint32(message.optimizeFor)
+                    writer.uint32(72/*= id 9, wireType 0 */).uint32(message.optimizeFor)
                 if (message.goPackage !== undefined && message.goPackage !== "")
-                    writer.uint32(90).string(message.goPackage)
+                    writer.uint32(90/*= id 11, wireType 2 */).string(message.goPackage)
                 if (message.ccGenericServices !== undefined && message.ccGenericServices !== false)
-                    writer.uint32(128).bool(message.ccGenericServices)
+                    writer.uint32(128/*= id 16, wireType 0 */).bool(message.ccGenericServices)
                 if (message.javaGenericServices !== undefined && message.javaGenericServices !== false)
-                    writer.uint32(136).bool(message.javaGenericServices)
+                    writer.uint32(136/*= id 17, wireType 0 */).bool(message.javaGenericServices)
                 if (message.pyGenericServices !== undefined && message.pyGenericServices !== false)
-                    writer.uint32(144).bool(message.pyGenericServices)
+                    writer.uint32(144/*= id 18, wireType 0 */).bool(message.pyGenericServices)
                 if (message.deprecated !== undefined && message.deprecated !== false)
-                    writer.uint32(184).bool(message.deprecated)
+                    writer.uint32(184/*= id 23, wireType 0 */).bool(message.deprecated)
                 if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== false)
-                    writer.uint32(248).bool(message.ccEnableArenas)
+                    writer.uint32(248/*= id 31, wireType 0 */).bool(message.ccEnableArenas)
                 if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== "")
-                    writer.uint32(290).string(message.objcClassPrefix)
+                    writer.uint32(290/*= id 36, wireType 2 */).string(message.objcClassPrefix)
                 if (message.csharpNamespace !== undefined && message.csharpNamespace !== "")
-                    writer.uint32(298).string(message.csharpNamespace)
+                    writer.uint32(298/*= id 37, wireType 2 */).string(message.csharpNamespace)
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[14].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[14].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, "google.protobuf.FileOptions.OptimizeMode", null, null, null, null, null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
@@ -6706,9 +6706,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.FileOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[14].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[14].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 return null
@@ -6797,16 +6797,16 @@ $root.google = (function() {
             MessageOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== false)
-                    writer.uint32(8).bool(message.messageSetWireFormat)
+                    writer.uint32(8/*= id 1, wireType 0 */).bool(message.messageSetWireFormat)
                 if (message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== false)
-                    writer.uint32(16).bool(message.noStandardDescriptorAccessor)
+                    writer.uint32(16/*= id 2, wireType 0 */).bool(message.noStandardDescriptorAccessor)
                 if (message.deprecated !== undefined && message.deprecated !== false)
-                    writer.uint32(24).bool(message.deprecated)
+                    writer.uint32(24/*= id 3, wireType 0 */).bool(message.deprecated)
                 if (message.mapEntry !== undefined && message.mapEntry !== false)
-                    writer.uint32(56).bool(message.mapEntry)
+                    writer.uint32(56/*= id 7, wireType 0 */).bool(message.mapEntry)
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[4].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[4].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
@@ -6894,9 +6894,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.MessageOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[4].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[4].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 return null
@@ -6985,20 +6985,20 @@ $root.google = (function() {
             FieldOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.ctype !== undefined && message.ctype !== "STRING")
-                    writer.uint32(8).uint32(message.ctype)
+                    writer.uint32(8/*= id 1, wireType 0 */).uint32(message.ctype)
                 if (message.packed !== undefined && message.packed !== false)
-                    writer.uint32(16).bool(message.packed)
+                    writer.uint32(16/*= id 2, wireType 0 */).bool(message.packed)
                 if (message.jstype !== undefined && message.jstype !== "JS_NORMAL")
-                    writer.uint32(48).uint32(message.jstype)
+                    writer.uint32(48/*= id 6, wireType 0 */).uint32(message.jstype)
                 if (message.lazy !== undefined && message.lazy !== false)
-                    writer.uint32(40).bool(message.lazy)
+                    writer.uint32(40/*= id 5, wireType 0 */).bool(message.lazy)
                 if (message.deprecated !== undefined && message.deprecated !== false)
-                    writer.uint32(24).bool(message.deprecated)
+                    writer.uint32(24/*= id 3, wireType 0 */).bool(message.deprecated)
                 if (message.weak !== undefined && message.weak !== false)
-                    writer.uint32(80).bool(message.weak)
+                    writer.uint32(80/*= id 10, wireType 0 */).bool(message.weak)
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[6].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[6].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, ["google.protobuf.FieldOptions.CType", null, "google.protobuf.FieldOptions.JSType", null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
@@ -7112,9 +7112,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.FieldOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[6].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[6].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 return null
@@ -7192,7 +7192,7 @@ $root.google = (function() {
                 writer || (writer = Writer.create())
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[0].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[0].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, ["google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
@@ -7252,9 +7252,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.OneofOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[0].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[0].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 return null
@@ -7326,14 +7326,14 @@ $root.google = (function() {
             EnumOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.allowAlias !== undefined && message.allowAlias !== false)
-                    writer.uint32(16).bool(message.allowAlias)
+                    writer.uint32(16/*= id 2, wireType 0 */).bool(message.allowAlias)
                 if (message.deprecated !== undefined && message.deprecated !== false)
-                    writer.uint32(24).bool(message.deprecated)
+                    writer.uint32(24/*= id 3, wireType 0 */).bool(message.deprecated)
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[2].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== "")
-                    writer.uint32(336904306).string(message[".jspb.test.IsExtension.simpleOption"])
+                    writer.uint32(336904306/*= id 42113038, wireType 2 */).string(message[".jspb.test.IsExtension.simpleOption"])
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, "google.protobuf.UninterpretedOption", null]); /* eslint-enable */
 
@@ -7410,9 +7410,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.EnumOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[2].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[2].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 if (message[".jspb.test.IsExtension.simpleOption"] !== undefined) {
@@ -7475,10 +7475,10 @@ $root.google = (function() {
             EnumValueOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.deprecated !== undefined && message.deprecated !== false)
-                    writer.uint32(8).bool(message.deprecated)
+                    writer.uint32(8/*= id 1, wireType 0 */).bool(message.deprecated)
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[1].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
@@ -7545,9 +7545,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.EnumValueOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[1].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[1].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 return null
@@ -7606,10 +7606,10 @@ $root.google = (function() {
             ServiceOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.deprecated !== undefined && message.deprecated !== false)
-                    writer.uint32(264).bool(message.deprecated)
+                    writer.uint32(264/*= id 33, wireType 0 */).bool(message.deprecated)
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[1].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
@@ -7676,9 +7676,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.ServiceOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[1].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[1].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 return null
@@ -7743,12 +7743,12 @@ $root.google = (function() {
             MethodOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.deprecated !== undefined && message.deprecated !== false)
-                    writer.uint32(264).bool(message.deprecated)
+                    writer.uint32(264/*= id 33, wireType 0 */).bool(message.deprecated)
                 if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== "IDEMPOTENCY_UNKNOWN")
-                    writer.uint32(272).uint32(message.idempotencyLevel)
+                    writer.uint32(272/*= id 34, wireType 0 */).uint32(message.idempotencyLevel)
                 if (message.uninterpretedOption)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
-                    types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                    types[2].encode(message.uninterpretedOption[i], writer.uint32(7994/*= id 999, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.MethodOptions.IdempotencyLevel", "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
@@ -7828,9 +7828,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.uninterpretedOption))
                         return "invalid value for field .google.protobuf.MethodOptions.uninterpretedOption (array expected)"
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var s;
-                        if (s = types[2].verify(message.uninterpretedOption[i]))
-                            return s
+                        var reason;
+                        if (reason = types[2].verify(message.uninterpretedOption[i]))
+                            return reason
                     }
                 }
                 return null
@@ -7932,19 +7932,19 @@ $root.google = (function() {
                 writer || (writer = Writer.create())
                 if (message.name)
                     for (var i = 0; i < message.name.length; ++i)
-                    types[0].encode(message.name[i], writer.uint32(18).fork()).ldelim()
+                    types[0].encode(message.name[i], writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                 if (message.identifierValue !== undefined && message.identifierValue !== "")
-                    writer.uint32(26).string(message.identifierValue)
+                    writer.uint32(26/*= id 3, wireType 2 */).string(message.identifierValue)
                 if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && util.longNe(message.positiveIntValue, 0, 0))
-                    writer.uint32(32).uint64(message.positiveIntValue)
+                    writer.uint32(32/*= id 4, wireType 0 */).uint64(message.positiveIntValue)
                 if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && util.longNe(message.negativeIntValue, 0, 0))
-                    writer.uint32(40).int64(message.negativeIntValue)
+                    writer.uint32(40/*= id 5, wireType 0 */).int64(message.negativeIntValue)
                 if (message.doubleValue !== undefined && message.doubleValue !== 0)
-                    writer.uint32(49).double(message.doubleValue)
+                    writer.uint32(49/*= id 6, wireType 1 */).double(message.doubleValue)
                 if (message.stringValue !== undefined && message.stringValue !== [])
-                    writer.uint32(58).bytes(message.stringValue)
+                    writer.uint32(58/*= id 7, wireType 2 */).bytes(message.stringValue)
                 if (message.aggregateValue !== undefined && message.aggregateValue !== "")
-                    writer.uint32(66).string(message.aggregateValue)
+                    writer.uint32(66/*= id 8, wireType 2 */).string(message.aggregateValue)
                 return writer
             }})($protobuf.Writer, $protobuf.util, ["google.protobuf.UninterpretedOption.NamePart", null, null, null, null, null, null]); /* eslint-enable */
 
@@ -8022,9 +8022,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.name))
                         return "invalid value for field .google.protobuf.UninterpretedOption.name (array expected)"
                     for (var i = 0; i < message.name.length; ++i) {
-                        var s;
-                        if (s = types[0].verify(message.name[i]))
-                            return s
+                        var reason;
+                        if (reason = types[0].verify(message.name[i]))
+                            return reason
                     }
                 }
                 if (message.identifierValue !== undefined) {
@@ -8103,8 +8103,8 @@ $root.google = (function() {
                  */
                 NamePart.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
-                    writer.uint32(10).string(message.namePart)
-                    writer.uint32(16).bool(message.isExtension)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.namePart)
+                    writer.uint32(16/*= id 2, wireType 0 */).bool(message.isExtension)
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
@@ -8220,7 +8220,7 @@ $root.google = (function() {
                 writer || (writer = Writer.create())
                 if (message.location)
                     for (var i = 0; i < message.location.length; ++i)
-                    types[0].encode(message.location[i], writer.uint32(10).fork()).ldelim()
+                    types[0].encode(message.location[i], writer.uint32(10/*= id 1, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, ["google.protobuf.SourceCodeInfo.Location"]); /* eslint-enable */
 
@@ -8280,9 +8280,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.location))
                         return "invalid value for field .google.protobuf.SourceCodeInfo.location (array expected)"
                     for (var i = 0; i < message.location.length; ++i) {
-                        var s;
-                        if (s = types[0].verify(message.location[i]))
-                            return s
+                        var reason;
+                        if (reason = types[0].verify(message.location[i]))
+                            return reason
                     }
                 }
                 return null
@@ -8356,24 +8356,24 @@ $root.google = (function() {
                 Location.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
                     if (message.path && message.path.length) {
-                        writer.uint32(10).fork()
+                        writer.uint32(10/*= id 1, wireType 2 */).fork()
                         for (var i = 0; i < message.path.length; ++i)
                             writer.int32(message.path[i])
                         writer.ldelim()
                     }
                     if (message.span && message.span.length) {
-                        writer.uint32(18).fork()
+                        writer.uint32(18/*= id 2, wireType 2 */).fork()
                         for (var i = 0; i < message.span.length; ++i)
                             writer.int32(message.span[i])
                         writer.ldelim()
                     }
                     if (message.leadingComments !== undefined && message.leadingComments !== "")
-                        writer.uint32(26).string(message.leadingComments)
+                        writer.uint32(26/*= id 3, wireType 2 */).string(message.leadingComments)
                     if (message.trailingComments !== undefined && message.trailingComments !== "")
-                        writer.uint32(34).string(message.trailingComments)
+                        writer.uint32(34/*= id 4, wireType 2 */).string(message.trailingComments)
                     if (message.leadingDetachedComments)
                         for (var i = 0; i < message.leadingDetachedComments.length; ++i)
-                        writer.uint32(50).string(message.leadingDetachedComments[i])
+                        writer.uint32(50/*= id 6, wireType 2 */).string(message.leadingDetachedComments[i])
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null]); /* eslint-enable */
 
@@ -8539,7 +8539,7 @@ $root.google = (function() {
                 writer || (writer = Writer.create())
                 if (message.annotation)
                     for (var i = 0; i < message.annotation.length; ++i)
-                    types[0].encode(message.annotation[i], writer.uint32(10).fork()).ldelim()
+                    types[0].encode(message.annotation[i], writer.uint32(10/*= id 1, wireType 2 */).fork()).ldelim()
                 return writer
             }})($protobuf.Writer, $protobuf.util, ["google.protobuf.GeneratedCodeInfo.Annotation"]); /* eslint-enable */
 
@@ -8599,9 +8599,9 @@ $root.google = (function() {
                     if (!Array.isArray(message.annotation))
                         return "invalid value for field .google.protobuf.GeneratedCodeInfo.annotation (array expected)"
                     for (var i = 0; i < message.annotation.length; ++i) {
-                        var s;
-                        if (s = types[0].verify(message.annotation[i]))
-                            return s
+                        var reason;
+                        if (reason = types[0].verify(message.annotation[i]))
+                            return reason
                     }
                 }
                 return null
@@ -8669,17 +8669,17 @@ $root.google = (function() {
                 Annotation.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                     writer || (writer = Writer.create())
                     if (message.path && message.path.length) {
-                        writer.uint32(10).fork()
+                        writer.uint32(10/*= id 1, wireType 2 */).fork()
                         for (var i = 0; i < message.path.length; ++i)
                             writer.int32(message.path[i])
                         writer.ldelim()
                     }
                     if (message.sourceFile !== undefined && message.sourceFile !== "")
-                        writer.uint32(18).string(message.sourceFile)
+                        writer.uint32(18/*= id 2, wireType 2 */).string(message.sourceFile)
                     if (message.begin !== undefined && message.begin !== 0)
-                        writer.uint32(24).int32(message.begin)
+                        writer.uint32(24/*= id 3, wireType 0 */).int32(message.begin)
                     if (message.end !== undefined && message.end !== 0)
-                        writer.uint32(32).int32(message.end)
+                        writer.uint32(32/*= id 4, wireType 0 */).int32(message.end)
                     return writer
                 }})($protobuf.Writer, $protobuf.util, [null, null, null, null]); /* eslint-enable */
 

@@ -52,7 +52,7 @@ $root.A = (function() {
     A.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
         writer || (writer = Writer.create())
         if (message.whatever !== undefined && message.whatever !== "")
-            writer.uint32(10).string(message.whatever)
+            writer.uint32(10/*= id 1, wireType 2 */).string(message.whatever)
         return writer
     }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
@@ -161,7 +161,7 @@ $root.B = (function() {
     B.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
         writer || (writer = Writer.create())
         if (message.A !== undefined && message.A !== null)
-            types[0].encode(message.A, writer.uint32(10).fork()).ldelim()
+            types[0].encode(message.A, writer.uint32(10/*= id 1, wireType 2 */).fork()).ldelim()
         return writer
     }})($protobuf.Writer, $protobuf.util, ["A"]); /* eslint-enable */
 
@@ -217,9 +217,9 @@ $root.B = (function() {
      */
     B.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
         if (message.A !== undefined && message.A !== null) {
-            var s;
-            if (s = types[0].verify(message.A))
-                return s
+            var reason;
+            if (reason = types[0].verify(message.A))
+                return reason
         }
         return null
     }})($protobuf.util, ["A"]); /* eslint-enable */

@@ -62,7 +62,7 @@ $root.vector_tile = (function() {
             writer || (writer = Writer.create())
             if (message.layers)
                 for (var i = 0; i < message.layers.length; ++i)
-                types[0].encode(message.layers[i], writer.uint32(26).fork()).ldelim()
+                types[0].encode(message.layers[i], writer.uint32(26/*= id 3, wireType 2 */).fork()).ldelim()
             return writer
         }})($protobuf.Writer, $protobuf.util, ["vector_tile.Tile.Layer"]); /* eslint-enable */
 
@@ -122,9 +122,9 @@ $root.vector_tile = (function() {
                 if (!Array.isArray(message.layers))
                     return "invalid value for field .vector_tile.Tile.layers (array expected)"
                 for (var i = 0; i < message.layers.length; ++i) {
-                    var s;
-                    if (s = types[0].verify(message.layers[i]))
-                        return s
+                    var reason;
+                    if (reason = types[0].verify(message.layers[i]))
+                        return reason
                 }
             }
             return null
@@ -223,19 +223,19 @@ $root.vector_tile = (function() {
             Value.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.stringValue !== undefined && message.stringValue !== "")
-                    writer.uint32(10).string(message.stringValue)
+                    writer.uint32(10/*= id 1, wireType 2 */).string(message.stringValue)
                 if (message.floatValue !== undefined && message.floatValue !== 0)
-                    writer.uint32(21).float(message.floatValue)
+                    writer.uint32(21/*= id 2, wireType 5 */).float(message.floatValue)
                 if (message.doubleValue !== undefined && message.doubleValue !== 0)
-                    writer.uint32(25).double(message.doubleValue)
+                    writer.uint32(25/*= id 3, wireType 1 */).double(message.doubleValue)
                 if (message.intValue !== undefined && message.intValue !== null && util.longNe(message.intValue, 0, 0))
-                    writer.uint32(32).int64(message.intValue)
+                    writer.uint32(32/*= id 4, wireType 0 */).int64(message.intValue)
                 if (message.uintValue !== undefined && message.uintValue !== null && util.longNe(message.uintValue, 0, 0))
-                    writer.uint32(40).uint64(message.uintValue)
+                    writer.uint32(40/*= id 5, wireType 0 */).uint64(message.uintValue)
                 if (message.sintValue !== undefined && message.sintValue !== null && util.longNe(message.sintValue, 0, 0))
-                    writer.uint32(48).sint64(message.sintValue)
+                    writer.uint32(48/*= id 6, wireType 0 */).sint64(message.sintValue)
                 if (message.boolValue !== undefined && message.boolValue !== false)
-                    writer.uint32(56).bool(message.boolValue)
+                    writer.uint32(56/*= id 7, wireType 0 */).bool(message.boolValue)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, null, null]); /* eslint-enable */
 
@@ -404,17 +404,17 @@ $root.vector_tile = (function() {
             Feature.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
                 if (message.id !== undefined && message.id !== null && util.longNe(message.id, 0, 0))
-                    writer.uint32(8).uint64(message.id)
+                    writer.uint32(8/*= id 1, wireType 0 */).uint64(message.id)
                 if (message.tags && message.tags.length) {
-                    writer.uint32(18).fork()
+                    writer.uint32(18/*= id 2, wireType 2 */).fork()
                     for (var i = 0; i < message.tags.length; ++i)
                         writer.uint32(message.tags[i])
                     writer.ldelim()
                 }
                 if (message.type !== undefined && message.type !== "UNKNOWN")
-                    writer.uint32(24).uint32(message.type)
+                    writer.uint32(24/*= id 3, wireType 0 */).uint32(message.type)
                 if (message.geometry && message.geometry.length) {
-                    writer.uint32(34).fork()
+                    writer.uint32(34/*= id 4, wireType 2 */).fork()
                     for (var i = 0; i < message.geometry.length; ++i)
                         writer.uint32(message.geometry[i])
                     writer.ldelim()
@@ -604,19 +604,19 @@ $root.vector_tile = (function() {
              */
             Layer.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
                 writer || (writer = Writer.create())
-                writer.uint32(120).uint32(message.version)
-                writer.uint32(10).string(message.name)
+                writer.uint32(120/*= id 15, wireType 0 */).uint32(message.version)
+                writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
                 if (message.features)
                     for (var i = 0; i < message.features.length; ++i)
-                    types[2].encode(message.features[i], writer.uint32(18).fork()).ldelim()
+                    types[2].encode(message.features[i], writer.uint32(18/*= id 2, wireType 2 */).fork()).ldelim()
                 if (message.keys)
                     for (var i = 0; i < message.keys.length; ++i)
-                    writer.uint32(26).string(message.keys[i])
+                    writer.uint32(26/*= id 3, wireType 2 */).string(message.keys[i])
                 if (message.values)
                     for (var i = 0; i < message.values.length; ++i)
-                    types[4].encode(message.values[i], writer.uint32(34).fork()).ldelim()
+                    types[4].encode(message.values[i], writer.uint32(34/*= id 4, wireType 2 */).fork()).ldelim()
                 if (message.extent !== undefined && message.extent !== 4096)
-                    writer.uint32(40).uint32(message.extent)
+                    writer.uint32(40/*= id 5, wireType 0 */).uint32(message.extent)
                 return writer
             }})($protobuf.Writer, $protobuf.util, [null, null, "vector_tile.Tile.Feature", null, "vector_tile.Tile.Value", null]); /* eslint-enable */
 
@@ -697,9 +697,9 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.features))
                         return "invalid value for field .vector_tile.Tile.Layer.features (array expected)"
                     for (var i = 0; i < message.features.length; ++i) {
-                        var s;
-                        if (s = types[2].verify(message.features[i]))
-                            return s
+                        var reason;
+                        if (reason = types[2].verify(message.features[i]))
+                            return reason
                     }
                 }
                 if (message.keys !== undefined) {
@@ -714,9 +714,9 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.values))
                         return "invalid value for field .vector_tile.Tile.Layer.values (array expected)"
                     for (var i = 0; i < message.values.length; ++i) {
-                        var s;
-                        if (s = types[4].verify(message.values[i]))
-                            return s
+                        var reason;
+                        if (reason = types[4].verify(message.values[i]))
+                            return reason
                     }
                 }
                 if (message.extent !== undefined) {
