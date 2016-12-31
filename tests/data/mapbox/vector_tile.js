@@ -58,20 +58,13 @@ $root.vector_tile = (function() {
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Tile.encode = (function() {
-            /* eslint-disable */
-            var Writer = $protobuf.Writer;
-            var util = $protobuf.util;
-            var types; $lazyTypes.push(types = ["vector_tile.Tile.Layer"]);
-            return function encode(m, w) {
-                w||(w=Writer.create())
-                if(m.layers)
-                    for(var i=0;i<m.layers.length;++i)
-                    types[0].encode(m.layers[i],w.uint32(26).fork()).ldelim()
-                return w
-            }
-            /* eslint-enable */
-        })();
+        Tile.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+            writer || (writer = Writer.create())
+            if (message.layers)
+                for (var i = 0; i < message.layers.length; ++i)
+                types[0].encode(message.layers[i], writer.uint32(26).fork()).ldelim()
+            return writer
+        }})($protobuf.Writer, $protobuf.util, ["vector_tile.Tile.Layer"]); /* eslint-enable */
 
         /**
          * Encodes the specified Tile, length delimited.
@@ -90,30 +83,23 @@ $root.vector_tile = (function() {
          * @param {number} [length] Message length if known beforehand
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.decode = (function() {
-            /* eslint-disable */
-            var Reader = $protobuf.Reader;
-            var util = $protobuf.util;
-            var types; $lazyTypes.push(types = ["vector_tile.Tile.Layer"]);
-            return function decode(r, l) {
-                r instanceof Reader||(r=Reader.create(r))
-                var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile
-                while(r.pos<c){
-                    var t=r.uint32()
-                    switch(t>>>3){
-                        case 3:
-                            m.layers&&m.layers.length||(m.layers=[])
-                            m.layers.push(types[0].decode(r,r.uint32()))
-                            break
-                        default:
-                            r.skipType(t&7)
-                            break
-                    }
+        Tile.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+            reader instanceof Reader || (reader = Reader.create(reader))
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile
+            while (reader.pos < end) {
+                var tag = reader.uint32()
+                switch (tag >>> 3) {
+                    case 3:
+                        message.layers && message.layers.length || (message.layers = [])
+                        message.layers.push(types[0].decode(reader, reader.uint32()))
+                        break
+                    default:
+                        reader.skipType(tag & 7)
+                        break
                 }
-                return m
             }
-            /* eslint-enable */
-        })();
+            return message
+        }})($protobuf.Reader, $protobuf.util, ["vector_tile.Tile.Layer"]); /* eslint-enable */
 
         /**
          * Decodes a Tile from the specified reader or buffer, length delimited.
@@ -131,24 +117,18 @@ $root.vector_tile = (function() {
          * @param {vector_tile.Tile|Object} message Tile or plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
-        Tile.verify = (function() {
-            /* eslint-disable */
-            var util = $protobuf.util;
-            var types; $lazyTypes.push(types = ["vector_tile.Tile.Layer"]);
-            return function verify(m) {
-                if(m.layers!==undefined){
-                    if(!Array.isArray(m.layers))
-                        return"invalid value for field .vector_tile.Tile.layers (array expected)"
-                    for(var i=0;i<m.layers.length;++i){
-                        var r;
-                        if(r=types[0].verify(m.layers[i]))
-                            return r
-                    }
+        Tile.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+            if (message.layers !== undefined) {
+                if (!Array.isArray(message.layers))
+                    return "invalid value for field .vector_tile.Tile.layers (array expected)"
+                for (var i = 0; i < message.layers.length; ++i) {
+                    var s;
+                    if (s = types[0].verify(message.layers[i]))
+                        return s
                 }
-                return null
             }
-            /* eslint-enable */
-        })();
+            return null
+        }})($protobuf.util, ["vector_tile.Tile.Layer"]); /* eslint-enable */
 
         /**
          * GeomType values.
@@ -240,31 +220,24 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Value.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.stringValue!==undefined&&m.stringValue!=="")
-                        w.uint32(10).string(m.stringValue)
-                    if(m.floatValue!==undefined&&m.floatValue!==0)
-                        w.uint32(21).float(m.floatValue)
-                    if(m.doubleValue!==undefined&&m.doubleValue!==0)
-                        w.uint32(25).double(m.doubleValue)
-                    if(m.intValue!==undefined&&m.intValue!==null&&util.longNe(m.intValue,0,0))
-                        w.uint32(32).int64(m.intValue)
-                    if(m.uintValue!==undefined&&m.uintValue!==null&&util.longNe(m.uintValue,0,0))
-                        w.uint32(40).uint64(m.uintValue)
-                    if(m.sintValue!==undefined&&m.sintValue!==null&&util.longNe(m.sintValue,0,0))
-                        w.uint32(48).sint64(m.sintValue)
-                    if(m.boolValue!==undefined&&m.boolValue!==false)
-                        w.uint32(56).bool(m.boolValue)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            Value.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.stringValue !== undefined && message.stringValue !== "")
+                    writer.uint32(10).string(message.stringValue)
+                if (message.floatValue !== undefined && message.floatValue !== 0)
+                    writer.uint32(21).float(message.floatValue)
+                if (message.doubleValue !== undefined && message.doubleValue !== 0)
+                    writer.uint32(25).double(message.doubleValue)
+                if (message.intValue !== undefined && message.intValue !== null && util.longNe(message.intValue, 0, 0))
+                    writer.uint32(32).int64(message.intValue)
+                if (message.uintValue !== undefined && message.uintValue !== null && util.longNe(message.uintValue, 0, 0))
+                    writer.uint32(40).uint64(message.uintValue)
+                if (message.sintValue !== undefined && message.sintValue !== null && util.longNe(message.sintValue, 0, 0))
+                    writer.uint32(48).sint64(message.sintValue)
+                if (message.boolValue !== undefined && message.boolValue !== false)
+                    writer.uint32(56).bool(message.boolValue)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified Value, length delimited.
@@ -283,47 +256,40 @@ $root.vector_tile = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile.Value
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.stringValue=r.string()
-                                break
-                            case 2:
-                                m.floatValue=r.float()
-                                break
-                            case 3:
-                                m.doubleValue=r.double()
-                                break
-                            case 4:
-                                m.intValue=r.int64()
-                                break
-                            case 5:
-                                m.uintValue=r.uint64()
-                                break
-                            case 6:
-                                m.sintValue=r.sint64()
-                                break
-                            case 7:
-                                m.boolValue=r.bool()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Value.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Value
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.stringValue = reader.string()
+                            break
+                        case 2:
+                            message.floatValue = reader.float()
+                            break
+                        case 3:
+                            message.doubleValue = reader.double()
+                            break
+                        case 4:
+                            message.intValue = reader.int64()
+                            break
+                        case 5:
+                            message.uintValue = reader.uint64()
+                            break
+                        case 6:
+                            message.sintValue = reader.sint64()
+                            break
+                        case 7:
+                            message.boolValue = reader.bool()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Decodes a Value from the specified reader or buffer, length delimited.
@@ -341,43 +307,37 @@ $root.vector_tile = (function() {
              * @param {vector_tile.Tile.Value|Object} message Value or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Value.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,null,null]);
-                return function verify(m) {
-                    if(m.stringValue!==undefined){
-                        if(!util.isString(m.stringValue))
-                            return"invalid value for field .vector_tile.Tile.Value.stringValue (string expected)"
-                    }
-                    if(m.floatValue!==undefined){
-                        if(typeof m.floatValue!=="number")
-                            return"invalid value for field .vector_tile.Tile.Value.floatValue (number expected)"
-                    }
-                    if(m.doubleValue!==undefined){
-                        if(typeof m.doubleValue!=="number")
-                            return"invalid value for field .vector_tile.Tile.Value.doubleValue (number expected)"
-                    }
-                    if(m.intValue!==undefined){
-                        if(!util.isInteger(m.intValue)&&!(m.intValue&&util.isInteger(m.intValue.low)&&util.isInteger(m.intValue.high)))
-                            return"invalid value for field .vector_tile.Tile.Value.intValue (integer|Long expected)"
-                    }
-                    if(m.uintValue!==undefined){
-                        if(!util.isInteger(m.uintValue)&&!(m.uintValue&&util.isInteger(m.uintValue.low)&&util.isInteger(m.uintValue.high)))
-                            return"invalid value for field .vector_tile.Tile.Value.uintValue (integer|Long expected)"
-                    }
-                    if(m.sintValue!==undefined){
-                        if(!util.isInteger(m.sintValue)&&!(m.sintValue&&util.isInteger(m.sintValue.low)&&util.isInteger(m.sintValue.high)))
-                            return"invalid value for field .vector_tile.Tile.Value.sintValue (integer|Long expected)"
-                    }
-                    if(m.boolValue!==undefined){
-                        if(typeof m.boolValue!=="boolean")
-                            return"invalid value for field .vector_tile.Tile.Value.boolValue (boolean expected)"
-                    }
-                    return null
+            Value.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.stringValue !== undefined) {
+                    if (!util.isString(message.stringValue))
+                        return "invalid value for field .vector_tile.Tile.Value.stringValue (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.floatValue !== undefined) {
+                    if (typeof message.floatValue !== "number")
+                        return "invalid value for field .vector_tile.Tile.Value.floatValue (number expected)"
+                }
+                if (message.doubleValue !== undefined) {
+                    if (typeof message.doubleValue !== "number")
+                        return "invalid value for field .vector_tile.Tile.Value.doubleValue (number expected)"
+                }
+                if (message.intValue !== undefined) {
+                    if (!util.isInteger(message.intValue) && !(message.intValue && util.isInteger(message.intValue.low) && util.isInteger(message.intValue.high)))
+                        return "invalid value for field .vector_tile.Tile.Value.intValue (integer | Long expected)"
+                }
+                if (message.uintValue !== undefined) {
+                    if (!util.isInteger(message.uintValue) && !(message.uintValue && util.isInteger(message.uintValue.low) && util.isInteger(message.uintValue.high)))
+                        return "invalid value for field .vector_tile.Tile.Value.uintValue (integer | Long expected)"
+                }
+                if (message.sintValue !== undefined) {
+                    if (!util.isInteger(message.sintValue) && !(message.sintValue && util.isInteger(message.sintValue.low) && util.isInteger(message.sintValue.high)))
+                        return "invalid value for field .vector_tile.Tile.Value.sintValue (integer | Long expected)"
+                }
+                if (message.boolValue !== undefined) {
+                    if (typeof message.boolValue !== "boolean")
+                        return "invalid value for field .vector_tile.Tile.Value.boolValue (boolean expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, null, null, null, null, null]); /* eslint-enable */
 
             return Value;
         })();
@@ -441,33 +401,26 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Feature.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.GeomType",null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.id!==undefined&&m.id!==null&&util.longNe(m.id,0,0))
-                        w.uint32(8).uint64(m.id)
-                    if(m.tags&&m.tags.length){
-                        w.uint32(18).fork()
-                        for(var i=0;i<m.tags.length;++i)
-                            w.uint32(m.tags[i])
-                        w.ldelim()
-                    }
-                    if(m.type!==undefined&&m.type!=="UNKNOWN")
-                        w.uint32(24).uint32(m.type)
-                    if(m.geometry&&m.geometry.length){
-                        w.uint32(34).fork()
-                        for(var i=0;i<m.geometry.length;++i)
-                            w.uint32(m.geometry[i])
-                        w.ldelim()
-                    }
-                    return w
+            Feature.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.id !== undefined && message.id !== null && util.longNe(message.id, 0, 0))
+                    writer.uint32(8).uint64(message.id)
+                if (message.tags && message.tags.length) {
+                    writer.uint32(18).fork()
+                    for (var i = 0; i < message.tags.length; ++i)
+                        writer.uint32(message.tags[i])
+                    writer.ldelim()
                 }
-                /* eslint-enable */
-            })();
+                if (message.type !== undefined && message.type !== "UNKNOWN")
+                    writer.uint32(24).uint32(message.type)
+                if (message.geometry && message.geometry.length) {
+                    writer.uint32(34).fork()
+                    for (var i = 0; i < message.geometry.length; ++i)
+                        writer.uint32(message.geometry[i])
+                    writer.ldelim()
+                }
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "vector_tile.Tile.GeomType", null]); /* eslint-enable */
 
             /**
              * Encodes the specified Feature, length delimited.
@@ -486,50 +439,43 @@ $root.vector_tile = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.GeomType",null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile.Feature
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.id=r.uint64()
-                                break
-                            case 2:
-                                m.tags&&m.tags.length||(m.tags=[])
-                                if((t&7)===2){
-                                    var e=r.uint32()+r.pos
-                                    while(r.pos<e)
-                                        m.tags.push(r.uint32())
-                                }else
-                                    m.tags.push(r.uint32())
-                                break
-                            case 3:
-                                m.type=r.uint32()
-                                break
-                            case 4:
-                                m.geometry&&m.geometry.length||(m.geometry=[])
-                                if((t&7)===2){
-                                    var e=r.uint32()+r.pos
-                                    while(r.pos<e)
-                                        m.geometry.push(r.uint32())
-                                }else
-                                    m.geometry.push(r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Feature.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Feature
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.id = reader.uint64()
+                            break
+                        case 2:
+                            message.tags && message.tags.length || (message.tags = [])
+                            if ((tag & 7) === 2) {
+                                var e = reader.uint32()+reader.pos
+                                while (reader.pos < e)
+                                    message.tags.push(reader.uint32())
+                            }else
+                                message.tags.push(reader.uint32())
+                            break
+                        case 3:
+                            message.type = reader.uint32()
+                            break
+                        case 4:
+                            message.geometry && message.geometry.length || (message.geometry = [])
+                            if ((tag & 7) === 2) {
+                                var e = reader.uint32()+reader.pos
+                                while (reader.pos < e)
+                                    message.geometry.push(reader.uint32())
+                            }else
+                                message.geometry.push(reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "vector_tile.Tile.GeomType", null]); /* eslint-enable */
 
             /**
              * Decodes a Feature from the specified reader or buffer, length delimited.
@@ -547,46 +493,40 @@ $root.vector_tile = (function() {
              * @param {vector_tile.Tile.Feature|Object} message Feature or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Feature.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.GeomType",null]);
-                return function verify(m) {
-                    if(m.id!==undefined){
-                        if(!util.isInteger(m.id)&&!(m.id&&util.isInteger(m.id.low)&&util.isInteger(m.id.high)))
-                            return"invalid value for field .vector_tile.Tile.Feature.id (integer|Long expected)"
-                    }
-                    if(m.tags!==undefined){
-                        if(!Array.isArray(m.tags))
-                            return"invalid value for field .vector_tile.Tile.Feature.tags (array expected)"
-                        for(var i=0;i<m.tags.length;++i){
-                            if(!util.isInteger(m.tags[i]))
-                                return"invalid value for field .vector_tile.Tile.Feature.tags (integer[] expected)"
-                        }
-                    }
-                    if(m.type!==undefined){
-                        switch(m.type){
-                            default:
-                                return"invalid value for field .vector_tile.Tile.Feature.type (enum value expected)"
-                            case 0:
-                            case 1:
-                            case 2:
-                            case 3:
-                                break
-                        }
-                    }
-                    if(m.geometry!==undefined){
-                        if(!Array.isArray(m.geometry))
-                            return"invalid value for field .vector_tile.Tile.Feature.geometry (array expected)"
-                        for(var i=0;i<m.geometry.length;++i){
-                            if(!util.isInteger(m.geometry[i]))
-                                return"invalid value for field .vector_tile.Tile.Feature.geometry (integer[] expected)"
-                        }
-                    }
-                    return null
+            Feature.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.id !== undefined) {
+                    if (!util.isInteger(message.id) && !(message.id && util.isInteger(message.id.low) && util.isInteger(message.id.high)))
+                        return "invalid value for field .vector_tile.Tile.Feature.id (integer | Long expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.tags !== undefined) {
+                    if (!Array.isArray(message.tags))
+                        return "invalid value for field .vector_tile.Tile.Feature.tags (array expected)"
+                    for (var i = 0; i < message.tags.length; ++i) {
+                        if (!util.isInteger(message.tags[i]))
+                            return "invalid value for field .vector_tile.Tile.Feature.tags (integer[] expected)"
+                    }
+                }
+                if (message.type !== undefined) {
+                    switch (message.type) {
+                        default:
+                            return "invalid value for field .vector_tile.Tile.Feature.type (enum value expected)"
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                            break
+                    }
+                }
+                if (message.geometry !== undefined) {
+                    if (!Array.isArray(message.geometry))
+                        return "invalid value for field .vector_tile.Tile.Feature.geometry (array expected)"
+                    for (var i = 0; i < message.geometry.length; ++i) {
+                        if (!util.isInteger(message.geometry[i]))
+                            return "invalid value for field .vector_tile.Tile.Feature.geometry (integer[] expected)"
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, null, "vector_tile.Tile.GeomType", null]); /* eslint-enable */
 
             return Feature;
         })();
@@ -662,30 +602,23 @@ $root.vector_tile = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Layer.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.Feature",null,"vector_tile.Tile.Value",null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    w.uint32(120).uint32(m.version)
-                    w.uint32(10).string(m.name)
-                    if(m.features)
-                        for(var i=0;i<m.features.length;++i)
-                        types[2].encode(m.features[i],w.uint32(18).fork()).ldelim()
-                    if(m.keys)
-                        for(var i=0;i<m.keys.length;++i)
-                        w.uint32(26).string(m.keys[i])
-                    if(m.values)
-                        for(var i=0;i<m.values.length;++i)
-                        types[4].encode(m.values[i],w.uint32(34).fork()).ldelim()
-                    if(m.extent!==undefined&&m.extent!==4096)
-                        w.uint32(40).uint32(m.extent)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            Layer.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                writer.uint32(120).uint32(message.version)
+                writer.uint32(10).string(message.name)
+                if (message.features)
+                    for (var i = 0; i < message.features.length; ++i)
+                    types[2].encode(message.features[i], writer.uint32(18).fork()).ldelim()
+                if (message.keys)
+                    for (var i = 0; i < message.keys.length; ++i)
+                    writer.uint32(26).string(message.keys[i])
+                if (message.values)
+                    for (var i = 0; i < message.values.length; ++i)
+                    types[4].encode(message.values[i], writer.uint32(34).fork()).ldelim()
+                if (message.extent !== undefined && message.extent !== 4096)
+                    writer.uint32(40).uint32(message.extent)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "vector_tile.Tile.Feature", null, "vector_tile.Tile.Value", null]); /* eslint-enable */
 
             /**
              * Encodes the specified Layer, length delimited.
@@ -704,47 +637,40 @@ $root.vector_tile = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.Feature",null,"vector_tile.Tile.Value",null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.vector_tile.Tile.Layer
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 15:
-                                m.version=r.uint32()
-                                break
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m.features&&m.features.length||(m.features=[])
-                                m.features.push(types[2].decode(r,r.uint32()))
-                                break
-                            case 3:
-                                m.keys&&m.keys.length||(m.keys=[])
-                                m.keys.push(r.string())
-                                break
-                            case 4:
-                                m.values&&m.values.length||(m.values=[])
-                                m.values.push(types[4].decode(r,r.uint32()))
-                                break
-                            case 5:
-                                m.extent=r.uint32()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Layer.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.vector_tile.Tile.Layer
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 15:
+                            message.version = reader.uint32()
+                            break
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message.features && message.features.length || (message.features = [])
+                            message.features.push(types[2].decode(reader, reader.uint32()))
+                            break
+                        case 3:
+                            message.keys && message.keys.length || (message.keys = [])
+                            message.keys.push(reader.string())
+                            break
+                        case 4:
+                            message.values && message.values.length || (message.values = [])
+                            message.values.push(types[4].decode(reader, reader.uint32()))
+                            break
+                        case 5:
+                            message.extent = reader.uint32()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "vector_tile.Tile.Feature", null, "vector_tile.Tile.Value", null]); /* eslint-enable */
 
             /**
              * Decodes a Layer from the specified reader or buffer, length delimited.
@@ -762,49 +688,43 @@ $root.vector_tile = (function() {
              * @param {vector_tile.Tile.Layer|Object} message Layer or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Layer.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"vector_tile.Tile.Feature",null,"vector_tile.Tile.Value",null]);
-                return function verify(m) {
-                    if(!util.isInteger(m.version))
-                        return"invalid value for field .vector_tile.Tile.Layer.version (integer expected)"
-                    if(!util.isString(m.name))
-                        return"invalid value for field .vector_tile.Tile.Layer.name (string expected)"
-                    if(m.features!==undefined){
-                        if(!Array.isArray(m.features))
-                            return"invalid value for field .vector_tile.Tile.Layer.features (array expected)"
-                        for(var i=0;i<m.features.length;++i){
-                            var r;
-                            if(r=types[2].verify(m.features[i]))
-                                return r
-                        }
+            Layer.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (!util.isInteger(message.version))
+                    return "invalid value for field .vector_tile.Tile.Layer.version (integer expected)"
+                if (!util.isString(message.name))
+                    return "invalid value for field .vector_tile.Tile.Layer.name (string expected)"
+                if (message.features !== undefined) {
+                    if (!Array.isArray(message.features))
+                        return "invalid value for field .vector_tile.Tile.Layer.features (array expected)"
+                    for (var i = 0; i < message.features.length; ++i) {
+                        var s;
+                        if (s = types[2].verify(message.features[i]))
+                            return s
                     }
-                    if(m.keys!==undefined){
-                        if(!Array.isArray(m.keys))
-                            return"invalid value for field .vector_tile.Tile.Layer.keys (array expected)"
-                        for(var i=0;i<m.keys.length;++i){
-                            if(!util.isString(m.keys[i]))
-                                return"invalid value for field .vector_tile.Tile.Layer.keys (string[] expected)"
-                        }
-                    }
-                    if(m.values!==undefined){
-                        if(!Array.isArray(m.values))
-                            return"invalid value for field .vector_tile.Tile.Layer.values (array expected)"
-                        for(var i=0;i<m.values.length;++i){
-                            var r;
-                            if(r=types[4].verify(m.values[i]))
-                                return r
-                        }
-                    }
-                    if(m.extent!==undefined){
-                        if(!util.isInteger(m.extent))
-                            return"invalid value for field .vector_tile.Tile.Layer.extent (integer expected)"
-                    }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                if (message.keys !== undefined) {
+                    if (!Array.isArray(message.keys))
+                        return "invalid value for field .vector_tile.Tile.Layer.keys (array expected)"
+                    for (var i = 0; i < message.keys.length; ++i) {
+                        if (!util.isString(message.keys[i]))
+                            return "invalid value for field .vector_tile.Tile.Layer.keys (string[] expected)"
+                    }
+                }
+                if (message.values !== undefined) {
+                    if (!Array.isArray(message.values))
+                        return "invalid value for field .vector_tile.Tile.Layer.values (array expected)"
+                    for (var i = 0; i < message.values.length; ++i) {
+                        var s;
+                        if (s = types[4].verify(message.values[i]))
+                            return s
+                    }
+                }
+                if (message.extent !== undefined) {
+                    if (!util.isInteger(message.extent))
+                        return "invalid value for field .vector_tile.Tile.Layer.extent (integer expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, "vector_tile.Tile.Feature", null, "vector_tile.Tile.Value", null]); /* eslint-enable */
 
             return Layer;
         })();

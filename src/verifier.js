@@ -23,9 +23,9 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                     ("break")
             ("}");
         } else if (field.resolvedType instanceof Type) gen
-            ("var r;")
-            ("if(r=types[%d].verify(%s))", fieldIndex, ref)
-                ("return r");
+            ("var s;")
+            ("if(s=types[%d].verify(%s))", fieldIndex, ref)
+                ("return s");
     } else {
         switch (field.type) {
             case "int32":

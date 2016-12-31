@@ -58,17 +58,10 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Empty.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            Empty.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                return writer
+            }})($protobuf.Writer, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Encodes the specified Empty, length delimited.
@@ -87,26 +80,19 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Empty} Empty
              */
-            Empty.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Empty
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Empty.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Empty
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Decodes a Empty from the specified reader or buffer, length delimited.
@@ -124,15 +110,9 @@ $root.jspb = (function() {
              * @param {jspb.test.Empty|Object} message Empty or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Empty.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function verify(m) {
-                    return null
-                }
-                /* eslint-enable */
-            })();
+            Empty.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                return null
+            }})($protobuf.util, []); /* eslint-enable */
 
             return Empty;
         })();
@@ -189,19 +169,12 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumContainer.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["jspb.test.OuterEnum"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.outerEnum!==undefined&&m.outerEnum!==0)
-                        w.uint32(8).uint32(m.outerEnum)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            EnumContainer.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.outerEnum !== undefined && message.outerEnum !== 0)
+                    writer.uint32(8).uint32(message.outerEnum)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, ["jspb.test.OuterEnum"]); /* eslint-enable */
 
             /**
              * Encodes the specified EnumContainer, length delimited.
@@ -220,29 +193,22 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.EnumContainer} EnumContainer
              */
-            EnumContainer.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["jspb.test.OuterEnum"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.EnumContainer
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.outerEnum=r.uint32()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            EnumContainer.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.EnumContainer
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.outerEnum = reader.uint32()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, ["jspb.test.OuterEnum"]); /* eslint-enable */
 
             /**
              * Decodes a EnumContainer from the specified reader or buffer, length delimited.
@@ -260,24 +226,18 @@ $root.jspb = (function() {
              * @param {jspb.test.EnumContainer|Object} message EnumContainer or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumContainer.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["jspb.test.OuterEnum"]);
-                return function verify(m) {
-                    if(m.outerEnum!==undefined){
-                        switch(m.outerEnum){
-                            default:
-                                return"invalid value for field .jspb.test.EnumContainer.outerEnum (enum value expected)"
-                            case 1:
-                            case 2:
-                                break
-                        }
+            EnumContainer.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.outerEnum !== undefined) {
+                    switch (message.outerEnum) {
+                        default:
+                            return "invalid value for field .jspb.test.EnumContainer.outerEnum (enum value expected)"
+                        case 1:
+                        case 2:
+                            break
                     }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, ["jspb.test.OuterEnum"]); /* eslint-enable */
 
             return EnumContainer;
         })();
@@ -335,23 +295,16 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Simple1.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    w.uint32(10).string(m.aString)
-                    if(m.aRepeatedString)
-                        for(var i=0;i<m.aRepeatedString.length;++i)
-                        w.uint32(18).string(m.aRepeatedString[i])
-                    if(m.aBoolean!==undefined&&m.aBoolean!==false)
-                        w.uint32(24).bool(m.aBoolean)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            Simple1.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                writer.uint32(10).string(message.aString)
+                if (message.aRepeatedString)
+                    for (var i = 0; i < message.aRepeatedString.length; ++i)
+                    writer.uint32(18).string(message.aRepeatedString[i])
+                if (message.aBoolean !== undefined && message.aBoolean !== false)
+                    writer.uint32(24).bool(message.aBoolean)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified Simple1, length delimited.
@@ -370,36 +323,29 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple1} Simple1
              */
-            Simple1.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Simple1
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.aString=r.string()
-                                break
-                            case 2:
-                                m.aRepeatedString&&m.aRepeatedString.length||(m.aRepeatedString=[])
-                                m.aRepeatedString.push(r.string())
-                                break
-                            case 3:
-                                m.aBoolean=r.bool()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Simple1.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Simple1
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.aString = reader.string()
+                            break
+                        case 2:
+                            message.aRepeatedString && message.aRepeatedString.length || (message.aRepeatedString = [])
+                            message.aRepeatedString.push(reader.string())
+                            break
+                        case 3:
+                            message.aBoolean = reader.bool()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null]); /* eslint-enable */
 
             /**
              * Decodes a Simple1 from the specified reader or buffer, length delimited.
@@ -417,29 +363,23 @@ $root.jspb = (function() {
              * @param {jspb.test.Simple1|Object} message Simple1 or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Simple1.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null]);
-                return function verify(m) {
-                    if(!util.isString(m.aString))
-                        return"invalid value for field .jspb.test.Simple1.aString (string expected)"
-                    if(m.aRepeatedString!==undefined){
-                        if(!Array.isArray(m.aRepeatedString))
-                            return"invalid value for field .jspb.test.Simple1.aRepeatedString (array expected)"
-                        for(var i=0;i<m.aRepeatedString.length;++i){
-                            if(!util.isString(m.aRepeatedString[i]))
-                                return"invalid value for field .jspb.test.Simple1.aRepeatedString (string[] expected)"
-                        }
+            Simple1.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (!util.isString(message.aString))
+                    return "invalid value for field .jspb.test.Simple1.aString (string expected)"
+                if (message.aRepeatedString !== undefined) {
+                    if (!Array.isArray(message.aRepeatedString))
+                        return "invalid value for field .jspb.test.Simple1.aRepeatedString (array expected)"
+                    for (var i = 0; i < message.aRepeatedString.length; ++i) {
+                        if (!util.isString(message.aRepeatedString[i]))
+                            return "invalid value for field .jspb.test.Simple1.aRepeatedString (string[] expected)"
                     }
-                    if(m.aBoolean!==undefined){
-                        if(typeof m.aBoolean!=="boolean")
-                            return"invalid value for field .jspb.test.Simple1.aBoolean (boolean expected)"
-                    }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                if (message.aBoolean !== undefined) {
+                    if (typeof message.aBoolean !== "boolean")
+                        return "invalid value for field .jspb.test.Simple1.aBoolean (boolean expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, null]); /* eslint-enable */
 
             return Simple1;
         })();
@@ -491,21 +431,14 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Simple2.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    w.uint32(10).string(m.aString)
-                    if(m.aRepeatedString)
-                        for(var i=0;i<m.aRepeatedString.length;++i)
-                        w.uint32(18).string(m.aRepeatedString[i])
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            Simple2.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                writer.uint32(10).string(message.aString)
+                if (message.aRepeatedString)
+                    for (var i = 0; i < message.aRepeatedString.length; ++i)
+                    writer.uint32(18).string(message.aRepeatedString[i])
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified Simple2, length delimited.
@@ -524,33 +457,26 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Simple2} Simple2
              */
-            Simple2.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Simple2
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.aString=r.string()
-                                break
-                            case 2:
-                                m.aRepeatedString&&m.aRepeatedString.length||(m.aRepeatedString=[])
-                                m.aRepeatedString.push(r.string())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Simple2.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Simple2
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.aString = reader.string()
+                            break
+                        case 2:
+                            message.aRepeatedString && message.aRepeatedString.length || (message.aRepeatedString = [])
+                            message.aRepeatedString.push(reader.string())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null]); /* eslint-enable */
 
             /**
              * Decodes a Simple2 from the specified reader or buffer, length delimited.
@@ -568,25 +494,19 @@ $root.jspb = (function() {
              * @param {jspb.test.Simple2|Object} message Simple2 or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Simple2.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function verify(m) {
-                    if(!util.isString(m.aString))
-                        return"invalid value for field .jspb.test.Simple2.aString (string expected)"
-                    if(m.aRepeatedString!==undefined){
-                        if(!Array.isArray(m.aRepeatedString))
-                            return"invalid value for field .jspb.test.Simple2.aRepeatedString (array expected)"
-                        for(var i=0;i<m.aRepeatedString.length;++i){
-                            if(!util.isString(m.aRepeatedString[i]))
-                                return"invalid value for field .jspb.test.Simple2.aRepeatedString (string[] expected)"
-                        }
+            Simple2.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (!util.isString(message.aString))
+                    return "invalid value for field .jspb.test.Simple2.aString (string expected)"
+                if (message.aRepeatedString !== undefined) {
+                    if (!Array.isArray(message.aRepeatedString))
+                        return "invalid value for field .jspb.test.Simple2.aRepeatedString (array expected)"
+                    for (var i = 0; i < message.aRepeatedString.length; ++i) {
+                        if (!util.isString(message.aRepeatedString[i]))
+                            return "invalid value for field .jspb.test.Simple2.aRepeatedString (string[] expected)"
                     }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, [null, null]); /* eslint-enable */
 
             return Simple2;
         })();
@@ -653,21 +573,14 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            SpecialCases.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    w.uint32(10).string(m.normal)
-                    w.uint32(18).string(m["default"])
-                    w.uint32(26).string(m["function"])
-                    w.uint32(34).string(m["var"])
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            SpecialCases.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                writer.uint32(10).string(message.normal)
+                writer.uint32(18).string(message["default"])
+                writer.uint32(26).string(message["function"])
+                writer.uint32(34).string(message["var"])
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified SpecialCases, length delimited.
@@ -686,38 +599,31 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.SpecialCases} SpecialCases
              */
-            SpecialCases.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.SpecialCases
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.normal=r.string()
-                                break
-                            case 2:
-                                m["default"]=r.string()
-                                break
-                            case 3:
-                                m["function"]=r.string()
-                                break
-                            case 4:
-                                m["var"]=r.string()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            SpecialCases.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.SpecialCases
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.normal = reader.string()
+                            break
+                        case 2:
+                            message["default"] = reader.string()
+                            break
+                        case 3:
+                            message["function"] = reader.string()
+                            break
+                        case 4:
+                            message["var"] = reader.string()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, null]); /* eslint-enable */
 
             /**
              * Decodes a SpecialCases from the specified reader or buffer, length delimited.
@@ -735,23 +641,17 @@ $root.jspb = (function() {
              * @param {jspb.test.SpecialCases|Object} message SpecialCases or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            SpecialCases.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null]);
-                return function verify(m) {
-                    if(!util.isString(m.normal))
-                        return"invalid value for field .jspb.test.SpecialCases.normal (string expected)"
-                    if(!util.isString(m["default"]))
-                        return"invalid value for field .jspb.test.SpecialCases.default (string expected)"
-                    if(!util.isString(m["function"]))
-                        return"invalid value for field .jspb.test.SpecialCases.function (string expected)"
-                    if(!util.isString(m["var"]))
-                        return"invalid value for field .jspb.test.SpecialCases.var (string expected)"
-                    return null
-                }
-                /* eslint-enable */
-            })();
+            SpecialCases.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (!util.isString(message.normal))
+                    return "invalid value for field .jspb.test.SpecialCases.normal (string expected)"
+                if (!util.isString(message["default"]))
+                    return "invalid value for field .jspb.test.SpecialCases.default (string expected)"
+                if (!util.isString(message["function"]))
+                    return "invalid value for field .jspb.test.SpecialCases.function (string expected)"
+                if (!util.isString(message["var"]))
+                    return "invalid value for field .jspb.test.SpecialCases.var (string expected)"
+                return null
+            }})($protobuf.util, [null, null, null, null]); /* eslint-enable */
 
             return SpecialCases;
         })();
@@ -821,28 +721,21 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OptionalFields.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.OptionalFields.Nested","jspb.test.OptionalFields.Nested",null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.aString!==undefined&&m.aString!=="")
-                        w.uint32(10).string(m.aString)
-                    w.uint32(16).bool(m.aBool)
-                    if(m.aNestedMessage!==undefined&&m.aNestedMessage!==null)
-                        types[2].encode(m.aNestedMessage,w.uint32(26).fork()).ldelim()
-                    if(m.aRepeatedMessage)
-                        for(var i=0;i<m.aRepeatedMessage.length;++i)
-                        types[3].encode(m.aRepeatedMessage[i],w.uint32(34).fork()).ldelim()
-                    if(m.aRepeatedString)
-                        for(var i=0;i<m.aRepeatedString.length;++i)
-                        w.uint32(42).string(m.aRepeatedString[i])
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            OptionalFields.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.aString !== undefined && message.aString !== "")
+                    writer.uint32(10).string(message.aString)
+                writer.uint32(16).bool(message.aBool)
+                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null)
+                    types[2].encode(message.aNestedMessage, writer.uint32(26).fork()).ldelim()
+                if (message.aRepeatedMessage)
+                    for (var i = 0; i < message.aRepeatedMessage.length; ++i)
+                    types[3].encode(message.aRepeatedMessage[i], writer.uint32(34).fork()).ldelim()
+                if (message.aRepeatedString)
+                    for (var i = 0; i < message.aRepeatedString.length; ++i)
+                    writer.uint32(42).string(message.aRepeatedString[i])
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "jspb.test.OptionalFields.Nested", "jspb.test.OptionalFields.Nested", null]); /* eslint-enable */
 
             /**
              * Encodes the specified OptionalFields, length delimited.
@@ -861,43 +754,36 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OptionalFields} OptionalFields
              */
-            OptionalFields.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.OptionalFields.Nested","jspb.test.OptionalFields.Nested",null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.OptionalFields
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.aString=r.string()
-                                break
-                            case 2:
-                                m.aBool=r.bool()
-                                break
-                            case 3:
-                                m.aNestedMessage=types[2].decode(r,r.uint32())
-                                break
-                            case 4:
-                                m.aRepeatedMessage&&m.aRepeatedMessage.length||(m.aRepeatedMessage=[])
-                                m.aRepeatedMessage.push(types[3].decode(r,r.uint32()))
-                                break
-                            case 5:
-                                m.aRepeatedString&&m.aRepeatedString.length||(m.aRepeatedString=[])
-                                m.aRepeatedString.push(r.string())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            OptionalFields.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OptionalFields
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.aString = reader.string()
+                            break
+                        case 2:
+                            message.aBool = reader.bool()
+                            break
+                        case 3:
+                            message.aNestedMessage = types[2].decode(reader, reader.uint32())
+                            break
+                        case 4:
+                            message.aRepeatedMessage && message.aRepeatedMessage.length || (message.aRepeatedMessage = [])
+                            message.aRepeatedMessage.push(types[3].decode(reader, reader.uint32()))
+                            break
+                        case 5:
+                            message.aRepeatedString && message.aRepeatedString.length || (message.aRepeatedString = [])
+                            message.aRepeatedString.push(reader.string())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "jspb.test.OptionalFields.Nested", "jspb.test.OptionalFields.Nested", null]); /* eslint-enable */
 
             /**
              * Decodes a OptionalFields from the specified reader or buffer, length delimited.
@@ -915,43 +801,37 @@ $root.jspb = (function() {
              * @param {jspb.test.OptionalFields|Object} message OptionalFields or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OptionalFields.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.OptionalFields.Nested","jspb.test.OptionalFields.Nested",null]);
-                return function verify(m) {
-                    if(m.aString!==undefined){
-                        if(!util.isString(m.aString))
-                            return"invalid value for field .jspb.test.OptionalFields.aString (string expected)"
-                    }
-                    if(typeof m.aBool!=="boolean")
-                        return"invalid value for field .jspb.test.OptionalFields.aBool (boolean expected)"
-                    if(m.aNestedMessage!==undefined&&m.aNestedMessage!==null){
-                        var r;
-                        if(r=types[2].verify(m.aNestedMessage))
-                            return r
-                    }
-                    if(m.aRepeatedMessage!==undefined){
-                        if(!Array.isArray(m.aRepeatedMessage))
-                            return"invalid value for field .jspb.test.OptionalFields.aRepeatedMessage (array expected)"
-                        for(var i=0;i<m.aRepeatedMessage.length;++i){
-                            var r;
-                            if(r=types[3].verify(m.aRepeatedMessage[i]))
-                                return r
-                        }
-                    }
-                    if(m.aRepeatedString!==undefined){
-                        if(!Array.isArray(m.aRepeatedString))
-                            return"invalid value for field .jspb.test.OptionalFields.aRepeatedString (array expected)"
-                        for(var i=0;i<m.aRepeatedString.length;++i){
-                            if(!util.isString(m.aRepeatedString[i]))
-                                return"invalid value for field .jspb.test.OptionalFields.aRepeatedString (string[] expected)"
-                        }
-                    }
-                    return null
+            OptionalFields.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.aString !== undefined) {
+                    if (!util.isString(message.aString))
+                        return "invalid value for field .jspb.test.OptionalFields.aString (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (typeof message.aBool !== "boolean")
+                    return "invalid value for field .jspb.test.OptionalFields.aBool (boolean expected)"
+                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
+                    var s;
+                    if (s = types[2].verify(message.aNestedMessage))
+                        return s
+                }
+                if (message.aRepeatedMessage !== undefined) {
+                    if (!Array.isArray(message.aRepeatedMessage))
+                        return "invalid value for field .jspb.test.OptionalFields.aRepeatedMessage (array expected)"
+                    for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
+                        var s;
+                        if (s = types[3].verify(message.aRepeatedMessage[i]))
+                            return s
+                    }
+                }
+                if (message.aRepeatedString !== undefined) {
+                    if (!Array.isArray(message.aRepeatedString))
+                        return "invalid value for field .jspb.test.OptionalFields.aRepeatedString (array expected)"
+                    for (var i = 0; i < message.aRepeatedString.length; ++i) {
+                        if (!util.isString(message.aRepeatedString[i]))
+                            return "invalid value for field .jspb.test.OptionalFields.aRepeatedString (string[] expected)"
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, null, "jspb.test.OptionalFields.Nested", "jspb.test.OptionalFields.Nested", null]); /* eslint-enable */
 
             OptionalFields.Nested = (function() {
 
@@ -994,19 +874,12 @@ $root.jspb = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Nested.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        if(m.anInt!==undefined&&m.anInt!==0)
-                            w.uint32(8).int32(m.anInt)
-                        return w
-                    }
-                    /* eslint-enable */
-                })();
+                Nested.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    if (message.anInt !== undefined && message.anInt !== 0)
+                        writer.uint32(8).int32(message.anInt)
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified Nested, length delimited.
@@ -1025,29 +898,22 @@ $root.jspb = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OptionalFields.Nested} Nested
                  */
-                Nested.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.OptionalFields.Nested
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 1:
-                                    m.anInt=r.int32()
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                Nested.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OptionalFields.Nested
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 1:
+                                message.anInt = reader.int32()
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
@@ -1065,19 +931,13 @@ $root.jspb = (function() {
                  * @param {jspb.test.OptionalFields.Nested|Object} message Nested or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Nested.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function verify(m) {
-                        if(m.anInt!==undefined){
-                            if(!util.isInteger(m.anInt))
-                                return"invalid value for field .jspb.test.OptionalFields.Nested.anInt (integer expected)"
-                        }
-                        return null
+                Nested.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (message.anInt !== undefined) {
+                        if (!util.isInteger(message.anInt))
+                            return "invalid value for field .jspb.test.OptionalFields.Nested.anInt (integer expected)"
                     }
-                    /* eslint-enable */
-                })();
+                    return null
+                }})($protobuf.util, [null]); /* eslint-enable */
 
                 return Nested;
             })();
@@ -1180,37 +1040,30 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            HasExtensions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"jspb.test.IsExtension","jspb.test.Simple1",null,null,"jspb.test.Simple1","jspb.test.Simple1"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.str1!==undefined&&m.str1!=="")
-                        w.uint32(10).string(m.str1)
-                    if(m.str2!==undefined&&m.str2!=="")
-                        w.uint32(18).string(m.str2)
-                    if(m.str3!==undefined&&m.str3!=="")
-                        w.uint32(26).string(m.str3)
-                    if(m[".jspb.test.IsExtension.extField"]!==undefined&&m[".jspb.test.IsExtension.extField"]!==null)
-                        types[3].encode(m[".jspb.test.IsExtension.extField"],w.uint32(802).fork()).ldelim()
-                    if(m[".jspb.test.IndirectExtension.simple"]!==undefined&&m[".jspb.test.IndirectExtension.simple"]!==null)
-                        types[4].encode(m[".jspb.test.IndirectExtension.simple"],w.uint32(810).fork()).ldelim()
-                    if(m[".jspb.test.IndirectExtension.str"]!==undefined&&m[".jspb.test.IndirectExtension.str"]!=="")
-                        w.uint32(818).string(m[".jspb.test.IndirectExtension.str"])
-                    if(m[".jspb.test.IndirectExtension.repeatedStr"])
-                        for(var i=0;i<m[".jspb.test.IndirectExtension.repeatedStr"].length;++i)
-                        w.uint32(826).string(m[".jspb.test.IndirectExtension.repeatedStr"][i])
-                    if(m[".jspb.test.IndirectExtension.repeatedSimple"])
-                        for(var i=0;i<m[".jspb.test.IndirectExtension.repeatedSimple"].length;++i)
-                        types[7].encode(m[".jspb.test.IndirectExtension.repeatedSimple"][i],w.uint32(834).fork()).ldelim()
-                    if(m[".jspb.test.simple1"]!==undefined&&m[".jspb.test.simple1"]!==null)
-                        types[8].encode(m[".jspb.test.simple1"],w.uint32(842).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            HasExtensions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.str1 !== undefined && message.str1 !== "")
+                    writer.uint32(10).string(message.str1)
+                if (message.str2 !== undefined && message.str2 !== "")
+                    writer.uint32(18).string(message.str2)
+                if (message.str3 !== undefined && message.str3 !== "")
+                    writer.uint32(26).string(message.str3)
+                if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null)
+                    types[3].encode(message[".jspb.test.IsExtension.extField"], writer.uint32(802).fork()).ldelim()
+                if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null)
+                    types[4].encode(message[".jspb.test.IndirectExtension.simple"], writer.uint32(810).fork()).ldelim()
+                if (message[".jspb.test.IndirectExtension.str"] !== undefined && message[".jspb.test.IndirectExtension.str"] !== "")
+                    writer.uint32(818).string(message[".jspb.test.IndirectExtension.str"])
+                if (message[".jspb.test.IndirectExtension.repeatedStr"])
+                    for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
+                    writer.uint32(826).string(message[".jspb.test.IndirectExtension.repeatedStr"][i])
+                if (message[".jspb.test.IndirectExtension.repeatedSimple"])
+                    for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i)
+                    types[7].encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(834).fork()).ldelim()
+                if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null)
+                    types[8].encode(message[".jspb.test.simple1"], writer.uint32(842).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, "jspb.test.IsExtension", "jspb.test.Simple1", null, null, "jspb.test.Simple1", "jspb.test.Simple1"]); /* eslint-enable */
 
             /**
              * Encodes the specified HasExtensions, length delimited.
@@ -1229,55 +1082,48 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.HasExtensions} HasExtensions
              */
-            HasExtensions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"jspb.test.IsExtension","jspb.test.Simple1",null,null,"jspb.test.Simple1","jspb.test.Simple1"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.HasExtensions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.str1=r.string()
-                                break
-                            case 2:
-                                m.str2=r.string()
-                                break
-                            case 3:
-                                m.str3=r.string()
-                                break
-                            case 100:
-                                m[".jspb.test.IsExtension.extField"]=types[3].decode(r,r.uint32())
-                                break
-                            case 101:
-                                m[".jspb.test.IndirectExtension.simple"]=types[4].decode(r,r.uint32())
-                                break
-                            case 102:
-                                m[".jspb.test.IndirectExtension.str"]=r.string()
-                                break
-                            case 103:
-                                m[".jspb.test.IndirectExtension.repeatedStr"]&&m[".jspb.test.IndirectExtension.repeatedStr"].length||(m[".jspb.test.IndirectExtension.repeatedStr"]=[])
-                                m[".jspb.test.IndirectExtension.repeatedStr"].push(r.string())
-                                break
-                            case 104:
-                                m[".jspb.test.IndirectExtension.repeatedSimple"]&&m[".jspb.test.IndirectExtension.repeatedSimple"].length||(m[".jspb.test.IndirectExtension.repeatedSimple"]=[])
-                                m[".jspb.test.IndirectExtension.repeatedSimple"].push(types[7].decode(r,r.uint32()))
-                                break
-                            case 105:
-                                m[".jspb.test.simple1"]=types[8].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            HasExtensions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.HasExtensions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.str1 = reader.string()
+                            break
+                        case 2:
+                            message.str2 = reader.string()
+                            break
+                        case 3:
+                            message.str3 = reader.string()
+                            break
+                        case 100:
+                            message[".jspb.test.IsExtension.extField"] = types[3].decode(reader, reader.uint32())
+                            break
+                        case 101:
+                            message[".jspb.test.IndirectExtension.simple"] = types[4].decode(reader, reader.uint32())
+                            break
+                        case 102:
+                            message[".jspb.test.IndirectExtension.str"] = reader.string()
+                            break
+                        case 103:
+                            message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length || (message[".jspb.test.IndirectExtension.repeatedStr"] = [])
+                            message[".jspb.test.IndirectExtension.repeatedStr"].push(reader.string())
+                            break
+                        case 104:
+                            message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length || (message[".jspb.test.IndirectExtension.repeatedSimple"] = [])
+                            message[".jspb.test.IndirectExtension.repeatedSimple"].push(types[7].decode(reader, reader.uint32()))
+                            break
+                        case 105:
+                            message[".jspb.test.simple1"] = types[8].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, "jspb.test.IsExtension", "jspb.test.Simple1", null, null, "jspb.test.Simple1", "jspb.test.Simple1"]); /* eslint-enable */
 
             /**
              * Decodes a HasExtensions from the specified reader or buffer, length delimited.
@@ -1295,63 +1141,57 @@ $root.jspb = (function() {
              * @param {jspb.test.HasExtensions|Object} message HasExtensions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            HasExtensions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"jspb.test.IsExtension","jspb.test.Simple1",null,null,"jspb.test.Simple1","jspb.test.Simple1"]);
-                return function verify(m) {
-                    if(m.str1!==undefined){
-                        if(!util.isString(m.str1))
-                            return"invalid value for field .jspb.test.HasExtensions.str1 (string expected)"
-                    }
-                    if(m.str2!==undefined){
-                        if(!util.isString(m.str2))
-                            return"invalid value for field .jspb.test.HasExtensions.str2 (string expected)"
-                    }
-                    if(m.str3!==undefined){
-                        if(!util.isString(m.str3))
-                            return"invalid value for field .jspb.test.HasExtensions.str3 (string expected)"
-                    }
-                    if(m[".jspb.test.IsExtension.extField"]!==undefined&&m[".jspb.test.IsExtension.extField"]!==null){
-                        var r;
-                        if(r=types[3].verify(m[".jspb.test.IsExtension.extField"]))
-                            return r
-                    }
-                    if(m[".jspb.test.IndirectExtension.simple"]!==undefined&&m[".jspb.test.IndirectExtension.simple"]!==null){
-                        var r;
-                        if(r=types[4].verify(m[".jspb.test.IndirectExtension.simple"]))
-                            return r
-                    }
-                    if(m[".jspb.test.IndirectExtension.str"]!==undefined){
-                        if(!util.isString(m[".jspb.test.IndirectExtension.str"]))
-                            return"invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.str (string expected)"
-                    }
-                    if(m[".jspb.test.IndirectExtension.repeatedStr"]!==undefined){
-                        if(!Array.isArray(m[".jspb.test.IndirectExtension.repeatedStr"]))
-                            return"invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr (array expected)"
-                        for(var i=0;i<m[".jspb.test.IndirectExtension.repeatedStr"].length;++i){
-                            if(!util.isString(m[".jspb.test.IndirectExtension.repeatedStr"][i]))
-                                return"invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr (string[] expected)"
-                        }
-                    }
-                    if(m[".jspb.test.IndirectExtension.repeatedSimple"]!==undefined){
-                        if(!Array.isArray(m[".jspb.test.IndirectExtension.repeatedSimple"]))
-                            return"invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple (array expected)"
-                        for(var i=0;i<m[".jspb.test.IndirectExtension.repeatedSimple"].length;++i){
-                            var r;
-                            if(r=types[7].verify(m[".jspb.test.IndirectExtension.repeatedSimple"][i]))
-                                return r
-                        }
-                    }
-                    if(m[".jspb.test.simple1"]!==undefined&&m[".jspb.test.simple1"]!==null){
-                        var r;
-                        if(r=types[8].verify(m[".jspb.test.simple1"]))
-                            return r
-                    }
-                    return null
+            HasExtensions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.str1 !== undefined) {
+                    if (!util.isString(message.str1))
+                        return "invalid value for field .jspb.test.HasExtensions.str1 (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.str2 !== undefined) {
+                    if (!util.isString(message.str2))
+                        return "invalid value for field .jspb.test.HasExtensions.str2 (string expected)"
+                }
+                if (message.str3 !== undefined) {
+                    if (!util.isString(message.str3))
+                        return "invalid value for field .jspb.test.HasExtensions.str3 (string expected)"
+                }
+                if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
+                    var s;
+                    if (s = types[3].verify(message[".jspb.test.IsExtension.extField"]))
+                        return s
+                }
+                if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
+                    var s;
+                    if (s = types[4].verify(message[".jspb.test.IndirectExtension.simple"]))
+                        return s
+                }
+                if (message[".jspb.test.IndirectExtension.str"] !== undefined) {
+                    if (!util.isString(message[".jspb.test.IndirectExtension.str"]))
+                        return "invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.str (string expected)"
+                }
+                if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined) {
+                    if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedStr"]))
+                        return "invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr (array expected)"
+                    for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i) {
+                        if (!util.isString(message[".jspb.test.IndirectExtension.repeatedStr"][i]))
+                            return "invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr (string[] expected)"
+                    }
+                }
+                if (message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined) {
+                    if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedSimple"]))
+                        return "invalid value for field .jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple (array expected)"
+                    for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
+                        var s;
+                        if (s = types[7].verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]))
+                            return s
+                    }
+                }
+                if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
+                    var s;
+                    if (s = types[8].verify(message[".jspb.test.simple1"]))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, null, null, "jspb.test.IsExtension", "jspb.test.Simple1", null, null, "jspb.test.Simple1", "jspb.test.Simple1"]); /* eslint-enable */
 
             return HasExtensions;
         })();
@@ -1421,27 +1261,20 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Complex.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.Complex.Nested","jspb.test.Complex.Nested",null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    w.uint32(10).string(m.aString)
-                    w.uint32(72).bool(m.anOutOfOrderBool)
-                    if(m.aNestedMessage!==undefined&&m.aNestedMessage!==null)
-                        types[2].encode(m.aNestedMessage,w.uint32(34).fork()).ldelim()
-                    if(m.aRepeatedMessage)
-                        for(var i=0;i<m.aRepeatedMessage.length;++i)
-                        types[3].encode(m.aRepeatedMessage[i],w.uint32(42).fork()).ldelim()
-                    if(m.aRepeatedString)
-                        for(var i=0;i<m.aRepeatedString.length;++i)
-                        w.uint32(58).string(m.aRepeatedString[i])
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            Complex.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                writer.uint32(10).string(message.aString)
+                writer.uint32(72).bool(message.anOutOfOrderBool)
+                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null)
+                    types[2].encode(message.aNestedMessage, writer.uint32(34).fork()).ldelim()
+                if (message.aRepeatedMessage)
+                    for (var i = 0; i < message.aRepeatedMessage.length; ++i)
+                    types[3].encode(message.aRepeatedMessage[i], writer.uint32(42).fork()).ldelim()
+                if (message.aRepeatedString)
+                    for (var i = 0; i < message.aRepeatedString.length; ++i)
+                    writer.uint32(58).string(message.aRepeatedString[i])
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "jspb.test.Complex.Nested", "jspb.test.Complex.Nested", null]); /* eslint-enable */
 
             /**
              * Encodes the specified Complex, length delimited.
@@ -1460,43 +1293,36 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Complex} Complex
              */
-            Complex.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.Complex.Nested","jspb.test.Complex.Nested",null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Complex
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.aString=r.string()
-                                break
-                            case 9:
-                                m.anOutOfOrderBool=r.bool()
-                                break
-                            case 4:
-                                m.aNestedMessage=types[2].decode(r,r.uint32())
-                                break
-                            case 5:
-                                m.aRepeatedMessage&&m.aRepeatedMessage.length||(m.aRepeatedMessage=[])
-                                m.aRepeatedMessage.push(types[3].decode(r,r.uint32()))
-                                break
-                            case 7:
-                                m.aRepeatedString&&m.aRepeatedString.length||(m.aRepeatedString=[])
-                                m.aRepeatedString.push(r.string())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Complex.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Complex
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.aString = reader.string()
+                            break
+                        case 9:
+                            message.anOutOfOrderBool = reader.bool()
+                            break
+                        case 4:
+                            message.aNestedMessage = types[2].decode(reader, reader.uint32())
+                            break
+                        case 5:
+                            message.aRepeatedMessage && message.aRepeatedMessage.length || (message.aRepeatedMessage = [])
+                            message.aRepeatedMessage.push(types[3].decode(reader, reader.uint32()))
+                            break
+                        case 7:
+                            message.aRepeatedString && message.aRepeatedString.length || (message.aRepeatedString = [])
+                            message.aRepeatedString.push(reader.string())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "jspb.test.Complex.Nested", "jspb.test.Complex.Nested", null]); /* eslint-enable */
 
             /**
              * Decodes a Complex from the specified reader or buffer, length delimited.
@@ -1514,41 +1340,35 @@ $root.jspb = (function() {
              * @param {jspb.test.Complex|Object} message Complex or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Complex.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.Complex.Nested","jspb.test.Complex.Nested",null]);
-                return function verify(m) {
-                    if(!util.isString(m.aString))
-                        return"invalid value for field .jspb.test.Complex.aString (string expected)"
-                    if(typeof m.anOutOfOrderBool!=="boolean")
-                        return"invalid value for field .jspb.test.Complex.anOutOfOrderBool (boolean expected)"
-                    if(m.aNestedMessage!==undefined&&m.aNestedMessage!==null){
-                        var r;
-                        if(r=types[2].verify(m.aNestedMessage))
-                            return r
-                    }
-                    if(m.aRepeatedMessage!==undefined){
-                        if(!Array.isArray(m.aRepeatedMessage))
-                            return"invalid value for field .jspb.test.Complex.aRepeatedMessage (array expected)"
-                        for(var i=0;i<m.aRepeatedMessage.length;++i){
-                            var r;
-                            if(r=types[3].verify(m.aRepeatedMessage[i]))
-                                return r
-                        }
-                    }
-                    if(m.aRepeatedString!==undefined){
-                        if(!Array.isArray(m.aRepeatedString))
-                            return"invalid value for field .jspb.test.Complex.aRepeatedString (array expected)"
-                        for(var i=0;i<m.aRepeatedString.length;++i){
-                            if(!util.isString(m.aRepeatedString[i]))
-                                return"invalid value for field .jspb.test.Complex.aRepeatedString (string[] expected)"
-                        }
-                    }
-                    return null
+            Complex.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (!util.isString(message.aString))
+                    return "invalid value for field .jspb.test.Complex.aString (string expected)"
+                if (typeof message.anOutOfOrderBool !== "boolean")
+                    return "invalid value for field .jspb.test.Complex.anOutOfOrderBool (boolean expected)"
+                if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
+                    var s;
+                    if (s = types[2].verify(message.aNestedMessage))
+                        return s
                 }
-                /* eslint-enable */
-            })();
+                if (message.aRepeatedMessage !== undefined) {
+                    if (!Array.isArray(message.aRepeatedMessage))
+                        return "invalid value for field .jspb.test.Complex.aRepeatedMessage (array expected)"
+                    for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
+                        var s;
+                        if (s = types[3].verify(message.aRepeatedMessage[i]))
+                            return s
+                    }
+                }
+                if (message.aRepeatedString !== undefined) {
+                    if (!Array.isArray(message.aRepeatedString))
+                        return "invalid value for field .jspb.test.Complex.aRepeatedString (array expected)"
+                    for (var i = 0; i < message.aRepeatedString.length; ++i) {
+                        if (!util.isString(message.aRepeatedString[i]))
+                            return "invalid value for field .jspb.test.Complex.aRepeatedString (string[] expected)"
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, null, "jspb.test.Complex.Nested", "jspb.test.Complex.Nested", null]); /* eslint-enable */
 
             Complex.Nested = (function() {
 
@@ -1591,18 +1411,11 @@ $root.jspb = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Nested.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        w.uint32(16).int32(m.anInt)
-                        return w
-                    }
-                    /* eslint-enable */
-                })();
+                Nested.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    writer.uint32(16).int32(message.anInt)
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified Nested, length delimited.
@@ -1621,29 +1434,22 @@ $root.jspb = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Complex.Nested} Nested
                  */
-                Nested.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Complex.Nested
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 2:
-                                    m.anInt=r.int32()
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                Nested.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Complex.Nested
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 2:
+                                message.anInt = reader.int32()
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
@@ -1661,17 +1467,11 @@ $root.jspb = (function() {
                  * @param {jspb.test.Complex.Nested|Object} message Nested or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Nested.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function verify(m) {
-                        if(!util.isInteger(m.anInt))
-                            return"invalid value for field .jspb.test.Complex.Nested.anInt (integer expected)"
-                        return null
-                    }
-                    /* eslint-enable */
-                })();
+                Nested.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (!util.isInteger(message.anInt))
+                        return "invalid value for field .jspb.test.Complex.Nested.anInt (integer expected)"
+                    return null
+                }})($protobuf.util, [null]); /* eslint-enable */
 
                 return Nested;
             })();
@@ -1711,17 +1511,10 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OuterMessage.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            OuterMessage.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                return writer
+            }})($protobuf.Writer, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Encodes the specified OuterMessage, length delimited.
@@ -1740,26 +1533,19 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
-            OuterMessage.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.OuterMessage
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            OuterMessage.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OuterMessage
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Decodes a OuterMessage from the specified reader or buffer, length delimited.
@@ -1777,15 +1563,9 @@ $root.jspb = (function() {
              * @param {jspb.test.OuterMessage|Object} message OuterMessage or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OuterMessage.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function verify(m) {
-                    return null
-                }
-                /* eslint-enable */
-            })();
+            OuterMessage.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                return null
+            }})($protobuf.util, []); /* eslint-enable */
 
             OuterMessage.Complex = (function() {
 
@@ -1828,19 +1608,12 @@ $root.jspb = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Complex.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        if(m.innerComplexField!==undefined&&m.innerComplexField!==0)
-                            w.uint32(8).int32(m.innerComplexField)
-                        return w
-                    }
-                    /* eslint-enable */
-                })();
+                Complex.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    if (message.innerComplexField !== undefined && message.innerComplexField !== 0)
+                        writer.uint32(8).int32(message.innerComplexField)
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified Complex, length delimited.
@@ -1859,29 +1632,22 @@ $root.jspb = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.OuterMessage.Complex} Complex
                  */
-                Complex.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.OuterMessage.Complex
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 1:
-                                    m.innerComplexField=r.int32()
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                Complex.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.OuterMessage.Complex
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 1:
+                                message.innerComplexField = reader.int32()
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
                 /**
                  * Decodes a Complex from the specified reader or buffer, length delimited.
@@ -1899,19 +1665,13 @@ $root.jspb = (function() {
                  * @param {jspb.test.OuterMessage.Complex|Object} message Complex or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Complex.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null]);
-                    return function verify(m) {
-                        if(m.innerComplexField!==undefined){
-                            if(!util.isInteger(m.innerComplexField))
-                                return"invalid value for field .jspb.test.OuterMessage.Complex.innerComplexField (integer expected)"
-                        }
-                        return null
+                Complex.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (message.innerComplexField !== undefined) {
+                        if (!util.isInteger(message.innerComplexField))
+                            return "invalid value for field .jspb.test.OuterMessage.Complex.innerComplexField (integer expected)"
                     }
-                    /* eslint-enable */
-                })();
+                    return null
+                }})($protobuf.util, [null]); /* eslint-enable */
 
                 return Complex;
             })();
@@ -1960,19 +1720,12 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            IsExtension.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.ext1!==undefined&&m.ext1!=="")
-                        w.uint32(10).string(m.ext1)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            IsExtension.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.ext1 !== undefined && message.ext1 !== "")
+                    writer.uint32(10).string(message.ext1)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
             /**
              * Encodes the specified IsExtension, length delimited.
@@ -1991,29 +1744,22 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IsExtension} IsExtension
              */
-            IsExtension.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.IsExtension
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.ext1=r.string()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            IsExtension.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.IsExtension
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.ext1 = reader.string()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
             /**
              * Decodes a IsExtension from the specified reader or buffer, length delimited.
@@ -2031,19 +1777,13 @@ $root.jspb = (function() {
              * @param {jspb.test.IsExtension|Object} message IsExtension or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            IsExtension.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function verify(m) {
-                    if(m.ext1!==undefined){
-                        if(!util.isString(m.ext1))
-                            return"invalid value for field .jspb.test.IsExtension.ext1 (string expected)"
-                    }
-                    return null
+            IsExtension.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.ext1 !== undefined) {
+                    if (!util.isString(message.ext1))
+                        return "invalid value for field .jspb.test.IsExtension.ext1 (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, [null]); /* eslint-enable */
 
             return IsExtension;
         })();
@@ -2080,17 +1820,10 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            IndirectExtension.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            IndirectExtension.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                return writer
+            }})($protobuf.Writer, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Encodes the specified IndirectExtension, length delimited.
@@ -2109,26 +1842,19 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
-            IndirectExtension.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.IndirectExtension
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            IndirectExtension.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.IndirectExtension
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Decodes a IndirectExtension from the specified reader or buffer, length delimited.
@@ -2146,15 +1872,9 @@ $root.jspb = (function() {
              * @param {jspb.test.IndirectExtension|Object} message IndirectExtension or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            IndirectExtension.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function verify(m) {
-                    return null
-                }
-                /* eslint-enable */
-            })();
+            IndirectExtension.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                return null
+            }})($protobuf.util, []); /* eslint-enable */
 
             return IndirectExtension;
         })();
@@ -2230,29 +1950,22 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            DefaultValues.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"jspb.test.DefaultValues.Enum",null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.stringField!==undefined&&m.stringField!=="default<>'\"abc")
-                        w.uint32(10).string(m.stringField)
-                    if(m.boolField!==undefined&&m.boolField!==true)
-                        w.uint32(16).bool(m.boolField)
-                    if(m.intField!==undefined&&m.intField!==null&&util.longNe(m.intField,11,0))
-                        w.uint32(24).int64(m.intField)
-                    if(m.enumField!==undefined&&m.enumField!=="E1")
-                        w.uint32(32).uint32(m.enumField)
-                    if(m.emptyField!==undefined&&m.emptyField!=="")
-                        w.uint32(50).string(m.emptyField)
-                    if(m.bytesField!==undefined&&m.bytesField!=="moo")
-                        w.uint32(66).bytes(m.bytesField)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            DefaultValues.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.stringField !== undefined && message.stringField !== "default <> '\"abc")
+                    writer.uint32(10).string(message.stringField)
+                if (message.boolField !== undefined && message.boolField !== true)
+                    writer.uint32(16).bool(message.boolField)
+                if (message.intField !== undefined && message.intField !== null && util.longNe(message.intField, 11, 0))
+                    writer.uint32(24).int64(message.intField)
+                if (message.enumField !== undefined && message.enumField !== "E1")
+                    writer.uint32(32).uint32(message.enumField)
+                if (message.emptyField !== undefined && message.emptyField !== "")
+                    writer.uint32(50).string(message.emptyField)
+                if (message.bytesField !== undefined && message.bytesField !== "moo")
+                    writer.uint32(66).bytes(message.bytesField)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, "jspb.test.DefaultValues.Enum", null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified DefaultValues, length delimited.
@@ -2271,44 +1984,37 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.DefaultValues} DefaultValues
              */
-            DefaultValues.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"jspb.test.DefaultValues.Enum",null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.DefaultValues
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.stringField=r.string()
-                                break
-                            case 2:
-                                m.boolField=r.bool()
-                                break
-                            case 3:
-                                m.intField=r.int64()
-                                break
-                            case 4:
-                                m.enumField=r.uint32()
-                                break
-                            case 6:
-                                m.emptyField=r.string()
-                                break
-                            case 8:
-                                m.bytesField=r.bytes()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            DefaultValues.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.DefaultValues
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.stringField = reader.string()
+                            break
+                        case 2:
+                            message.boolField = reader.bool()
+                            break
+                        case 3:
+                            message.intField = reader.int64()
+                            break
+                        case 4:
+                            message.enumField = reader.uint32()
+                            break
+                        case 6:
+                            message.emptyField = reader.string()
+                            break
+                        case 8:
+                            message.bytesField = reader.bytes()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, "jspb.test.DefaultValues.Enum", null, null]); /* eslint-enable */
 
             /**
              * Decodes a DefaultValues from the specified reader or buffer, length delimited.
@@ -2326,44 +2032,38 @@ $root.jspb = (function() {
              * @param {jspb.test.DefaultValues|Object} message DefaultValues or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            DefaultValues.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"jspb.test.DefaultValues.Enum",null,null]);
-                return function verify(m) {
-                    if(m.stringField!==undefined){
-                        if(!util.isString(m.stringField))
-                            return"invalid value for field .jspb.test.DefaultValues.stringField (string expected)"
-                    }
-                    if(m.boolField!==undefined){
-                        if(typeof m.boolField!=="boolean")
-                            return"invalid value for field .jspb.test.DefaultValues.boolField (boolean expected)"
-                    }
-                    if(m.intField!==undefined){
-                        if(!util.isInteger(m.intField)&&!(m.intField&&util.isInteger(m.intField.low)&&util.isInteger(m.intField.high)))
-                            return"invalid value for field .jspb.test.DefaultValues.intField (integer|Long expected)"
-                    }
-                    if(m.enumField!==undefined){
-                        switch(m.enumField){
-                            default:
-                                return"invalid value for field .jspb.test.DefaultValues.enumField (enum value expected)"
-                            case 13:
-                            case 77:
-                                break
-                        }
-                    }
-                    if(m.emptyField!==undefined){
-                        if(!util.isString(m.emptyField))
-                            return"invalid value for field .jspb.test.DefaultValues.emptyField (string expected)"
-                    }
-                    if(m.bytesField!==undefined){
-                        if(!(m.bytesField&&typeof m.bytesField.length==="number"||util.isString(m.bytesField)))
-                            return"invalid value for field .jspb.test.DefaultValues.bytesField (buffer expected)"
-                    }
-                    return null
+            DefaultValues.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.stringField !== undefined) {
+                    if (!util.isString(message.stringField))
+                        return "invalid value for field .jspb.test.DefaultValues.stringField (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.boolField !== undefined) {
+                    if (typeof message.boolField !== "boolean")
+                        return "invalid value for field .jspb.test.DefaultValues.boolField (boolean expected)"
+                }
+                if (message.intField !== undefined) {
+                    if (!util.isInteger(message.intField) && !(message.intField && util.isInteger(message.intField.low) && util.isInteger(message.intField.high)))
+                        return "invalid value for field .jspb.test.DefaultValues.intField (integer | Long expected)"
+                }
+                if (message.enumField !== undefined) {
+                    switch (message.enumField) {
+                        default:
+                            return "invalid value for field .jspb.test.DefaultValues.enumField (enum value expected)"
+                        case 13:
+                        case 77:
+                            break
+                    }
+                }
+                if (message.emptyField !== undefined) {
+                    if (!util.isString(message.emptyField))
+                        return "invalid value for field .jspb.test.DefaultValues.emptyField (string expected)"
+                }
+                if (message.bytesField !== undefined) {
+                    if (!(message.bytesField && typeof message.bytesField.length === "number" || util.isString(message.bytesField)))
+                        return "invalid value for field .jspb.test.DefaultValues.bytesField (buffer expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, null, "jspb.test.DefaultValues.Enum", null, null]); /* eslint-enable */
 
             /**
              * Enum values.
@@ -2462,33 +2162,26 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FloatingPointFields.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,null,null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.optionalFloatField!==undefined&&m.optionalFloatField!==0)
-                        w.uint32(13).float(m.optionalFloatField)
-                    w.uint32(21).float(m.requiredFloatField)
-                    if(m.repeatedFloatField)
-                        for(var i=0;i<m.repeatedFloatField.length;++i)
-                        w.uint32(29).float(m.repeatedFloatField[i])
-                    if(m.defaultFloatField!==undefined&&m.defaultFloatField!==2)
-                        w.uint32(37).float(m.defaultFloatField)
-                    if(m.optionalDoubleField!==undefined&&m.optionalDoubleField!==0)
-                        w.uint32(41).double(m.optionalDoubleField)
-                    w.uint32(49).double(m.requiredDoubleField)
-                    if(m.repeatedDoubleField)
-                        for(var i=0;i<m.repeatedDoubleField.length;++i)
-                        w.uint32(57).double(m.repeatedDoubleField[i])
-                    if(m.defaultDoubleField!==undefined&&m.defaultDoubleField!==2)
-                        w.uint32(65).double(m.defaultDoubleField)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            FloatingPointFields.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.optionalFloatField !== undefined && message.optionalFloatField !== 0)
+                    writer.uint32(13).float(message.optionalFloatField)
+                writer.uint32(21).float(message.requiredFloatField)
+                if (message.repeatedFloatField)
+                    for (var i = 0; i < message.repeatedFloatField.length; ++i)
+                    writer.uint32(29).float(message.repeatedFloatField[i])
+                if (message.defaultFloatField !== undefined && message.defaultFloatField !== 2)
+                    writer.uint32(37).float(message.defaultFloatField)
+                if (message.optionalDoubleField !== undefined && message.optionalDoubleField !== 0)
+                    writer.uint32(41).double(message.optionalDoubleField)
+                writer.uint32(49).double(message.requiredDoubleField)
+                if (message.repeatedDoubleField)
+                    for (var i = 0; i < message.repeatedDoubleField.length; ++i)
+                    writer.uint32(57).double(message.repeatedDoubleField[i])
+                if (message.defaultDoubleField !== undefined && message.defaultDoubleField !== 2)
+                    writer.uint32(65).double(message.defaultDoubleField)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified FloatingPointFields, length delimited.
@@ -2507,52 +2200,45 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.FloatingPointFields} FloatingPointFields
              */
-            FloatingPointFields.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,null,null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.FloatingPointFields
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.optionalFloatField=r.float()
-                                break
-                            case 2:
-                                m.requiredFloatField=r.float()
-                                break
-                            case 3:
-                                m.repeatedFloatField&&m.repeatedFloatField.length||(m.repeatedFloatField=[])
-                                m.repeatedFloatField.push(r.float())
-                                break
-                            case 4:
-                                m.defaultFloatField=r.float()
-                                break
-                            case 5:
-                                m.optionalDoubleField=r.double()
-                                break
-                            case 6:
-                                m.requiredDoubleField=r.double()
-                                break
-                            case 7:
-                                m.repeatedDoubleField&&m.repeatedDoubleField.length||(m.repeatedDoubleField=[])
-                                m.repeatedDoubleField.push(r.double())
-                                break
-                            case 8:
-                                m.defaultDoubleField=r.double()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            FloatingPointFields.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.FloatingPointFields
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.optionalFloatField = reader.float()
+                            break
+                        case 2:
+                            message.requiredFloatField = reader.float()
+                            break
+                        case 3:
+                            message.repeatedFloatField && message.repeatedFloatField.length || (message.repeatedFloatField = [])
+                            message.repeatedFloatField.push(reader.float())
+                            break
+                        case 4:
+                            message.defaultFloatField = reader.float()
+                            break
+                        case 5:
+                            message.optionalDoubleField = reader.double()
+                            break
+                        case 6:
+                            message.requiredDoubleField = reader.double()
+                            break
+                        case 7:
+                            message.repeatedDoubleField && message.repeatedDoubleField.length || (message.repeatedDoubleField = [])
+                            message.repeatedDoubleField.push(reader.double())
+                            break
+                        case 8:
+                            message.defaultDoubleField = reader.double()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Decodes a FloatingPointFields from the specified reader or buffer, length delimited.
@@ -2570,51 +2256,45 @@ $root.jspb = (function() {
              * @param {jspb.test.FloatingPointFields|Object} message FloatingPointFields or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FloatingPointFields.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,null,null,null]);
-                return function verify(m) {
-                    if(m.optionalFloatField!==undefined){
-                        if(typeof m.optionalFloatField!=="number")
-                            return"invalid value for field .jspb.test.FloatingPointFields.optionalFloatField (number expected)"
-                    }
-                    if(typeof m.requiredFloatField!=="number")
-                        return"invalid value for field .jspb.test.FloatingPointFields.requiredFloatField (number expected)"
-                    if(m.repeatedFloatField!==undefined){
-                        if(!Array.isArray(m.repeatedFloatField))
-                            return"invalid value for field .jspb.test.FloatingPointFields.repeatedFloatField (array expected)"
-                        for(var i=0;i<m.repeatedFloatField.length;++i){
-                            if(typeof m.repeatedFloatField[i]!=="number")
-                                return"invalid value for field .jspb.test.FloatingPointFields.repeatedFloatField (number[] expected)"
-                        }
-                    }
-                    if(m.defaultFloatField!==undefined){
-                        if(typeof m.defaultFloatField!=="number")
-                            return"invalid value for field .jspb.test.FloatingPointFields.defaultFloatField (number expected)"
-                    }
-                    if(m.optionalDoubleField!==undefined){
-                        if(typeof m.optionalDoubleField!=="number")
-                            return"invalid value for field .jspb.test.FloatingPointFields.optionalDoubleField (number expected)"
-                    }
-                    if(typeof m.requiredDoubleField!=="number")
-                        return"invalid value for field .jspb.test.FloatingPointFields.requiredDoubleField (number expected)"
-                    if(m.repeatedDoubleField!==undefined){
-                        if(!Array.isArray(m.repeatedDoubleField))
-                            return"invalid value for field .jspb.test.FloatingPointFields.repeatedDoubleField (array expected)"
-                        for(var i=0;i<m.repeatedDoubleField.length;++i){
-                            if(typeof m.repeatedDoubleField[i]!=="number")
-                                return"invalid value for field .jspb.test.FloatingPointFields.repeatedDoubleField (number[] expected)"
-                        }
-                    }
-                    if(m.defaultDoubleField!==undefined){
-                        if(typeof m.defaultDoubleField!=="number")
-                            return"invalid value for field .jspb.test.FloatingPointFields.defaultDoubleField (number expected)"
-                    }
-                    return null
+            FloatingPointFields.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.optionalFloatField !== undefined) {
+                    if (typeof message.optionalFloatField !== "number")
+                        return "invalid value for field .jspb.test.FloatingPointFields.optionalFloatField (number expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (typeof message.requiredFloatField !== "number")
+                    return "invalid value for field .jspb.test.FloatingPointFields.requiredFloatField (number expected)"
+                if (message.repeatedFloatField !== undefined) {
+                    if (!Array.isArray(message.repeatedFloatField))
+                        return "invalid value for field .jspb.test.FloatingPointFields.repeatedFloatField (array expected)"
+                    for (var i = 0; i < message.repeatedFloatField.length; ++i) {
+                        if (typeof message.repeatedFloatField[i] !== "number")
+                            return "invalid value for field .jspb.test.FloatingPointFields.repeatedFloatField (number[] expected)"
+                    }
+                }
+                if (message.defaultFloatField !== undefined) {
+                    if (typeof message.defaultFloatField !== "number")
+                        return "invalid value for field .jspb.test.FloatingPointFields.defaultFloatField (number expected)"
+                }
+                if (message.optionalDoubleField !== undefined) {
+                    if (typeof message.optionalDoubleField !== "number")
+                        return "invalid value for field .jspb.test.FloatingPointFields.optionalDoubleField (number expected)"
+                }
+                if (typeof message.requiredDoubleField !== "number")
+                    return "invalid value for field .jspb.test.FloatingPointFields.requiredDoubleField (number expected)"
+                if (message.repeatedDoubleField !== undefined) {
+                    if (!Array.isArray(message.repeatedDoubleField))
+                        return "invalid value for field .jspb.test.FloatingPointFields.repeatedDoubleField (array expected)"
+                    for (var i = 0; i < message.repeatedDoubleField.length; ++i) {
+                        if (typeof message.repeatedDoubleField[i] !== "number")
+                            return "invalid value for field .jspb.test.FloatingPointFields.repeatedDoubleField (number[] expected)"
+                    }
+                }
+                if (message.defaultDoubleField !== undefined) {
+                    if (typeof message.defaultDoubleField !== "number")
+                        return "invalid value for field .jspb.test.FloatingPointFields.defaultDoubleField (number expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, null, null, null, null, null, null]); /* eslint-enable */
 
             return FloatingPointFields;
         })();
@@ -2691,30 +2371,23 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestClone.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"jspb.test.Simple1","jspb.test.Simple1",null,null,"jspb.test.CloneExtension"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.str!==undefined&&m.str!=="")
-                        w.uint32(10).string(m.str)
-                    if(m.simple1!==undefined&&m.simple1!==null)
-                        types[1].encode(m.simple1,w.uint32(26).fork()).ldelim()
-                    if(m.simple2)
-                        for(var i=0;i<m.simple2.length;++i)
-                        types[2].encode(m.simple2[i],w.uint32(42).fork()).ldelim()
-                    if(m.bytesField!==undefined&&m.bytesField!==[])
-                        w.uint32(50).bytes(m.bytesField)
-                    if(m.unused!==undefined&&m.unused!=="")
-                        w.uint32(58).string(m.unused)
-                    if(m[".jspb.test.CloneExtension.extField"]!==undefined&&m[".jspb.test.CloneExtension.extField"]!==null)
-                        types[5].encode(m[".jspb.test.CloneExtension.extField"],w.uint32(802).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            TestClone.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.str !== undefined && message.str !== "")
+                    writer.uint32(10).string(message.str)
+                if (message.simple1 !== undefined && message.simple1 !== null)
+                    types[1].encode(message.simple1, writer.uint32(26).fork()).ldelim()
+                if (message.simple2)
+                    for (var i = 0; i < message.simple2.length; ++i)
+                    types[2].encode(message.simple2[i], writer.uint32(42).fork()).ldelim()
+                if (message.bytesField !== undefined && message.bytesField !== [])
+                    writer.uint32(50).bytes(message.bytesField)
+                if (message.unused !== undefined && message.unused !== "")
+                    writer.uint32(58).string(message.unused)
+                if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null)
+                    types[5].encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(802).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "jspb.test.Simple1", "jspb.test.Simple1", null, null, "jspb.test.CloneExtension"]); /* eslint-enable */
 
             /**
              * Encodes the specified TestClone, length delimited.
@@ -2733,45 +2406,38 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestClone} TestClone
              */
-            TestClone.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"jspb.test.Simple1","jspb.test.Simple1",null,null,"jspb.test.CloneExtension"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.TestClone
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.str=r.string()
-                                break
-                            case 3:
-                                m.simple1=types[1].decode(r,r.uint32())
-                                break
-                            case 5:
-                                m.simple2&&m.simple2.length||(m.simple2=[])
-                                m.simple2.push(types[2].decode(r,r.uint32()))
-                                break
-                            case 6:
-                                m.bytesField=r.bytes()
-                                break
-                            case 7:
-                                m.unused=r.string()
-                                break
-                            case 100:
-                                m[".jspb.test.CloneExtension.extField"]=types[5].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            TestClone.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestClone
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.str = reader.string()
+                            break
+                        case 3:
+                            message.simple1 = types[1].decode(reader, reader.uint32())
+                            break
+                        case 5:
+                            message.simple2 && message.simple2.length || (message.simple2 = [])
+                            message.simple2.push(types[2].decode(reader, reader.uint32()))
+                            break
+                        case 6:
+                            message.bytesField = reader.bytes()
+                            break
+                        case 7:
+                            message.unused = reader.string()
+                            break
+                        case 100:
+                            message[".jspb.test.CloneExtension.extField"] = types[5].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "jspb.test.Simple1", "jspb.test.Simple1", null, null, "jspb.test.CloneExtension"]); /* eslint-enable */
 
             /**
              * Decodes a TestClone from the specified reader or buffer, length delimited.
@@ -2789,46 +2455,40 @@ $root.jspb = (function() {
              * @param {jspb.test.TestClone|Object} message TestClone or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestClone.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"jspb.test.Simple1","jspb.test.Simple1",null,null,"jspb.test.CloneExtension"]);
-                return function verify(m) {
-                    if(m.str!==undefined){
-                        if(!util.isString(m.str))
-                            return"invalid value for field .jspb.test.TestClone.str (string expected)"
-                    }
-                    if(m.simple1!==undefined&&m.simple1!==null){
-                        var r;
-                        if(r=types[1].verify(m.simple1))
-                            return r
-                    }
-                    if(m.simple2!==undefined){
-                        if(!Array.isArray(m.simple2))
-                            return"invalid value for field .jspb.test.TestClone.simple2 (array expected)"
-                        for(var i=0;i<m.simple2.length;++i){
-                            var r;
-                            if(r=types[2].verify(m.simple2[i]))
-                                return r
-                        }
-                    }
-                    if(m.bytesField!==undefined){
-                        if(!(m.bytesField&&typeof m.bytesField.length==="number"||util.isString(m.bytesField)))
-                            return"invalid value for field .jspb.test.TestClone.bytesField (buffer expected)"
-                    }
-                    if(m.unused!==undefined){
-                        if(!util.isString(m.unused))
-                            return"invalid value for field .jspb.test.TestClone.unused (string expected)"
-                    }
-                    if(m[".jspb.test.CloneExtension.extField"]!==undefined&&m[".jspb.test.CloneExtension.extField"]!==null){
-                        var r;
-                        if(r=types[5].verify(m[".jspb.test.CloneExtension.extField"]))
-                            return r
-                    }
-                    return null
+            TestClone.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.str !== undefined) {
+                    if (!util.isString(message.str))
+                        return "invalid value for field .jspb.test.TestClone.str (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.simple1 !== undefined && message.simple1 !== null) {
+                    var s;
+                    if (s = types[1].verify(message.simple1))
+                        return s
+                }
+                if (message.simple2 !== undefined) {
+                    if (!Array.isArray(message.simple2))
+                        return "invalid value for field .jspb.test.TestClone.simple2 (array expected)"
+                    for (var i = 0; i < message.simple2.length; ++i) {
+                        var s;
+                        if (s = types[2].verify(message.simple2[i]))
+                            return s
+                    }
+                }
+                if (message.bytesField !== undefined) {
+                    if (!(message.bytesField && typeof message.bytesField.length === "number" || util.isString(message.bytesField)))
+                        return "invalid value for field .jspb.test.TestClone.bytesField (buffer expected)"
+                }
+                if (message.unused !== undefined) {
+                    if (!util.isString(message.unused))
+                        return "invalid value for field .jspb.test.TestClone.unused (string expected)"
+                }
+                if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
+                    var s;
+                    if (s = types[5].verify(message[".jspb.test.CloneExtension.extField"]))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, "jspb.test.Simple1", "jspb.test.Simple1", null, null, "jspb.test.CloneExtension"]); /* eslint-enable */
 
             return TestClone;
         })();
@@ -2874,19 +2534,12 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            CloneExtension.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.ext!==undefined&&m.ext!=="")
-                        w.uint32(18).string(m.ext)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            CloneExtension.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.ext !== undefined && message.ext !== "")
+                    writer.uint32(18).string(message.ext)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
             /**
              * Encodes the specified CloneExtension, length delimited.
@@ -2905,29 +2558,22 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.CloneExtension} CloneExtension
              */
-            CloneExtension.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.CloneExtension
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 2:
-                                m.ext=r.string()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            CloneExtension.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.CloneExtension
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 2:
+                            message.ext = reader.string()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
             /**
              * Decodes a CloneExtension from the specified reader or buffer, length delimited.
@@ -2945,19 +2591,13 @@ $root.jspb = (function() {
              * @param {jspb.test.CloneExtension|Object} message CloneExtension or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            CloneExtension.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function verify(m) {
-                    if(m.ext!==undefined){
-                        if(!util.isString(m.ext))
-                            return"invalid value for field .jspb.test.CloneExtension.ext (string expected)"
-                    }
-                    return null
+            CloneExtension.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.ext !== undefined) {
+                    if (!util.isString(message.ext))
+                        return "invalid value for field .jspb.test.CloneExtension.ext (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, [null]); /* eslint-enable */
 
             return CloneExtension;
         })();
@@ -3015,22 +2655,15 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestGroup.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"jspb.test.Simple2","jspb.test.Simple2"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.id!==undefined&&m.id!=="")
-                        w.uint32(34).string(m.id)
-                    types[1].encode(m.requiredSimple,w.uint32(42).fork()).ldelim()
-                    if(m.optionalSimple!==undefined&&m.optionalSimple!==null)
-                        types[2].encode(m.optionalSimple,w.uint32(50).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            TestGroup.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.id !== undefined && message.id !== "")
+                    writer.uint32(34).string(message.id)
+                types[1].encode(message.requiredSimple, writer.uint32(42).fork()).ldelim()
+                if (message.optionalSimple !== undefined && message.optionalSimple !== null)
+                    types[2].encode(message.optionalSimple, writer.uint32(50).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "jspb.test.Simple2", "jspb.test.Simple2"]); /* eslint-enable */
 
             /**
              * Encodes the specified TestGroup, length delimited.
@@ -3049,35 +2682,28 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestGroup} TestGroup
              */
-            TestGroup.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"jspb.test.Simple2","jspb.test.Simple2"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.TestGroup
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 4:
-                                m.id=r.string()
-                                break
-                            case 5:
-                                m.requiredSimple=types[1].decode(r,r.uint32())
-                                break
-                            case 6:
-                                m.optionalSimple=types[2].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            TestGroup.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestGroup
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 4:
+                            message.id = reader.string()
+                            break
+                        case 5:
+                            message.requiredSimple = types[1].decode(reader, reader.uint32())
+                            break
+                        case 6:
+                            message.optionalSimple = types[2].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "jspb.test.Simple2", "jspb.test.Simple2"]); /* eslint-enable */
 
             /**
              * Decodes a TestGroup from the specified reader or buffer, length delimited.
@@ -3095,27 +2721,21 @@ $root.jspb = (function() {
              * @param {jspb.test.TestGroup|Object} message TestGroup or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestGroup.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"jspb.test.Simple2","jspb.test.Simple2"]);
-                return function verify(m) {
-                    if(m.id!==undefined){
-                        if(!util.isString(m.id))
-                            return"invalid value for field .jspb.test.TestGroup.id (string expected)"
-                    }
-                    var r;
-                    if(r=types[1].verify(m.requiredSimple))
-                        return r
-                    if(m.optionalSimple!==undefined&&m.optionalSimple!==null){
-                        var r;
-                        if(r=types[2].verify(m.optionalSimple))
-                            return r
-                    }
-                    return null
+            TestGroup.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.id !== undefined) {
+                    if (!util.isString(message.id))
+                        return "invalid value for field .jspb.test.TestGroup.id (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                var s;
+                if (s = types[1].verify(message.requiredSimple))
+                    return s
+                if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
+                    var s;
+                    if (s = types[2].verify(message.optionalSimple))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, "jspb.test.Simple2", "jspb.test.Simple2"]); /* eslint-enable */
 
             return TestGroup;
         })();
@@ -3168,21 +2788,14 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestReservedNames.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.extension!==undefined&&m.extension!==0)
-                        w.uint32(8).int32(m.extension)
-                    if(m[".jspb.test.TestReservedNamesExtension.foo"]!==undefined&&m[".jspb.test.TestReservedNamesExtension.foo"]!==0)
-                        w.uint32(80).int32(m[".jspb.test.TestReservedNamesExtension.foo"])
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            TestReservedNames.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.extension !== undefined && message.extension !== 0)
+                    writer.uint32(8).int32(message.extension)
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && message[".jspb.test.TestReservedNamesExtension.foo"] !== 0)
+                    writer.uint32(80).int32(message[".jspb.test.TestReservedNamesExtension.foo"])
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified TestReservedNames, length delimited.
@@ -3201,32 +2814,25 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNames} TestReservedNames
              */
-            TestReservedNames.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.TestReservedNames
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.extension=r.int32()
-                                break
-                            case 10:
-                                m[".jspb.test.TestReservedNamesExtension.foo"]=r.int32()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            TestReservedNames.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestReservedNames
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.extension = reader.int32()
+                            break
+                        case 10:
+                            message[".jspb.test.TestReservedNamesExtension.foo"] = reader.int32()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null]); /* eslint-enable */
 
             /**
              * Decodes a TestReservedNames from the specified reader or buffer, length delimited.
@@ -3244,23 +2850,17 @@ $root.jspb = (function() {
              * @param {jspb.test.TestReservedNames|Object} message TestReservedNames or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestReservedNames.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function verify(m) {
-                    if(m.extension!==undefined){
-                        if(!util.isInteger(m.extension))
-                            return"invalid value for field .jspb.test.TestReservedNames.extension (integer expected)"
-                    }
-                    if(m[".jspb.test.TestReservedNamesExtension.foo"]!==undefined){
-                        if(!util.isInteger(m[".jspb.test.TestReservedNamesExtension.foo"]))
-                            return"invalid value for field .jspb.test.TestReservedNames..jspb.test.TestReservedNamesExtension.foo (integer expected)"
-                    }
-                    return null
+            TestReservedNames.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.extension !== undefined) {
+                    if (!util.isInteger(message.extension))
+                        return "invalid value for field .jspb.test.TestReservedNames.extension (integer expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined) {
+                    if (!util.isInteger(message[".jspb.test.TestReservedNamesExtension.foo"]))
+                        return "invalid value for field .jspb.test.TestReservedNames..jspb.test.TestReservedNamesExtension.foo (integer expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null]); /* eslint-enable */
 
             return TestReservedNames;
         })();
@@ -3297,17 +2897,10 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestReservedNamesExtension.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            TestReservedNamesExtension.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                return writer
+            }})($protobuf.Writer, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Encodes the specified TestReservedNamesExtension, length delimited.
@@ -3326,26 +2919,19 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
-            TestReservedNamesExtension.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.TestReservedNamesExtension
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            TestReservedNamesExtension.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestReservedNamesExtension
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Decodes a TestReservedNamesExtension from the specified reader or buffer, length delimited.
@@ -3363,15 +2949,9 @@ $root.jspb = (function() {
              * @param {jspb.test.TestReservedNamesExtension|Object} message TestReservedNamesExtension or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestReservedNamesExtension.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function verify(m) {
-                    return null
-                }
-                /* eslint-enable */
-            })();
+            TestReservedNamesExtension.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                return null
+            }})($protobuf.util, []); /* eslint-enable */
 
             return TestReservedNamesExtension;
         })();
@@ -3555,54 +3135,47 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestMessageWithOneof.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.TestMessageWithOneof",null,null,null,null,null,null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.normalField!==undefined&&m.normalField!==false)
-                        w.uint32(64).bool(m.normalField)
-                    if(m.repeatedField)
-                        for(var i=0;i<m.repeatedField.length;++i)
-                        w.uint32(74).string(m.repeatedField[i])
-                    switch(m.getPartialOneof()){
-                        case"pone":
-                            w.uint32(26).string(m.pone)
-                            break;
-                        case"pthree":
-                            w.uint32(42).string(m.pthree)
-                            break;
-                    }
-                    switch(m.getRecursiveOneof()){
-                        case"rone":
-                            types[2].encode(m.rone,w.uint32(50).fork()).ldelim()
-                            break;
-                        case"rtwo":
-                            w.uint32(58).string(m.rtwo)
-                            break;
-                    }
-                    switch(m.getDefaultOneofA()){
-                        case"aone":
-                            w.uint32(80).int32(m.aone)
-                            break;
-                        case"atwo":
-                            w.uint32(88).int32(m.atwo)
-                            break;
-                    }
-                    switch(m.getDefaultOneofB()){
-                        case"bone":
-                            w.uint32(96).int32(m.bone)
-                            break;
-                        case"btwo":
-                            w.uint32(104).int32(m.btwo)
-                            break;
-                    }
-                    return w
+            TestMessageWithOneof.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.normalField !== undefined && message.normalField !== false)
+                    writer.uint32(64).bool(message.normalField)
+                if (message.repeatedField)
+                    for (var i = 0; i < message.repeatedField.length; ++i)
+                    writer.uint32(74).string(message.repeatedField[i])
+                switch (message.getPartialOneof()) {
+                    case"pone":
+                        writer.uint32(26).string(message.pone)
+                        break;
+                    case"pthree":
+                        writer.uint32(42).string(message.pthree)
+                        break;
                 }
-                /* eslint-enable */
-            })();
+                switch (message.getRecursiveOneof()) {
+                    case"rone":
+                        types[2].encode(message.rone, writer.uint32(50).fork()).ldelim()
+                        break;
+                    case"rtwo":
+                        writer.uint32(58).string(message.rtwo)
+                        break;
+                }
+                switch (message.getDefaultOneofA()) {
+                    case"aone":
+                        writer.uint32(80).int32(message.aone)
+                        break;
+                    case"atwo":
+                        writer.uint32(88).int32(message.atwo)
+                        break;
+                }
+                switch (message.getDefaultOneofB()) {
+                    case"bone":
+                        writer.uint32(96).int32(message.bone)
+                        break;
+                    case"btwo":
+                        writer.uint32(104).int32(message.btwo)
+                        break;
+                }
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "jspb.test.TestMessageWithOneof", null, null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified TestMessageWithOneof, length delimited.
@@ -3621,57 +3194,50 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMessageWithOneof} TestMessageWithOneof
              */
-            TestMessageWithOneof.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.TestMessageWithOneof",null,null,null,null,null,null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.TestMessageWithOneof
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 3:
-                                m.pone=r.string()
-                                break
-                            case 5:
-                                m.pthree=r.string()
-                                break
-                            case 6:
-                                m.rone=types[2].decode(r,r.uint32())
-                                break
-                            case 7:
-                                m.rtwo=r.string()
-                                break
-                            case 8:
-                                m.normalField=r.bool()
-                                break
-                            case 9:
-                                m.repeatedField&&m.repeatedField.length||(m.repeatedField=[])
-                                m.repeatedField.push(r.string())
-                                break
-                            case 10:
-                                m.aone=r.int32()
-                                break
-                            case 11:
-                                m.atwo=r.int32()
-                                break
-                            case 12:
-                                m.bone=r.int32()
-                                break
-                            case 13:
-                                m.btwo=r.int32()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            TestMessageWithOneof.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMessageWithOneof
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 3:
+                            message.pone = reader.string()
+                            break
+                        case 5:
+                            message.pthree = reader.string()
+                            break
+                        case 6:
+                            message.rone = types[2].decode(reader, reader.uint32())
+                            break
+                        case 7:
+                            message.rtwo = reader.string()
+                            break
+                        case 8:
+                            message.normalField = reader.bool()
+                            break
+                        case 9:
+                            message.repeatedField && message.repeatedField.length || (message.repeatedField = [])
+                            message.repeatedField.push(reader.string())
+                            break
+                        case 10:
+                            message.aone = reader.int32()
+                            break
+                        case 11:
+                            message.atwo = reader.int32()
+                            break
+                        case 12:
+                            message.bone = reader.int32()
+                            break
+                        case 13:
+                            message.btwo = reader.int32()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "jspb.test.TestMessageWithOneof", null, null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Decodes a TestMessageWithOneof from the specified reader or buffer, length delimited.
@@ -3689,60 +3255,54 @@ $root.jspb = (function() {
              * @param {jspb.test.TestMessageWithOneof|Object} message TestMessageWithOneof or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestMessageWithOneof.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"jspb.test.TestMessageWithOneof",null,null,null,null,null,null,null]);
-                return function verify(m) {
-                    if(m.pone!==undefined){
-                        if(!util.isString(m.pone))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.pone (string expected)"
-                    }
-                    if(m.pthree!==undefined){
-                        if(!util.isString(m.pthree))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.pthree (string expected)"
-                    }
-                    if(m.rone!==undefined&&m.rone!==null){
-                        var r;
-                        if(r=types[2].verify(m.rone))
-                            return r
-                    }
-                    if(m.rtwo!==undefined){
-                        if(!util.isString(m.rtwo))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.rtwo (string expected)"
-                    }
-                    if(m.normalField!==undefined){
-                        if(typeof m.normalField!=="boolean")
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.normalField (boolean expected)"
-                    }
-                    if(m.repeatedField!==undefined){
-                        if(!Array.isArray(m.repeatedField))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.repeatedField (array expected)"
-                        for(var i=0;i<m.repeatedField.length;++i){
-                            if(!util.isString(m.repeatedField[i]))
-                                return"invalid value for field .jspb.test.TestMessageWithOneof.repeatedField (string[] expected)"
-                        }
-                    }
-                    if(m.aone!==undefined){
-                        if(!util.isInteger(m.aone))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.aone (integer expected)"
-                    }
-                    if(m.atwo!==undefined){
-                        if(!util.isInteger(m.atwo))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.atwo (integer expected)"
-                    }
-                    if(m.bone!==undefined){
-                        if(!util.isInteger(m.bone))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.bone (integer expected)"
-                    }
-                    if(m.btwo!==undefined){
-                        if(!util.isInteger(m.btwo))
-                            return"invalid value for field .jspb.test.TestMessageWithOneof.btwo (integer expected)"
-                    }
-                    return null
+            TestMessageWithOneof.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.pone !== undefined) {
+                    if (!util.isString(message.pone))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.pone (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.pthree !== undefined) {
+                    if (!util.isString(message.pthree))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.pthree (string expected)"
+                }
+                if (message.rone !== undefined && message.rone !== null) {
+                    var s;
+                    if (s = types[2].verify(message.rone))
+                        return s
+                }
+                if (message.rtwo !== undefined) {
+                    if (!util.isString(message.rtwo))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.rtwo (string expected)"
+                }
+                if (message.normalField !== undefined) {
+                    if (typeof message.normalField !== "boolean")
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.normalField (boolean expected)"
+                }
+                if (message.repeatedField !== undefined) {
+                    if (!Array.isArray(message.repeatedField))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.repeatedField (array expected)"
+                    for (var i = 0; i < message.repeatedField.length; ++i) {
+                        if (!util.isString(message.repeatedField[i]))
+                            return "invalid value for field .jspb.test.TestMessageWithOneof.repeatedField (string[] expected)"
+                    }
+                }
+                if (message.aone !== undefined) {
+                    if (!util.isInteger(message.aone))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.aone (integer expected)"
+                }
+                if (message.atwo !== undefined) {
+                    if (!util.isInteger(message.atwo))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.atwo (integer expected)"
+                }
+                if (message.bone !== undefined) {
+                    if (!util.isInteger(message.bone))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.bone (integer expected)"
+                }
+                if (message.btwo !== undefined) {
+                    if (!util.isInteger(message.btwo))
+                        return "invalid value for field .jspb.test.TestMessageWithOneof.btwo (integer expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, "jspb.test.TestMessageWithOneof", null, null, null, null, null, null, null]); /* eslint-enable */
 
             return TestMessageWithOneof;
         })();
@@ -3794,21 +3354,14 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestEndsWithBytes.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.value!==undefined&&m.value!==0)
-                        w.uint32(8).int32(m.value)
-                    if(m.data!==undefined&&m.data!==[])
-                        w.uint32(18).bytes(m.data)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            TestEndsWithBytes.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.value !== undefined && message.value !== 0)
+                    writer.uint32(8).int32(message.value)
+                if (message.data !== undefined && message.data !== [])
+                    writer.uint32(18).bytes(message.data)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified TestEndsWithBytes, length delimited.
@@ -3827,32 +3380,25 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestEndsWithBytes} TestEndsWithBytes
              */
-            TestEndsWithBytes.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.TestEndsWithBytes
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.value=r.int32()
-                                break
-                            case 2:
-                                m.data=r.bytes()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            TestEndsWithBytes.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestEndsWithBytes
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.value = reader.int32()
+                            break
+                        case 2:
+                            message.data = reader.bytes()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null]); /* eslint-enable */
 
             /**
              * Decodes a TestEndsWithBytes from the specified reader or buffer, length delimited.
@@ -3870,23 +3416,17 @@ $root.jspb = (function() {
              * @param {jspb.test.TestEndsWithBytes|Object} message TestEndsWithBytes or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestEndsWithBytes.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null]);
-                return function verify(m) {
-                    if(m.value!==undefined){
-                        if(!util.isInteger(m.value))
-                            return"invalid value for field .jspb.test.TestEndsWithBytes.value (integer expected)"
-                    }
-                    if(m.data!==undefined){
-                        if(!(m.data&&typeof m.data.length==="number"||util.isString(m.data)))
-                            return"invalid value for field .jspb.test.TestEndsWithBytes.data (buffer expected)"
-                    }
-                    return null
+            TestEndsWithBytes.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.value !== undefined) {
+                    if (!util.isInteger(message.value))
+                        return "invalid value for field .jspb.test.TestEndsWithBytes.value (integer expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.data !== undefined) {
+                    if (!(message.data && typeof message.data.length === "number" || util.isString(message.data)))
+                        return "invalid value for field .jspb.test.TestEndsWithBytes.data (buffer expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null]); /* eslint-enable */
 
             return TestEndsWithBytes;
         })();
@@ -3998,96 +3538,89 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            TestMapFieldsNoBinary.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"jspb.test.MapValueEnumNoBinary","jspb.test.MapValueMessageNoBinary",null,null,null,"jspb.test.TestMapFieldsNoBinary","jspb.test.TestMapFieldsNoBinary"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.mapStringString&&m.mapStringString!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringString),i=0;i<ks.length;++i){
-                            w.uint32(10).fork().uint32(10).string(ks[i])
-                            w.uint32(18).string(m.mapStringString[ks[i]])
-                            w.ldelim()
-                        }
+            TestMapFieldsNoBinary.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.mapStringString && message.mapStringString !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringString), i = 0; i < keys.length; ++i) {
+                        writer.uint32(10).fork().uint32(10).string(keys[i])
+                        writer.uint32(18).string(message.mapStringString[keys[i]])
+                        writer.ldelim()
                     }
-                    if(m.mapStringInt32&&m.mapStringInt32!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringInt32),i=0;i<ks.length;++i){
-                            w.uint32(18).fork().uint32(10).string(ks[i])
-                            w.uint32(16).int32(m.mapStringInt32[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapStringInt64&&m.mapStringInt64!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringInt64),i=0;i<ks.length;++i){
-                            w.uint32(26).fork().uint32(10).string(ks[i])
-                            w.uint32(16).int64(m.mapStringInt64[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapStringBool&&m.mapStringBool!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringBool),i=0;i<ks.length;++i){
-                            w.uint32(34).fork().uint32(10).string(ks[i])
-                            w.uint32(16).bool(m.mapStringBool[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapStringDouble&&m.mapStringDouble!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringDouble),i=0;i<ks.length;++i){
-                            w.uint32(42).fork().uint32(10).string(ks[i])
-                            w.uint32(17).double(m.mapStringDouble[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapStringEnum&&m.mapStringEnum!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringEnum),i=0;i<ks.length;++i){
-                            w.uint32(50).fork().uint32(10).string(ks[i])
-                            w.uint32(16).uint32(m.mapStringEnum[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapStringMsg&&m.mapStringMsg!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringMsg),i=0;i<ks.length;++i){
-                            w.uint32(58).fork().uint32(10).string(ks[i])
-                            types[6].encode(m.mapStringMsg[ks[i]],w.uint32(18).fork()).ldelim()
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapInt32String&&m.mapInt32String!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapInt32String),i=0;i<ks.length;++i){
-                            w.uint32(66).fork().uint32(8).int32(ks[i])
-                            w.uint32(18).string(m.mapInt32String[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapInt64String&&m.mapInt64String!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapInt64String),i=0;i<ks.length;++i){
-                            w.uint32(74).fork().uint32(8).int64(ks[i])
-                            w.uint32(18).string(m.mapInt64String[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.mapBoolString&&m.mapBoolString!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapBoolString),i=0;i<ks.length;++i){
-                            w.uint32(82).fork().uint32(8).bool(ks[i])
-                            w.uint32(18).string(m.mapBoolString[ks[i]])
-                            w.ldelim()
-                        }
-                    }
-                    if(m.testMapFields!==undefined&&m.testMapFields!==null)
-                        types[10].encode(m.testMapFields,w.uint32(90).fork()).ldelim()
-                    if(m.mapStringTestmapfields&&m.mapStringTestmapfields!==util.emptyObject){
-                        for(var ks=Object.keys(m.mapStringTestmapfields),i=0;i<ks.length;++i){
-                            w.uint32(98).fork().uint32(10).string(ks[i])
-                            types[11].encode(m.mapStringTestmapfields[ks[i]],w.uint32(18).fork()).ldelim()
-                            w.ldelim()
-                        }
-                    }
-                    return w
                 }
-                /* eslint-enable */
-            })();
+                if (message.mapStringInt32 && message.mapStringInt32 !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringInt32), i = 0; i < keys.length; ++i) {
+                        writer.uint32(18).fork().uint32(10).string(keys[i])
+                        writer.uint32(16).int32(message.mapStringInt32[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapStringInt64 && message.mapStringInt64 !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringInt64), i = 0; i < keys.length; ++i) {
+                        writer.uint32(26).fork().uint32(10).string(keys[i])
+                        writer.uint32(16).int64(message.mapStringInt64[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapStringBool && message.mapStringBool !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringBool), i = 0; i < keys.length; ++i) {
+                        writer.uint32(34).fork().uint32(10).string(keys[i])
+                        writer.uint32(16).bool(message.mapStringBool[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapStringDouble && message.mapStringDouble !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringDouble), i = 0; i < keys.length; ++i) {
+                        writer.uint32(42).fork().uint32(10).string(keys[i])
+                        writer.uint32(17).double(message.mapStringDouble[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapStringEnum && message.mapStringEnum !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringEnum), i = 0; i < keys.length; ++i) {
+                        writer.uint32(50).fork().uint32(10).string(keys[i])
+                        writer.uint32(16).uint32(message.mapStringEnum[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapStringMsg && message.mapStringMsg !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringMsg), i = 0; i < keys.length; ++i) {
+                        writer.uint32(58).fork().uint32(10).string(keys[i])
+                        types[6].encode(message.mapStringMsg[keys[i]], writer.uint32(18).fork()).ldelim()
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapInt32String && message.mapInt32String !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapInt32String), i = 0; i < keys.length; ++i) {
+                        writer.uint32(66).fork().uint32(8).int32(keys[i])
+                        writer.uint32(18).string(message.mapInt32String[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapInt64String && message.mapInt64String !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapInt64String), i = 0; i < keys.length; ++i) {
+                        writer.uint32(74).fork().uint32(8).int64(keys[i])
+                        writer.uint32(18).string(message.mapInt64String[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.mapBoolString && message.mapBoolString !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapBoolString), i = 0; i < keys.length; ++i) {
+                        writer.uint32(82).fork().uint32(8).bool(keys[i])
+                        writer.uint32(18).string(message.mapBoolString[keys[i]])
+                        writer.ldelim()
+                    }
+                }
+                if (message.testMapFields !== undefined && message.testMapFields !== null)
+                    types[10].encode(message.testMapFields, writer.uint32(90).fork()).ldelim()
+                if (message.mapStringTestmapfields && message.mapStringTestmapfields !== util.emptyObject) {
+                    for (var keys = Object.keys(message.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
+                        writer.uint32(98).fork().uint32(10).string(keys[i])
+                        types[11].encode(message.mapStringTestmapfields[keys[i]], writer.uint32(18).fork()).ldelim()
+                        writer.ldelim()
+                    }
+                }
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, "jspb.test.MapValueEnumNoBinary", "jspb.test.MapValueMessageNoBinary", null, null, null, "jspb.test.TestMapFieldsNoBinary", "jspb.test.TestMapFieldsNoBinary"]); /* eslint-enable */
 
             /**
              * Encodes the specified TestMapFieldsNoBinary, length delimited.
@@ -4106,139 +3639,132 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.TestMapFieldsNoBinary} TestMapFieldsNoBinary
              */
-            TestMapFieldsNoBinary.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"jspb.test.MapValueEnumNoBinary","jspb.test.MapValueMessageNoBinary",null,null,null,"jspb.test.TestMapFieldsNoBinary","jspb.test.TestMapFieldsNoBinary"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.TestMapFieldsNoBinary
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                r.skip().pos++
-                                if(m.mapStringString===util.emptyObject)
-                                    m.mapStringString={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringString[k]=r.string()
-                                break
-                            case 2:
-                                r.skip().pos++
-                                if(m.mapStringInt32===util.emptyObject)
-                                    m.mapStringInt32={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringInt32[k]=r.int32()
-                                break
-                            case 3:
-                                r.skip().pos++
-                                if(m.mapStringInt64===util.emptyObject)
-                                    m.mapStringInt64={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringInt64[k]=r.int64()
-                                break
-                            case 4:
-                                r.skip().pos++
-                                if(m.mapStringBool===util.emptyObject)
-                                    m.mapStringBool={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringBool[k]=r.bool()
-                                break
-                            case 5:
-                                r.skip().pos++
-                                if(m.mapStringDouble===util.emptyObject)
-                                    m.mapStringDouble={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringDouble[k]=r.double()
-                                break
-                            case 6:
-                                r.skip().pos++
-                                if(m.mapStringEnum===util.emptyObject)
-                                    m.mapStringEnum={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringEnum[k]=r.uint32()
-                                break
-                            case 7:
-                                r.skip().pos++
-                                if(m.mapStringMsg===util.emptyObject)
-                                    m.mapStringMsg={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringMsg[k]=types[6].decode(r,r.uint32())
-                                break
-                            case 8:
-                                r.skip().pos++
-                                if(m.mapInt32String===util.emptyObject)
-                                    m.mapInt32String={}
-                                var k=r.int32()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapInt32String[k]=r.string()
-                                break
-                            case 9:
-                                r.skip().pos++
-                                if(m.mapInt64String===util.emptyObject)
-                                    m.mapInt64String={}
-                                var k=r.int64()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapInt64String[k]=r.string()
-                                break
-                            case 10:
-                                r.skip().pos++
-                                if(m.mapBoolString===util.emptyObject)
-                                    m.mapBoolString={}
-                                var k=r.bool()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapBoolString[k]=r.string()
-                                break
-                            case 11:
-                                m.testMapFields=types[10].decode(r,r.uint32())
-                                break
-                            case 12:
-                                r.skip().pos++
-                                if(m.mapStringTestmapfields===util.emptyObject)
-                                    m.mapStringTestmapfields={}
-                                var k=r.string()
-                                if(typeof k==="object")
-                                    k=util.longToHash(k)
-                                r.pos++
-                                m.mapStringTestmapfields[k]=types[11].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            TestMapFieldsNoBinary.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.TestMapFieldsNoBinary
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            reader.skip().pos++
+                            if (message.mapStringString === util.emptyObject)
+                                message.mapStringString = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringString[key] = reader.string()
+                            break
+                        case 2:
+                            reader.skip().pos++
+                            if (message.mapStringInt32 === util.emptyObject)
+                                message.mapStringInt32 = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringInt32[key] = reader.int32()
+                            break
+                        case 3:
+                            reader.skip().pos++
+                            if (message.mapStringInt64 === util.emptyObject)
+                                message.mapStringInt64 = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringInt64[key] = reader.int64()
+                            break
+                        case 4:
+                            reader.skip().pos++
+                            if (message.mapStringBool === util.emptyObject)
+                                message.mapStringBool = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringBool[key] = reader.bool()
+                            break
+                        case 5:
+                            reader.skip().pos++
+                            if (message.mapStringDouble === util.emptyObject)
+                                message.mapStringDouble = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringDouble[key] = reader.double()
+                            break
+                        case 6:
+                            reader.skip().pos++
+                            if (message.mapStringEnum === util.emptyObject)
+                                message.mapStringEnum = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringEnum[key] = reader.uint32()
+                            break
+                        case 7:
+                            reader.skip().pos++
+                            if (message.mapStringMsg === util.emptyObject)
+                                message.mapStringMsg = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringMsg[key] = types[6].decode(reader, reader.uint32())
+                            break
+                        case 8:
+                            reader.skip().pos++
+                            if (message.mapInt32String === util.emptyObject)
+                                message.mapInt32String = {}
+                            var key = reader.int32()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapInt32String[key] = reader.string()
+                            break
+                        case 9:
+                            reader.skip().pos++
+                            if (message.mapInt64String === util.emptyObject)
+                                message.mapInt64String = {}
+                            var key = reader.int64()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapInt64String[key] = reader.string()
+                            break
+                        case 10:
+                            reader.skip().pos++
+                            if (message.mapBoolString === util.emptyObject)
+                                message.mapBoolString = {}
+                            var key = reader.bool()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapBoolString[key] = reader.string()
+                            break
+                        case 11:
+                            message.testMapFields = types[10].decode(reader, reader.uint32())
+                            break
+                        case 12:
+                            reader.skip().pos++
+                            if (message.mapStringTestmapfields === util.emptyObject)
+                                message.mapStringTestmapfields = {}
+                            var key = reader.string()
+                            if (typeof key === "object")
+                                key = util.longToHash(key)
+                            reader.pos++
+                            message.mapStringTestmapfields[key] = types[11].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, null, null, "jspb.test.MapValueEnumNoBinary", "jspb.test.MapValueMessageNoBinary", null, null, null, "jspb.test.TestMapFieldsNoBinary", "jspb.test.TestMapFieldsNoBinary"]); /* eslint-enable */
 
             /**
              * Decodes a TestMapFieldsNoBinary from the specified reader or buffer, length delimited.
@@ -4256,133 +3782,127 @@ $root.jspb = (function() {
              * @param {jspb.test.TestMapFieldsNoBinary|Object} message TestMapFieldsNoBinary or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            TestMapFieldsNoBinary.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"jspb.test.MapValueEnumNoBinary","jspb.test.MapValueMessageNoBinary",null,null,null,"jspb.test.TestMapFieldsNoBinary","jspb.test.TestMapFieldsNoBinary"]);
-                return function verify(m) {
-                    if(m.mapStringString!==undefined){
-                        if(!util.isObject(m.mapStringString))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringString (object expected)"
-                        var k=Object.keys(m.mapStringString)
-                        for(var i=0;i<k.length;++i){
-                            if(!util.isString(m.mapStringString[k[i]]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringString (string{k:string} expected)"
-                        }
+            TestMapFieldsNoBinary.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.mapStringString !== undefined) {
+                    if (!util.isObject(message.mapStringString))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringString (object expected)"
+                    var key = Object.keys(message.mapStringString)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (!util.isString(message.mapStringString[key[i]]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringString (string{key : string} expected)"
                     }
-                    if(m.mapStringInt32!==undefined){
-                        if(!util.isObject(m.mapStringInt32))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt32 (object expected)"
-                        var k=Object.keys(m.mapStringInt32)
-                        for(var i=0;i<k.length;++i){
-                            if(!util.isInteger(m.mapStringInt32[k[i]]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt32 (integer{k:string} expected)"
-                        }
-                    }
-                    if(m.mapStringInt64!==undefined){
-                        if(!util.isObject(m.mapStringInt64))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt64 (object expected)"
-                        var k=Object.keys(m.mapStringInt64)
-                        for(var i=0;i<k.length;++i){
-                            if(!util.isInteger(m.mapStringInt64[k[i]])&&!(m.mapStringInt64[k[i]]&&util.isInteger(m.mapStringInt64[k[i]].low)&&util.isInteger(m.mapStringInt64[k[i]].high)))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt64 (integer|Long{k:string} expected)"
-                        }
-                    }
-                    if(m.mapStringBool!==undefined){
-                        if(!util.isObject(m.mapStringBool))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringBool (object expected)"
-                        var k=Object.keys(m.mapStringBool)
-                        for(var i=0;i<k.length;++i){
-                            if(typeof m.mapStringBool[k[i]]!=="boolean")
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringBool (boolean{k:string} expected)"
-                        }
-                    }
-                    if(m.mapStringDouble!==undefined){
-                        if(!util.isObject(m.mapStringDouble))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringDouble (object expected)"
-                        var k=Object.keys(m.mapStringDouble)
-                        for(var i=0;i<k.length;++i){
-                            if(typeof m.mapStringDouble[k[i]]!=="number")
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringDouble (number{k:string} expected)"
-                        }
-                    }
-                    if(m.mapStringEnum!==undefined){
-                        if(!util.isObject(m.mapStringEnum))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringEnum (object expected)"
-                        var k=Object.keys(m.mapStringEnum)
-                        for(var i=0;i<k.length;++i){
-                            switch(m.mapStringEnum[k[i]]){
-                                default:
-                                    return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringEnum (enum value{k:string} expected)"
-                                case 0:
-                                case 1:
-                                case 2:
-                                    break
-                            }
-                        }
-                    }
-                    if(m.mapStringMsg!==undefined){
-                        if(!util.isObject(m.mapStringMsg))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringMsg (object expected)"
-                        var k=Object.keys(m.mapStringMsg)
-                        for(var i=0;i<k.length;++i){
-                            var r;
-                            if(r=types[6].verify(m.mapStringMsg[k[i]]))
-                                return r
-                        }
-                    }
-                    if(m.mapInt32String!==undefined){
-                        if(!util.isObject(m.mapInt32String))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt32String (object expected)"
-                        var k=Object.keys(m.mapInt32String)
-                        for(var i=0;i<k.length;++i){
-                            if(!/^-?(?:0|[1-9]\d*)$/.test(k[i]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt32String (integer key{k:int32} expected)"
-                            if(!util.isString(m.mapInt32String[k[i]]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt32String (string{k:int32} expected)"
-                        }
-                    }
-                    if(m.mapInt64String!==undefined){
-                        if(!util.isObject(m.mapInt64String))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt64String (object expected)"
-                        var k=Object.keys(m.mapInt64String)
-                        for(var i=0;i<k.length;++i){
-                            if(!/^(?:[\x00-\xff]{8}|-?(?:0|[1-9]\d*))$/.test(k[i]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt64String (integer|Long key{k:int64} expected)"
-                            if(!util.isString(m.mapInt64String[k[i]]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt64String (string{k:int64} expected)"
-                        }
-                    }
-                    if(m.mapBoolString!==undefined){
-                        if(!util.isObject(m.mapBoolString))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapBoolString (object expected)"
-                        var k=Object.keys(m.mapBoolString)
-                        for(var i=0;i<k.length;++i){
-                            if(!/^true|false|0|1$/.test(k[i]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapBoolString (boolean key{k:bool} expected)"
-                            if(!util.isString(m.mapBoolString[k[i]]))
-                                return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapBoolString (string{k:bool} expected)"
-                        }
-                    }
-                    if(m.testMapFields!==undefined&&m.testMapFields!==null){
-                        var r;
-                        if(r=types[10].verify(m.testMapFields))
-                            return r
-                    }
-                    if(m.mapStringTestmapfields!==undefined){
-                        if(!util.isObject(m.mapStringTestmapfields))
-                            return"invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields (object expected)"
-                        var k=Object.keys(m.mapStringTestmapfields)
-                        for(var i=0;i<k.length;++i){
-                            var r;
-                            if(r=types[11].verify(m.mapStringTestmapfields[k[i]]))
-                                return r
-                        }
-                    }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                if (message.mapStringInt32 !== undefined) {
+                    if (!util.isObject(message.mapStringInt32))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt32 (object expected)"
+                    var key = Object.keys(message.mapStringInt32)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (!util.isInteger(message.mapStringInt32[key[i]]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt32 (integer{key : string} expected)"
+                    }
+                }
+                if (message.mapStringInt64 !== undefined) {
+                    if (!util.isObject(message.mapStringInt64))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt64 (object expected)"
+                    var key = Object.keys(message.mapStringInt64)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (!util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && util.isInteger(message.mapStringInt64[key[i]].low) && util.isInteger(message.mapStringInt64[key[i]].high)))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringInt64 (integer | Long{key : string} expected)"
+                    }
+                }
+                if (message.mapStringBool !== undefined) {
+                    if (!util.isObject(message.mapStringBool))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringBool (object expected)"
+                    var key = Object.keys(message.mapStringBool)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (typeof message.mapStringBool[key[i]] !== "boolean")
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringBool (boolean{key : string} expected)"
+                    }
+                }
+                if (message.mapStringDouble !== undefined) {
+                    if (!util.isObject(message.mapStringDouble))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringDouble (object expected)"
+                    var key = Object.keys(message.mapStringDouble)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (typeof message.mapStringDouble[key[i]] !== "number")
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringDouble (number{key : string} expected)"
+                    }
+                }
+                if (message.mapStringEnum !== undefined) {
+                    if (!util.isObject(message.mapStringEnum))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringEnum (object expected)"
+                    var key = Object.keys(message.mapStringEnum)
+                    for (var i = 0; i < key.length; ++i) {
+                        switch (message.mapStringEnum[key[i]]) {
+                            default:
+                                return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringEnum (enum value{key : string} expected)"
+                            case 0:
+                            case 1:
+                            case 2:
+                                break
+                        }
+                    }
+                }
+                if (message.mapStringMsg !== undefined) {
+                    if (!util.isObject(message.mapStringMsg))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringMsg (object expected)"
+                    var key = Object.keys(message.mapStringMsg)
+                    for (var i = 0; i < key.length; ++i) {
+                        var s;
+                        if (s = types[6].verify(message.mapStringMsg[key[i]]))
+                            return s
+                    }
+                }
+                if (message.mapInt32String !== undefined) {
+                    if (!util.isObject(message.mapInt32String))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt32String (object expected)"
+                    var key = Object.keys(message.mapInt32String)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (!/^- ? ( ?: 0 | [1 - 9]\d*)$/.test(key[i]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt32String (integer key{key : int32} expected)"
+                        if (!util.isString(message.mapInt32String[key[i]]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt32String (string{key : int32} expected)"
+                    }
+                }
+                if (message.mapInt64String !== undefined) {
+                    if (!util.isObject(message.mapInt64String))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt64String (object expected)"
+                    var key = Object.keys(message.mapInt64String)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (!/^( ?: [\x00-\xff]{8} | - ? ( ?: 0 | [1 - 9]\d*))$/.test(key[i]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt64String (integer | Long key{key : int64} expected)"
+                        if (!util.isString(message.mapInt64String[key[i]]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapInt64String (string{key : int64} expected)"
+                    }
+                }
+                if (message.mapBoolString !== undefined) {
+                    if (!util.isObject(message.mapBoolString))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapBoolString (object expected)"
+                    var key = Object.keys(message.mapBoolString)
+                    for (var i = 0; i < key.length; ++i) {
+                        if (!/^true | false | 0 | 1$/.test(key[i]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapBoolString (boolean key{key : bool} expected)"
+                        if (!util.isString(message.mapBoolString[key[i]]))
+                            return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapBoolString (string{key : bool} expected)"
+                    }
+                }
+                if (message.testMapFields !== undefined && message.testMapFields !== null) {
+                    var s;
+                    if (s = types[10].verify(message.testMapFields))
+                        return s
+                }
+                if (message.mapStringTestmapfields !== undefined) {
+                    if (!util.isObject(message.mapStringTestmapfields))
+                        return "invalid value for field .jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields (object expected)"
+                    var key = Object.keys(message.mapStringTestmapfields)
+                    for (var i = 0; i < key.length; ++i) {
+                        var s;
+                        if (s = types[11].verify(message.mapStringTestmapfields[key[i]]))
+                            return s
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, null, null, null, null, "jspb.test.MapValueEnumNoBinary", "jspb.test.MapValueMessageNoBinary", null, null, null, "jspb.test.TestMapFieldsNoBinary", "jspb.test.TestMapFieldsNoBinary"]); /* eslint-enable */
 
             return TestMapFieldsNoBinary;
         })();
@@ -4440,19 +3960,12 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MapValueMessageNoBinary.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.foo!==undefined&&m.foo!==0)
-                        w.uint32(8).int32(m.foo)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            MapValueMessageNoBinary.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.foo !== undefined && message.foo !== 0)
+                    writer.uint32(8).int32(message.foo)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
             /**
              * Encodes the specified MapValueMessageNoBinary, length delimited.
@@ -4471,29 +3984,22 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.MapValueMessageNoBinary} MapValueMessageNoBinary
              */
-            MapValueMessageNoBinary.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.MapValueMessageNoBinary
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.foo=r.int32()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            MapValueMessageNoBinary.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.MapValueMessageNoBinary
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.foo = reader.int32()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
             /**
              * Decodes a MapValueMessageNoBinary from the specified reader or buffer, length delimited.
@@ -4511,19 +4017,13 @@ $root.jspb = (function() {
              * @param {jspb.test.MapValueMessageNoBinary|Object} message MapValueMessageNoBinary or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MapValueMessageNoBinary.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null]);
-                return function verify(m) {
-                    if(m.foo!==undefined){
-                        if(!util.isInteger(m.foo))
-                            return"invalid value for field .jspb.test.MapValueMessageNoBinary.foo (integer expected)"
-                    }
-                    return null
+            MapValueMessageNoBinary.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.foo !== undefined) {
+                    if (!util.isInteger(message.foo))
+                        return "invalid value for field .jspb.test.MapValueMessageNoBinary.foo (integer expected)"
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, [null]); /* eslint-enable */
 
             return MapValueMessageNoBinary;
         })();
@@ -4560,17 +4060,10 @@ $root.jspb = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Deeply.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            Deeply.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                return writer
+            }})($protobuf.Writer, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Encodes the specified Deeply, length delimited.
@@ -4589,26 +4082,19 @@ $root.jspb = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {jspb.test.Deeply} Deeply
              */
-            Deeply.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Deeply
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            Deeply.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, []); /* eslint-enable */
 
             /**
              * Decodes a Deeply from the specified reader or buffer, length delimited.
@@ -4626,15 +4112,9 @@ $root.jspb = (function() {
              * @param {jspb.test.Deeply|Object} message Deeply or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            Deeply.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = []);
-                return function verify(m) {
-                    return null
-                }
-                /* eslint-enable */
-            })();
+            Deeply.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                return null
+            }})($protobuf.util, []); /* eslint-enable */
 
             Deeply.Nested = (function() {
 
@@ -4668,17 +4148,10 @@ $root.jspb = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Nested.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = []);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        return w
-                    }
-                    /* eslint-enable */
-                })();
+                Nested.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, []); /* eslint-enable */
 
                 /**
                  * Encodes the specified Nested, length delimited.
@@ -4697,26 +4170,19 @@ $root.jspb = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
-                Nested.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = []);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Deeply.Nested
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                Nested.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply.Nested
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, []); /* eslint-enable */
 
                 /**
                  * Decodes a Nested from the specified reader or buffer, length delimited.
@@ -4734,15 +4200,9 @@ $root.jspb = (function() {
                  * @param {jspb.test.Deeply.Nested|Object} message Nested or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Nested.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = []);
-                    return function verify(m) {
-                        return null
-                    }
-                    /* eslint-enable */
-                })();
+                Nested.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    return null
+                }})($protobuf.util, []); /* eslint-enable */
 
                 Nested.Message = (function() {
 
@@ -4785,19 +4245,12 @@ $root.jspb = (function() {
                      * @param {$protobuf.Writer} [writer] Writer to encode to
                      * @returns {$protobuf.Writer} Writer
                      */
-                    Message.encode = (function() {
-                        /* eslint-disable */
-                        var Writer = $protobuf.Writer;
-                        var util = $protobuf.util;
-                        var types; $lazyTypes.push(types = [null]);
-                        return function encode(m, w) {
-                            w||(w=Writer.create())
-                            if(m.count!==undefined&&m.count!==0)
-                                w.uint32(8).int32(m.count)
-                            return w
-                        }
-                        /* eslint-enable */
-                    })();
+                    Message.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                        writer || (writer = Writer.create())
+                        if (message.count !== undefined && message.count !== 0)
+                            writer.uint32(8).int32(message.count)
+                        return writer
+                    }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
                     /**
                      * Encodes the specified Message, length delimited.
@@ -4816,29 +4269,22 @@ $root.jspb = (function() {
                      * @param {number} [length] Message length if known beforehand
                      * @returns {jspb.test.Deeply.Nested.Message} Message
                      */
-                    Message.decode = (function() {
-                        /* eslint-disable */
-                        var Reader = $protobuf.Reader;
-                        var util = $protobuf.util;
-                        var types; $lazyTypes.push(types = [null]);
-                        return function decode(r, l) {
-                            r instanceof Reader||(r=Reader.create(r))
-                            var c=l===undefined?r.len:r.pos+l,m=new $root.jspb.test.Deeply.Nested.Message
-                            while(r.pos<c){
-                                var t=r.uint32()
-                                switch(t>>>3){
-                                    case 1:
-                                        m.count=r.int32()
-                                        break
-                                    default:
-                                        r.skipType(t&7)
-                                        break
-                                }
+                    Message.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                        reader instanceof Reader || (reader = Reader.create(reader))
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.jspb.test.Deeply.Nested.Message
+                        while (reader.pos < end) {
+                            var tag = reader.uint32()
+                            switch (tag >>> 3) {
+                                case 1:
+                                    message.count = reader.int32()
+                                    break
+                                default:
+                                    reader.skipType(tag & 7)
+                                    break
                             }
-                            return m
                         }
-                        /* eslint-enable */
-                    })();
+                        return message
+                    }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
                     /**
                      * Decodes a Message from the specified reader or buffer, length delimited.
@@ -4856,19 +4302,13 @@ $root.jspb = (function() {
                      * @param {jspb.test.Deeply.Nested.Message|Object} message Message or plain object to verify
                      * @returns {?string} `null` if valid, otherwise the reason why it is not
                      */
-                    Message.verify = (function() {
-                        /* eslint-disable */
-                        var util = $protobuf.util;
-                        var types; $lazyTypes.push(types = [null]);
-                        return function verify(m) {
-                            if(m.count!==undefined){
-                                if(!util.isInteger(m.count))
-                                    return"invalid value for field .jspb.test.Deeply.Nested.Message.count (integer expected)"
-                            }
-                            return null
+                    Message.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                        if (message.count !== undefined) {
+                            if (!util.isInteger(message.count))
+                                return "invalid value for field .jspb.test.Deeply.Nested.Message.count (integer expected)"
                         }
-                        /* eslint-enable */
-                    })();
+                        return null
+                    }})($protobuf.util, [null]); /* eslint-enable */
 
                     return Message;
                 })();
@@ -4944,20 +4384,13 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FileDescriptorSet.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.FileDescriptorProto"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.file)
-                        for(var i=0;i<m.file.length;++i)
-                        types[0].encode(m.file[i],w.uint32(10).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            FileDescriptorSet.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.file)
+                    for (var i = 0; i < message.file.length; ++i)
+                    types[0].encode(message.file[i], writer.uint32(10).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, ["google.protobuf.FileDescriptorProto"]); /* eslint-enable */
 
             /**
              * Encodes the specified FileDescriptorSet, length delimited.
@@ -4976,30 +4409,23 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorSet} FileDescriptorSet
              */
-            FileDescriptorSet.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.FileDescriptorProto"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.FileDescriptorSet
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.file&&m.file.length||(m.file=[])
-                                m.file.push(types[0].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            FileDescriptorSet.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileDescriptorSet
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.file && message.file.length || (message.file = [])
+                            message.file.push(types[0].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, ["google.protobuf.FileDescriptorProto"]); /* eslint-enable */
 
             /**
              * Decodes a FileDescriptorSet from the specified reader or buffer, length delimited.
@@ -5017,24 +4443,18 @@ $root.google = (function() {
              * @param {google.protobuf.FileDescriptorSet|Object} message FileDescriptorSet or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FileDescriptorSet.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.FileDescriptorProto"]);
-                return function verify(m) {
-                    if(m.file!==undefined){
-                        if(!Array.isArray(m.file))
-                            return"invalid value for field .google.protobuf.FileDescriptorSet.file (array expected)"
-                        for(var i=0;i<m.file.length;++i){
-                            var r;
-                            if(r=types[0].verify(m.file[i]))
-                                return r
-                        }
+            FileDescriptorSet.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.file !== undefined) {
+                    if (!Array.isArray(message.file))
+                        return "invalid value for field .google.protobuf.FileDescriptorSet.file (array expected)"
+                    for (var i = 0; i < message.file.length; ++i) {
+                        var s;
+                        if (s = types[0].verify(message.file[i]))
+                            return s
                     }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, ["google.protobuf.FileDescriptorProto"]); /* eslint-enable */
 
             return FileDescriptorSet;
         })();
@@ -5147,48 +4567,41 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FileDescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"google.protobuf.DescriptorProto","google.protobuf.EnumDescriptorProto","google.protobuf.ServiceDescriptorProto","google.protobuf.FieldDescriptorProto","google.protobuf.FileOptions","google.protobuf.SourceCodeInfo",null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m["package"]!==undefined&&m["package"]!=="")
-                        w.uint32(18).string(m["package"])
-                    if(m.dependency)
-                        for(var i=0;i<m.dependency.length;++i)
-                        w.uint32(26).string(m.dependency[i])
-                    if(m.publicDependency)
-                        for(var i=0;i<m.publicDependency.length;++i)
-                        w.uint32(80).int32(m.publicDependency[i])
-                    if(m.weakDependency)
-                        for(var i=0;i<m.weakDependency.length;++i)
-                        w.uint32(88).int32(m.weakDependency[i])
-                    if(m.messageType)
-                        for(var i=0;i<m.messageType.length;++i)
-                        types[5].encode(m.messageType[i],w.uint32(34).fork()).ldelim()
-                    if(m.enumType)
-                        for(var i=0;i<m.enumType.length;++i)
-                        types[6].encode(m.enumType[i],w.uint32(42).fork()).ldelim()
-                    if(m.service)
-                        for(var i=0;i<m.service.length;++i)
-                        types[7].encode(m.service[i],w.uint32(50).fork()).ldelim()
-                    if(m.extension)
-                        for(var i=0;i<m.extension.length;++i)
-                        types[8].encode(m.extension[i],w.uint32(58).fork()).ldelim()
-                    if(m.options!==undefined&&m.options!==null)
-                        types[9].encode(m.options,w.uint32(66).fork()).ldelim()
-                    if(m.sourceCodeInfo!==undefined&&m.sourceCodeInfo!==null)
-                        types[10].encode(m.sourceCodeInfo,w.uint32(74).fork()).ldelim()
-                    if(m.syntax!==undefined&&m.syntax!=="")
-                        w.uint32(98).string(m.syntax)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            FileDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message["package"] !== undefined && message["package"] !== "")
+                    writer.uint32(18).string(message["package"])
+                if (message.dependency)
+                    for (var i = 0; i < message.dependency.length; ++i)
+                    writer.uint32(26).string(message.dependency[i])
+                if (message.publicDependency)
+                    for (var i = 0; i < message.publicDependency.length; ++i)
+                    writer.uint32(80).int32(message.publicDependency[i])
+                if (message.weakDependency)
+                    for (var i = 0; i < message.weakDependency.length; ++i)
+                    writer.uint32(88).int32(message.weakDependency[i])
+                if (message.messageType)
+                    for (var i = 0; i < message.messageType.length; ++i)
+                    types[5].encode(message.messageType[i], writer.uint32(34).fork()).ldelim()
+                if (message.enumType)
+                    for (var i = 0; i < message.enumType.length; ++i)
+                    types[6].encode(message.enumType[i], writer.uint32(42).fork()).ldelim()
+                if (message.service)
+                    for (var i = 0; i < message.service.length; ++i)
+                    types[7].encode(message.service[i], writer.uint32(50).fork()).ldelim()
+                if (message.extension)
+                    for (var i = 0; i < message.extension.length; ++i)
+                    types[8].encode(message.extension[i], writer.uint32(58).fork()).ldelim()
+                if (message.options !== undefined && message.options !== null)
+                    types[9].encode(message.options, writer.uint32(66).fork()).ldelim()
+                if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null)
+                    types[10].encode(message.sourceCodeInfo, writer.uint32(74).fork()).ldelim()
+                if (message.syntax !== undefined && message.syntax !== "")
+                    writer.uint32(98).string(message.syntax)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.ServiceDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.FileOptions", "google.protobuf.SourceCodeInfo", null]); /* eslint-enable */
 
             /**
              * Encodes the specified FileDescriptorProto, length delimited.
@@ -5207,69 +4620,62 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileDescriptorProto} FileDescriptorProto
              */
-            FileDescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"google.protobuf.DescriptorProto","google.protobuf.EnumDescriptorProto","google.protobuf.ServiceDescriptorProto","google.protobuf.FieldDescriptorProto","google.protobuf.FileOptions","google.protobuf.SourceCodeInfo",null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.FileDescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m["package"]=r.string()
-                                break
-                            case 3:
-                                m.dependency&&m.dependency.length||(m.dependency=[])
-                                m.dependency.push(r.string())
-                                break
-                            case 10:
-                                m.publicDependency&&m.publicDependency.length||(m.publicDependency=[])
-                                m.publicDependency.push(r.int32())
-                                break
-                            case 11:
-                                m.weakDependency&&m.weakDependency.length||(m.weakDependency=[])
-                                m.weakDependency.push(r.int32())
-                                break
-                            case 4:
-                                m.messageType&&m.messageType.length||(m.messageType=[])
-                                m.messageType.push(types[5].decode(r,r.uint32()))
-                                break
-                            case 5:
-                                m.enumType&&m.enumType.length||(m.enumType=[])
-                                m.enumType.push(types[6].decode(r,r.uint32()))
-                                break
-                            case 6:
-                                m.service&&m.service.length||(m.service=[])
-                                m.service.push(types[7].decode(r,r.uint32()))
-                                break
-                            case 7:
-                                m.extension&&m.extension.length||(m.extension=[])
-                                m.extension.push(types[8].decode(r,r.uint32()))
-                                break
-                            case 8:
-                                m.options=types[9].decode(r,r.uint32())
-                                break
-                            case 9:
-                                m.sourceCodeInfo=types[10].decode(r,r.uint32())
-                                break
-                            case 12:
-                                m.syntax=r.string()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            FileDescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileDescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message["package"] = reader.string()
+                            break
+                        case 3:
+                            message.dependency && message.dependency.length || (message.dependency = [])
+                            message.dependency.push(reader.string())
+                            break
+                        case 10:
+                            message.publicDependency && message.publicDependency.length || (message.publicDependency = [])
+                            message.publicDependency.push(reader.int32())
+                            break
+                        case 11:
+                            message.weakDependency && message.weakDependency.length || (message.weakDependency = [])
+                            message.weakDependency.push(reader.int32())
+                            break
+                        case 4:
+                            message.messageType && message.messageType.length || (message.messageType = [])
+                            message.messageType.push(types[5].decode(reader, reader.uint32()))
+                            break
+                        case 5:
+                            message.enumType && message.enumType.length || (message.enumType = [])
+                            message.enumType.push(types[6].decode(reader, reader.uint32()))
+                            break
+                        case 6:
+                            message.service && message.service.length || (message.service = [])
+                            message.service.push(types[7].decode(reader, reader.uint32()))
+                            break
+                        case 7:
+                            message.extension && message.extension.length || (message.extension = [])
+                            message.extension.push(types[8].decode(reader, reader.uint32()))
+                            break
+                        case 8:
+                            message.options = types[9].decode(reader, reader.uint32())
+                            break
+                        case 9:
+                            message.sourceCodeInfo = types[10].decode(reader, reader.uint32())
+                            break
+                        case 12:
+                            message.syntax = reader.string()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, null, null, "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.ServiceDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.FileOptions", "google.protobuf.SourceCodeInfo", null]); /* eslint-enable */
 
             /**
              * Decodes a FileDescriptorProto from the specified reader or buffer, length delimited.
@@ -5287,97 +4693,91 @@ $root.google = (function() {
              * @param {google.protobuf.FileDescriptorProto|Object} message FileDescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FileDescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"google.protobuf.DescriptorProto","google.protobuf.EnumDescriptorProto","google.protobuf.ServiceDescriptorProto","google.protobuf.FieldDescriptorProto","google.protobuf.FileOptions","google.protobuf.SourceCodeInfo",null]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.name (string expected)"
-                    }
-                    if(m["package"]!==undefined){
-                        if(!util.isString(m["package"]))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.package (string expected)"
-                    }
-                    if(m.dependency!==undefined){
-                        if(!Array.isArray(m.dependency))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.dependency (array expected)"
-                        for(var i=0;i<m.dependency.length;++i){
-                            if(!util.isString(m.dependency[i]))
-                                return"invalid value for field .google.protobuf.FileDescriptorProto.dependency (string[] expected)"
-                        }
-                    }
-                    if(m.publicDependency!==undefined){
-                        if(!Array.isArray(m.publicDependency))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.publicDependency (array expected)"
-                        for(var i=0;i<m.publicDependency.length;++i){
-                            if(!util.isInteger(m.publicDependency[i]))
-                                return"invalid value for field .google.protobuf.FileDescriptorProto.publicDependency (integer[] expected)"
-                        }
-                    }
-                    if(m.weakDependency!==undefined){
-                        if(!Array.isArray(m.weakDependency))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.weakDependency (array expected)"
-                        for(var i=0;i<m.weakDependency.length;++i){
-                            if(!util.isInteger(m.weakDependency[i]))
-                                return"invalid value for field .google.protobuf.FileDescriptorProto.weakDependency (integer[] expected)"
-                        }
-                    }
-                    if(m.messageType!==undefined){
-                        if(!Array.isArray(m.messageType))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.messageType (array expected)"
-                        for(var i=0;i<m.messageType.length;++i){
-                            var r;
-                            if(r=types[5].verify(m.messageType[i]))
-                                return r
-                        }
-                    }
-                    if(m.enumType!==undefined){
-                        if(!Array.isArray(m.enumType))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.enumType (array expected)"
-                        for(var i=0;i<m.enumType.length;++i){
-                            var r;
-                            if(r=types[6].verify(m.enumType[i]))
-                                return r
-                        }
-                    }
-                    if(m.service!==undefined){
-                        if(!Array.isArray(m.service))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.service (array expected)"
-                        for(var i=0;i<m.service.length;++i){
-                            var r;
-                            if(r=types[7].verify(m.service[i]))
-                                return r
-                        }
-                    }
-                    if(m.extension!==undefined){
-                        if(!Array.isArray(m.extension))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.extension (array expected)"
-                        for(var i=0;i<m.extension.length;++i){
-                            var r;
-                            if(r=types[8].verify(m.extension[i]))
-                                return r
-                        }
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[9].verify(m.options))
-                            return r
-                    }
-                    if(m.sourceCodeInfo!==undefined&&m.sourceCodeInfo!==null){
-                        var r;
-                        if(r=types[10].verify(m.sourceCodeInfo))
-                            return r
-                    }
-                    if(m.syntax!==undefined){
-                        if(!util.isString(m.syntax))
-                            return"invalid value for field .google.protobuf.FileDescriptorProto.syntax (string expected)"
-                    }
-                    return null
+            FileDescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message["package"] !== undefined) {
+                    if (!util.isString(message["package"]))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.package (string expected)"
+                }
+                if (message.dependency !== undefined) {
+                    if (!Array.isArray(message.dependency))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.dependency (array expected)"
+                    for (var i = 0; i < message.dependency.length; ++i) {
+                        if (!util.isString(message.dependency[i]))
+                            return "invalid value for field .google.protobuf.FileDescriptorProto.dependency (string[] expected)"
+                    }
+                }
+                if (message.publicDependency !== undefined) {
+                    if (!Array.isArray(message.publicDependency))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.publicDependency (array expected)"
+                    for (var i = 0; i < message.publicDependency.length; ++i) {
+                        if (!util.isInteger(message.publicDependency[i]))
+                            return "invalid value for field .google.protobuf.FileDescriptorProto.publicDependency (integer[] expected)"
+                    }
+                }
+                if (message.weakDependency !== undefined) {
+                    if (!Array.isArray(message.weakDependency))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.weakDependency (array expected)"
+                    for (var i = 0; i < message.weakDependency.length; ++i) {
+                        if (!util.isInteger(message.weakDependency[i]))
+                            return "invalid value for field .google.protobuf.FileDescriptorProto.weakDependency (integer[] expected)"
+                    }
+                }
+                if (message.messageType !== undefined) {
+                    if (!Array.isArray(message.messageType))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.messageType (array expected)"
+                    for (var i = 0; i < message.messageType.length; ++i) {
+                        var s;
+                        if (s = types[5].verify(message.messageType[i]))
+                            return s
+                    }
+                }
+                if (message.enumType !== undefined) {
+                    if (!Array.isArray(message.enumType))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.enumType (array expected)"
+                    for (var i = 0; i < message.enumType.length; ++i) {
+                        var s;
+                        if (s = types[6].verify(message.enumType[i]))
+                            return s
+                    }
+                }
+                if (message.service !== undefined) {
+                    if (!Array.isArray(message.service))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.service (array expected)"
+                    for (var i = 0; i < message.service.length; ++i) {
+                        var s;
+                        if (s = types[7].verify(message.service[i]))
+                            return s
+                    }
+                }
+                if (message.extension !== undefined) {
+                    if (!Array.isArray(message.extension))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.extension (array expected)"
+                    for (var i = 0; i < message.extension.length; ++i) {
+                        var s;
+                        if (s = types[8].verify(message.extension[i]))
+                            return s
+                    }
+                }
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[9].verify(message.options))
+                        return s
+                }
+                if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
+                    var s;
+                    if (s = types[10].verify(message.sourceCodeInfo))
+                        return s
+                }
+                if (message.syntax !== undefined) {
+                    if (!util.isString(message.syntax))
+                        return "invalid value for field .google.protobuf.FileDescriptorProto.syntax (string expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, null, null, null, "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.ServiceDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.FileOptions", "google.protobuf.SourceCodeInfo", null]); /* eslint-enable */
 
             return FileDescriptorProto;
         })();
@@ -5477,45 +4877,38 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            DescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.FieldDescriptorProto","google.protobuf.FieldDescriptorProto","google.protobuf.DescriptorProto","google.protobuf.EnumDescriptorProto","google.protobuf.DescriptorProto.ExtensionRange","google.protobuf.OneofDescriptorProto","google.protobuf.MessageOptions","google.protobuf.DescriptorProto.ReservedRange",null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m.field)
-                        for(var i=0;i<m.field.length;++i)
-                        types[1].encode(m.field[i],w.uint32(18).fork()).ldelim()
-                    if(m.extension)
-                        for(var i=0;i<m.extension.length;++i)
-                        types[2].encode(m.extension[i],w.uint32(50).fork()).ldelim()
-                    if(m.nestedType)
-                        for(var i=0;i<m.nestedType.length;++i)
-                        types[3].encode(m.nestedType[i],w.uint32(26).fork()).ldelim()
-                    if(m.enumType)
-                        for(var i=0;i<m.enumType.length;++i)
-                        types[4].encode(m.enumType[i],w.uint32(34).fork()).ldelim()
-                    if(m.extensionRange)
-                        for(var i=0;i<m.extensionRange.length;++i)
-                        types[5].encode(m.extensionRange[i],w.uint32(42).fork()).ldelim()
-                    if(m.oneofDecl)
-                        for(var i=0;i<m.oneofDecl.length;++i)
-                        types[6].encode(m.oneofDecl[i],w.uint32(66).fork()).ldelim()
-                    if(m.options!==undefined&&m.options!==null)
-                        types[7].encode(m.options,w.uint32(58).fork()).ldelim()
-                    if(m.reservedRange)
-                        for(var i=0;i<m.reservedRange.length;++i)
-                        types[8].encode(m.reservedRange[i],w.uint32(74).fork()).ldelim()
-                    if(m.reservedName)
-                        for(var i=0;i<m.reservedName.length;++i)
-                        w.uint32(82).string(m.reservedName[i])
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            DescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message.field)
+                    for (var i = 0; i < message.field.length; ++i)
+                    types[1].encode(message.field[i], writer.uint32(18).fork()).ldelim()
+                if (message.extension)
+                    for (var i = 0; i < message.extension.length; ++i)
+                    types[2].encode(message.extension[i], writer.uint32(50).fork()).ldelim()
+                if (message.nestedType)
+                    for (var i = 0; i < message.nestedType.length; ++i)
+                    types[3].encode(message.nestedType[i], writer.uint32(26).fork()).ldelim()
+                if (message.enumType)
+                    for (var i = 0; i < message.enumType.length; ++i)
+                    types[4].encode(message.enumType[i], writer.uint32(34).fork()).ldelim()
+                if (message.extensionRange)
+                    for (var i = 0; i < message.extensionRange.length; ++i)
+                    types[5].encode(message.extensionRange[i], writer.uint32(42).fork()).ldelim()
+                if (message.oneofDecl)
+                    for (var i = 0; i < message.oneofDecl.length; ++i)
+                    types[6].encode(message.oneofDecl[i], writer.uint32(66).fork()).ldelim()
+                if (message.options !== undefined && message.options !== null)
+                    types[7].encode(message.options, writer.uint32(58).fork()).ldelim()
+                if (message.reservedRange)
+                    for (var i = 0; i < message.reservedRange.length; ++i)
+                    types[8].encode(message.reservedRange[i], writer.uint32(74).fork()).ldelim()
+                if (message.reservedName)
+                    for (var i = 0; i < message.reservedName.length; ++i)
+                    writer.uint32(82).string(message.reservedName[i])
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.FieldDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.DescriptorProto.ExtensionRange", "google.protobuf.OneofDescriptorProto", "google.protobuf.MessageOptions", "google.protobuf.DescriptorProto.ReservedRange", null]); /* eslint-enable */
 
             /**
              * Encodes the specified DescriptorProto, length delimited.
@@ -5534,64 +4927,57 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.DescriptorProto} DescriptorProto
              */
-            DescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.FieldDescriptorProto","google.protobuf.FieldDescriptorProto","google.protobuf.DescriptorProto","google.protobuf.EnumDescriptorProto","google.protobuf.DescriptorProto.ExtensionRange","google.protobuf.OneofDescriptorProto","google.protobuf.MessageOptions","google.protobuf.DescriptorProto.ReservedRange",null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.DescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m.field&&m.field.length||(m.field=[])
-                                m.field.push(types[1].decode(r,r.uint32()))
-                                break
-                            case 6:
-                                m.extension&&m.extension.length||(m.extension=[])
-                                m.extension.push(types[2].decode(r,r.uint32()))
-                                break
-                            case 3:
-                                m.nestedType&&m.nestedType.length||(m.nestedType=[])
-                                m.nestedType.push(types[3].decode(r,r.uint32()))
-                                break
-                            case 4:
-                                m.enumType&&m.enumType.length||(m.enumType=[])
-                                m.enumType.push(types[4].decode(r,r.uint32()))
-                                break
-                            case 5:
-                                m.extensionRange&&m.extensionRange.length||(m.extensionRange=[])
-                                m.extensionRange.push(types[5].decode(r,r.uint32()))
-                                break
-                            case 8:
-                                m.oneofDecl&&m.oneofDecl.length||(m.oneofDecl=[])
-                                m.oneofDecl.push(types[6].decode(r,r.uint32()))
-                                break
-                            case 7:
-                                m.options=types[7].decode(r,r.uint32())
-                                break
-                            case 9:
-                                m.reservedRange&&m.reservedRange.length||(m.reservedRange=[])
-                                m.reservedRange.push(types[8].decode(r,r.uint32()))
-                                break
-                            case 10:
-                                m.reservedName&&m.reservedName.length||(m.reservedName=[])
-                                m.reservedName.push(r.string())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            DescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message.field && message.field.length || (message.field = [])
+                            message.field.push(types[1].decode(reader, reader.uint32()))
+                            break
+                        case 6:
+                            message.extension && message.extension.length || (message.extension = [])
+                            message.extension.push(types[2].decode(reader, reader.uint32()))
+                            break
+                        case 3:
+                            message.nestedType && message.nestedType.length || (message.nestedType = [])
+                            message.nestedType.push(types[3].decode(reader, reader.uint32()))
+                            break
+                        case 4:
+                            message.enumType && message.enumType.length || (message.enumType = [])
+                            message.enumType.push(types[4].decode(reader, reader.uint32()))
+                            break
+                        case 5:
+                            message.extensionRange && message.extensionRange.length || (message.extensionRange = [])
+                            message.extensionRange.push(types[5].decode(reader, reader.uint32()))
+                            break
+                        case 8:
+                            message.oneofDecl && message.oneofDecl.length || (message.oneofDecl = [])
+                            message.oneofDecl.push(types[6].decode(reader, reader.uint32()))
+                            break
+                        case 7:
+                            message.options = types[7].decode(reader, reader.uint32())
+                            break
+                        case 9:
+                            message.reservedRange && message.reservedRange.length || (message.reservedRange = [])
+                            message.reservedRange.push(types[8].decode(reader, reader.uint32()))
+                            break
+                        case 10:
+                            message.reservedName && message.reservedName.length || (message.reservedName = [])
+                            message.reservedName.push(reader.string())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "google.protobuf.FieldDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.DescriptorProto.ExtensionRange", "google.protobuf.OneofDescriptorProto", "google.protobuf.MessageOptions", "google.protobuf.DescriptorProto.ReservedRange", null]); /* eslint-enable */
 
             /**
              * Decodes a DescriptorProto from the specified reader or buffer, length delimited.
@@ -5609,95 +4995,89 @@ $root.google = (function() {
              * @param {google.protobuf.DescriptorProto|Object} message DescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            DescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.FieldDescriptorProto","google.protobuf.FieldDescriptorProto","google.protobuf.DescriptorProto","google.protobuf.EnumDescriptorProto","google.protobuf.DescriptorProto.ExtensionRange","google.protobuf.OneofDescriptorProto","google.protobuf.MessageOptions","google.protobuf.DescriptorProto.ReservedRange",null]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.DescriptorProto.name (string expected)"
-                    }
-                    if(m.field!==undefined){
-                        if(!Array.isArray(m.field))
-                            return"invalid value for field .google.protobuf.DescriptorProto.field (array expected)"
-                        for(var i=0;i<m.field.length;++i){
-                            var r;
-                            if(r=types[1].verify(m.field[i]))
-                                return r
-                        }
-                    }
-                    if(m.extension!==undefined){
-                        if(!Array.isArray(m.extension))
-                            return"invalid value for field .google.protobuf.DescriptorProto.extension (array expected)"
-                        for(var i=0;i<m.extension.length;++i){
-                            var r;
-                            if(r=types[2].verify(m.extension[i]))
-                                return r
-                        }
-                    }
-                    if(m.nestedType!==undefined){
-                        if(!Array.isArray(m.nestedType))
-                            return"invalid value for field .google.protobuf.DescriptorProto.nestedType (array expected)"
-                        for(var i=0;i<m.nestedType.length;++i){
-                            var r;
-                            if(r=types[3].verify(m.nestedType[i]))
-                                return r
-                        }
-                    }
-                    if(m.enumType!==undefined){
-                        if(!Array.isArray(m.enumType))
-                            return"invalid value for field .google.protobuf.DescriptorProto.enumType (array expected)"
-                        for(var i=0;i<m.enumType.length;++i){
-                            var r;
-                            if(r=types[4].verify(m.enumType[i]))
-                                return r
-                        }
-                    }
-                    if(m.extensionRange!==undefined){
-                        if(!Array.isArray(m.extensionRange))
-                            return"invalid value for field .google.protobuf.DescriptorProto.extensionRange (array expected)"
-                        for(var i=0;i<m.extensionRange.length;++i){
-                            var r;
-                            if(r=types[5].verify(m.extensionRange[i]))
-                                return r
-                        }
-                    }
-                    if(m.oneofDecl!==undefined){
-                        if(!Array.isArray(m.oneofDecl))
-                            return"invalid value for field .google.protobuf.DescriptorProto.oneofDecl (array expected)"
-                        for(var i=0;i<m.oneofDecl.length;++i){
-                            var r;
-                            if(r=types[6].verify(m.oneofDecl[i]))
-                                return r
-                        }
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[7].verify(m.options))
-                            return r
-                    }
-                    if(m.reservedRange!==undefined){
-                        if(!Array.isArray(m.reservedRange))
-                            return"invalid value for field .google.protobuf.DescriptorProto.reservedRange (array expected)"
-                        for(var i=0;i<m.reservedRange.length;++i){
-                            var r;
-                            if(r=types[8].verify(m.reservedRange[i]))
-                                return r
-                        }
-                    }
-                    if(m.reservedName!==undefined){
-                        if(!Array.isArray(m.reservedName))
-                            return"invalid value for field .google.protobuf.DescriptorProto.reservedName (array expected)"
-                        for(var i=0;i<m.reservedName.length;++i){
-                            if(!util.isString(m.reservedName[i]))
-                                return"invalid value for field .google.protobuf.DescriptorProto.reservedName (string[] expected)"
-                        }
-                    }
-                    return null
+            DescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.DescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.field !== undefined) {
+                    if (!Array.isArray(message.field))
+                        return "invalid value for field .google.protobuf.DescriptorProto.field (array expected)"
+                    for (var i = 0; i < message.field.length; ++i) {
+                        var s;
+                        if (s = types[1].verify(message.field[i]))
+                            return s
+                    }
+                }
+                if (message.extension !== undefined) {
+                    if (!Array.isArray(message.extension))
+                        return "invalid value for field .google.protobuf.DescriptorProto.extension (array expected)"
+                    for (var i = 0; i < message.extension.length; ++i) {
+                        var s;
+                        if (s = types[2].verify(message.extension[i]))
+                            return s
+                    }
+                }
+                if (message.nestedType !== undefined) {
+                    if (!Array.isArray(message.nestedType))
+                        return "invalid value for field .google.protobuf.DescriptorProto.nestedType (array expected)"
+                    for (var i = 0; i < message.nestedType.length; ++i) {
+                        var s;
+                        if (s = types[3].verify(message.nestedType[i]))
+                            return s
+                    }
+                }
+                if (message.enumType !== undefined) {
+                    if (!Array.isArray(message.enumType))
+                        return "invalid value for field .google.protobuf.DescriptorProto.enumType (array expected)"
+                    for (var i = 0; i < message.enumType.length; ++i) {
+                        var s;
+                        if (s = types[4].verify(message.enumType[i]))
+                            return s
+                    }
+                }
+                if (message.extensionRange !== undefined) {
+                    if (!Array.isArray(message.extensionRange))
+                        return "invalid value for field .google.protobuf.DescriptorProto.extensionRange (array expected)"
+                    for (var i = 0; i < message.extensionRange.length; ++i) {
+                        var s;
+                        if (s = types[5].verify(message.extensionRange[i]))
+                            return s
+                    }
+                }
+                if (message.oneofDecl !== undefined) {
+                    if (!Array.isArray(message.oneofDecl))
+                        return "invalid value for field .google.protobuf.DescriptorProto.oneofDecl (array expected)"
+                    for (var i = 0; i < message.oneofDecl.length; ++i) {
+                        var s;
+                        if (s = types[6].verify(message.oneofDecl[i]))
+                            return s
+                    }
+                }
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[7].verify(message.options))
+                        return s
+                }
+                if (message.reservedRange !== undefined) {
+                    if (!Array.isArray(message.reservedRange))
+                        return "invalid value for field .google.protobuf.DescriptorProto.reservedRange (array expected)"
+                    for (var i = 0; i < message.reservedRange.length; ++i) {
+                        var s;
+                        if (s = types[8].verify(message.reservedRange[i]))
+                            return s
+                    }
+                }
+                if (message.reservedName !== undefined) {
+                    if (!Array.isArray(message.reservedName))
+                        return "invalid value for field .google.protobuf.DescriptorProto.reservedName (array expected)"
+                    for (var i = 0; i < message.reservedName.length; ++i) {
+                        if (!util.isString(message.reservedName[i]))
+                            return "invalid value for field .google.protobuf.DescriptorProto.reservedName (string[] expected)"
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, "google.protobuf.FieldDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.DescriptorProto.ExtensionRange", "google.protobuf.OneofDescriptorProto", "google.protobuf.MessageOptions", "google.protobuf.DescriptorProto.ReservedRange", null]); /* eslint-enable */
 
             DescriptorProto.ExtensionRange = (function() {
 
@@ -5746,21 +5126,14 @@ $root.google = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                ExtensionRange.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        if(m.start!==undefined&&m.start!==0)
-                            w.uint32(8).int32(m.start)
-                        if(m.end!==undefined&&m.end!==0)
-                            w.uint32(16).int32(m.end)
-                        return w
-                    }
-                    /* eslint-enable */
-                })();
+                ExtensionRange.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    if (message.start !== undefined && message.start !== 0)
+                        writer.uint32(8).int32(message.start)
+                    if (message.end !== undefined && message.end !== 0)
+                        writer.uint32(16).int32(message.end)
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified ExtensionRange, length delimited.
@@ -5779,32 +5152,25 @@ $root.google = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ExtensionRange} ExtensionRange
                  */
-                ExtensionRange.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.DescriptorProto.ExtensionRange
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 1:
-                                    m.start=r.int32()
-                                    break
-                                case 2:
-                                    m.end=r.int32()
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                ExtensionRange.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto.ExtensionRange
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 1:
+                                message.start = reader.int32()
+                                break
+                            case 2:
+                                message.end = reader.int32()
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null, null]); /* eslint-enable */
 
                 /**
                  * Decodes a ExtensionRange from the specified reader or buffer, length delimited.
@@ -5822,23 +5188,17 @@ $root.google = (function() {
                  * @param {google.protobuf.DescriptorProto.ExtensionRange|Object} message ExtensionRange or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                ExtensionRange.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function verify(m) {
-                        if(m.start!==undefined){
-                            if(!util.isInteger(m.start))
-                                return"invalid value for field .google.protobuf.DescriptorProto.ExtensionRange.start (integer expected)"
-                        }
-                        if(m.end!==undefined){
-                            if(!util.isInteger(m.end))
-                                return"invalid value for field .google.protobuf.DescriptorProto.ExtensionRange.end (integer expected)"
-                        }
-                        return null
+                ExtensionRange.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (message.start !== undefined) {
+                        if (!util.isInteger(message.start))
+                            return "invalid value for field .google.protobuf.DescriptorProto.ExtensionRange.start (integer expected)"
                     }
-                    /* eslint-enable */
-                })();
+                    if (message.end !== undefined) {
+                        if (!util.isInteger(message.end))
+                            return "invalid value for field .google.protobuf.DescriptorProto.ExtensionRange.end (integer expected)"
+                    }
+                    return null
+                }})($protobuf.util, [null, null]); /* eslint-enable */
 
                 return ExtensionRange;
             })();
@@ -5890,21 +5250,14 @@ $root.google = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                ReservedRange.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        if(m.start!==undefined&&m.start!==0)
-                            w.uint32(8).int32(m.start)
-                        if(m.end!==undefined&&m.end!==0)
-                            w.uint32(16).int32(m.end)
-                        return w
-                    }
-                    /* eslint-enable */
-                })();
+                ReservedRange.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    if (message.start !== undefined && message.start !== 0)
+                        writer.uint32(8).int32(message.start)
+                    if (message.end !== undefined && message.end !== 0)
+                        writer.uint32(16).int32(message.end)
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified ReservedRange, length delimited.
@@ -5923,32 +5276,25 @@ $root.google = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.DescriptorProto.ReservedRange} ReservedRange
                  */
-                ReservedRange.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.DescriptorProto.ReservedRange
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 1:
-                                    m.start=r.int32()
-                                    break
-                                case 2:
-                                    m.end=r.int32()
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                ReservedRange.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.DescriptorProto.ReservedRange
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 1:
+                                message.start = reader.int32()
+                                break
+                            case 2:
+                                message.end = reader.int32()
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null, null]); /* eslint-enable */
 
                 /**
                  * Decodes a ReservedRange from the specified reader or buffer, length delimited.
@@ -5966,23 +5312,17 @@ $root.google = (function() {
                  * @param {google.protobuf.DescriptorProto.ReservedRange|Object} message ReservedRange or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                ReservedRange.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function verify(m) {
-                        if(m.start!==undefined){
-                            if(!util.isInteger(m.start))
-                                return"invalid value for field .google.protobuf.DescriptorProto.ReservedRange.start (integer expected)"
-                        }
-                        if(m.end!==undefined){
-                            if(!util.isInteger(m.end))
-                                return"invalid value for field .google.protobuf.DescriptorProto.ReservedRange.end (integer expected)"
-                        }
-                        return null
+                ReservedRange.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (message.start !== undefined) {
+                        if (!util.isInteger(message.start))
+                            return "invalid value for field .google.protobuf.DescriptorProto.ReservedRange.start (integer expected)"
                     }
-                    /* eslint-enable */
-                })();
+                    if (message.end !== undefined) {
+                        if (!util.isInteger(message.end))
+                            return "invalid value for field .google.protobuf.DescriptorProto.ReservedRange.end (integer expected)"
+                    }
+                    return null
+                }})($protobuf.util, [null, null]); /* eslint-enable */
 
                 return ReservedRange;
             })();
@@ -6085,37 +5425,30 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FieldDescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.FieldDescriptorProto.Label","google.protobuf.FieldDescriptorProto.Type",null,null,null,null,null,"google.protobuf.FieldOptions"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m.number!==undefined&&m.number!==0)
-                        w.uint32(24).int32(m.number)
-                    if(m.label!==undefined&&m.label!==0)
-                        w.uint32(32).uint32(m.label)
-                    if(m.type!==undefined&&m.type!==0)
-                        w.uint32(40).uint32(m.type)
-                    if(m.typeName!==undefined&&m.typeName!=="")
-                        w.uint32(50).string(m.typeName)
-                    if(m.extendee!==undefined&&m.extendee!=="")
-                        w.uint32(18).string(m.extendee)
-                    if(m.defaultValue!==undefined&&m.defaultValue!=="")
-                        w.uint32(58).string(m.defaultValue)
-                    if(m.oneofIndex!==undefined&&m.oneofIndex!==0)
-                        w.uint32(72).int32(m.oneofIndex)
-                    if(m.jsonName!==undefined&&m.jsonName!=="")
-                        w.uint32(82).string(m.jsonName)
-                    if(m.options!==undefined&&m.options!==null)
-                        types[9].encode(m.options,w.uint32(66).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            FieldDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message.number !== undefined && message.number !== 0)
+                    writer.uint32(24).int32(message.number)
+                if (message.label !== undefined && message.label !== 0)
+                    writer.uint32(32).uint32(message.label)
+                if (message.type !== undefined && message.type !== 0)
+                    writer.uint32(40).uint32(message.type)
+                if (message.typeName !== undefined && message.typeName !== "")
+                    writer.uint32(50).string(message.typeName)
+                if (message.extendee !== undefined && message.extendee !== "")
+                    writer.uint32(18).string(message.extendee)
+                if (message.defaultValue !== undefined && message.defaultValue !== "")
+                    writer.uint32(58).string(message.defaultValue)
+                if (message.oneofIndex !== undefined && message.oneofIndex !== 0)
+                    writer.uint32(72).int32(message.oneofIndex)
+                if (message.jsonName !== undefined && message.jsonName !== "")
+                    writer.uint32(82).string(message.jsonName)
+                if (message.options !== undefined && message.options !== null)
+                    types[9].encode(message.options, writer.uint32(66).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "google.protobuf.FieldDescriptorProto.Label", "google.protobuf.FieldDescriptorProto.Type", null, null, null, null, null, "google.protobuf.FieldOptions"]); /* eslint-enable */
 
             /**
              * Encodes the specified FieldDescriptorProto, length delimited.
@@ -6134,56 +5467,49 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldDescriptorProto} FieldDescriptorProto
              */
-            FieldDescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.FieldDescriptorProto.Label","google.protobuf.FieldDescriptorProto.Type",null,null,null,null,null,"google.protobuf.FieldOptions"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.FieldDescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 3:
-                                m.number=r.int32()
-                                break
-                            case 4:
-                                m.label=r.uint32()
-                                break
-                            case 5:
-                                m.type=r.uint32()
-                                break
-                            case 6:
-                                m.typeName=r.string()
-                                break
-                            case 2:
-                                m.extendee=r.string()
-                                break
-                            case 7:
-                                m.defaultValue=r.string()
-                                break
-                            case 9:
-                                m.oneofIndex=r.int32()
-                                break
-                            case 10:
-                                m.jsonName=r.string()
-                                break
-                            case 8:
-                                m.options=types[9].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            FieldDescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldDescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 3:
+                            message.number = reader.int32()
+                            break
+                        case 4:
+                            message.label = reader.uint32()
+                            break
+                        case 5:
+                            message.type = reader.uint32()
+                            break
+                        case 6:
+                            message.typeName = reader.string()
+                            break
+                        case 2:
+                            message.extendee = reader.string()
+                            break
+                        case 7:
+                            message.defaultValue = reader.string()
+                            break
+                        case 9:
+                            message.oneofIndex = reader.int32()
+                            break
+                        case 10:
+                            message.jsonName = reader.string()
+                            break
+                        case 8:
+                            message.options = types[9].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "google.protobuf.FieldDescriptorProto.Label", "google.protobuf.FieldDescriptorProto.Type", null, null, null, null, null, "google.protobuf.FieldOptions"]); /* eslint-enable */
 
             /**
              * Decodes a FieldDescriptorProto from the specified reader or buffer, length delimited.
@@ -6201,83 +5527,77 @@ $root.google = (function() {
              * @param {google.protobuf.FieldDescriptorProto|Object} message FieldDescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FieldDescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.FieldDescriptorProto.Label","google.protobuf.FieldDescriptorProto.Type",null,null,null,null,null,"google.protobuf.FieldOptions"]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.FieldDescriptorProto.name (string expected)"
-                    }
-                    if(m.number!==undefined){
-                        if(!util.isInteger(m.number))
-                            return"invalid value for field .google.protobuf.FieldDescriptorProto.number (integer expected)"
-                    }
-                    if(m.label!==undefined){
-                        switch(m.label){
-                            default:
-                                return"invalid value for field .google.protobuf.FieldDescriptorProto.label (enum value expected)"
-                            case 1:
-                            case 2:
-                            case 3:
-                                break
-                        }
-                    }
-                    if(m.type!==undefined){
-                        switch(m.type){
-                            default:
-                                return"invalid value for field .google.protobuf.FieldDescriptorProto.type (enum value expected)"
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 4:
-                            case 5:
-                            case 6:
-                            case 7:
-                            case 8:
-                            case 9:
-                            case 10:
-                            case 11:
-                            case 12:
-                            case 13:
-                            case 14:
-                            case 15:
-                            case 16:
-                            case 17:
-                            case 18:
-                                break
-                        }
-                    }
-                    if(m.typeName!==undefined){
-                        if(!util.isString(m.typeName))
-                            return"invalid value for field .google.protobuf.FieldDescriptorProto.typeName (string expected)"
-                    }
-                    if(m.extendee!==undefined){
-                        if(!util.isString(m.extendee))
-                            return"invalid value for field .google.protobuf.FieldDescriptorProto.extendee (string expected)"
-                    }
-                    if(m.defaultValue!==undefined){
-                        if(!util.isString(m.defaultValue))
-                            return"invalid value for field .google.protobuf.FieldDescriptorProto.defaultValue (string expected)"
-                    }
-                    if(m.oneofIndex!==undefined){
-                        if(!util.isInteger(m.oneofIndex))
-                            return"invalid value for field .google.protobuf.FieldDescriptorProto.oneofIndex (integer expected)"
-                    }
-                    if(m.jsonName!==undefined){
-                        if(!util.isString(m.jsonName))
-                            return"invalid value for field .google.protobuf.FieldDescriptorProto.jsonName (string expected)"
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[9].verify(m.options))
-                            return r
-                    }
-                    return null
+            FieldDescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.FieldDescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.number !== undefined) {
+                    if (!util.isInteger(message.number))
+                        return "invalid value for field .google.protobuf.FieldDescriptorProto.number (integer expected)"
+                }
+                if (message.label !== undefined) {
+                    switch (message.label) {
+                        default:
+                            return "invalid value for field .google.protobuf.FieldDescriptorProto.label (enum value expected)"
+                        case 1:
+                        case 2:
+                        case 3:
+                            break
+                    }
+                }
+                if (message.type !== undefined) {
+                    switch (message.type) {
+                        default:
+                            return "invalid value for field .google.protobuf.FieldDescriptorProto.type (enum value expected)"
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                        case 9:
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 13:
+                        case 14:
+                        case 15:
+                        case 16:
+                        case 17:
+                        case 18:
+                            break
+                    }
+                }
+                if (message.typeName !== undefined) {
+                    if (!util.isString(message.typeName))
+                        return "invalid value for field .google.protobuf.FieldDescriptorProto.typeName (string expected)"
+                }
+                if (message.extendee !== undefined) {
+                    if (!util.isString(message.extendee))
+                        return "invalid value for field .google.protobuf.FieldDescriptorProto.extendee (string expected)"
+                }
+                if (message.defaultValue !== undefined) {
+                    if (!util.isString(message.defaultValue))
+                        return "invalid value for field .google.protobuf.FieldDescriptorProto.defaultValue (string expected)"
+                }
+                if (message.oneofIndex !== undefined) {
+                    if (!util.isInteger(message.oneofIndex))
+                        return "invalid value for field .google.protobuf.FieldDescriptorProto.oneofIndex (integer expected)"
+                }
+                if (message.jsonName !== undefined) {
+                    if (!util.isString(message.jsonName))
+                        return "invalid value for field .google.protobuf.FieldDescriptorProto.jsonName (string expected)"
+                }
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[9].verify(message.options))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, null, "google.protobuf.FieldDescriptorProto.Label", "google.protobuf.FieldDescriptorProto.Type", null, null, null, null, null, "google.protobuf.FieldOptions"]); /* eslint-enable */
 
             /**
              * Type values.
@@ -6368,21 +5688,14 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OneofDescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.OneofOptions"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m.options!==undefined&&m.options!==null)
-                        types[1].encode(m.options,w.uint32(18).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            OneofDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message.options !== undefined && message.options !== null)
+                    types[1].encode(message.options, writer.uint32(18).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.OneofOptions"]); /* eslint-enable */
 
             /**
              * Encodes the specified OneofDescriptorProto, length delimited.
@@ -6401,32 +5714,25 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofDescriptorProto} OneofDescriptorProto
              */
-            OneofDescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.OneofOptions"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.OneofDescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m.options=types[1].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            OneofDescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.OneofDescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message.options = types[1].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "google.protobuf.OneofOptions"]); /* eslint-enable */
 
             /**
              * Decodes a OneofDescriptorProto from the specified reader or buffer, length delimited.
@@ -6444,24 +5750,18 @@ $root.google = (function() {
              * @param {google.protobuf.OneofDescriptorProto|Object} message OneofDescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OneofDescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.OneofOptions"]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.OneofDescriptorProto.name (string expected)"
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[1].verify(m.options))
-                            return r
-                    }
-                    return null
+            OneofDescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.OneofDescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[1].verify(message.options))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, "google.protobuf.OneofOptions"]); /* eslint-enable */
 
             return OneofDescriptorProto;
         })();
@@ -6519,24 +5819,17 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumDescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.EnumValueDescriptorProto","google.protobuf.EnumOptions"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m.value)
-                        for(var i=0;i<m.value.length;++i)
-                        types[1].encode(m.value[i],w.uint32(18).fork()).ldelim()
-                    if(m.options!==undefined&&m.options!==null)
-                        types[2].encode(m.options,w.uint32(26).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            EnumDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message.value)
+                    for (var i = 0; i < message.value.length; ++i)
+                    types[1].encode(message.value[i], writer.uint32(18).fork()).ldelim()
+                if (message.options !== undefined && message.options !== null)
+                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.EnumValueDescriptorProto", "google.protobuf.EnumOptions"]); /* eslint-enable */
 
             /**
              * Encodes the specified EnumDescriptorProto, length delimited.
@@ -6555,36 +5848,29 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumDescriptorProto} EnumDescriptorProto
              */
-            EnumDescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.EnumValueDescriptorProto","google.protobuf.EnumOptions"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.EnumDescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m.value&&m.value.length||(m.value=[])
-                                m.value.push(types[1].decode(r,r.uint32()))
-                                break
-                            case 3:
-                                m.options=types[2].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            EnumDescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumDescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message.value && message.value.length || (message.value = [])
+                            message.value.push(types[1].decode(reader, reader.uint32()))
+                            break
+                        case 3:
+                            message.options = types[2].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "google.protobuf.EnumValueDescriptorProto", "google.protobuf.EnumOptions"]); /* eslint-enable */
 
             /**
              * Decodes a EnumDescriptorProto from the specified reader or buffer, length delimited.
@@ -6602,33 +5888,27 @@ $root.google = (function() {
              * @param {google.protobuf.EnumDescriptorProto|Object} message EnumDescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumDescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.EnumValueDescriptorProto","google.protobuf.EnumOptions"]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.EnumDescriptorProto.name (string expected)"
-                    }
-                    if(m.value!==undefined){
-                        if(!Array.isArray(m.value))
-                            return"invalid value for field .google.protobuf.EnumDescriptorProto.value (array expected)"
-                        for(var i=0;i<m.value.length;++i){
-                            var r;
-                            if(r=types[1].verify(m.value[i]))
-                                return r
-                        }
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[2].verify(m.options))
-                            return r
-                    }
-                    return null
+            EnumDescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.EnumDescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.value !== undefined) {
+                    if (!Array.isArray(message.value))
+                        return "invalid value for field .google.protobuf.EnumDescriptorProto.value (array expected)"
+                    for (var i = 0; i < message.value.length; ++i) {
+                        var s;
+                        if (s = types[1].verify(message.value[i]))
+                            return s
+                    }
+                }
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[2].verify(message.options))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, "google.protobuf.EnumValueDescriptorProto", "google.protobuf.EnumOptions"]); /* eslint-enable */
 
             return EnumDescriptorProto;
         })();
@@ -6686,23 +5966,16 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumValueDescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.EnumValueOptions"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m.number!==undefined&&m.number!==0)
-                        w.uint32(16).int32(m.number)
-                    if(m.options!==undefined&&m.options!==null)
-                        types[2].encode(m.options,w.uint32(26).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            EnumValueDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message.number !== undefined && message.number !== 0)
+                    writer.uint32(16).int32(message.number)
+                if (message.options !== undefined && message.options !== null)
+                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "google.protobuf.EnumValueOptions"]); /* eslint-enable */
 
             /**
              * Encodes the specified EnumValueDescriptorProto, length delimited.
@@ -6721,35 +5994,28 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueDescriptorProto} EnumValueDescriptorProto
              */
-            EnumValueDescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.EnumValueOptions"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.EnumValueDescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m.number=r.int32()
-                                break
-                            case 3:
-                                m.options=types[2].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            EnumValueDescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumValueDescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message.number = reader.int32()
+                            break
+                        case 3:
+                            message.options = types[2].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "google.protobuf.EnumValueOptions"]); /* eslint-enable */
 
             /**
              * Decodes a EnumValueDescriptorProto from the specified reader or buffer, length delimited.
@@ -6767,28 +6033,22 @@ $root.google = (function() {
              * @param {google.protobuf.EnumValueDescriptorProto|Object} message EnumValueDescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumValueDescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.EnumValueOptions"]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.EnumValueDescriptorProto.name (string expected)"
-                    }
-                    if(m.number!==undefined){
-                        if(!util.isInteger(m.number))
-                            return"invalid value for field .google.protobuf.EnumValueDescriptorProto.number (integer expected)"
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[2].verify(m.options))
-                            return r
-                    }
-                    return null
+            EnumValueDescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.EnumValueDescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.number !== undefined) {
+                    if (!util.isInteger(message.number))
+                        return "invalid value for field .google.protobuf.EnumValueDescriptorProto.number (integer expected)"
+                }
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[2].verify(message.options))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, null, "google.protobuf.EnumValueOptions"]); /* eslint-enable */
 
             return EnumValueDescriptorProto;
         })();
@@ -6846,24 +6106,17 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            ServiceDescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.MethodDescriptorProto","google.protobuf.ServiceOptions"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m.method)
-                        for(var i=0;i<m.method.length;++i)
-                        types[1].encode(m.method[i],w.uint32(18).fork()).ldelim()
-                    if(m.options!==undefined&&m.options!==null)
-                        types[2].encode(m.options,w.uint32(26).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            ServiceDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message.method)
+                    for (var i = 0; i < message.method.length; ++i)
+                    types[1].encode(message.method[i], writer.uint32(18).fork()).ldelim()
+                if (message.options !== undefined && message.options !== null)
+                    types[2].encode(message.options, writer.uint32(26).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.MethodDescriptorProto", "google.protobuf.ServiceOptions"]); /* eslint-enable */
 
             /**
              * Encodes the specified ServiceDescriptorProto, length delimited.
@@ -6882,36 +6135,29 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceDescriptorProto} ServiceDescriptorProto
              */
-            ServiceDescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.MethodDescriptorProto","google.protobuf.ServiceOptions"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.ServiceDescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m.method&&m.method.length||(m.method=[])
-                                m.method.push(types[1].decode(r,r.uint32()))
-                                break
-                            case 3:
-                                m.options=types[2].decode(r,r.uint32())
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            ServiceDescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ServiceDescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message.method && message.method.length || (message.method = [])
+                            message.method.push(types[1].decode(reader, reader.uint32()))
+                            break
+                        case 3:
+                            message.options = types[2].decode(reader, reader.uint32())
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "google.protobuf.MethodDescriptorProto", "google.protobuf.ServiceOptions"]); /* eslint-enable */
 
             /**
              * Decodes a ServiceDescriptorProto from the specified reader or buffer, length delimited.
@@ -6929,33 +6175,27 @@ $root.google = (function() {
              * @param {google.protobuf.ServiceDescriptorProto|Object} message ServiceDescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            ServiceDescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.MethodDescriptorProto","google.protobuf.ServiceOptions"]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.ServiceDescriptorProto.name (string expected)"
-                    }
-                    if(m.method!==undefined){
-                        if(!Array.isArray(m.method))
-                            return"invalid value for field .google.protobuf.ServiceDescriptorProto.method (array expected)"
-                        for(var i=0;i<m.method.length;++i){
-                            var r;
-                            if(r=types[1].verify(m.method[i]))
-                                return r
-                        }
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[2].verify(m.options))
-                            return r
-                    }
-                    return null
+            ServiceDescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.ServiceDescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.method !== undefined) {
+                    if (!Array.isArray(message.method))
+                        return "invalid value for field .google.protobuf.ServiceDescriptorProto.method (array expected)"
+                    for (var i = 0; i < message.method.length; ++i) {
+                        var s;
+                        if (s = types[1].verify(message.method[i]))
+                            return s
+                    }
+                }
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[2].verify(message.options))
+                        return s
+                }
+                return null
+            }})($protobuf.util, [null, "google.protobuf.MethodDescriptorProto", "google.protobuf.ServiceOptions"]); /* eslint-enable */
 
             return ServiceDescriptorProto;
         })();
@@ -7031,29 +6271,22 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MethodDescriptorProto.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"google.protobuf.MethodOptions",null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name!==undefined&&m.name!=="")
-                        w.uint32(10).string(m.name)
-                    if(m.inputType!==undefined&&m.inputType!=="")
-                        w.uint32(18).string(m.inputType)
-                    if(m.outputType!==undefined&&m.outputType!=="")
-                        w.uint32(26).string(m.outputType)
-                    if(m.options!==undefined&&m.options!==null)
-                        types[3].encode(m.options,w.uint32(34).fork()).ldelim()
-                    if(m.clientStreaming!==undefined&&m.clientStreaming!==false)
-                        w.uint32(40).bool(m.clientStreaming)
-                    if(m.serverStreaming!==undefined&&m.serverStreaming!==false)
-                        w.uint32(48).bool(m.serverStreaming)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            MethodDescriptorProto.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name !== undefined && message.name !== "")
+                    writer.uint32(10).string(message.name)
+                if (message.inputType !== undefined && message.inputType !== "")
+                    writer.uint32(18).string(message.inputType)
+                if (message.outputType !== undefined && message.outputType !== "")
+                    writer.uint32(26).string(message.outputType)
+                if (message.options !== undefined && message.options !== null)
+                    types[3].encode(message.options, writer.uint32(34).fork()).ldelim()
+                if (message.clientStreaming !== undefined && message.clientStreaming !== false)
+                    writer.uint32(40).bool(message.clientStreaming)
+                if (message.serverStreaming !== undefined && message.serverStreaming !== false)
+                    writer.uint32(48).bool(message.serverStreaming)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, "google.protobuf.MethodOptions", null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified MethodDescriptorProto, length delimited.
@@ -7072,44 +6305,37 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodDescriptorProto} MethodDescriptorProto
              */
-            MethodDescriptorProto.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"google.protobuf.MethodOptions",null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.MethodDescriptorProto
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.name=r.string()
-                                break
-                            case 2:
-                                m.inputType=r.string()
-                                break
-                            case 3:
-                                m.outputType=r.string()
-                                break
-                            case 4:
-                                m.options=types[3].decode(r,r.uint32())
-                                break
-                            case 5:
-                                m.clientStreaming=r.bool()
-                                break
-                            case 6:
-                                m.serverStreaming=r.bool()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            MethodDescriptorProto.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MethodDescriptorProto
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string()
+                            break
+                        case 2:
+                            message.inputType = reader.string()
+                            break
+                        case 3:
+                            message.outputType = reader.string()
+                            break
+                        case 4:
+                            message.options = types[3].decode(reader, reader.uint32())
+                            break
+                        case 5:
+                            message.clientStreaming = reader.bool()
+                            break
+                        case 6:
+                            message.serverStreaming = reader.bool()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, "google.protobuf.MethodOptions", null, null]); /* eslint-enable */
 
             /**
              * Decodes a MethodDescriptorProto from the specified reader or buffer, length delimited.
@@ -7127,40 +6353,34 @@ $root.google = (function() {
              * @param {google.protobuf.MethodDescriptorProto|Object} message MethodDescriptorProto or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MethodDescriptorProto.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,"google.protobuf.MethodOptions",null,null]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!util.isString(m.name))
-                            return"invalid value for field .google.protobuf.MethodDescriptorProto.name (string expected)"
-                    }
-                    if(m.inputType!==undefined){
-                        if(!util.isString(m.inputType))
-                            return"invalid value for field .google.protobuf.MethodDescriptorProto.inputType (string expected)"
-                    }
-                    if(m.outputType!==undefined){
-                        if(!util.isString(m.outputType))
-                            return"invalid value for field .google.protobuf.MethodDescriptorProto.outputType (string expected)"
-                    }
-                    if(m.options!==undefined&&m.options!==null){
-                        var r;
-                        if(r=types[3].verify(m.options))
-                            return r
-                    }
-                    if(m.clientStreaming!==undefined){
-                        if(typeof m.clientStreaming!=="boolean")
-                            return"invalid value for field .google.protobuf.MethodDescriptorProto.clientStreaming (boolean expected)"
-                    }
-                    if(m.serverStreaming!==undefined){
-                        if(typeof m.serverStreaming!=="boolean")
-                            return"invalid value for field .google.protobuf.MethodDescriptorProto.serverStreaming (boolean expected)"
-                    }
-                    return null
+            MethodDescriptorProto.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!util.isString(message.name))
+                        return "invalid value for field .google.protobuf.MethodDescriptorProto.name (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.inputType !== undefined) {
+                    if (!util.isString(message.inputType))
+                        return "invalid value for field .google.protobuf.MethodDescriptorProto.inputType (string expected)"
+                }
+                if (message.outputType !== undefined) {
+                    if (!util.isString(message.outputType))
+                        return "invalid value for field .google.protobuf.MethodDescriptorProto.outputType (string expected)"
+                }
+                if (message.options !== undefined && message.options !== null) {
+                    var s;
+                    if (s = types[3].verify(message.options))
+                        return s
+                }
+                if (message.clientStreaming !== undefined) {
+                    if (typeof message.clientStreaming !== "boolean")
+                        return "invalid value for field .google.protobuf.MethodDescriptorProto.clientStreaming (boolean expected)"
+                }
+                if (message.serverStreaming !== undefined) {
+                    if (typeof message.serverStreaming !== "boolean")
+                        return "invalid value for field .google.protobuf.MethodDescriptorProto.serverStreaming (boolean expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, null, "google.protobuf.MethodOptions", null, null]); /* eslint-enable */
 
             return MethodDescriptorProto;
         })();
@@ -7290,48 +6510,41 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FileOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"google.protobuf.FileOptions.OptimizeMode",null,null,null,null,null,null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.javaPackage!==undefined&&m.javaPackage!=="")
-                        w.uint32(10).string(m.javaPackage)
-                    if(m.javaOuterClassname!==undefined&&m.javaOuterClassname!=="")
-                        w.uint32(66).string(m.javaOuterClassname)
-                    if(m.javaMultipleFiles!==undefined&&m.javaMultipleFiles!==false)
-                        w.uint32(80).bool(m.javaMultipleFiles)
-                    if(m.javaGenerateEqualsAndHash!==undefined&&m.javaGenerateEqualsAndHash!==false)
-                        w.uint32(160).bool(m.javaGenerateEqualsAndHash)
-                    if(m.javaStringCheckUtf8!==undefined&&m.javaStringCheckUtf8!==false)
-                        w.uint32(216).bool(m.javaStringCheckUtf8)
-                    if(m.optimizeFor!==undefined&&m.optimizeFor!=="SPEED")
-                        w.uint32(72).uint32(m.optimizeFor)
-                    if(m.goPackage!==undefined&&m.goPackage!=="")
-                        w.uint32(90).string(m.goPackage)
-                    if(m.ccGenericServices!==undefined&&m.ccGenericServices!==false)
-                        w.uint32(128).bool(m.ccGenericServices)
-                    if(m.javaGenericServices!==undefined&&m.javaGenericServices!==false)
-                        w.uint32(136).bool(m.javaGenericServices)
-                    if(m.pyGenericServices!==undefined&&m.pyGenericServices!==false)
-                        w.uint32(144).bool(m.pyGenericServices)
-                    if(m.deprecated!==undefined&&m.deprecated!==false)
-                        w.uint32(184).bool(m.deprecated)
-                    if(m.ccEnableArenas!==undefined&&m.ccEnableArenas!==false)
-                        w.uint32(248).bool(m.ccEnableArenas)
-                    if(m.objcClassPrefix!==undefined&&m.objcClassPrefix!=="")
-                        w.uint32(290).string(m.objcClassPrefix)
-                    if(m.csharpNamespace!==undefined&&m.csharpNamespace!=="")
-                        w.uint32(298).string(m.csharpNamespace)
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[14].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            FileOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.javaPackage !== undefined && message.javaPackage !== "")
+                    writer.uint32(10).string(message.javaPackage)
+                if (message.javaOuterClassname !== undefined && message.javaOuterClassname !== "")
+                    writer.uint32(66).string(message.javaOuterClassname)
+                if (message.javaMultipleFiles !== undefined && message.javaMultipleFiles !== false)
+                    writer.uint32(80).bool(message.javaMultipleFiles)
+                if (message.javaGenerateEqualsAndHash !== undefined && message.javaGenerateEqualsAndHash !== false)
+                    writer.uint32(160).bool(message.javaGenerateEqualsAndHash)
+                if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== false)
+                    writer.uint32(216).bool(message.javaStringCheckUtf8)
+                if (message.optimizeFor !== undefined && message.optimizeFor !== "SPEED")
+                    writer.uint32(72).uint32(message.optimizeFor)
+                if (message.goPackage !== undefined && message.goPackage !== "")
+                    writer.uint32(90).string(message.goPackage)
+                if (message.ccGenericServices !== undefined && message.ccGenericServices !== false)
+                    writer.uint32(128).bool(message.ccGenericServices)
+                if (message.javaGenericServices !== undefined && message.javaGenericServices !== false)
+                    writer.uint32(136).bool(message.javaGenericServices)
+                if (message.pyGenericServices !== undefined && message.pyGenericServices !== false)
+                    writer.uint32(144).bool(message.pyGenericServices)
+                if (message.deprecated !== undefined && message.deprecated !== false)
+                    writer.uint32(184).bool(message.deprecated)
+                if (message.ccEnableArenas !== undefined && message.ccEnableArenas !== false)
+                    writer.uint32(248).bool(message.ccEnableArenas)
+                if (message.objcClassPrefix !== undefined && message.objcClassPrefix !== "")
+                    writer.uint32(290).string(message.objcClassPrefix)
+                if (message.csharpNamespace !== undefined && message.csharpNamespace !== "")
+                    writer.uint32(298).string(message.csharpNamespace)
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[14].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, "google.protobuf.FileOptions.OptimizeMode", null, null, null, null, null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Encodes the specified FileOptions, length delimited.
@@ -7350,72 +6563,65 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FileOptions} FileOptions
              */
-            FileOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"google.protobuf.FileOptions.OptimizeMode",null,null,null,null,null,null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.FileOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.javaPackage=r.string()
-                                break
-                            case 8:
-                                m.javaOuterClassname=r.string()
-                                break
-                            case 10:
-                                m.javaMultipleFiles=r.bool()
-                                break
-                            case 20:
-                                m.javaGenerateEqualsAndHash=r.bool()
-                                break
-                            case 27:
-                                m.javaStringCheckUtf8=r.bool()
-                                break
-                            case 9:
-                                m.optimizeFor=r.uint32()
-                                break
-                            case 11:
-                                m.goPackage=r.string()
-                                break
-                            case 16:
-                                m.ccGenericServices=r.bool()
-                                break
-                            case 17:
-                                m.javaGenericServices=r.bool()
-                                break
-                            case 18:
-                                m.pyGenericServices=r.bool()
-                                break
-                            case 23:
-                                m.deprecated=r.bool()
-                                break
-                            case 31:
-                                m.ccEnableArenas=r.bool()
-                                break
-                            case 36:
-                                m.objcClassPrefix=r.string()
-                                break
-                            case 37:
-                                m.csharpNamespace=r.string()
-                                break
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[14].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            FileOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FileOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.javaPackage = reader.string()
+                            break
+                        case 8:
+                            message.javaOuterClassname = reader.string()
+                            break
+                        case 10:
+                            message.javaMultipleFiles = reader.bool()
+                            break
+                        case 20:
+                            message.javaGenerateEqualsAndHash = reader.bool()
+                            break
+                        case 27:
+                            message.javaStringCheckUtf8 = reader.bool()
+                            break
+                        case 9:
+                            message.optimizeFor = reader.uint32()
+                            break
+                        case 11:
+                            message.goPackage = reader.string()
+                            break
+                        case 16:
+                            message.ccGenericServices = reader.bool()
+                            break
+                        case 17:
+                            message.javaGenericServices = reader.bool()
+                            break
+                        case 18:
+                            message.pyGenericServices = reader.bool()
+                            break
+                        case 23:
+                            message.deprecated = reader.bool()
+                            break
+                        case 31:
+                            message.ccEnableArenas = reader.bool()
+                            break
+                        case 36:
+                            message.objcClassPrefix = reader.string()
+                            break
+                        case 37:
+                            message.csharpNamespace = reader.string()
+                            break
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[14].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, null, null, "google.protobuf.FileOptions.OptimizeMode", null, null, null, null, null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Decodes a FileOptions from the specified reader or buffer, length delimited.
@@ -7433,86 +6639,80 @@ $root.google = (function() {
              * @param {google.protobuf.FileOptions|Object} message FileOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FileOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,null,"google.protobuf.FileOptions.OptimizeMode",null,null,null,null,null,null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function verify(m) {
-                    if(m.javaPackage!==undefined){
-                        if(!util.isString(m.javaPackage))
-                            return"invalid value for field .google.protobuf.FileOptions.javaPackage (string expected)"
-                    }
-                    if(m.javaOuterClassname!==undefined){
-                        if(!util.isString(m.javaOuterClassname))
-                            return"invalid value for field .google.protobuf.FileOptions.javaOuterClassname (string expected)"
-                    }
-                    if(m.javaMultipleFiles!==undefined){
-                        if(typeof m.javaMultipleFiles!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.javaMultipleFiles (boolean expected)"
-                    }
-                    if(m.javaGenerateEqualsAndHash!==undefined){
-                        if(typeof m.javaGenerateEqualsAndHash!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.javaGenerateEqualsAndHash (boolean expected)"
-                    }
-                    if(m.javaStringCheckUtf8!==undefined){
-                        if(typeof m.javaStringCheckUtf8!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.javaStringCheckUtf8 (boolean expected)"
-                    }
-                    if(m.optimizeFor!==undefined){
-                        switch(m.optimizeFor){
-                            default:
-                                return"invalid value for field .google.protobuf.FileOptions.optimizeFor (enum value expected)"
-                            case 1:
-                            case 2:
-                            case 3:
-                                break
-                        }
-                    }
-                    if(m.goPackage!==undefined){
-                        if(!util.isString(m.goPackage))
-                            return"invalid value for field .google.protobuf.FileOptions.goPackage (string expected)"
-                    }
-                    if(m.ccGenericServices!==undefined){
-                        if(typeof m.ccGenericServices!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.ccGenericServices (boolean expected)"
-                    }
-                    if(m.javaGenericServices!==undefined){
-                        if(typeof m.javaGenericServices!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.javaGenericServices (boolean expected)"
-                    }
-                    if(m.pyGenericServices!==undefined){
-                        if(typeof m.pyGenericServices!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.pyGenericServices (boolean expected)"
-                    }
-                    if(m.deprecated!==undefined){
-                        if(typeof m.deprecated!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.deprecated (boolean expected)"
-                    }
-                    if(m.ccEnableArenas!==undefined){
-                        if(typeof m.ccEnableArenas!=="boolean")
-                            return"invalid value for field .google.protobuf.FileOptions.ccEnableArenas (boolean expected)"
-                    }
-                    if(m.objcClassPrefix!==undefined){
-                        if(!util.isString(m.objcClassPrefix))
-                            return"invalid value for field .google.protobuf.FileOptions.objcClassPrefix (string expected)"
-                    }
-                    if(m.csharpNamespace!==undefined){
-                        if(!util.isString(m.csharpNamespace))
-                            return"invalid value for field .google.protobuf.FileOptions.csharpNamespace (string expected)"
-                    }
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.FileOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[14].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
-                    }
-                    return null
+            FileOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.javaPackage !== undefined) {
+                    if (!util.isString(message.javaPackage))
+                        return "invalid value for field .google.protobuf.FileOptions.javaPackage (string expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.javaOuterClassname !== undefined) {
+                    if (!util.isString(message.javaOuterClassname))
+                        return "invalid value for field .google.protobuf.FileOptions.javaOuterClassname (string expected)"
+                }
+                if (message.javaMultipleFiles !== undefined) {
+                    if (typeof message.javaMultipleFiles !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.javaMultipleFiles (boolean expected)"
+                }
+                if (message.javaGenerateEqualsAndHash !== undefined) {
+                    if (typeof message.javaGenerateEqualsAndHash !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.javaGenerateEqualsAndHash (boolean expected)"
+                }
+                if (message.javaStringCheckUtf8 !== undefined) {
+                    if (typeof message.javaStringCheckUtf8 !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.javaStringCheckUtf8 (boolean expected)"
+                }
+                if (message.optimizeFor !== undefined) {
+                    switch (message.optimizeFor) {
+                        default:
+                            return "invalid value for field .google.protobuf.FileOptions.optimizeFor (enum value expected)"
+                        case 1:
+                        case 2:
+                        case 3:
+                            break
+                    }
+                }
+                if (message.goPackage !== undefined) {
+                    if (!util.isString(message.goPackage))
+                        return "invalid value for field .google.protobuf.FileOptions.goPackage (string expected)"
+                }
+                if (message.ccGenericServices !== undefined) {
+                    if (typeof message.ccGenericServices !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.ccGenericServices (boolean expected)"
+                }
+                if (message.javaGenericServices !== undefined) {
+                    if (typeof message.javaGenericServices !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.javaGenericServices (boolean expected)"
+                }
+                if (message.pyGenericServices !== undefined) {
+                    if (typeof message.pyGenericServices !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.pyGenericServices (boolean expected)"
+                }
+                if (message.deprecated !== undefined) {
+                    if (typeof message.deprecated !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.deprecated (boolean expected)"
+                }
+                if (message.ccEnableArenas !== undefined) {
+                    if (typeof message.ccEnableArenas !== "boolean")
+                        return "invalid value for field .google.protobuf.FileOptions.ccEnableArenas (boolean expected)"
+                }
+                if (message.objcClassPrefix !== undefined) {
+                    if (!util.isString(message.objcClassPrefix))
+                        return "invalid value for field .google.protobuf.FileOptions.objcClassPrefix (string expected)"
+                }
+                if (message.csharpNamespace !== undefined) {
+                    if (!util.isString(message.csharpNamespace))
+                        return "invalid value for field .google.protobuf.FileOptions.csharpNamespace (string expected)"
+                }
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.FileOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[14].verify(message.uninterpretedOption[i]))
+                            return s
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, null, null, null, null, "google.protobuf.FileOptions.OptimizeMode", null, null, null, null, null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * OptimizeMode values.
@@ -7594,28 +6794,21 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MessageOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.messageSetWireFormat!==undefined&&m.messageSetWireFormat!==false)
-                        w.uint32(8).bool(m.messageSetWireFormat)
-                    if(m.noStandardDescriptorAccessor!==undefined&&m.noStandardDescriptorAccessor!==false)
-                        w.uint32(16).bool(m.noStandardDescriptorAccessor)
-                    if(m.deprecated!==undefined&&m.deprecated!==false)
-                        w.uint32(24).bool(m.deprecated)
-                    if(m.mapEntry!==undefined&&m.mapEntry!==false)
-                        w.uint32(56).bool(m.mapEntry)
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[4].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            MessageOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.messageSetWireFormat !== undefined && message.messageSetWireFormat !== false)
+                    writer.uint32(8).bool(message.messageSetWireFormat)
+                if (message.noStandardDescriptorAccessor !== undefined && message.noStandardDescriptorAccessor !== false)
+                    writer.uint32(16).bool(message.noStandardDescriptorAccessor)
+                if (message.deprecated !== undefined && message.deprecated !== false)
+                    writer.uint32(24).bool(message.deprecated)
+                if (message.mapEntry !== undefined && message.mapEntry !== false)
+                    writer.uint32(56).bool(message.mapEntry)
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[4].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Encodes the specified MessageOptions, length delimited.
@@ -7634,42 +6827,35 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MessageOptions} MessageOptions
              */
-            MessageOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.MessageOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.messageSetWireFormat=r.bool()
-                                break
-                            case 2:
-                                m.noStandardDescriptorAccessor=r.bool()
-                                break
-                            case 3:
-                                m.deprecated=r.bool()
-                                break
-                            case 7:
-                                m.mapEntry=r.bool()
-                                break
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[4].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            MessageOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MessageOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.messageSetWireFormat = reader.bool()
+                            break
+                        case 2:
+                            message.noStandardDescriptorAccessor = reader.bool()
+                            break
+                        case 3:
+                            message.deprecated = reader.bool()
+                            break
+                        case 7:
+                            message.mapEntry = reader.bool()
+                            break
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[4].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Decodes a MessageOptions from the specified reader or buffer, length delimited.
@@ -7687,40 +6873,34 @@ $root.google = (function() {
              * @param {google.protobuf.MessageOptions|Object} message MessageOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MessageOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function verify(m) {
-                    if(m.messageSetWireFormat!==undefined){
-                        if(typeof m.messageSetWireFormat!=="boolean")
-                            return"invalid value for field .google.protobuf.MessageOptions.messageSetWireFormat (boolean expected)"
-                    }
-                    if(m.noStandardDescriptorAccessor!==undefined){
-                        if(typeof m.noStandardDescriptorAccessor!=="boolean")
-                            return"invalid value for field .google.protobuf.MessageOptions.noStandardDescriptorAccessor (boolean expected)"
-                    }
-                    if(m.deprecated!==undefined){
-                        if(typeof m.deprecated!=="boolean")
-                            return"invalid value for field .google.protobuf.MessageOptions.deprecated (boolean expected)"
-                    }
-                    if(m.mapEntry!==undefined){
-                        if(typeof m.mapEntry!=="boolean")
-                            return"invalid value for field .google.protobuf.MessageOptions.mapEntry (boolean expected)"
-                    }
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.MessageOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[4].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
-                    }
-                    return null
+            MessageOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.messageSetWireFormat !== undefined) {
+                    if (typeof message.messageSetWireFormat !== "boolean")
+                        return "invalid value for field .google.protobuf.MessageOptions.messageSetWireFormat (boolean expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.noStandardDescriptorAccessor !== undefined) {
+                    if (typeof message.noStandardDescriptorAccessor !== "boolean")
+                        return "invalid value for field .google.protobuf.MessageOptions.noStandardDescriptorAccessor (boolean expected)"
+                }
+                if (message.deprecated !== undefined) {
+                    if (typeof message.deprecated !== "boolean")
+                        return "invalid value for field .google.protobuf.MessageOptions.deprecated (boolean expected)"
+                }
+                if (message.mapEntry !== undefined) {
+                    if (typeof message.mapEntry !== "boolean")
+                        return "invalid value for field .google.protobuf.MessageOptions.mapEntry (boolean expected)"
+                }
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.MessageOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[4].verify(message.uninterpretedOption[i]))
+                            return s
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             return MessageOptions;
         })();
@@ -7802,32 +6982,25 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            FieldOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.FieldOptions.CType",null,"google.protobuf.FieldOptions.JSType",null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.ctype!==undefined&&m.ctype!=="STRING")
-                        w.uint32(8).uint32(m.ctype)
-                    if(m.packed!==undefined&&m.packed!==false)
-                        w.uint32(16).bool(m.packed)
-                    if(m.jstype!==undefined&&m.jstype!=="JS_NORMAL")
-                        w.uint32(48).uint32(m.jstype)
-                    if(m.lazy!==undefined&&m.lazy!==false)
-                        w.uint32(40).bool(m.lazy)
-                    if(m.deprecated!==undefined&&m.deprecated!==false)
-                        w.uint32(24).bool(m.deprecated)
-                    if(m.weak!==undefined&&m.weak!==false)
-                        w.uint32(80).bool(m.weak)
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[6].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            FieldOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.ctype !== undefined && message.ctype !== "STRING")
+                    writer.uint32(8).uint32(message.ctype)
+                if (message.packed !== undefined && message.packed !== false)
+                    writer.uint32(16).bool(message.packed)
+                if (message.jstype !== undefined && message.jstype !== "JS_NORMAL")
+                    writer.uint32(48).uint32(message.jstype)
+                if (message.lazy !== undefined && message.lazy !== false)
+                    writer.uint32(40).bool(message.lazy)
+                if (message.deprecated !== undefined && message.deprecated !== false)
+                    writer.uint32(24).bool(message.deprecated)
+                if (message.weak !== undefined && message.weak !== false)
+                    writer.uint32(80).bool(message.weak)
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[6].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, ["google.protobuf.FieldOptions.CType", null, "google.protobuf.FieldOptions.JSType", null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Encodes the specified FieldOptions, length delimited.
@@ -7846,48 +7019,41 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.FieldOptions} FieldOptions
              */
-            FieldOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.FieldOptions.CType",null,"google.protobuf.FieldOptions.JSType",null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.FieldOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.ctype=r.uint32()
-                                break
-                            case 2:
-                                m.packed=r.bool()
-                                break
-                            case 6:
-                                m.jstype=r.uint32()
-                                break
-                            case 5:
-                                m.lazy=r.bool()
-                                break
-                            case 3:
-                                m.deprecated=r.bool()
-                                break
-                            case 10:
-                                m.weak=r.bool()
-                                break
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[6].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            FieldOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.FieldOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.ctype = reader.uint32()
+                            break
+                        case 2:
+                            message.packed = reader.bool()
+                            break
+                        case 6:
+                            message.jstype = reader.uint32()
+                            break
+                        case 5:
+                            message.lazy = reader.bool()
+                            break
+                        case 3:
+                            message.deprecated = reader.bool()
+                            break
+                        case 10:
+                            message.weak = reader.bool()
+                            break
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[6].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, ["google.protobuf.FieldOptions.CType", null, "google.protobuf.FieldOptions.JSType", null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Decodes a FieldOptions from the specified reader or buffer, length delimited.
@@ -7905,60 +7071,54 @@ $root.google = (function() {
              * @param {google.protobuf.FieldOptions|Object} message FieldOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            FieldOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.FieldOptions.CType",null,"google.protobuf.FieldOptions.JSType",null,null,null,"google.protobuf.UninterpretedOption"]);
-                return function verify(m) {
-                    if(m.ctype!==undefined){
-                        switch(m.ctype){
-                            default:
-                                return"invalid value for field .google.protobuf.FieldOptions.ctype (enum value expected)"
-                            case 0:
-                            case 1:
-                            case 2:
-                                break
-                        }
+            FieldOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.ctype !== undefined) {
+                    switch (message.ctype) {
+                        default:
+                            return "invalid value for field .google.protobuf.FieldOptions.ctype (enum value expected)"
+                        case 0:
+                        case 1:
+                        case 2:
+                            break
                     }
-                    if(m.packed!==undefined){
-                        if(typeof m.packed!=="boolean")
-                            return"invalid value for field .google.protobuf.FieldOptions.packed (boolean expected)"
-                    }
-                    if(m.jstype!==undefined){
-                        switch(m.jstype){
-                            default:
-                                return"invalid value for field .google.protobuf.FieldOptions.jstype (enum value expected)"
-                            case 0:
-                            case 1:
-                            case 2:
-                                break
-                        }
-                    }
-                    if(m.lazy!==undefined){
-                        if(typeof m.lazy!=="boolean")
-                            return"invalid value for field .google.protobuf.FieldOptions.lazy (boolean expected)"
-                    }
-                    if(m.deprecated!==undefined){
-                        if(typeof m.deprecated!=="boolean")
-                            return"invalid value for field .google.protobuf.FieldOptions.deprecated (boolean expected)"
-                    }
-                    if(m.weak!==undefined){
-                        if(typeof m.weak!=="boolean")
-                            return"invalid value for field .google.protobuf.FieldOptions.weak (boolean expected)"
-                    }
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.FieldOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[6].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
-                    }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                if (message.packed !== undefined) {
+                    if (typeof message.packed !== "boolean")
+                        return "invalid value for field .google.protobuf.FieldOptions.packed (boolean expected)"
+                }
+                if (message.jstype !== undefined) {
+                    switch (message.jstype) {
+                        default:
+                            return "invalid value for field .google.protobuf.FieldOptions.jstype (enum value expected)"
+                        case 0:
+                        case 1:
+                        case 2:
+                            break
+                    }
+                }
+                if (message.lazy !== undefined) {
+                    if (typeof message.lazy !== "boolean")
+                        return "invalid value for field .google.protobuf.FieldOptions.lazy (boolean expected)"
+                }
+                if (message.deprecated !== undefined) {
+                    if (typeof message.deprecated !== "boolean")
+                        return "invalid value for field .google.protobuf.FieldOptions.deprecated (boolean expected)"
+                }
+                if (message.weak !== undefined) {
+                    if (typeof message.weak !== "boolean")
+                        return "invalid value for field .google.protobuf.FieldOptions.weak (boolean expected)"
+                }
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.FieldOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[6].verify(message.uninterpretedOption[i]))
+                            return s
+                    }
+                }
+                return null
+            }})($protobuf.util, ["google.protobuf.FieldOptions.CType", null, "google.protobuf.FieldOptions.JSType", null, null, null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * CType values.
@@ -8028,20 +7188,13 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            OneofOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.UninterpretedOption"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[0].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            OneofOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[0].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, ["google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Encodes the specified OneofOptions, length delimited.
@@ -8060,30 +7213,23 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.OneofOptions} OneofOptions
              */
-            OneofOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.UninterpretedOption"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.OneofOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[0].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            OneofOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.OneofOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[0].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, ["google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Decodes a OneofOptions from the specified reader or buffer, length delimited.
@@ -8101,24 +7247,18 @@ $root.google = (function() {
              * @param {google.protobuf.OneofOptions|Object} message OneofOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            OneofOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.UninterpretedOption"]);
-                return function verify(m) {
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.OneofOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[0].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
+            OneofOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.OneofOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[0].verify(message.uninterpretedOption[i]))
+                            return s
                     }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, ["google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             return OneofOptions;
         })();
@@ -8183,26 +7323,19 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.UninterpretedOption",null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.allowAlias!==undefined&&m.allowAlias!==false)
-                        w.uint32(16).bool(m.allowAlias)
-                    if(m.deprecated!==undefined&&m.deprecated!==false)
-                        w.uint32(24).bool(m.deprecated)
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[2].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    if(m[".jspb.test.IsExtension.simpleOption"]!==undefined&&m[".jspb.test.IsExtension.simpleOption"]!=="")
-                        w.uint32(336904306).string(m[".jspb.test.IsExtension.simpleOption"])
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            EnumOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.allowAlias !== undefined && message.allowAlias !== false)
+                    writer.uint32(16).bool(message.allowAlias)
+                if (message.deprecated !== undefined && message.deprecated !== false)
+                    writer.uint32(24).bool(message.deprecated)
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined && message[".jspb.test.IsExtension.simpleOption"] !== "")
+                    writer.uint32(336904306).string(message[".jspb.test.IsExtension.simpleOption"])
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, null, "google.protobuf.UninterpretedOption", null]); /* eslint-enable */
 
             /**
              * Encodes the specified EnumOptions, length delimited.
@@ -8221,39 +7354,32 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumOptions} EnumOptions
              */
-            EnumOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.UninterpretedOption",null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.EnumOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 2:
-                                m.allowAlias=r.bool()
-                                break
-                            case 3:
-                                m.deprecated=r.bool()
-                                break
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[2].decode(r,r.uint32()))
-                                break
-                            case 42113038:
-                                m[".jspb.test.IsExtension.simpleOption"]=r.string()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            EnumOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 2:
+                            message.allowAlias = reader.bool()
+                            break
+                        case 3:
+                            message.deprecated = reader.bool()
+                            break
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[2].decode(reader, reader.uint32()))
+                            break
+                        case 42113038:
+                            message[".jspb.test.IsExtension.simpleOption"] = reader.string()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, null, "google.protobuf.UninterpretedOption", null]); /* eslint-enable */
 
             /**
              * Decodes a EnumOptions from the specified reader or buffer, length delimited.
@@ -8271,36 +7397,30 @@ $root.google = (function() {
              * @param {google.protobuf.EnumOptions|Object} message EnumOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,null,"google.protobuf.UninterpretedOption",null]);
-                return function verify(m) {
-                    if(m.allowAlias!==undefined){
-                        if(typeof m.allowAlias!=="boolean")
-                            return"invalid value for field .google.protobuf.EnumOptions.allowAlias (boolean expected)"
-                    }
-                    if(m.deprecated!==undefined){
-                        if(typeof m.deprecated!=="boolean")
-                            return"invalid value for field .google.protobuf.EnumOptions.deprecated (boolean expected)"
-                    }
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.EnumOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[2].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
-                    }
-                    if(m[".jspb.test.IsExtension.simpleOption"]!==undefined){
-                        if(!util.isString(m[".jspb.test.IsExtension.simpleOption"]))
-                            return"invalid value for field .google.protobuf.EnumOptions..jspb.test.IsExtension.simpleOption (string expected)"
-                    }
-                    return null
+            EnumOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.allowAlias !== undefined) {
+                    if (typeof message.allowAlias !== "boolean")
+                        return "invalid value for field .google.protobuf.EnumOptions.allowAlias (boolean expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.deprecated !== undefined) {
+                    if (typeof message.deprecated !== "boolean")
+                        return "invalid value for field .google.protobuf.EnumOptions.deprecated (boolean expected)"
+                }
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.EnumOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[2].verify(message.uninterpretedOption[i]))
+                            return s
+                    }
+                }
+                if (message[".jspb.test.IsExtension.simpleOption"] !== undefined) {
+                    if (!util.isString(message[".jspb.test.IsExtension.simpleOption"]))
+                        return "invalid value for field .google.protobuf.EnumOptions..jspb.test.IsExtension.simpleOption (string expected)"
+                }
+                return null
+            }})($protobuf.util, [null, null, "google.protobuf.UninterpretedOption", null]); /* eslint-enable */
 
             return EnumOptions;
         })();
@@ -8352,22 +7472,15 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            EnumValueOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.UninterpretedOption"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.deprecated!==undefined&&m.deprecated!==false)
-                        w.uint32(8).bool(m.deprecated)
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[1].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            EnumValueOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.deprecated !== undefined && message.deprecated !== false)
+                    writer.uint32(8).bool(message.deprecated)
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Encodes the specified EnumValueOptions, length delimited.
@@ -8386,33 +7499,26 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.EnumValueOptions} EnumValueOptions
              */
-            EnumValueOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.UninterpretedOption"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.EnumValueOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.deprecated=r.bool()
-                                break
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[1].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            EnumValueOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.EnumValueOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.deprecated = reader.bool()
+                            break
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[1].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Decodes a EnumValueOptions from the specified reader or buffer, length delimited.
@@ -8430,28 +7536,22 @@ $root.google = (function() {
              * @param {google.protobuf.EnumValueOptions|Object} message EnumValueOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            EnumValueOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.UninterpretedOption"]);
-                return function verify(m) {
-                    if(m.deprecated!==undefined){
-                        if(typeof m.deprecated!=="boolean")
-                            return"invalid value for field .google.protobuf.EnumValueOptions.deprecated (boolean expected)"
-                    }
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.EnumValueOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[1].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
-                    }
-                    return null
+            EnumValueOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.deprecated !== undefined) {
+                    if (typeof message.deprecated !== "boolean")
+                        return "invalid value for field .google.protobuf.EnumValueOptions.deprecated (boolean expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.EnumValueOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[1].verify(message.uninterpretedOption[i]))
+                            return s
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             return EnumValueOptions;
         })();
@@ -8503,22 +7603,15 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            ServiceOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.UninterpretedOption"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.deprecated!==undefined&&m.deprecated!==false)
-                        w.uint32(264).bool(m.deprecated)
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[1].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            ServiceOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.deprecated !== undefined && message.deprecated !== false)
+                    writer.uint32(264).bool(message.deprecated)
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[1].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Encodes the specified ServiceOptions, length delimited.
@@ -8537,33 +7630,26 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.ServiceOptions} ServiceOptions
              */
-            ServiceOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.UninterpretedOption"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.ServiceOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 33:
-                                m.deprecated=r.bool()
-                                break
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[1].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            ServiceOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.ServiceOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 33:
+                            message.deprecated = reader.bool()
+                            break
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[1].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Decodes a ServiceOptions from the specified reader or buffer, length delimited.
@@ -8581,28 +7667,22 @@ $root.google = (function() {
              * @param {google.protobuf.ServiceOptions|Object} message ServiceOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            ServiceOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.UninterpretedOption"]);
-                return function verify(m) {
-                    if(m.deprecated!==undefined){
-                        if(typeof m.deprecated!=="boolean")
-                            return"invalid value for field .google.protobuf.ServiceOptions.deprecated (boolean expected)"
-                    }
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.ServiceOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[1].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
-                    }
-                    return null
+            ServiceOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.deprecated !== undefined) {
+                    if (typeof message.deprecated !== "boolean")
+                        return "invalid value for field .google.protobuf.ServiceOptions.deprecated (boolean expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.ServiceOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[1].verify(message.uninterpretedOption[i]))
+                            return s
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             return ServiceOptions;
         })();
@@ -8660,24 +7740,17 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            MethodOptions.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.MethodOptions.IdempotencyLevel","google.protobuf.UninterpretedOption"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.deprecated!==undefined&&m.deprecated!==false)
-                        w.uint32(264).bool(m.deprecated)
-                    if(m.idempotencyLevel!==undefined&&m.idempotencyLevel!=="IDEMPOTENCY_UNKNOWN")
-                        w.uint32(272).uint32(m.idempotencyLevel)
-                    if(m.uninterpretedOption)
-                        for(var i=0;i<m.uninterpretedOption.length;++i)
-                        types[2].encode(m.uninterpretedOption[i],w.uint32(7994).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            MethodOptions.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.deprecated !== undefined && message.deprecated !== false)
+                    writer.uint32(264).bool(message.deprecated)
+                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== "IDEMPOTENCY_UNKNOWN")
+                    writer.uint32(272).uint32(message.idempotencyLevel)
+                if (message.uninterpretedOption)
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i)
+                    types[2].encode(message.uninterpretedOption[i], writer.uint32(7994).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, [null, "google.protobuf.MethodOptions.IdempotencyLevel", "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Encodes the specified MethodOptions, length delimited.
@@ -8696,36 +7769,29 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.MethodOptions} MethodOptions
              */
-            MethodOptions.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.MethodOptions.IdempotencyLevel","google.protobuf.UninterpretedOption"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.MethodOptions
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 33:
-                                m.deprecated=r.bool()
-                                break
-                            case 34:
-                                m.idempotencyLevel=r.uint32()
-                                break
-                            case 999:
-                                m.uninterpretedOption&&m.uninterpretedOption.length||(m.uninterpretedOption=[])
-                                m.uninterpretedOption.push(types[2].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            MethodOptions.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.MethodOptions
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 33:
+                            message.deprecated = reader.bool()
+                            break
+                        case 34:
+                            message.idempotencyLevel = reader.uint32()
+                            break
+                        case 999:
+                            message.uninterpretedOption && message.uninterpretedOption.length || (message.uninterpretedOption = [])
+                            message.uninterpretedOption.push(types[2].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, [null, "google.protobuf.MethodOptions.IdempotencyLevel", "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * Decodes a MethodOptions from the specified reader or buffer, length delimited.
@@ -8743,38 +7809,32 @@ $root.google = (function() {
              * @param {google.protobuf.MethodOptions|Object} message MethodOptions or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            MethodOptions.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = [null,"google.protobuf.MethodOptions.IdempotencyLevel","google.protobuf.UninterpretedOption"]);
-                return function verify(m) {
-                    if(m.deprecated!==undefined){
-                        if(typeof m.deprecated!=="boolean")
-                            return"invalid value for field .google.protobuf.MethodOptions.deprecated (boolean expected)"
-                    }
-                    if(m.idempotencyLevel!==undefined){
-                        switch(m.idempotencyLevel){
-                            default:
-                                return"invalid value for field .google.protobuf.MethodOptions.idempotencyLevel (enum value expected)"
-                            case 0:
-                            case 1:
-                            case 2:
-                                break
-                        }
-                    }
-                    if(m.uninterpretedOption!==undefined){
-                        if(!Array.isArray(m.uninterpretedOption))
-                            return"invalid value for field .google.protobuf.MethodOptions.uninterpretedOption (array expected)"
-                        for(var i=0;i<m.uninterpretedOption.length;++i){
-                            var r;
-                            if(r=types[2].verify(m.uninterpretedOption[i]))
-                                return r
-                        }
-                    }
-                    return null
+            MethodOptions.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.deprecated !== undefined) {
+                    if (typeof message.deprecated !== "boolean")
+                        return "invalid value for field .google.protobuf.MethodOptions.deprecated (boolean expected)"
                 }
-                /* eslint-enable */
-            })();
+                if (message.idempotencyLevel !== undefined) {
+                    switch (message.idempotencyLevel) {
+                        default:
+                            return "invalid value for field .google.protobuf.MethodOptions.idempotencyLevel (enum value expected)"
+                        case 0:
+                        case 1:
+                        case 2:
+                            break
+                    }
+                }
+                if (message.uninterpretedOption !== undefined) {
+                    if (!Array.isArray(message.uninterpretedOption))
+                        return "invalid value for field .google.protobuf.MethodOptions.uninterpretedOption (array expected)"
+                    for (var i = 0; i < message.uninterpretedOption.length; ++i) {
+                        var s;
+                        if (s = types[2].verify(message.uninterpretedOption[i]))
+                            return s
+                    }
+                }
+                return null
+            }})($protobuf.util, [null, "google.protobuf.MethodOptions.IdempotencyLevel", "google.protobuf.UninterpretedOption"]); /* eslint-enable */
 
             /**
              * IdempotencyLevel values.
@@ -8868,32 +7928,25 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            UninterpretedOption.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.UninterpretedOption.NamePart",null,null,null,null,null,null]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.name)
-                        for(var i=0;i<m.name.length;++i)
-                        types[0].encode(m.name[i],w.uint32(18).fork()).ldelim()
-                    if(m.identifierValue!==undefined&&m.identifierValue!=="")
-                        w.uint32(26).string(m.identifierValue)
-                    if(m.positiveIntValue!==undefined&&m.positiveIntValue!==null&&util.longNe(m.positiveIntValue,0,0))
-                        w.uint32(32).uint64(m.positiveIntValue)
-                    if(m.negativeIntValue!==undefined&&m.negativeIntValue!==null&&util.longNe(m.negativeIntValue,0,0))
-                        w.uint32(40).int64(m.negativeIntValue)
-                    if(m.doubleValue!==undefined&&m.doubleValue!==0)
-                        w.uint32(49).double(m.doubleValue)
-                    if(m.stringValue!==undefined&&m.stringValue!==[])
-                        w.uint32(58).bytes(m.stringValue)
-                    if(m.aggregateValue!==undefined&&m.aggregateValue!=="")
-                        w.uint32(66).string(m.aggregateValue)
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            UninterpretedOption.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.name)
+                    for (var i = 0; i < message.name.length; ++i)
+                    types[0].encode(message.name[i], writer.uint32(18).fork()).ldelim()
+                if (message.identifierValue !== undefined && message.identifierValue !== "")
+                    writer.uint32(26).string(message.identifierValue)
+                if (message.positiveIntValue !== undefined && message.positiveIntValue !== null && util.longNe(message.positiveIntValue, 0, 0))
+                    writer.uint32(32).uint64(message.positiveIntValue)
+                if (message.negativeIntValue !== undefined && message.negativeIntValue !== null && util.longNe(message.negativeIntValue, 0, 0))
+                    writer.uint32(40).int64(message.negativeIntValue)
+                if (message.doubleValue !== undefined && message.doubleValue !== 0)
+                    writer.uint32(49).double(message.doubleValue)
+                if (message.stringValue !== undefined && message.stringValue !== [])
+                    writer.uint32(58).bytes(message.stringValue)
+                if (message.aggregateValue !== undefined && message.aggregateValue !== "")
+                    writer.uint32(66).string(message.aggregateValue)
+                return writer
+            }})($protobuf.Writer, $protobuf.util, ["google.protobuf.UninterpretedOption.NamePart", null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Encodes the specified UninterpretedOption, length delimited.
@@ -8912,48 +7965,41 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.UninterpretedOption} UninterpretedOption
              */
-            UninterpretedOption.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.UninterpretedOption.NamePart",null,null,null,null,null,null]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.UninterpretedOption
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 2:
-                                m.name&&m.name.length||(m.name=[])
-                                m.name.push(types[0].decode(r,r.uint32()))
-                                break
-                            case 3:
-                                m.identifierValue=r.string()
-                                break
-                            case 4:
-                                m.positiveIntValue=r.uint64()
-                                break
-                            case 5:
-                                m.negativeIntValue=r.int64()
-                                break
-                            case 6:
-                                m.doubleValue=r.double()
-                                break
-                            case 7:
-                                m.stringValue=r.bytes()
-                                break
-                            case 8:
-                                m.aggregateValue=r.string()
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            UninterpretedOption.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.UninterpretedOption
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 2:
+                            message.name && message.name.length || (message.name = [])
+                            message.name.push(types[0].decode(reader, reader.uint32()))
+                            break
+                        case 3:
+                            message.identifierValue = reader.string()
+                            break
+                        case 4:
+                            message.positiveIntValue = reader.uint64()
+                            break
+                        case 5:
+                            message.negativeIntValue = reader.int64()
+                            break
+                        case 6:
+                            message.doubleValue = reader.double()
+                            break
+                        case 7:
+                            message.stringValue = reader.bytes()
+                            break
+                        case 8:
+                            message.aggregateValue = reader.string()
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, ["google.protobuf.UninterpretedOption.NamePart", null, null, null, null, null, null]); /* eslint-enable */
 
             /**
              * Decodes a UninterpretedOption from the specified reader or buffer, length delimited.
@@ -8971,48 +8017,42 @@ $root.google = (function() {
              * @param {google.protobuf.UninterpretedOption|Object} message UninterpretedOption or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            UninterpretedOption.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.UninterpretedOption.NamePart",null,null,null,null,null,null]);
-                return function verify(m) {
-                    if(m.name!==undefined){
-                        if(!Array.isArray(m.name))
-                            return"invalid value for field .google.protobuf.UninterpretedOption.name (array expected)"
-                        for(var i=0;i<m.name.length;++i){
-                            var r;
-                            if(r=types[0].verify(m.name[i]))
-                                return r
-                        }
+            UninterpretedOption.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.name !== undefined) {
+                    if (!Array.isArray(message.name))
+                        return "invalid value for field .google.protobuf.UninterpretedOption.name (array expected)"
+                    for (var i = 0; i < message.name.length; ++i) {
+                        var s;
+                        if (s = types[0].verify(message.name[i]))
+                            return s
                     }
-                    if(m.identifierValue!==undefined){
-                        if(!util.isString(m.identifierValue))
-                            return"invalid value for field .google.protobuf.UninterpretedOption.identifierValue (string expected)"
-                    }
-                    if(m.positiveIntValue!==undefined){
-                        if(!util.isInteger(m.positiveIntValue)&&!(m.positiveIntValue&&util.isInteger(m.positiveIntValue.low)&&util.isInteger(m.positiveIntValue.high)))
-                            return"invalid value for field .google.protobuf.UninterpretedOption.positiveIntValue (integer|Long expected)"
-                    }
-                    if(m.negativeIntValue!==undefined){
-                        if(!util.isInteger(m.negativeIntValue)&&!(m.negativeIntValue&&util.isInteger(m.negativeIntValue.low)&&util.isInteger(m.negativeIntValue.high)))
-                            return"invalid value for field .google.protobuf.UninterpretedOption.negativeIntValue (integer|Long expected)"
-                    }
-                    if(m.doubleValue!==undefined){
-                        if(typeof m.doubleValue!=="number")
-                            return"invalid value for field .google.protobuf.UninterpretedOption.doubleValue (number expected)"
-                    }
-                    if(m.stringValue!==undefined){
-                        if(!(m.stringValue&&typeof m.stringValue.length==="number"||util.isString(m.stringValue)))
-                            return"invalid value for field .google.protobuf.UninterpretedOption.stringValue (buffer expected)"
-                    }
-                    if(m.aggregateValue!==undefined){
-                        if(!util.isString(m.aggregateValue))
-                            return"invalid value for field .google.protobuf.UninterpretedOption.aggregateValue (string expected)"
-                    }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                if (message.identifierValue !== undefined) {
+                    if (!util.isString(message.identifierValue))
+                        return "invalid value for field .google.protobuf.UninterpretedOption.identifierValue (string expected)"
+                }
+                if (message.positiveIntValue !== undefined) {
+                    if (!util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && util.isInteger(message.positiveIntValue.low) && util.isInteger(message.positiveIntValue.high)))
+                        return "invalid value for field .google.protobuf.UninterpretedOption.positiveIntValue (integer | Long expected)"
+                }
+                if (message.negativeIntValue !== undefined) {
+                    if (!util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && util.isInteger(message.negativeIntValue.low) && util.isInteger(message.negativeIntValue.high)))
+                        return "invalid value for field .google.protobuf.UninterpretedOption.negativeIntValue (integer | Long expected)"
+                }
+                if (message.doubleValue !== undefined) {
+                    if (typeof message.doubleValue !== "number")
+                        return "invalid value for field .google.protobuf.UninterpretedOption.doubleValue (number expected)"
+                }
+                if (message.stringValue !== undefined) {
+                    if (!(message.stringValue && typeof message.stringValue.length === "number" || util.isString(message.stringValue)))
+                        return "invalid value for field .google.protobuf.UninterpretedOption.stringValue (buffer expected)"
+                }
+                if (message.aggregateValue !== undefined) {
+                    if (!util.isString(message.aggregateValue))
+                        return "invalid value for field .google.protobuf.UninterpretedOption.aggregateValue (string expected)"
+                }
+                return null
+            }})($protobuf.util, ["google.protobuf.UninterpretedOption.NamePart", null, null, null, null, null, null]); /* eslint-enable */
 
             UninterpretedOption.NamePart = (function() {
 
@@ -9061,19 +8101,12 @@ $root.google = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                NamePart.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        w.uint32(10).string(m.namePart)
-                        w.uint32(16).bool(m.isExtension)
-                        return w
-                    }
-                    /* eslint-enable */
-                })();
+                NamePart.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    writer.uint32(10).string(message.namePart)
+                    writer.uint32(16).bool(message.isExtension)
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified NamePart, length delimited.
@@ -9092,32 +8125,25 @@ $root.google = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.UninterpretedOption.NamePart} NamePart
                  */
-                NamePart.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.UninterpretedOption.NamePart
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 1:
-                                    m.namePart=r.string()
-                                    break
-                                case 2:
-                                    m.isExtension=r.bool()
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                NamePart.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.UninterpretedOption.NamePart
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 1:
+                                message.namePart = reader.string()
+                                break
+                            case 2:
+                                message.isExtension = reader.bool()
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null, null]); /* eslint-enable */
 
                 /**
                  * Decodes a NamePart from the specified reader or buffer, length delimited.
@@ -9135,19 +8161,13 @@ $root.google = (function() {
                  * @param {google.protobuf.UninterpretedOption.NamePart|Object} message NamePart or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                NamePart.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null]);
-                    return function verify(m) {
-                        if(!util.isString(m.namePart))
-                            return"invalid value for field .google.protobuf.UninterpretedOption.NamePart.namePart (string expected)"
-                        if(typeof m.isExtension!=="boolean")
-                            return"invalid value for field .google.protobuf.UninterpretedOption.NamePart.isExtension (boolean expected)"
-                        return null
-                    }
-                    /* eslint-enable */
-                })();
+                NamePart.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (!util.isString(message.namePart))
+                        return "invalid value for field .google.protobuf.UninterpretedOption.NamePart.namePart (string expected)"
+                    if (typeof message.isExtension !== "boolean")
+                        return "invalid value for field .google.protobuf.UninterpretedOption.NamePart.isExtension (boolean expected)"
+                    return null
+                }})($protobuf.util, [null, null]); /* eslint-enable */
 
                 return NamePart;
             })();
@@ -9196,20 +8216,13 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            SourceCodeInfo.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.SourceCodeInfo.Location"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.location)
-                        for(var i=0;i<m.location.length;++i)
-                        types[0].encode(m.location[i],w.uint32(10).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            SourceCodeInfo.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.location)
+                    for (var i = 0; i < message.location.length; ++i)
+                    types[0].encode(message.location[i], writer.uint32(10).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, ["google.protobuf.SourceCodeInfo.Location"]); /* eslint-enable */
 
             /**
              * Encodes the specified SourceCodeInfo, length delimited.
@@ -9228,30 +8241,23 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.SourceCodeInfo} SourceCodeInfo
              */
-            SourceCodeInfo.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.SourceCodeInfo.Location"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.SourceCodeInfo
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.location&&m.location.length||(m.location=[])
-                                m.location.push(types[0].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            SourceCodeInfo.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.SourceCodeInfo
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.location && message.location.length || (message.location = [])
+                            message.location.push(types[0].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, ["google.protobuf.SourceCodeInfo.Location"]); /* eslint-enable */
 
             /**
              * Decodes a SourceCodeInfo from the specified reader or buffer, length delimited.
@@ -9269,24 +8275,18 @@ $root.google = (function() {
              * @param {google.protobuf.SourceCodeInfo|Object} message SourceCodeInfo or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            SourceCodeInfo.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.SourceCodeInfo.Location"]);
-                return function verify(m) {
-                    if(m.location!==undefined){
-                        if(!Array.isArray(m.location))
-                            return"invalid value for field .google.protobuf.SourceCodeInfo.location (array expected)"
-                        for(var i=0;i<m.location.length;++i){
-                            var r;
-                            if(r=types[0].verify(m.location[i]))
-                                return r
-                        }
+            SourceCodeInfo.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.location !== undefined) {
+                    if (!Array.isArray(message.location))
+                        return "invalid value for field .google.protobuf.SourceCodeInfo.location (array expected)"
+                    for (var i = 0; i < message.location.length; ++i) {
+                        var s;
+                        if (s = types[0].verify(message.location[i]))
+                            return s
                     }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, ["google.protobuf.SourceCodeInfo.Location"]); /* eslint-enable */
 
             SourceCodeInfo.Location = (function() {
 
@@ -9353,36 +8353,29 @@ $root.google = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Location.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null,null,null,null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        if(m.path&&m.path.length){
-                            w.uint32(10).fork()
-                            for(var i=0;i<m.path.length;++i)
-                                w.int32(m.path[i])
-                            w.ldelim()
-                        }
-                        if(m.span&&m.span.length){
-                            w.uint32(18).fork()
-                            for(var i=0;i<m.span.length;++i)
-                                w.int32(m.span[i])
-                            w.ldelim()
-                        }
-                        if(m.leadingComments!==undefined&&m.leadingComments!=="")
-                            w.uint32(26).string(m.leadingComments)
-                        if(m.trailingComments!==undefined&&m.trailingComments!=="")
-                            w.uint32(34).string(m.trailingComments)
-                        if(m.leadingDetachedComments)
-                            for(var i=0;i<m.leadingDetachedComments.length;++i)
-                            w.uint32(50).string(m.leadingDetachedComments[i])
-                        return w
+                Location.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    if (message.path && message.path.length) {
+                        writer.uint32(10).fork()
+                        for (var i = 0; i < message.path.length; ++i)
+                            writer.int32(message.path[i])
+                        writer.ldelim()
                     }
-                    /* eslint-enable */
-                })();
+                    if (message.span && message.span.length) {
+                        writer.uint32(18).fork()
+                        for (var i = 0; i < message.span.length; ++i)
+                            writer.int32(message.span[i])
+                        writer.ldelim()
+                    }
+                    if (message.leadingComments !== undefined && message.leadingComments !== "")
+                        writer.uint32(26).string(message.leadingComments)
+                    if (message.trailingComments !== undefined && message.trailingComments !== "")
+                        writer.uint32(34).string(message.trailingComments)
+                    if (message.leadingDetachedComments)
+                        for (var i = 0; i < message.leadingDetachedComments.length; ++i)
+                        writer.uint32(50).string(message.leadingDetachedComments[i])
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified Location, length delimited.
@@ -9401,54 +8394,47 @@ $root.google = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.SourceCodeInfo.Location} Location
                  */
-                Location.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null,null,null,null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.SourceCodeInfo.Location
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 1:
-                                    m.path&&m.path.length||(m.path=[])
-                                    if((t&7)===2){
-                                        var e=r.uint32()+r.pos
-                                        while(r.pos<e)
-                                            m.path.push(r.int32())
-                                    }else
-                                        m.path.push(r.int32())
-                                    break
-                                case 2:
-                                    m.span&&m.span.length||(m.span=[])
-                                    if((t&7)===2){
-                                        var e=r.uint32()+r.pos
-                                        while(r.pos<e)
-                                            m.span.push(r.int32())
-                                    }else
-                                        m.span.push(r.int32())
-                                    break
-                                case 3:
-                                    m.leadingComments=r.string()
-                                    break
-                                case 4:
-                                    m.trailingComments=r.string()
-                                    break
-                                case 6:
-                                    m.leadingDetachedComments&&m.leadingDetachedComments.length||(m.leadingDetachedComments=[])
-                                    m.leadingDetachedComments.push(r.string())
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                Location.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.SourceCodeInfo.Location
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 1:
+                                message.path && message.path.length || (message.path = [])
+                                if ((tag & 7) === 2) {
+                                    var e = reader.uint32()+reader.pos
+                                    while (reader.pos < e)
+                                        message.path.push(reader.int32())
+                                }else
+                                    message.path.push(reader.int32())
+                                break
+                            case 2:
+                                message.span && message.span.length || (message.span = [])
+                                if ((tag & 7) === 2) {
+                                    var e = reader.uint32()+reader.pos
+                                    while (reader.pos < e)
+                                        message.span.push(reader.int32())
+                                }else
+                                    message.span.push(reader.int32())
+                                break
+                            case 3:
+                                message.leadingComments = reader.string()
+                                break
+                            case 4:
+                                message.trailingComments = reader.string()
+                                break
+                            case 6:
+                                message.leadingDetachedComments && message.leadingDetachedComments.length || (message.leadingDetachedComments = [])
+                                message.leadingDetachedComments.push(reader.string())
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null, null, null, null, null]); /* eslint-enable */
 
                 /**
                  * Decodes a Location from the specified reader or buffer, length delimited.
@@ -9466,47 +8452,41 @@ $root.google = (function() {
                  * @param {google.protobuf.SourceCodeInfo.Location|Object} message Location or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Location.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null,null,null,null]);
-                    return function verify(m) {
-                        if(m.path!==undefined){
-                            if(!Array.isArray(m.path))
-                                return"invalid value for field .google.protobuf.SourceCodeInfo.Location.path (array expected)"
-                            for(var i=0;i<m.path.length;++i){
-                                if(!util.isInteger(m.path[i]))
-                                    return"invalid value for field .google.protobuf.SourceCodeInfo.Location.path (integer[] expected)"
-                            }
+                Location.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (message.path !== undefined) {
+                        if (!Array.isArray(message.path))
+                            return "invalid value for field .google.protobuf.SourceCodeInfo.Location.path (array expected)"
+                        for (var i = 0; i < message.path.length; ++i) {
+                            if (!util.isInteger(message.path[i]))
+                                return "invalid value for field .google.protobuf.SourceCodeInfo.Location.path (integer[] expected)"
                         }
-                        if(m.span!==undefined){
-                            if(!Array.isArray(m.span))
-                                return"invalid value for field .google.protobuf.SourceCodeInfo.Location.span (array expected)"
-                            for(var i=0;i<m.span.length;++i){
-                                if(!util.isInteger(m.span[i]))
-                                    return"invalid value for field .google.protobuf.SourceCodeInfo.Location.span (integer[] expected)"
-                            }
-                        }
-                        if(m.leadingComments!==undefined){
-                            if(!util.isString(m.leadingComments))
-                                return"invalid value for field .google.protobuf.SourceCodeInfo.Location.leadingComments (string expected)"
-                        }
-                        if(m.trailingComments!==undefined){
-                            if(!util.isString(m.trailingComments))
-                                return"invalid value for field .google.protobuf.SourceCodeInfo.Location.trailingComments (string expected)"
-                        }
-                        if(m.leadingDetachedComments!==undefined){
-                            if(!Array.isArray(m.leadingDetachedComments))
-                                return"invalid value for field .google.protobuf.SourceCodeInfo.Location.leadingDetachedComments (array expected)"
-                            for(var i=0;i<m.leadingDetachedComments.length;++i){
-                                if(!util.isString(m.leadingDetachedComments[i]))
-                                    return"invalid value for field .google.protobuf.SourceCodeInfo.Location.leadingDetachedComments (string[] expected)"
-                            }
-                        }
-                        return null
                     }
-                    /* eslint-enable */
-                })();
+                    if (message.span !== undefined) {
+                        if (!Array.isArray(message.span))
+                            return "invalid value for field .google.protobuf.SourceCodeInfo.Location.span (array expected)"
+                        for (var i = 0; i < message.span.length; ++i) {
+                            if (!util.isInteger(message.span[i]))
+                                return "invalid value for field .google.protobuf.SourceCodeInfo.Location.span (integer[] expected)"
+                        }
+                    }
+                    if (message.leadingComments !== undefined) {
+                        if (!util.isString(message.leadingComments))
+                            return "invalid value for field .google.protobuf.SourceCodeInfo.Location.leadingComments (string expected)"
+                    }
+                    if (message.trailingComments !== undefined) {
+                        if (!util.isString(message.trailingComments))
+                            return "invalid value for field .google.protobuf.SourceCodeInfo.Location.trailingComments (string expected)"
+                    }
+                    if (message.leadingDetachedComments !== undefined) {
+                        if (!Array.isArray(message.leadingDetachedComments))
+                            return "invalid value for field .google.protobuf.SourceCodeInfo.Location.leadingDetachedComments (array expected)"
+                        for (var i = 0; i < message.leadingDetachedComments.length; ++i) {
+                            if (!util.isString(message.leadingDetachedComments[i]))
+                                return "invalid value for field .google.protobuf.SourceCodeInfo.Location.leadingDetachedComments (string[] expected)"
+                        }
+                    }
+                    return null
+                }})($protobuf.util, [null, null, null, null, null]); /* eslint-enable */
 
                 return Location;
             })();
@@ -9555,20 +8535,13 @@ $root.google = (function() {
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            GeneratedCodeInfo.encode = (function() {
-                /* eslint-disable */
-                var Writer = $protobuf.Writer;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.GeneratedCodeInfo.Annotation"]);
-                return function encode(m, w) {
-                    w||(w=Writer.create())
-                    if(m.annotation)
-                        for(var i=0;i<m.annotation.length;++i)
-                        types[0].encode(m.annotation[i],w.uint32(10).fork()).ldelim()
-                    return w
-                }
-                /* eslint-enable */
-            })();
+            GeneratedCodeInfo.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                writer || (writer = Writer.create())
+                if (message.annotation)
+                    for (var i = 0; i < message.annotation.length; ++i)
+                    types[0].encode(message.annotation[i], writer.uint32(10).fork()).ldelim()
+                return writer
+            }})($protobuf.Writer, $protobuf.util, ["google.protobuf.GeneratedCodeInfo.Annotation"]); /* eslint-enable */
 
             /**
              * Encodes the specified GeneratedCodeInfo, length delimited.
@@ -9587,30 +8560,23 @@ $root.google = (function() {
              * @param {number} [length] Message length if known beforehand
              * @returns {google.protobuf.GeneratedCodeInfo} GeneratedCodeInfo
              */
-            GeneratedCodeInfo.decode = (function() {
-                /* eslint-disable */
-                var Reader = $protobuf.Reader;
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.GeneratedCodeInfo.Annotation"]);
-                return function decode(r, l) {
-                    r instanceof Reader||(r=Reader.create(r))
-                    var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.GeneratedCodeInfo
-                    while(r.pos<c){
-                        var t=r.uint32()
-                        switch(t>>>3){
-                            case 1:
-                                m.annotation&&m.annotation.length||(m.annotation=[])
-                                m.annotation.push(types[0].decode(r,r.uint32()))
-                                break
-                            default:
-                                r.skipType(t&7)
-                                break
-                        }
+            GeneratedCodeInfo.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                reader instanceof Reader || (reader = Reader.create(reader))
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.GeneratedCodeInfo
+                while (reader.pos < end) {
+                    var tag = reader.uint32()
+                    switch (tag >>> 3) {
+                        case 1:
+                            message.annotation && message.annotation.length || (message.annotation = [])
+                            message.annotation.push(types[0].decode(reader, reader.uint32()))
+                            break
+                        default:
+                            reader.skipType(tag & 7)
+                            break
                     }
-                    return m
                 }
-                /* eslint-enable */
-            })();
+                return message
+            }})($protobuf.Reader, $protobuf.util, ["google.protobuf.GeneratedCodeInfo.Annotation"]); /* eslint-enable */
 
             /**
              * Decodes a GeneratedCodeInfo from the specified reader or buffer, length delimited.
@@ -9628,24 +8594,18 @@ $root.google = (function() {
              * @param {google.protobuf.GeneratedCodeInfo|Object} message GeneratedCodeInfo or plain object to verify
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
-            GeneratedCodeInfo.verify = (function() {
-                /* eslint-disable */
-                var util = $protobuf.util;
-                var types; $lazyTypes.push(types = ["google.protobuf.GeneratedCodeInfo.Annotation"]);
-                return function verify(m) {
-                    if(m.annotation!==undefined){
-                        if(!Array.isArray(m.annotation))
-                            return"invalid value for field .google.protobuf.GeneratedCodeInfo.annotation (array expected)"
-                        for(var i=0;i<m.annotation.length;++i){
-                            var r;
-                            if(r=types[0].verify(m.annotation[i]))
-                                return r
-                        }
+            GeneratedCodeInfo.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                if (message.annotation !== undefined) {
+                    if (!Array.isArray(message.annotation))
+                        return "invalid value for field .google.protobuf.GeneratedCodeInfo.annotation (array expected)"
+                    for (var i = 0; i < message.annotation.length; ++i) {
+                        var s;
+                        if (s = types[0].verify(message.annotation[i]))
+                            return s
                     }
-                    return null
                 }
-                /* eslint-enable */
-            })();
+                return null
+            }})($protobuf.util, ["google.protobuf.GeneratedCodeInfo.Annotation"]); /* eslint-enable */
 
             GeneratedCodeInfo.Annotation = (function() {
 
@@ -9706,29 +8666,22 @@ $root.google = (function() {
                  * @param {$protobuf.Writer} [writer] Writer to encode to
                  * @returns {$protobuf.Writer} Writer
                  */
-                Annotation.encode = (function() {
-                    /* eslint-disable */
-                    var Writer = $protobuf.Writer;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null,null,null]);
-                    return function encode(m, w) {
-                        w||(w=Writer.create())
-                        if(m.path&&m.path.length){
-                            w.uint32(10).fork()
-                            for(var i=0;i<m.path.length;++i)
-                                w.int32(m.path[i])
-                            w.ldelim()
-                        }
-                        if(m.sourceFile!==undefined&&m.sourceFile!=="")
-                            w.uint32(18).string(m.sourceFile)
-                        if(m.begin!==undefined&&m.begin!==0)
-                            w.uint32(24).int32(m.begin)
-                        if(m.end!==undefined&&m.end!==0)
-                            w.uint32(32).int32(m.end)
-                        return w
+                Annotation.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+                    writer || (writer = Writer.create())
+                    if (message.path && message.path.length) {
+                        writer.uint32(10).fork()
+                        for (var i = 0; i < message.path.length; ++i)
+                            writer.int32(message.path[i])
+                        writer.ldelim()
                     }
-                    /* eslint-enable */
-                })();
+                    if (message.sourceFile !== undefined && message.sourceFile !== "")
+                        writer.uint32(18).string(message.sourceFile)
+                    if (message.begin !== undefined && message.begin !== 0)
+                        writer.uint32(24).int32(message.begin)
+                    if (message.end !== undefined && message.end !== 0)
+                        writer.uint32(32).int32(message.end)
+                    return writer
+                }})($protobuf.Writer, $protobuf.util, [null, null, null, null]); /* eslint-enable */
 
                 /**
                  * Encodes the specified Annotation, length delimited.
@@ -9747,44 +8700,37 @@ $root.google = (function() {
                  * @param {number} [length] Message length if known beforehand
                  * @returns {google.protobuf.GeneratedCodeInfo.Annotation} Annotation
                  */
-                Annotation.decode = (function() {
-                    /* eslint-disable */
-                    var Reader = $protobuf.Reader;
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null,null,null]);
-                    return function decode(r, l) {
-                        r instanceof Reader||(r=Reader.create(r))
-                        var c=l===undefined?r.len:r.pos+l,m=new $root.google.protobuf.GeneratedCodeInfo.Annotation
-                        while(r.pos<c){
-                            var t=r.uint32()
-                            switch(t>>>3){
-                                case 1:
-                                    m.path&&m.path.length||(m.path=[])
-                                    if((t&7)===2){
-                                        var e=r.uint32()+r.pos
-                                        while(r.pos<e)
-                                            m.path.push(r.int32())
-                                    }else
-                                        m.path.push(r.int32())
-                                    break
-                                case 2:
-                                    m.sourceFile=r.string()
-                                    break
-                                case 3:
-                                    m.begin=r.int32()
-                                    break
-                                case 4:
-                                    m.end=r.int32()
-                                    break
-                                default:
-                                    r.skipType(t&7)
-                                    break
-                            }
+                Annotation.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+                    reader instanceof Reader || (reader = Reader.create(reader))
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.google.protobuf.GeneratedCodeInfo.Annotation
+                    while (reader.pos < end) {
+                        var tag = reader.uint32()
+                        switch (tag >>> 3) {
+                            case 1:
+                                message.path && message.path.length || (message.path = [])
+                                if ((tag & 7) === 2) {
+                                    var e = reader.uint32()+reader.pos
+                                    while (reader.pos < e)
+                                        message.path.push(reader.int32())
+                                }else
+                                    message.path.push(reader.int32())
+                                break
+                            case 2:
+                                message.sourceFile = reader.string()
+                                break
+                            case 3:
+                                message.begin = reader.int32()
+                                break
+                            case 4:
+                                message.end = reader.int32()
+                                break
+                            default:
+                                reader.skipType(tag & 7)
+                                break
                         }
-                        return m
                     }
-                    /* eslint-enable */
-                })();
+                    return message
+                }})($protobuf.Reader, $protobuf.util, [null, null, null, null]); /* eslint-enable */
 
                 /**
                  * Decodes a Annotation from the specified reader or buffer, length delimited.
@@ -9802,35 +8748,29 @@ $root.google = (function() {
                  * @param {google.protobuf.GeneratedCodeInfo.Annotation|Object} message Annotation or plain object to verify
                  * @returns {?string} `null` if valid, otherwise the reason why it is not
                  */
-                Annotation.verify = (function() {
-                    /* eslint-disable */
-                    var util = $protobuf.util;
-                    var types; $lazyTypes.push(types = [null,null,null,null]);
-                    return function verify(m) {
-                        if(m.path!==undefined){
-                            if(!Array.isArray(m.path))
-                                return"invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.path (array expected)"
-                            for(var i=0;i<m.path.length;++i){
-                                if(!util.isInteger(m.path[i]))
-                                    return"invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.path (integer[] expected)"
-                            }
+                Annotation.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+                    if (message.path !== undefined) {
+                        if (!Array.isArray(message.path))
+                            return "invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.path (array expected)"
+                        for (var i = 0; i < message.path.length; ++i) {
+                            if (!util.isInteger(message.path[i]))
+                                return "invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.path (integer[] expected)"
                         }
-                        if(m.sourceFile!==undefined){
-                            if(!util.isString(m.sourceFile))
-                                return"invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.sourceFile (string expected)"
-                        }
-                        if(m.begin!==undefined){
-                            if(!util.isInteger(m.begin))
-                                return"invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.begin (integer expected)"
-                        }
-                        if(m.end!==undefined){
-                            if(!util.isInteger(m.end))
-                                return"invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.end (integer expected)"
-                        }
-                        return null
                     }
-                    /* eslint-enable */
-                })();
+                    if (message.sourceFile !== undefined) {
+                        if (!util.isString(message.sourceFile))
+                            return "invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.sourceFile (string expected)"
+                    }
+                    if (message.begin !== undefined) {
+                        if (!util.isInteger(message.begin))
+                            return "invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.begin (integer expected)"
+                    }
+                    if (message.end !== undefined) {
+                        if (!util.isInteger(message.end))
+                            return "invalid value for field .google.protobuf.GeneratedCodeInfo.Annotation.end (integer expected)"
+                    }
+                    return null
+                }})($protobuf.util, [null, null, null, null]); /* eslint-enable */
 
                 return Annotation;
             })();

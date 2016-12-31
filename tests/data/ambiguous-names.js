@@ -49,19 +49,12 @@ $root.A = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    A.encode = (function() {
-        /* eslint-disable */
-        var Writer = $protobuf.Writer;
-        var util = $protobuf.util;
-        var types; $lazyTypes.push(types = [null]);
-        return function encode(m, w) {
-            w||(w=Writer.create())
-            if(m.whatever!==undefined&&m.whatever!=="")
-                w.uint32(10).string(m.whatever)
-            return w
-        }
-        /* eslint-enable */
-    })();
+    A.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+        writer || (writer = Writer.create())
+        if (message.whatever !== undefined && message.whatever !== "")
+            writer.uint32(10).string(message.whatever)
+        return writer
+    }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
 
     /**
      * Encodes the specified A, length delimited.
@@ -80,29 +73,22 @@ $root.A = (function() {
      * @param {number} [length] Message length if known beforehand
      * @returns {A} A
      */
-    A.decode = (function() {
-        /* eslint-disable */
-        var Reader = $protobuf.Reader;
-        var util = $protobuf.util;
-        var types; $lazyTypes.push(types = [null]);
-        return function decode(r, l) {
-            r instanceof Reader||(r=Reader.create(r))
-            var c=l===undefined?r.len:r.pos+l,m=new $root.A
-            while(r.pos<c){
-                var t=r.uint32()
-                switch(t>>>3){
-                    case 1:
-                        m.whatever=r.string()
-                        break
-                    default:
-                        r.skipType(t&7)
-                        break
-                }
+    A.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+        reader instanceof Reader || (reader = Reader.create(reader))
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.A
+        while (reader.pos < end) {
+            var tag = reader.uint32()
+            switch (tag >>> 3) {
+                case 1:
+                    message.whatever = reader.string()
+                    break
+                default:
+                    reader.skipType(tag & 7)
+                    break
             }
-            return m
         }
-        /* eslint-enable */
-    })();
+        return message
+    }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
 
     /**
      * Decodes a A from the specified reader or buffer, length delimited.
@@ -120,19 +106,13 @@ $root.A = (function() {
      * @param {A|Object} message A or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    A.verify = (function() {
-        /* eslint-disable */
-        var util = $protobuf.util;
-        var types; $lazyTypes.push(types = [null]);
-        return function verify(m) {
-            if(m.whatever!==undefined){
-                if(!util.isString(m.whatever))
-                    return"invalid value for field .A.whatever (string expected)"
-            }
-            return null
+    A.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+        if (message.whatever !== undefined) {
+            if (!util.isString(message.whatever))
+                return "invalid value for field .A.whatever (string expected)"
         }
-        /* eslint-enable */
-    })();
+        return null
+    }})($protobuf.util, [null]); /* eslint-enable */
 
     return A;
 })();
@@ -178,19 +158,12 @@ $root.B = (function() {
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    B.encode = (function() {
-        /* eslint-disable */
-        var Writer = $protobuf.Writer;
-        var util = $protobuf.util;
-        var types; $lazyTypes.push(types = ["A"]);
-        return function encode(m, w) {
-            w||(w=Writer.create())
-            if(m.A!==undefined&&m.A!==null)
-                types[0].encode(m.A,w.uint32(10).fork()).ldelim()
-            return w
-        }
-        /* eslint-enable */
-    })();
+    B.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
+        writer || (writer = Writer.create())
+        if (message.A !== undefined && message.A !== null)
+            types[0].encode(message.A, writer.uint32(10).fork()).ldelim()
+        return writer
+    }})($protobuf.Writer, $protobuf.util, ["A"]); /* eslint-enable */
 
     /**
      * Encodes the specified B, length delimited.
@@ -209,29 +182,22 @@ $root.B = (function() {
      * @param {number} [length] Message length if known beforehand
      * @returns {B} B
      */
-    B.decode = (function() {
-        /* eslint-disable */
-        var Reader = $protobuf.Reader;
-        var util = $protobuf.util;
-        var types; $lazyTypes.push(types = ["A"]);
-        return function decode(r, l) {
-            r instanceof Reader||(r=Reader.create(r))
-            var c=l===undefined?r.len:r.pos+l,m=new $root.B
-            while(r.pos<c){
-                var t=r.uint32()
-                switch(t>>>3){
-                    case 1:
-                        m.A=types[0].decode(r,r.uint32())
-                        break
-                    default:
-                        r.skipType(t&7)
-                        break
-                }
+    B.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
+        reader instanceof Reader || (reader = Reader.create(reader))
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.B
+        while (reader.pos < end) {
+            var tag = reader.uint32()
+            switch (tag >>> 3) {
+                case 1:
+                    message.A = types[0].decode(reader, reader.uint32())
+                    break
+                default:
+                    reader.skipType(tag & 7)
+                    break
             }
-            return m
         }
-        /* eslint-enable */
-    })();
+        return message
+    }})($protobuf.Reader, $protobuf.util, ["A"]); /* eslint-enable */
 
     /**
      * Decodes a B from the specified reader or buffer, length delimited.
@@ -249,20 +215,14 @@ $root.B = (function() {
      * @param {B|Object} message B or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    B.verify = (function() {
-        /* eslint-disable */
-        var util = $protobuf.util;
-        var types; $lazyTypes.push(types = ["A"]);
-        return function verify(m) {
-            if(m.A!==undefined&&m.A!==null){
-                var r;
-                if(r=types[0].verify(m.A))
-                    return r
-            }
-            return null
+    B.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+        if (message.A !== undefined && message.A !== null) {
+            var s;
+            if (s = types[0].verify(message.A))
+                return s
         }
-        /* eslint-enable */
-    })();
+        return null
+    }})($protobuf.util, ["A"]); /* eslint-enable */
 
     return B;
 })();

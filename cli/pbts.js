@@ -46,9 +46,13 @@ exports.main = function(args, callback) {
                 "Generates TypeScript definitions from annotated JavaScript files.",
                 "",
                 "  -n, --name      Wraps everything in a module of the specified name.",
+                "",
                 "  -o, --out       Saves to a file instead of writing to stdout.",
+                "",
                 "  -m, --main      Whether building the main library without any imports.",
+                "",
                 "  -g, --global    Name of the global object in browser environments, if any.",
+                "",
                 "  --no-comments   Does not output any JSDoc comments.",
                 "",
                 "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..."

@@ -133,23 +133,39 @@ function buildNamespace(ref, ns) {
     }
 }
 
+function slightlyBeautify(generatedCode) {
+    return generatedCode
+        .replace(/(!?[=<>|&%?:]+)([^\s])/g, " $1 $2") // a!==b, a&&b, a?b:c etc.
+        .replace(/\b([+-])\b/g," $1 ") // a+b
+        .replace(/\b(if|else|else if|for|while|do|switch)\(/g, "$1 (") // if(a)
+        .replace(/\breturn"/g, "return \"") // return"error"
+        .replace(/([;,])([^\s])/g, "$1 $2") // cond(var a=0;a<b;++b), var a=1,b;
+        .replace(/{$/mg, " {")
+        .replace(/\br\b/g, "reader")
+        .replace(/\bw\b/g, "writer")
+        .replace(/\bm\b/g, "message")
+        .replace(/\bt\b/g, "tag")
+        .replace(/\bl\b/g, "length")
+        .replace(/\bc\b/g, "end")
+        .replace(/\bk\b/g, "key")
+        .replace(/\bks\b/g, "keys");
+}
+
 function buildFunction(type, functionName, gen, scope) {
-    var lines = gen.str(functionName)
-    .replace("(this.getCtor())", " $root" + type.fullName)
-    .split(/\n/g);
-    push(name(type.name) + "." + functionName + " = (function() {");
-    ++indent;
-    push("/* eslint-disable */");
-    Object.keys(scope).forEach(function(key) {
-        push("var " + key + " = " + scope[key] + ";");
-    });
-    push("var types; $lazyTypes.push(types = [" + type.fieldsArray.map(function(field) {
+    var lines = slightlyBeautify(gen.str(functionName)
+        .replace("(this.getCtor())", " $root" + type.fullName))
+        .split(/\n/g);
+
+    // add referenced types to scope
+    scope["types"] = "[" + type.fieldsArray.map(function(field) {
         return field.resolve().resolvedType
             ? JSON.stringify(field.resolvedType.fullName.substring(1))
             : "null";
-    }).join(",") + "]);");
-    push("return " + lines[0]);
-    lines.slice(1).forEach(function(line) {
+    }).join(", ") + "]";
+
+    // enclose all but the first and last line in an iife returning our properly scoped function
+    push(name(type.name) + "." + functionName + " = /* eslint-disable */ (function(" + Object.keys(scope).join(", ") + ") { $lazyTypes.push(types); return " + lines[0]);
+    lines.slice(1, lines.length - 1).forEach(function(line) {
         var prev = indent;
         var i = 0;
         while (line.charAt(i++) === "\t")
@@ -157,9 +173,7 @@ function buildFunction(type, functionName, gen, scope) {
         push(line.trim());
         indent = prev;
     });
-    push("/* eslint-enable */");
-    --indent;
-    push("})();");
+    push("}})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + "); /* eslint-enable */");
 }
 
 function buildType(ref, type) {
