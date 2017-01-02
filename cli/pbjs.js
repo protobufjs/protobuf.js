@@ -26,14 +26,15 @@ exports.main = function(args, callback) {
             root   : "r"
         },
         string: [ "target", "out", "path", "wrap", "root" ],
-        boolean: [ "keep-case", "create", "encode", "decode", "verify", "delimited" ],
+        boolean: [ "keep-case", "create", "encode", "decode", "verify", "delimited", "comments" ],
         default: {
             target: "json",
             create: true,
             encode: true,
             decode: true,
             verify: true,
-            delimited: true
+            delimited: true,
+            comments: true
         }
     });
 
@@ -82,6 +83,7 @@ exports.main = function(args, callback) {
                 "  --no-decode     Does not generate decode functions.",
                 "  --no-verify     Does not generate verify functions.",
                 "  --no-delimited  Does not generate delimited encode/decode functions.",
+                "  --no-comments   Does not output any JSDoc comments.",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..."
             ].join("\n"));

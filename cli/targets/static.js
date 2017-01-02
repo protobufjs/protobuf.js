@@ -70,6 +70,8 @@ function push(line) {
 }
 
 function pushComment(lines) {
+    if (!config.comments)
+        return;
     push("/**");
     lines.forEach(function(line) {
         if (line === null)
