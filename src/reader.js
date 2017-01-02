@@ -51,7 +51,9 @@ Reader.create = util.Buffer
         if (!BufferReader)
             BufferReader = require("./reader_buffer");
         return (Reader.create = function create_buffer(buffer) {
-            return new BufferReader(buffer);
+            return util.Buffer.isBuffer(buffer)
+                ? new BufferReader(buffer)
+                : new Reader(buffer);
         })(buffer);
     }
     /* istanbul ignore next */
