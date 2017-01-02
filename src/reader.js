@@ -487,7 +487,7 @@ ReaderPrototype.skipType = function(wireType) {
 
         /* istanbul ignore next */
         default:
-            throw Error("invalid wire type: " + wireType);
+            throw Error("invalid wire type " + wireType + " at offset " + this.pos);
     }
     return this;
 };
