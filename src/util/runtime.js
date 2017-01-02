@@ -115,23 +115,6 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 };
 
 /**
- * Tests if two possibly long values are not equal.
- * @param {number|Long} a First value
- * @param {number|Long} b Second value
- * @returns {boolean} `true` if not equal
- * @deprecated Use {@link util.longNe|longNe} instead
- */
-util.longNeq = function longNeq(a, b) {
-    return typeof a === "number"
-         ? typeof b === "number"
-            ? a !== b
-            : (a = util.LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
-         : typeof b === "number"
-            ? (b = util.LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
-            : a.low !== b.low || a.high !== b.high;
-};
-
-/**
  * Tests if a possibily long value equals the specified low and high bits.
  * @param {number|string|Long} val Value to test
  * @param {number} lo Low bits to test against
