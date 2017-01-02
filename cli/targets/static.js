@@ -166,8 +166,7 @@ function beautify(code) {
             mangle: false,
             output: {
                 beautify: true,
-                bracketize: true,
-                screw_ie8: false
+                bracketize: true
             }
         }
     ).code.replace(/ {4}/g, "\t");

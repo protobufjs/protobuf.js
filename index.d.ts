@@ -1,5 +1,5 @@
 // $> pbts --main --global protobuf --out index.d.ts src
-// Generated Mon, 02 Jan 2017 13:12:35 UTC
+// Generated Mon, 02 Jan 2017 15:34:42 UTC
 
 export as namespace protobuf;
 
@@ -1049,12 +1049,6 @@ export class OneOf extends ReflectionObject {
     constructor(name: string, fieldNames?: (string[]|Object), options?: { [k: string]: any });
 
     /**
-     * Upper cased name for getter/setter calls.
-     * @type {string}
-     */
-    ucName: string;
-
-    /**
      * Field names that belong to this oneof.
      * @type {string[]}
      */
@@ -1994,6 +1988,13 @@ export namespace util {
          * @throws {Error} If encoding is invalid
          */
         function decode(string: string, buffer: Uint8Array, offset: number): number;
+
+        /**
+         * Tests if the specified string appears to be base64 encoded.
+         * @param {string} string String to test
+         * @returns {boolean} `true` if probably base64 encoded, otherwise false
+         */
+        function test(string: string): boolean;
     }
 
     /**
@@ -2233,13 +2234,6 @@ export namespace util {
     var isNode: boolean;
 
     /**
-     * Whether running within IE8 or not.
-     * @memberof util
-     * @type {boolean}
-     */
-    var isIE8: boolean;
-
-    /**
      * Node's Buffer class if available.
      * @type {?function(new: Buffer)}
      */
@@ -2304,13 +2298,6 @@ export namespace util {
     function longNe(val: (number|string|Long), lo: number, hi: number): boolean;
 
     /**
-     * Converts the first character of a string to upper case.
-     * @param {string} str String to convert
-     * @returns {string} Converted string
-     */
-    function ucFirst(str: string): string;
-
-    /**
      * An immuable empty array.
      * @memberof util
      * @type {Array.<*>}
@@ -2322,6 +2309,14 @@ export namespace util {
      * @type {Object}
      */
     var emptyObject: Object;
+
+    /**
+     * Tests if two arrays are not equal.
+     * @param {Array.<*>} a Array 1
+     * @param {Array.<*>} b Array 2
+     * @returns {boolean} `true` if not equal, otherwise `false`
+     */
+    function arrayNe(a: any[], b: any[]): boolean;
 
     /**
      * A minimal UTF8 implementation for number arrays.
@@ -2386,11 +2381,18 @@ export namespace util {
     function safeProp(prop: string): string;
 
     /**
-     * Converts the second character of a string to lower case.
+     * Converts the first character of a string to lower case.
      * @param {string} str String to convert
      * @returns {string} Converted string
      */
     function lcFirst(str: string): string;
+
+    /**
+     * Converts the first character of a string to upper case.
+     * @param {string} str String to convert
+     * @returns {string} Converted string
+     */
+    function ucFirst(str: string): string;
 
     /**
      * Creates a new buffer of whatever type supported by the environment.

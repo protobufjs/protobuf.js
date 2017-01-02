@@ -7,10 +7,7 @@ var OneOfPrototype = ReflectionObject.extend(OneOf);
 
 OneOf.className = "OneOf";
 
-var Field = require("./field"),
-    util  = require("./util");
-
-var TypeError = util._TypeError;
+var Field = require("./field");
 
 /**
  * Constructs a new oneof instance.
@@ -30,13 +27,7 @@ function OneOf(name, fieldNames, options) {
 
     /* istanbul ignore next */
     if (fieldNames && !Array.isArray(fieldNames))
-        throw TypeError("fieldNames", "an Array");
-
-    /**
-     * Upper cased name for getter/setter calls.
-     * @type {string}
-     */
-    this.ucName = util.ucFirst(this.name);
+        throw TypeError("fieldNames must be an Array");
 
     /**
      * Field names that belong to this oneof.
@@ -119,7 +110,7 @@ OneOfPrototype.add = function add(field) {
 
     /* istanbul ignore next */
     if (!(field instanceof Field))
-        throw TypeError("field", "a Field");
+        throw TypeError("field must be a Field");
 
     if (field.parent)
         field.parent.remove(field);
@@ -139,7 +130,7 @@ OneOfPrototype.remove = function remove(field) {
 
     /* istanbul ignore next */
     if (!(field instanceof Field))
-        throw TypeError("field", "a Field");
+        throw TypeError("field must be a Field");
 
     var index = this._fieldsArray.indexOf(field);
     /* istanbul ignore next */

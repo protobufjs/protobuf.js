@@ -3,7 +3,7 @@
 var util = exports;
 
 util.LongBits = require("./longbits");
-util.base64   = require("@protobufjs/base64");
+util.base64   = require("./base64");
 util.inquire  = require("@protobufjs/inquire");
 util.utf8     = require("@protobufjs/utf8");
 util.pool     = require("@protobufjs/pool");
@@ -14,13 +14,6 @@ util.pool     = require("@protobufjs/pool");
  * @type {boolean}
  */
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
-
-/**
- * Whether running within IE8 or not.
- * @memberof util
- * @type {boolean}
- */
-util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-disable-line no-eval, no-empty
 
 /**
  * Node's Buffer class if available.
@@ -129,15 +122,6 @@ util.longNe = function longNe(val, lo, hi) {
 };
 
 /**
- * Converts the first character of a string to upper case.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
-    return str.charAt(0).toUpperCase() + str.substring(1);
-};
-
-/**
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}
@@ -149,3 +133,17 @@ util.emptyArray = Object.freeze ? Object.freeze([]) : [];
  * @type {Object}
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : {};
+
+/**
+ * Tests if two arrays are not equal.
+ * @param {Array.<*>} a Array 1
+ * @param {Array.<*>} b Array 2
+ * @returns {boolean} `true` if not equal, otherwise `false`
+ */
+util.arrayNe = function arrayNe(a, b) {
+    if (a.length === b.length)
+        for (var i = 0; i < a.length; ++i)
+            if (a[i] !== b[i])
+                return true;
+    return false;
+};

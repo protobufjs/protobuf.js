@@ -2791,7 +2791,7 @@ $root.jspb = (function() {
              * DefaultValues bytesField.
              * @type {Uint8Array}
              */
-            $prototype.bytesField = "moo";
+            $prototype.bytesField = $protobuf.util.emptyObject;
 
             // Referenced types
             var $types = [null, null, null, "jspb.test.DefaultValues.Enum", null, null]; $lazyTypes.push($types);
@@ -2831,7 +2831,7 @@ $root.jspb = (function() {
                 if (message.emptyField !== undefined && message.emptyField !== "") {
                     writer.uint32(50).string(message.emptyField);
                 }
-                if (message.bytesField !== undefined && message.bytesField !== "moo") {
+                if (message.bytesField && message.bytesField.length && util.arrayNe(message.bytesField, [ 109, 111, 111 ])) {
                     writer.uint32(66).bytes(message.bytesField);
                 }
                 return writer;
@@ -2974,7 +2974,7 @@ $root.jspb = (function() {
                     if (dst.emptyField === undefined && options.defaults) {
                         dst.emptyField = "";
                     }
-                    dst.bytesField = impl.bytes(src.bytesField, "moo", options);
+                    dst.bytesField = impl.bytes(src.bytesField, [ 109, 111, 111 ], options);
                 }
                 return dst;
             };})($types);
@@ -3436,7 +3436,7 @@ $root.jspb = (function() {
                         types[2].encode(message.simple2[i], writer.uint32(42).fork()).ldelim();
                     }
                 }
-                if (message.bytesField !== undefined && message.bytesField !== []) {
+                if (message.bytesField && message.bytesField.length) {
                     writer.uint32(50).bytes(message.bytesField);
                 }
                 if (message.unused !== undefined && message.unused !== "") {
@@ -4801,7 +4801,7 @@ $root.jspb = (function() {
                 if (message.value !== undefined && message.value !== 0) {
                     writer.uint32(8).int32(message.value);
                 }
-                if (message.data !== undefined && message.data !== []) {
+                if (message.data && message.data.length) {
                     writer.uint32(18).bytes(message.data);
                 }
                 return writer;
@@ -11433,7 +11433,7 @@ $root.google = (function() {
                 if (message.doubleValue !== undefined && message.doubleValue !== 0) {
                     writer.uint32(49).double(message.doubleValue);
                 }
-                if (message.stringValue !== undefined && message.stringValue !== []) {
+                if (message.stringValue && message.stringValue.length) {
                     writer.uint32(58).bytes(message.stringValue);
                 }
                 if (message.aggregateValue !== undefined && message.aggregateValue !== "") {

@@ -8,8 +8,6 @@ ReflectionObject.extend = util.extend;
 
 var Root; // cyclic
 
-var TypeError = util._TypeError;
-
 /**
  * Constructs a new reflection object instance.
  * @classdesc Base class of all reflection objects.
@@ -22,10 +20,10 @@ function ReflectionObject(name, options) {
 
     /* istanbul ignore next */
     if (!util.isString(name))
-        throw TypeError("name");
+        throw TypeError("name must be a string");
     /* istanbul ignore next */
     if (options && !util.isObject(options))
-        throw TypeError("options", "an object");
+        throw TypeError("options must be an object");
 
     /**
      * Options.

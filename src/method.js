@@ -10,8 +10,6 @@ Method.className = "Method";
 var Type = require("./type"),
     util = require("./util");
 
-var TypeError = util._TypeError;
-
 /**
  * Constructs a new service method instance.
  * @classdesc Reflected service method.
@@ -38,13 +36,13 @@ function Method(name, type, requestType, responseType, requestStream, responseSt
 
     /* istanbul ignore next */
     if (type && !util.isString(type))
-        throw TypeError("type");
+        throw TypeError("type must be a string");
     /* istanbul ignore next */
     if (!util.isString(requestType))
-        throw TypeError("requestType");
+        throw TypeError("requestType must be a string");
     /* istanbul ignore next */
     if (!util.isString(responseType))
-        throw TypeError("responseType");
+        throw TypeError("responseType must be a string");
 
     ReflectionObject.call(this, name, options);
 

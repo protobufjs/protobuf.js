@@ -30,8 +30,6 @@ function initNested() {
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
 }
 
-var TypeError = util._TypeError;
-
 /**
  * Constructs a new namespace instance.
  * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
@@ -157,7 +155,7 @@ NamespacePrototype.addJSON = function addJSON(nestedJson) {
             for (var j = 0; j < nestedTypes.length; ++j)
                 if (nestedTypes[j].testJSON(nested))
                     return ns.add(nestedTypes[j].fromJSON(nestedName, nested));
-            throw TypeError("nested." + nestedName, "JSON for " + nestedError);
+            throw TypeError("nested." + nestedName + " must be JSON for " + nestedError);
         });
     }
     return this;
@@ -200,10 +198,10 @@ NamespacePrototype.add = function add(object) {
 
     /* istanbul ignore next */
     if (!object || nestedTypes.indexOf(object.constructor) < 0)
-        throw TypeError("object", nestedError);
+        throw TypeError("object must be " + nestedError);
     /* istanbul ignore next */
     if (object instanceof Field && object.extend === undefined)
-        throw TypeError("object", "an extension field when not part of a type");
+        throw TypeError("object must be an extension field when not part of a type");
 
     if (!this.nested)
         this.nested = {};
@@ -242,7 +240,7 @@ NamespacePrototype.remove = function remove(object) {
 
     /* istanbul ignore next */
     if (!(object instanceof ReflectionObject))
-        throw TypeError("object", "a ReflectionObject");
+        throw TypeError("object must be a ReflectionObject");
     /* istanbul ignore next */
     if (object.parent !== this || !this.nested)
         throw Error(object + " is not a member of " + this);

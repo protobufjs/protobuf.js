@@ -25,25 +25,9 @@ util.fs = util.inquire("fs");
  * @returns {Array.<*>} Converted array
  */
 util.toArray = function toArray(object) {
-    if (!object)
-        return [];
-    var names = Object.keys(object),
-        length = names.length;
-    var array = new Array(length);
-    for (var i = 0; i < length; ++i)
-        array[i] = object[names[i]];
-    return array;
-};
-
-/**
- * Creates a type error.
- * @param {string} name Argument name
- * @param {string} [description="a string"] Expected argument descripotion
- * @returns {TypeError} Created type error
- * @private
- */
-util._TypeError = function(name, description) {
-    return TypeError(name + " must be " + (description || "a string"));
+    return object ? Object.values ? Object.values(object) : Object.keys(object).map(function(key) {
+        return object[key];
+    }) : [];
 };
 
 /**
@@ -73,12 +57,21 @@ util.safeProp = function safeProp(prop) {
 };
 
 /**
- * Converts the second character of a string to lower case.
+ * Converts the first character of a string to lower case.
  * @param {string} str String to convert
  * @returns {string} Converted string
  */
-util.lcFirst = function lcFirst(str) { // ucFirst counterpart is in runtime util
+util.lcFirst = function lcFirst(str) {
     return str.charAt(0).toLowerCase() + str.substring(1);
+};
+
+/**
+ * Converts the first character of a string to upper case.
+ * @param {string} str String to convert
+ * @returns {string} Converted string
+ */
+util.ucFirst = function ucFirst(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
 };
 
 /**

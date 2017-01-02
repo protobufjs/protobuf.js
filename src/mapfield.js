@@ -28,7 +28,7 @@ function MapField(name, id, keyType, type, options) {
 
     /* istanbul ignore next */
     if (!util.isString(keyType))
-        throw util._TypeError("keyType");
+        throw TypeError("keyType must be a string");
 
     /**
      * Key type.

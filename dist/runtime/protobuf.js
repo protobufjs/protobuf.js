@@ -1,132 +1,10 @@
 /*!
  * protobuf.js v6.4.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 02 Jan 2017 13:12:40 UTC
+ * Compiled Mon, 02 Jan 2017 15:34:48 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
-
-/**
- * A minimal base64 implementation for number arrays.
- * @memberof util
- * @namespace
- */
-var base64 = exports;
-
-/**
- * Calculates the byte length of a base64 encoded string.
- * @param {string} string Base64 encoded string
- * @returns {number} Byte length
- */
-base64.length = function length(string) {
-    var p = string.length;
-    if (!p)
-        return 0;
-    var n = 0;
-    while (--p % 4 > 1 && string.charAt(p) === "=")
-        ++n;
-    return Math.ceil(string.length * 3) / 4 - n;
-};
-
-// Base64 encoding table
-var b64 = new Array(64);
-
-// Base64 decoding table
-var s64 = new Array(123);
-
-// 65..90, 97..122, 48..57, 43, 47
-for (var i = 0; i < 64;)
-    s64[b64[i] = i < 26 ? i + 65 : i < 52 ? i + 71 : i < 62 ? i - 4 : i - 59 | 43] = i++;
-
-/**
- * Encodes a buffer to a base64 encoded string.
- * @param {Uint8Array} buffer Source buffer
- * @param {number} start Source start
- * @param {number} end Source end
- * @returns {string} Base64 encoded string
- */
-base64.encode = function encode(buffer, start, end) {
-    var string = []; // alt: new Array(Math.ceil((end - start) / 3) * 4);
-    var i = 0, // output index
-        j = 0, // goto index
-        t;     // temporary
-    while (start < end) {
-        var b = buffer[start++];
-        switch (j) {
-            case 0:
-                string[i++] = b64[b >> 2];
-                t = (b & 3) << 4;
-                j = 1;
-                break;
-            case 1:
-                string[i++] = b64[t | b >> 4];
-                t = (b & 15) << 2;
-                j = 2;
-                break;
-            case 2:
-                string[i++] = b64[t | b >> 6];
-                string[i++] = b64[b & 63];
-                j = 0;
-                break;
-        }
-    }
-    if (j) {
-        string[i++] = b64[t];
-        string[i  ] = 61;
-        if (j === 1)
-            string[i + 1] = 61;
-    }
-    return String.fromCharCode.apply(String, string);
-};
-
-var invalidEncoding = "invalid encoding";
-
-/**
- * Decodes a base64 encoded string to a buffer.
- * @param {string} string Source string
- * @param {Uint8Array} buffer Destination buffer
- * @param {number} offset Destination offset
- * @returns {number} Number of bytes written
- * @throws {Error} If encoding is invalid
- */
-base64.decode = function decode(string, buffer, offset) {
-    var start = offset;
-    var j = 0, // goto index
-        t;     // temporary
-    for (var i = 0; i < string.length;) {
-        var c = string.charCodeAt(i++);
-        if (c === 61 && j > 1)
-            break;
-        if ((c = s64[c]) === undefined)
-            throw Error(invalidEncoding);
-        switch (j) {
-            case 0:
-                t = c;
-                j = 1;
-                break;
-            case 1:
-                buffer[offset++] = t << 2 | (c & 48) >> 4;
-                t = c;
-                j = 2;
-                break;
-            case 2:
-                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
-                t = c;
-                j = 3;
-                break;
-            case 3:
-                buffer[offset++] = (t & 3) << 6 | c;
-                j = 0;
-                break;
-        }
-    }
-    if (j === 1)
-        throw Error(invalidEncoding);
-    return offset - start;
-};
-
-},{}],2:[function(require,module,exports){
 "use strict";
 module.exports = inquire;
 
@@ -145,7 +23,7 @@ function inquire(moduleName) {
     return null;
 }
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -195,7 +73,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 /**
@@ -302,7 +180,7 @@ utf8.write = function(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function (global){
 // This file exports just the bare minimum required to work with statically generated code.
 // Can be used as a drop-in replacement for the full library as it has the same general structure.
@@ -311,9 +189,9 @@ var protobuf = global.protobuf = exports;
 
 protobuf.Writer       = require(11);
 protobuf.BufferWriter = require(12);
-protobuf.Reader       = require(7);
-protobuf.BufferReader = require(8);
-protobuf.converters   = require(6);
+protobuf.Reader       = require(6);
+protobuf.BufferReader = require(7);
+protobuf.converters   = require(5);
 protobuf.util         = require(10);
 protobuf.roots        = {};
 protobuf.configure    = configure;
@@ -334,7 +212,7 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"12":12,"6":6,"7":7,"8":8}],6:[function(require,module,exports){
+},{"10":10,"11":11,"12":12,"5":5,"6":6,"7":7}],5:[function(require,module,exports){
 "use strict";
 var converters = exports;
 
@@ -467,7 +345,7 @@ converters.message = {
     }
 };
 
-},{"10":10}],7:[function(require,module,exports){
+},{"10":10}],6:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -519,9 +397,11 @@ function Reader(buffer) {
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
         if (!BufferReader)
-            BufferReader = require(8);
+            BufferReader = require(7);
         return (Reader.create = function create_buffer(buffer) {
-            return new BufferReader(buffer);
+            return util.Buffer.isBuffer(buffer)
+                ? new BufferReader(buffer)
+                : new Reader(buffer);
         })(buffer);
     }
     /* istanbul ignore next */
@@ -983,11 +863,11 @@ Reader._configure = configure;
 
 configure();
 
-},{"10":10,"8":8}],8:[function(require,module,exports){
+},{"10":10,"7":7}],7:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
-var Reader = require(7);
+var Reader = require(6);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
@@ -1016,7 +896,138 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"10":10,"7":7}],9:[function(require,module,exports){
+},{"10":10,"6":6}],8:[function(require,module,exports){
+"use strict";
+
+/**
+ * A minimal base64 implementation for number arrays.
+ * @memberof util
+ * @namespace
+ */
+var base64 = exports;
+
+/**
+ * Calculates the byte length of a base64 encoded string.
+ * @param {string} string Base64 encoded string
+ * @returns {number} Byte length
+ */
+base64.length = function length(string) {
+    var p = string.length;
+    if (!p)
+        return 0;
+    var n = 0;
+    while (--p % 4 > 1 && string.charAt(p) === "=")
+        ++n;
+    return Math.ceil(string.length * 3) / 4 - n;
+};
+
+// Base64 encoding table
+var b64 = new Array(64);
+
+// Base64 decoding table
+var s64 = new Array(123);
+
+// 65..90, 97..122, 48..57, 43, 47
+for (var i = 0; i < 64;)
+    s64[b64[i] = i < 26 ? i + 65 : i < 52 ? i + 71 : i < 62 ? i - 4 : i - 59 | 43] = i++;
+
+/**
+ * Encodes a buffer to a base64 encoded string.
+ * @param {Uint8Array} buffer Source buffer
+ * @param {number} start Source start
+ * @param {number} end Source end
+ * @returns {string} Base64 encoded string
+ */
+base64.encode = function encode(buffer, start, end) {
+    var string = []; // alt: new Array(Math.ceil((end - start) / 3) * 4);
+    var i = 0, // output index
+        j = 0, // goto index
+        t;     // temporary
+    while (start < end) {
+        var b = buffer[start++];
+        switch (j) {
+            case 0:
+                string[i++] = b64[b >> 2];
+                t = (b & 3) << 4;
+                j = 1;
+                break;
+            case 1:
+                string[i++] = b64[t | b >> 4];
+                t = (b & 15) << 2;
+                j = 2;
+                break;
+            case 2:
+                string[i++] = b64[t | b >> 6];
+                string[i++] = b64[b & 63];
+                j = 0;
+                break;
+        }
+    }
+    if (j) {
+        string[i++] = b64[t];
+        string[i  ] = 61;
+        if (j === 1)
+            string[i + 1] = 61;
+    }
+    return String.fromCharCode.apply(String, string);
+};
+
+var invalidEncoding = "invalid encoding";
+
+/**
+ * Decodes a base64 encoded string to a buffer.
+ * @param {string} string Source string
+ * @param {Uint8Array} buffer Destination buffer
+ * @param {number} offset Destination offset
+ * @returns {number} Number of bytes written
+ * @throws {Error} If encoding is invalid
+ */
+base64.decode = function decode(string, buffer, offset) {
+    var start = offset;
+    var j = 0, // goto index
+        t;     // temporary
+    for (var i = 0; i < string.length;) {
+        var c = string.charCodeAt(i++);
+        if (c === 61 && j > 1)
+            break;
+        if ((c = s64[c]) === undefined)
+            throw Error(invalidEncoding);
+        switch (j) {
+            case 0:
+                t = c;
+                j = 1;
+                break;
+            case 1:
+                buffer[offset++] = t << 2 | (c & 48) >> 4;
+                t = c;
+                j = 2;
+                break;
+            case 2:
+                buffer[offset++] = (t & 15) << 4 | (c & 60) >> 2;
+                t = c;
+                j = 3;
+                break;
+            case 3:
+                buffer[offset++] = (t & 3) << 6 | c;
+                j = 0;
+                break;
+        }
+    }
+    if (j === 1)
+        throw Error(invalidEncoding);
+    return offset - start;
+};
+
+/**
+ * Tests if the specified string appears to be base64 encoded.
+ * @param {string} string String to test
+ * @returns {boolean} `true` if probably base64 encoded, otherwise false
+ */
+base64.test = function test(string) {
+    return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(string);
+};
+
+},{}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
@@ -1235,10 +1246,10 @@ LongBitsPrototype.length = function length() {
 var util = exports;
 
 util.LongBits = require(9);
-util.base64   = require(1);
-util.inquire  = require(2);
-util.utf8     = require(4);
-util.pool     = require(3);
+util.base64   = require(8);
+util.inquire  = require(1);
+util.utf8     = require(3);
+util.pool     = require(2);
 
 /**
  * Whether running within node or not.
@@ -1246,13 +1257,6 @@ util.pool     = require(3);
  * @type {boolean}
  */
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
-
-/**
- * Whether running within IE8 or not.
- * @memberof util
- * @type {boolean}
- */
-util.isIE8 = false; try { util.isIE8 = eval("!-[1,]"); } catch (e) {} // eslint-disable-line no-eval, no-empty
 
 /**
  * Node's Buffer class if available.
@@ -1361,15 +1365,6 @@ util.longNe = function longNe(val, lo, hi) {
 };
 
 /**
- * Converts the first character of a string to upper case.
- * @param {string} str String to convert
- * @returns {string} Converted string
- */
-util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
-    return str.charAt(0).toUpperCase() + str.substring(1);
-};
-
-/**
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}
@@ -1382,9 +1377,23 @@ util.emptyArray = Object.freeze ? Object.freeze([]) : [];
  */
 util.emptyObject = Object.freeze ? Object.freeze({}) : {};
 
+/**
+ * Tests if two arrays are not equal.
+ * @param {Array.<*>} a Array 1
+ * @param {Array.<*>} b Array 2
+ * @returns {boolean} `true` if not equal, otherwise `false`
+ */
+util.arrayNe = function arrayNe(a, b) {
+    if (a.length === b.length)
+        for (var i = 0; i < a.length; ++i)
+            if (a[i] !== b[i])
+                return true;
+    return false;
+};
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"1":1,"2":2,"3":3,"4":4,"9":9}],11:[function(require,module,exports){
+},{"1":1,"2":2,"3":3,"8":8,"9":9}],11:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -2004,7 +2013,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"10":10,"11":11}]},{},[5])
+},{"10":10,"11":11}]},{},[4])
 
 
 //# sourceMappingURL=protobuf.js.map

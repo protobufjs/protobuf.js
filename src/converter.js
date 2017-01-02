@@ -20,7 +20,7 @@ function genConvert(field, fieldIndex, prop) {
         case "sfixed64":
             return sprintf("f.longs(s%s,%d,%d,%j,o)", prop, 0, 0, field.type.charAt(0) === "u");
         case "bytes":
-            return sprintf("f.bytes(s%s,%j,o)", prop, field.defaultValue);
+            return sprintf("f.bytes(s%s,%j,o)", prop, Array.prototype.slice.call(field.defaultValue));
     }
     return null;
 }

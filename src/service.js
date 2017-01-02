@@ -181,7 +181,7 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
 
             /* istanbul ignore next */
             if (!request)
-                throw util._TypeError("request", "not null");
+                throw TypeError("request must not be null");
 
             method.resolve();
             var requestData;

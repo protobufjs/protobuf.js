@@ -6,8 +6,6 @@ var Message = require("./message"),
 
 var Type; // cyclic
 
-var TypeError = util._TypeError;
-
 /**
  * Constructs a class instance, which is also a message prototype.
  * @classdesc Runtime class providing the tools to create your own custom classes.
@@ -31,12 +29,12 @@ function create(type, ctor) {
 
     /* istanbul ignore next */
     if (!(type instanceof Type))
-        throw TypeError("type", "a Type");
+        throw TypeError("type must be a Type");
 
     if (ctor) {
         /* istanbul ignore next */
         if (typeof ctor !== "function")
-            throw TypeError("ctor", "a function");
+            throw TypeError("ctor must be a function");
     } else
         ctor = (function(MessageCtor) {
             return function Message(properties) {

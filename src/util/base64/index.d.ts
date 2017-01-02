@@ -32,4 +32,11 @@ declare namespace base64 {
      * @throws {Error} If encoding is invalid
      */
     function decode(string: string, buffer: Uint8Array, offset: number): number;
+
+    /**
+     * Tests if the specified string appears to be base64 encoded.
+     * @param {string} string String to test
+     * @returns {boolean} `true` if it appears to be base64 encoded, otherwise false
+     */
+    function test(string: string): boolean;
 }

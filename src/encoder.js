@@ -77,10 +77,11 @@ function encoder(mtype) {
         } else if (!field.partOf) {
             if (!field.required) {
 
-                if (field.long) {
-                    gen
+                if (field.long) gen
     ("if(%s!==undefined&&%s!==null&&util.longNe(%s,%d,%d))", ref, ref, ref, field.defaultValue.low, field.defaultValue.high);
-                } else gen
+                else if (field.bytes) gen
+    ("if(%s&&%s.length" + (field.defaultValue.length ? "&&util.arrayNe(%s,%j)" : "") + ")", ref, ref, ref, Array.prototype.slice.call(field.defaultValue));
+                else gen
     ("if(%s!==undefined&&%s!==%j)", ref, ref, field.defaultValue);
 
             }

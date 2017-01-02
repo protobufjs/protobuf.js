@@ -17,7 +17,8 @@ tape.test("google.protobuf.Any class", function(test) {
         }
         /* Any.prototype = */ Class.create(root.lookup("google.protobuf.Any"), Any);
 
-        var valueBuffer = protobuf.util.newBuffer(0);
+        var valueBuffer = protobuf.util.newBuffer(1);
+        valueBuffer[0] = 0;
         var any = new Any({
             type_url: "some.type",
             value: valueBuffer
@@ -41,8 +42,8 @@ tape.test("google.protobuf.Any class", function(test) {
                 test.equal(buf[0]    , 1 << 3 | 2, "a tag with id 1, wire type 2");
                 test.equal(buf[1]    , 9         , "a field length of 9");
                 test.equal(buf[11]   , 2 << 3 | 2, "a tag with id 2, wire type 2");
-                test.equal(buf[12]   , 0         , "a field length of 0");
-                test.equal(buf.length, 13        , "13 bytes in total");
+                test.equal(buf[12]   , 1         , "a field length of 1");
+                test.equal(buf.length, 14        , "14 bytes in total");
 
                 test.end();
             });
@@ -60,12 +61,12 @@ tape.test("google.protobuf.Any class", function(test) {
 
                 buf = Any.encodeDelimited(any).finish();
 
-                test.equal(buf[0]    , 13        , "a length of 13");
+                test.equal(buf[0]    , 14        , "a length of 14");
                 test.equal(buf[1]    , 1 << 3 | 2, "a tag with id 1, wire type 2");
                 test.equal(buf[2]    , 9         , "a field length of 9");
                 test.equal(buf[12]   , 2 << 3 | 2, "a tag with id 2, wire type 2");
-                test.equal(buf[13]   , 0         , "a field length of 0");
-                test.equal(buf.length, 14        , "14 bytes in total");
+                test.equal(buf[13]   , 1         , "a field length of 1");
+                test.equal(buf.length, 15        , "15 bytes in total");
 
                 test.end();
             });

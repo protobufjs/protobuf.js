@@ -175,7 +175,7 @@ Object.defineProperties(TypePrototype, {
         },
         set: function(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
-                throw util._TypeError("ctor", "a Message constructor");
+                throw TypeError("ctor must be a Message constructor");
             if (!ctor.from)
                 ctor.from = Message.from;
             this._ctor = ctor;

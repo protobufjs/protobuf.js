@@ -361,7 +361,10 @@ Consolidates imports and converts between file formats.
   --no-encode     Does not generate encode functions.
   --no-decode     Does not generate decode functions.
   --no-verify     Does not generate verify functions.
+  --no-convert    Does not generate convert functions like asJSON and from.
   --no-delimited  Does not generate delimited encode/decode functions.
+  --no-beautify   Does not beautify generated code.
+  --no-comments   Does not output any JSDoc comments.
 
 usage: pbjs [options] file1.proto file2.json ...
 ```

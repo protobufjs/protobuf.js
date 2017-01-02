@@ -9,8 +9,6 @@ Enum.className = "Enum";
 
 var util = require("./util");
 
-var TypeError = util._TypeError;
-
 /**
  * Constructs a new enum instance.
  * @classdesc Reflected enum.
@@ -94,10 +92,10 @@ EnumPrototype.add = function(name, id) {
 
     /* istanbul ignore next */
     if (!util.isString(name))
-        throw TypeError("name");
+        throw TypeError("name must be a string");
     /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
-        throw TypeError("id", "a non-negative integer");
+        throw TypeError("id must be a non-negative integer");
     /* istanbul ignore next */
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);
@@ -118,7 +116,7 @@ EnumPrototype.add = function(name, id) {
  */
 EnumPrototype.remove = function(name) {
     if (!util.isString(name))
-        throw TypeError("name");
+        throw TypeError("name must be a string");
     var val = this.values[name];
     if (val === undefined)
         throw Error("'" + name + "' is not a name of " + this);

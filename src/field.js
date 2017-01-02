@@ -14,8 +14,6 @@ var Enum      = require("./enum"),
 var Type,     // cyclic
     MapField; // cyclic
 
-var TypeError = util._TypeError;
-
 /**
  * Constructs a new message field instance. Note that {@link MapField|map fields} have their own class.
  * @classdesc Reflected message field.
@@ -40,16 +38,16 @@ function Field(name, id, type, rule, extend, options) {
 
     /* istanbul ignore next */
     if (!util.isInteger(id) || id < 0)
-        throw TypeError("id", "a non-negative integer");
+        throw TypeError("id must be a non-negative integer");
     /* istanbul ignore next */
     if (!util.isString(type))
-        throw TypeError("type");
+        throw TypeError("type must be a string");
     /* istanbul ignore next */
     if (extend !== undefined && !util.isString(extend))
-        throw TypeError("extend");
+        throw TypeError("extend must be a string");
     /* istanbul ignore next */
     if (rule !== undefined && !/^required|optional|repeated$/.test(rule = rule.toString().toLowerCase()))
-        throw TypeError("rule", "a valid rule string");
+        throw TypeError("rule must be a string rule");
 
     /**
      * Field rule, if any.
@@ -261,6 +259,13 @@ FieldPrototype.resolve = function resolve() {
             this.defaultValue = util.Long.fromNumber(this.defaultValue, this.type.charAt(0) === "u");
             if (Object.freeze)
                 Object.freeze(this.defaultValue); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
+        } else if (this.bytes && typeof this.defaultValue === "string") {
+            var buf;
+            if (util.base64.test(this.defaultValue))
+                util.base64.decode(this.defaultValue, buf = util.newBuffer(util.base64.length(this.defaultValue)), 0);
+            else
+                util.utf8.write(this.defaultValue, buf = util.newBuffer(util.utf8.length(this.defaultValue)), 0);
+            this.defaultValue = buf;
         }
     }
 
