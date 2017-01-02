@@ -1,5 +1,5 @@
 // $> pbts --main --global protobuf --out index.d.ts src
-// Generated Mon, 02 Jan 2017 04:20:31 UTC
+// Generated Mon, 02 Jan 2017 13:12:35 UTC
 
 export as namespace protobuf;
 
@@ -417,14 +417,6 @@ export class Field extends ReflectionObject {
      * @readonly
      */
     readonly packed: boolean;
-
-    /**
-     * Determines whether this field is packed. This is an alias of {@link Field#packed|packed}'s getter for use within non-ES5 environments.
-     * @name Field#isPacked
-     * @function
-     * @returns {boolean}
-     */
-    isPacked(): boolean;
 
     /**
      * Tests if the specified JSON object describes a field.
@@ -2317,23 +2309,6 @@ export namespace util {
      * @returns {string} Converted string
      */
     function ucFirst(str: string): string;
-
-    /**
-     * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
-     * @param {Object} target Target object
-     * @param {Object.<string,*>} descriptors Property descriptors
-     * @returns {undefined}
-     */
-    function props(target: Object, descriptors: { [k: string]: any }): void;
-
-    /**
-     * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
-     * @param {Object} target Target object
-     * @param {string} key Property name
-     * @param {Object.<string,*>} descriptor Property descriptor
-     * @returns {undefined}
-     */
-    function prop(target: Object, key: string, descriptor: { [k: string]: any }): void;
 
     /**
      * An immuable empty array.

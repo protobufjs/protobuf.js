@@ -300,9 +300,9 @@ function buildType(ref, type) {
             "@name " + fullName + "#" + name(oneof.name),
             "@type {string|undefined}"
         ]);
-        push("$protobuf.util.prop($prototype, " + JSON.stringify(oneof.name) +", {");
+        push("Object.defineProperty($prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
-            push("get: function getVirtual() {");
+            push("get: function() {");
             ++indent;
             oneof.oneof.forEach(function(name) {
                 push("if (this[" + JSON.stringify(name) + "] !== undefined)");
@@ -313,7 +313,7 @@ function buildType(ref, type) {
             push("return undefined;");
             --indent;
             push("},");
-            push("set: function setVirtual(value) {");
+            push("set: function(value) {");
             ++indent;
             oneof.oneof.forEach(function(name) {
                 push("if (value !== " + JSON.stringify(name) + ")");
@@ -601,11 +601,16 @@ function buildService(ref, service) {
 }
 
 function buildEnum(ref, enm) {
+    var parentFullName = enm.parent.fullName.substring(1);
     push("");
-    var comment = [
+    var comment = parentFullName.length ? [
         enm.name + " enum.",
         "@name " + name(enm.name),
-        "@memberof " + enm.parent.fullName.substring(1),
+        "@memberof " + parentFullName,
+        "@enum {number}"
+    ] : [
+        enm.name + " enum.",
+        "@exports " + name(enm.name),
         "@enum {number}"
     ];
     Object.keys(enm.values).forEach(function(key) {

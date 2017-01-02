@@ -1,5 +1,5 @@
 // $> pbts --out tests/data/test.d.ts --no-comments tests/data/test.js
-// Generated Mon, 02 Jan 2017 04:42:18 UTC
+// Generated Mon, 02 Jan 2017 04:51:34 UTC
 
 import * as $protobuf from "../..";
 

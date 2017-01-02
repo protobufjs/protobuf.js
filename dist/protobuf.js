@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 02 Jan 2017 04:21:33 UTC
+ * Compiled Mon, 02 Jan 2017 13:12:40 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -629,7 +629,7 @@ function create(type, ctor) {
     prototype.$type = type;
 
     // Messages have non-enumerable default values on their prototype
-    type.getFieldsArray().forEach(function(field) {
+    type.fieldsArray.forEach(function(field) {
         // objects on the prototype must be immmutable. users must assign a new object instance and
         // cannot use Array#push on empty arrays on the prototype for example, as this would modify
         // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
@@ -641,26 +641,25 @@ function create(type, ctor) {
     });
 
     // Messages have non-enumerable getters and setters for each virtual oneof field
-    type.getOneofsArray().forEach(function(oneof) {
-        util.prop(prototype, oneof.resolve().name, {
-            get: function getVirtual() {
+    type.oneofsArray.forEach(function(oneof) {
+        Object.defineProperty(prototype, oneof.resolve().name, {
+            get: function() {
                 // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
                 for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
                     if (oneof.oneof.indexOf(keys[i]) > -1)
                         return keys[i];
                 return undefined;
             },
-            set: function setVirtual(value) {
+            set: function(value) {
                 for (var keys = oneof.oneof, i = 0; i < keys.length; ++i)
                     if (keys[i] !== value)
                         delete this[keys[i]];
             }
-            // see util.prop for IE8 support
         });
     });
 
     // Register
-    type.setCtor(ctor);
+    type.ctor = ctor;
 
     return prototype;
 }
@@ -957,7 +956,7 @@ function genConvert(field, fieldIndex, prop) {
  */
 function converter(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();
+    var fields = mtype.fieldsArray;
     var gen = util.codegen("s", "f", "o")
     ("if(!o)")
         ("o={}")
@@ -1149,7 +1148,7 @@ converters.message = {
         if (!value)
             return null;
         // can't use instanceof Type here because converters are also part of the minimal runtime
-        return new (typeOrCtor.getCtor ? typeOrCtor.getCtor() : typeOrCtor)(options.fieldsOnly ? undefined : value);
+        return new (typeOrCtor.ctor ? typeOrCtor.ctor : typeOrCtor)(options.fieldsOnly ? undefined : value);
     },
     enums: function(value, defaultValue, values) {
         if (typeof value === "string")
@@ -1194,11 +1193,11 @@ var Enum    = require(16),
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();
+    var fields = mtype.fieldsArray;
     var gen = util.codegen("r", "l")
     ("if(!(r instanceof Reader))")
         ("r=Reader.create(r)")
-    ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
+    ("var c=l===undefined?r.len:r.pos+l,m=new(this.ctor)")
     ("while(r.pos<c){")
         ("var t=r.uint32()");
     if (mtype.group) gen
@@ -1293,8 +1292,8 @@ function genEncodeType(gen, field, fieldIndex, ref) {
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var fields = mtype.getFieldsArray();
-    var oneofs = mtype.getOneofsArray();
+    var fields = mtype.fieldsArray;
+    var oneofs = mtype.oneofsArray;
     var gen = util.codegen("m", "w")
     ("if(!w)")
         ("w=Writer.create()");
@@ -1370,8 +1369,8 @@ function encoder(mtype) {
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i];
         gen
-        ("switch(%s){", "m.get" + oneof.ucName + "()");
-        var oneofFields = oneof.getFieldsArray();
+        ("switch(%s){", "m" + util.safeProp(oneof.name));
+        var oneofFields = oneof.fieldsArray;
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
@@ -1684,7 +1683,7 @@ function Field(name, id, type, rule, extend, options) {
     this._packed = null;
 }
 
-util.props(FieldPrototype, {
+Object.defineProperties(FieldPrototype, {
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
@@ -1693,20 +1692,13 @@ util.props(FieldPrototype, {
      * @readonly
      */
     packed: {
-        get: FieldPrototype.isPacked = function() {
+        get: function() {
             // defaults to packed=true if not explicity set to false
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
         }
     }
-
-    /**
-     * Determines whether this field is packed. This is an alias of {@link Field#packed|packed}'s getter for use within non-ES5 environments.
-     * @name Field#isPacked
-     * @function
-     * @returns {boolean}
-     */
 });
 
 /**
@@ -2242,7 +2234,7 @@ function clearCache(namespace) {
     return namespace;
 }
 
-util.props(NamespacePrototype, {
+Object.defineProperties(NamespacePrototype, {
 
     /**
      * Nested objects of this namespace as an array for iteration.
@@ -2251,7 +2243,7 @@ util.props(NamespacePrototype, {
      * @readonly
      */
     nestedArray: {
-        get: function getNestedArray() {
+        get: function() {
             return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
         }
     }
@@ -2291,7 +2283,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
 NamespacePrototype.toJSON = function toJSON() {
     return {
         options : this.options,
-        nested  : arrayToJSON(this.getNestedArray())
+        nested  : arrayToJSON(this.nestedArray)
     };
 };
 
@@ -2383,7 +2375,7 @@ NamespacePrototype.add = function add(object) {
             // initNested above already initializes Type and Service
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
-                var nested = prev.getNestedArray();
+                var nested = prev.nestedArray;
                 for (var i = 0; i < nested.length; ++i)
                     object.add(nested[i]);
                 this.remove(prev);
@@ -2467,7 +2459,7 @@ NamespacePrototype.resolve = function resolve() {
     // Add uppercased (and thus conflict-free) nested types, services and enums as properties
     // of the type just like static code does. This allows using a .d.ts generated for a static
     // module with reflection-based solutions where the condition is met.
-    var nested = this.getNestedArray();
+    var nested = this.nestedArray;
     for (var i = 0; i < nested.length; ++i)
         if (/^[A-Z]/.test(nested[i].name)) {
             if (nested[i] instanceof Type || nested[i] instanceof Service)
@@ -2487,7 +2479,7 @@ NamespacePrototype.resolve = function resolve() {
  * @returns {Namespace} `this`
  */
 NamespacePrototype.resolveAll = function resolveAll() {
-    var nested = this.getNestedArray(), i = 0;
+    var nested = this.nestedArray, i = 0;
     while (i < nested.length)
         if (nested[i] instanceof Namespace)
             nested[i++].resolveAll();
@@ -2514,7 +2506,7 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
         return null;
     // Start at root if path is absolute
     if (path[0] === "")
-        return this.getRoot().lookup(path.slice(1), filterType);
+        return this.root.lookup(path.slice(1), filterType);
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
     if (found && path.length === 1 && (!filterType || found instanceof filterType) || found instanceof Namespace && (found = found.lookup(path.slice(1), filterType, true)))
@@ -2646,7 +2638,7 @@ function ReflectionObject(name, options) {
 /** @alias ReflectionObject.prototype */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
-util.props(ReflectionObjectPrototype, {
+Object.defineProperties(ReflectionObjectPrototype, {
 
     /**
      * Reference to the root namespace.
@@ -2655,7 +2647,7 @@ util.props(ReflectionObjectPrototype, {
      * @readonly
      */
     root: {
-        get: function getRoot() {
+        get: function() {
             var ptr = this;
             while (ptr.parent !== null)
                 ptr = ptr.parent;
@@ -2670,7 +2662,7 @@ util.props(ReflectionObjectPrototype, {
      * @readonly
      */
     fullName: {
-        get: ReflectionObjectPrototype.getFullName = function getFullName() {
+        get: function() {
             var path = [ this.name ],
                 ptr = this.parent;
             while (ptr) {
@@ -2701,7 +2693,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         this.parent.remove(this);
     this.parent = parent;
     this.resolved = false;
-    var root = parent.getRoot();
+    var root = parent.root;
     if (!Root)
         Root = require(27);
     if (root instanceof Root)
@@ -2714,7 +2706,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
-    var root = parent.getRoot();
+    var root = parent.root;
     if (!Root)
         Root = require(27);
     if (root instanceof Root)
@@ -2730,10 +2722,9 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    var root = this.getRoot();
     if (!Root)
         Root = require(27);
-    if (root instanceof Root)
+    if (this.root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
 };
@@ -2781,8 +2772,8 @@ ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
  * @returns {string} Class name[, space, full name]
  */
 ReflectionObjectPrototype.toString = function toString() {
-    var className = this.constructor.className;
-    var fullName = this.getFullName();
+    var className = this.constructor.className,
+        fullName  = this.fullName;
     if (fullName.length)
         return className + " " + fullName;
     return className;
@@ -2849,8 +2840,8 @@ function OneOf(name, fieldNames, options) {
  * @type {Field[]}
  * @readonly
  */
-util.prop(OneOfPrototype, "fieldsArray", {
-    get: function getFieldsArray() {
+Object.defineProperty(OneOfPrototype, "fieldsArray", {
+    get: function() {
         return this._fieldsArray;
     }
 });
@@ -4434,7 +4425,7 @@ RootPrototype.loadSync = function loadSync(filename, options) {
 RootPrototype.resolveAll = function resolveAll() {
     if (this.deferred.length)
         throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
-            return "'extend " + field.extend + "' in " + field.parent.getFullName();
+            return "'extend " + field.extend + "' in " + field.parent.fullName;
         }).join(", "));
     return Namespace.prototype.resolveAll.call(this);
 };
@@ -4449,7 +4440,7 @@ RootPrototype.resolveAll = function resolveAll() {
 function handleExtension(field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
-        var sisterField = new Field(field.getFullName(), field.id, field.type, field.rule, undefined, field.options);
+        var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
         sisterField.declaringField = field;
         field.extensionField = sisterField;
         extendedType.add(sisterField);
@@ -4479,7 +4470,7 @@ RootPrototype._handleAdd = function handleAdd(object) {
     if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
         this.deferred.push(object);
     else if (object instanceof Namespace) {
-        var nested = object.getNestedArray();
+        var nested = object.nestedArray;
         for (i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleAdd(nested[i]);
     }
@@ -4505,7 +4496,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
             object.extensionField = null;
         }
     } else if (object instanceof Namespace) {
-        var nested = object.getNestedArray();
+        var nested = object.nestedArray;
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
     }
@@ -4608,7 +4599,7 @@ function Service(name, options) {
     this._methodsArray = null;
 }
 
-util.props(ServicePrototype, {
+Object.defineProperties(ServicePrototype, {
 
     /**
      * Methods of this service as an array for iteration.
@@ -4617,7 +4608,7 @@ util.props(ServicePrototype, {
      * @readonly
      */
     methodsArray: {
-        get: function getMethodsArray() {
+        get: function() {
             return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
         }
     }
@@ -4661,7 +4652,7 @@ ServicePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.getMethodsArray()) || {},
+        methods : Namespace.arrayToJSON(this.methodsArray) || {},
         nested  : inherited && inherited.nested || undefined
     };
 };
@@ -4677,7 +4668,7 @@ ServicePrototype.get = function get(name) {
  * @override
  */
 ServicePrototype.resolveAll = function resolveAll() {
-    var methods = this.getMethodsArray();
+    var methods = this.methodsArray;
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
     return NamespacePrototype.resolve.call(this);
@@ -4743,7 +4734,7 @@ ServicePrototype.remove = function remove(object) {
  */
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl);
-    this.getMethodsArray().forEach(function(method) {
+    this.methodsArray.forEach(function(method) {
         rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
             if (!rpcService.$rpc) // already ended?
                 return;
@@ -5094,7 +5085,7 @@ function Type(name, options) {
     this._ctor = null;
 }
 
-util.props(TypePrototype, {
+Object.defineProperties(TypePrototype, {
 
     /**
      * Message fields by id.
@@ -5103,7 +5094,7 @@ util.props(TypePrototype, {
      * @readonly
      */
     fieldsById: {
-        get: function getFieldsById() {
+        get: function() {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
@@ -5129,7 +5120,7 @@ util.props(TypePrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function getFieldsArray() {
+        get: function() {
             return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
         }
     },
@@ -5141,8 +5132,8 @@ util.props(TypePrototype, {
      * @readonly
      */
     repeatedFieldsArray: {
-        get: function getRepeatedFieldsArray() {
-            return this._repeatedFieldsArray || (this._repeatedFieldsArray = this.getFieldsArray().filter(function(field) { return field.repeated; }));
+        get: function() {
+            return this._repeatedFieldsArray || (this._repeatedFieldsArray = this.fieldsArray.filter(function(field) { return field.repeated; }));
         }
     },
 
@@ -5153,7 +5144,7 @@ util.props(TypePrototype, {
      * @readonly
      */
     oneofsArray: {
-        get: function getOneofsArray() {
+        get: function() {
             return this._oneofsArray || (this._oneofsArray = util.toArray(this.oneofs));
         }
     },
@@ -5164,10 +5155,10 @@ util.props(TypePrototype, {
      * @type {Class}
      */
     ctor: {
-        get: function getCtor() {
+        get: function() {
             return this._ctor || (this._ctor = Class.create(this).constructor);
         },
-        set: function setCtor(ctor) {
+        set: function(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
                 throw util._TypeError("ctor", "a Message constructor");
             if (!ctor.from)
@@ -5241,8 +5232,8 @@ TypePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options    : inherited && inherited.options || undefined,
-        oneofs     : Namespace.arrayToJSON(this.getOneofsArray()),
-        fields     : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
+        oneofs     : Namespace.arrayToJSON(this.oneofsArray),
+        fields     : Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
         extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
         reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
         group      : this.group || undefined,
@@ -5254,10 +5245,10 @@ TypePrototype.toJSON = function toJSON() {
  * @override
  */
 TypePrototype.resolveAll = function resolveAll() {
-    var fields = this.getFieldsArray(), i = 0;
+    var fields = this.fieldsArray, i = 0;
     while (i < fields.length)
         fields[i++].resolve();
-    var oneofs = this.getOneofsArray(); i = 0;
+    var oneofs = this.oneofsArray; i = 0;
     while (i < oneofs.length)
         oneofs[i++].resolve();
     return NamespacePrototype.resolve.call(this);
@@ -5284,7 +5275,7 @@ TypePrototype.add = function add(object) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
-        if (this.getFieldsById()[object.id])
+        if (this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
         if (object.parent)
             object.parent.remove(object);
@@ -5328,7 +5319,7 @@ TypePrototype.remove = function remove(object) {
  * @returns {Message} Runtime message
  */
 TypePrototype.create = function create(properties) {
-    return new (this.getCtor())(properties);
+    return new this.ctor(properties);
 };
 
 /**
@@ -5348,22 +5339,23 @@ TypePrototype.from = function from(object, options) {
 TypePrototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
-    var types = this.getFieldsArray().map(function(fld) { return fld.resolve().resolvedType; });
-    this.encode = encoder(this).eof(this.getFullName() + "$encode", {
+    var fullName = this.fullName,
+        types    = this.fieldsArray.map(function(fld) { return fld.resolve().resolvedType; });
+    this.encode = encoder(this).eof(fullName + "$encode", {
         Writer : Writer,
         types  : types,
         util   : util
     });
-    this.decode = decoder(this).eof(this.getFullName() + "$decode", {
+    this.decode = decoder(this).eof(fullName + "$decode", {
         Reader : Reader,
         types  : types,
         util   : util
     });
-    this.verify = verifier(this).eof(this.getFullName() + "$verify", {
+    this.verify = verifier(this).eof(fullName + "$verify", {
         types : types,
         util  : util
     });
-    this.convert = converter(this).eof(this.getFullName() + "$convert", {
+    this.convert = converter(this).eof(fullName + "$convert", {
         types : types,
         util  : util
     });
@@ -6213,43 +6205,6 @@ util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
 };
 
 /**
- * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
- * @param {Object} target Target object
- * @param {Object.<string,*>} descriptors Property descriptors
- * @returns {undefined}
- */
-util.props = function props(target, descriptors) {
-    Object.keys(descriptors).forEach(function(key) {
-        util.prop(target, key, descriptors[key]);
-    });
-};
-
-/**
- * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
- * @param {Object} target Target object
- * @param {string} key Property name
- * @param {Object.<string,*>} descriptor Property descriptor
- * @returns {undefined}
- */
-util.prop = function prop(target, key, descriptor) {
-    var ucKey = util.ucFirst(key);
-    if (descriptor.get)
-        target["get" + ucKey] = descriptor.get;
-    if (descriptor.set)
-        target["set" + ucKey] = util.isIE8
-            ? function(value) {
-                  descriptor.set.call(this, value);
-                  this[key] = value;
-              }
-            : descriptor.set;
-    if (util.isIE8) {
-        if (descriptor.value !== undefined)
-            target[key] = descriptor.value;
-    } else
-        Object.defineProperty(target, key, descriptor);
-};
-
-/**
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}
@@ -6272,7 +6227,7 @@ var Enum      = require(16),
     util      = require(34);
 
 function invalid(field, expected) {
-    return field.getFullName().substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
+    return field.fullName.substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
@@ -6366,7 +6321,7 @@ function genVerifyKey(gen, field, ref) {
  */
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();
+    var fields = mtype.fieldsArray;
     if (!fields.length)
         return util.codegen()("return null");
     var gen = util.codegen("m");

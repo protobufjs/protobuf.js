@@ -4371,15 +4371,15 @@ $root.jspb = (function() {
              * @name jspb.test.TestMessageWithOneof#partialOneof
              * @type {string|undefined}
              */
-            $protobuf.util.prop($prototype, "partialOneof", {
-                get: function getVirtual() {
+            Object.defineProperty($prototype, "partialOneof", {
+                get: function() {
                     if (this["pone"] !== undefined)
                         return "pone";
                     if (this["pthree"] !== undefined)
                         return "pthree";
                     return undefined;
                 },
-                set: function setVirtual(value) {
+                set: function(value) {
                     if (value !== "pone")
                         delete this["pone"];
                     if (value !== "pthree")
@@ -4392,15 +4392,15 @@ $root.jspb = (function() {
              * @name jspb.test.TestMessageWithOneof#recursiveOneof
              * @type {string|undefined}
              */
-            $protobuf.util.prop($prototype, "recursiveOneof", {
-                get: function getVirtual() {
+            Object.defineProperty($prototype, "recursiveOneof", {
+                get: function() {
                     if (this["rone"] !== undefined)
                         return "rone";
                     if (this["rtwo"] !== undefined)
                         return "rtwo";
                     return undefined;
                 },
-                set: function setVirtual(value) {
+                set: function(value) {
                     if (value !== "rone")
                         delete this["rone"];
                     if (value !== "rtwo")
@@ -4413,15 +4413,15 @@ $root.jspb = (function() {
              * @name jspb.test.TestMessageWithOneof#defaultOneofA
              * @type {string|undefined}
              */
-            $protobuf.util.prop($prototype, "defaultOneofA", {
-                get: function getVirtual() {
+            Object.defineProperty($prototype, "defaultOneofA", {
+                get: function() {
                     if (this["aone"] !== undefined)
                         return "aone";
                     if (this["atwo"] !== undefined)
                         return "atwo";
                     return undefined;
                 },
-                set: function setVirtual(value) {
+                set: function(value) {
                     if (value !== "aone")
                         delete this["aone"];
                     if (value !== "atwo")
@@ -4434,15 +4434,15 @@ $root.jspb = (function() {
              * @name jspb.test.TestMessageWithOneof#defaultOneofB
              * @type {string|undefined}
              */
-            $protobuf.util.prop($prototype, "defaultOneofB", {
-                get: function getVirtual() {
+            Object.defineProperty($prototype, "defaultOneofB", {
+                get: function() {
                     if (this["bone"] !== undefined)
                         return "bone";
                     if (this["btwo"] !== undefined)
                         return "btwo";
                     return undefined;
                 },
-                set: function setVirtual(value) {
+                set: function(value) {
                     if (value !== "bone")
                         delete this["bone"];
                     if (value !== "btwo")

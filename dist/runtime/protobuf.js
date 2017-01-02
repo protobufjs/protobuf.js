@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.0 (c) 2016, Daniel Wirtz
- * Compiled Mon, 02 Jan 2017 04:21:33 UTC
+ * Compiled Mon, 02 Jan 2017 13:12:40 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -437,7 +437,7 @@ converters.message = {
         if (!value)
             return null;
         // can't use instanceof Type here because converters are also part of the minimal runtime
-        return new (typeOrCtor.getCtor ? typeOrCtor.getCtor() : typeOrCtor)(options.fieldsOnly ? undefined : value);
+        return new (typeOrCtor.ctor ? typeOrCtor.ctor : typeOrCtor)(options.fieldsOnly ? undefined : value);
     },
     enums: function(value, defaultValue, values) {
         if (typeof value === "string")
@@ -1367,43 +1367,6 @@ util.longNe = function longNe(val, lo, hi) {
  */
 util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
     return str.charAt(0).toUpperCase() + str.substring(1);
-};
-
-/**
- * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
- * @param {Object} target Target object
- * @param {Object.<string,*>} descriptors Property descriptors
- * @returns {undefined}
- */
-util.props = function props(target, descriptors) {
-    Object.keys(descriptors).forEach(function(key) {
-        util.prop(target, key, descriptors[key]);
-    });
-};
-
-/**
- * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
- * @param {Object} target Target object
- * @param {string} key Property name
- * @param {Object.<string,*>} descriptor Property descriptor
- * @returns {undefined}
- */
-util.prop = function prop(target, key, descriptor) {
-    var ucKey = util.ucFirst(key);
-    if (descriptor.get)
-        target["get" + ucKey] = descriptor.get;
-    if (descriptor.set)
-        target["set" + ucKey] = util.isIE8
-            ? function(value) {
-                  descriptor.set.call(this, value);
-                  this[key] = value;
-              }
-            : descriptor.set;
-    if (util.isIE8) {
-        if (descriptor.value !== undefined)
-            target[key] = descriptor.value;
-    } else
-        Object.defineProperty(target, key, descriptor);
 };
 
 /**
