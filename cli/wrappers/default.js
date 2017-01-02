@@ -1,4 +1,3 @@
-/* eslint-disable block-scoped-var, no-redeclare, no-control-regex, strict */
 (function(global, factory) { /* global define, require, module */
 
     /* AMD */ if (typeof define === 'function' && define.amd)

@@ -17,15 +17,17 @@ var protobuf = require(".."),
  * @returns {number|undefined} Exit code, if known
  */
 exports.main = function(args, callback) {
+    var lintDefault = "eslint-disable block-scoped-var, no-redeclare, no-control-regex";
     var argv = minimist(args, {
         alias: {
             target : "t",
             out    : "o",
             path   : "p",
             wrap   : "w",
-            root   : "r"
+            root   : "r",
+            lint   : "l"
         },
-        string: [ "target", "out", "path", "wrap", "root" ],
+        string: [ "target", "out", "path", "wrap", "root", "lint" ],
         boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments" ],
         default: {
             target    : "json",
@@ -36,7 +38,8 @@ exports.main = function(args, callback) {
             convert   : true,
             delimited : true,
             beautify  : true,
-            comments  : true
+            comments  : true,
+            lint      : lintDefault
         }
     });
 
@@ -52,9 +55,9 @@ exports.main = function(args, callback) {
             callback(Error("usage"));
         else
             console.error([
-                "protobuf.js v" + pkg.version + " cli",
+                "protobuf.js v" + pkg.version + " CLI for JavaScript",
                 "",
-                "Consolidates imports and converts between file formats.",
+                chalk.bold.white("Consolidates imports and converts between file formats."),
                 "",
                 "  -t, --target    Specifies the target format. Also accepts a path to require a custom target.",
                 "",
@@ -64,21 +67,26 @@ exports.main = function(args, callback) {
                 "",
                 "  -o, --out       Saves to a file instead of writing to stdout.",
                 "",
-                "  Module targets only:",
+                chalk.bold.gray("  Module targets only:"),
                 "",
                 "  -w, --wrap      Specifies the wrapper to use. Also accepts a path to require a custom wrapper.",
                 "",
                 "                  default   Default wrapper supporting both CommonJS and AMD",
-                "                  commonjs  CommonJS only wrapper",
-                "                  amd       AMD only wrapper",
+                "                  commonjs  CommonJS wrapper",
+                "                  amd       AMD wrapper",
+                "                  es6       ES6 wrapper",
                 "",
                 "  -r, --root      Specifies an alternative protobuf.roots name.",
                 "",
-                "  Proto sources only:",
+                "  -l, --lint      Linter configuration. Defaults to protobuf.js-compatible rules:",
+                "",
+                "                  " + lintDefault,
+                "",
+                chalk.bold.gray("  Proto sources only:"),
                 "",
                 "  --keep-case     Keeps field casing instead of converting to camel case (not recommended).",
                 "",
-                "  Static targets only:",
+                chalk.bold.gray("  Static targets only:"),
                 "",
                 "  --no-create     Does not generate create functions used for runtime compatibility.",
                 "  --no-encode     Does not generate encode functions.",
@@ -89,7 +97,7 @@ exports.main = function(args, callback) {
                 "  --no-beautify   Does not beautify generated code.",
                 "  --no-comments   Does not output any JSDoc comments.",
                 "",
-                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..."
+                "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..." + chalk.gray("  (or)  ") + "other | " + chalk.bold.green("pbjs") + " [options] -"
             ].join("\n"));
         return 1;
     }
@@ -127,30 +135,58 @@ exports.main = function(args, callback) {
         "keepCase": argv["keep-case"] || false
     };
 
-    try {
-        root.loadSync(files, parseOptions); // sync is deterministic while async is not
-    } catch (err) {
-        if (callback) {
-            callback(err);
-            return undefined;
-        }
-        throw err;
-    }
+    // Read from stdin
+    if (files.length === 1 && files[0] === "-") {
+        var data = [];
+        process.stdin.on("data", function(chunk) {
+            data.push(chunk);
+        });
+        process.stdin.on("end", function() {
+            var source = Buffer.concat(data).toString("utf8");
+            if (source.charAt(0) !== "{") {
+                protobuf.parse(source, root, parseOptions);
+            } else {
+                var json = JSON.parse(source);
+                root.setOptions(json.options).addJSON(json);
+            }
+            callTarget();
+        });
 
-    target(root, argv, function targetCallback(err, output) {
-        if (err) {
-            if (callback)
-                return callback(err);
+    // Load from disk
+    } else {
+        try {
+            root.loadSync(files, parseOptions); // sync is deterministic while async is not
+            callTarget();
+        } catch (err) {
+            if (callback) {
+                callback(err);
+                return undefined;
+            }
             throw err;
         }
-        if (output !== "") {
-            if (argv.out)
-                fs.writeFileSync(argv.out, output, { encoding: "utf8" });
-            else
-                process.stdout.write(output, "utf8");
-        }
-        return callback 
-            ? callback(null)
-            : undefined;
-    });
+    }
+
+    function callTarget() {
+        target(root, argv, function targetCallback(err, output) {
+            if (err) {
+                if (callback)
+                    return callback(err);
+                throw err;
+            }
+            if (output !== "") {
+                output = [
+                    "// $> pbjs " + args.join(" "),
+                    "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
+                    ""
+                ].join("\n") + "\n" + output;
+                if (argv.out)
+                    fs.writeFileSync(argv.out, output, { encoding: "utf8" });
+                else
+                    process.stdout.write(output, "utf8");
+            }
+            return callback 
+                ? callback(null)
+                : undefined;
+        });
+    }
 };

@@ -90,9 +90,8 @@ exports.require = function(name, version) {
     return require(name + sub);
 };
 
-exports.wrap = function(name, OUTPUT, ROOT) {
-    if (!ROOT)
-        ROOT = "default";
+exports.wrap = function(OUTPUT, options) {
+    var name = options.wrap || "default";
     var wrap;
     try {
         // try built-in wrappers first
@@ -101,11 +100,13 @@ exports.wrap = function(name, OUTPUT, ROOT) {
         // otherwise fetch the custom one
         wrap = fs.readFileSync(path.resolve(process.cwd(), name)).toString("utf8");
     }
-    wrap = wrap.replace(/%ROOT%/g, JSON.stringify(ROOT));
+    wrap = wrap.replace(/%ROOT%/g, JSON.stringify(options.root || "default"));
     wrap = wrap.replace(/( *)%OUTPUT%/, function($0, $1) {
         return $1.length ? OUTPUT.replace(/^/mg, $1) : OUTPUT;
     });
-    return wrap;
+    if (options.lint !== "")
+        wrap = "/*" + options.lint + "*/\n" + wrap;
+    return wrap.replace(/\r?\n/, "\n");
 };
 
 exports.pad = function(str, len, l) {

@@ -537,7 +537,7 @@ function buildService(ref, service) {
     ]);
     push("this.responseDelimited = Boolean(responseDelimited);");
     --indent;
-    push("};");
+    push("}");
 
     service.methodsArray.forEach(function(method) {
         method.resolve();
@@ -567,7 +567,7 @@ function buildService(ref, service) {
                 --indent;
             push("} catch (err) {");
                 ++indent;
-                push("(typeof setImmediate === 'function' ? setImmediate : setTimeout)(function() { callback(err); });");
+                push("(typeof setImmediate === \"function\" ? setImmediate : setTimeout)(function() { callback(err); });");
                 push("return;");
                 --indent;
             push("}");

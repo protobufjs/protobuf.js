@@ -1,4 +1,7 @@
-/* eslint-disable block-scoped-var, no-redeclare, no-control-regex, strict */
+// $> pbjs --target static-module --wrap commonjs --root test_rpc --out tests/data/rpc.js tests/data/rpc.proto
+// Generated Mon, 02 Jan 2017 21:00:30 UTC
+
+/*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
 "use strict";
 
 var $protobuf = require("../../runtime");
@@ -57,7 +60,7 @@ $root.MyService = (function() {
          * @type {boolean}
          */
         this.responseDelimited = Boolean(responseDelimited);
-    };
+    }
 
     /**
      * Callback as used by {@link MyService#myMethod}.
@@ -78,7 +81,7 @@ $root.MyService = (function() {
         try {
             requestData = (this.requestDelimited ? $root.MyRequest.encodeDelimited(request) : $root.MyRequest.encode(request)).finish();
         } catch (err) {
-            (typeof setImmediate === 'function' ? setImmediate : setTimeout)(function() { callback(err); });
+            (typeof setImmediate === "function" ? setImmediate : setTimeout)(function() { callback(err); });
             return;
         }
         var self = this;

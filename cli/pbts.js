@@ -6,7 +6,8 @@ var child_process = require("child_process");
 
 var minimist = util.require("minimist", pkg.devDependencies.minimist),
     chalk    = util.require("chalk", pkg.devDependencies.chalk),
-    glob     = util.require("glob", pkg.devDependencies.glob);
+    glob     = util.require("glob", pkg.devDependencies.glob),
+    tmp      = util.require("tmp", pkg.devDependencies.glob);
 
 var jsdoc    = util.require("jsdoc/package.json", pkg.devDependencies.jsdoc);
 
@@ -41,9 +42,9 @@ exports.main = function(args, callback) {
             callback(Error("usage"));
         else
             console.error([
-                "protobuf.js v" + pkg.version + " cli for TypeScript",
+                "protobuf.js v" + pkg.version + " CLI for TypeScript",
                 "",
-                "Generates TypeScript definitions from annotated JavaScript files.",
+                chalk.bold.white("Generates TypeScript definitions from annotated JavaScript files."),
                 "",
                 "  -n, --name      Wraps everything in a module of the specified name.",
                 "",
@@ -55,7 +56,7 @@ exports.main = function(args, callback) {
                 "",
                 "  --no-comments   Does not output any JSDoc comments.",
                 "",
-                "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..."
+                "usage: " + chalk.bold.green("pbts") + " [options] file1.js file2.js ..." + chalk.bold.gray("  (or)  ") + "other | " + chalk.bold.green("pbts") + " [options] -"
             ].join("\n"));
         if (callback)
             callback(Error("usage"));
@@ -72,63 +73,90 @@ exports.main = function(args, callback) {
             ++i;
     }
 
-    // There is no proper API for jsdoc, so this executes the CLI and pipes the output
-    var basedir = path.join(__dirname, "..");
-    var moduleName = argv.name || "null";
-    var child = child_process.exec("node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return '"' + file + '"'; }).join(' '), {
-        cwd: process.cwd(),
-        argv0: "node",
-        stdio: "pipe",
-        maxBuffer: 1 << 24 // 16mb
-    });
-    var out = [];
-    child.stdout.on("data", function(data) {
-        out.push(data);
-    });
-    child.stderr.pipe(process.stderr);
-    child.on("close", function(code) {
-        if (code) {
-            out = out.join('').replace(/\s*JSDoc \d+\.\d+\.\d+ [^$]+/, "");
-            process.stderr.write(out);
-            var err = Error("code " + code);
-            if (callback)
-                callback(err);
-            else
-                throw err;
-            return;
-        }
+    var cleanup = [];
 
-        var output = [
-            "// $> pbts " + args.join(" "),
-            "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
-            ""
-        ];
-        if (argv.global)
-            output.push(
-                "export as namespace " + argv.global + ";",
-                ""
-            );
-        if (!argv.main)
-            output.push(
-                "import * as $protobuf from \"protobufjs\";",
-                ""
-            );
-        output = output.join('\n') + "\n" + out.join('');
+    // Read from stdin (to a temporary file)
+    if (files.length === 1 && files[0] === "-") {
+        var data = [];
+        process.stdin.on("data", function(chunk) {
+            data.push(chunk);
+        });
+        process.stdin.on("end", function() {
+            files[0] = tmp.tmpNameSync() + ".js";
+            fs.writeFileSync(files[0], Buffer.concat(data));
+            cleanup.push(files[0]);
+            callJsdoc();
+        });
 
-        try {
-            if (argv.out)
-                fs.writeFileSync(argv.out, output);
-            else
-                process.stdout.write(output, "utf8");
-            if (callback)
-                callback(null);
-        } catch (err) {
-            if (callback)
-                callback(err);
-            else
-                throw err;
-        }
-    });
+    // Load from disk
+    } else {
+        callJsdoc();
+    }
+
+    function callJsdoc() {
+
+        // There is no proper API for jsdoc, so this executes the CLI and pipes the output
+        var basedir = path.join(__dirname, "..");
+        var moduleName = argv.name || "null";
+        var cmd = "node \"" + basedir + "/node_modules/jsdoc/jsdoc.js\" -c \"" + basedir + "/jsdoc.types.json\" -q \"module=" + encodeURIComponent(moduleName) + "&comments=" + Boolean(argv.comments) + "\" " + files.map(function(file) { return '"' + file + '"'; }).join(' ');
+        var child = child_process.exec(cmd, {
+            cwd: process.cwd(),
+            argv0: "node",
+            stdio: "pipe",
+            maxBuffer: 1 << 24 // 16mb
+        });
+        var out = [];
+        child.stdout.on("data", function(data) {
+            out.push(data);
+        });
+        child.stderr.pipe(process.stderr);
+        child.on("close", function(code) {
+            // clean up temporary files, no matter what
+            try { cleanup.forEach(fs.unlinkSync); } catch(e) {} cleanup = [];
+
+            if (code) {
+                out = out.join('').replace(/\s*JSDoc \d+\.\d+\.\d+ [^$]+/, "");
+                process.stderr.write(out);
+                var err = Error("code " + code);
+                if (callback)
+                    callback(err);
+                else
+                    throw err;
+                return;
+            }
+
+            var output = [
+                "// $> pbts " + args.join(" "),
+                "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
+                ""
+            ];
+            if (argv.global)
+                output.push(
+                    "export as namespace " + argv.global + ";",
+                    ""
+                );
+            if (!argv.main)
+                output.push(
+                    "import * as $protobuf from \"protobufjs\";",
+                    ""
+                );
+            output = output.join('\n') + "\n" + out.join('');
+
+            try {
+                if (argv.out)
+                    fs.writeFileSync(argv.out, output);
+                else
+                    process.stdout.write(output, "utf8");
+                if (callback)
+                    callback(null);
+            } catch (err) {
+                if (callback)
+                    callback(err);
+                else
+                    throw err;
+            }
+        });
+    }
 
     return undefined;
 };
