@@ -101,6 +101,8 @@ exports.main = function(args, callback) {
         var output = [
             "// $> pbts " + args.join(" "),
             "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
+            "",
+            "/// <reference path=\"node_modules/protobufjs/types/protobuf.js.d.ts\" />",
             ""
         ];
         if (argv.global)
@@ -110,7 +112,7 @@ exports.main = function(args, callback) {
             );
         if (!argv.main)
             output.push(
-                "import * as $protobuf from \"protobufjs\";",
+                "import { Long, Reader, Writer } from \"protobufjs\";",
                 ""
             );
         output = output.join('\n') + "\n" + out.join('');
