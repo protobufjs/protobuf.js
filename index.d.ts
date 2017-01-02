@@ -1,5 +1,5 @@
 // $> pbts --main --global protobuf --out index.d.ts src
-// Generated Sat, 31 Dec 2016 00:05:20 UTC
+// Generated Mon, 02 Jan 2017 04:20:31 UTC
 
 export as namespace protobuf;
 
@@ -92,31 +92,80 @@ export class Class {
 export function common(name: string, json: { [k: string]: any }): void;
 
 /**
- * A converter as used by {@link convert}.
- * @typedef Converter
+ * Generates a conveter specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @param {function} generateField Field generator
+ * @returns {Codegen} Codegen instance
+ * @property {ConverterImpl} json Converter implementation producing JSON
+ * @property {ConverterImpl} message Converter implementation producing runtime messages
+ */
+export function converter(mtype: Type, generateField: () => any): Codegen;
+
+/**
+ * A converter implementation as used by {@link Type#convert} respectively {@link Message.convert}.
+ * @typedef ConverterImpl
+ * @type {Object}
+ * @property {ConverterCreate} create Function for creating a new destination object
+ * @property {ConverterEnums} enums Function for converting enum values
+ * @property {ConverterLongs} longs Function for converting long values
+ * @property {ConverterBytes} bytes Function for converting bytes values
+ */
+
+interface ConverterImpl {
+    create: ConverterCreate;
+    enums: ConverterEnums;
+    longs: ConverterLongs;
+    bytes: ConverterBytes;
+}
+
+/**
+ * A function for creating a new destination object.
+ * @typedef ConverterCreate
  * @type {function}
- * @param {Field} field Reflected field
- * @param {*} value Value to convert
- * @param {Object.<string,*>} options Conversion options
- * @returns {*} Converted value
+ * @param {Message|Object} value Source object or message
+ * @param {Function} typeOrCtor Reflected type or message constructor
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Message|Object} Destination object or message
  */
-type Converter = (field: Field, value: any, options: { [k: string]: any }) => any;
+type ConverterCreate = (value: (Message|Object), typeOrCtor: () => any, options?: { [k: string]: any }) => (Message|Object);
 
 /**
- * Converts between JSON objects and messages, based on reflection information.
- * @param {Type} type Type
- * @param {*} source Source object
- * @param {*} destination Destination object
- * @param {Object.<string,*>} options Conversion options
- * @param {Converter} converter Conversion function
- * @returns {*} `destination`
- * @property {Converter} toJson To JSON converter using {@link JSONConversionOptions}
- * @property {Converter} toMessage To message converter using {@link MessageConversionOptions}
+ * A function for converting enum values.
+ * @typedef ConverterEnums
+ * @type {function}
+ * @param {number|string} value Actual value
+ * @param {number} defaultValue Default value
+ * @param {Object.<string,number>} values Possible values
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {number|string} Converted value
  */
-export function convert(type: Type, source: any, destination: any, options: { [k: string]: any }, converter: Converter): any;
+type ConverterEnums = (value: (number|string), defaultValue: number, values: { [k: string]: number }, options?: { [k: string]: any }) => (number|string);
 
 /**
- * JSON conversion options as used by {@link Message#asJSON} with {@link convert}.
+ * A function for converting long values.
+ * @typedef ConverterLongs
+ * @type {function}
+ * @param {number|string|Long} value Actual value
+ * @param {Long} defaultValue Default value
+ * @param {boolean} unsigned Whether unsigned or not
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {number|string|Long} Converted value
+ */
+type ConverterLongs = (value: (number|string|Long), defaultValue: Long, unsigned: boolean, options?: { [k: string]: any }) => (number|string|Long);
+
+/**
+ * A function for converting bytes values.
+ * @typedef ConverterBytes
+ * @type {function}
+ * @param {string|number[]|Uint8Array} value Actual value
+ * @param {number[]} defaultValue Default value
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {string|number[]|Uint8Array} Converted value
+ */
+type ConverterBytes = (value: (string|number[]|Uint8Array), defaultValue: number[], options?: { [k: string]: any }) => (string|number[]|Uint8Array);
+
+/**
+ * JSON conversion options as used by {@link Message#asJSON}.
  * @typedef JSONConversionOptions
  * @type {Object}
  * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
@@ -130,6 +179,7 @@ export function convert(type: Type, source: any, destination: any, options: { [k
  * Valid values are `Array` and `String` (the global types).
  * Defaults to return the underlying buffer type.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
+ * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  */
 
 interface JSONConversionOptions {
@@ -138,10 +188,11 @@ interface JSONConversionOptions {
     enums?: any;
     bytes?: any;
     defaults?: boolean;
+    arrays?: boolean;
 }
 
 /**
- * Message conversion options as used by {@link Message.from} and {@link Type#from} with {@link convert}.
+ * Message conversion options as used by {@link Message.from} and {@link Type#from}.
  * @typedef MessageConversionOptions
  * @type {Object}
  * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
@@ -188,26 +239,16 @@ export class Enum extends ReflectionObject {
     constructor(name: string, values?: { [k: string]: number }, options?: { [k: string]: any });
 
     /**
+     * Enum values by id.
+     * @type {Object.<number,string>}
+     */
+    valuesById: { [k: number]: string };
+
+    /**
      * Enum values by name.
      * @type {Object.<string,number>}
      */
     values: { [k: string]: number };
-
-    /**
-     * Enum values by id.
-     * @name Enum#valuesById
-     * @type {Object.<number,string>}
-     * @readonly
-     */
-    readonly valuesById: { [k: number]: string };
-
-    /**
-     * Gets this enum's values by id. This is an alias of {@link Enum#valuesById|valuesById}'s getter for use within non-ES5 environments.
-     * @name Enum#getValuesById
-     * @function
-     * @returns {Object.<number,string>}
-     */
-    getValuesById(): { [k: number]: string };
 
     /**
      * Tests if the specified JSON object describes an enum.
@@ -624,6 +665,15 @@ export class Message {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     static verify(message: (Message|Object)): string;
+
+    /**
+     * Converts an object or runtime message of this type.
+     * @param {Message|Object} source Source object or runtime message
+     * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Message|Object} Converted object or runtime message
+     */
+    static convert(source: (Message|Object), impl: ConverterImpl, options?: { [k: string]: any }): (Message|Object);
 }
 
 /**
@@ -1672,6 +1722,15 @@ export class Type extends Namespace {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     verify(message: (Message|Object)): string;
+
+    /**
+     * Converts an object or runtime message.
+     * @param {Message|Object} source Source object or runtime message
+     * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Message|Object} Converted object or runtime message
+     */
+    convert(source: (Message|Object), impl: ConverterImpl, options?: { [k: string]: any }): (Message|Object);
 }
 
 /**
@@ -1954,6 +2013,7 @@ export namespace util {
      * @returns {Codegen} Codegen instance
      * @property {boolean} supported Whether code generation is supported by the environment.
      * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+     * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
      */
     function codegen(...params: string[]): Codegen;
 
@@ -2241,15 +2301,6 @@ export namespace util {
      * @returns {Long|number} Original value
      */
     function longFromHash(hash: string, unsigned?: boolean): (Long|number);
-
-    /**
-     * Tests if two possibly long values are not equal.
-     * @param {number|Long} a First value
-     * @param {number|Long} b Second value
-     * @returns {boolean} `true` if not equal
-     * @deprecated Use {@link util.longNe|longNe} instead
-     */
-    function longNeq(a: (number|Long), b: (number|Long)): boolean;
 
     /**
      * Tests if a possibily long value equals the specified low and high bits.

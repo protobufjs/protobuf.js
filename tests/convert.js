@@ -1,4 +1,5 @@
 var tape = require("tape");
+
 var protobuf  = require("..");
 
 tape.test("convert", function(test) {

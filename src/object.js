@@ -55,7 +55,7 @@ function ReflectionObject(name, options) {
 /** @alias ReflectionObject.prototype */
 var ReflectionObjectPrototype = ReflectionObject.prototype;
 
-util.props(ReflectionObjectPrototype, {
+Object.defineProperties(ReflectionObjectPrototype, {
 
     /**
      * Reference to the root namespace.
@@ -64,7 +64,7 @@ util.props(ReflectionObjectPrototype, {
      * @readonly
      */
     root: {
-        get: function getRoot() {
+        get: function() {
             var ptr = this;
             while (ptr.parent !== null)
                 ptr = ptr.parent;
@@ -79,7 +79,7 @@ util.props(ReflectionObjectPrototype, {
      * @readonly
      */
     fullName: {
-        get: ReflectionObjectPrototype.getFullName = function getFullName() {
+        get: function() {
             var path = [ this.name ],
                 ptr = this.parent;
             while (ptr) {
@@ -110,7 +110,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
         this.parent.remove(this);
     this.parent = parent;
     this.resolved = false;
-    var root = parent.getRoot();
+    var root = parent.root;
     if (!Root)
         Root = require("./root");
     if (root instanceof Root)
@@ -123,7 +123,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
  * @returns {undefined}
  */
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
-    var root = parent.getRoot();
+    var root = parent.root;
     if (!Root)
         Root = require("./root");
     if (root instanceof Root)
@@ -139,10 +139,9 @@ ReflectionObjectPrototype.onRemove = function onRemove(parent) {
 ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
-    var root = this.getRoot();
     if (!Root)
         Root = require("./root");
-    if (root instanceof Root)
+    if (this.root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
 };
@@ -190,8 +189,8 @@ ReflectionObjectPrototype.setOptions = function setOptions(options, ifNotSet) {
  * @returns {string} Class name[, space, full name]
  */
 ReflectionObjectPrototype.toString = function toString() {
-    var className = this.constructor.className;
-    var fullName = this.getFullName();
+    var className = this.constructor.className,
+        fullName  = this.fullName;
     if (fullName.length)
         return className + " " + fullName;
     return className;

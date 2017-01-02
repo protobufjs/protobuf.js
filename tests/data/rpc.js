@@ -1,4 +1,5 @@
-"use strict"; // eslint-disable-line strict
+/* eslint-disable block-scoped-var, no-redeclare, no-control-regex, strict */
+"use strict";
 
 var $protobuf = require("../../runtime");
 
@@ -30,7 +31,7 @@ $root.MyService = (function() {
      */
 
     /**
-     * Constructs a new MyService.
+     * Constructs a new MyService service.
      * @exports MyService
      * @constructor
      * @param {RPCImpl} rpc RPC implementation
@@ -68,7 +69,7 @@ $root.MyService = (function() {
 
     /**
      * Calls MyMethod.
-     * @param {MyRequest|Object} request MyRequest or plain object
+     * @param {MyRequest|Object} request MyRequest message or plain object
      * @param {MyService_myMethod_Callback} callback Node-style callback called with the error, if any, and MyResponse
      * @returns {undefined}
      */
@@ -135,22 +136,25 @@ $root.MyRequest = (function() {
     };
 
     /**
-     * Encodes the specified MyRequest.
+     * Encodes the specified MyRequest message.
      * @function
-     * @param {MyRequest|Object} message MyRequest or plain object to encode
+     * @param {MyRequest|Object} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyRequest.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
-        writer || (writer = Writer.create())
-        if (message.path !== undefined && message.path !== "")
-            writer.uint32(10/*= id 1, wireType 2 */).string(message.path)
-        return writer
-    }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
+    MyRequest.encode = (function(Writer) { return function encode(message, writer) {
+        if (!writer) {
+            writer = Writer.create();
+        }
+        if (message.path !== undefined && message.path !== "") {
+            writer.uint32(10).string(message.path);
+        }
+        return writer;
+    };})($protobuf.Writer);
 
     /**
-     * Encodes the specified MyRequest, length delimited.
-     * @param {MyRequest|Object} message MyRequest or plain object to encode
+     * Encodes the specified MyRequest message, length delimited.
+     * @param {MyRequest|Object} message MyRequest message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -159,31 +163,34 @@ $root.MyRequest = (function() {
     };
 
     /**
-     * Decodes a MyRequest from the specified reader or buffer.
+     * Decodes a MyRequest message from the specified reader or buffer.
      * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
-        reader instanceof Reader || (reader = Reader.create(reader))
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyRequest
+    MyRequest.decode = (function(Reader) { return function decode(reader, len) {
+        if (!(reader instanceof Reader)) {
+            reader = Reader.create(reader);
+        }
+        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.MyRequest();
         while (reader.pos < end) {
-            var tag = reader.uint32()
+            var tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.path = reader.string()
-                    break
-                default:
-                    reader.skipType(tag & 7)
-                    break
+            case 1:
+                message.path = reader.string();
+                break;
+
+            default:
+                reader.skipType(tag & 7);
+                break;
             }
         }
-        return message
-    }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
+        return message;
+    };})($protobuf.Reader);
 
     /**
-     * Decodes a MyRequest from the specified reader or buffer, length delimited.
+     * Decodes a MyRequest message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {MyRequest} MyRequest
      */
@@ -193,18 +200,59 @@ $root.MyRequest = (function() {
     };
 
     /**
-     * Verifies a MyRequest.
+     * Verifies a MyRequest message.
      * @function
-     * @param {MyRequest|Object} message MyRequest or plain object to verify
+     * @param {MyRequest|Object} message MyRequest message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    MyRequest.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+    MyRequest.verify = (function(util) { return function verify(message) {
         if (message.path !== undefined) {
-            if (!util.isString(message.path))
-                return "invalid value for field .MyRequest.path (string expected)"
+            if (!util.isString(message.path)) {
+                return "MyRequest.path: string expected";
+            }
         }
-        return null
-    }})($protobuf.util, [null]); /* eslint-enable */
+        return null;
+    };})($protobuf.util);
+
+    /**
+     * Converts a MyRequest message.
+     * @function
+     * @param {MyRequest|Object} source MyRequest message or plain object to convert
+     * @param {*} impl Converter implementation to use
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {MyRequest|Object} Converted message
+     */
+    MyRequest.convert = (function() { return function convert(src, impl, options) {
+        if (!options) {
+            options = {};
+        }
+        var dst = impl.create(src, this, options);
+        if (dst) {
+            if (dst.path === undefined && options.defaults) {
+                dst.path = "";
+            }
+        }
+        return dst;
+    };})();
+
+    /**
+     * Creates a MyRequest message from JSON.
+     * @param {Object.<string,*>} source Source object
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {MyRequest} MyRequest
+     */
+    MyRequest.from = function from(source, options) {
+        return this.convert(source, $protobuf.converters.message, options);
+    };
+
+    /**
+     * Converts this MyRequest message to JSON.
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Object.<string,*>} JSON object
+     */
+    $prototype.asJSON = function asJSON(options) {
+        return this.constructor.convert(this, $protobuf.converters.json, options);
+    };
 
     return MyRequest;
 })();
@@ -244,22 +292,25 @@ $root.MyResponse = (function() {
     };
 
     /**
-     * Encodes the specified MyResponse.
+     * Encodes the specified MyResponse message.
      * @function
-     * @param {MyResponse|Object} message MyResponse or plain object to encode
+     * @param {MyResponse|Object} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    MyResponse.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
-        writer || (writer = Writer.create())
-        if (message.status !== undefined && message.status !== 0)
-            writer.uint32(16/*= id 2, wireType 0 */).int32(message.status)
-        return writer
-    }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
+    MyResponse.encode = (function(Writer) { return function encode(message, writer) {
+        if (!writer) {
+            writer = Writer.create();
+        }
+        if (message.status !== undefined && message.status !== 0) {
+            writer.uint32(16).int32(message.status);
+        }
+        return writer;
+    };})($protobuf.Writer);
 
     /**
-     * Encodes the specified MyResponse, length delimited.
-     * @param {MyResponse|Object} message MyResponse or plain object to encode
+     * Encodes the specified MyResponse message, length delimited.
+     * @param {MyResponse|Object} message MyResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -268,31 +319,34 @@ $root.MyResponse = (function() {
     };
 
     /**
-     * Decodes a MyResponse from the specified reader or buffer.
+     * Decodes a MyResponse message from the specified reader or buffer.
      * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
-        reader instanceof Reader || (reader = Reader.create(reader))
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MyResponse
+    MyResponse.decode = (function(Reader) { return function decode(reader, len) {
+        if (!(reader instanceof Reader)) {
+            reader = Reader.create(reader);
+        }
+        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.MyResponse();
         while (reader.pos < end) {
-            var tag = reader.uint32()
+            var tag = reader.uint32();
             switch (tag >>> 3) {
-                case 2:
-                    message.status = reader.int32()
-                    break
-                default:
-                    reader.skipType(tag & 7)
-                    break
+            case 2:
+                message.status = reader.int32();
+                break;
+
+            default:
+                reader.skipType(tag & 7);
+                break;
             }
         }
-        return message
-    }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
+        return message;
+    };})($protobuf.Reader);
 
     /**
-     * Decodes a MyResponse from the specified reader or buffer, length delimited.
+     * Decodes a MyResponse message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {MyResponse} MyResponse
      */
@@ -302,18 +356,59 @@ $root.MyResponse = (function() {
     };
 
     /**
-     * Verifies a MyResponse.
+     * Verifies a MyResponse message.
      * @function
-     * @param {MyResponse|Object} message MyResponse or plain object to verify
+     * @param {MyResponse|Object} message MyResponse message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    MyResponse.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+    MyResponse.verify = (function(util) { return function verify(message) {
         if (message.status !== undefined) {
-            if (!util.isInteger(message.status))
-                return "invalid value for field .MyResponse.status (integer expected)"
+            if (!util.isInteger(message.status)) {
+                return "MyResponse.status: integer expected";
+            }
         }
-        return null
-    }})($protobuf.util, [null]); /* eslint-enable */
+        return null;
+    };})($protobuf.util);
+
+    /**
+     * Converts a MyResponse message.
+     * @function
+     * @param {MyResponse|Object} source MyResponse message or plain object to convert
+     * @param {*} impl Converter implementation to use
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {MyResponse|Object} Converted message
+     */
+    MyResponse.convert = (function() { return function convert(src, impl, options) {
+        if (!options) {
+            options = {};
+        }
+        var dst = impl.create(src, this, options);
+        if (dst) {
+            if (dst.status === undefined && options.defaults) {
+                dst.status = 0;
+            }
+        }
+        return dst;
+    };})();
+
+    /**
+     * Creates a MyResponse message from JSON.
+     * @param {Object.<string,*>} source Source object
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {MyResponse} MyResponse
+     */
+    MyResponse.from = function from(source, options) {
+        return this.convert(source, $protobuf.converters.message, options);
+    };
+
+    /**
+     * Converts this MyResponse message to JSON.
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Object.<string,*>} JSON object
+     */
+    $prototype.asJSON = function asJSON(options) {
+        return this.constructor.convert(this, $protobuf.converters.json, options);
+    };
 
     return MyResponse;
 })();
@@ -323,7 +418,7 @@ $lazyTypes.forEach(function(types) {
     types.forEach(function(path, i) {
         if (!path)
             return;
-        path = path.split('.');
+        path = path.split(".");
         var ptr = $root;
         while (path.length)
             ptr = ptr[path.shift()];

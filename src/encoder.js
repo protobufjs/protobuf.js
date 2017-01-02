@@ -18,10 +18,11 @@ function genEncodeType(gen, field, fieldIndex, ref) {
  */
 function encoder(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
-    var fields = mtype.getFieldsArray();
-    var oneofs = mtype.getOneofsArray();
+    var fields = mtype.fieldsArray;
+    var oneofs = mtype.oneofsArray;
     var gen = util.codegen("m", "w")
-    ("w||(w=Writer.create())");
+    ("if(!w)")
+        ("w=Writer.create()");
 
     var i, ref;
     for (var i = 0; i < fields.length; ++i) {
@@ -38,11 +39,10 @@ function encoder(mtype) {
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim()", i, ref); // can't be groups
+            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", i, ref); // can't be groups
             else gen
-            ("w.uint32(%d).%s(%s[ks[i]])", 16 | wireType, type, ref);
+            (".uint32(%d).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
             gen
-            ("w.ldelim()")
         ("}")
     ("}");
 
@@ -62,12 +62,14 @@ function encoder(mtype) {
             // Non-packed
             } else { gen
 
-    ("if(%s)", ref)
+    ("if(%s){", ref)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genEncodeType(gen, field, i, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
+            gen
+    ("}");
 
             }
 
@@ -93,8 +95,8 @@ function encoder(mtype) {
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i];
         gen
-        ("switch(%s){", "m.get" + oneof.ucName + "()");
-        var oneofFields = oneof.getFieldsArray();
+        ("switch(%s){", "m" + util.safeProp(oneof.name));
+        var oneofFields = oneof.fieldsArray;
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,

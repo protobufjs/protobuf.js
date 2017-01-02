@@ -83,7 +83,7 @@ exports.require = function(name, version) {
         require.resolve(path.join(dir, "package.json"));
     } catch (e) {
         console.error("installing " + name + "@" + version + " ...");
-        child_process.execSync("npm install " + name + "@" + version, {
+        child_process.execSync("npm --silent install " + name + "@" + version, {
             cwd: cwd
         });
     }

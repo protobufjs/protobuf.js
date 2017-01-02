@@ -4,7 +4,7 @@ module.exports = codegen;
 var blockOpenRe  = /[{[]$/,
     blockCloseRe = /^[}\]]/,
     casingRe     = /:$/,
-    branchRe     = /^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/,
+    branchRe     = /^\s*(?:if|}?else if|while|for)\b|\b(?:else)\s*$/,
     breakRe      = /\b(?:break|continue);?$|^\s*return\b/;
 
 /**
@@ -16,6 +16,7 @@ var blockOpenRe  = /[{[]$/,
  * @returns {Codegen} Codegen instance
  * @property {boolean} supported Whether code generation is supported by the environment.
  * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+ * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
  */
 function codegen() {
     var params = [],
@@ -131,5 +132,6 @@ function sprintf(format) {
     });
 }
 
+codegen.sprintf   = sprintf;
 codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
 codegen.verbose   = false;

@@ -138,43 +138,6 @@ util.ucFirst = function ucFirst(str) { // lcFirst counterpart is in core util
 };
 
 /**
- * Defines the specified properties on the specified target. Also adds getters and setters for non-ES5 environments.
- * @param {Object} target Target object
- * @param {Object.<string,*>} descriptors Property descriptors
- * @returns {undefined}
- */
-util.props = function props(target, descriptors) {
-    Object.keys(descriptors).forEach(function(key) {
-        util.prop(target, key, descriptors[key]);
-    });
-};
-
-/**
- * Defines the specified property on the specified target. Also adds getters and setters for non-ES5 environments.
- * @param {Object} target Target object
- * @param {string} key Property name
- * @param {Object.<string,*>} descriptor Property descriptor
- * @returns {undefined}
- */
-util.prop = function prop(target, key, descriptor) {
-    var ucKey = util.ucFirst(key);
-    if (descriptor.get)
-        target["get" + ucKey] = descriptor.get;
-    if (descriptor.set)
-        target["set" + ucKey] = util.isIE8
-            ? function(value) {
-                  descriptor.set.call(this, value);
-                  this[key] = value;
-              }
-            : descriptor.set;
-    if (util.isIE8) {
-        if (descriptor.value !== undefined)
-            target[key] = descriptor.value;
-    } else
-        Object.defineProperty(target, key, descriptor);
-};
-
-/**
  * An immuable empty array.
  * @memberof util
  * @type {Array.<*>}

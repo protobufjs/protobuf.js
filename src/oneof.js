@@ -58,8 +58,8 @@ function OneOf(name, fieldNames, options) {
  * @type {Field[]}
  * @readonly
  */
-util.prop(OneOfPrototype, "fieldsArray", {
-    get: function getFieldsArray() {
+Object.defineProperty(OneOfPrototype, "fieldsArray", {
+    get: function() {
         return this._fieldsArray;
     }
 });

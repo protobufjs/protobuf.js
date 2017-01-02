@@ -16,20 +16,20 @@ tape.test("oneofs", function(test) {
         });
 
         test.equal(message.num, 1, "should initialize the last value");
-        test.equal(message.getKind(), "num", "should reference the last value");
+        test.equal(message.kind, "num", "should reference the last value");
         
-        message.setKind('num');
+        message.kind = 'num';
         test.notOk(message.hasOwnProperty('str'), "should delete other values");
 
         message.str = "a";
-        message.setKind('str'); // message.kind = 'str' if IE8 support isn't required
+        message.kind = 'str';
 
         test.notOk(message.hasOwnProperty('num'), "should delete the previous value");
         test.equal(message.str, "a", "should set the new value");
         test.equal(message.kind, "str", "should reference the new value");
 
         message.num = 0; // default
-        message.setKind('num');
+        message.kind = 'num';
         test.notOk(message.hasOwnProperty('str'), "should delete the previous value");
         test.equal(message.num, 0, "should set the new value");
         test.equal(message.kind, "num", "should reference the new value");

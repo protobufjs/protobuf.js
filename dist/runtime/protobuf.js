@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.3.2 (c) 2016, Daniel Wirtz
- * Compiled Fri, 30 Dec 2016 23:13:48 UTC
+ * protobuf.js v6.4.0 (c) 2016, Daniel Wirtz
+ * Compiled Mon, 02 Jan 2017 04:21:33 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -309,11 +309,12 @@ utf8.write = function(string, buffer, offset) {
 "use strict";
 var protobuf = global.protobuf = exports;
 
-protobuf.Writer       = require(10);
-protobuf.BufferWriter = require(11);
-protobuf.Reader       = require(6);
-protobuf.BufferReader = require(7);
-protobuf.util         = require(9);
+protobuf.Writer       = require(11);
+protobuf.BufferWriter = require(12);
+protobuf.Reader       = require(7);
+protobuf.BufferReader = require(8);
+protobuf.converters   = require(6);
+protobuf.util         = require(10);
 protobuf.roots        = {};
 protobuf.configure    = configure;
 
@@ -333,11 +334,144 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"11":11,"6":6,"7":7,"9":9}],6:[function(require,module,exports){
+},{"10":10,"11":11,"12":12,"6":6,"7":7,"8":8}],6:[function(require,module,exports){
+"use strict";
+var converters = exports;
+
+var util = require(10);
+
+/**
+ * JSON conversion options as used by {@link Message#asJSON}.
+ * @typedef JSONConversionOptions
+ * @type {Object}
+ * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
+ * @property {*} [longs] Long conversion type. Only relevant with a long library.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to a possibly unsafe number without, and a `Long` with a long library.
+ * @property {*} [enums=Number] Enum value conversion type.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to the numeric ids.
+ * @property {*} [bytes] Bytes value conversion type.
+ * Valid values are `Array` and `String` (the global types).
+ * Defaults to return the underlying buffer type.
+ * @property {boolean} [defaults=false] Also sets default values on the resulting object
+ * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
+ */
+
+/**
+ * Converter implementation producing JSON.
+ * @type {ConverterImpl}
+ */
+converters.json = {
+    create: function(value, typeOrCtor, options) {
+        if (!value)
+            return null;
+        return options.fieldsOnly
+            ? {}
+            : util.merge({}, value);
+    },
+    enums: function(value, defaultValue, values, options) {
+        if (!options.defaults) {
+            if (value === undefined || value === defaultValue)
+                return undefined;
+        } else if (value === undefined)
+            value = defaultValue;
+        return options.enums === String && typeof value === "number"
+            ? values[value]
+            : value;
+    },
+    longs: function(value, defaultLow, defaultHigh, unsigned, options) {
+        if (!value) {
+            if (options.defaults)
+                value = { low: defaultLow, high: defaultHigh };
+            else
+                return undefined;
+        } else if (!util.longNe(value, defaultLow, defaultHigh) && !options.defaults)
+            return undefined;
+        if (options.longs === Number)
+            return typeof value === "number"
+                ? value
+                : util.LongBits.from(value).toNumber(unsigned);
+        if (options.longs === String) {
+            if (typeof value === "number")
+                return util.Long.fromNumber(value, unsigned).toString();
+            value = util.Long.fromValue(value); // has no unsigned option
+            value.unsigned = unsigned;
+            return value.toString();
+        }
+        return value;
+    },
+    bytes: function(value, defaultValue, options) {
+        if (!value) {
+            if (options.defaults)
+                value = defaultValue;
+            else
+                return undefined;
+        } else if (!value.length && !options.defaults)
+            return undefined;
+        return options.bytes === String
+            ? util.base64.encode(value, 0, value.length)
+            : options.bytes === Array
+            ? Array.prototype.slice.call(value)
+            : options.bytes === util.Buffer && !util.Buffer.isBuffer(value)
+            ? util.Buffer.from(value) // polyfilled
+            : value;
+    }
+};
+
+/**
+ * Message conversion options as used by {@link Message.from} and {@link Type#from}.
+ * @typedef MessageConversionOptions
+ * @type {Object}
+ * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
+ */
+// Note that options.defaults and options.arrays also affect the message converter.
+// As defaults are already on the prototype, usage is not recommended and thus undocumented.
+
+/**
+ * Converter implementation producing runtime messages.
+ * @type {ConverterImpl}
+ */
+converters.message = {
+    create: function(value, typeOrCtor, options) {
+        if (!value)
+            return null;
+        // can't use instanceof Type here because converters are also part of the minimal runtime
+        return new (typeOrCtor.getCtor ? typeOrCtor.getCtor() : typeOrCtor)(options.fieldsOnly ? undefined : value);
+    },
+    enums: function(value, defaultValue, values) {
+        if (typeof value === "string")
+            return values[value];
+        return value | 0;
+    },
+    longs: function(value, defaultLow, defaultHigh, unsigned) {
+        if (typeof value === "string")
+            return util.Long.fromString(value, unsigned);
+        if (typeof value === "number")
+            return util.Long.fromNumber(value, unsigned);
+        return value;
+    },
+    bytes: function(value/*, defaultValue*/) {
+        if (util.Buffer)
+            return util.Buffer.isBuffer(value)
+                ? value
+                : util.Buffer.from(value, "base64"); // polyfilled
+        if (typeof value === "string") {
+            var buf = util.newBuffer(util.base64.length(value));
+            util.base64.decode(value, buf, 0);
+            return buf;
+        }
+        return value instanceof util.Array
+            ? value
+            : new util.Array(value);
+    }
+};
+
+},{"10":10}],7:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-var util      = require(9);
+var util      = require(10);
 
 var BufferReader; // cyclic
 
@@ -385,7 +519,7 @@ function Reader(buffer) {
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
         if (!BufferReader)
-            BufferReader = require(7);
+            BufferReader = require(8);
         return (Reader.create = function create_buffer(buffer) {
             return new BufferReader(buffer);
         })(buffer);
@@ -823,7 +957,7 @@ ReaderPrototype.skipType = function(wireType) {
 
         /* istanbul ignore next */
         default:
-            throw Error("invalid wire type: " + wireType);
+            throw Error("invalid wire type " + wireType + " at offset " + this.pos);
     }
     return this;
 };
@@ -849,16 +983,16 @@ Reader._configure = configure;
 
 configure();
 
-},{"7":7,"9":9}],7:[function(require,module,exports){
+},{"10":10,"8":8}],8:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
-var Reader = require(6);
+var Reader = require(7);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require(9);
+var util = require(10);
 
 /**
  * Constructs a new buffer reader instance.
@@ -882,12 +1016,12 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"6":6,"9":9}],8:[function(require,module,exports){
+},{"10":10,"7":7}],9:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(9);
+var util = require(10);
 
 /**
  * Any compatible Long instance.
@@ -1094,13 +1228,13 @@ LongBitsPrototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"9":9}],9:[function(require,module,exports){
+},{"10":10}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-util.LongBits = require(8);
+util.LongBits = require(9);
 util.base64   = require(1);
 util.inquire  = require(2);
 util.utf8     = require(4);
@@ -1213,23 +1347,6 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 };
 
 /**
- * Tests if two possibly long values are not equal.
- * @param {number|Long} a First value
- * @param {number|Long} b Second value
- * @returns {boolean} `true` if not equal
- * @deprecated Use {@link util.longNe|longNe} instead
- */
-util.longNeq = function longNeq(a, b) {
-    return typeof a === "number"
-         ? typeof b === "number"
-            ? a !== b
-            : (a = util.LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
-         : typeof b === "number"
-            ? (b = util.LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
-            : a.low !== b.low || a.high !== b.high;
-};
-
-/**
  * Tests if a possibily long value equals the specified low and high bits.
  * @param {number|string|Long} val Value to test
  * @param {number} lo Low bits to test against
@@ -1304,11 +1421,11 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : {};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"1":1,"2":2,"3":3,"4":4,"8":8}],10:[function(require,module,exports){
+},{"1":1,"2":2,"3":3,"4":4,"9":9}],11:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(9);
+var util      = require(10);
 
 var BufferWriter; // cyclic
 
@@ -1439,7 +1556,7 @@ function Writer() {
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
         if (!BufferWriter)
-            BufferWriter = require(11);
+            BufferWriter = require(12);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -1851,16 +1968,16 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
-},{"11":11,"9":9}],11:[function(require,module,exports){
+},{"10":10,"12":12}],12:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
-var Writer = require(10);
+var Writer = require(11);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require(9);
+var util = require(10);
 
 var utf8   = util.utf8,
     Buffer = util.Buffer;
@@ -1924,7 +2041,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"10":10,"9":9}]},{},[5])
+},{"10":10,"11":11}]},{},[5])
 
 
 //# sourceMappingURL=protobuf.js.map

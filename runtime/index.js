@@ -7,6 +7,7 @@ protobuf.Writer       = require("../src/writer");
 protobuf.BufferWriter = require("../src/writer_buffer");
 protobuf.Reader       = require("../src/reader");
 protobuf.BufferReader = require("../src/reader_buffer");
+protobuf.converters   = require("../src/converters");
 protobuf.util         = require("../src/util/runtime");
 protobuf.roots        = {};
 protobuf.configure    = configure;

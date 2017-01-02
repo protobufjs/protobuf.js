@@ -155,7 +155,7 @@ function Field(name, id, type, rule, extend, options) {
     this._packed = null;
 }
 
-util.props(FieldPrototype, {
+Object.defineProperties(FieldPrototype, {
 
     /**
      * Determines whether this field is packed. Only relevant when repeated and working with proto2.
@@ -164,20 +164,13 @@ util.props(FieldPrototype, {
      * @readonly
      */
     packed: {
-        get: FieldPrototype.isPacked = function() {
+        get: function() {
             // defaults to packed=true if not explicity set to false
             if (this._packed === null)
                 this._packed = this.getOption("packed") !== false;
             return this._packed;
         }
     }
-
-    /**
-     * Determines whether this field is packed. This is an alias of {@link Field#packed|packed}'s getter for use within non-ES5 environments.
-     * @name Field#isPacked
-     * @function
-     * @returns {boolean}
-     */
 });
 
 /**
@@ -257,9 +250,11 @@ FieldPrototype.resolve = function resolve() {
     else if (this.repeated)
         this.defaultValue = [];
     else {
-        if (this.options && this.options["default"] !== undefined)
+        if (this.options && this.options["default"] !== undefined) {
             this.defaultValue = this.options["default"];
-        else
+            if (this.resolvedType instanceof Enum && typeof this.defaultValue === "string")
+                this.defaultValue = this.resolvedType.values[this.defaultValue] || 0;
+        } else
             this.defaultValue = typeDefault;
 
         if (this.long) {

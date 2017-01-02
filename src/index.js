@@ -90,6 +90,7 @@ protobuf.BufferReader     = require("./reader_buffer");
 protobuf.encoder          = require("./encoder");
 protobuf.decoder          = require("./decoder");
 protobuf.verifier         = require("./verifier");
+protobuf.converter        = require("./converter");
 
 // Reflection
 protobuf.ReflectionObject = require("./object");

@@ -1,7 +1,7 @@
 "use strict";
 module.exports = Message;
 
-var convert = require("./convert");
+var converters = require("./converters");
 
 /**
  * Constructs a new message instance.
@@ -43,7 +43,7 @@ var MessagePrototype = Message.prototype;
  * @returns {Object.<string,*>} JSON object
  */
 MessagePrototype.asJSON = function asJSON(options) {
-    return convert(this.$type, this, {}, options, convert.toJson);
+    return this.$type.convert(this, converters.json, options);
 };
 
 /**
@@ -53,7 +53,7 @@ MessagePrototype.asJSON = function asJSON(options) {
  * @returns {Message} Message instance
  */
 Message.from = function from(object, options) {
-    return convert(this.$type, object, new this.constructor(), options, convert.toMessage);
+    return this.$type.convert(object, converters.message, options);
 };
 
 /**
@@ -107,4 +107,15 @@ Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  */
 Message.verify = function verify(message) {
     return this.$type.verify(message);
+};
+
+/**
+ * Converts an object or runtime message of this type.
+ * @param {Message|Object} source Source object or runtime message
+ * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Message|Object} Converted object or runtime message
+ */
+Message.convert = function convert(source, impl, options) {
+    return this.$type.convert(source, impl, options);
 };

@@ -1,15 +1,33 @@
-# [6.3.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.3.2)
+# [6.4.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.0)
+
+## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/39bc1031bb502f8b677b3736dd283736ea4d92c1) Removed now unused util.longNeq which was used by early static code<br />
 
 ## Fixed
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7eb3d456370d7d66b0856e32b2d2602abf598516) Respect optional properties when writing interfaces in tsd-jsdoc, fixes [#598](https://github.com/dcodeIO/protobuf.js/issues/598)<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/28ce07d9812f5e1743afef95a94532d2c9488a84) Be more verbose when throwing invalid wire type errors, see [#602](https://github.com/dcodeIO/protobuf.js/issues/602)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/40074bb69c3ca4fcefe09d4cfe01f3a86844a7e8) Added an asJSON-option to always populate array fields, even if defaults=false, see [#597](https://github.com/dcodeIO/protobuf.js/issues/597)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a7d23240a278aac0bf01767b6096d692c09ae1ce) Attempt to improve TypeScript support by using explicit exports<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cec253fb9a177ac810ec96f4f87186506091fa37) Copy-pasted typescript definitions to micro modules, see [#599](https://github.com/dcodeIO/protobuf.js/issues/599)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/1f18453c7bfcce65c258fa98a3e3d4577d2e550f) Emit an error on resolveAll() if any extension fields cannot be resolved, see [#595](https://github.com/dcodeIO/protobuf.js/issues/595) + test case<br />
 
 ## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/3c775535517b8385a1d3c1bf056f3da3b4266f8c) Added support for TypeScript enums to pbts<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0cda72a55a1f2567a5d981dc5d924e55b8070513) Added a few helpful comments to static code<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/24b293c297feff8bda5ee7a2f8f3f83d77c156d0) Slightly beautify statically generated code<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/65637ffce20099df97ffbcdce50faccc8e97c366) Do not wrap main definition as a module and export directly instead<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/65637ffce20099df97ffbcdce50faccc8e97c366) Generate prettier definitions with --no-comments<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/20d8a2dd93d3bbb6990594286f992e703fc4e334) Added variable arguments support to tsd-jsdoc<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8493dbd9a923693e943f710918937d83ae3c4572) Reference dependency imports as a module to prevent name collisions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/39a2ea361c50d7f4aaa0408a0d55bb13823b906c) Removed now unnecessary comment lines in generated static code<br />
 
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/805291086f6212d1f108b3d8f36325cf1739c0bd) Reverted previous attempt on [#597](https://github.com/dcodeIO/protobuf.js/issues/597)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c5160217ea95996375460c5403dfe37b913d392e) Minor tsd-jsdoc refactor<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/961dd03061fc2c43ab3bf22b3f9f5165504c1002) Removed unused sandbox files<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f625eb8b0762f8f5d35bcd5fc445e52b92d8e77d) Updated package.json of micro modules to reference types, see [#599](https://github.com/dcodeIO/protobuf.js/issues/599)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/46ec8209b21cf9ff09ae8674e2a5bbc49fd4991b) Reference dependencies as imports in generated typescript definitions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c0ab94c2e469c0fbf790e4807f24fddd6370e342) Reference dependencies as imports in generated typescript definitions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3bab132b871798c7c50c60a4c14c2effdffa372e) Allow null values on optional long fields, see [#590](https://github.com/dcodeIO/protobuf.js/issues/590)<br />

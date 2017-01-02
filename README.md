@@ -541,7 +541,7 @@ Compatibility
 
 * Because the internals of this package do not rely on `google/protobuf/descriptor.proto`, options are parsed and presented literally.
 * If typed arrays are not supported by the environment, plain arrays will be used instead.
-* Support for pre-ES5 environments like IE8 can be achieved by [using a polyfill](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js) and, instead of using property getters and setters on reflection objects, calling the respective functions prefixed with `get`, `set` or `is` directly (i.e. calling `Type#getFieldsById()` instead of accessing `Type#fieldsById`). Note that this also applies to virtual oneof properties (use `getKind`, `setKind` for example if the oneof is named `kind`).
+* Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js).
 * If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
 
 **License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

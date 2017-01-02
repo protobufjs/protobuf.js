@@ -1,4 +1,5 @@
-"use strict"; // eslint-disable-line strict
+/* eslint-disable block-scoped-var, no-redeclare, no-control-regex, strict */
+"use strict";
 
 var $protobuf = require("../../runtime");
 
@@ -43,22 +44,25 @@ $root.A = (function() {
     };
 
     /**
-     * Encodes the specified A.
+     * Encodes the specified A message.
      * @function
-     * @param {A|Object} message A or plain object to encode
+     * @param {A|Object} message A message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    A.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
-        writer || (writer = Writer.create())
-        if (message.whatever !== undefined && message.whatever !== "")
-            writer.uint32(10/*= id 1, wireType 2 */).string(message.whatever)
-        return writer
-    }})($protobuf.Writer, $protobuf.util, [null]); /* eslint-enable */
+    A.encode = (function(Writer) { return function encode(message, writer) {
+        if (!writer) {
+            writer = Writer.create();
+        }
+        if (message.whatever !== undefined && message.whatever !== "") {
+            writer.uint32(10).string(message.whatever);
+        }
+        return writer;
+    };})($protobuf.Writer);
 
     /**
-     * Encodes the specified A, length delimited.
-     * @param {A|Object} message A or plain object to encode
+     * Encodes the specified A message, length delimited.
+     * @param {A|Object} message A message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -67,31 +71,34 @@ $root.A = (function() {
     };
 
     /**
-     * Decodes a A from the specified reader or buffer.
+     * Decodes a A message from the specified reader or buffer.
      * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {A} A
      */
-    A.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
-        reader instanceof Reader || (reader = Reader.create(reader))
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.A
+    A.decode = (function(Reader) { return function decode(reader, len) {
+        if (!(reader instanceof Reader)) {
+            reader = Reader.create(reader);
+        }
+        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.A();
         while (reader.pos < end) {
-            var tag = reader.uint32()
+            var tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.whatever = reader.string()
-                    break
-                default:
-                    reader.skipType(tag & 7)
-                    break
+            case 1:
+                message.whatever = reader.string();
+                break;
+
+            default:
+                reader.skipType(tag & 7);
+                break;
             }
         }
-        return message
-    }})($protobuf.Reader, $protobuf.util, [null]); /* eslint-enable */
+        return message;
+    };})($protobuf.Reader);
 
     /**
-     * Decodes a A from the specified reader or buffer, length delimited.
+     * Decodes a A message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {A} A
      */
@@ -101,18 +108,59 @@ $root.A = (function() {
     };
 
     /**
-     * Verifies a A.
+     * Verifies a A message.
      * @function
-     * @param {A|Object} message A or plain object to verify
+     * @param {A|Object} message A message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    A.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+    A.verify = (function(util) { return function verify(message) {
         if (message.whatever !== undefined) {
-            if (!util.isString(message.whatever))
-                return "invalid value for field .A.whatever (string expected)"
+            if (!util.isString(message.whatever)) {
+                return "A.whatever: string expected";
+            }
         }
-        return null
-    }})($protobuf.util, [null]); /* eslint-enable */
+        return null;
+    };})($protobuf.util);
+
+    /**
+     * Converts a A message.
+     * @function
+     * @param {A|Object} source A message or plain object to convert
+     * @param {*} impl Converter implementation to use
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {A|Object} Converted message
+     */
+    A.convert = (function() { return function convert(src, impl, options) {
+        if (!options) {
+            options = {};
+        }
+        var dst = impl.create(src, this, options);
+        if (dst) {
+            if (dst.whatever === undefined && options.defaults) {
+                dst.whatever = "";
+            }
+        }
+        return dst;
+    };})();
+
+    /**
+     * Creates a A message from JSON.
+     * @param {Object.<string,*>} source Source object
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {A} A
+     */
+    A.from = function from(source, options) {
+        return this.convert(source, $protobuf.converters.message, options);
+    };
+
+    /**
+     * Converts this A message to JSON.
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Object.<string,*>} JSON object
+     */
+    $prototype.asJSON = function asJSON(options) {
+        return this.constructor.convert(this, $protobuf.converters.json, options);
+    };
 
     return A;
 })();
@@ -142,6 +190,9 @@ $root.B = (function() {
      */
     $prototype.A = null;
 
+    // Referenced types
+    var $types = ["A"]; $lazyTypes.push($types);
+
     /**
      * Creates a new B instance using the specified properties.
      * @param {Object} [properties] Properties to set
@@ -152,22 +203,25 @@ $root.B = (function() {
     };
 
     /**
-     * Encodes the specified B.
+     * Encodes the specified B message.
      * @function
-     * @param {B|Object} message B or plain object to encode
+     * @param {B|Object} message B message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    B.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
-        writer || (writer = Writer.create())
-        if (message.A !== undefined && message.A !== null)
-            types[0].encode(message.A, writer.uint32(10/*= id 1, wireType 2 */).fork()).ldelim()
-        return writer
-    }})($protobuf.Writer, $protobuf.util, ["A"]); /* eslint-enable */
+    B.encode = (function(Writer, types) { return function encode(message, writer) {
+        if (!writer) {
+            writer = Writer.create();
+        }
+        if (message.A !== undefined && message.A !== null) {
+            types[0].encode(message.A, writer.uint32(10).fork()).ldelim();
+        }
+        return writer;
+    };})($protobuf.Writer, $types);
 
     /**
-     * Encodes the specified B, length delimited.
-     * @param {B|Object} message B or plain object to encode
+     * Encodes the specified B message, length delimited.
+     * @param {B|Object} message B message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -176,31 +230,34 @@ $root.B = (function() {
     };
 
     /**
-     * Decodes a B from the specified reader or buffer.
+     * Decodes a B message from the specified reader or buffer.
      * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {B} B
      */
-    B.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
-        reader instanceof Reader || (reader = Reader.create(reader))
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.B
+    B.decode = (function(Reader, types) { return function decode(reader, len) {
+        if (!(reader instanceof Reader)) {
+            reader = Reader.create(reader);
+        }
+        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.B();
         while (reader.pos < end) {
-            var tag = reader.uint32()
+            var tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.A = types[0].decode(reader, reader.uint32())
-                    break
-                default:
-                    reader.skipType(tag & 7)
-                    break
+            case 1:
+                message.A = types[0].decode(reader, reader.uint32());
+                break;
+
+            default:
+                reader.skipType(tag & 7);
+                break;
             }
         }
-        return message
-    }})($protobuf.Reader, $protobuf.util, ["A"]); /* eslint-enable */
+        return message;
+    };})($protobuf.Reader, $types);
 
     /**
-     * Decodes a B from the specified reader or buffer, length delimited.
+     * Decodes a B message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {B} B
      */
@@ -210,19 +267,58 @@ $root.B = (function() {
     };
 
     /**
-     * Verifies a B.
+     * Verifies a B message.
      * @function
-     * @param {B|Object} message B or plain object to verify
+     * @param {B|Object} message B message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    B.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+    B.verify = (function(types) { return function verify(message) {
         if (message.A !== undefined && message.A !== null) {
-            var reason;
-            if (reason = types[0].verify(message.A))
-                return reason
+            var err;
+            if (err = types[0].verify(message.A)) {
+                return err;
+            }
         }
-        return null
-    }})($protobuf.util, ["A"]); /* eslint-enable */
+        return null;
+    };})($types);
+
+    /**
+     * Converts a B message.
+     * @function
+     * @param {B|Object} source B message or plain object to convert
+     * @param {*} impl Converter implementation to use
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {B|Object} Converted message
+     */
+    B.convert = (function(types) { return function convert(src, impl, options) {
+        if (!options) {
+            options = {};
+        }
+        var dst = impl.create(src, this, options);
+        if (dst) {
+            dst.A = types[0].convert(src.A, impl, options);
+        }
+        return dst;
+    };})($types);
+
+    /**
+     * Creates a B message from JSON.
+     * @param {Object.<string,*>} source Source object
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {B} B
+     */
+    B.from = function from(source, options) {
+        return this.convert(source, $protobuf.converters.message, options);
+    };
+
+    /**
+     * Converts this B message to JSON.
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Object.<string,*>} JSON object
+     */
+    $prototype.asJSON = function asJSON(options) {
+        return this.constructor.convert(this, $protobuf.converters.json, options);
+    };
 
     return B;
 })();
@@ -232,7 +328,7 @@ $lazyTypes.forEach(function(types) {
     types.forEach(function(path, i) {
         if (!path)
             return;
-        path = path.split('.');
+        path = path.split(".");
         var ptr = $root;
         while (path.length)
             ptr = ptr[path.shift()];

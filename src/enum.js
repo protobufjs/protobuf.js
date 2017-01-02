@@ -24,53 +24,32 @@ function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
 
     /**
+     * Enum values by id.
+     * @type {Object.<number,string>}
+     */
+    this.valuesById = {};
+
+    /**
      * Enum values by name.
      * @type {Object.<string,number>}
      */
-    this.values = values || {}; // toJSON, marker
+    this.values = Object.create(this.valuesById); // toJSON, marker
 
-    /**
-     * Cached values by id.
-     * @type {?Object.<number,string>}
-     * @private
-     */
-    this._valuesById = null;
-}
+    // Note that values inherit valuesById on their prototype which makes them a TypeScript-
+    // compatible enum. This is used by pbts to write actual enum definitions that work for
+    // static and reflection code alike instead of emitting generic object definitions.
 
-util.props(EnumPrototype, {
-
-    /**
-     * Enum values by id.
-     * @name Enum#valuesById
-     * @type {Object.<number,string>}
-     * @readonly
-     */
-    valuesById: {
-        get: function getValuesById() {
-            if (!this._valuesById) {
-                this._valuesById = {};
-                Object.keys(this.values).forEach(function(name) {
-                    var id = this.values[name];
-                    if (this._valuesById[id])
-                        throw Error("duplicate id " + id + " in " + this);
-                    this._valuesById[id] = name;
-                }, this);
-            }
-            return this._valuesById;
+    var self = this;
+    Object.keys(values || {}).forEach(function(key) {
+        var val;
+        if (typeof values[key] === "number")
+            val = values[key];
+        else {
+            val = parseInt(key, 10);
+            key = values[key];
         }
-    }
-
-    /**
-     * Gets this enum's values by id. This is an alias of {@link Enum#valuesById|valuesById}'s getter for use within non-ES5 environments.
-     * @name Enum#getValuesById
-     * @function
-     * @returns {Object.<number,string>}
-     */
-});
-
-function clearCache(enm) {
-    enm._valuesById = null;
-    return enm;
+        self.valuesById[self.values[key] = val] = key;
+    });
 }
 
 /**
@@ -123,11 +102,11 @@ EnumPrototype.add = function(name, id) {
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);
     /* istanbul ignore next */
-    if (this.getValuesById()[id] !== undefined)
+    if (this.valuesById[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
 
-    this.values[name] = id;
-    return clearCache(this);
+    this.valuesById[this.values[name] = id] = name;
+    return this;
 };
 
 /**
@@ -140,8 +119,10 @@ EnumPrototype.add = function(name, id) {
 EnumPrototype.remove = function(name) {
     if (!util.isString(name))
         throw TypeError("name");
-    if (this.values[name] === undefined)
+    var val = this.values[name];
+    if (val === undefined)
         throw Error("'" + name + "' is not a name of " + this);
+    delete this.valuesById[val];
     delete this.values[name];
-    return clearCache(this);
+    return this;
 };

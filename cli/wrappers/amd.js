@@ -1,5 +1,6 @@
+/* eslint-disable block-scoped-var, no-redeclare, no-control-regex, strict */
 define(["protobuf"], function($protobuf) {
-    "use strict"; // eslint-disable-line strict
+    "use strict";
 
     %OUTPUT%
 

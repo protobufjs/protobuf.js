@@ -39,7 +39,7 @@ function Service(name, options) {
     this._methodsArray = null;
 }
 
-util.props(ServicePrototype, {
+Object.defineProperties(ServicePrototype, {
 
     /**
      * Methods of this service as an array for iteration.
@@ -48,7 +48,7 @@ util.props(ServicePrototype, {
      * @readonly
      */
     methodsArray: {
-        get: function getMethodsArray() {
+        get: function() {
             return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
         }
     }
@@ -92,7 +92,7 @@ ServicePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options : inherited && inherited.options || undefined,
-        methods : Namespace.arrayToJSON(this.getMethodsArray()) || {},
+        methods : Namespace.arrayToJSON(this.methodsArray) || {},
         nested  : inherited && inherited.nested || undefined
     };
 };
@@ -108,7 +108,7 @@ ServicePrototype.get = function get(name) {
  * @override
  */
 ServicePrototype.resolveAll = function resolveAll() {
-    var methods = this.getMethodsArray();
+    var methods = this.methodsArray;
     for (var i = 0; i < methods.length; ++i)
         methods[i].resolve();
     return NamespacePrototype.resolve.call(this);
@@ -174,7 +174,7 @@ ServicePrototype.remove = function remove(object) {
  */
 ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDelimited) {
     var rpcService = new rpc.Service(rpcImpl);
-    this.getMethodsArray().forEach(function(method) {
+    this.methodsArray.forEach(function(method) {
         rpcService[util.lcFirst(method.name)] = function callVirtual(request, /* optional */ callback) {
             if (!rpcService.$rpc) // already ended?
                 return;

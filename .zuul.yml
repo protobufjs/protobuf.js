@@ -9,7 +9,7 @@ browsers:
   - name: safari
     version: [5, latest]
   - name: ie
-    version: [8, 9, 10, 11]
+    version: [9, 10, 11]
   - name: opera
     version: [11, 12]
   - name: android

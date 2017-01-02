@@ -238,7 +238,7 @@ RootPrototype.loadSync = function loadSync(filename, options) {
 RootPrototype.resolveAll = function resolveAll() {
     if (this.deferred.length)
         throw Error("unresolvable extensions: " + this.deferred.map(function(field) {
-            return "'extend " + field.extend + "' in " + field.parent.getFullName();
+            return "'extend " + field.extend + "' in " + field.parent.fullName;
         }).join(", "));
     return Namespace.prototype.resolveAll.call(this);
 };
@@ -253,7 +253,7 @@ RootPrototype.resolveAll = function resolveAll() {
 function handleExtension(field) {
     var extendedType = field.parent.lookup(field.extend);
     if (extendedType) {
-        var sisterField = new Field(field.getFullName(), field.id, field.type, field.rule, undefined, field.options);
+        var sisterField = new Field(field.fullName, field.id, field.type, field.rule, undefined, field.options);
         sisterField.declaringField = field;
         field.extensionField = sisterField;
         extendedType.add(sisterField);
@@ -283,7 +283,7 @@ RootPrototype._handleAdd = function handleAdd(object) {
     if (object instanceof Field && object.extend !== undefined && !object.extensionField && !handleExtension(object) && this.deferred.indexOf(object) < 0)
         this.deferred.push(object);
     else if (object instanceof Namespace) {
-        var nested = object.getNestedArray();
+        var nested = object.nestedArray;
         for (i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleAdd(nested[i]);
     }
@@ -309,7 +309,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
             object.extensionField = null;
         }
     } else if (object instanceof Namespace) {
-        var nested = object.getNestedArray();
+        var nested = object.nestedArray;
         for (var i = 0; i < nested.length; ++i) // recurse into the namespace
             this._handleRemove(nested[i]);
     }

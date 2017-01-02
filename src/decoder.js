@@ -12,11 +12,11 @@ var Enum    = require("./enum"),
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();
+    var fields = mtype.fieldsArray;
     var gen = util.codegen("r", "l")
-
-    ("r instanceof Reader||(r=Reader.create(r))")
-    ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
+    ("if(!(r instanceof Reader))")
+        ("r=Reader.create(r)")
+    ("var c=l===undefined?r.len:r.pos+l,m=new(this.ctor)")
     ("while(r.pos<c){")
         ("var t=r.uint32()");
     if (mtype.group) gen
@@ -52,13 +52,14 @@ function decoder(mtype) {
         // Repeated fields
         } else if (field.repeated) { gen
 
-                ("%s&&%s.length||(%s=[])", ref, ref, ref);
+                ("if(!(%s&&%s.length))", ref, ref)
+                    ("%s=[]", ref);
 
             // Packed
             if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
-                    ("var e=r.uint32()+r.pos")
-                    ("while(r.pos<e)")
+                    ("var c2=r.uint32()+r.pos")
+                    ("while(r.pos<c2)")
                         ("%s.push(r.%s())", ref, type)
                 ("}else");
 

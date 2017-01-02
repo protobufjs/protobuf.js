@@ -17,12 +17,11 @@ var Enum      = require("./enum"),
     Message   = require("./message"),
     Reader    = require("./reader"),
     Writer    = require("./writer"),
-    convert   = require("./convert"),
-    util      = require("./util");
-
-var encoder,  // might become cyclic
-    decoder,  // might become cyclic
-    verifier; // cyclic
+    util      = require("./util"),
+    encoder   = require("./encoder"),
+    decoder   = require("./decoder"),
+    verifier  = require("./verifier"),
+    converter = require("./converter");
 
 /**
  * Constructs a new reflected message type instance.
@@ -101,7 +100,7 @@ function Type(name, options) {
     this._ctor = null;
 }
 
-util.props(TypePrototype, {
+Object.defineProperties(TypePrototype, {
 
     /**
      * Message fields by id.
@@ -110,7 +109,7 @@ util.props(TypePrototype, {
      * @readonly
      */
     fieldsById: {
-        get: function getFieldsById() {
+        get: function() {
             if (this._fieldsById)
                 return this._fieldsById;
             this._fieldsById = {};
@@ -136,7 +135,7 @@ util.props(TypePrototype, {
      * @readonly
      */
     fieldsArray: {
-        get: function getFieldsArray() {
+        get: function() {
             return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
         }
     },
@@ -148,8 +147,8 @@ util.props(TypePrototype, {
      * @readonly
      */
     repeatedFieldsArray: {
-        get: function getRepeatedFieldsArray() {
-            return this._repeatedFieldsArray || (this._repeatedFieldsArray = this.getFieldsArray().filter(function(field) { return field.repeated; }));
+        get: function() {
+            return this._repeatedFieldsArray || (this._repeatedFieldsArray = this.fieldsArray.filter(function(field) { return field.repeated; }));
         }
     },
 
@@ -160,7 +159,7 @@ util.props(TypePrototype, {
      * @readonly
      */
     oneofsArray: {
-        get: function getOneofsArray() {
+        get: function() {
             return this._oneofsArray || (this._oneofsArray = util.toArray(this.oneofs));
         }
     },
@@ -171,10 +170,10 @@ util.props(TypePrototype, {
      * @type {Class}
      */
     ctor: {
-        get: function getCtor() {
+        get: function() {
             return this._ctor || (this._ctor = Class.create(this).constructor);
         },
-        set: function setCtor(ctor) {
+        set: function(ctor) {
             if (ctor && !(ctor.prototype instanceof Message))
                 throw util._TypeError("ctor", "a Message constructor");
             if (!ctor.from)
@@ -248,8 +247,8 @@ TypePrototype.toJSON = function toJSON() {
     var inherited = NamespacePrototype.toJSON.call(this);
     return {
         options    : inherited && inherited.options || undefined,
-        oneofs     : Namespace.arrayToJSON(this.getOneofsArray()),
-        fields     : Namespace.arrayToJSON(this.getFieldsArray().filter(function(obj) { return !obj.declaringField; })) || {},
+        oneofs     : Namespace.arrayToJSON(this.oneofsArray),
+        fields     : Namespace.arrayToJSON(this.fieldsArray.filter(function(obj) { return !obj.declaringField; })) || {},
         extensions : this.extensions && this.extensions.length ? this.extensions : undefined,
         reserved   : this.reserved && this.reserved.length ? this.reserved : undefined,
         group      : this.group || undefined,
@@ -261,10 +260,10 @@ TypePrototype.toJSON = function toJSON() {
  * @override
  */
 TypePrototype.resolveAll = function resolveAll() {
-    var fields = this.getFieldsArray(), i = 0;
+    var fields = this.fieldsArray, i = 0;
     while (i < fields.length)
         fields[i++].resolve();
-    var oneofs = this.getOneofsArray(); i = 0;
+    var oneofs = this.oneofsArray; i = 0;
     while (i < oneofs.length)
         oneofs[i++].resolve();
     return NamespacePrototype.resolve.call(this);
@@ -291,7 +290,7 @@ TypePrototype.add = function add(object) {
         // NOTE: Extension fields aren't actual fields on the declaring type, but nested objects.
         // The root object takes care of adding distinct sister-fields to the respective extended
         // type instead.
-        if (this.getFieldsById()[object.id])
+        if (this.fieldsById[object.id])
             throw Error("duplicate id " + object.id + " in " + this);
         if (object.parent)
             object.parent.remove(object);
@@ -335,7 +334,7 @@ TypePrototype.remove = function remove(object) {
  * @returns {Message} Runtime message
  */
 TypePrototype.create = function create(properties) {
-    return new (this.getCtor())(properties);
+    return new this.ctor(properties);
 };
 
 /**
@@ -345,7 +344,7 @@ TypePrototype.create = function create(properties) {
  * @returns {Message} Runtime message
  */
 TypePrototype.from = function from(object, options) {
-    return convert(this, object, new (this.getCtor())(), options, convert.toMessage);
+    return this.convert(object, converter.message, options);
 };
 
 /**
@@ -355,23 +354,24 @@ TypePrototype.from = function from(object, options) {
 TypePrototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
-    if (!encoder) {
-        encoder  = require("./encoder");
-        decoder  = require("./decoder");
-        verifier = require("./verifier");
-    }
-    this.encode = encoder(this).eof(this.getFullName() + "$encode", {
+    var fullName = this.fullName,
+        types    = this.fieldsArray.map(function(fld) { return fld.resolve().resolvedType; });
+    this.encode = encoder(this).eof(fullName + "$encode", {
         Writer : Writer,
-        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        types  : types,
         util   : util
     });
-    this.decode = decoder(this).eof(this.getFullName() + "$decode", {
+    this.decode = decoder(this).eof(fullName + "$decode", {
         Reader : Reader,
-        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        types  : types,
         util   : util
     });
-    this.verify = verifier(this).eof(this.getFullName() + "$verify", {
-        types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+    this.verify = verifier(this).eof(fullName + "$verify", {
+        types : types,
+        util  : util
+    });
+    this.convert = converter(this).eof(fullName + "$convert", {
+        types : types,
         util  : util
     });
     return this;
@@ -424,4 +424,15 @@ TypePrototype.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  */
 TypePrototype.verify = function verify_setup(message) {
     return this.setup().verify(message); // overrides this method
+};
+
+/**
+ * Converts an object or runtime message.
+ * @param {Message|Object} source Source object or runtime message
+ * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Message|Object} Converted object or runtime message
+ */
+TypePrototype.convert = function convert_setup(source, impl, options) {
+    return this.setup().convert(source, impl, options); // overrides this method
 };

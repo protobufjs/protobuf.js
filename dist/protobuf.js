@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.3.2 (c) 2016, Daniel Wirtz
- * Compiled Fri, 30 Dec 2016 23:13:48 UTC
+ * protobuf.js v6.4.0 (c) 2016, Daniel Wirtz
+ * Compiled Mon, 02 Jan 2017 04:21:33 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -170,143 +170,6 @@ base64.decode = function decode(string, buffer, offset) {
 
 },{}],3:[function(require,module,exports){
 "use strict";
-module.exports = codegen;
-
-var blockOpenRe  = /[{[]$/,
-    blockCloseRe = /^[}\]]/,
-    casingRe     = /:$/,
-    branchRe     = /^\s*(?:if|else if|while|for)\b|\b(?:else)\s*$/,
-    breakRe      = /\b(?:break|continue);?$|^\s*return\b/;
-
-/**
- * A closure for generating functions programmatically.
- * @memberof util
- * @namespace
- * @function
- * @param {...string} params Function parameter names
- * @returns {Codegen} Codegen instance
- * @property {boolean} supported Whether code generation is supported by the environment.
- * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
- */
-function codegen() {
-    var params = [],
-        src    = [],
-        indent = 1,
-        inCase = false;
-    for (var i = 0; i < arguments.length;)
-        params.push(arguments[i++]);
-
-    /**
-     * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
-     * @typedef Codegen
-     * @type {function}
-     * @param {string} format Format string
-     * @param {...*} args Replacements
-     * @returns {Codegen} Itself
-     * @property {function(string=):string} str Stringifies the so far generated function source.
-     * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
-     */
-    /**/
-    function gen() {
-        var args = [],
-            i = 0;
-        for (; i < arguments.length;)
-            args.push(arguments[i++]);
-        var line = sprintf.apply(null, args);
-        var level = indent;
-        if (src.length) {
-            var prev = src[src.length - 1];
-
-            // block open or one time branch
-            if (blockOpenRe.test(prev))
-                level = ++indent; // keep
-            else if (branchRe.test(prev))
-                ++level; // once
-            
-            // casing
-            if (casingRe.test(prev) && !casingRe.test(line)) {
-                level = ++indent;
-                inCase = true;
-            } else if (inCase && breakRe.test(prev)) {
-                level = --indent;
-                inCase = false;
-            }
-
-            // block close
-            if (blockCloseRe.test(line))
-                level = --indent;
-        }
-        for (i = 0; i < level; ++i)
-            line = "\t" + line;
-        src.push(line);
-        return gen;
-    }
-
-    /**
-     * Stringifies the so far generated function source.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @returns {string} Function source using tabs for indentation
-     * @inner
-     */
-    function str(name) {
-        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(", ") + ") {\n" + src.join("\n") + "\n}";
-    }
-
-    gen.str = str;
-
-    /**
-     * Ends generation and builds the function whilst applying a scope.
-     * @param {string} [name] Function name, defaults to generate an anonymous function
-     * @param {Object} [scope] Function scope
-     * @returns {function} The generated function, with scope applied if specified
-     * @inner
-     */
-    function eof(name, scope) {
-        if (typeof name === "object") {
-            scope = name;
-            name = undefined;
-        }
-        var source = gen.str(name);
-        if (codegen.verbose)
-            console.log("--- codegen ---\n" + source.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
-        var keys = Object.keys(scope || (scope = {}));
-        return Function.apply(null, keys.concat("return " + source)).apply(null, keys.map(function(key) { return scope[key]; })); // eslint-disable-line no-new-func
-        //     ^ Creates a wrapper function with the scoped variable names as its parameters,
-        //       calls it with the respective scoped variable values ^
-        //       and returns our brand-new properly scoped function.
-        //
-        // This works because "Invoking the Function constructor as a function (without using the
-        // new operator) has the same effect as invoking it as a constructor."
-        // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Function
-    }
-
-    gen.eof = eof;
-
-    return gen;
-}
-
-function sprintf(format) {
-    var args = [],
-        i = 1;
-    for (; i < arguments.length;)
-        args.push(arguments[i++]);
-    i = 0;
-    return format.replace(/%([djs])/g, function($0, $1) {
-        var arg = args[i++];
-        switch ($1) {
-            case "j":
-                return JSON.stringify(arg);
-            default:
-                return String(arg);
-        }
-    });
-}
-
-codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
-codegen.verbose   = false;
-
-},{}],4:[function(require,module,exports){
-"use strict";
 module.exports = EventEmitter;
 
 /**
@@ -386,7 +249,7 @@ EventEmitterPrototype.emit = function emit(evt) {
     return this;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 module.exports = extend;
 
@@ -408,12 +271,12 @@ function extend(ctor) {
     return prototype;
 }
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 module.exports = fetch;
 
 var asPromise = require(1),
-    inquire   = require(7);
+    inquire   = require(6);
 
 var fs = inquire("fs");
 
@@ -461,7 +324,7 @@ function fetch_xhr(path, callback) {
     xhr.send();
 }
 
-},{"1":1,"7":7}],7:[function(require,module,exports){
+},{"1":1,"6":6}],6:[function(require,module,exports){
 "use strict";
 module.exports = inquire;
 
@@ -480,7 +343,7 @@ function inquire(moduleName) {
     return null;
 }
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 /**
@@ -547,7 +410,7 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
     return (originPath = originPath.replace(/(?:\/|^)[^/]+$/, "")).length ? normalize(originPath + "/" + includePath) : includePath;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -597,7 +460,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 /**
@@ -704,7 +567,7 @@ utf8.write = function(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 module.exports = Class;
 
@@ -849,7 +712,7 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-},{"19":19,"32":32,"34":34}],12:[function(require,module,exports){
+},{"19":19,"32":32,"34":34}],11:[function(require,module,exports){
 "use strict";
 
 module.exports = common;
@@ -1056,69 +919,141 @@ common("wrappers", {
         }
     }
 });
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
-module.exports = convert;
+module.exports = converter;
 
-var Enum    = require(16),
-    util    = require(34);
+var Enum       = require(16),
+    converters = require(13),
+    util       = require(34);
 
-var Type,    // cyclic
-    Message;
+var sprintf    = util.codegen.sprintf;
 
-/**
- * A converter as used by {@link convert}.
- * @typedef Converter
- * @type {function}
- * @param {Field} field Reflected field
- * @param {*} value Value to convert
- * @param {Object.<string,*>} options Conversion options
- * @returns {*} Converted value
- */
-
-/**
- * Converts between JSON objects and messages, based on reflection information.
- * @param {Type} type Type
- * @param {*} source Source object
- * @param {*} destination Destination object
- * @param {Object.<string,*>} options Conversion options
- * @param {Converter} converter Conversion function
- * @returns {*} `destination`
- * @property {Converter} toJson To JSON converter using {@link JSONConversionOptions}
- * @property {Converter} toMessage To message converter using {@link MessageConversionOptions}
- */
-function convert(type, source, destination, options, converter) {
-
-    if (!Type) { // require this here already so it is available within the converters below
-        Type = require(32);
-        Message = require(19);
+function genConvert(field, fieldIndex, prop) {
+    if (field.resolvedType)
+        return field.resolvedType instanceof Enum
+             ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, 0, fieldIndex)
+             : sprintf("types[%d].convert(s%s,f,o)", fieldIndex, prop);
+    switch (field.type) {
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64":
+            return sprintf("f.longs(s%s,%d,%d,%j,o)", prop, 0, 0, field.type.charAt(0) === "u");
+        case "bytes":
+            return sprintf("f.bytes(s%s,%j,o)", prop, field.defaultValue);
     }
-
-    if (!options)
-        options = {};
-
-    var keys = Object.keys(options.defaults ? type.fields : source);
-    for (var i = 0, key; i < keys.length; ++i) {
-        var field = type.fields[key = keys[i]],
-            value = source[key];
-        if (field) {
-            if (field.repeated) {
-                if (value || options.defaults) {
-                    destination[key] = [];
-                    if (value)
-                        for (var j = 0, l = value.length; j < l; ++j)
-                            destination[key].push(converter(field, value[j], options));
-                }
-            } else
-                destination[key] = converter(field, value, options);
-        } else if (!options.fieldsOnly)
-            destination[key] = value;
-    }
-    return destination;
+    return null;
 }
 
 /**
- * JSON conversion options as used by {@link Message#asJSON} with {@link convert}.
+ * Generates a conveter specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @param {function} generateField Field generator
+ * @returns {Codegen} Codegen instance
+ * @property {ConverterImpl} json Converter implementation producing JSON
+ * @property {ConverterImpl} message Converter implementation producing runtime messages
+ */
+function converter(mtype) {
+    /* eslint-disable no-unexpected-multiline */
+    var fields = mtype.getFieldsArray();
+    var gen = util.codegen("s", "f", "o")
+    ("if(!o)")
+        ("o={}")
+    ("var d=f.create(s,this,o)");
+    if (fields.length) { gen
+    ("if(d){");
+        var convert;
+        fields.forEach(function(field, i) {
+            var prop = util.safeProp(field.resolve().name);
+            if (field.repeated) { gen
+        ("if(s%s&&s%s.length){", prop, prop)
+            ("d%s=[]", prop)
+            ("for(var i=0;i<s%s.length;++i)", prop);
+                if (convert = genConvert(field, i, prop + "[i]")) gen
+                ("d%s.push(%s)", prop, convert);
+                else gen
+                ("d%s.push(s%s[i])", prop, prop);
+                gen
+        ("}else if(o.defaults||o.arrays)")
+            ("d%s=[]", prop);
+            } else if (convert = genConvert(field, i, prop)) gen
+        ("d%s=%s", prop, convert);
+            else gen
+        ("if(d%s===undefined&&o.defaults)", prop)
+            ("d%s=%j", prop, field.defaultValue);
+        });
+        gen
+    ("}");
+    }
+    return gen
+    ("return d");
+    /* eslint-enable no-unexpected-multiline */
+}
+
+util.merge(converter, converters);
+
+/**
+ * A converter implementation as used by {@link Type#convert} respectively {@link Message.convert}.
+ * @typedef ConverterImpl
+ * @type {Object}
+ * @property {ConverterCreate} create Function for creating a new destination object
+ * @property {ConverterEnums} enums Function for converting enum values
+ * @property {ConverterLongs} longs Function for converting long values
+ * @property {ConverterBytes} bytes Function for converting bytes values
+ */
+
+/**
+ * A function for creating a new destination object.
+ * @typedef ConverterCreate
+ * @type {function}
+ * @param {Message|Object} value Source object or message
+ * @param {Function} typeOrCtor Reflected type or message constructor
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Message|Object} Destination object or message
+ */
+
+/**
+ * A function for converting enum values.
+ * @typedef ConverterEnums
+ * @type {function}
+ * @param {number|string} value Actual value
+ * @param {number} defaultValue Default value
+ * @param {Object.<string,number>} values Possible values
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {number|string} Converted value
+ */
+
+/**
+ * A function for converting long values.
+ * @typedef ConverterLongs
+ * @type {function}
+ * @param {number|string|Long} value Actual value
+ * @param {Long} defaultValue Default value
+ * @param {boolean} unsigned Whether unsigned or not
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {number|string|Long} Converted value
+ */
+
+/**
+ * A function for converting bytes values.
+ * @typedef ConverterBytes
+ * @type {function}
+ * @param {string|number[]|Uint8Array} value Actual value
+ * @param {number[]} defaultValue Default value
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {string|number[]|Uint8Array} Converted value 
+ */
+
+},{"13":13,"16":16,"34":34}],13:[function(require,module,exports){
+"use strict";
+var converters = exports;
+
+var util = require(37);
+
+/**
+ * JSON conversion options as used by {@link Message#asJSON}.
  * @typedef JSONConversionOptions
  * @type {Object}
  * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
@@ -1132,100 +1067,119 @@ function convert(type, source, destination, options, converter) {
  * Valid values are `Array` and `String` (the global types).
  * Defaults to return the underlying buffer type.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
+ * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  */
-/**/
-convert.toJson = function toJson(field, value, options) {
-    if (!options)
-        options = {};
 
-    // Recurse into inner messages
-    if (value instanceof Message)
-        return convert(value.$type, value, {}, options, toJson);
-
-    // Enums as strings
-    if (options.enums && field.resolvedType instanceof Enum)
-        return options.enums === String
-            ? field.resolvedType.getValuesById()[value]
-            : value | 0;
-
-    // Longs as numbers or strings
-    if (options.longs && field.long) {
-        var unsigned = field.type.charAt(0) === "u";
+/**
+ * Converter implementation producing JSON.
+ * @type {ConverterImpl}
+ */
+converters.json = {
+    create: function(value, typeOrCtor, options) {
+        if (!value)
+            return null;
+        return options.fieldsOnly
+            ? {}
+            : util.merge({}, value);
+    },
+    enums: function(value, defaultValue, values, options) {
+        if (!options.defaults) {
+            if (value === undefined || value === defaultValue)
+                return undefined;
+        } else if (value === undefined)
+            value = defaultValue;
+        return options.enums === String && typeof value === "number"
+            ? values[value]
+            : value;
+    },
+    longs: function(value, defaultLow, defaultHigh, unsigned, options) {
+        if (!value) {
+            if (options.defaults)
+                value = { low: defaultLow, high: defaultHigh };
+            else
+                return undefined;
+        } else if (!util.longNe(value, defaultLow, defaultHigh) && !options.defaults)
+            return undefined;
         if (options.longs === Number)
             return typeof value === "number"
                 ? value
                 : util.LongBits.from(value).toNumber(unsigned);
         if (options.longs === String) {
-            if(typeof value === "number")
+            if (typeof value === "number")
                 return util.Long.fromNumber(value, unsigned).toString();
             value = util.Long.fromValue(value); // has no unsigned option
             value.unsigned = unsigned;
             return value.toString();
         }
+        return value;
+    },
+    bytes: function(value, defaultValue, options) {
+        if (!value) {
+            if (options.defaults)
+                value = defaultValue;
+            else
+                return undefined;
+        } else if (!value.length && !options.defaults)
+            return undefined;
+        return options.bytes === String
+            ? util.base64.encode(value, 0, value.length)
+            : options.bytes === Array
+            ? Array.prototype.slice.call(value)
+            : options.bytes === util.Buffer && !util.Buffer.isBuffer(value)
+            ? util.Buffer.from(value) // polyfilled
+            : value;
     }
-
-    // Bytes as base64 strings, plain arrays or buffers
-    if (options.bytes && field.bytes) {
-        if (options.bytes === String)
-            return util.base64.encode(value, 0, value.length);
-        if (options.bytes === Array)
-            return Array.prototype.slice.call(value);
-        if (options.bytes === util.Buffer && !util.Buffer.isBuffer(value))
-            return util.Buffer.from(value); // polyfilled
-    }
-    return value;
 };
 
 /**
- * Message conversion options as used by {@link Message.from} and {@link Type#from} with {@link convert}.
+ * Message conversion options as used by {@link Message.from} and {@link Type#from}.
  * @typedef MessageConversionOptions
  * @type {Object}
  * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
  */
-/**/
-convert.toMessage = function toMessage(field, value, options) {
-    switch (typeof value) {
+// Note that options.defaults and options.arrays also affect the message converter.
+// As defaults are already on the prototype, usage is not recommended and thus undocumented.
 
-        // Recurse into inner messages
-        case "object":
-            if (value) {
-                if (field.resolvedType instanceof Type)
-                    return convert(field.resolvedType, value, new (field.resolvedType.getCtor())(), options, toMessage);
-                if (field.type === "bytes")
-                    return util.Buffer
-                        ? util.Buffer.isBuffer(value)
-                          ? value
-                          : util.Buffer.from(value) // polyfilled
-                        : value instanceof util.Array
-                          ? value
-                          : new util.Array(value);
-            }
-            break;
-
-        // Strings to proper numbers, longs or buffers
-        case "string":
-            if (field.resolvedType instanceof Enum)
-                return field.resolvedType.values[value] || 0;
-            if (field.long)
-                return util.Long.fromString(value, field.type.charAt(0) === "u");
-            if (field.bytes) {
-                var buf = util.newBuffer(util.base64.length(value));
-                util.base64.decode(value, buf, 0);
-                return buf;
-            }
-            break;
-
-        // Numbers to proper longs
-        case "number":
-            if (field.long)
-                return util.Long.fromNumber(value, field.type.charAt(0) === "u");
-            break;
-
+/**
+ * Converter implementation producing runtime messages.
+ * @type {ConverterImpl}
+ */
+converters.message = {
+    create: function(value, typeOrCtor, options) {
+        if (!value)
+            return null;
+        // can't use instanceof Type here because converters are also part of the minimal runtime
+        return new (typeOrCtor.getCtor ? typeOrCtor.getCtor() : typeOrCtor)(options.fieldsOnly ? undefined : value);
+    },
+    enums: function(value, defaultValue, values) {
+        if (typeof value === "string")
+            return values[value];
+        return value | 0;
+    },
+    longs: function(value, defaultLow, defaultHigh, unsigned) {
+        if (typeof value === "string")
+            return util.Long.fromString(value, unsigned);
+        if (typeof value === "number")
+            return util.Long.fromNumber(value, unsigned);
+        return value;
+    },
+    bytes: function(value/*, defaultValue*/) {
+        if (util.Buffer)
+            return util.Buffer.isBuffer(value)
+                ? value
+                : util.Buffer.from(value, "base64"); // polyfilled
+        if (typeof value === "string") {
+            var buf = util.newBuffer(util.base64.length(value));
+            util.base64.decode(value, buf, 0);
+            return buf;
+        }
+        return value instanceof util.Array
+            ? value
+            : new util.Array(value);
     }
-    return value;
 };
 
-},{"16":16,"19":19,"32":32,"34":34}],14:[function(require,module,exports){
+},{"37":37}],14:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
 
@@ -1242,8 +1196,8 @@ function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
     var gen = util.codegen("r", "l")
-
-    ("r instanceof Reader||(r=Reader.create(r))")
+    ("if(!(r instanceof Reader))")
+        ("r=Reader.create(r)")
     ("var c=l===undefined?r.len:r.pos+l,m=new(this.getCtor())")
     ("while(r.pos<c){")
         ("var t=r.uint32()");
@@ -1280,13 +1234,14 @@ function decoder(mtype) {
         // Repeated fields
         } else if (field.repeated) { gen
 
-                ("%s&&%s.length||(%s=[])", ref, ref, ref);
+                ("if(!(%s&&%s.length))", ref, ref)
+                    ("%s=[]", ref);
 
             // Packed
             if (field.packed && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
-                    ("var e=r.uint32()+r.pos")
-                    ("while(r.pos<e)")
+                    ("var c2=r.uint32()+r.pos")
+                    ("while(r.pos<c2)")
                         ("%s.push(r.%s())", ref, type)
                 ("}else");
 
@@ -1341,7 +1296,8 @@ function encoder(mtype) {
     var fields = mtype.getFieldsArray();
     var oneofs = mtype.getOneofsArray();
     var gen = util.codegen("m", "w")
-    ("w||(w=Writer.create())");
+    ("if(!w)")
+        ("w=Writer.create()");
 
     var i, ref;
     for (var i = 0; i < fields.length; ++i) {
@@ -1358,11 +1314,10 @@ function encoder(mtype) {
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
             if (wireType === undefined) gen
-            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim()", i, ref); // can't be groups
+            ("types[%d].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", i, ref); // can't be groups
             else gen
-            ("w.uint32(%d).%s(%s[ks[i]])", 16 | wireType, type, ref);
+            (".uint32(%d).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
             gen
-            ("w.ldelim()")
         ("}")
     ("}");
 
@@ -1382,12 +1337,14 @@ function encoder(mtype) {
             // Non-packed
             } else { gen
 
-    ("if(%s)", ref)
+    ("if(%s){", ref)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
             genEncodeType(gen, field, i, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
+            gen
+    ("}");
 
             }
 
@@ -1466,53 +1423,32 @@ function Enum(name, values, options) {
     ReflectionObject.call(this, name, options);
 
     /**
+     * Enum values by id.
+     * @type {Object.<number,string>}
+     */
+    this.valuesById = {};
+
+    /**
      * Enum values by name.
      * @type {Object.<string,number>}
      */
-    this.values = values || {}; // toJSON, marker
+    this.values = Object.create(this.valuesById); // toJSON, marker
 
-    /**
-     * Cached values by id.
-     * @type {?Object.<number,string>}
-     * @private
-     */
-    this._valuesById = null;
-}
+    // Note that values inherit valuesById on their prototype which makes them a TypeScript-
+    // compatible enum. This is used by pbts to write actual enum definitions that work for
+    // static and reflection code alike instead of emitting generic object definitions.
 
-util.props(EnumPrototype, {
-
-    /**
-     * Enum values by id.
-     * @name Enum#valuesById
-     * @type {Object.<number,string>}
-     * @readonly
-     */
-    valuesById: {
-        get: function getValuesById() {
-            if (!this._valuesById) {
-                this._valuesById = {};
-                Object.keys(this.values).forEach(function(name) {
-                    var id = this.values[name];
-                    if (this._valuesById[id])
-                        throw Error("duplicate id " + id + " in " + this);
-                    this._valuesById[id] = name;
-                }, this);
-            }
-            return this._valuesById;
+    var self = this;
+    Object.keys(values || {}).forEach(function(key) {
+        var val;
+        if (typeof values[key] === "number")
+            val = values[key];
+        else {
+            val = parseInt(key, 10);
+            key = values[key];
         }
-    }
-
-    /**
-     * Gets this enum's values by id. This is an alias of {@link Enum#valuesById|valuesById}'s getter for use within non-ES5 environments.
-     * @name Enum#getValuesById
-     * @function
-     * @returns {Object.<number,string>}
-     */
-});
-
-function clearCache(enm) {
-    enm._valuesById = null;
-    return enm;
+        self.valuesById[self.values[key] = val] = key;
+    });
 }
 
 /**
@@ -1565,11 +1501,11 @@ EnumPrototype.add = function(name, id) {
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);
     /* istanbul ignore next */
-    if (this.getValuesById()[id] !== undefined)
+    if (this.valuesById[id] !== undefined)
         throw Error("duplicate id " + id + " in " + this);
 
-    this.values[name] = id;
-    return clearCache(this);
+    this.valuesById[this.values[name] = id] = name;
+    return this;
 };
 
 /**
@@ -1582,10 +1518,12 @@ EnumPrototype.add = function(name, id) {
 EnumPrototype.remove = function(name) {
     if (!util.isString(name))
         throw TypeError("name");
-    if (this.values[name] === undefined)
+    var val = this.values[name];
+    if (val === undefined)
         throw Error("'" + name + "' is not a name of " + this);
+    delete this.valuesById[val];
     delete this.values[name];
-    return clearCache(this);
+    return this;
 };
 
 },{"22":22,"34":34}],17:[function(require,module,exports){
@@ -1848,9 +1786,11 @@ FieldPrototype.resolve = function resolve() {
     else if (this.repeated)
         this.defaultValue = [];
     else {
-        if (this.options && this.options["default"] !== undefined)
+        if (this.options && this.options["default"] !== undefined) {
             this.defaultValue = this.options["default"];
-        else
+            if (this.resolvedType instanceof Enum && typeof this.defaultValue === "string")
+                this.defaultValue = this.resolvedType.values[this.defaultValue] || 0;
+        } else
             this.defaultValue = typeDefault;
 
         if (this.long) {
@@ -1963,7 +1903,7 @@ MapFieldPrototype.resolve = function resolve() {
 "use strict";
 module.exports = Message;
 
-var convert = require(13);
+var converters = require(13);
 
 /**
  * Constructs a new message instance.
@@ -2005,7 +1945,7 @@ var MessagePrototype = Message.prototype;
  * @returns {Object.<string,*>} JSON object
  */
 MessagePrototype.asJSON = function asJSON(options) {
-    return convert(this.$type, this, {}, options, convert.toJson);
+    return this.$type.convert(this, converters.json, options);
 };
 
 /**
@@ -2015,7 +1955,7 @@ MessagePrototype.asJSON = function asJSON(options) {
  * @returns {Message} Message instance
  */
 Message.from = function from(object, options) {
-    return convert(this.$type, object, new this.constructor(), options, convert.toMessage);
+    return this.$type.convert(object, converters.message, options);
 };
 
 /**
@@ -2069,6 +2009,17 @@ Message.decodeDelimited = function decodeDelimited(readerOrBuffer) {
  */
 Message.verify = function verify(message) {
     return this.$type.verify(message);
+};
+
+/**
+ * Converts an object or runtime message of this type.
+ * @param {Message|Object} source Source object or runtime message
+ * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Message|Object} Converted object or runtime message
+ */
+Message.convert = function convert(source, impl, options) {
+    return this.$type.convert(source, impl, options);
 };
 
 },{"13":13}],20:[function(require,module,exports){
@@ -3434,8 +3385,7 @@ function parse(source, root, options) {
         if (!isName(name))
             throw illegal(name, "name");
 
-        var values = {};
-        var enm = new Enum(name, values);
+        var enm = new Enum(name);
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (lower(token) === "option") {
@@ -3459,7 +3409,7 @@ function parse(source, root, options) {
         var name = token;
         skip("=");
         var value = parseId(next(), true);
-        parent.values[name] = value;
+        parent.add(name, value);
         parseInlineOptions({}); // skips enum value options
     }
 
@@ -3698,7 +3648,7 @@ function parse(source, root, options) {
 "use strict";
 module.exports = Reader;
 
-var util      = require(36);
+var util      = require(37);
 
 var BufferReader; // cyclic
 
@@ -4184,7 +4134,7 @@ ReaderPrototype.skipType = function(wireType) {
 
         /* istanbul ignore next */
         default:
-            throw Error("invalid wire type: " + wireType);
+            throw Error("invalid wire type " + wireType + " at offset " + this.pos);
     }
     return this;
 };
@@ -4210,7 +4160,7 @@ Reader._configure = configure;
 
 configure();
 
-},{"26":26,"36":36}],26:[function(require,module,exports){
+},{"26":26,"37":37}],26:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
@@ -4219,7 +4169,7 @@ var Reader = require(25);
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require(36);
+var util = require(37);
 
 /**
  * Constructs a new buffer reader instance.
@@ -4243,7 +4193,7 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"25":25,"36":36}],27:[function(require,module,exports){
+},{"25":25,"37":37}],27:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
@@ -4312,7 +4262,7 @@ function SYNC() {} // eslint-disable-line no-empty-function
 var initParser = function() {
     try { // excluded in noparse builds
         parse  = require(24);
-        common = require(12);
+        common = require(11);
     } catch (e) {} // eslint-disable-line no-empty
     initParser = null;
 };
@@ -4561,7 +4511,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
     }
 };
 
-},{"12":12,"17":17,"21":21,"24":24,"34":34}],28:[function(require,module,exports){
+},{"11":11,"17":17,"21":21,"24":24,"34":34}],28:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5057,16 +5007,15 @@ var Enum      = require(16),
     OneOf     = require(23),
     Field     = require(17),
     Service   = require(30),
-    Class     = require(11),
+    Class     = require(10),
     Message   = require(19),
     Reader    = require(25),
-    Writer    = require(38),
-    convert   = require(13),
-    util      = require(34);
-
-var encoder,  // might become cyclic
-    decoder,  // might become cyclic
-    verifier; // cyclic
+    Writer    = require(39),
+    util      = require(34),
+    encoder   = require(15),
+    decoder   = require(14),
+    verifier  = require(38),
+    converter = require(12);
 
 /**
  * Constructs a new reflected message type instance.
@@ -5389,7 +5338,7 @@ TypePrototype.create = function create(properties) {
  * @returns {Message} Runtime message
  */
 TypePrototype.from = function from(object, options) {
-    return convert(this, object, new (this.getCtor())(), options, convert.toMessage);
+    return this.convert(object, converter.message, options);
 };
 
 /**
@@ -5399,23 +5348,23 @@ TypePrototype.from = function from(object, options) {
 TypePrototype.setup = function setup() {
     // Sets up everything at once so that the prototype chain does not have to be re-evaluated
     // multiple times (V8, soft-deopt prototype-check).
-    if (!encoder) {
-        encoder  = require(15);
-        decoder  = require(14);
-        verifier = require(37);
-    }
+    var types = this.getFieldsArray().map(function(fld) { return fld.resolve().resolvedType; });
     this.encode = encoder(this).eof(this.getFullName() + "$encode", {
         Writer : Writer,
-        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        types  : types,
         util   : util
     });
     this.decode = decoder(this).eof(this.getFullName() + "$decode", {
         Reader : Reader,
-        types  : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        types  : types,
         util   : util
     });
     this.verify = verifier(this).eof(this.getFullName() + "$verify", {
-        types : this.getFieldsArray().map(function(fld) { return fld.resolvedType; }),
+        types : types,
+        util  : util
+    });
+    this.convert = converter(this).eof(this.getFullName() + "$convert", {
+        types : types,
         util  : util
     });
     return this;
@@ -5470,7 +5419,18 @@ TypePrototype.verify = function verify_setup(message) {
     return this.setup().verify(message); // overrides this method
 };
 
-},{"11":11,"13":13,"14":14,"15":15,"16":16,"17":17,"19":19,"21":21,"23":23,"25":25,"30":30,"34":34,"37":37,"38":38}],33:[function(require,module,exports){
+/**
+ * Converts an object or runtime message.
+ * @param {Message|Object} source Source object or runtime message
+ * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Message|Object} Converted object or runtime message
+ */
+TypePrototype.convert = function convert_setup(source, impl, options) {
+    return this.setup().convert(source, impl, options); // overrides this method
+};
+
+},{"10":10,"12":12,"14":14,"15":15,"16":16,"17":17,"19":19,"21":21,"23":23,"25":25,"30":30,"34":34,"38":38,"39":39}],33:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5671,14 +5631,14 @@ types.packed = bake([
  * Various utility functions.
  * @namespace
  */
-var util = module.exports = require(36);
+var util = module.exports = require(37);
 
 util.asPromise    = require(1);
-util.codegen      = require(3);
-util.EventEmitter = require(4);
-util.extend       = require(5);
-util.fetch        = require(6);
-util.path         = require(8);
+util.codegen      = require(35);
+util.EventEmitter = require(3);
+util.extend       = require(4);
+util.fetch        = require(5);
+util.path         = require(7);
 
 /**
  * Node's fs module if available.
@@ -5760,12 +5720,151 @@ util.newBuffer = function newBuffer(size) {
         : new (typeof Uint8Array !== "undefined" ? Uint8Array : Array)(size);
 };
 
-},{"1":1,"3":3,"36":36,"4":4,"5":5,"6":6,"8":8}],35:[function(require,module,exports){
+},{"1":1,"3":3,"35":35,"37":37,"4":4,"5":5,"7":7}],35:[function(require,module,exports){
+"use strict";
+module.exports = codegen;
+
+var blockOpenRe  = /[{[]$/,
+    blockCloseRe = /^[}\]]/,
+    casingRe     = /:$/,
+    branchRe     = /^\s*(?:if|}?else if|while|for)\b|\b(?:else)\s*$/,
+    breakRe      = /\b(?:break|continue);?$|^\s*return\b/;
+
+/**
+ * A closure for generating functions programmatically.
+ * @memberof util
+ * @namespace
+ * @function
+ * @param {...string} params Function parameter names
+ * @returns {Codegen} Codegen instance
+ * @property {boolean} supported Whether code generation is supported by the environment.
+ * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+ * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
+ */
+function codegen() {
+    var params = [],
+        src    = [],
+        indent = 1,
+        inCase = false;
+    for (var i = 0; i < arguments.length;)
+        params.push(arguments[i++]);
+
+    /**
+     * A codegen instance as returned by {@link codegen}, that also is a sprintf-like appender function.
+     * @typedef Codegen
+     * @type {function}
+     * @param {string} format Format string
+     * @param {...*} args Replacements
+     * @returns {Codegen} Itself
+     * @property {function(string=):string} str Stringifies the so far generated function source.
+     * @property {function(string=, Object=):function} eof Ends generation and builds the function whilst applying a scope.
+     */
+    /**/
+    function gen() {
+        var args = [],
+            i = 0;
+        for (; i < arguments.length;)
+            args.push(arguments[i++]);
+        var line = sprintf.apply(null, args);
+        var level = indent;
+        if (src.length) {
+            var prev = src[src.length - 1];
+
+            // block open or one time branch
+            if (blockOpenRe.test(prev))
+                level = ++indent; // keep
+            else if (branchRe.test(prev))
+                ++level; // once
+
+            // casing
+            if (casingRe.test(prev) && !casingRe.test(line)) {
+                level = ++indent;
+                inCase = true;
+            } else if (inCase && breakRe.test(prev)) {
+                level = --indent;
+                inCase = false;
+            }
+
+            // block close
+            if (blockCloseRe.test(line))
+                level = --indent;
+        }
+        for (i = 0; i < level; ++i)
+            line = "\t" + line;
+        src.push(line);
+        return gen;
+    }
+
+    /**
+     * Stringifies the so far generated function source.
+     * @param {string} [name] Function name, defaults to generate an anonymous function
+     * @returns {string} Function source using tabs for indentation
+     * @inner
+     */
+    function str(name) {
+        return "function " + (name ? name.replace(/[^\w_$]/g, "_") : "") + "(" + params.join(", ") + ") {\n" + src.join("\n") + "\n}";
+    }
+
+    gen.str = str;
+
+    /**
+     * Ends generation and builds the function whilst applying a scope.
+     * @param {string} [name] Function name, defaults to generate an anonymous function
+     * @param {Object.<string,*>} [scope] Function scope
+     * @returns {function} The generated function, with scope applied if specified
+     * @inner
+     */
+    function eof(name, scope) {
+        if (typeof name === "object") {
+            scope = name;
+            name = undefined;
+        }
+        var source = gen.str(name);
+        if (codegen.verbose)
+            console.log("--- codegen ---\n" + source.replace(/^/mg, "> ").replace(/\t/g, "  ")); // eslint-disable-line no-console
+        var keys = Object.keys(scope || (scope = {}));
+        return Function.apply(null, keys.concat("return " + source)).apply(null, keys.map(function(key) { return scope[key]; })); // eslint-disable-line no-new-func
+        //     ^ Creates a wrapper function with the scoped variable names as its parameters,
+        //       calls it with the respective scoped variable values ^
+        //       and returns our brand-new properly scoped function.
+        //
+        // This works because "Invoking the Function constructor as a function (without using the
+        // new operator) has the same effect as invoking it as a constructor."
+        // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Function
+    }
+
+    gen.eof = eof;
+
+    return gen;
+}
+
+function sprintf(format) {
+    var args = [],
+        i = 1;
+    for (; i < arguments.length;)
+        args.push(arguments[i++]);
+    i = 0;
+    return format.replace(/%([djs])/g, function($0, $1) {
+        var arg = args[i++];
+        switch ($1) {
+            case "j":
+                return JSON.stringify(arg);
+            default:
+                return String(arg);
+        }
+    });
+}
+
+codegen.sprintf   = sprintf;
+codegen.supported = false; try { codegen.supported = codegen("a","b")("return a-b").eof()(2,1) === 1; } catch (e) {} // eslint-disable-line no-empty
+codegen.verbose   = false;
+
+},{}],36:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(36);
+var util = require(37);
 
 /**
  * Any compatible Long instance.
@@ -5972,17 +6071,17 @@ LongBitsPrototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"36":36}],36:[function(require,module,exports){
+},{"37":37}],37:[function(require,module,exports){
 (function (global){
 "use strict";
 
 var util = exports;
 
-util.LongBits = require(35);
+util.LongBits = require(36);
 util.base64   = require(2);
-util.inquire  = require(7);
-util.utf8     = require(10);
-util.pool     = require(9);
+util.inquire  = require(6);
+util.utf8     = require(9);
+util.pool     = require(8);
 
 /**
  * Whether running within node or not.
@@ -6091,23 +6190,6 @@ util.longFromHash = function longFromHash(hash, unsigned) {
 };
 
 /**
- * Tests if two possibly long values are not equal.
- * @param {number|Long} a First value
- * @param {number|Long} b Second value
- * @returns {boolean} `true` if not equal
- * @deprecated Use {@link util.longNe|longNe} instead
- */
-util.longNeq = function longNeq(a, b) {
-    return typeof a === "number"
-         ? typeof b === "number"
-            ? a !== b
-            : (a = util.LongBits.fromNumber(a)).lo !== b.low || a.hi !== b.high
-         : typeof b === "number"
-            ? (b = util.LongBits.fromNumber(b)).lo !== a.low || b.hi !== a.high
-            : a.low !== b.low || a.high !== b.high;
-};
-
-/**
  * Tests if a possibily long value equals the specified low and high bits.
  * @param {number|string|Long} val Value to test
  * @param {number} lo Low bits to test against
@@ -6182,16 +6264,15 @@ util.emptyObject = Object.freeze ? Object.freeze({}) : {};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"2":2,"35":35,"7":7,"9":9}],37:[function(require,module,exports){
+},{"2":2,"36":36,"6":6,"8":8,"9":9}],38:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
 var Enum      = require(16),
-    Type      = require(32),
     util      = require(34);
 
 function invalid(field, expected) {
-    return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
+    return field.getFullName().substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
@@ -6207,10 +6288,10 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             gen
                     ("break")
             ("}");
-        } else if (field.resolvedType instanceof Type) gen
-            ("var r;")
-            ("if(r=types[%d].verify(%s))", fieldIndex, ref)
-                ("return r");
+        } else gen
+            ("var e;")
+            ("if(e=types[%d].verify(%s))", fieldIndex, ref)
+                ("return e");
     } else {
         switch (field.type) {
             case "int32":
@@ -6286,6 +6367,8 @@ function genVerifyKey(gen, field, ref) {
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
     var fields = mtype.getFieldsArray();
+    if (!fields.length)
+        return util.codegen()("return null");
     var gen = util.codegen("m");
 
     for (var i = 0; i < fields.length; ++i) {
@@ -6318,7 +6401,7 @@ function verifier(mtype) {
         // required or present fields
         } else {
             if (!field.required) {
-                if (field.resolvedType instanceof Type) gen
+                if (field.resolvedType && !(field.resolvedType instanceof Enum)) gen
             ("if(%s!==undefined&&%s!==null){", ref, ref);
                 else gen
             ("if(%s!==undefined){", ref);
@@ -6332,11 +6415,11 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
-},{"16":16,"32":32,"34":34}],38:[function(require,module,exports){
+},{"16":16,"34":34}],39:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(36);
+var util      = require(37);
 
 var BufferWriter; // cyclic
 
@@ -6467,7 +6550,7 @@ function Writer() {
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
         if (!BufferWriter)
-            BufferWriter = require(39);
+            BufferWriter = require(40);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -6879,16 +6962,16 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
-},{"36":36,"39":39}],39:[function(require,module,exports){
+},{"37":37,"40":40}],40:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
-var Writer = require(38);
+var Writer = require(39);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require(36);
+var util = require(37);
 
 var utf8   = util.utf8,
     Buffer = util.Buffer;
@@ -6952,7 +7035,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"36":36,"38":38}],40:[function(require,module,exports){
+},{"37":37,"39":39}],41:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -7035,17 +7118,18 @@ protobuf.roots = {};
 try {
     protobuf.tokenize     = require(31);
     protobuf.parse        = require(24);
-    protobuf.common       = require(12);
+    protobuf.common       = require(11);
 } catch (e) {} // eslint-disable-line no-empty
 
 // Serialization
-protobuf.Writer           = require(38);
-protobuf.BufferWriter     = require(39);
+protobuf.Writer           = require(39);
+protobuf.BufferWriter     = require(40);
 protobuf.Reader           = require(25);
 protobuf.BufferReader     = require(26);
 protobuf.encoder          = require(15);
 protobuf.decoder          = require(14);
-protobuf.verifier         = require(37);
+protobuf.verifier         = require(38);
+protobuf.converter        = require(12);
 
 // Reflection
 protobuf.ReflectionObject = require(22);
@@ -7060,7 +7144,7 @@ protobuf.Service          = require(30);
 protobuf.Method           = require(20);
 
 // Runtime
-protobuf.Class            = require(11);
+protobuf.Class            = require(10);
 protobuf.Message          = require(19);
 
 // Utility
@@ -7091,7 +7175,7 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"11":11,"12":12,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"27":27,"28":28,"30":30,"31":31,"32":32,"33":33,"34":34,"37":37,"38":38,"39":39}]},{},[40])
+},{"10":10,"11":11,"12":12,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"27":27,"28":28,"30":30,"31":31,"32":32,"33":33,"34":34,"38":38,"39":39,"40":40}]},{},[41])
 
 
 //# sourceMappingURL=protobuf.js.map

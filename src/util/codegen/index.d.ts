@@ -21,5 +21,6 @@ type Codegen = (format: string, ...args: any[]) => Codegen;
  * @returns {Codegen} Codegen instance
  * @property {boolean} supported Whether code generation is supported by the environment.
  * @property {boolean} verbose=false When set to true, codegen will log generated code to console. Useful for debugging.
+ * @property {function(string, ...*):string} sprintf Underlying sprintf implementation
  */
 declare function codegen(...params: string[]): Codegen;

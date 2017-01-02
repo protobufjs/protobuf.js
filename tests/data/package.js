@@ -1,4 +1,5 @@
-"use strict"; // eslint-disable-line strict
+/* eslint-disable block-scoped-var, no-redeclare, no-control-regex, strict */
+"use strict";
 
 var $protobuf = require("../../runtime");
 
@@ -123,6 +124,9 @@ $root.Package = (function() {
      */
     $prototype.types = "";
 
+    // Referenced types
+    var $types = [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null]; $lazyTypes.push($types);
+
     /**
      * Creates a new Package instance using the specified properties.
      * @param {Object} [properties] Properties to set
@@ -133,78 +137,82 @@ $root.Package = (function() {
     };
 
     /**
-     * Encodes the specified Package.
+     * Encodes the specified Package message.
      * @function
-     * @param {Package|Object} message Package or plain object to encode
+     * @param {Package|Object} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Package.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
-        writer || (writer = Writer.create())
-        if (message.name !== undefined && message.name !== "")
-            writer.uint32(10/*= id 1, wireType 2 */).string(message.name)
-        if (message.version !== undefined && message.version !== "")
-            writer.uint32(18/*= id 2, wireType 2 */).string(message.version)
-        if (message.description !== undefined && message.description !== "")
-            writer.uint32(26/*= id 3, wireType 2 */).string(message.description)
-        if (message.author !== undefined && message.author !== "")
-            writer.uint32(34/*= id 4, wireType 2 */).string(message.author)
-        if (message.license !== undefined && message.license !== "")
-            writer.uint32(42/*= id 5, wireType 2 */).string(message.license)
-        if (message.repository !== undefined && message.repository !== null)
-            types[5].encode(message.repository, writer.uint32(50/*= id 6, wireType 2 */).fork()).ldelim()
-        if (message.bugs !== undefined && message.bugs !== "")
-            writer.uint32(58/*= id 7, wireType 2 */).string(message.bugs)
-        if (message.homepage !== undefined && message.homepage !== "")
-            writer.uint32(66/*= id 8, wireType 2 */).string(message.homepage)
-        if (message.keywords)
-            for (var i = 0; i < message.keywords.length; ++i)
-            writer.uint32(74/*= id 9, wireType 2 */).string(message.keywords[i])
-        if (message.main !== undefined && message.main !== "")
-            writer.uint32(82/*= id 10, wireType 2 */).string(message.main)
+    Package.encode = (function(Writer, util, types) { return function encode(message, writer) {
+        if (!writer) {
+            writer = Writer.create();
+        }
+        if (message.name !== undefined && message.name !== "") {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.version !== undefined && message.version !== "") {
+            writer.uint32(18).string(message.version);
+        }
+        if (message.description !== undefined && message.description !== "") {
+            writer.uint32(26).string(message.description);
+        }
+        if (message.author !== undefined && message.author !== "") {
+            writer.uint32(34).string(message.author);
+        }
+        if (message.license !== undefined && message.license !== "") {
+            writer.uint32(42).string(message.license);
+        }
+        if (message.repository !== undefined && message.repository !== null) {
+            types[5].encode(message.repository, writer.uint32(50).fork()).ldelim();
+        }
+        if (message.bugs !== undefined && message.bugs !== "") {
+            writer.uint32(58).string(message.bugs);
+        }
+        if (message.homepage !== undefined && message.homepage !== "") {
+            writer.uint32(66).string(message.homepage);
+        }
+        if (message.keywords) {
+            for (var i = 0; i < message.keywords.length; ++i) {
+                writer.uint32(74).string(message.keywords[i]);
+            }
+        }
+        if (message.main !== undefined && message.main !== "") {
+            writer.uint32(82).string(message.main);
+        }
         if (message.bin && message.bin !== util.emptyObject) {
             for (var keys = Object.keys(message.bin), i = 0; i < keys.length; ++i) {
-                writer.uint32(90/*= id 11, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
-                writer.uint32(18/*= id 2, wireType 2 */).string(message.bin[keys[i]])
-                writer.ldelim()
+                writer.uint32(90).fork().uint32(10).string(keys[i]).uint32(18).string(message.bin[keys[i]]).ldelim();
             }
         }
         if (message.scripts && message.scripts !== util.emptyObject) {
             for (var keys = Object.keys(message.scripts), i = 0; i < keys.length; ++i) {
-                writer.uint32(98/*= id 12, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
-                writer.uint32(18/*= id 2, wireType 2 */).string(message.scripts[keys[i]])
-                writer.ldelim()
+                writer.uint32(98).fork().uint32(10).string(keys[i]).uint32(18).string(message.scripts[keys[i]]).ldelim();
             }
         }
         if (message.dependencies && message.dependencies !== util.emptyObject) {
             for (var keys = Object.keys(message.dependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(106/*= id 13, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
-                writer.uint32(18/*= id 2, wireType 2 */).string(message.dependencies[keys[i]])
-                writer.ldelim()
+                writer.uint32(106).fork().uint32(10).string(keys[i]).uint32(18).string(message.dependencies[keys[i]]).ldelim();
             }
         }
         if (message.optionalDependencies && message.optionalDependencies !== util.emptyObject) {
             for (var keys = Object.keys(message.optionalDependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(114/*= id 14, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
-                writer.uint32(18/*= id 2, wireType 2 */).string(message.optionalDependencies[keys[i]])
-                writer.ldelim()
+                writer.uint32(114).fork().uint32(10).string(keys[i]).uint32(18).string(message.optionalDependencies[keys[i]]).ldelim();
             }
         }
         if (message.devDependencies && message.devDependencies !== util.emptyObject) {
             for (var keys = Object.keys(message.devDependencies), i = 0; i < keys.length; ++i) {
-                writer.uint32(122/*= id 15, wireType 2 */).fork().uint32(10/*= id 1, wireType 2 */).string(keys[i])
-                writer.uint32(18/*= id 2, wireType 2 */).string(message.devDependencies[keys[i]])
-                writer.ldelim()
+                writer.uint32(122).fork().uint32(10).string(keys[i]).uint32(18).string(message.devDependencies[keys[i]]).ldelim();
             }
         }
-        if (message.types !== undefined && message.types !== "")
-            writer.uint32(138/*= id 17, wireType 2 */).string(message.types)
-        return writer
-    }})($protobuf.Writer, $protobuf.util, [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null]); /* eslint-enable */
+        if (message.types !== undefined && message.types !== "") {
+            writer.uint32(138).string(message.types);
+        }
+        return writer;
+    };})($protobuf.Writer, $protobuf.util, $types);
 
     /**
-     * Encodes the specified Package, length delimited.
-     * @param {Package|Object} message Package or plain object to encode
+     * Encodes the specified Package message, length delimited.
+     * @param {Package|Object} message Package message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
@@ -213,112 +221,142 @@ $root.Package = (function() {
     };
 
     /**
-     * Decodes a Package from the specified reader or buffer.
+     * Decodes a Package message from the specified reader or buffer.
      * @function
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
      * @returns {Package} Package
      */
-    Package.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
-        reader instanceof Reader || (reader = Reader.create(reader))
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package
+    Package.decode = (function(Reader, util, types) { return function decode(reader, len) {
+        if (!(reader instanceof Reader)) {
+            reader = Reader.create(reader);
+        }
+        var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Package();
         while (reader.pos < end) {
-            var tag = reader.uint32()
+            var tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1:
-                    message.name = reader.string()
-                    break
-                case 2:
-                    message.version = reader.string()
-                    break
-                case 3:
-                    message.description = reader.string()
-                    break
-                case 4:
-                    message.author = reader.string()
-                    break
-                case 5:
-                    message.license = reader.string()
-                    break
-                case 6:
-                    message.repository = types[5].decode(reader, reader.uint32())
-                    break
-                case 7:
-                    message.bugs = reader.string()
-                    break
-                case 8:
-                    message.homepage = reader.string()
-                    break
-                case 9:
-                    message.keywords && message.keywords.length || (message.keywords = [])
-                    message.keywords.push(reader.string())
-                    break
-                case 10:
-                    message.main = reader.string()
-                    break
-                case 11:
-                    reader.skip().pos++
-                    if (message.bin === util.emptyObject)
-                        message.bin = {}
-                    var key = reader.string()
-                    if (typeof key === "object")
-                        key = util.longToHash(key)
-                    reader.pos++
-                    message.bin[key] = reader.string()
-                    break
-                case 12:
-                    reader.skip().pos++
-                    if (message.scripts === util.emptyObject)
-                        message.scripts = {}
-                    var key = reader.string()
-                    if (typeof key === "object")
-                        key = util.longToHash(key)
-                    reader.pos++
-                    message.scripts[key] = reader.string()
-                    break
-                case 13:
-                    reader.skip().pos++
-                    if (message.dependencies === util.emptyObject)
-                        message.dependencies = {}
-                    var key = reader.string()
-                    if (typeof key === "object")
-                        key = util.longToHash(key)
-                    reader.pos++
-                    message.dependencies[key] = reader.string()
-                    break
-                case 14:
-                    reader.skip().pos++
-                    if (message.optionalDependencies === util.emptyObject)
-                        message.optionalDependencies = {}
-                    var key = reader.string()
-                    if (typeof key === "object")
-                        key = util.longToHash(key)
-                    reader.pos++
-                    message.optionalDependencies[key] = reader.string()
-                    break
-                case 15:
-                    reader.skip().pos++
-                    if (message.devDependencies === util.emptyObject)
-                        message.devDependencies = {}
-                    var key = reader.string()
-                    if (typeof key === "object")
-                        key = util.longToHash(key)
-                    reader.pos++
-                    message.devDependencies[key] = reader.string()
-                    break
-                case 17:
-                    message.types = reader.string()
-                    break
-                default:
-                    reader.skipType(tag & 7)
-                    break
+            case 1:
+                message.name = reader.string();
+                break;
+
+            case 2:
+                message.version = reader.string();
+                break;
+
+            case 3:
+                message.description = reader.string();
+                break;
+
+            case 4:
+                message.author = reader.string();
+                break;
+
+            case 5:
+                message.license = reader.string();
+                break;
+
+            case 6:
+                message.repository = types[5].decode(reader, reader.uint32());
+                break;
+
+            case 7:
+                message.bugs = reader.string();
+                break;
+
+            case 8:
+                message.homepage = reader.string();
+                break;
+
+            case 9:
+                if (!(message.keywords && message.keywords.length)) {
+                    message.keywords = [];
+                }
+                message.keywords.push(reader.string());
+                break;
+
+            case 10:
+                message.main = reader.string();
+                break;
+
+            case 11:
+                reader.skip().pos++;
+                if (message.bin === util.emptyObject) {
+                    message.bin = {};
+                }
+                var key = reader.string();
+                if (typeof key === "object") {
+                    key = util.longToHash(key);
+                }
+                reader.pos++;
+                message.bin[key] = reader.string();
+                break;
+
+            case 12:
+                reader.skip().pos++;
+                if (message.scripts === util.emptyObject) {
+                    message.scripts = {};
+                }
+                var key = reader.string();
+                if (typeof key === "object") {
+                    key = util.longToHash(key);
+                }
+                reader.pos++;
+                message.scripts[key] = reader.string();
+                break;
+
+            case 13:
+                reader.skip().pos++;
+                if (message.dependencies === util.emptyObject) {
+                    message.dependencies = {};
+                }
+                var key = reader.string();
+                if (typeof key === "object") {
+                    key = util.longToHash(key);
+                }
+                reader.pos++;
+                message.dependencies[key] = reader.string();
+                break;
+
+            case 14:
+                reader.skip().pos++;
+                if (message.optionalDependencies === util.emptyObject) {
+                    message.optionalDependencies = {};
+                }
+                var key = reader.string();
+                if (typeof key === "object") {
+                    key = util.longToHash(key);
+                }
+                reader.pos++;
+                message.optionalDependencies[key] = reader.string();
+                break;
+
+            case 15:
+                reader.skip().pos++;
+                if (message.devDependencies === util.emptyObject) {
+                    message.devDependencies = {};
+                }
+                var key = reader.string();
+                if (typeof key === "object") {
+                    key = util.longToHash(key);
+                }
+                reader.pos++;
+                message.devDependencies[key] = reader.string();
+                break;
+
+            case 17:
+                message.types = reader.string();
+                break;
+
+            default:
+                reader.skipType(tag & 7);
+                break;
             }
         }
-        return message
-    }})($protobuf.Reader, $protobuf.util, [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null]); /* eslint-enable */
+        return message;
+    };})($protobuf.Reader, $protobuf.util, $types);
 
     /**
-     * Decodes a Package from the specified reader or buffer, length delimited.
+     * Decodes a Package message from the specified reader or buffer, length delimited.
      * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
      * @returns {Package} Package
      */
@@ -328,108 +366,220 @@ $root.Package = (function() {
     };
 
     /**
-     * Verifies a Package.
+     * Verifies a Package message.
      * @function
-     * @param {Package|Object} message Package or plain object to verify
+     * @param {Package|Object} message Package message or plain object to verify
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
-    Package.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+    Package.verify = (function(util, types) { return function verify(message) {
         if (message.name !== undefined) {
-            if (!util.isString(message.name))
-                return "invalid value for field .Package.name (string expected)"
+            if (!util.isString(message.name)) {
+                return "Package.name: string expected";
+            }
         }
         if (message.version !== undefined) {
-            if (!util.isString(message.version))
-                return "invalid value for field .Package.version (string expected)"
+            if (!util.isString(message.version)) {
+                return "Package.version: string expected";
+            }
         }
         if (message.description !== undefined) {
-            if (!util.isString(message.description))
-                return "invalid value for field .Package.description (string expected)"
+            if (!util.isString(message.description)) {
+                return "Package.description: string expected";
+            }
         }
         if (message.author !== undefined) {
-            if (!util.isString(message.author))
-                return "invalid value for field .Package.author (string expected)"
+            if (!util.isString(message.author)) {
+                return "Package.author: string expected";
+            }
         }
         if (message.license !== undefined) {
-            if (!util.isString(message.license))
-                return "invalid value for field .Package.license (string expected)"
+            if (!util.isString(message.license)) {
+                return "Package.license: string expected";
+            }
         }
         if (message.repository !== undefined && message.repository !== null) {
-            var reason;
-            if (reason = types[5].verify(message.repository))
-                return reason
+            var err;
+            if (err = types[5].verify(message.repository)) {
+                return err;
+            }
         }
         if (message.bugs !== undefined) {
-            if (!util.isString(message.bugs))
-                return "invalid value for field .Package.bugs (string expected)"
+            if (!util.isString(message.bugs)) {
+                return "Package.bugs: string expected";
+            }
         }
         if (message.homepage !== undefined) {
-            if (!util.isString(message.homepage))
-                return "invalid value for field .Package.homepage (string expected)"
+            if (!util.isString(message.homepage)) {
+                return "Package.homepage: string expected";
+            }
         }
         if (message.keywords !== undefined) {
-            if (!Array.isArray(message.keywords))
-                return "invalid value for field .Package.keywords (array expected)"
+            if (!Array.isArray(message.keywords)) {
+                return "Package.keywords: array expected";
+            }
             for (var i = 0; i < message.keywords.length; ++i) {
-                if (!util.isString(message.keywords[i]))
-                    return "invalid value for field .Package.keywords (string[] expected)"
+                if (!util.isString(message.keywords[i])) {
+                    return "Package.keywords: string[] expected";
+                }
             }
         }
         if (message.main !== undefined) {
-            if (!util.isString(message.main))
-                return "invalid value for field .Package.main (string expected)"
+            if (!util.isString(message.main)) {
+                return "Package.main: string expected";
+            }
         }
         if (message.bin !== undefined) {
-            if (!util.isObject(message.bin))
-                return "invalid value for field .Package.bin (object expected)"
-            var key = Object.keys(message.bin)
+            if (!util.isObject(message.bin)) {
+                return "Package.bin: object expected";
+            }
+            var key = Object.keys(message.bin);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.bin[key[i]]))
-                    return "invalid value for field .Package.bin (string{key : string} expected)"
+                if (!util.isString(message.bin[key[i]])) {
+                    return "Package.bin: string{key:string} expected";
+                }
             }
         }
         if (message.scripts !== undefined) {
-            if (!util.isObject(message.scripts))
-                return "invalid value for field .Package.scripts (object expected)"
-            var key = Object.keys(message.scripts)
+            if (!util.isObject(message.scripts)) {
+                return "Package.scripts: object expected";
+            }
+            var key = Object.keys(message.scripts);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.scripts[key[i]]))
-                    return "invalid value for field .Package.scripts (string{key : string} expected)"
+                if (!util.isString(message.scripts[key[i]])) {
+                    return "Package.scripts: string{key:string} expected";
+                }
             }
         }
         if (message.dependencies !== undefined) {
-            if (!util.isObject(message.dependencies))
-                return "invalid value for field .Package.dependencies (object expected)"
-            var key = Object.keys(message.dependencies)
+            if (!util.isObject(message.dependencies)) {
+                return "Package.dependencies: object expected";
+            }
+            var key = Object.keys(message.dependencies);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.dependencies[key[i]]))
-                    return "invalid value for field .Package.dependencies (string{key : string} expected)"
+                if (!util.isString(message.dependencies[key[i]])) {
+                    return "Package.dependencies: string{key:string} expected";
+                }
             }
         }
         if (message.optionalDependencies !== undefined) {
-            if (!util.isObject(message.optionalDependencies))
-                return "invalid value for field .Package.optionalDependencies (object expected)"
-            var key = Object.keys(message.optionalDependencies)
+            if (!util.isObject(message.optionalDependencies)) {
+                return "Package.optionalDependencies: object expected";
+            }
+            var key = Object.keys(message.optionalDependencies);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.optionalDependencies[key[i]]))
-                    return "invalid value for field .Package.optionalDependencies (string{key : string} expected)"
+                if (!util.isString(message.optionalDependencies[key[i]])) {
+                    return "Package.optionalDependencies: string{key:string} expected";
+                }
             }
         }
         if (message.devDependencies !== undefined) {
-            if (!util.isObject(message.devDependencies))
-                return "invalid value for field .Package.devDependencies (object expected)"
-            var key = Object.keys(message.devDependencies)
+            if (!util.isObject(message.devDependencies)) {
+                return "Package.devDependencies: object expected";
+            }
+            var key = Object.keys(message.devDependencies);
             for (var i = 0; i < key.length; ++i) {
-                if (!util.isString(message.devDependencies[key[i]]))
-                    return "invalid value for field .Package.devDependencies (string{key : string} expected)"
+                if (!util.isString(message.devDependencies[key[i]])) {
+                    return "Package.devDependencies: string{key:string} expected";
+                }
             }
         }
         if (message.types !== undefined) {
-            if (!util.isString(message.types))
-                return "invalid value for field .Package.types (string expected)"
+            if (!util.isString(message.types)) {
+                return "Package.types: string expected";
+            }
         }
-        return null
-    }})($protobuf.util, [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null]); /* eslint-enable */
+        return null;
+    };})($protobuf.util, $types);
+
+    /**
+     * Converts a Package message.
+     * @function
+     * @param {Package|Object} source Package message or plain object to convert
+     * @param {*} impl Converter implementation to use
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Package|Object} Converted message
+     */
+    Package.convert = (function(types) { return function convert(src, impl, options) {
+        if (!options) {
+            options = {};
+        }
+        var dst = impl.create(src, this, options);
+        if (dst) {
+            if (dst.name === undefined && options.defaults) {
+                dst.name = "";
+            }
+            if (dst.version === undefined && options.defaults) {
+                dst.version = "";
+            }
+            if (dst.description === undefined && options.defaults) {
+                dst.description = "";
+            }
+            if (dst.author === undefined && options.defaults) {
+                dst.author = "";
+            }
+            if (dst.license === undefined && options.defaults) {
+                dst.license = "";
+            }
+            dst.repository = types[5].convert(src.repository, impl, options);
+            if (dst.bugs === undefined && options.defaults) {
+                dst.bugs = "";
+            }
+            if (dst.homepage === undefined && options.defaults) {
+                dst.homepage = "";
+            }
+            if (src.keywords && src.keywords.length) {
+                dst.keywords = [];
+                for (var i = 0; i < src.keywords.length; ++i) {
+                    dst.keywords.push(src.keywords[i]);
+                }
+            } else {
+                if (options.defaults || options.arrays) {
+                    dst.keywords = [];
+                }
+            }
+            if (dst.main === undefined && options.defaults) {
+                dst.main = "";
+            }
+            if (dst.bin === undefined && options.defaults) {
+                dst.bin = {};
+            }
+            if (dst.scripts === undefined && options.defaults) {
+                dst.scripts = {};
+            }
+            if (dst.dependencies === undefined && options.defaults) {
+                dst.dependencies = {};
+            }
+            if (dst.optionalDependencies === undefined && options.defaults) {
+                dst.optionalDependencies = {};
+            }
+            if (dst.devDependencies === undefined && options.defaults) {
+                dst.devDependencies = {};
+            }
+            if (dst.types === undefined && options.defaults) {
+                dst.types = "";
+            }
+        }
+        return dst;
+    };})($types);
+
+    /**
+     * Creates a Package message from JSON.
+     * @param {Object.<string,*>} source Source object
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Package} Package
+     */
+    Package.from = function from(source, options) {
+        return this.convert(source, $protobuf.converters.message, options);
+    };
+
+    /**
+     * Converts this Package message to JSON.
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Object.<string,*>} JSON object
+     */
+    $prototype.asJSON = function asJSON(options) {
+        return this.constructor.convert(this, $protobuf.converters.json, options);
+    };
 
     Package.Repository = (function() {
 
@@ -472,24 +622,28 @@ $root.Package = (function() {
         };
 
         /**
-         * Encodes the specified Repository.
+         * Encodes the specified Repository message.
          * @function
-         * @param {Package.Repository|Object} message Repository or plain object to encode
+         * @param {Package.Repository|Object} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Repository.encode = /* eslint-disable */ (function(Writer, util, types) { $lazyTypes.push(types); return function encode(message, writer)  {
-            writer || (writer = Writer.create())
-            if (message.type !== undefined && message.type !== "")
-                writer.uint32(10/*= id 1, wireType 2 */).string(message.type)
-            if (message.url !== undefined && message.url !== "")
-                writer.uint32(18/*= id 2, wireType 2 */).string(message.url)
-            return writer
-        }})($protobuf.Writer, $protobuf.util, [null, null]); /* eslint-enable */
+        Repository.encode = (function(Writer) { return function encode(message, writer) {
+            if (!writer) {
+                writer = Writer.create();
+            }
+            if (message.type !== undefined && message.type !== "") {
+                writer.uint32(10).string(message.type);
+            }
+            if (message.url !== undefined && message.url !== "") {
+                writer.uint32(18).string(message.url);
+            }
+            return writer;
+        };})($protobuf.Writer);
 
         /**
-         * Encodes the specified Repository, length delimited.
-         * @param {Package.Repository|Object} message Repository or plain object to encode
+         * Encodes the specified Repository message, length delimited.
+         * @param {Package.Repository|Object} message Repository message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -498,34 +652,38 @@ $root.Package = (function() {
         };
 
         /**
-         * Decodes a Repository from the specified reader or buffer.
+         * Decodes a Repository message from the specified reader or buffer.
          * @function
          * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
          * @returns {Package.Repository} Repository
          */
-        Repository.decode = /* eslint-disable */ (function(Reader, util, types) { $lazyTypes.push(types); return function decode(reader, length)  {
-            reader instanceof Reader || (reader = Reader.create(reader))
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Package.Repository
+        Repository.decode = (function(Reader) { return function decode(reader, len) {
+            if (!(reader instanceof Reader)) {
+                reader = Reader.create(reader);
+            }
+            var end = len === undefined ? reader.len : reader.pos + len, message = new $root.Package.Repository();
             while (reader.pos < end) {
-                var tag = reader.uint32()
+                var tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.type = reader.string()
-                        break
-                    case 2:
-                        message.url = reader.string()
-                        break
-                    default:
-                        reader.skipType(tag & 7)
-                        break
+                case 1:
+                    message.type = reader.string();
+                    break;
+
+                case 2:
+                    message.url = reader.string();
+                    break;
+
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
-            return message
-        }})($protobuf.Reader, $protobuf.util, [null, null]); /* eslint-enable */
+            return message;
+        };})($protobuf.Reader);
 
         /**
-         * Decodes a Repository from the specified reader or buffer, length delimited.
+         * Decodes a Repository message from the specified reader or buffer, length delimited.
          * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
          * @returns {Package.Repository} Repository
          */
@@ -535,22 +693,67 @@ $root.Package = (function() {
         };
 
         /**
-         * Verifies a Repository.
+         * Verifies a Repository message.
          * @function
-         * @param {Package.Repository|Object} message Repository or plain object to verify
+         * @param {Package.Repository|Object} message Repository message or plain object to verify
          * @returns {?string} `null` if valid, otherwise the reason why it is not
          */
-        Repository.verify = /* eslint-disable */ (function(util, types) { $lazyTypes.push(types); return function verify(message)  {
+        Repository.verify = (function(util) { return function verify(message) {
             if (message.type !== undefined) {
-                if (!util.isString(message.type))
-                    return "invalid value for field .Package.Repository.type (string expected)"
+                if (!util.isString(message.type)) {
+                    return "Package.Repository.type: string expected";
+                }
             }
             if (message.url !== undefined) {
-                if (!util.isString(message.url))
-                    return "invalid value for field .Package.Repository.url (string expected)"
+                if (!util.isString(message.url)) {
+                    return "Package.Repository.url: string expected";
+                }
             }
-            return null
-        }})($protobuf.util, [null, null]); /* eslint-enable */
+            return null;
+        };})($protobuf.util);
+
+        /**
+         * Converts a Repository message.
+         * @function
+         * @param {Package.Repository|Object} source Repository message or plain object to convert
+         * @param {*} impl Converter implementation to use
+         * @param {Object.<string,*>} [options] Conversion options
+         * @returns {Package.Repository|Object} Converted message
+         */
+        Repository.convert = (function() { return function convert(src, impl, options) {
+            if (!options) {
+                options = {};
+            }
+            var dst = impl.create(src, this, options);
+            if (dst) {
+                if (dst.type === undefined && options.defaults) {
+                    dst.type = "";
+                }
+                if (dst.url === undefined && options.defaults) {
+                    dst.url = "";
+                }
+            }
+            return dst;
+        };})();
+
+        /**
+         * Creates a Repository message from JSON.
+         * @param {Object.<string,*>} source Source object
+         * @param {Object.<string,*>} [options] Conversion options
+         * @returns {Package.Repository} Repository
+         */
+        Repository.from = function from(source, options) {
+            return this.convert(source, $protobuf.converters.message, options);
+        };
+
+        /**
+         * Converts this Repository message to JSON.
+         * @param {Object.<string,*>} [options] Conversion options
+         * @returns {Object.<string,*>} JSON object
+         */
+        $prototype.asJSON = function asJSON(options) {
+            return this.constructor.convert(this, $protobuf.converters.json, options);
+        };
 
         return Repository;
     })();
@@ -563,7 +766,7 @@ $lazyTypes.forEach(function(types) {
     types.forEach(function(path, i) {
         if (!path)
             return;
-        path = path.split('.');
+        path = path.split(".");
         var ptr = $root;
         while (path.length)
             ptr = ptr[path.shift()];

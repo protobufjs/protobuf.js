@@ -406,8 +406,7 @@ function parse(source, root, options) {
         if (!isName(name))
             throw illegal(name, "name");
 
-        var values = {};
-        var enm = new Enum(name, values);
+        var enm = new Enum(name);
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (lower(token) === "option") {
@@ -431,7 +430,7 @@ function parse(source, root, options) {
         var name = token;
         skip("=");
         var value = parseId(next(), true);
-        parent.values[name] = value;
+        parent.add(name, value);
         parseInlineOptions({}); // skips enum value options
     }
 

@@ -26,14 +26,17 @@ exports.main = function(args, callback) {
             root   : "r"
         },
         string: [ "target", "out", "path", "wrap", "root" ],
-        boolean: [ "keep-case", "create", "encode", "decode", "verify", "delimited" ],
+        boolean: [ "keep-case", "create", "encode", "decode", "verify", "convert", "delimited", "beautify", "comments" ],
         default: {
-            target: "json",
-            create: true,
-            encode: true,
-            decode: true,
-            verify: true,
-            delimited: true
+            target    : "json",
+            create    : true,
+            encode    : true,
+            decode    : true,
+            verify    : true,
+            convert   : true,
+            delimited : true,
+            beautify  : true,
+            comments  : true
         }
     });
 
@@ -81,7 +84,10 @@ exports.main = function(args, callback) {
                 "  --no-encode     Does not generate encode functions.",
                 "  --no-decode     Does not generate decode functions.",
                 "  --no-verify     Does not generate verify functions.",
+                "  --no-convert    Does not generate convert functions like asJSON and from.",
                 "  --no-delimited  Does not generate delimited encode/decode functions.",
+                "  --no-beautify   Does not beautify generated code.",
+                "  --no-comments   Does not output any JSDoc comments.",
                 "",
                 "usage: " + chalk.bold.green("pbjs") + " [options] file1.proto file2.json ..."
             ].join("\n"));

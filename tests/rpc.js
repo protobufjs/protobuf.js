@@ -44,7 +44,7 @@ tape.test("RPC", function(test) {
         }), function(err, response) {
             if (err)
                 return test.fail(err.message);
-            test.ok(response instanceof MyResponse.getCtor(), "should return an instance of MyResponse");
+            test.ok(response instanceof MyResponse.ctor, "should return an instance of MyResponse");
             test.deepEqual(response, {
                 status: 200
             }, "should return status 200");

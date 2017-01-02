@@ -1,10 +1,10 @@
 "use strict";
 module.exports = static_target;
 
-// - Static code does not have any reflection or JSON features.
-
 var protobuf = require("../.."),
     cliUtil  = require("../util");
+
+var UglifyJS = cliUtil.require("uglify-js", require(require("path").join(__dirname, "..", "..", "package.json")).devDependencies["uglify-js"]);
 
 var Type      = protobuf.Type,
     Service   = protobuf.Service,
@@ -22,14 +22,17 @@ static_target.description = "Static code without reflection";
 function static_target(root, options, callback) {
     config = options;
     try {
-        push("// Lazily resolved type references");
+        if (config.comments)
+            push("// Lazily resolved type references");
         push("var $lazyTypes = [];");
         push("");
-        push("// Exported root namespace");
+        if (config.comments)
+            push("// Exported root namespace");
         push("var $root = {};");
         buildNamespace(null, root);
         push("");
-        push("// Resolve lazy types");
+        if (config.comments)
+            push("// Resolve lazy types");
         push("$lazyTypes.forEach(function(types) {");
             ++indent;
             push("types.forEach(function(path, i) {");
@@ -38,7 +41,7 @@ function static_target(root, options, callback) {
                     ++indent;
                     push("return;");
                     --indent;
-                push("path = path.split('.');");
+                push("path = path.split(\".\");");
                 push("var ptr = $root;");
                 push("while (path.length)");
                     ++indent;
@@ -70,6 +73,8 @@ function push(line) {
 }
 
 function pushComment(lines) {
+    if (!config.comments)
+        return;
     push("/**");
     lines.forEach(function(line) {
         if (line === null)
@@ -83,6 +88,12 @@ function name(name) {
     if (!name)
         return "$root";
     return cliUtil.reserved(name) ? name + "_" : name;
+}
+
+function aOrAn(name) {
+    return ((/^[hH](?:ou|on|ei)/.test(name) || /^[aeiouAEIOU][a-z]/.test(name)) && !/^us/i.test(name)
+        ? "an "
+        : "a ") + name;
 }
 
 // generate dot-notation property accessors where possible. this saves a few chars (i.e. m.hello
@@ -133,43 +144,52 @@ function buildNamespace(ref, ns) {
     }
 }
 
-function slightlyBeautify(generatedCode) {
-    return generatedCode
-        .replace(/(!?[=<>|&%?:]+)([^\s])/g, " $1 $2") // a!==b, a&&b, a?b:c etc.
-        .replace(/\b([+-])\b/g," $1 ") // a+b
-        .replace(/\b(if|else|else if|for|while|do|switch)\(/g, "$1 (") // if(a)
-        .replace(/\b(return|case)"/g, "$1 \"") // return"error", case"one"
-        .replace(/([;,])([^\s])/g, "$1 $2") // cond(var a=0;a<b;++b), var a=1,b;
-        .replace(/{$/mg, " {")
+function beautify(code) {
+    return UglifyJS.minify(code
         .replace(/\br\b/g, "reader")
         .replace(/\bw\b/g, "writer")
         .replace(/\bm\b/g, "message")
         .replace(/\bt\b/g, "tag")
-        .replace(/\bl\b/g, "length")
+        .replace(/\bl\b/g, "len")
         .replace(/\bc\b/g, "end")
+        .replace(/\bc2\b/g, "end2")
         .replace(/\bk\b/g, "key")
         .replace(/\bks\b/g, "keys")
-        .replace(/\bs\b/g, "reason")
-        .replace(/(uint32)\((\d+)\)/g, function($0, $1, $2) {
-            var tag = parseInt($2, 10);
-            return $1 + "(" + tag + "/*= id " + (tag >>> 3) + ", wireType " + (tag & 7) + " */)";
-        });
+        .replace(/\be\b/g, "err")
+        .replace(/\bf\b/g, "impl")
+        .replace(/\bo\b/g, "options")
+        .replace(/\bs\b/g, "src")
+        .replace(/\bd\b/g, "dst"),
+        {
+            fromString: true,
+            compress: false,
+            mangle: false,
+            output: {
+                beautify: true,
+                bracketize: true,
+                screw_ie8: false
+            }
+        }
+    ).code.replace(/ {4}/g, "\t");
 }
 
 function buildFunction(type, functionName, gen, scope) {
-    var lines = slightlyBeautify(gen.str(functionName)
-        .replace("(this.getCtor())", " $root" + type.fullName))
-        .split(/\n/g);
+    var code = gen.str(functionName)
+        .replace("(this.ctor)", " $root" + type.fullName) // types: construct directly instead of using reflected ctor
+        .replace(/(types\[\d+])(\.values)/,"$1"); // enums: use types[N] instead of reflected types[N].values
 
-    // add referenced types to scope
-    scope["types"] = "[" + type.fieldsArray.map(function(field) {
-        return field.resolve().resolvedType
-            ? JSON.stringify(field.resolvedType.fullName.substring(1))
-            : "null";
-    }).join(", ") + "]";
+    if (config.beautify)
+        code = beautify(code);
+
+    // remove unused scope vars
+    Object.keys(scope).forEach(function(key) {
+        if (!new RegExp("\\b(" + key + ")\\b", "g").test(code))
+            delete scope[key];
+    });
 
     // enclose all but the first and last line in an iife returning our properly scoped function
-    push(name(type.name) + "." + functionName + " = /* eslint-disable */ (function(" + Object.keys(scope).join(", ") + ") { $lazyTypes.push(types); return " + lines[0]);
+    var lines = code.split(/\n/g);
+    push(name(type.name) + "." + functionName + " = (function(" + Object.keys(scope).join(", ") + ") { return " + lines[0]);
     lines.slice(1, lines.length - 1).forEach(function(line) {
         var prev = indent;
         var i = 0;
@@ -178,7 +198,7 @@ function buildFunction(type, functionName, gen, scope) {
         push(line.trim());
         indent = prev;
     });
-    push("}})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + "); /* eslint-enable */");
+    push("};})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + ");");
 }
 
 function buildType(ref, type) {
@@ -205,9 +225,10 @@ function buildType(ref, type) {
         --indent;
     push("}");
 
-    if (type.fieldsArray.length || type.oneofsArray.length) {
+    if (type.fieldsArray.length || type.oneofsArray.length || config.convert) {
         push("");
-        push("/** @alias " + fullName + ".prototype */");
+        if (config.comments)
+            push("/** @alias " + fullName + ".prototype */");
         push("var $prototype = " + name(type.name) + ".prototype;");
     }
 
@@ -253,13 +274,15 @@ function buildType(ref, type) {
         }
         if (field.repeated)
             jsType = "Array.<" + jsType + ">";
-        push("");
         var prop = util.safeProp(field.name);
-        pushComment([
-            type.name + " " + field.name + ".",
-            prop.charAt(0) !== "." ? "@name " + fullName + "#" + field.name : null,
-            "@type {" + jsType + "}"
-        ]);
+        if (config.comments) {
+            push("");
+            pushComment([
+                type.name + " " + field.name + ".",
+                prop.charAt(0) !== "." ? "@name " + fullName + "#" + field.name : null,
+                "@type {" + jsType + "}"
+            ]);
+        }
         if (Array.isArray(field.defaultValue)) {
             push("$prototype" + prop + " = $protobuf.util.emptyArray;");
         } else if (util.isObject(field.defaultValue))
@@ -304,6 +327,22 @@ function buildType(ref, type) {
         push("});");
     });
 
+    var hasTypes = false;
+    var types = type.fieldsArray.map(function(field) {
+        if (field.resolve().resolvedType) { // including enums!
+            hasTypes = true;
+            return JSON.stringify(field.resolvedType.fullName.substring(1));
+        }
+        return "null";
+    }).join(", ");
+
+    if (hasTypes && (config.encode || config.decode || config.verify || config.convert)) {
+        push("");
+        if (config.comments)
+            push("// Referenced types");
+        push("var $types = [" + types + "]; $lazyTypes.push($types);");
+    }
+
     if (config.create) {
         push("");
         pushComment([
@@ -317,27 +356,27 @@ function buildType(ref, type) {
             --indent;
         push("};");
     }
-
     
     if (config.encode) {
         push("");
         pushComment([
-            "Encodes the specified " + type.name + ".",
+            "Encodes the specified " + type.name + " message.",
             "@function",
-            "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
+            "@param {" + fullName + "|Object} message " + type.name + " message or plain object to encode",
             "@param {$protobuf.Writer} [writer] Writer to encode to",
             "@returns {$protobuf.Writer} Writer"
         ]);
         buildFunction(type, "encode", protobuf.encoder(type), {
             Writer : "$protobuf.Writer",
-            util   : "$protobuf.util"
+            util   : "$protobuf.util",
+            types  : hasTypes ? "$types" : undefined
         });
 
         if (config.delimited) {
             push("");
             pushComment([
-                "Encodes the specified " + type.name + ", length delimited.",
-                "@param {" + fullName + "|Object} message " + type.name + " or plain object to encode",
+                "Encodes the specified " + type.name + " message, length delimited.",
+                "@param {" + fullName + "|Object} message " + type.name + " message or plain object to encode",
                 "@param {$protobuf.Writer} [writer] Writer to encode to",
                 "@returns {$protobuf.Writer} Writer"
             ]);
@@ -354,7 +393,7 @@ function buildType(ref, type) {
     if (config.decode) {
         push("");
         pushComment([
-            "Decodes a " + type.name + " from the specified reader or buffer.",
+            "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer.",
             "@function",
             "@param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
             "@param {number} [length] Message length if known beforehand",
@@ -362,13 +401,14 @@ function buildType(ref, type) {
         ]);
         buildFunction(type, "decode", protobuf.decoder(type), {
             Reader : "$protobuf.Reader",
-            util   : "$protobuf.util"
+            util   : "$protobuf.util",
+            types  : hasTypes ? "$types" : undefined
         });
 
         if (config.delimited) {
             push("");
             pushComment([
-                "Decodes a " + type.name + " from the specified reader or buffer, length delimited.",
+                "Decodes " + aOrAn(type.name) + " message from the specified reader or buffer, length delimited.",
                 "@param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from",
                 "@returns {" + fullName + "} " + type.name
             ]);
@@ -385,15 +425,57 @@ function buildType(ref, type) {
     if (config.verify) {
         push("");
         pushComment([
-            "Verifies a " + type.name + ".",
+            "Verifies " + aOrAn(type.name) + " message.",
             "@function",
-            "@param {" + fullName + "|Object} message " + type.name + " or plain object to verify",
+            "@param {" + fullName + "|Object} message " + type.name + " message or plain object to verify",
             "@returns {?string} `null` if valid, otherwise the reason why it is not"
         ]);
         buildFunction(type, "verify", protobuf.verifier(type), {
-            util : "$protobuf.util"
+            util  : "$protobuf.util",
+            types : hasTypes ? "$types" : undefined
         });
 
+    }
+
+    if (config.convert) {
+        push("");
+        pushComment([
+            "Converts " + aOrAn(type.name) + " message.",
+            "@function",
+            "@param {" + fullName + "|Object} source " + type.name + " message or plain object to convert",
+            "@param {*} impl Converter implementation to use",
+            "@param {Object.<string,*>} [options] Conversion options",
+            "@returns {" + fullName + "|Object} Converted message"
+        ]);
+        buildFunction(type, "convert", protobuf.converter(type), {
+            util  : "$protobuf.util",
+            types : hasTypes ? "$types" : undefined
+        });
+
+        push("");
+        pushComment([
+            "Creates " + aOrAn(type.name) + " message from JSON.",
+            "@param {Object.<string,*>} source Source object",
+            "@param {Object.<string,*>} [options] Conversion options",
+            "@returns {" + fullName + "} " + type.name
+        ]);
+        push(name(type.name) + ".from = function from(source, options) {");
+        ++indent;
+        push("return this.convert(source, $protobuf.converters.message, options);");
+        --indent;
+        push("};");
+
+        push("");
+        pushComment([
+            "Converts this " + type.name + " message to JSON.",
+            "@param {Object.<string,*>} [options] Conversion options",
+            "@returns {Object.<string,*>} JSON object"
+        ]);
+        push("$prototype.asJSON = function asJSON(options) {");
+        ++indent;
+        push("return this.constructor.convert(this, $protobuf.converters.json, options);");
+        --indent;
+        push("};");
     }
 }
 
@@ -427,7 +509,7 @@ function buildService(ref, service) {
 
     push("");
     pushComment([
-        "Constructs a new " + service.name + ".",
+        "Constructs a new " + service.name + " service.",
         "@exports " + fullName,
         "@constructor",
         "@param {RPCImpl} rpc RPC implementation",
@@ -458,7 +540,7 @@ function buildService(ref, service) {
     --indent;
     push("};");
 
-    service.getMethodsArray().forEach(function(method) {
+    service.methodsArray.forEach(function(method) {
         method.resolve();
         var lcName = method.name.substring(0, 1).toLowerCase() + method.name.substring(1);
         push("");
@@ -473,7 +555,7 @@ function buildService(ref, service) {
         push("");
         pushComment([
             "Calls " + method.name + ".",
-            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " or plain object",
+            "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " message or plain object",
             "@param {" + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}"
         ]);
@@ -520,18 +602,26 @@ function buildService(ref, service) {
 
 function buildEnum(ref, enm) {
     push("");
-    pushComment([
-        enm.name + " values.",
-        "@exports " + enm.fullName.substring(1),
-        "@type {Object.<string,number>}"
-    ]);
-    push(name(ref) + "." + name(enm.name) + " = {");
-    push("");
+    var comment = [
+        enm.name + " enum.",
+        "@name " + name(enm.name),
+        "@memberof " + enm.parent.fullName.substring(1),
+        "@enum {number}"
+    ];
+    Object.keys(enm.values).forEach(function(key) {
+        var val = enm.values[key];
+        comment.push("@property {number} " + key + "=" + val + " " + key + " value");
+    });
+    pushComment(comment);
+    push(name(ref) + "." + name(enm.name) + " = (function() {");
     ++indent;
-    var keys = Object.keys(enm.values);
-    for (var i = 0; i < keys.length; ++i) {
-        push(name(keys[i]) + ": " + enm.values[keys[i]].toString(10) + (i < keys.length - 1 ? "," : ""));
-    }
+        push("var valuesById = {},");
+        push("    values = Object.create(valuesById);");
+        Object.keys(enm.values).forEach(function(key) {
+            var val = enm.values[key];
+            push("values[valuesById[" + val + "] = " + JSON.stringify(key) + "] = " + val + ";");
+        });
+        push("return values;");
     --indent;
-    push("};");
+    push("})();");
 }

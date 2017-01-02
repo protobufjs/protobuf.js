@@ -43,7 +43,7 @@ tape.test("services", function(test) {
         });
         service.doSomething(DoSomethingRequest.create(), function(err, res) {
             test.notOk(err, "should not raise an error");
-            test.ok(res instanceof DoSomethingResponse.getCtor(), "should return a properly typed response");
+            test.ok(res instanceof DoSomethingResponse.ctor, "should return a properly typed response");
             test.ok(dataEmitted, "should have emitted the data event");
             service.end();
         });

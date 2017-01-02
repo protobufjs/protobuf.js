@@ -2,11 +2,10 @@
 module.exports = verifier;
 
 var Enum      = require("./enum"),
-    Type      = require("./type"),
     util      = require("./util");
 
 function invalid(field, expected) {
-    return "invalid value for field " + field.getFullName() + " (" + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected)";
+    return field.fullName.substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
 
 function genVerifyValue(gen, field, fieldIndex, ref) {
@@ -22,10 +21,10 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
             gen
                     ("break")
             ("}");
-        } else if (field.resolvedType instanceof Type) gen
-            ("var s;")
-            ("if(s=types[%d].verify(%s))", fieldIndex, ref)
-                ("return s");
+        } else gen
+            ("var e;")
+            ("if(e=types[%d].verify(%s))", fieldIndex, ref)
+                ("return e");
     } else {
         switch (field.type) {
             case "int32":
@@ -100,7 +99,9 @@ function genVerifyKey(gen, field, ref) {
  */
 function verifier(mtype) {
     /* eslint-disable no-unexpected-multiline */
-    var fields = mtype.getFieldsArray();
+    var fields = mtype.fieldsArray;
+    if (!fields.length)
+        return util.codegen()("return null");
     var gen = util.codegen("m");
 
     for (var i = 0; i < fields.length; ++i) {
@@ -133,7 +134,7 @@ function verifier(mtype) {
         // required or present fields
         } else {
             if (!field.required) {
-                if (field.resolvedType instanceof Type) gen
+                if (field.resolvedType && !(field.resolvedType instanceof Enum)) gen
             ("if(%s!==undefined&&%s!==null){", ref, ref);
                 else gen
             ("if(%s!==undefined){", ref);

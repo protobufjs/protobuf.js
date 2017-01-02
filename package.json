@@ -81,6 +81,7 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
     "typescript": "^2.1.4",
+    "uglify-js": "^2.7.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
     "vinyl-source-stream": "^1.1.0",

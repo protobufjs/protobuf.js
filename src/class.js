@@ -59,7 +59,7 @@ function create(type, ctor) {
     prototype.$type = type;
 
     // Messages have non-enumerable default values on their prototype
-    type.getFieldsArray().forEach(function(field) {
+    type.fieldsArray.forEach(function(field) {
         // objects on the prototype must be immmutable. users must assign a new object instance and
         // cannot use Array#push on empty arrays on the prototype for example, as this would modify
         // the value on the prototype for ALL messages of this type. Hence, these objects are frozen.
@@ -71,26 +71,25 @@ function create(type, ctor) {
     });
 
     // Messages have non-enumerable getters and setters for each virtual oneof field
-    type.getOneofsArray().forEach(function(oneof) {
-        util.prop(prototype, oneof.resolve().name, {
-            get: function getVirtual() {
+    type.oneofsArray.forEach(function(oneof) {
+        Object.defineProperty(prototype, oneof.resolve().name, {
+            get: function() {
                 // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
                 for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
                     if (oneof.oneof.indexOf(keys[i]) > -1)
                         return keys[i];
                 return undefined;
             },
-            set: function setVirtual(value) {
+            set: function(value) {
                 for (var keys = oneof.oneof, i = 0; i < keys.length; ++i)
                     if (keys[i] !== value)
                         delete this[keys[i]];
             }
-            // see util.prop for IE8 support
         });
     });
 
     // Register
-    type.setCtor(ctor);
+    type.ctor = ctor;
 
     return prototype;
 }

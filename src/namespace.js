@@ -72,7 +72,7 @@ function clearCache(namespace) {
     return namespace;
 }
 
-util.props(NamespacePrototype, {
+Object.defineProperties(NamespacePrototype, {
 
     /**
      * Nested objects of this namespace as an array for iteration.
@@ -81,7 +81,7 @@ util.props(NamespacePrototype, {
      * @readonly
      */
     nestedArray: {
-        get: function getNestedArray() {
+        get: function() {
             return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
         }
     }
@@ -121,7 +121,7 @@ Namespace.fromJSON = function fromJSON(name, json) {
 NamespacePrototype.toJSON = function toJSON() {
     return {
         options : this.options,
-        nested  : arrayToJSON(this.getNestedArray())
+        nested  : arrayToJSON(this.nestedArray)
     };
 };
 
@@ -213,7 +213,7 @@ NamespacePrototype.add = function add(object) {
             // initNested above already initializes Type and Service
             if (prev instanceof Namespace && object instanceof Namespace && !(prev instanceof Type || prev instanceof Service)) {
                 // replace plain namespace but keep existing nested elements and options
-                var nested = prev.getNestedArray();
+                var nested = prev.nestedArray;
                 for (var i = 0; i < nested.length; ++i)
                     object.add(nested[i]);
                 this.remove(prev);
@@ -297,7 +297,7 @@ NamespacePrototype.resolve = function resolve() {
     // Add uppercased (and thus conflict-free) nested types, services and enums as properties
     // of the type just like static code does. This allows using a .d.ts generated for a static
     // module with reflection-based solutions where the condition is met.
-    var nested = this.getNestedArray();
+    var nested = this.nestedArray;
     for (var i = 0; i < nested.length; ++i)
         if (/^[A-Z]/.test(nested[i].name)) {
             if (nested[i] instanceof Type || nested[i] instanceof Service)
@@ -317,7 +317,7 @@ NamespacePrototype.resolve = function resolve() {
  * @returns {Namespace} `this`
  */
 NamespacePrototype.resolveAll = function resolveAll() {
-    var nested = this.getNestedArray(), i = 0;
+    var nested = this.nestedArray, i = 0;
     while (i < nested.length)
         if (nested[i] instanceof Namespace)
             nested[i++].resolveAll();
@@ -344,7 +344,7 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
         return null;
     // Start at root if path is absolute
     if (path[0] === "")
-        return this.getRoot().lookup(path.slice(1), filterType);
+        return this.root.lookup(path.slice(1), filterType);
     // Test if the first part matches any nested object, and if so, traverse if path contains more
     var found = this.get(path[0]);
     if (found && path.length === 1 && (!filterType || found instanceof filterType) || found instanceof Namespace && (found = found.lookup(path.slice(1), filterType, true)))
