@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.4.0 (c) 2016, Daniel Wirtz
- * Compiled Tue, 03 Jan 2017 15:34:50 UTC
+ * protobuf.js v6.4.1 (c) 2016, Daniel Wirtz
+ * Compiled Tue, 03 Jan 2017 21:45:57 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -754,11 +754,9 @@ function create(type, ctor) {
         if (typeof ctor !== "function")
             throw TypeError("ctor must be a function");
     } else
-        ctor = (function(MessageCtor) {
-            return function Message(properties) {
-                MessageCtor.call(this, properties);
-            };
-        })(Message);
+        ctor = util.codegen("p")("return ctor.call(this,p)").eof(type.name, {
+            ctor: Message
+        });
 
     // Let's pretend...
     ctor.constructor = Class;
@@ -816,6 +814,15 @@ Class.create = create;
 Class.prototype = Message;
 
 /**
+ * Creates a message from a JSON object by converting strings and numbers to their respective field types.
+ * @name Class#from
+ * @function
+ * @param {Object.<string,*>} object JSON object
+ * @param {MessageConversionOptions} [options] Options
+ * @returns {Message} Message instance
+ */
+
+/**
  * Encodes a message of this type.
  * @name Class#encode
  * @function
@@ -855,6 +862,16 @@ Class.prototype = Message;
  * @function
  * @param {Message|Object} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
+ */
+
+/**
+ * Converts an object or runtime message of this type.
+ * @name Class#convert
+ * @function
+ * @param {Message|Object} source Source object or runtime message
+ * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+ * @param {Object.<string,*>} [options] Conversion options
+ * @returns {Message|Object} Converted object or runtime message
  */
 
 },{"20":20,"33":33,"35":35}],12:[function(require,module,exports){

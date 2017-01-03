@@ -3,3 +3,4 @@ npm-debug.*
 node_modules/
 docs/
 coverage/
+sandbox/
