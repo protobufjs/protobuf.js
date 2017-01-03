@@ -1,6 +1,8 @@
 "use strict";
 module.exports = parse;
 
+parse.keepCase = false;
+
 var tokenize  = require("./tokenize"),
     Root      = require("./root"),
     Type      = require("./type"),
@@ -61,14 +63,16 @@ function camelCase(str) {
  * @param {ParseOptions} [options] Parse options
  * @returns {ParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
+ * @property {boolean} keepCase=false When set to `true`, always keeps field casing instead of converting to camel case when no {@link ParseOptions} are specified
  */
 function parse(source, root, options) {
     /* eslint-disable callback-return */
     if (!(root instanceof Root)) {
+        options = root;
         root = new Root();
-        options = root || {};
-    } else if (!options)
-        options = {};
+    }
+    if (!options)
+        options = { keepCase: parse.keepCase };
 
     var tn = tokenize(source),
         next = tn.next,
