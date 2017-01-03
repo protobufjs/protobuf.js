@@ -94,8 +94,8 @@ EnumPrototype.add = function(name, id) {
     if (!util.isString(name))
         throw TypeError("name must be a string");
     /* istanbul ignore next */
-    if (!util.isInteger(id) || id < 0)
-        throw TypeError("id must be a non-negative integer");
+    if (!util.isInteger(id))
+        throw TypeError("id must be an integer");
     /* istanbul ignore next */
     if (this.values[name] !== undefined)
         throw Error("duplicate name '" + name + "' in " + this);

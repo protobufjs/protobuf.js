@@ -88,6 +88,8 @@ RootPrototype.load = function load(filename, options, callback) {
     var self = this;
     if (!callback)
         return util.asPromise(load, self, filename);
+    
+    var sync = callback === SYNC; // undocumented
 
     // Finishes loading by calling the callback (exactly once)
     function finish(err, root) {
@@ -97,8 +99,6 @@ RootPrototype.load = function load(filename, options, callback) {
         callback = null;
         cb(err, root);
     }
-
-    var sync = callback === SYNC; // undocumented
 
     // Processes a single file
     function process(filename, source) {
@@ -120,6 +120,8 @@ RootPrototype.load = function load(filename, options, callback) {
                     });
             }
         } catch (err) {
+            if (sync)
+                throw err;
             finish(err);
             return;
         }
