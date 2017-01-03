@@ -7,7 +7,7 @@ var child_process = require("child_process");
 var minimist = util.require("minimist", pkg.devDependencies.minimist),
     chalk    = util.require("chalk", pkg.devDependencies.chalk),
     glob     = util.require("glob", pkg.devDependencies.glob),
-    tmp      = util.require("tmp", pkg.devDependencies.glob);
+    tmp      = util.require("tmp", pkg.devDependencies.tmp);
 
 var jsdoc    = util.require("jsdoc/package.json", pkg.devDependencies.jsdoc);
 
