@@ -215,7 +215,7 @@ RootPrototype.load = function load(filename, options, callback) {
  * @name Root#load
  * @function
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {ParseOptions} [options] Parse options
+ * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Promise<Root>} Promise
  * @variation 3
  */
@@ -224,7 +224,7 @@ RootPrototype.load = function load(filename, options, callback) {
 /**
  * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
  * @param {string|string[]} filename Names of one or multiple files to load
- * @param {ParseOptions} [options] Parse options
+ * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */

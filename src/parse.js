@@ -1,7 +1,8 @@
 "use strict";
 module.exports = parse;
 
-parse.keepCase = false;
+parse.filename = null;
+parse.defaults = { keepCase: false };
 
 var tokenize  = require("./tokenize"),
     Root      = require("./root"),
@@ -60,10 +61,10 @@ function camelCase(str) {
  * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
- * @param {ParseOptions} [options] Parse options
+ * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {ParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
- * @property {boolean} keepCase=false When set to `true`, always keeps field casing instead of converting to camel case when no {@link ParseOptions} are specified
+ * @property {ParseOptions} defaults Default {@link ParseOptions}
  */
 function parse(source, root, options) {
     /* eslint-disable callback-return */
@@ -72,7 +73,7 @@ function parse(source, root, options) {
         root = new Root();
     }
     if (!options)
-        options = { keepCase: parse.keepCase };
+        options = parse.defaults;
 
     var tn = tokenize(source),
         next = tn.next,
@@ -664,7 +665,7 @@ function parse(source, root, options) {
  * @name parse
  * @function
  * @param {string} source Source contents
- * @param {ParseOptions} [options] Parse options
+ * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {ParserResult} Parser result
  * @variation 2
  */

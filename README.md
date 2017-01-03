@@ -315,10 +315,9 @@ Documentation
 -------------
 
 * [Google's Developer Guide](https://developers.google.com/protocol-buffers/docs/overview)
-
 * [protobuf.js API Documentation](http://dcode.io/protobuf.js/) and [CHANGELOG](https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md)
-
-* [Questions and answers on StackOverflow](http://stackoverflow.com/questions/tagged/protobuf.js)
+* [Frequently asked questions](https://github.com/dcodeIO/protobuf.js/wiki) on our wiki
+* [More questions and answers](http://stackoverflow.com/questions/tagged/protobuf.js) on StackOverflow
 
 Command line
 ------------

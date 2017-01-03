@@ -16,6 +16,7 @@ var protobuf = global.protobuf = exports;
  * @param {Root} root Root namespace, defaults to create a new one if omitted.
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
+ * @see {@link Root#load}
  */
 function load(filename, root, callback) {
     if (typeof root === "function") {
@@ -34,6 +35,7 @@ function load(filename, root, callback) {
  * @param {string|string[]} filename One or multiple files to load
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
+ * @see {@link Root#load}
  * @variation 2
  */
 // function load(filename:string, callback:LoadCallback):undefined
@@ -45,6 +47,7 @@ function load(filename, root, callback) {
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Promise<Root>} Promise
+ * @see {@link Root#load}
  * @variation 3
  */
 // function load(filename:string, [root:Root]):Promise<Root>
@@ -57,6 +60,7 @@ protobuf.load = load;
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ * @see {@link Root#loadSync}
  */
 function loadSync(filename, root) {
     if (!root)

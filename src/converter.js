@@ -10,16 +10,20 @@ var sprintf    = util.codegen.sprintf;
 function genConvert(field, fieldIndex, prop) {
     if (field.resolvedType)
         return field.resolvedType instanceof Enum
-             ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, 0, fieldIndex)
-             : sprintf("types[%d].convert(s%s,f,o)", fieldIndex, prop);
+            // enums
+            ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, 0, fieldIndex)
+            // recurse into messages
+            : sprintf("types[%d].convert(s%s,f,o)", fieldIndex, prop);
     switch (field.type) {
         case "int64":
         case "uint64":
         case "sint64":
         case "fixed64":
         case "sfixed64":
+            // longs
             return sprintf("f.longs(s%s,%d,%d,%j,o)", prop, 0, 0, field.type.charAt(0) === "u");
         case "bytes":
+            // bytes
             return sprintf("f.bytes(s%s,%j,o)", prop, Array.prototype.slice.call(field.defaultValue));
     }
     return null;
@@ -45,6 +49,8 @@ function converter(mtype) {
         var convert;
         fields.forEach(function(field, i) {
             var prop = util.safeProp(field.resolve().name);
+
+            // repeated
             if (field.repeated) { gen
         ("if(s%s&&s%s.length){", prop, prop)
             ("d%s=[]", prop)
@@ -56,11 +62,14 @@ function converter(mtype) {
                 gen
         ("}else if(o.defaults||o.arrays)")
             ("d%s=[]", prop);
+
+            // non-repeated
             } else if (convert = genConvert(field, i, prop)) gen
         ("d%s=%s", prop, convert);
             else gen
         ("if(d%s===undefined&&o.defaults)", prop)
             ("d%s=%j", prop, field.defaultValue);
+
         });
         gen
     ("}");
