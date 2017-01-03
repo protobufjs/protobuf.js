@@ -1,6 +1,3 @@
-// $> pbts --out tests/data/test.d.ts --no-comments tests/data/test.js
-// Generated Mon, 02 Jan 2017 21:00:32 UTC
-
 import * as $protobuf from "../..";
 
 export namespace jspb {
@@ -234,7 +231,7 @@ export namespace jspb {
             constructor(properties?: Object);
             stringField: string;
             boolField: boolean;
-            intField: (number|Long);
+            intField: (number|$protobuf.Long);
             enumField: number;
             emptyField: string;
             bytesField: Uint8Array;
@@ -399,7 +396,7 @@ export namespace jspb {
             constructor(properties?: Object);
             mapStringString: string;
             mapStringInt32: number;
-            mapStringInt64: (number|Long);
+            mapStringInt64: (number|$protobuf.Long);
             mapStringBool: boolean;
             mapStringDouble: number;
             mapStringEnum: number;
@@ -901,8 +898,8 @@ export namespace google {
             constructor(properties?: Object);
             name: google.protobuf.UninterpretedOption.NamePart[];
             identifierValue: string;
-            positiveIntValue: (number|Long);
-            negativeIntValue: (number|Long);
+            positiveIntValue: (number|$protobuf.Long);
+            negativeIntValue: (number|$protobuf.Long);
             doubleValue: number;
             stringValue: Uint8Array;
             aggregateValue: string;

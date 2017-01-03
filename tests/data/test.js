@@ -1,6 +1,3 @@
-// $> pbjs --target static-module --wrap commonjs --root test_test --out tests/data/test.js tests/data/test.proto
-// Generated Mon, 02 Jan 2017 21:00:30 UTC
-
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
 "use strict";
 
@@ -202,7 +199,7 @@ $root.jspb = (function() {
              * EnumContainer outerEnum.
              * @type {number}
              */
-            $prototype.outerEnum = 0;
+            $prototype.outerEnum = 1;
 
             // Referenced types
             var $types = ["jspb.test.OuterEnum"]; $lazyTypes.push($types);
@@ -227,7 +224,7 @@ $root.jspb = (function() {
                 if (!writer) {
                     writer = Writer.create();
                 }
-                if (message.outerEnum !== undefined && message.outerEnum !== 0) {
+                if (message.outerEnum !== undefined && message.outerEnum !== 1) {
                     writer.uint32(8).uint32(message.outerEnum);
                 }
                 return writer;
@@ -314,7 +311,7 @@ $root.jspb = (function() {
                 }
                 var dst = impl.create(src, this, options);
                 if (dst) {
-                    dst.outerEnum = impl.enums(src.outerEnum, 0, types[0], options);
+                    dst.outerEnum = impl.enums(src.outerEnum, 1, types[0], options);
                 }
                 return dst;
             };})($types);
@@ -2774,7 +2771,7 @@ $root.jspb = (function() {
 
             /**
              * DefaultValues intField.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.intField = $protobuf.util.emptyObject;
 
@@ -2782,7 +2779,7 @@ $root.jspb = (function() {
              * DefaultValues enumField.
              * @type {number}
              */
-            $prototype.enumField = 13;
+            $prototype.enumField = undefined;
 
             /**
              * DefaultValues emptyField.
@@ -2828,7 +2825,7 @@ $root.jspb = (function() {
                 if (message.intField !== undefined && message.intField !== null && util.longNe(message.intField, 11, 0)) {
                     writer.uint32(24).int64(message.intField);
                 }
-                if (message.enumField !== undefined && message.enumField !== 13) {
+                if (message.enumField !== undefined && message.enumField !== undefined) {
                     writer.uint32(32).uint32(message.enumField);
                 }
                 if (message.emptyField !== undefined && message.emptyField !== "") {
@@ -2973,7 +2970,7 @@ $root.jspb = (function() {
                         dst.boolField = true;
                     }
                     dst.intField = impl.longs(src.intField, 0, 0, false, options);
-                    dst.enumField = impl.enums(src.enumField, 0, types[3], options);
+                    dst.enumField = impl.enums(src.enumField, undefined, types[3], options);
                     if (dst.emptyField === undefined && options.defaults) {
                         dst.emptyField = "";
                     }
@@ -4958,7 +4955,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.mapStringInt64 = $protobuf.util.emptyObject;
 
@@ -5461,28 +5458,28 @@ $root.jspb = (function() {
                 var dst = impl.create(src, this, options);
                 if (dst) {
                     if (dst.mapStringString === undefined && options.defaults) {
-                        dst.mapStringString = {};
+                        dst.mapStringString = "";
                     }
                     if (dst.mapStringInt32 === undefined && options.defaults) {
-                        dst.mapStringInt32 = {};
+                        dst.mapStringInt32 = 0;
                     }
                     dst.mapStringInt64 = impl.longs(src.mapStringInt64, 0, 0, false, options);
                     if (dst.mapStringBool === undefined && options.defaults) {
-                        dst.mapStringBool = {};
+                        dst.mapStringBool = false;
                     }
                     if (dst.mapStringDouble === undefined && options.defaults) {
-                        dst.mapStringDouble = {};
+                        dst.mapStringDouble = 0;
                     }
                     dst.mapStringEnum = impl.enums(src.mapStringEnum, 0, types[5], options);
                     dst.mapStringMsg = types[6].convert(src.mapStringMsg, impl, options);
                     if (dst.mapInt32String === undefined && options.defaults) {
-                        dst.mapInt32String = {};
+                        dst.mapInt32String = "";
                     }
                     if (dst.mapInt64String === undefined && options.defaults) {
-                        dst.mapInt64String = {};
+                        dst.mapInt64String = "";
                     }
                     if (dst.mapBoolString === undefined && options.defaults) {
-                        dst.mapBoolString = {};
+                        dst.mapBoolString = "";
                     }
                     dst.testMapFields = types[10].convert(src.testMapFields, impl, options);
                     dst.mapStringTestmapfields = types[11].convert(src.mapStringTestmapfields, impl, options);
@@ -7700,13 +7697,13 @@ $root.google = (function() {
              * FieldDescriptorProto label.
              * @type {number}
              */
-            $prototype.label = 0;
+            $prototype.label = 1;
 
             /**
              * FieldDescriptorProto type.
              * @type {number}
              */
-            $prototype.type = 0;
+            $prototype.type = 1;
 
             /**
              * FieldDescriptorProto typeName.
@@ -7773,10 +7770,10 @@ $root.google = (function() {
                 if (message.number !== undefined && message.number !== 0) {
                     writer.uint32(24).int32(message.number);
                 }
-                if (message.label !== undefined && message.label !== 0) {
+                if (message.label !== undefined && message.label !== 1) {
                     writer.uint32(32).uint32(message.label);
                 }
-                if (message.type !== undefined && message.type !== 0) {
+                if (message.type !== undefined && message.type !== 1) {
                     writer.uint32(40).uint32(message.type);
                 }
                 if (message.typeName !== undefined && message.typeName !== "") {
@@ -7991,8 +7988,8 @@ $root.google = (function() {
                     if (dst.number === undefined && options.defaults) {
                         dst.number = 0;
                     }
-                    dst.label = impl.enums(src.label, 0, types[2], options);
-                    dst.type = impl.enums(src.type, 0, types[3].values, options);
+                    dst.label = impl.enums(src.label, 1, types[2], options);
+                    dst.type = impl.enums(src.type, 1, types[3].values, options);
                     if (dst.typeName === undefined && options.defaults) {
                         dst.typeName = "";
                     }
@@ -9232,7 +9229,7 @@ $root.google = (function() {
              * FileOptions optimizeFor.
              * @type {number}
              */
-            $prototype.optimizeFor = 1;
+            $prototype.optimizeFor = undefined;
 
             /**
              * FileOptions goPackage.
@@ -9326,7 +9323,7 @@ $root.google = (function() {
                 if (message.javaStringCheckUtf8 !== undefined && message.javaStringCheckUtf8 !== false) {
                     writer.uint32(216).bool(message.javaStringCheckUtf8);
                 }
-                if (message.optimizeFor !== undefined && message.optimizeFor !== 1) {
+                if (message.optimizeFor !== undefined && message.optimizeFor !== undefined) {
                     writer.uint32(72).uint32(message.optimizeFor);
                 }
                 if (message.goPackage !== undefined && message.goPackage !== "") {
@@ -9593,7 +9590,7 @@ $root.google = (function() {
                     if (dst.javaStringCheckUtf8 === undefined && options.defaults) {
                         dst.javaStringCheckUtf8 = false;
                     }
-                    dst.optimizeFor = impl.enums(src.optimizeFor, 0, types[5], options);
+                    dst.optimizeFor = impl.enums(src.optimizeFor, undefined, types[5], options);
                     if (dst.goPackage === undefined && options.defaults) {
                         dst.goPackage = "";
                     }
@@ -9956,7 +9953,7 @@ $root.google = (function() {
              * FieldOptions ctype.
              * @type {number}
              */
-            $prototype.ctype = 0;
+            $prototype.ctype = undefined;
 
             /**
              * FieldOptions packed.
@@ -9968,7 +9965,7 @@ $root.google = (function() {
              * FieldOptions jstype.
              * @type {number}
              */
-            $prototype.jstype = 0;
+            $prototype.jstype = undefined;
 
             /**
              * FieldOptions lazy.
@@ -10017,13 +10014,13 @@ $root.google = (function() {
                 if (!writer) {
                     writer = Writer.create();
                 }
-                if (message.ctype !== undefined && message.ctype !== 0) {
+                if (message.ctype !== undefined && message.ctype !== undefined) {
                     writer.uint32(8).uint32(message.ctype);
                 }
                 if (message.packed !== undefined && message.packed !== false) {
                     writer.uint32(16).bool(message.packed);
                 }
-                if (message.jstype !== undefined && message.jstype !== 0) {
+                if (message.jstype !== undefined && message.jstype !== undefined) {
                     writer.uint32(48).uint32(message.jstype);
                 }
                 if (message.lazy !== undefined && message.lazy !== false) {
@@ -10194,11 +10191,11 @@ $root.google = (function() {
                 }
                 var dst = impl.create(src, this, options);
                 if (dst) {
-                    dst.ctype = impl.enums(src.ctype, 0, types[0], options);
+                    dst.ctype = impl.enums(src.ctype, undefined, types[0], options);
                     if (dst.packed === undefined && options.defaults) {
                         dst.packed = false;
                     }
-                    dst.jstype = impl.enums(src.jstype, 0, types[2].values, options);
+                    dst.jstype = impl.enums(src.jstype, undefined, types[2].values, options);
                     if (dst.lazy === undefined && options.defaults) {
                         dst.lazy = false;
                     }
@@ -11123,7 +11120,7 @@ $root.google = (function() {
              * MethodOptions idempotencyLevel.
              * @type {number}
              */
-            $prototype.idempotencyLevel = 0;
+            $prototype.idempotencyLevel = undefined;
 
             /**
              * MethodOptions uninterpretedOption.
@@ -11157,7 +11154,7 @@ $root.google = (function() {
                 if (message.deprecated !== undefined && message.deprecated !== false) {
                     writer.uint32(264).bool(message.deprecated);
                 }
-                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== 0) {
+                if (message.idempotencyLevel !== undefined && message.idempotencyLevel !== undefined) {
                     writer.uint32(272).uint32(message.idempotencyLevel);
                 }
                 if (message.uninterpretedOption) {
@@ -11280,7 +11277,7 @@ $root.google = (function() {
                     if (dst.deprecated === undefined && options.defaults) {
                         dst.deprecated = false;
                     }
-                    dst.idempotencyLevel = impl.enums(src.idempotencyLevel, 0, types[1], options);
+                    dst.idempotencyLevel = impl.enums(src.idempotencyLevel, undefined, types[1], options);
                     if (src.uninterpretedOption && src.uninterpretedOption.length) {
                         dst.uninterpretedOption = [];
                         for (var i = 0; i < src.uninterpretedOption.length; ++i) {
@@ -11368,13 +11365,13 @@ $root.google = (function() {
 
             /**
              * UninterpretedOption positiveIntValue.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.positiveIntValue = $protobuf.util.emptyObject;
 
             /**
              * UninterpretedOption negativeIntValue.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.negativeIntValue = $protobuf.util.emptyObject;
 

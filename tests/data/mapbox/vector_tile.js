@@ -1,6 +1,3 @@
-// $> pbjs --target static-module --wrap commonjs --root test_vector_tile --out tests/data/mapbox/vector_tile.js tests/data/mapbox/vector_tile.proto
-// Generated Mon, 02 Jan 2017 21:00:30 UTC
-
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
 "use strict";
 
@@ -254,19 +251,19 @@ $root.vector_tile = (function() {
 
             /**
              * Value intValue.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.intValue = $protobuf.util.emptyObject;
 
             /**
              * Value uintValue.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.uintValue = $protobuf.util.emptyObject;
 
             /**
              * Value sintValue.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.sintValue = $protobuf.util.emptyObject;
 
@@ -512,7 +509,7 @@ $root.vector_tile = (function() {
 
             /**
              * Feature id.
-             * @type {number|Long}
+             * @type {number|$protobuf.Long}
              */
             $prototype.id = $protobuf.util.emptyObject;
 
@@ -526,7 +523,7 @@ $root.vector_tile = (function() {
              * Feature type.
              * @type {number}
              */
-            $prototype.type = 0;
+            $prototype.type = undefined;
 
             /**
              * Feature geometry.
@@ -567,7 +564,7 @@ $root.vector_tile = (function() {
                     }
                     writer.ldelim();
                 }
-                if (message.type !== undefined && message.type !== 0) {
+                if (message.type !== undefined && message.type !== undefined) {
                     writer.uint32(24).uint32(message.type);
                 }
                 if (message.geometry && message.geometry.length) {
@@ -731,7 +728,7 @@ $root.vector_tile = (function() {
                             dst.tags = [];
                         }
                     }
-                    dst.type = impl.enums(src.type, 0, types[2], options);
+                    dst.type = impl.enums(src.type, undefined, types[2], options);
                     if (src.geometry && src.geometry.length) {
                         dst.geometry = [];
                         for (var i = 0; i < src.geometry.length; ++i) {

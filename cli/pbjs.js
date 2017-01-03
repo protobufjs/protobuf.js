@@ -174,11 +174,6 @@ exports.main = function(args, callback) {
                 throw err;
             }
             if (output !== "") {
-                output = [
-                    "// $> pbjs " + args.join(" "),
-                    "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
-                    ""
-                ].join("\n") + "\n" + output;
                 if (argv.out)
                     fs.writeFileSync(argv.out, output, { encoding: "utf8" });
                 else

@@ -1,6 +1,3 @@
-// $> pbjs --target static-module --wrap commonjs --root test_package --out tests/data/package.js tests/data/package.proto
-// Generated Mon, 02 Jan 2017 21:00:30 UTC
-
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
 "use strict";
 
@@ -544,19 +541,19 @@ $root.Package = (function() {
                 dst.main = "";
             }
             if (dst.bin === undefined && options.defaults) {
-                dst.bin = {};
+                dst.bin = "";
             }
             if (dst.scripts === undefined && options.defaults) {
-                dst.scripts = {};
+                dst.scripts = "";
             }
             if (dst.dependencies === undefined && options.defaults) {
-                dst.dependencies = {};
+                dst.dependencies = "";
             }
             if (dst.optionalDependencies === undefined && options.defaults) {
-                dst.optionalDependencies = {};
+                dst.optionalDependencies = "";
             }
             if (dst.devDependencies === undefined && options.defaults) {
-                dst.devDependencies = {};
+                dst.devDependencies = "";
             }
             if (dst.types === undefined && options.defaults) {
                 dst.types = "";

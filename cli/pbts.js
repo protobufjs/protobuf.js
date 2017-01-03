@@ -125,11 +125,7 @@ exports.main = function(args, callback) {
                 return;
             }
 
-            var output = [
-                "// $> pbts " + args.join(" "),
-                "// Generated " + (new Date()).toUTCString().replace(/GMT/, "UTC"),
-                ""
-            ];
+            var output = [];
             if (argv.global)
                 output.push(
                     "export as namespace " + argv.global + ";",

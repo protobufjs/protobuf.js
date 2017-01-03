@@ -1,6 +1,3 @@
-// $> pbjs --target static-module --wrap commonjs --root test_rpc --out tests/data/rpc.js tests/data/rpc.proto
-// Generated Mon, 02 Jan 2017 21:00:30 UTC
-
 /*eslint-disable block-scoped-var, no-redeclare, no-control-regex*/
 "use strict";
 
