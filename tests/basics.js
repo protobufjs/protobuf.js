@@ -30,8 +30,7 @@ tape.test("google.protobuf.Any type", function(test) {
             }, "should be populated with the contents we provided");
 
             var writer = Any.encode(any),
-                buf,
-                msg;
+                buf;
 
             function verifyEncode(test, buf) {
                 test.equal(buf[0]    , 1 << 3 | 2, "a tag with id 1, wire type 2");
@@ -53,7 +52,7 @@ tape.test("google.protobuf.Any type", function(test) {
 
             test.test("should decode", function(test) {
 
-                msg = Any.decode(buf);
+                var msg = Any.decode(buf);
 
                 test.deepEqual(msg, any, "an equal message");
 
@@ -77,7 +76,7 @@ tape.test("google.protobuf.Any type", function(test) {
 
             test.test("should decodeDelimited", function(test) {
 
-                msg = Any.decodeDelimited(buf);
+                var msg = Any.decodeDelimited(buf);
                 test.deepEqual(msg, any, "an equal message");
 
                 test.end();

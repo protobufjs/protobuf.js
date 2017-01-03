@@ -22,3 +22,8 @@ scripts:
 tunnel:
   type: ngrok
   proto: tcp
+browserify:
+  - external: long
+  - require: ./lib/tape-adapter
+    expose: intimidate
+    entry: true
