@@ -1,12 +1,19 @@
 # [6.4.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.0)
 
 ## Breaking
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a017bf8a2dbdb7f9e7ce4c026bb6845174feb3b1) Dropped IE8 support<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/39bc1031bb502f8b677b3736dd283736ea4d92c1) Removed now unused util.longNeq which was used by early static code<br />
 
 ## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5915ff972482e7db2a73629244ab8a93685b2e55) Do not swallow errors in loadSync, also accept negative enum values in Enum#add, fixes [#609](https://github.com/dcodeIO/protobuf.js/issues/609)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fde56c0de69b480343931264a01a1ead1e3156ec) Improved bytes field support, also fixes [#606](https://github.com/dcodeIO/protobuf.js/issues/606)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0c03f327115d57c4cd5eea3a9a1fad672ed6bd44) Fall back to browser Reader when passing an Uint8Array under node, fixes [#605](https://github.com/dcodeIO/protobuf.js/issues/605)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/7eb3d456370d7d66b0856e32b2d2602abf598516) Respect optional properties when writing interfaces in tsd-jsdoc, fixes [#598](https://github.com/dcodeIO/protobuf.js/issues/598)<br />
 
 ## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/bcadffecb3a8b98fbbd34b45bae0e6af58f9c810) Instead of protobuf.parse.keepCase, fall back to protobuf.parse.defaults holding all possible defaults, see [#608](https://github.com/dcodeIO/protobuf.js/issues/608)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a4d6a2af0d57a2e0cccf31e3462c8b2465239f8b) Added global ParseOptions#keepCase fallback as protobuf.parse.keepCase, see [#608](https://github.com/dcodeIO/protobuf.js/issues/608)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a017bf8a2dbdb7f9e7ce4c026bb6845174feb3b1) Converters use code generation and support custom implementations<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/28ce07d9812f5e1743afef95a94532d2c9488a84) Be more verbose when throwing invalid wire type errors, see [#602](https://github.com/dcodeIO/protobuf.js/issues/602)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/40074bb69c3ca4fcefe09d4cfe01f3a86844a7e8) Added an asJSON-option to always populate array fields, even if defaults=false, see [#597](https://github.com/dcodeIO/protobuf.js/issues/597)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/a7d23240a278aac0bf01767b6096d692c09ae1ce) Attempt to improve TypeScript support by using explicit exports<br />
@@ -14,6 +21,11 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/1f18453c7bfcce65c258fa98a3e3d4577d2e550f) Emit an error on resolveAll() if any extension fields cannot be resolved, see [#595](https://github.com/dcodeIO/protobuf.js/issues/595) + test case<br />
 
 ## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/804739dbb75359b0034db0097fe82081e3870a53) Removed 'not recommend' label for --keep-case, see [#608](https://github.com/dcodeIO/protobuf.js/issues/608)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9681854526f1813a6ef08becf130ef2fbc28b638) Added customizable linter configuration to pbjs<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9681854526f1813a6ef08becf130ef2fbc28b638) Added stdin support to pbjs and pbts<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/407223b5ceca3304bc65cb48888abfdc917d5800) Static code no longer uses IE8 support utility<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a017bf8a2dbdb7f9e7ce4c026bb6845174feb3b1) Generated static code now supports asJSON/from<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3c775535517b8385a1d3c1bf056f3da3b4266f8c) Added support for TypeScript enums to pbts<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/0cda72a55a1f2567a5d981dc5d924e55b8070513) Added a few helpful comments to static code<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/24b293c297feff8bda5ee7a2f8f3f83d77c156d0) Slightly beautify statically generated code<br />
@@ -23,13 +35,18 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/8493dbd9a923693e943f710918937d83ae3c4572) Reference dependency imports as a module to prevent name collisions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/39a2ea361c50d7f4aaa0408a0d55bb13823b906c) Removed now unnecessary comment lines in generated static code<br />
 
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/a4e41b55471d83a8bf265c6641c3c6e0eee82e31) Added notes on CSP-restricted environments to README, see [#593](https://github.com/dcodeIO/protobuf.js/issues/593)<br />
+
 ## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1a3effdad171ded0608e8da021ba8f9dd017f2ff) Added test case for asJSON with arrays=true, see [#597](https://github.com/dcodeIO/protobuf.js/issues/597)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/751a90f509b68a5f410d1f1844ccff2fc1fc056a) Added a tape adapter to assert message equality accross browsers<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fde56c0de69b480343931264a01a1ead1e3156ec) Refactored some internal utility away<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/805291086f6212d1f108b3d8f36325cf1739c0bd) Reverted previous attempt on [#597](https://github.com/dcodeIO/protobuf.js/issues/597)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c5160217ea95996375460c5403dfe37b913d392e) Minor tsd-jsdoc refactor<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/961dd03061fc2c43ab3bf22b3f9f5165504c1002) Removed unused sandbox files<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/f625eb8b0762f8f5d35bcd5fc445e52b92d8e77d) Updated package.json of micro modules to reference types, see [#599](https://github.com/dcodeIO/protobuf.js/issues/599)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/46ec8209b21cf9ff09ae8674e2a5bbc49fd4991b) Reference dependencies as imports in generated typescript definitions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
-[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c0ab94c2e469c0fbf790e4807f24fddd6370e342) Reference dependencies as imports in generated typescript definitions, see [#596](https://github.com/dcodeIO/protobuf.js/issues/596)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/3bab132b871798c7c50c60a4c14c2effdffa372e) Allow null values on optional long fields, see [#590](https://github.com/dcodeIO/protobuf.js/issues/590)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/31da56c177f1e11ffe0072ad5f58a55e3f8008fd) Various jsdoc improvements and a workaround for d.ts generation, see [#592](https://github.com/dcodeIO/protobuf.js/issues/592)<br />
 

@@ -2,11 +2,12 @@
 
 var util = exports;
 
-util.LongBits = require("./longbits");
-util.base64   = require("./base64");
+util.base64   = require("@protobufjs/base64");
 util.inquire  = require("@protobufjs/inquire");
 util.utf8     = require("@protobufjs/utf8");
 util.pool     = require("@protobufjs/pool");
+
+util.LongBits = require("./longbits");
 
 /**
  * Whether running within node or not.

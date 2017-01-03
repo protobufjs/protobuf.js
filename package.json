@@ -42,23 +42,23 @@
     "release": "npm run make && npm run changelog"
   },
   "dependencies": {
-    "@protobufjs/aspromise": "^1.0.4",
-    "@protobufjs/base64": "^1.0.4",
-    "@protobufjs/codegen": "^1.0.3",
-    "@protobufjs/eventemitter": "^1.0.4",
-    "@protobufjs/extend": "^1.0.1",
-    "@protobufjs/fetch": "^1.0.3",
-    "@protobufjs/inquire": "^1.0.1",
-    "@protobufjs/path": "^1.0.1",
-    "@protobufjs/pool": "^1.0.4",
-    "@protobufjs/utf8": "^1.0.5"
+    "@protobufjs/aspromise": "^1.0.5",
+    "@protobufjs/base64": "^1.0.5",
+    "@protobufjs/codegen": "^1.0.4",
+    "@protobufjs/eventemitter": "^1.0.5",
+    "@protobufjs/extend": "^1.0.2",
+    "@protobufjs/fetch": "^1.0.4",
+    "@protobufjs/inquire": "^1.0.2",
+    "@protobufjs/path": "^1.0.2",
+    "@protobufjs/pool": "^1.0.5",
+    "@protobufjs/utf8": "^1.0.6"
   },
   "optionalDependencies": {
     "long": "^3.2.0",
     "@types/long": "^3.0.31"
   },
   "devDependencies": {
-    "@types/node": "6.0.54",
+    "@types/node": "6.0.55",
     "benchmark": "^2.1.3",
     "browserify": "^13.1.1",
     "bundle-collapser": "^1.2.1",

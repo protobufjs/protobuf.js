@@ -1,5 +1,5 @@
 // $> pbts --main --global protobuf --out index.d.ts src
-// Generated Tue, 03 Jan 2017 02:10:19 UTC
+// Generated Tue, 03 Jan 2017 15:34:45 UTC
 
 export as namespace protobuf;
 
@@ -458,6 +458,7 @@ type LoadCallback = (error: Error, root?: Root) => void;
  * @param {Root} root Root namespace, defaults to create a new one if omitted.
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
+ * @see {@link Root#load}
  */
 export function load(filename: (string|string[]), root: Root, callback: LoadCallback): void;
 
@@ -468,6 +469,7 @@ export function load(filename: (string|string[]), root: Root, callback: LoadCall
  * @param {string|string[]} filename One or multiple files to load
  * @param {LoadCallback} callback Callback function
  * @returns {undefined}
+ * @see {@link Root#load}
  * @variation 2
  */
 export function load(filename: (string|string[]), callback: LoadCallback): void;
@@ -479,6 +481,7 @@ export function load(filename: (string|string[]), callback: LoadCallback): void;
  * @param {string|string[]} filename One or multiple files to load
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Promise<Root>} Promise
+ * @see {@link Root#load}
  * @variation 3
  */
 export function load(filename: (string|string[]), root?: Root): Promise<Root>;
@@ -489,6 +492,7 @@ export function load(filename: (string|string[]), root?: Root): Promise<Root>;
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted.
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
+ * @see {@link Root#loadSync}
  */
 export function loadSync(filename: (string|string[]), root?: Root): Root;
 
@@ -1118,9 +1122,10 @@ type ParseOptions = { [k: string]: any };
  * @function
  * @param {string} source Source contents
  * @param {Root} root Root to populate
- * @param {ParseOptions} [options] Parse options
+ * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {ParserResult} Parser result
  * @property {string} filename=null Currently processing file name for error reporting, if known
+ * @property {ParseOptions} defaults Default {@link ParseOptions}
  */
 export function parse(source: string, root: Root, options?: ParseOptions): ParserResult;
 
@@ -1129,7 +1134,7 @@ export function parse(source: string, root: Root, options?: ParseOptions): Parse
  * @name parse
  * @function
  * @param {string} source Source contents
- * @param {ParseOptions} [options] Parse options
+ * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {ParserResult} Parser result
  * @variation 2
  */
@@ -1376,7 +1381,7 @@ export class Root extends Namespace {
      * @name Root#load
      * @function
      * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {ParseOptions} [options] Parse options
+     * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
      * @returns {Promise<Root>} Promise
      * @variation 3
      */
@@ -1385,7 +1390,7 @@ export class Root extends Namespace {
     /**
      * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
      * @param {string|string[]} filename Names of one or multiple files to load
-     * @param {ParseOptions} [options] Parse options
+     * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
      * @returns {Root} Root namespace
      * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
      */

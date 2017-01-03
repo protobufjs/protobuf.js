@@ -8,8 +8,8 @@
     "url": "https://github.com/dcodeIO/protobuf.js.git"
   },
   "dependencies": {
-    "@protobufjs/aspromise": "^1.0.4",
-    "@protobufjs/inquire": "^1.0.1"
+    "@protobufjs/aspromise": "^1.0.5",
+    "@protobufjs/inquire": "^1.0.2"
   },
   "license": "BSD-3-Clause",
   "main": "index.js",
