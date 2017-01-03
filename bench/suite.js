@@ -13,29 +13,25 @@ function newSuite(name) {
         benches.push(event.target);
     })
     .on("start", function() {
-        console.log("benchmarking " + name + " performance ...\n");
-    })
-    .on("error", function(err) {
-        console.log("ERROR:", err);
+        process.stdout.write("benchmarking " + name + " performance ...\n\n");
     })
     .on("cycle", function(event) {
-        console.log(String(event.target));
+        process.stdout.write(String(event.target) + "\n");
     })
-    .on("complete", function(event) {
+    .on("complete", function() {
         if (benches.length > 1) {
-            var fastest = this.filter('fastest'),
-                slowest = this.filter('slowest');
-            var fastestHz = getHz(fastest[0]);
-            console.log("\n" + chalk.white(pad(fastest[0].name, padSize)) + " was " + chalk.green("fastest"));
+            var fastest = this.filter("fastest"), // eslint-disable-line no-invalid-this
+                fastestHz = getHz(fastest[0]);
+            process.stdout.write("\n" + chalk.white(pad(fastest[0].name, padSize)) + " was " + chalk.green("fastest") + "\n");
             benches.forEach(function(bench) {
                 if (fastest.indexOf(bench) === 0)
                     return;
                 var hz = hz = getHz(bench);
                 var percent = (1 - (hz / fastestHz)) * 100;
-                console.log(chalk.white(pad(bench.name, padSize)) + " was " + chalk.red(percent.toFixed(1)+'% slower'));
+                process.stdout.write(chalk.white(pad(bench.name, padSize)) + " was " + chalk.red(percent.toFixed(1) + "% slower") + "\n");
             });
         }
-        console.log();
+        process.stdout.write("\n");
     });
 }
 

@@ -1,11 +1,10 @@
-var protobuf = require(".."),
-    newSuite = require("./suite"),
+"use strict";
+var newSuite = require("./suite"),
     ieee754  = require("../lib/ieee754");
 
 // This benchmark compares raw data type performance of Uint8Array and Buffer.
 
 var data = [ 0xCD, 0xCC, 0xCC, 0x3D ]; // ~0.10000000149011612 LE
-
 var array  = new Uint8Array(data);
 var buffer = Buffer.from(data);
 
@@ -42,10 +41,9 @@ newSuite("float")
 })
 .run();
 
-var data = [ 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F ]; // 0.1 LE
-
-var array  = new Uint8Array(data);
-var buffer = Buffer.from(data);
+data = [ 0x9A, 0x99, 0x99, 0x99, 0x99, 0x99, 0xB9, 0x3F ]; // 0.1 LE
+array  = new Uint8Array(data);
+buffer = Buffer.from(data);
 
 // raw double read speed
 newSuite("double")
@@ -103,6 +101,7 @@ function readString(bytes) {
         }
         return String.fromCharCode.apply(String, out.slice(0, c));
     }
+    return "";
 }
 
 // raw string read speed

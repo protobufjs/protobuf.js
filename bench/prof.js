@@ -1,3 +1,5 @@
+"use strict";
+
 var fs   = require("fs"),
     path = require("path");
 
@@ -5,36 +7,36 @@ var fs   = require("fs"),
 
 var commands = ["encode", "decode", "encode-browser", "decode-browser"];
 if (commands.indexOf(process.argv[2]) < 0) { // 0: node, 1: prof.js
-    console.error("usage: " + path.basename(process.argv[1]) + " <" + commands.join('|') + "> [iterations=10000000]");
-    process.exit(0);
+    process.stderr.write("usage: " + path.basename(process.argv[1]) + " <" + commands.join("|") + "> [iterations=10000000]\n");
+    return;
 }
 
 // Spin up a node process with profiling enabled and process the generated log
 if (process.execArgv.indexOf("--prof") < 0) {
-    console.log("cleaning up old logs ...");
+    process.stdout.write("cleaning up old logs ...\n");
     var child_process = require("child_process");
-    var logRe = /^isolate\-[0-9A-F]+\-v8\.log$/;
+    var logRe = /^isolate-[0-9A-F]+-v8\.log$/;
     fs.readdirSync(process.cwd()).forEach(function readdirSync_it(file) {
         if (logRe.test(file))
             fs.unlink(file);
     });
-    console.log("generating profile (may take a while) ...");
-    var child = child_process.execSync("node --prof --trace-deopt " + process.execArgv.join(" ") + " " + process.argv.slice(1).join(' '), {
+    process.stdout.write("generating profile (may take a while) ...\n");
+    child_process.execSync("node --prof --trace-deopt " + process.execArgv.join(" ") + " " + process.argv.slice(1).join(' '), {
         cwd: process.cwd(),
-        stdio: 'inherit'
+        stdio: "inherit"
     });
-    console.log("processing profile ...");
+    process.stdout.write("processing profile ...\n");
     fs.readdirSync(process.cwd()).forEach(function readdirSync_it(file) {
         if (logRe.test(file)) {
             child_process.execSync("node --prof-process " + file, {
                 cwd: process.cwd(),
-                stdio: 'inherit'
+                stdio: "inherit"
             });
             // fs.unlink(file);
         }
     });
-    console.log("done.");
-    process.exit(0);
+    process.stdout.write("done.\n");
+    return;
 }
 
 // Actual profiling code
@@ -59,7 +61,7 @@ if (process.argv.indexOf("--alt") < 0) {
 
 if (process.argv.length > 3 && /^\d+$/.test(process.argv[3]))
     count = parseInt(process.argv[3], 10);
-console.log(" x " + count);
+process.stdout.write(" x " + count + "\n");
 
 function setupBrowser() {
     protobuf.Writer.create = function create_browser() { return new protobuf.Writer(); };
@@ -69,16 +71,17 @@ function setupBrowser() {
 switch (process.argv[2]) {
     case "encode-browser":
         setupBrowser();
+        // eslint-disable-line no-fallthrough
     case "encode":
         for (var i = 0; i < count; ++i)
             Test.encode(data).finish();
         break;
     case "decode-browser":
         setupBrowser();
+        // eslint-disable-line no-fallthrough
     case "decode":
         var buf = Test.encode(data).finish();
-        for (var i = 0; i < count; ++i)
+        for (var j = 0; j < count; ++j)
             Test.decode(buf);
         break;
 }
-process.exit(0);

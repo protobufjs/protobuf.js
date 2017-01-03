@@ -1,3 +1,5 @@
+"use strict";
+
 var protobuf  = require(".."),
     newSuite  = require("./suite"),
     data      = require("./bench.json");
@@ -19,21 +21,22 @@ var protobuf  = require(".."),
 //
 // To experience the impact by yourself, increase string lengths within bench.json.
 
-var root = protobuf.loadSync(require.resolve("./bench.proto"));
-var Test = root.resolveAll().lookup("Test");
+var root = protobuf.loadSync(require.resolve("./bench.proto")),
+    Test = root.resolveAll().lookup("Test");
 
 // protobuf.util.codegen.verbose = true;
 
 var buf = Test.encode(data).finish();
 
 // warm up
-for (var i = 0; i < 500000; ++i)
+var i;
+for (i = 0; i < 500000; ++i)
     Test.encode(data).finish();
-for (var i = 0; i < 1000000; ++i)
+for (i = 0; i < 1000000; ++i)
     Test.decode(buf);
-for (var i = 0; i < 500000; ++i)
+for (i = 0; i < 500000; ++i)
     Test.verify(data);
-console.log("");
+process.stdout.write("\n");
 
 if (!Buffer.from)
     Buffer.from = function from(str, enc) {
@@ -92,10 +95,13 @@ setTimeout(function() {
     var dataMessage = Test.from(data);
     var dataJson = dataMessage.asJSON();
 
-    newSuite("converting")
+    newSuite("converting from JSON")
     .add("Message.from", function() {
         Test.from(dataJson);
     })
+    .run();
+    
+    newSuite("converting to JSON")
     .add("Message#asJSON", function() {
         dataMessage.asJSON();
     })

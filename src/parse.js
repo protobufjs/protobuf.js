@@ -667,5 +667,7 @@ function parse(source, root, options) {
  * @param {string} source Source contents
  * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {ParserResult} Parser result
+ * @property {string} filename=null Currently processing file name for error reporting, if known
+ * @property {ParseOptions} defaults Default {@link ParseOptions}
  * @variation 2
  */

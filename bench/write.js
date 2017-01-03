@@ -1,5 +1,5 @@
-var protobuf = require(".."),
-    newSuite = require("./suite"),
+"use strict";
+var newSuite = require("./suite"),
     ieee754  = require("../lib/ieee754");
 
 // This benchmark compares raw data type performance of Uint8Array and Buffer.
@@ -96,8 +96,8 @@ newSuite("double")
 .run();
 
 var source = Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
-var array  = new Uint8Array(16);
-var buffer = new Buffer(16);
+array  = new Uint8Array(16);
+buffer = new Buffer(16);
 
 // raw bytes write speed
 newSuite("bytes")
@@ -143,7 +143,7 @@ function writeString(buf, pos, val) {
     }
 }
 
-function byteLength(val) {
+/* function byteLength(val) {
     var strlen = val.length >>> 0;
     var len = 0;
     for (var i = 0; i < strlen; ++i) {
@@ -159,10 +159,10 @@ function byteLength(val) {
             len += 3;
     }
     return len;
-}
+} */
 
-var array = new Uint8Array(1000);
-var buffer = new Buffer(1000);
+array = new Uint8Array(1000);
+buffer = new Buffer(1000);
 
 [
     "Lorem ipsu",
