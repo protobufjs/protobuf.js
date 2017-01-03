@@ -84,7 +84,7 @@ exports.main = function(args, callback) {
                 "",
                 chalk.bold.gray("  Proto sources only:"),
                 "",
-                "  --keep-case     Keeps field casing instead of converting to camel case (not recommended).",
+                "  --keep-case     Keeps field casing instead of converting to camel case.",
                 "",
                 chalk.bold.gray("  Static targets only:"),
                 "",
