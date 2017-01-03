@@ -48,6 +48,24 @@ tape.test("convert", function(test) {
                 test.end();
             });
 
+            test.test("called with arrays = true", function(test) {
+                var obj = Message.create().asJSON({ arrays: true });
+
+                test.equal(obj.stringVal, undefined, "should not set stringVal");
+                test.same(obj.stringRepeated, [], "should set stringRepeated");
+
+                test.equal(obj.uint64Val, undefined, "should not set uint64Val");
+                test.same(obj.uint64Repeated, [], "should set uint64Repeated");
+
+                test.equal(obj.bytesVal, undefined, "should not set bytesVal");
+                test.same(obj.bytesRepeated, [], "should set bytesRepeated");
+
+                test.equal(obj.enumVal, undefined, "should not set enumVal");
+                test.same(obj.enumRepeated, [], "should set enumRepeated");
+
+                test.end();
+            });
+
             test.test("should convert", function(test) {
                 var buf = protobuf.util.newBuffer(3);
                 buf[0] = buf[1] = buf[2] = 49; // "111"
