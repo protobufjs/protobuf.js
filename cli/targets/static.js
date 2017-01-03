@@ -250,7 +250,7 @@ function buildType(ref, type) {
             case "sint64":
             case "fixed64":
             case "sfixed64":
-                jsType = "number|Long";
+                jsType = "number|$protobuf.Long";
                 break;
             case "bool":
                 jsType = "boolean";
