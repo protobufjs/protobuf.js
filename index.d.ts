@@ -1,5 +1,5 @@
 // $> pbts --main --global protobuf --out index.d.ts src
-// Generated Tue, 03 Jan 2017 15:34:45 UTC
+// Generated Tue, 03 Jan 2017 23:45:16 UTC
 
 export as namespace protobuf;
 
@@ -27,6 +27,16 @@ export class Class {
      * @returns {Message} Message prototype
      */
     static create(type: Type, ctor?: any): Message;
+
+    /**
+     * Creates a message from a JSON object by converting strings and numbers to their respective field types.
+     * @name Class#from
+     * @function
+     * @param {Object.<string,*>} object JSON object
+     * @param {MessageConversionOptions} [options] Options
+     * @returns {Message} Message instance
+     */
+    from(object: { [k: string]: any }, options?: MessageConversionOptions): Message;
 
     /**
      * Encodes a message of this type.
@@ -74,6 +84,17 @@ export class Class {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     verify(message: (Message|Object)): string;
+
+    /**
+     * Converts an object or runtime message of this type.
+     * @name Class#convert
+     * @function
+     * @param {Message|Object} source Source object or runtime message
+     * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
+     * @param {Object.<string,*>} [options] Conversion options
+     * @returns {Message|Object} Converted object or runtime message
+     */
+    convert(source: (Message|Object), impl: ConverterImpl, options?: { [k: string]: any }): (Message|Object);
 }
 
 /**
@@ -375,7 +396,13 @@ export class Field extends ReflectionObject {
     partOf: OneOf;
 
     /**
-     * The field's default value. Only relevant when working with proto2.
+     * The field type's default value.
+     * @type {*}
+     */
+    typeDefault: any;
+
+    /**
+     * The field's default value on prototypes.
      * @type {*}
      */
     defaultValue: any;
@@ -1136,6 +1163,8 @@ export function parse(source: string, root: Root, options?: ParseOptions): Parse
  * @param {string} source Source contents
  * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {ParserResult} Parser result
+ * @property {string} filename=null Currently processing file name for error reporting, if known
+ * @property {ParseOptions} defaults Default {@link ParseOptions}
  * @variation 2
  */
 export function parse(source: string, options?: ParseOptions): ParserResult;

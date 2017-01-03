@@ -24,7 +24,7 @@ tape.test("convert", function(test) {
                 test.same(obj.bytesVal, [], "should set bytesVal");
                 test.same(obj.bytesRepeated, [], "should set bytesRepeated");
 
-                test.equal(obj.enumVal, 0, "should set enumVal");
+                test.equal(obj.enumVal, 1, "should set enumVal to the first defined value");
                 test.same(obj.enumRepeated, [], "should set enumRepeated");
 
                 test.end();
@@ -74,7 +74,7 @@ tape.test("convert", function(test) {
                     uint64Repeated: [2, 3],
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
-                    enumVal: 1,
+                    enumVal: 2,
                     enumRepeated: [1, 2]
                 });
 
@@ -86,7 +86,7 @@ tape.test("convert", function(test) {
                 if (protobuf.util.isNode)
                     test.ok(Buffer.isBuffer(msg.asJSON({ bytes: Buffer }).bytesVal), "bytes to buffers");
 
-                test.equal(msg.asJSON({ enums: String }).enumVal, "ONE", "enums to strings");
+                test.equal(msg.asJSON({ enums: String }).enumVal, "TWO", "enums to strings");
 
                 test.end();
             });

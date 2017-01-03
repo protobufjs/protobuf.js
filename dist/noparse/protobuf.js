@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 03 Jan 2017 21:45:57 UTC
+ * Compiled Tue, 03 Jan 2017 23:45:07 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -888,7 +888,7 @@ function genConvert(field, fieldIndex, prop) {
     if (field.resolvedType)
         return field.resolvedType instanceof Enum
             // enums
-            ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, 0, fieldIndex)
+            ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, field.typeDefault, fieldIndex)
             // recurse into messages
             : sprintf("types[%d].convert(s%s,f,o)", fieldIndex, prop);
     switch (field.type) {
@@ -901,7 +901,7 @@ function genConvert(field, fieldIndex, prop) {
             return sprintf("f.longs(s%s,%d,%d,%j,o)", prop, 0, 0, field.type.charAt(0) === "u");
         case "bytes":
             // bytes
-            return sprintf("f.bytes(s%s,%j,o)", prop, Array.prototype.slice.call(field.defaultValue));
+            return sprintf("f.bytes(s%s,%j,o)", prop, Array.prototype.slice.call(field.typeDefault));
     }
     return null;
 }
@@ -945,7 +945,7 @@ function converter(mtype) {
         ("d%s=%s", prop, convert);
             else gen
         ("if(d%s===undefined&&o.defaults)", prop)
-            ("d%s=%j", prop, field.defaultValue);
+            ("d%s=%j", prop, field.typeDefault /* == field.defaultValue */);
 
         });
         gen
@@ -1602,7 +1602,13 @@ function Field(name, id, type, rule, extend, options) {
     this.partOf = null;
 
     /**
-     * The field's default value. Only relevant when working with proto2.
+     * The field type's default value.
+     * @type {*}
+     */
+    this.typeDefault = null;
+
+    /**
+     * The field's default value on prototypes.
      * @type {*}
      */
     this.defaultValue = null;
@@ -1719,47 +1725,47 @@ FieldPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
 
-    var typeDefault = types.defaults[this.type];
-
-    // if not a basic type, resolve it
-    if (typeDefault === undefined) {
+    if ((this.typeDefault = types.defaults[this.type]) === undefined) {
+        // if not a basic type, resolve it
         if (!Type)
             Type = require(30);
         if (this.resolvedType = this.parent.lookup(this.type, Type))
-            typeDefault = null;
+            this.typeDefault = null;
         else if (this.resolvedType = this.parent.lookup(this.type, Enum))
-            typeDefault = 0;
+            this.typeDefault = this.resolvedType.values[Object.keys(this.resolvedType.values)[0]]; // first defined
         /* istanbul ignore next */
         else
             throw Error("unresolvable field type: " + this.type);
     }
 
-    // when everything is resolved, determine the default value
+    // use explicitly set default value if present
+    if (this.options && this.options["default"] !== undefined) {
+        this.typeDefault = this.options["default"];
+        if (this.resolvedType instanceof Enum && typeof this.typeDefault === "string")
+            this.typeDefault = this.resolvedType.values[this.defaultValue];
+    }
+
+    // convert to internal data type if necesssary
+    if (this.long) {
+        this.typeDefault = util.Long.fromNumber(this.typeDefault, this.type.charAt(0) === "u");
+        if (Object.freeze)
+            Object.freeze(this.typeDefault); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
+    } else if (this.bytes && typeof this.typeDefault === "string") {
+        var buf;
+        if (util.base64.test(this.typeDefault))
+            util.base64.decode(this.typeDefault, buf = util.newBuffer(util.base64.length(this.typeDefault)), 0);
+        else
+            util.utf8.write(this.typeDefault, buf = util.newBuffer(util.utf8.length(this.typeDefault)), 0);
+        this.typeDefault = buf;
+    }
+
+    // account for maps and repeated fields
     if (this.map)
         this.defaultValue = {};
     else if (this.repeated)
         this.defaultValue = [];
-    else {
-        if (this.options && this.options["default"] !== undefined) {
-            this.defaultValue = this.options["default"];
-            if (this.resolvedType instanceof Enum && typeof this.defaultValue === "string")
-                this.defaultValue = this.resolvedType.values[this.defaultValue] || 0;
-        } else
-            this.defaultValue = typeDefault;
-
-        if (this.long) {
-            this.defaultValue = util.Long.fromNumber(this.defaultValue, this.type.charAt(0) === "u");
-            if (Object.freeze)
-                Object.freeze(this.defaultValue); // long instances are meant to be immutable anyway (i.e. use small int cache that even requires it)
-        } else if (this.bytes && typeof this.defaultValue === "string") {
-            var buf;
-            if (util.base64.test(this.defaultValue))
-                util.base64.decode(this.defaultValue, buf = util.newBuffer(util.base64.length(this.defaultValue)), 0);
-            else
-                util.utf8.write(this.defaultValue, buf = util.newBuffer(util.utf8.length(this.defaultValue)), 0);
-            this.defaultValue = buf;
-        }
-    }
+    else
+        this.defaultValue = this.typeDefault;
 
     return ReflectionObject.prototype.resolve.call(this);
 };

@@ -11,7 +11,7 @@ function genConvert(field, fieldIndex, prop) {
     if (field.resolvedType)
         return field.resolvedType instanceof Enum
             // enums
-            ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, 0, fieldIndex)
+            ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, field.typeDefault, fieldIndex)
             // recurse into messages
             : sprintf("types[%d].convert(s%s,f,o)", fieldIndex, prop);
     switch (field.type) {
@@ -24,7 +24,7 @@ function genConvert(field, fieldIndex, prop) {
             return sprintf("f.longs(s%s,%d,%d,%j,o)", prop, 0, 0, field.type.charAt(0) === "u");
         case "bytes":
             // bytes
-            return sprintf("f.bytes(s%s,%j,o)", prop, Array.prototype.slice.call(field.defaultValue));
+            return sprintf("f.bytes(s%s,%j,o)", prop, Array.prototype.slice.call(field.typeDefault));
     }
     return null;
 }
@@ -68,7 +68,7 @@ function converter(mtype) {
         ("d%s=%s", prop, convert);
             else gen
         ("if(d%s===undefined&&o.defaults)", prop)
-            ("d%s=%j", prop, field.defaultValue);
+            ("d%s=%j", prop, field.typeDefault /* == field.defaultValue */);
 
         });
         gen
