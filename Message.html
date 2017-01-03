@@ -125,8 +125,6 @@
             
                 <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
             
-                <li data-name="util.isIE8"><a href="util.html#.isIE8">isIE8</a></li>
-            
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
@@ -138,6 +136,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="util.arrayNe"><a href="util.html#.arrayNe">arrayNe</a></li>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
             
@@ -161,8 +161,6 @@
             
                 <li data-name="util.longNe"><a href="util.html#.longNe">longNe</a></li>
             
-                <li data-name="util.longNeq"><a href="util.html#.longNeq">longNeq</a></li>
-            
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
             
                 <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
@@ -170,10 +168,6 @@
                 <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
             
                 <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
-            
-                <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
-            
-                <li data-name="util.props"><a href="util.html#.props">props</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
             
@@ -209,6 +203,8 @@
                 <li data-name="util.base64.encode"><a href="util.base64.html#.encode">encode</a></li>
             
                 <li data-name="util.base64.length"><a href="util.base64.html#.length">length</a></li>
+            
+                <li data-name="util.base64.test"><a href="util.base64.html#.test">test</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -484,8 +480,6 @@
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
             
-                <li data-name="Enum#getValuesById"><a href="Enum.html#getValuesById">getValuesById</a></li>
-            
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
                 <li data-name="Enum#onRemove"><a href="Enum.html#onRemove">onRemove</a></li>
@@ -576,8 +570,6 @@
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
-            
-                <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
@@ -672,8 +664,6 @@
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
-                <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
-            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -714,6 +704,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="Message.convert"><a href="Message.html#.convert">convert</a></li>
             
                 <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
             
@@ -913,8 +905,6 @@
                 <li data-name="OneOf#resolved"><a href="OneOf.html#resolved">resolved</a></li>
             
                 <li data-name="OneOf#root"><a href="OneOf.html#root">root</a></li>
-            
-                <li data-name="OneOf#ucName"><a href="OneOf.html#ucName">ucName</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1344,6 +1334,8 @@
             
                 <li data-name="Type#addJSON"><a href="Type.html#addJSON">addJSON</a></li>
             
+                <li data-name="Type#convert"><a href="Type.html#convert">convert</a></li>
+            
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
@@ -1439,6 +1431,8 @@
             <span class="subtitle">Members</span>
             
                 <li data-name="util.LongBits.zero"><a href="util.LongBits.html#.zero">zero</a></li>
+            
+                <li data-name="util.LongBits.zeroHash"><a href="util.LongBits.html#.zeroHash">zeroHash</a></li>
             
                 <li data-name="util.LongBits#hi"><a href="util.LongBits.html#hi">hi</a></li>
             
@@ -1580,12 +1574,12 @@
     <div class="nameContainer">
         <h4 class="name" id="Message">
             
-            <span class="type-signature ">abstract</span>new Message<span class="signature">(<span class="optional">properties</span>)</span>
+            new Message<span class="signature">(<span class="optional">properties</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L17">line 17</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L15">line 15</a>
         </div>
         
     </div>
@@ -1597,7 +1591,7 @@
     
     <div class="description">
         <p>Constructs a new message instance.</p>
-<p>This method should be called from your custom constructors, i.e. <code>Message.call(this, properties)</code>.</p>
+<p>This function should also be called from your custom constructors, i.e. <code>Message.call(this, properties)</code>.</p>
     </div>
     
 
@@ -1708,12 +1702,6 @@
     
     </div>
     
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>Object</li>
-        </ul>
     
     
     
@@ -1827,6 +1815,220 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".convert">
+            
+            Message.convert<span class="signature">(source, impl, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> | Object }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L119">line 119</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Converts an object or runtime message of this type.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Message.html">Message</a></span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Source object or runtime message</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>impl</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#ConverterImpl">ConverterImpl</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Converter implementation to use, i.e. <a href="converters.html#.json">converters.json</a> or <a href="converters.html#.message">converters.message</a></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Conversion options</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Message.html">Message</a>
+                         | 
+                    
+                        Object
+                        
+                    
+            </td>
+            <td class="description last">Converted object or runtime message</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".decode">
             
             Message.decode<span class="signature">(readerOrBuffer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
@@ -1834,7 +2036,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L81">line 81</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L79">line 79</a>
         </div>
         
     </div>
@@ -1982,7 +2184,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L92">line 92</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L90">line 90</a>
         </div>
         
     </div>
@@ -2130,7 +2332,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L67">line 67</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L65">line 65</a>
         </div>
         
     </div>
@@ -2313,7 +2515,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L77">line 77</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L75">line 75</a>
         </div>
         
     </div>
@@ -2496,7 +2698,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L57">line 57</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L55">line 55</a>
         </div>
         
     </div>
@@ -2676,7 +2878,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L103">line 103</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L101">line 101</a>
         </div>
         
     </div>
@@ -2824,7 +3026,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L47">line 47</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js">message.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js#L45">line 45</a>
         </div>
         
     </div>

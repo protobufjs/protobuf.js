@@ -125,8 +125,6 @@
             
                 <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
             
-                <li data-name="util.isIE8"><a href="util.html#.isIE8">isIE8</a></li>
-            
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
@@ -138,6 +136,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="util.arrayNe"><a href="util.html#.arrayNe">arrayNe</a></li>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
             
@@ -161,8 +161,6 @@
             
                 <li data-name="util.longNe"><a href="util.html#.longNe">longNe</a></li>
             
-                <li data-name="util.longNeq"><a href="util.html#.longNeq">longNeq</a></li>
-            
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
             
                 <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
@@ -170,10 +168,6 @@
                 <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
             
                 <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
-            
-                <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
-            
-                <li data-name="util.props"><a href="util.html#.props">props</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
             
@@ -209,6 +203,8 @@
                 <li data-name="util.base64.encode"><a href="util.base64.html#.encode">encode</a></li>
             
                 <li data-name="util.base64.length"><a href="util.base64.html#.length">length</a></li>
+            
+                <li data-name="util.base64.test"><a href="util.base64.html#.test">test</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -484,8 +480,6 @@
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
             
-                <li data-name="Enum#getValuesById"><a href="Enum.html#getValuesById">getValuesById</a></li>
-            
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
                 <li data-name="Enum#onRemove"><a href="Enum.html#onRemove">onRemove</a></li>
@@ -576,8 +570,6 @@
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
-            
-                <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
@@ -672,8 +664,6 @@
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
-                <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
-            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -714,6 +704,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="Message.convert"><a href="Message.html#.convert">convert</a></li>
             
                 <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
             
@@ -913,8 +905,6 @@
                 <li data-name="OneOf#resolved"><a href="OneOf.html#resolved">resolved</a></li>
             
                 <li data-name="OneOf#root"><a href="OneOf.html#root">root</a></li>
-            
-                <li data-name="OneOf#ucName"><a href="OneOf.html#ucName">ucName</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1344,6 +1334,8 @@
             
                 <li data-name="Type#addJSON"><a href="Type.html#addJSON">addJSON</a></li>
             
+                <li data-name="Type#convert"><a href="Type.html#convert">convert</a></li>
+            
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
@@ -1439,6 +1431,8 @@
             <span class="subtitle">Members</span>
             
                 <li data-name="util.LongBits.zero"><a href="util.LongBits.html#.zero">zero</a></li>
+            
+                <li data-name="util.LongBits.zeroHash"><a href="util.LongBits.html#.zeroHash">zeroHash</a></li>
             
                 <li data-name="util.LongBits#hi"><a href="util.LongBits.html#hi">hi</a></li>
             
@@ -1583,7 +1577,7 @@
 
     <section>
         <article class="readme"><h1 id="protobuf-js">protobuf.js</h1>
-<p><a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></p>
+<p><a target="_blank" href="https://travis-ci.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/travis/dcodeIO/protobuf.js.svg" alt="travis"></a> <a target="_blank" href="https://david-dm.org/dcodeIO/protobuf.js"><img src="https://img.shields.io/david/dcodeIO/protobuf.js.svg" alt="david"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/dm/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://npmjs.org/package/protobufjs"><img src="https://img.shields.io/npm/v/protobufjs.svg" alt="npm"></a> <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dcode%40dcode.io&amp;item_name=%3C3%20protobuf.js"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="donate"></a></p>
 <p><strong>Protocol Buffers</strong> are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google (<a target="_blank" href="https://developers.google.com/protocol-buffers/">see</a>).</p>
 <p><strong>protobuf.js</strong> is a pure JavaScript implementation for node and the browser. It efficiently encodes plain objects and custom classes and works out of the box with .proto files.</p>
 <p><strong>Recommended read:</strong> <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/wiki/Changes-in-protobuf.js-6.0">Changes in protobuf.js 6.0</a></p>
@@ -1725,10 +1719,10 @@ greeter.sayHello({ name: 'you' }, function(err, response) {
     callback(null, responseData);
 }</code></pre><p>There is also an <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/examples/streaming-rpc.js">example for streaming RPC</a>.</p>
 <h3 id="usage-with-typescript">Usage with TypeScript</h3>
-<pre class="prettyprint source lang-ts"><code>/// &lt;reference path=&quot;node_modules/protobufjs/types/protobuf.js.d.ts&quot; />
-
-import * as protobuf from &quot;protobufjs&quot;;
+<pre class="prettyprint source lang-ts"><code>import * as protobuf from &quot;protobufjs&quot;;
+import * as Long from &quot;long&quot;; // optional
 ...</code></pre><p>See also: <a target="_blank" href="https://github.com/dcodeIO/protobuf.js#generating-typescript-definitions-from-static-modules">Generating your own TypeScript definitions</a></p>
+<p>Additional configuration might be necessary when not utilizing node, i.e. reference <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/index.d.ts">protobuf.js.d.ts</a> and <a target="_blank" href="https://github.com/DefinitelyTyped/DefinitelyTyped/blob/types-2.0/long/index.d.ts">long.js.d.ts</a>.</p>
 <h2 id="module-structure">Module Structure</h2>
 <p>The library exports a flat <code>protobuf</code> namespace including but not restricted to the following members, ordered by category:</p>
 <h3 id="parser">Parser</h3>
@@ -1780,12 +1774,10 @@ import * as protobuf from &quot;protobufjs&quot;;
 <p>For less common members, see the API documentation.</p>
 <h2 id="documentation">Documentation</h2>
 <ul>
-<li><p><a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">Google's Developer Guide</a></p>
-</li>
-<li><p><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a> and <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md">CHANGELOG</a></p>
-</li>
-<li><p><a target="_blank" href="http://stackoverflow.com/questions/tagged/protobuf.js">Questions and answers on StackOverflow</a></p>
-</li>
+<li><a target="_blank" href="https://developers.google.com/protocol-buffers/docs/overview">Google's Developer Guide</a></li>
+<li><a target="_blank" href="http://dcode.io/protobuf.js/">protobuf.js API Documentation</a> and <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/CHANGELOG.md">CHANGELOG</a></li>
+<li><a target="_blank" href="https://github.com/dcodeIO/protobuf.js/wiki">Frequently asked questions</a> on our wiki</li>
+<li><a target="_blank" href="http://stackoverflow.com/questions/tagged/protobuf.js">More questions and answers</a> on StackOverflow</li>
 </ul>
 <h2 id="command-line">Command line</h2>
 <p>The <code>pbjs</code> command line utility can be used to bundle and translate between .proto and .json files.</p>
@@ -1820,10 +1812,14 @@ import * as protobuf from &quot;protobufjs&quot;;
 
   Static targets only:
 
+  --no-create     Does not generate create functions used for runtime compatibility.
   --no-encode     Does not generate encode functions.
   --no-decode     Does not generate decode functions.
   --no-verify     Does not generate verify functions.
+  --no-convert    Does not generate convert functions like asJSON and from.
   --no-delimited  Does not generate delimited encode/decode functions.
+  --no-beautify   Does not beautify generated code.
+  --no-comments   Does not output any JSDoc comments.
 
 usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production environments it is recommended to bundle all your .proto files to a single .json file, which reduces the number of network requests and parser invocations required:</p>
 <pre class="prettyprint source"><code>$> pbjs -t json file1.proto file2.proto > bundle.json</code></pre><p>Now, either include this file in your final bundle:</p>
@@ -1837,6 +1833,12 @@ usage: pbjs [options] file1.proto file2.json ...</code></pre><p>For production e
   -n, --name      Wraps everything in a module of the specified name.
 
   -o, --out       Saves to a file instead of writing to stdout.
+
+  -m, --main      Whether building the main library without any imports.
+
+  -g, --global    Name of the global object in browser environments, if any.
+
+  --no-comments   Does not output any JSDoc comments.
 
 usage: pbts [options] file1.js file2.js ...</code></pre><h3 id="using-pbjs-and-pbts-programmatically">Using pbjs and pbts programmatically</h3>
 <p>Both utilities can be used programmatically by providing command line arguments and a callback to their respective <code>main</code> functions:</p>
@@ -1862,7 +1864,7 @@ pbjs.main([ &quot;--target&quot;, &quot;json-module&quot;, &quot;path/to/myproto
 $> cd protobuf.js
 $> npm install --dev</code></pre><p>Building the development and production versions with their respective source maps to <code>dist/</code>:</p>
 <pre class="prettyprint source"><code>$> npm run build</code></pre><p>Building the documentation to <code>docs/</code>:</p>
-<pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>types/</code>:</p>
+<pre class="prettyprint source"><code>$> npm run docs</code></pre><p>Building the TypeScript definition to <code>index.d.ts</code>:</p>
 <pre class="prettyprint source"><code>$> npm run types</code></pre><h3 id="browserify-integration">Browserify integration</h3>
 <p>By default, protobuf.js integrates into your browserify build-process without requiring any optional modules. Hence:</p>
 <ul>
@@ -1920,7 +1922,8 @@ Type.verify x 5,857,856 ops/sec ±0.82% (91 runs sampled)</code></pre><p>Note th
 <ul>
 <li>Because the internals of this package do not rely on <code>google/protobuf/descriptor.proto</code>, options are parsed and presented literally.</li>
 <li>If typed arrays are not supported by the environment, plain arrays will be used instead.</li>
-<li>Support for pre-ES5 environments like IE8 can be achieved by <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js">using a polyfill</a> and, instead of using property getters and setters on reflection objects, calling the respective functions prefixed with <code>get</code>, <code>set</code> or <code>is</code> directly (i.e. calling <code>Type#getFieldsById()</code> instead of accessing <code>Type#fieldsById</code>). Note that this also applies to virtual oneof properties (use <code>getKind</code>, <code>setKind</code> for example if the oneof is named <code>kind</code>).</li>
+<li>Support for pre-ES5 environments (except IE8) can be achieved by <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js">using a polyfill</a>.</li>
+<li>Support for <a target="_blank" href="https://w3c.github.io/webappsec-csp/">Content Security Policy</a>-restricted environments (like Chrome extensions without <a target="_blank" href="https://developer.chrome.com/extensions/contentSecurityPolicy#relaxing-eval">unsafe-eval</a>) can be achieved by generating and using static code instead.</li>
 <li>If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install <a target="_blank" href="https://github.com/dcodeIO/long.js">long.js</a> alongside this library. All 64 bit numbers will then be returned as a <code>Long</code> instance instead of a possibly unsafe JavaScript number (<a target="_blank" href="https://github.com/dcodeIO/long.js">see</a>).</li>
 </ul>
 <p><strong>License:</strong> <a target="_blank" href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</a></p></article>

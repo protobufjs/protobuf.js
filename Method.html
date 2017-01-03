@@ -125,8 +125,6 @@
             
                 <li data-name="util.fs"><a href="util.html#.fs">fs</a></li>
             
-                <li data-name="util.isIE8"><a href="util.html#.isIE8">isIE8</a></li>
-            
                 <li data-name="util.isNode"><a href="util.html#.isNode">isNode</a></li>
             
                 <li data-name="util.Long"><a href="util.html#.Long">Long</a></li>
@@ -138,6 +136,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="util.arrayNe"><a href="util.html#.arrayNe">arrayNe</a></li>
             
                 <li data-name="util.asPromise"><a href="util.html#.asPromise">asPromise</a></li>
             
@@ -161,8 +161,6 @@
             
                 <li data-name="util.longNe"><a href="util.html#.longNe">longNe</a></li>
             
-                <li data-name="util.longNeq"><a href="util.html#.longNeq">longNeq</a></li>
-            
                 <li data-name="util.longToHash"><a href="util.html#.longToHash">longToHash</a></li>
             
                 <li data-name="util.merge"><a href="util.html#.merge">merge</a></li>
@@ -170,10 +168,6 @@
                 <li data-name="util.newBuffer"><a href="util.html#.newBuffer">newBuffer</a></li>
             
                 <li data-name="util.pool"><a href="util.html#.pool">pool</a></li>
-            
-                <li data-name="util.prop"><a href="util.html#.prop">prop</a></li>
-            
-                <li data-name="util.props"><a href="util.html#.props">props</a></li>
             
                 <li data-name="util.safeProp"><a href="util.html#.safeProp">safeProp</a></li>
             
@@ -209,6 +203,8 @@
                 <li data-name="util.base64.encode"><a href="util.base64.html#.encode">encode</a></li>
             
                 <li data-name="util.base64.length"><a href="util.base64.html#.length">length</a></li>
+            
+                <li data-name="util.base64.test"><a href="util.base64.html#.test">test</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -484,8 +480,6 @@
             
                 <li data-name="Enum#getOption"><a href="Enum.html#getOption">getOption</a></li>
             
-                <li data-name="Enum#getValuesById"><a href="Enum.html#getValuesById">getValuesById</a></li>
-            
                 <li data-name="Enum#onAdd"><a href="Enum.html#onAdd">onAdd</a></li>
             
                 <li data-name="Enum#onRemove"><a href="Enum.html#onRemove">onRemove</a></li>
@@ -576,8 +570,6 @@
                 <li data-name="Field.testJSON"><a href="Field.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Field#getOption"><a href="Field.html#getOption">getOption</a></li>
-            
-                <li data-name="Field#isPacked"><a href="Field.html#isPacked">isPacked</a></li>
             
                 <li data-name="Field#onAdd"><a href="Field.html#onAdd">onAdd</a></li>
             
@@ -672,8 +664,6 @@
             
                 <li data-name="MapField#getOption"><a href="MapField.html#getOption">getOption</a></li>
             
-                <li data-name="MapField#isPacked"><a href="MapField.html#isPacked">isPacked</a></li>
-            
                 <li data-name="MapField#onAdd"><a href="MapField.html#onAdd">onAdd</a></li>
             
                 <li data-name="MapField#onRemove"><a href="MapField.html#onRemove">onRemove</a></li>
@@ -714,6 +704,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="Message.convert"><a href="Message.html#.convert">convert</a></li>
             
                 <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
             
@@ -913,8 +905,6 @@
                 <li data-name="OneOf#resolved"><a href="OneOf.html#resolved">resolved</a></li>
             
                 <li data-name="OneOf#root"><a href="OneOf.html#root">root</a></li>
-            
-                <li data-name="OneOf#ucName"><a href="OneOf.html#ucName">ucName</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1344,6 +1334,8 @@
             
                 <li data-name="Type#addJSON"><a href="Type.html#addJSON">addJSON</a></li>
             
+                <li data-name="Type#convert"><a href="Type.html#convert">convert</a></li>
+            
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
@@ -1439,6 +1431,8 @@
             <span class="subtitle">Members</span>
             
                 <li data-name="util.LongBits.zero"><a href="util.LongBits.html#.zero">zero</a></li>
+            
+                <li data-name="util.LongBits.zeroHash"><a href="util.LongBits.html#.zeroHash">zeroHash</a></li>
             
                 <li data-name="util.LongBits#hi"><a href="util.LongBits.html#hi">hi</a></li>
             
@@ -1585,7 +1579,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js#L28">line 28</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js">method.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js#L26">line 26</a>
         </div>
         
     </div>
@@ -1751,7 +1745,7 @@
 <span class="param-type">boolean</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">Object.&lt;string, *></span>
 
 
             
@@ -1784,7 +1778,7 @@
 <span class="param-type">boolean</span>
 |
 
-<span class="param-type">Object</span>
+<span class="param-type">Object.&lt;string, *></span>
 
 
             
@@ -1814,7 +1808,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">Object.&lt;string, *></span>
 
 
             
@@ -2573,7 +2567,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">Object.&lt;string, *></span>
 
 
             
@@ -2746,7 +2740,7 @@
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">*</span>
 
 
             
@@ -2845,7 +2839,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L155">line 155</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L152">line 152</a>
         </div>
         
     </div>
@@ -2992,7 +2986,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L108">line 108</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L106">line 106</a>
         </div>
         
     </div>
@@ -3139,7 +3133,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L125">line 125</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L123">line 123</a>
         </div>
         
     </div>
@@ -3286,7 +3280,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L139">line 139</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L137">line 137</a>
         </div>
         
     </div>
@@ -3388,7 +3382,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L168">line 168</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L165">line 165</a>
         </div>
         
     </div>
@@ -3598,7 +3592,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L180">line 180</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L177">line 177</a>
         </div>
         
     </div>
@@ -3775,12 +3769,12 @@
             
                 <span class="inherited"><a href="ReflectionObject.html#toJSON">inherited</a></span>
             
-            toJSON<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object }</span>
+            toJSON<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L99">line 99</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L97">line 97</a>
         </div>
         
     </div>
@@ -3854,7 +3848,7 @@
             
             <td class="type">
             
-                        Object
+                        Object.&lt;string, *>
                         
                     
             </td>
@@ -3882,7 +3876,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L192">line 192</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js">object.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/object.js#L189">line 189</a>
         </div>
         
     </div>
