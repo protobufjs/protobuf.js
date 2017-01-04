@@ -1,3 +1,26 @@
+# [6.4.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.1)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/9035d4872e32d6402c8e4d8c915d4f24d5192ea9) Added more default value checks to converter, fixes [#616](https://github.com/dcodeIO/protobuf.js/issues/616)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/62eef58aa3b002115ebded0fa58acc770cd4e4f4) Respect long defaults in converters<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e3170a160079a3a7a99997a2661cdf654cb69e24) Convert inner messages and undefined/null values more thoroughly, fixes [#615](https://github.com/dcodeIO/protobuf.js/issues/615)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/b52089efcb9827537012bebe83d1a15738e214f4) Always use first defined enum value as field default, fixes [#613](https://github.com/dcodeIO/protobuf.js/issues/613)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/64f95f9fa1bbe42717d261aeec5c16d1a7aedcfb) Install correct 'tmp' dependency when running pbts without dev dependencies installed, fixes [#612](https://github.com/dcodeIO/protobuf.js/issues/612)<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/cba46c389ed56737184e5bc2bcce07243d52e5ce) Generate named constructors for runtime messages, see [#588](https://github.com/dcodeIO/protobuf.js/issues/588)<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ee20b81f9451c56dc106177bbf9758840b99d0f8) pbjs/pbts no longer generate any volatile headers, see [#614](https://github.com/dcodeIO/protobuf.js/issues/614)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/ec9d517d0b87ebe489f02097c2fc8005fae38904) Attempted to make broken shields less annoying<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/5cd4c2f2a94bc3c0f2c580040bce28dd42eaccec) Updated README<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/0643f93f5c0d96ed0ece5b47f54993ac3a827f1b) Some cleanup and added a logo<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/169638382de9efe35a1079c5f2045c33b858059a) use $protobuf.Long<br />
+
 # [6.4.0](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.0)
 
 ## Breaking

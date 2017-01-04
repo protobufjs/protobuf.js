@@ -2350,6 +2350,15 @@ export namespace util {
     function arrayNe(a: any[], b: any[]): boolean;
 
     /**
+     * Merges the properties of the source object into the destination object.
+     * @param {Object.<string,*>} dst Destination object
+     * @param {Object.<string,*>} src Source object
+     * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
+     * @returns {Object.<string,*>} Destination object
+     */
+    function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
+
+    /**
      * A minimal UTF8 implementation for number arrays.
      * @memberof util
      * @namespace
@@ -2394,15 +2403,6 @@ export namespace util {
      * @returns {Array.<*>} Converted array
      */
     function toArray(object: { [k: string]: any }): any[];
-
-    /**
-     * Merges the properties of the source object into the destination object.
-     * @param {Object.<string,*>} dst Destination object
-     * @param {Object.<string,*>} src Source object
-     * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
-     * @returns {Object.<string,*>} Destination object
-     */
-    function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
 
     /**
      * Returns a safe property accessor for the specified properly name.

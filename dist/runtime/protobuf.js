@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.1 (c) 2016, Daniel Wirtz
- * Compiled Tue, 03 Jan 2017 23:45:07 UTC
+ * Compiled Wed, 04 Jan 2017 12:36:42 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -373,30 +373,22 @@ var util = require(10);
  */
 converters.json = {
     create: function(value, typeOrCtor, options) {
-        if (!value)
+        if (!value) // inner messages
             return null;
         return options.fieldsOnly
             ? {}
             : util.merge({}, value);
     },
     enums: function(value, defaultValue, values, options) {
-        if (!options.defaults) {
-            if (value === undefined || value === defaultValue)
-                return undefined;
-        } else if (value === undefined)
+        if (value === undefined)
             value = defaultValue;
         return options.enums === String && typeof value === "number"
             ? values[value]
             : value;
     },
     longs: function(value, defaultLow, defaultHigh, unsigned, options) {
-        if (!value) {
-            if (options.defaults)
-                value = { low: defaultLow, high: defaultHigh };
-            else
-                return undefined;
-        } else if (!util.longNe(value, defaultLow, defaultHigh) && !options.defaults)
-            return undefined;
+        if (value === undefined || value === null)
+            value = { low: defaultLow, high: defaultHigh };
         if (options.longs === Number)
             return typeof value === "number"
                 ? value
@@ -412,10 +404,7 @@ converters.json = {
     },
     bytes: function(value, defaultValue, options) {
         if (!value) {
-            if (options.defaults)
-                value = defaultValue;
-            else
-                return undefined;
+            value = defaultValue;
         } else if (!value.length && !options.defaults)
             return undefined;
         return options.bytes === String
@@ -451,7 +440,7 @@ converters.message = {
     enums: function(value, defaultValue, values) {
         if (typeof value === "string")
             return values[value];
-        return value | 0;
+        return value;
     },
     longs: function(value, defaultLow, defaultHigh, unsigned) {
         if (typeof value === "string")
@@ -1390,6 +1379,23 @@ util.arrayNe = function arrayNe(a, b) {
             if (a[i] !== b[i])
                 return true;
     return false;
+};
+
+/**
+ * Merges the properties of the source object into the destination object.
+ * @param {Object.<string,*>} dst Destination object
+ * @param {Object.<string,*>} src Source object
+ * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
+ * @returns {Object.<string,*>} Destination object
+ */
+util.merge = function merge(dst, src, ifNotSet) {
+    if (src) {
+        var keys = Object.keys(src);
+        for (var i = 0; i < keys.length; ++i)
+            if (dst[keys[i]] === undefined || !ifNotSet)
+                dst[keys[i]] = src[keys[i]];
+    }
+    return dst;
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
