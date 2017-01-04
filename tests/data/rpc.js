@@ -226,7 +226,7 @@ $root.MyRequest = (function() {
         if (!options) {
             options = {};
         }
-        var dst = impl.create(src, this, options) || null;
+        var dst = impl.create(src, this, options);
         if (dst) {
             if (dst.path === undefined && options.defaults) {
                 dst.path = "";
@@ -382,7 +382,7 @@ $root.MyResponse = (function() {
         if (!options) {
             options = {};
         }
-        var dst = impl.create(src, this, options) || null;
+        var dst = impl.create(src, this, options);
         if (dst) {
             if (dst.status === undefined && options.defaults) {
                 dst.status = 0;

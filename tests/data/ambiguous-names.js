@@ -134,7 +134,7 @@ $root.A = (function() {
         if (!options) {
             options = {};
         }
-        var dst = impl.create(src, this, options) || null;
+        var dst = impl.create(src, this, options);
         if (dst) {
             if (dst.whatever === undefined && options.defaults) {
                 dst.whatever = "";
@@ -294,9 +294,9 @@ $root.B = (function() {
         if (!options) {
             options = {};
         }
-        var dst = impl.create(src, this, options) || null;
+        var dst = impl.create(src, this, options);
         if (dst) {
-            if (!(src.A === undefined || src.A === null) || options.defaults) {
+            if (src.A !== undefined && src.A !== null || options.defaults) {
                 dst.A = types[0].convert(src.A, impl, options);
             }
         }

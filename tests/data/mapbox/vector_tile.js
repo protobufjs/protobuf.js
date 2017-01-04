@@ -157,7 +157,7 @@ $root.vector_tile = (function() {
             if (!options) {
                 options = {};
             }
-            var dst = impl.create(src, this, options) || null;
+            var dst = impl.create(src, this, options);
             if (dst) {
                 if (src.layers && src.layers.length) {
                     dst.layers = [];
@@ -445,7 +445,7 @@ $root.vector_tile = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options) || null;
+                var dst = impl.create(src, this, options);
                 if (dst) {
                     if (dst.stringValue === undefined && options.defaults) {
                         dst.stringValue = "";
@@ -456,13 +456,13 @@ $root.vector_tile = (function() {
                     if (dst.doubleValue === undefined && options.defaults) {
                         dst.doubleValue = 0;
                     }
-                    if (!(src.intValue === undefined || src.intValue === null) || options.defaults) {
+                    if (src.intValue !== undefined && src.intValue !== null || options.defaults) {
                         dst.intValue = impl.longs(src.intValue, 0, 0, false, options);
                     }
-                    if (!(src.uintValue === undefined || src.uintValue === null) || options.defaults) {
+                    if (src.uintValue !== undefined && src.uintValue !== null || options.defaults) {
                         dst.uintValue = impl.longs(src.uintValue, 0, 0, true, options);
                     }
-                    if (!(src.sintValue === undefined || src.sintValue === null) || options.defaults) {
+                    if (src.sintValue !== undefined && src.sintValue !== null || options.defaults) {
                         dst.sintValue = impl.longs(src.sintValue, 0, 0, false, options);
                     }
                     if (dst.boolValue === undefined && options.defaults) {
@@ -721,9 +721,9 @@ $root.vector_tile = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options) || null;
+                var dst = impl.create(src, this, options);
                 if (dst) {
-                    if (!(src.id === undefined || src.id === null) || options.defaults) {
+                    if (src.id !== undefined && src.id !== null || options.defaults) {
                         dst.id = impl.longs(src.id, 0, 0, true, options);
                     }
                     if (src.tags && src.tags.length) {
@@ -736,7 +736,7 @@ $root.vector_tile = (function() {
                             dst.tags = [];
                         }
                     }
-                    if (!(src.type === undefined || src.type === null) || options.defaults) {
+                    if (src.type !== undefined || options.defaults) {
                         dst.type = impl.enums(src.type, undefined, types[2], options);
                     }
                     if (src.geometry && src.geometry.length) {
@@ -1017,7 +1017,7 @@ $root.vector_tile = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options) || null;
+                var dst = impl.create(src, this, options);
                 if (dst) {
                     if (dst.version === undefined && options.defaults) {
                         dst.version = 1;
