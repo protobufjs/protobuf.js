@@ -1,6 +1,6 @@
 # <p align="center"><img alt="protobuf.js" src="./pbjs.png" /></p>
 
-[![travis][travis-image]][travis-url] [![david][david-image]][david-url] [![npm][npm-dl-image]][npm-url] [![npm][npm-image]][npm-url] [![donate][paypal-image]][paypal-url]
+[![][travis-image]][travis-url] [![][david-image]][david-url] [![][npm-dl-image]][npm-url] [![][npm-image]][npm-url] [![][paypal-image]][paypal-url]
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
