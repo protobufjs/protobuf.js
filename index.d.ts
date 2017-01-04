@@ -1,6 +1,3 @@
-// $> pbts --main --global protobuf --out index.d.ts src
-// Generated Tue, 03 Jan 2017 23:45:16 UTC
-
 export as namespace protobuf;
 
 /**

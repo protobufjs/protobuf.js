@@ -1,10 +1,10 @@
-# <p align="center"><img src="./pbjs.png" /></p>
+# <p align="center"><img alt="protobuf.js" src="./pbjs.png" /></p>
 
 [![travis][travis-image]][travis-url] [![david][david-image]][david-url] [![npm][npm-dl-image]][npm-url] [![npm][npm-image]][npm-url] [![donate][paypal-image]][paypal-url]
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://developers.google.com/protocol-buffers/)).
 
-**protobuf.js** is a pure JavaScript implementation with TypeScript support for node and the browser. It efficiently encodes all teh codez and works out of the box with .proto files.
+**protobuf.js** is a pure JavaScript implementation with TypeScript support for node and the browser. It's super easy to use and works out of the box on .proto files!
 
 [travis-image]: https://img.shields.io/travis/dcodeIO/protobuf.js.svg
 [travis-url]: https://travis-ci.org/dcodeIO/protobuf.js

@@ -29,6 +29,7 @@ var root = protobuf.loadSync(require.resolve("./bench.proto")),
 var buf = Test.encode(data).finish();
 
 // warm up
+process.stdout.write("warming up ...\n");
 var i;
 for (i = 0; i < 500000; ++i)
     Test.encode(data).finish();

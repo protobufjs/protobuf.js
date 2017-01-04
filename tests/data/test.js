@@ -134,7 +134,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 return dst;
             };})();
 
@@ -309,9 +309,11 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
-                    dst.outerEnum = impl.enums(src.outerEnum, 1, types[0], options);
+                    if (!(src.outerEnum === undefined || src.outerEnum === null) || options.defaults) {
+                        dst.outerEnum = impl.enums(src.outerEnum, 1, types[0], options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -505,7 +507,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.aString === undefined && options.defaults) {
                         dst.aString = "";
@@ -698,7 +700,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.aString === undefined && options.defaults) {
                         dst.aString = "";
@@ -905,7 +907,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.normal === undefined && options.defaults) {
                         dst.normal = "";
@@ -1163,7 +1165,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.aString === undefined && options.defaults) {
                         dst.aString = "";
@@ -1171,7 +1173,9 @@ $root.jspb = (function() {
                     if (dst.aBool === undefined && options.defaults) {
                         dst.aBool = false;
                     }
-                    dst.aNestedMessage = types[2].convert(src.aNestedMessage, impl, options);
+                    if (!(src.aNestedMessage === undefined || src.aNestedMessage === null) || options.defaults) {
+                        dst.aNestedMessage = types[2].convert(src.aNestedMessage, impl, options);
+                    }
                     if (src.aRepeatedMessage && src.aRepeatedMessage.length) {
                         dst.aRepeatedMessage = [];
                         for (var i = 0; i < src.aRepeatedMessage.length; ++i) {
@@ -1340,7 +1344,7 @@ $root.jspb = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (dst.anInt === undefined && options.defaults) {
                             dst.anInt = 0;
@@ -1676,7 +1680,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.str1 === undefined && options.defaults) {
                         dst.str1 = "";
@@ -1687,8 +1691,12 @@ $root.jspb = (function() {
                     if (dst.str3 === undefined && options.defaults) {
                         dst.str3 = "";
                     }
-                    dst[".jspb.test.IsExtension.extField"] = types[3].convert(src[".jspb.test.IsExtension.extField"], impl, options);
-                    dst[".jspb.test.IndirectExtension.simple"] = types[4].convert(src[".jspb.test.IndirectExtension.simple"], impl, options);
+                    if (!(src[".jspb.test.IsExtension.extField"] === undefined || src[".jspb.test.IsExtension.extField"] === null) || options.defaults) {
+                        dst[".jspb.test.IsExtension.extField"] = types[3].convert(src[".jspb.test.IsExtension.extField"], impl, options);
+                    }
+                    if (!(src[".jspb.test.IndirectExtension.simple"] === undefined || src[".jspb.test.IndirectExtension.simple"] === null) || options.defaults) {
+                        dst[".jspb.test.IndirectExtension.simple"] = types[4].convert(src[".jspb.test.IndirectExtension.simple"], impl, options);
+                    }
                     if (dst[".jspb.test.IndirectExtension.str"] === undefined && options.defaults) {
                         dst[".jspb.test.IndirectExtension.str"] = "";
                     }
@@ -1712,7 +1720,9 @@ $root.jspb = (function() {
                             dst[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                         }
                     }
-                    dst[".jspb.test.simple1"] = types[8].convert(src[".jspb.test.simple1"], impl, options);
+                    if (!(src[".jspb.test.simple1"] === undefined || src[".jspb.test.simple1"] === null) || options.defaults) {
+                        dst[".jspb.test.simple1"] = types[8].convert(src[".jspb.test.simple1"], impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -1953,7 +1963,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.aString === undefined && options.defaults) {
                         dst.aString = "";
@@ -1961,7 +1971,9 @@ $root.jspb = (function() {
                     if (dst.anOutOfOrderBool === undefined && options.defaults) {
                         dst.anOutOfOrderBool = false;
                     }
-                    dst.aNestedMessage = types[2].convert(src.aNestedMessage, impl, options);
+                    if (!(src.aNestedMessage === undefined || src.aNestedMessage === null) || options.defaults) {
+                        dst.aNestedMessage = types[2].convert(src.aNestedMessage, impl, options);
+                    }
                     if (src.aRepeatedMessage && src.aRepeatedMessage.length) {
                         dst.aRepeatedMessage = [];
                         for (var i = 0; i < src.aRepeatedMessage.length; ++i) {
@@ -2126,7 +2138,7 @@ $root.jspb = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (dst.anInt === undefined && options.defaults) {
                             dst.anInt = 0;
@@ -2267,7 +2279,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 return dst;
             };})();
 
@@ -2415,7 +2427,7 @@ $root.jspb = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (dst.innerComplexField === undefined && options.defaults) {
                             dst.innerComplexField = 0;
@@ -2574,7 +2586,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.ext1 === undefined && options.defaults) {
                         dst.ext1 = "";
@@ -2712,7 +2724,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 return dst;
             };})();
 
@@ -2961,7 +2973,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.stringField === undefined && options.defaults) {
                         dst.stringField = "default<>'\"abc";
@@ -2969,12 +2981,18 @@ $root.jspb = (function() {
                     if (dst.boolField === undefined && options.defaults) {
                         dst.boolField = true;
                     }
-                    dst.intField = impl.longs(src.intField, 0, 0, false, options);
-                    dst.enumField = impl.enums(src.enumField, undefined, types[3], options);
+                    if (!(src.intField === undefined || src.intField === null) || options.defaults) {
+                        dst.intField = impl.longs(src.intField, 0, 0, false, options);
+                    }
+                    if (!(src.enumField === undefined || src.enumField === null) || options.defaults) {
+                        dst.enumField = impl.enums(src.enumField, undefined, types[3], options);
+                    }
                     if (dst.emptyField === undefined && options.defaults) {
                         dst.emptyField = "";
                     }
-                    dst.bytesField = impl.bytes(src.bytesField, [ 109, 111, 111 ], options);
+                    if (!(src.bytesField === undefined || src.bytesField === null) || options.defaults) {
+                        dst.bytesField = impl.bytes(src.bytesField, [ 109, 111, 111 ], options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -3280,7 +3298,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.optionalFloatField === undefined && options.defaults) {
                         dst.optionalFloatField = 0;
@@ -3578,12 +3596,14 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.str === undefined && options.defaults) {
                         dst.str = "";
                     }
-                    dst.simple1 = types[1].convert(src.simple1, impl, options);
+                    if (!(src.simple1 === undefined || src.simple1 === null) || options.defaults) {
+                        dst.simple1 = types[1].convert(src.simple1, impl, options);
+                    }
                     if (src.simple2 && src.simple2.length) {
                         dst.simple2 = [];
                         for (var i = 0; i < src.simple2.length; ++i) {
@@ -3594,11 +3614,15 @@ $root.jspb = (function() {
                             dst.simple2 = [];
                         }
                     }
-                    dst.bytesField = impl.bytes(src.bytesField, [], options);
+                    if (!(src.bytesField === undefined || src.bytesField === null) || options.defaults) {
+                        dst.bytesField = impl.bytes(src.bytesField, [], options);
+                    }
                     if (dst.unused === undefined && options.defaults) {
                         dst.unused = "";
                     }
-                    dst[".jspb.test.CloneExtension.extField"] = types[5].convert(src[".jspb.test.CloneExtension.extField"], impl, options);
+                    if (!(src[".jspb.test.CloneExtension.extField"] === undefined || src[".jspb.test.CloneExtension.extField"] === null) || options.defaults) {
+                        dst[".jspb.test.CloneExtension.extField"] = types[5].convert(src[".jspb.test.CloneExtension.extField"], impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -3750,7 +3774,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.ext === undefined && options.defaults) {
                         dst.ext = "";
@@ -3943,13 +3967,17 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.id === undefined && options.defaults) {
                         dst.id = "";
                     }
-                    dst.requiredSimple = types[1].convert(src.requiredSimple, impl, options);
-                    dst.optionalSimple = types[2].convert(src.optionalSimple, impl, options);
+                    if (!(src.requiredSimple === undefined || src.requiredSimple === null) || options.defaults) {
+                        dst.requiredSimple = types[1].convert(src.requiredSimple, impl, options);
+                    }
+                    if (!(src.optionalSimple === undefined || src.optionalSimple === null) || options.defaults) {
+                        dst.optionalSimple = types[2].convert(src.optionalSimple, impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -4120,7 +4148,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.extension === undefined && options.defaults) {
                         dst.extension = 0;
@@ -4261,7 +4289,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 return dst;
             };})();
 
@@ -4684,7 +4712,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.pone === undefined && options.defaults) {
                         dst.pone = "";
@@ -4692,7 +4720,9 @@ $root.jspb = (function() {
                     if (dst.pthree === undefined && options.defaults) {
                         dst.pthree = "";
                     }
-                    dst.rone = types[2].convert(src.rone, impl, options);
+                    if (!(src.rone === undefined || src.rone === null) || options.defaults) {
+                        dst.rone = types[2].convert(src.rone, impl, options);
+                    }
                     if (dst.rtwo === undefined && options.defaults) {
                         dst.rtwo = "";
                     }
@@ -4890,12 +4920,14 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.value === undefined && options.defaults) {
                         dst.value = 0;
                     }
-                    dst.data = impl.bytes(src.data, [], options);
+                    if (!(src.data === undefined || src.data === null) || options.defaults) {
+                        dst.data = impl.bytes(src.data, [], options);
+                    }
                 }
                 return dst;
             };})();
@@ -5455,7 +5487,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.mapStringString === undefined && options.defaults) {
                         dst.mapStringString = "";
@@ -5463,15 +5495,21 @@ $root.jspb = (function() {
                     if (dst.mapStringInt32 === undefined && options.defaults) {
                         dst.mapStringInt32 = 0;
                     }
-                    dst.mapStringInt64 = impl.longs(src.mapStringInt64, 0, 0, false, options);
+                    if (!(src.mapStringInt64 === undefined || src.mapStringInt64 === null) || options.defaults) {
+                        dst.mapStringInt64 = impl.longs(src.mapStringInt64, 0, 0, false, options);
+                    }
                     if (dst.mapStringBool === undefined && options.defaults) {
                         dst.mapStringBool = false;
                     }
                     if (dst.mapStringDouble === undefined && options.defaults) {
                         dst.mapStringDouble = 0;
                     }
-                    dst.mapStringEnum = impl.enums(src.mapStringEnum, 0, types[5], options);
-                    dst.mapStringMsg = types[6].convert(src.mapStringMsg, impl, options);
+                    if (!(src.mapStringEnum === undefined || src.mapStringEnum === null) || options.defaults) {
+                        dst.mapStringEnum = impl.enums(src.mapStringEnum, 0, types[5], options);
+                    }
+                    if (!(src.mapStringMsg === undefined || src.mapStringMsg === null) || options.defaults) {
+                        dst.mapStringMsg = types[6].convert(src.mapStringMsg, impl, options);
+                    }
                     if (dst.mapInt32String === undefined && options.defaults) {
                         dst.mapInt32String = "";
                     }
@@ -5481,8 +5519,12 @@ $root.jspb = (function() {
                     if (dst.mapBoolString === undefined && options.defaults) {
                         dst.mapBoolString = "";
                     }
-                    dst.testMapFields = types[10].convert(src.testMapFields, impl, options);
-                    dst.mapStringTestmapfields = types[11].convert(src.mapStringTestmapfields, impl, options);
+                    if (!(src.testMapFields === undefined || src.testMapFields === null) || options.defaults) {
+                        dst.testMapFields = types[10].convert(src.testMapFields, impl, options);
+                    }
+                    if (!(src.mapStringTestmapfields === undefined || src.mapStringTestmapfields === null) || options.defaults) {
+                        dst.mapStringTestmapfields = types[11].convert(src.mapStringTestmapfields, impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -5652,7 +5694,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.foo === undefined && options.defaults) {
                         dst.foo = 0;
@@ -5790,7 +5832,7 @@ $root.jspb = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 return dst;
             };})();
 
@@ -5920,7 +5962,7 @@ $root.jspb = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     return dst;
                 };})();
 
@@ -6068,7 +6110,7 @@ $root.jspb = (function() {
                         if (!options) {
                             options = {};
                         }
-                        var dst = impl.create(src, this, options);
+                        var dst = impl.create(src, this, options) || null;
                         if (dst) {
                             if (dst.count === undefined && options.defaults) {
                                 dst.count = 0;
@@ -6268,7 +6310,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (src.file && src.file.length) {
                         dst.file = [];
@@ -6709,7 +6751,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
@@ -6787,8 +6829,12 @@ $root.google = (function() {
                             dst.extension = [];
                         }
                     }
-                    dst.options = types[9].convert(src.options, impl, options);
-                    dst.sourceCodeInfo = types[10].convert(src.sourceCodeInfo, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[9].convert(src.options, impl, options);
+                    }
+                    if (!(src.sourceCodeInfo === undefined || src.sourceCodeInfo === null) || options.defaults) {
+                        dst.sourceCodeInfo = types[10].convert(src.sourceCodeInfo, impl, options);
+                    }
                     if (dst.syntax === undefined && options.defaults) {
                         dst.syntax = "";
                     }
@@ -7196,7 +7242,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
@@ -7261,7 +7307,9 @@ $root.google = (function() {
                             dst.oneofDecl = [];
                         }
                     }
-                    dst.options = types[7].convert(src.options, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[7].convert(src.options, impl, options);
+                    }
                     if (src.reservedRange && src.reservedRange.length) {
                         dst.reservedRange = [];
                         for (var i = 0; i < src.reservedRange.length; ++i) {
@@ -7448,7 +7496,7 @@ $root.google = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (dst.start === undefined && options.defaults) {
                             dst.start = 0;
@@ -7625,7 +7673,7 @@ $root.google = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (dst.start === undefined && options.defaults) {
                             dst.start = 0;
@@ -7980,7 +8028,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
@@ -7988,8 +8036,12 @@ $root.google = (function() {
                     if (dst.number === undefined && options.defaults) {
                         dst.number = 0;
                     }
-                    dst.label = impl.enums(src.label, 1, types[2], options);
-                    dst.type = impl.enums(src.type, 1, types[3].values, options);
+                    if (!(src.label === undefined || src.label === null) || options.defaults) {
+                        dst.label = impl.enums(src.label, 1, types[2], options);
+                    }
+                    if (!(src.type === undefined || src.type === null) || options.defaults) {
+                        dst.type = impl.enums(src.type, 1, types[3].values, options);
+                    }
                     if (dst.typeName === undefined && options.defaults) {
                         dst.typeName = "";
                     }
@@ -8005,7 +8057,9 @@ $root.google = (function() {
                     if (dst.jsonName === undefined && options.defaults) {
                         dst.jsonName = "";
                     }
-                    dst.options = types[9].convert(src.options, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[9].convert(src.options, impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -8245,12 +8299,14 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
                     }
-                    dst.options = types[1].convert(src.options, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[1].convert(src.options, impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -8453,7 +8509,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
@@ -8468,7 +8524,9 @@ $root.google = (function() {
                             dst.value = [];
                         }
                     }
-                    dst.options = types[2].convert(src.options, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[2].convert(src.options, impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -8660,7 +8718,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
@@ -8668,7 +8726,9 @@ $root.google = (function() {
                     if (dst.number === undefined && options.defaults) {
                         dst.number = 0;
                     }
-                    dst.options = types[2].convert(src.options, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[2].convert(src.options, impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -8871,7 +8931,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
@@ -8886,7 +8946,9 @@ $root.google = (function() {
                             dst.method = [];
                         }
                     }
-                    dst.options = types[2].convert(src.options, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[2].convert(src.options, impl, options);
+                    }
                 }
                 return dst;
             };})($types);
@@ -9132,7 +9194,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.name === undefined && options.defaults) {
                         dst.name = "";
@@ -9143,7 +9205,9 @@ $root.google = (function() {
                     if (dst.outputType === undefined && options.defaults) {
                         dst.outputType = "";
                     }
-                    dst.options = types[3].convert(src.options, impl, options);
+                    if (!(src.options === undefined || src.options === null) || options.defaults) {
+                        dst.options = types[3].convert(src.options, impl, options);
+                    }
                     if (dst.clientStreaming === undefined && options.defaults) {
                         dst.clientStreaming = false;
                     }
@@ -9573,7 +9637,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.javaPackage === undefined && options.defaults) {
                         dst.javaPackage = "";
@@ -9590,7 +9654,9 @@ $root.google = (function() {
                     if (dst.javaStringCheckUtf8 === undefined && options.defaults) {
                         dst.javaStringCheckUtf8 = false;
                     }
-                    dst.optimizeFor = impl.enums(src.optimizeFor, undefined, types[5], options);
+                    if (!(src.optimizeFor === undefined || src.optimizeFor === null) || options.defaults) {
+                        dst.optimizeFor = impl.enums(src.optimizeFor, undefined, types[5], options);
+                    }
                     if (dst.goPackage === undefined && options.defaults) {
                         dst.goPackage = "";
                     }
@@ -9880,7 +9946,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.messageSetWireFormat === undefined && options.defaults) {
                         dst.messageSetWireFormat = false;
@@ -10189,13 +10255,17 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
-                    dst.ctype = impl.enums(src.ctype, undefined, types[0], options);
+                    if (!(src.ctype === undefined || src.ctype === null) || options.defaults) {
+                        dst.ctype = impl.enums(src.ctype, undefined, types[0], options);
+                    }
                     if (dst.packed === undefined && options.defaults) {
                         dst.packed = false;
                     }
-                    dst.jstype = impl.enums(src.jstype, undefined, types[2].values, options);
+                    if (!(src.jstype === undefined || src.jstype === null) || options.defaults) {
+                        dst.jstype = impl.enums(src.jstype, undefined, types[2].values, options);
+                    }
                     if (dst.lazy === undefined && options.defaults) {
                         dst.lazy = false;
                     }
@@ -10416,7 +10486,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (src.uninterpretedOption && src.uninterpretedOption.length) {
                         dst.uninterpretedOption = [];
@@ -10648,7 +10718,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.allowAlias === undefined && options.defaults) {
                         dst.allowAlias = false;
@@ -10852,7 +10922,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.deprecated === undefined && options.defaults) {
                         dst.deprecated = false;
@@ -11050,7 +11120,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.deprecated === undefined && options.defaults) {
                         dst.deprecated = false;
@@ -11272,12 +11342,14 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (dst.deprecated === undefined && options.defaults) {
                         dst.deprecated = false;
                     }
-                    dst.idempotencyLevel = impl.enums(src.idempotencyLevel, undefined, types[1], options);
+                    if (!(src.idempotencyLevel === undefined || src.idempotencyLevel === null) || options.defaults) {
+                        dst.idempotencyLevel = impl.enums(src.idempotencyLevel, undefined, types[1], options);
+                    }
                     if (src.uninterpretedOption && src.uninterpretedOption.length) {
                         dst.uninterpretedOption = [];
                         for (var i = 0; i < src.uninterpretedOption.length; ++i) {
@@ -11579,7 +11651,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (src.name && src.name.length) {
                         dst.name = [];
@@ -11594,12 +11666,18 @@ $root.google = (function() {
                     if (dst.identifierValue === undefined && options.defaults) {
                         dst.identifierValue = "";
                     }
-                    dst.positiveIntValue = impl.longs(src.positiveIntValue, 0, 0, true, options);
-                    dst.negativeIntValue = impl.longs(src.negativeIntValue, 0, 0, false, options);
+                    if (!(src.positiveIntValue === undefined || src.positiveIntValue === null) || options.defaults) {
+                        dst.positiveIntValue = impl.longs(src.positiveIntValue, 0, 0, true, options);
+                    }
+                    if (!(src.negativeIntValue === undefined || src.negativeIntValue === null) || options.defaults) {
+                        dst.negativeIntValue = impl.longs(src.negativeIntValue, 0, 0, false, options);
+                    }
                     if (dst.doubleValue === undefined && options.defaults) {
                         dst.doubleValue = 0;
                     }
-                    dst.stringValue = impl.bytes(src.stringValue, [], options);
+                    if (!(src.stringValue === undefined || src.stringValue === null) || options.defaults) {
+                        dst.stringValue = impl.bytes(src.stringValue, [], options);
+                    }
                     if (dst.aggregateValue === undefined && options.defaults) {
                         dst.aggregateValue = "";
                     }
@@ -11761,7 +11839,7 @@ $root.google = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (dst.namePart === undefined && options.defaults) {
                             dst.namePart = "";
@@ -11937,7 +12015,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (src.location && src.location.length) {
                         dst.location = [];
@@ -12217,7 +12295,7 @@ $root.google = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (src.path && src.path.length) {
                             dst.path = [];
@@ -12423,7 +12501,7 @@ $root.google = (function() {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
+                var dst = impl.create(src, this, options) || null;
                 if (dst) {
                     if (src.annotation && src.annotation.length) {
                         dst.annotation = [];
@@ -12656,7 +12734,7 @@ $root.google = (function() {
                     if (!options) {
                         options = {};
                     }
-                    var dst = impl.create(src, this, options);
+                    var dst = impl.create(src, this, options) || null;
                     if (dst) {
                         if (src.path && src.path.length) {
                             dst.path = [];

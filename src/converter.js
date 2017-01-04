@@ -64,9 +64,14 @@ function converter(mtype) {
             ("d%s=[]", prop);
 
             // non-repeated
-            } else if (convert = genConvert(field, i, prop)) gen
-        ("d%s=%s", prop, convert);
-            else gen
+            } else if (convert = genConvert(field, i, prop)) {
+                if (field.long || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
+        ("if(s%s!==undefined&&s%s!==null||o.defaults)", prop, prop);
+                else gen
+        ("if(s%s!==undefined||o.defaults)", prop);
+                gen
+            ("d%s=%s", prop, convert);
+            } else gen
         ("if(d%s===undefined&&o.defaults)", prop)
             ("d%s=%j", prop, field.typeDefault /* == field.defaultValue */);
 

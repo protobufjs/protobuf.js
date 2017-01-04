@@ -503,7 +503,7 @@ $root.Package = (function() {
         if (!options) {
             options = {};
         }
-        var dst = impl.create(src, this, options);
+        var dst = impl.create(src, this, options) || null;
         if (dst) {
             if (dst.name === undefined && options.defaults) {
                 dst.name = "";
@@ -520,7 +520,9 @@ $root.Package = (function() {
             if (dst.license === undefined && options.defaults) {
                 dst.license = "";
             }
-            dst.repository = types[5].convert(src.repository, impl, options);
+            if (!(src.repository === undefined || src.repository === null) || options.defaults) {
+                dst.repository = types[5].convert(src.repository, impl, options);
+            }
             if (dst.bugs === undefined && options.defaults) {
                 dst.bugs = "";
             }
@@ -724,7 +726,7 @@ $root.Package = (function() {
             if (!options) {
                 options = {};
             }
-            var dst = impl.create(src, this, options);
+            var dst = impl.create(src, this, options) || null;
             if (dst) {
                 if (dst.type === undefined && options.defaults) {
                     dst.type = "";

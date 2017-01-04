@@ -148,3 +148,20 @@ util.arrayNe = function arrayNe(a, b) {
                 return true;
     return false;
 };
+
+/**
+ * Merges the properties of the source object into the destination object.
+ * @param {Object.<string,*>} dst Destination object
+ * @param {Object.<string,*>} src Source object
+ * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
+ * @returns {Object.<string,*>} Destination object
+ */
+util.merge = function merge(dst, src, ifNotSet) {
+    if (src) {
+        var keys = Object.keys(src);
+        for (var i = 0; i < keys.length; ++i)
+            if (dst[keys[i]] === undefined || !ifNotSet)
+                dst[keys[i]] = src[keys[i]];
+    }
+    return dst;
+};

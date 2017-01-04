@@ -9,7 +9,7 @@ message A {
     message C {
         message Two {
             extend B.One {
-                Two two = 1000;
+                C.Two two = 1000;
             }
         }
     }
