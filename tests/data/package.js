@@ -520,7 +520,7 @@ $root.Package = (function() {
             if (dst.license === undefined && options.defaults) {
                 dst.license = "";
             }
-            if (src.repository !== undefined && src.repository !== null || options.defaults) {
+            if (options.defaults || src.repository !== undefined && src.repository !== null) {
                 dst.repository = types[5].convert(src.repository, impl, options);
             }
             if (dst.bugs === undefined && options.defaults) {

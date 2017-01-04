@@ -65,10 +65,12 @@ function converter(mtype) {
 
             // non-repeated
             } else if (convert = genConvert(field, i, prop)) {
-                if (field.long || field.resolvedType && !(field.resolvedType instanceof Enum)) gen
-        ("if(s%s!==undefined&&s%s!==null||o.defaults)", prop, prop);
+                if (field.long) gen
+        ("if(o.defaults||s%s!==undefined&&s%s!==null&&util.longNe(s%s,%d,%d))", prop, prop, prop, field.typeDefault.low, field.typeDefault.high);
+                else if (field.resolvedType && !(field.resolvedType instanceof Enum)) gen
+        ("if(o.defaults||s%s!==undefined&&s%s!==null)", prop, prop);
                 else gen
-        ("if(s%s!==undefined||o.defaults)", prop);
+        ("if(o.defaults||s%s!==undefined&&s%s!==%j)", prop, prop, field.typeDefault);
                 gen
             ("d%s=%s", prop, convert);
             } else gen

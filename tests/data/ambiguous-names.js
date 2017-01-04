@@ -296,7 +296,7 @@ $root.B = (function() {
         }
         var dst = impl.create(src, this, options);
         if (dst) {
-            if (src.A !== undefined && src.A !== null || options.defaults) {
+            if (options.defaults || src.A !== undefined && src.A !== null) {
                 dst.A = types[0].convert(src.A, impl, options);
             }
         }

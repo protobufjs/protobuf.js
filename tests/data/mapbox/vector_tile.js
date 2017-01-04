@@ -441,7 +441,7 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} [options] Conversion options
              * @returns {vector_tile.Tile.Value|Object} Converted message
              */
-            Value.convert = (function() { return function convert(src, impl, options) {
+            Value.convert = (function(util) { return function convert(src, impl, options) {
                 if (!options) {
                     options = {};
                 }
@@ -456,13 +456,13 @@ $root.vector_tile = (function() {
                     if (dst.doubleValue === undefined && options.defaults) {
                         dst.doubleValue = 0;
                     }
-                    if (src.intValue !== undefined && src.intValue !== null || options.defaults) {
+                    if (options.defaults || src.intValue !== undefined && src.intValue !== null && util.longNe(src.intValue, 0, 0)) {
                         dst.intValue = impl.longs(src.intValue, 0, 0, false, options);
                     }
-                    if (src.uintValue !== undefined && src.uintValue !== null || options.defaults) {
+                    if (options.defaults || src.uintValue !== undefined && src.uintValue !== null && util.longNe(src.uintValue, 0, 0)) {
                         dst.uintValue = impl.longs(src.uintValue, 0, 0, true, options);
                     }
-                    if (src.sintValue !== undefined && src.sintValue !== null || options.defaults) {
+                    if (options.defaults || src.sintValue !== undefined && src.sintValue !== null && util.longNe(src.sintValue, 0, 0)) {
                         dst.sintValue = impl.longs(src.sintValue, 0, 0, false, options);
                     }
                     if (dst.boolValue === undefined && options.defaults) {
@@ -470,7 +470,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return dst;
-            };})();
+            };})($protobuf.util);
 
             /**
              * Creates a Value message from JSON.
@@ -717,13 +717,13 @@ $root.vector_tile = (function() {
              * @param {Object.<string,*>} [options] Conversion options
              * @returns {vector_tile.Tile.Feature|Object} Converted message
              */
-            Feature.convert = (function(types) { return function convert(src, impl, options) {
+            Feature.convert = (function(util, types) { return function convert(src, impl, options) {
                 if (!options) {
                     options = {};
                 }
                 var dst = impl.create(src, this, options);
                 if (dst) {
-                    if (src.id !== undefined && src.id !== null || options.defaults) {
+                    if (options.defaults || src.id !== undefined && src.id !== null && util.longNe(src.id, 0, 0)) {
                         dst.id = impl.longs(src.id, 0, 0, true, options);
                     }
                     if (src.tags && src.tags.length) {
@@ -736,7 +736,7 @@ $root.vector_tile = (function() {
                             dst.tags = [];
                         }
                     }
-                    if (src.type !== undefined || options.defaults) {
+                    if (options.defaults || src.type !== undefined && src.type !== undefined) {
                         dst.type = impl.enums(src.type, undefined, types[2], options);
                     }
                     if (src.geometry && src.geometry.length) {
@@ -751,7 +751,7 @@ $root.vector_tile = (function() {
                     }
                 }
                 return dst;
-            };})($types);
+            };})($protobuf.util, $types);
 
             /**
              * Creates a Feature message from JSON.

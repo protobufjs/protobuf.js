@@ -27,30 +27,22 @@ var util = require("./util/runtime");
  */
 converters.json = {
     create: function(value, typeOrCtor, options) {
-        if (!value)
+        if (!value) // inner messages
             return null;
         return options.fieldsOnly
             ? {}
             : util.merge({}, value);
     },
     enums: function(value, defaultValue, values, options) {
-        if (!options.defaults) {
-            if (value === undefined || value === defaultValue)
-                return undefined;
-        } else if (value === undefined)
+        if (value === undefined)
             value = defaultValue;
         return options.enums === String && typeof value === "number"
             ? values[value]
             : value;
     },
     longs: function(value, defaultLow, defaultHigh, unsigned, options) {
-        if (!value) {
-            if (options.defaults)
-                value = { low: defaultLow, high: defaultHigh };
-            else
-                return undefined;
-        } else if (!util.longNe(value, defaultLow, defaultHigh) && !options.defaults)
-            return undefined;
+        if (value === undefined || value === null)
+            value = { low: defaultLow, high: defaultHigh };
         if (options.longs === Number)
             return typeof value === "number"
                 ? value
@@ -66,10 +58,7 @@ converters.json = {
     },
     bytes: function(value, defaultValue, options) {
         if (!value) {
-            if (options.defaults)
-                value = defaultValue;
-            else
-                return undefined;
+            value = defaultValue;
         } else if (!value.length && !options.defaults)
             return undefined;
         return options.bytes === String
@@ -105,7 +94,7 @@ converters.message = {
     enums: function(value, defaultValue, values) {
         if (typeof value === "string")
             return values[value];
-        return value | 0;
+        return value;
     },
     longs: function(value, defaultLow, defaultHigh, unsigned) {
         if (typeof value === "string")
