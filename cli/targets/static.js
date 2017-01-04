@@ -2,9 +2,8 @@
 module.exports = static_target;
 
 var protobuf = require("../.."),
-    cliUtil  = require("../util");
-
-var UglifyJS = cliUtil.require("uglify-js", require(require("path").join(__dirname, "..", "..", "package.json")).devDependencies["uglify-js"]);
+    cliUtil  = require("../util"),
+    UglifyJS = require("uglify-js");
 
 var Type      = protobuf.Type,
     Service   = protobuf.Service,

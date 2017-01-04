@@ -1,17 +1,22 @@
-var path     = require("path"),
+"use strict";
+var child_process = require("child_process"),
+    path     = require("path"),
     fs       = require("fs"),
     pkg      = require(path.join(__dirname, "..", "package.json")),
     util     = require("./util");
-var child_process = require("child_process");
 
-var minimist = util.require("minimist", pkg.devDependencies.minimist),
-    chalk    = util.require("chalk", pkg.devDependencies.chalk),
-    glob     = util.require("glob", pkg.devDependencies.glob),
-    tmp      = util.require("tmp", pkg.devDependencies.tmp);
+util.setup([
+    "minimist",
+    "chalk",
+    "glob",
+    "tmp",
+    "jsdoc"
+], pkg.devDependencies);
 
-var jsdoc    = util.require("jsdoc/package.json", pkg.devDependencies.jsdoc);
-
-var protobuf = require("..");
+var minimist = require("minimist"),
+    chalk    = require("chalk"),
+    glob     = require("glob"),
+    tmp      = require("tmp");
 
 /**
  * Runs pbts programmatically.

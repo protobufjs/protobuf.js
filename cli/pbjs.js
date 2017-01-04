@@ -1,14 +1,22 @@
+"use strict";
 var path     = require("path"),
     fs       = require("fs"),
     pkg      = require(path.join(__dirname, "..", "package.json")),
     util     = require("./util");
 
-var minimist = util.require("minimist", pkg.devDependencies.minimist),
-    chalk    = util.require("chalk", pkg.devDependencies.chalk),
-    glob     = util.require("glob", pkg.devDependencies.glob);
+util.setup([
+    "minimist",
+    "chalk",
+    "glob",
+    "uglify-js"
+], pkg.devDependencies);
 
 var protobuf = require(".."),
-    targets  = util.requireAll("./targets");
+    minimist = require("minimist"),
+    chalk = require("chalk"),
+    glob = require("glob");
+
+var targets  = util.requireAll("./targets");
 
 /**
  * Runs pbjs programmatically.

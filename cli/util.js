@@ -69,25 +69,27 @@ exports.inspect = function inspect(object, indent) {
     return sb.join("\n");
 };
 
-exports.require = function(name, version) {
-    var sub = "";
-    var p = name.indexOf("/");
-    if (p > -1) {
-        sub = name.substring(p);
-        name = name.substring(0, p);
+exports.setup = function(modules, versions) {
+    for (var i = 0; i < modules.length;) {
+        try {
+            // do not feed the cache
+            require.resolve(path.join(modules[i], "package.json"));
+            modules.splice(i, 1);
+        } catch (e) {
+            ++i;
+        }
     }
-    var cwd = path.join(__dirname, "..");
-    var dir = path.join(cwd, "node_modules", name);
-    try {
-        // do not feed the cache
-        require.resolve(path.join(dir, "package.json"));
-    } catch (e) {
-        console.error("installing " + name + "@" + version + " ...");
-        child_process.execSync("npm --silent install " + name + "@" + version, {
-            cwd: cwd
-        });
-    }
-    return require(name + sub);
+    if (!modules.length)
+        return;
+    modules = modules.map(function(name) {
+        return name + "@" + versions[name];
+    });
+    var cmd = "npm --silent --only=prod install " + modules.join(" ");
+    process.stderr.write("setting up " + modules.join(", ") + " ...\n");
+    child_process.execSync(cmd, {
+        cwd: path.join(__dirname, ".."),
+        stdio: "ignore"
+    });
 };
 
 exports.wrap = function(OUTPUT, options) {
