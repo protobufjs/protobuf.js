@@ -1,4 +1,4 @@
-# <p align="center"><img alt="protobuf.js" src="./pbjs.png" /></p>
+# <p align="center"><img alt="protobuf.js" src="https://github.com/dcodeIO/protobuf.js/raw/master/pbjs.png" width="120" height="104" /></p>
 
 [![][travis-image]][travis-url] [![][david-image]][david-url] [![][npm-dl-image]][npm-url] [![][npm-image]][npm-url] [![][paypal-image]][paypal-url]
 
