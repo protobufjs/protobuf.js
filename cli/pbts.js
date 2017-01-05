@@ -5,13 +5,7 @@ var child_process = require("child_process"),
     pkg      = require(path.join(__dirname, "..", "package.json")),
     util     = require("./util");
 
-util.setup([
-    "minimist",
-    "chalk",
-    "glob",
-    "tmp",
-    "jsdoc"
-], pkg.devDependencies);
+util.setup();
 
 var minimist = require("minimist"),
     chalk    = require("chalk"),

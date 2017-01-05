@@ -88,5 +88,6 @@
     "vinyl-source-stream": "^1.1.0",
     "zuul": "^3.11.1",
     "zuul-ngrok": "^4.0.0"
-  }
+  },
+  "cliDependencies": [ "chalk", "glob", "jsdoc", "minimist", "tmp", "uglify-js" ]
 }

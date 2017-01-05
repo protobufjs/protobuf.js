@@ -4,12 +4,7 @@ var path     = require("path"),
     pkg      = require(path.join(__dirname, "..", "package.json")),
     util     = require("./util");
 
-util.setup([
-    "minimist",
-    "chalk",
-    "glob",
-    "uglify-js"
-], pkg.devDependencies);
+util.setup();
 
 var protobuf = require(".."),
     minimist = require("minimist"),

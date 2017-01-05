@@ -1,6 +1,8 @@
+"use strict";
 var fs            = require("fs"),
     path          = require("path"),
-    child_process = require("child_process");
+    child_process = require("child_process"),
+    Module        = require("module");
 
 var protobuf = require("..");
 
@@ -69,25 +71,30 @@ exports.inspect = function inspect(object, indent) {
     return sb.join("\n");
 };
 
-exports.setup = function(modules, versions) {
-    for (var i = 0; i < modules.length;) {
+exports.setup = function() {
+    // this one is important. without it, this folder won't be searched anymore.
+    try { fs.mkdirSync(path.join(__dirname, "node_modules")); } catch (e) {}
+
+    // find out which modules are missing
+    var pkg = require(path.join(__dirname, "..", "package.json"));
+    var install = [];
+    pkg.cliDependencies.forEach(function(name) {
         try {
-            // do not feed the cache
-            require.resolve(path.join(modules[i], "package.json"));
-            modules.splice(i, 1);
+            require.resolve(name + "/package.json"); // jsdoc has no main file
         } catch (e) {
-            ++i;
+            var version = pkg.dependencies[name] || pkg.devDependencies[name];
+            install.push(version ? name + "@" + version : name);
         }
-    }
-    if (!modules.length)
-        return;
-    modules = modules.map(function(name) {
-        return name + "@" + versions[name];
     });
-    var cmd = "npm --silent --only=prod install " + modules.join(" ");
-    process.stderr.write("setting up " + modules.join(", ") + " ...\n");
-    child_process.execSync(cmd, {
-        cwd: path.join(__dirname, ".."),
+    if (!install.length) {
+        try { fs.rmdirSync(path.join(__dirname, "node_modules")); } catch (e) {}
+        return;
+    }
+
+    // if any are missing, install them. this relies on an empty package.json in cli/.
+    process.stderr.write("installing CLI dependencies: " + install.join(", ") + "\n");
+    child_process.execSync("npm --silent install " + install.join(" "), {
+        cwd: __dirname,
         stdio: "ignore"
     });
 };
