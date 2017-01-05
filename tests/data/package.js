@@ -124,8 +124,14 @@ $root.Package = (function() {
      */
     $prototype.types = "";
 
+    /**
+     * Package cliDependencies.
+     * @type {Array.<string>}
+     */
+    $prototype.cliDependencies = $protobuf.util.emptyArray;
+
     // Referenced types
-    var $types = [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null]; $lazyTypes.push($types);
+    var $types = [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null, null]; $lazyTypes.push($types);
 
     /**
      * Creates a new Package instance using the specified properties.
@@ -206,6 +212,11 @@ $root.Package = (function() {
         }
         if (message.types !== undefined && message.types !== "") {
             writer.uint32(138).string(message.types);
+        }
+        if (message.cliDependencies) {
+            for (var i = 0; i < message.cliDependencies.length; ++i) {
+                writer.uint32(146).string(message.cliDependencies[i]);
+            }
         }
         return writer;
     };})($protobuf.Writer, $protobuf.util, $types);
@@ -345,6 +356,13 @@ $root.Package = (function() {
 
             case 17:
                 message.types = reader.string();
+                break;
+
+            case 18:
+                if (!(message.cliDependencies && message.cliDependencies.length)) {
+                    message.cliDependencies = [];
+                }
+                message.cliDependencies.push(reader.string());
                 break;
 
             default:
@@ -488,6 +506,16 @@ $root.Package = (function() {
                 return "Package.types: string expected";
             }
         }
+        if (message.cliDependencies !== undefined) {
+            if (!Array.isArray(message.cliDependencies)) {
+                return "Package.cliDependencies: array expected";
+            }
+            for (var i = 0; i < message.cliDependencies.length; ++i) {
+                if (!util.isString(message.cliDependencies[i])) {
+                    return "Package.cliDependencies: string[] expected";
+                }
+            }
+        }
         return null;
     };})($protobuf.util, $types);
 
@@ -559,6 +587,16 @@ $root.Package = (function() {
             }
             if (dst.types === undefined && options.defaults) {
                 dst.types = "";
+            }
+            if (src.cliDependencies && src.cliDependencies.length) {
+                dst.cliDependencies = [];
+                for (var i = 0; i < src.cliDependencies.length; ++i) {
+                    dst.cliDependencies.push(src.cliDependencies[i]);
+                }
+            } else {
+                if (options.defaults || options.arrays) {
+                    dst.cliDependencies = [];
+                }
             }
         }
         return dst;

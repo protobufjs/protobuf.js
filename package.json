@@ -44,7 +44,7 @@
   "dependencies": {
     "@protobufjs/aspromise": "^1.0.5",
     "@protobufjs/base64": "^1.0.5",
-    "@protobufjs/codegen": "^1.0.4",
+    "@protobufjs/codegen": "^1.0.5",
     "@protobufjs/eventemitter": "^1.0.5",
     "@protobufjs/extend": "^1.0.2",
     "@protobufjs/fetch": "^1.0.4",
@@ -89,5 +89,12 @@
     "zuul": "^3.11.1",
     "zuul-ngrok": "^4.0.0"
   },
-  "cliDependencies": [ "chalk", "glob", "jsdoc", "minimist", "tmp", "uglify-js" ]
+  "cliDependencies": [
+    "chalk",
+    "glob",
+    "jsdoc",
+    "minimist",
+    "tmp",
+    "uglify-js"
+  ]
 }

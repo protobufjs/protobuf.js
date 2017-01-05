@@ -24,4 +24,5 @@ message Package {
     map<string, string> devDependencies = 15;
     // map<string, bool>   browser = 16;
     string types = 17;
+    repeated string cliDependencies = 18;
 }
