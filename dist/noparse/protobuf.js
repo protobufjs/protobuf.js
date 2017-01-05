@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.2 (c) 2016, Daniel Wirtz
- * Compiled Thu, 05 Jan 2017 14:50:05 UTC
+ * Compiled Thu, 05 Jan 2017 23:53:37 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1198,8 +1198,8 @@ function decoder(mtype) {
                 ("if(!(%s&&%s.length))", ref, ref)
                     ("%s=[]", ref);
 
-            // Packed
-            if (field.packed && types.packed[type] !== undefined) gen
+            // Packable (always check for forward and backward compatiblity)
+            if (/* field.packed && */types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2)")

@@ -55,8 +55,8 @@ function decoder(mtype) {
                 ("if(!(%s&&%s.length))", ref, ref)
                     ("%s=[]", ref);
 
-            // Packed
-            if (field.packed && types.packed[type] !== undefined) gen
+            // Packable (always check for forward and backward compatiblity)
+            if (/* field.packed && */types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2)")
