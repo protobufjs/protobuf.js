@@ -1,6 +1,6 @@
 "use strict";
 
-var $protobuf = require("protobufjs/runtime");
+var $protobuf = require(%DEPENDENCY%);
 
 %OUTPUT%
 

@@ -4,7 +4,7 @@
         define(["protobuf"], factory);
 
     /* CommonJS */ else if (typeof require === 'function' && typeof module === 'object' && module && module.exports)
-        module.exports = factory(require("protobufjs/runtime"));
+        module.exports = factory(require(%DEPENDENCY%));
 
 })(this, function($protobuf) {
     "use strict";

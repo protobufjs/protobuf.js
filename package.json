@@ -86,7 +86,7 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^2.4.4",
     "vinyl-source-stream": "^1.1.0",
-    "zuul": "^3.11.1",
+    "zuul": "dcodeIO/zuul",
     "zuul-ngrok": "^4.0.0"
   },
   "cliDependencies": [

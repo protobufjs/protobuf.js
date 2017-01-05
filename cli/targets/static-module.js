@@ -19,7 +19,7 @@ function static_module_target(root, options, callback) {
         if (err)
             return callback(err);
         try {
-            output = util.wrap(output, options);
+            output = util.wrap(output, protobuf.util.merge({ dependency: "protobufjs/runtime" }, options));
         } catch (e) {
             callback(e);
             return;
