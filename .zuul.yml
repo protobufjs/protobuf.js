@@ -14,6 +14,7 @@ browsers:
     version: [11, 12]
   - name: android
     version: [4.0, 4.4, latest]
+    platform: Linux
   - name: iphone
     version: [8.1, 9.0, latest]
 scripts:
