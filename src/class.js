@@ -7,7 +7,7 @@ var Message = require("./message"),
 var Type; // cyclic
 
 /**
- * Constructs a class instance, which is also a message prototype.
+ * Constructs a class instance, which is also a {@link Message} prototype.
  * @classdesc Runtime class providing the tools to create your own custom classes.
  * @constructor
  * @param {Type} type Reflected type
@@ -36,6 +36,7 @@ function create(type, ctor) {
         if (typeof ctor !== "function")
             throw TypeError("ctor must be a function");
     } else
+        // create named constructor functions (codegen is required anyway)
         ctor = util.codegen("p")("return ctor.call(this,p)").eof(type.name, {
             ctor: Message
         });
@@ -47,7 +48,7 @@ function create(type, ctor) {
     var prototype = ctor.prototype = new Message();
     prototype.constructor = ctor;
 
-    // Static methods on Message are instance methods on Class and vice versa.
+    // Static methods on Message are instance methods on Class and vice versa
     util.merge(ctor, Message, true);
 
     // Classes and messages reference their reflected type
@@ -92,7 +93,7 @@ function create(type, ctor) {
 
 Class.create = create;
 
-// Static methods on Message are instance methods on Class and vice versa.
+// Static methods on Message are instance methods on Class and vice versa
 Class.prototype = Message;
 
 /**

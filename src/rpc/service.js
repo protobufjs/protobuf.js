@@ -1,8 +1,11 @@
 "use strict";
 module.exports = Service;
 
-var util         = require("../util");
-var EventEmitter = util.EventEmitter;
+// extends EventEmitter
+var EventEmitter = require("../util").EventEmitter;
+/** @alias rpc.Service.prototype */
+var ServicePrototype = Service.prototype = Object.create(EventEmitter.prototype);
+ServicePrototype.constructor = Service;
 
 /**
  * Constructs a new RPC service instance.
@@ -21,10 +24,6 @@ function Service(rpcImpl) {
      */
     this.$rpc = rpcImpl;
 }
-
-/** @alias rpc.Service.prototype */
-var ServicePrototype = Service.prototype = Object.create(EventEmitter.prototype);
-ServicePrototype.constructor = Service;
 
 /**
  * Ends this service and emits the `end` event.

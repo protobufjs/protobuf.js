@@ -1,7 +1,7 @@
 export as namespace protobuf;
 
 /**
- * Constructs a class instance, which is also a message prototype.
+ * Constructs a class instance, which is also a {@link Message} prototype.
  * @classdesc Runtime class providing the tools to create your own custom classes.
  * @constructor
  * @param {Type} type Reflected type
@@ -9,7 +9,7 @@ export as namespace protobuf;
 export class Class {
 
     /**
-     * Constructs a class instance, which is also a message prototype.
+     * Constructs a class instance, which is also a {@link Message} prototype.
      * @classdesc Runtime class providing the tools to create your own custom classes.
      * @constructor
      * @param {Type} type Reflected type
@@ -1624,14 +1624,6 @@ export class Type extends Namespace {
      * @readonly
      */
     readonly fieldsArray: Field[];
-
-    /**
-     * Repeated fields of this message as an array for iteration.
-     * @name Type#repeatedFieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    readonly repeatedFieldsArray: Field[];
 
     /**
      * Oneofs of this message as an array for iteration.

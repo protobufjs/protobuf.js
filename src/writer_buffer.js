@@ -1,6 +1,7 @@
 "use strict";
 module.exports = BufferWriter;
 
+// extends Writer
 var Writer = require("./writer");
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
@@ -8,8 +9,7 @@ BufferWriterPrototype.constructor = BufferWriter;
 
 var util = require("./util/runtime");
 
-var utf8   = util.utf8,
-    Buffer = util.Buffer;
+var Buffer = util.Buffer;
 
 /**
  * Constructs a new buffer writer instance.
@@ -54,7 +54,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
-        utf8.write(val, buf, pos);
+        util.utf8.write(val, buf, pos);
     else
         buf.utf8Write(val, pos);
 }

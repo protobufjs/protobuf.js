@@ -1,13 +1,15 @@
 "use strict";
 module.exports = OneOf;
 
+// extends ReflectionObject
 var ReflectionObject = require("./object");
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
 OneOf.className = "OneOf";
 
-var Field = require("./field");
+var Field = require("./field"),
+    util  = require("./util");
 
 /**
  * Constructs a new oneof instance.
@@ -41,6 +43,13 @@ function OneOf(name, fieldNames, options) {
      * @private
      */
     this._fieldsArray = [];
+
+    /**
+     * Safe property accessor on messages used by codegen.
+     * @type {string}
+     * @private
+     */
+    this._prop = util.safeProp(this.name);
 }
 
 /**

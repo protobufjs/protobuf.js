@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.2 (c) 2016, Daniel Wirtz
- * Compiled Wed, 04 Jan 2017 17:58:56 UTC
+ * Compiled Thu, 05 Jan 2017 14:50:05 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -725,7 +725,7 @@ var Message = require(20),
 var Type; // cyclic
 
 /**
- * Constructs a class instance, which is also a message prototype.
+ * Constructs a class instance, which is also a {@link Message} prototype.
  * @classdesc Runtime class providing the tools to create your own custom classes.
  * @constructor
  * @param {Type} type Reflected type
@@ -754,6 +754,7 @@ function create(type, ctor) {
         if (typeof ctor !== "function")
             throw TypeError("ctor must be a function");
     } else
+        // create named constructor functions (codegen is required anyway)
         ctor = util.codegen("p")("return ctor.call(this,p)").eof(type.name, {
             ctor: Message
         });
@@ -765,7 +766,7 @@ function create(type, ctor) {
     var prototype = ctor.prototype = new Message();
     prototype.constructor = ctor;
 
-    // Static methods on Message are instance methods on Class and vice versa.
+    // Static methods on Message are instance methods on Class and vice versa
     util.merge(ctor, Message, true);
 
     // Classes and messages reference their reflected type
@@ -810,7 +811,7 @@ function create(type, ctor) {
 
 Class.create = create;
 
-// Static methods on Message are instance methods on Class and vice versa.
+// Static methods on Message are instance methods on Class and vice versa
 Class.prototype = Message;
 
 /**
@@ -901,10 +902,14 @@ function common(name, json) {
 }
 
 // Not provided because of limited use (feel free to discuss or to provide yourself):
-// - google/protobuf/descriptor.proto
-// - google/protobuf/field_mask.proto
-// - google/protobuf/source_context.proto
-// - google/protobuf/type.proto
+//
+// google/protobuf/descriptor.proto
+// google/protobuf/field_mask.proto
+// google/protobuf/source_context.proto
+// google/protobuf/type.proto
+//
+// Stripped and pre-parsed versions of these non-bundled files are instead available as part of
+// the repository or package within the google/protobuf directory.
 
 common("any", {
     Any: {
@@ -961,7 +966,14 @@ common("struct", {
     Value: {
         oneofs: {
             kind: {
-                oneof: [ "nullValue", "numberValue", "stringValue", "boolValue", "structValue", "listValue" ]
+                oneof: [
+                    "nullValue",
+                    "numberValue",
+                    "stringValue",
+                    "boolValue",
+                    "structValue",
+                    "listValue"
+                ]
             }
         },
         fields: {
@@ -1081,6 +1093,7 @@ common("wrappers", {
         }
     }
 });
+
 },{}],13:[function(require,module,exports){
 "use strict";
 module.exports = converter;
@@ -1132,7 +1145,7 @@ function converter(mtype) {
     ("if(d){");
         var convert;
         fields.forEach(function(field, i) {
-            var prop = util.safeProp(field.resolve().name);
+            var prop = field.resolve()._prop;
 
             // repeated
             if (field.repeated) { gen
@@ -1377,7 +1390,7 @@ function decoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            ref   = "m" + util.safeProp(field.name);
+            ref   = "m" + field._prop;
         gen
             ("case %d:", field.id);
 
@@ -1471,7 +1484,7 @@ function encoder(mtype) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
-            ref      = "m" + util.safeProp(field.name);
+            ref      = "m" + field._prop;
 
         // Map fields
         if (field.map) {
@@ -1516,7 +1529,7 @@ function encoder(mtype) {
             }
 
         // Non-repeated
-        } else if (!field.partOf) {
+        } else if (!field.partOf) { // see below for oneofs
             if (!field.required) {
 
                 if (field.long) gen
@@ -1535,16 +1548,18 @@ function encoder(mtype) {
 
         }
     }
+
+    // oneofs
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i];
         gen
-        ("switch(%s){", "m" + util.safeProp(oneof.name));
+        ("switch(%s){", "m" + oneof._prop);
         var oneofFields = oneof.fieldsArray;
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
-                ref      = "m" + util.safeProp(field.name);
+                ref      = "m" + field._prop;
             gen
             ("case%j:", field.name);
 
@@ -1554,7 +1569,7 @@ function encoder(mtype) {
                 ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
             gen
-                ("break;");
+                ("break");
 
         } gen
         ("}");
@@ -1568,6 +1583,7 @@ function encoder(mtype) {
 "use strict";
 module.exports = Enum;
 
+// extends ReflectionObject
 var ReflectionObject = require(23);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
@@ -1696,6 +1712,7 @@ EnumPrototype.remove = function(name) {
 "use strict";
 module.exports = Field;
 
+// extends ReflectionObject
 var ReflectionObject = require(23);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
@@ -1852,23 +1869,27 @@ function Field(name, id, type, rule, extend, options) {
      * @private
      */
     this._packed = null;
-}
-
-Object.defineProperties(FieldPrototype, {
 
     /**
-     * Determines whether this field is packed. Only relevant when repeated and working with proto2.
-     * @name Field#packed
-     * @type {boolean}
-     * @readonly
+     * Safe property accessor on messages used by codegen.
+     * @type {string}
+     * @private
      */
-    packed: {
-        get: function() {
-            // defaults to packed=true if not explicity set to false
-            if (this._packed === null)
-                this._packed = this.getOption("packed") !== false;
-            return this._packed;
-        }
+    this._prop = util.safeProp(this.name);
+}
+
+/**
+ * Determines whether this field is packed. Only relevant when repeated and working with proto2.
+ * @name Field#packed
+ * @type {boolean}
+ * @readonly
+ */
+Object.defineProperties(FieldPrototype, {
+    get: function() {
+        // defaults to packed=true if not explicity set to false
+        if (this._packed === null)
+            this._packed = this.getOption("packed") !== false;
+        return this._packed;
     }
 });
 
@@ -1977,6 +1998,7 @@ FieldPrototype.resolve = function resolve() {
 "use strict";
 module.exports = MapField;
 
+// extends Field
 var Field = require(18);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
@@ -2196,6 +2218,7 @@ Message.convert = function convert(source, impl, options) {
 "use strict";
 module.exports = Method;
 
+// extends ReflectionObject
 var ReflectionObject = require(23);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
@@ -2339,6 +2362,7 @@ MethodPrototype.resolve = function resolve() {
 "use strict";
 module.exports = Namespace;
 
+// extends ReflectionObject
 var ReflectionObject = require(23);
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
@@ -2408,20 +2432,16 @@ function clearCache(namespace) {
     return namespace;
 }
 
-Object.defineProperties(NamespacePrototype, {
-
-    /**
-     * Nested objects of this namespace as an array for iteration.
-     * @name Namespace#nestedArray
-     * @type {ReflectionObject[]}
-     * @readonly
-     */
-    nestedArray: {
-        get: function() {
-            return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
-        }
+/**
+ * Nested objects of this namespace as an array for iteration.
+ * @name Namespace#nestedArray
+ * @type {ReflectionObject[]}
+ * @readonly
+ */
+Object.defineProperty(NamespacePrototype, "nestedArray", {
+    get: function() {
+        return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
     }
-
 });
 
 /**
@@ -2955,13 +2975,15 @@ ReflectionObjectPrototype.toString = function toString() {
 "use strict";
 module.exports = OneOf;
 
+// extends ReflectionObject
 var ReflectionObject = require(23);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
 OneOf.className = "OneOf";
 
-var Field = require(18);
+var Field = require(18),
+    util  = require(35);
 
 /**
  * Constructs a new oneof instance.
@@ -2995,6 +3017,13 @@ function OneOf(name, fieldNames, options) {
      * @private
      */
     this._fieldsArray = [];
+
+    /**
+     * Safe property accessor on messages used by codegen.
+     * @type {string}
+     * @private
+     */
+    this._prop = util.safeProp(this.name);
 }
 
 /**
@@ -3130,7 +3159,7 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"18":18,"23":23}],25:[function(require,module,exports){
+},{"18":18,"23":23,"35":35}],25:[function(require,module,exports){
 "use strict";
 module.exports = parse;
 
@@ -4327,6 +4356,7 @@ configure();
 "use strict";
 module.exports = BufferReader;
 
+// extends Reader
 var Reader = require(26);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
@@ -4360,6 +4390,7 @@ BufferReaderPrototype.string = function read_string_buffer() {
 "use strict";
 module.exports = Root;
 
+// extends Namespace
 var Namespace = require(22);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
@@ -4691,8 +4722,11 @@ rpc.Service = require(30);
 "use strict";
 module.exports = Service;
 
-var util         = require(35);
-var EventEmitter = util.EventEmitter;
+// extends EventEmitter
+var EventEmitter = require(35).EventEmitter;
+/** @alias rpc.Service.prototype */
+var ServicePrototype = Service.prototype = Object.create(EventEmitter.prototype);
+ServicePrototype.constructor = Service;
 
 /**
  * Constructs a new RPC service instance.
@@ -4711,10 +4745,6 @@ function Service(rpcImpl) {
      */
     this.$rpc = rpcImpl;
 }
-
-/** @alias rpc.Service.prototype */
-var ServicePrototype = Service.prototype = Object.create(EventEmitter.prototype);
-ServicePrototype.constructor = Service;
 
 /**
  * Ends this service and emits the `end` event.
@@ -4735,6 +4765,7 @@ ServicePrototype.end = function end(endedByRPC) {
 "use strict";
 module.exports = Service;
 
+// extends Namespace
 var Namespace = require(22);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
@@ -4773,20 +4804,16 @@ function Service(name, options) {
     this._methodsArray = null;
 }
 
-Object.defineProperties(ServicePrototype, {
-
-    /**
-     * Methods of this service as an array for iteration.
-     * @name Service#methodsArray
-     * @type {Method[]}
-     * @readonly
-     */
-    methodsArray: {
-        get: function() {
-            return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
-        }
+/**
+ * Methods of this service as an array for iteration.
+ * @name Service#methodsArray
+ * @type {Method[]}
+ * @readonly
+ */
+Object.defineProperty(ServicePrototype, "methodsArray", {
+    get: function() {
+        return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
     }
-
 });
 
 function clearCache(service) {
@@ -5160,6 +5187,7 @@ function tokenize(source) {
 "use strict";
 module.exports = Type;
 
+// extends Namespace
 var Namespace = require(22);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
@@ -5238,13 +5266,6 @@ function Type(name, options) {
     this._fieldsArray = null;
 
     /**
-     * Cached repeated fields as an array.
-     * @type {?Field[]}
-     * @private
-     */
-    this._repeatedFieldsArray = null;
-
-    /**
      * Cached oneofs as an array.
      * @type {?OneOf[]}
      * @private
@@ -5296,18 +5317,6 @@ Object.defineProperties(TypePrototype, {
     fieldsArray: {
         get: function() {
             return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
-        }
-    },
-
-    /**
-     * Repeated fields of this message as an array for iteration.
-     * @name Type#repeatedFieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    repeatedFieldsArray: {
-        get: function() {
-            return this._repeatedFieldsArray || (this._repeatedFieldsArray = this.fieldsArray.filter(function(field) { return field.repeated; }));
         }
     },
 
@@ -6355,7 +6364,7 @@ function verifier(mtype) {
 
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
-            ref   = "m" + util.safeProp(field.name);
+            ref   = "m" + field._prop;
 
         // map fields
         if (field.map) { gen
@@ -6948,6 +6957,7 @@ WriterPrototype.finish = function finish() {
 "use strict";
 module.exports = BufferWriter;
 
+// extends Writer
 var Writer = require(39);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
@@ -6955,8 +6965,7 @@ BufferWriterPrototype.constructor = BufferWriter;
 
 var util = require(37);
 
-var utf8   = util.utf8,
-    Buffer = util.Buffer;
+var Buffer = util.Buffer;
 
 /**
  * Constructs a new buffer writer instance.
@@ -7001,7 +7010,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
-        utf8.write(val, buf, pos);
+        util.utf8.write(val, buf, pos);
     else
         buf.utf8Write(val, pos);
 }

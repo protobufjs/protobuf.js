@@ -1,29 +1,23 @@
 language: node_js
-
 node_js:
   - 0.12
   - 4
   - 6
   - 7
-
 env:
   - CXX=g++-4.8
-
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-
 script:
   - npm test
   - npm run bench
-
 branches:
   only:
     - master
-
 matrix:
   include:
   - node_js: 6

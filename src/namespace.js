@@ -1,6 +1,7 @@
 "use strict";
 module.exports = Namespace;
 
+// extends ReflectionObject
 var ReflectionObject = require("./object");
 /** @alias Namespace.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
@@ -70,20 +71,16 @@ function clearCache(namespace) {
     return namespace;
 }
 
-Object.defineProperties(NamespacePrototype, {
-
-    /**
-     * Nested objects of this namespace as an array for iteration.
-     * @name Namespace#nestedArray
-     * @type {ReflectionObject[]}
-     * @readonly
-     */
-    nestedArray: {
-        get: function() {
-            return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
-        }
+/**
+ * Nested objects of this namespace as an array for iteration.
+ * @name Namespace#nestedArray
+ * @type {ReflectionObject[]}
+ * @readonly
+ */
+Object.defineProperty(NamespacePrototype, "nestedArray", {
+    get: function() {
+        return this._nestedArray || (this._nestedArray = util.toArray(this.nested));
     }
-
 });
 
 /**

@@ -48,7 +48,7 @@ function converter(mtype) {
     ("if(d){");
         var convert;
         fields.forEach(function(field, i) {
-            var prop = util.safeProp(field.resolve().name);
+            var prop = field.resolve()._prop;
 
             // repeated
             if (field.repeated) { gen

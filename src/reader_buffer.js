@@ -1,6 +1,7 @@
 "use strict";
 module.exports = BufferReader;
 
+// extends Reader
 var Reader = require("./reader");
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);

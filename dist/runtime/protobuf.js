@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.2 (c) 2016, Daniel Wirtz
- * Compiled Wed, 04 Jan 2017 17:58:56 UTC
+ * Compiled Thu, 05 Jan 2017 14:50:05 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -987,6 +987,7 @@ configure();
 "use strict";
 module.exports = BufferReader;
 
+// extends Reader
 var Reader = require(7);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
@@ -1951,6 +1952,7 @@ WriterPrototype.finish = function finish() {
 "use strict";
 module.exports = BufferWriter;
 
+// extends Writer
 var Writer = require(11);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
@@ -1958,8 +1960,7 @@ BufferWriterPrototype.constructor = BufferWriter;
 
 var util = require(10);
 
-var utf8   = util.utf8,
-    Buffer = util.Buffer;
+var Buffer = util.Buffer;
 
 /**
  * Constructs a new buffer writer instance.
@@ -2004,7 +2005,7 @@ BufferWriterPrototype.bytes = function write_bytes_buffer(value) {
 
 function writeStringBuffer(val, buf, pos) {
     if (val.length < 40) // plain js is faster for short strings (probably due to redundant assertions)
-        utf8.write(val, buf, pos);
+        util.utf8.write(val, buf, pos);
     else
         buf.utf8Write(val, pos);
 }

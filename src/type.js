@@ -1,6 +1,7 @@
 "use strict";
 module.exports = Type;
 
+// extends Namespace
 var Namespace = require("./namespace");
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
@@ -79,13 +80,6 @@ function Type(name, options) {
     this._fieldsArray = null;
 
     /**
-     * Cached repeated fields as an array.
-     * @type {?Field[]}
-     * @private
-     */
-    this._repeatedFieldsArray = null;
-
-    /**
      * Cached oneofs as an array.
      * @type {?OneOf[]}
      * @private
@@ -137,18 +131,6 @@ Object.defineProperties(TypePrototype, {
     fieldsArray: {
         get: function() {
             return this._fieldsArray || (this._fieldsArray = util.toArray(this.fields));
-        }
-    },
-
-    /**
-     * Repeated fields of this message as an array for iteration.
-     * @name Type#repeatedFieldsArray
-     * @type {Field[]}
-     * @readonly
-     */
-    repeatedFieldsArray: {
-        get: function() {
-            return this._repeatedFieldsArray || (this._repeatedFieldsArray = this.fieldsArray.filter(function(field) { return field.repeated; }));
         }
     },
 

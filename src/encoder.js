@@ -29,7 +29,7 @@ function encoder(mtype) {
         var field    = fields[i].resolve(),
             type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
             wireType = types.basic[type];
-            ref      = "m" + util.safeProp(field.name);
+            ref      = "m" + field._prop;
 
         // Map fields
         if (field.map) {
@@ -74,7 +74,7 @@ function encoder(mtype) {
             }
 
         // Non-repeated
-        } else if (!field.partOf) {
+        } else if (!field.partOf) { // see below for oneofs
             if (!field.required) {
 
                 if (field.long) gen
@@ -93,16 +93,18 @@ function encoder(mtype) {
 
         }
     }
+
+    // oneofs
     for (var i = 0; i < oneofs.length; ++i) {
         var oneof = oneofs[i];
         gen
-        ("switch(%s){", "m" + util.safeProp(oneof.name));
+        ("switch(%s){", "m" + oneof._prop);
         var oneofFields = oneof.fieldsArray;
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
-                ref      = "m" + util.safeProp(field.name);
+                ref      = "m" + field._prop;
             gen
             ("case%j:", field.name);
 
@@ -112,7 +114,7 @@ function encoder(mtype) {
                 ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
             gen
-                ("break;");
+                ("break");
 
         } gen
         ("}");

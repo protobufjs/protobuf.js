@@ -1,6 +1,7 @@
 "use strict";
 module.exports = Service;
 
+// extends Namespace
 var Namespace = require("./namespace");
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
@@ -39,20 +40,16 @@ function Service(name, options) {
     this._methodsArray = null;
 }
 
-Object.defineProperties(ServicePrototype, {
-
-    /**
-     * Methods of this service as an array for iteration.
-     * @name Service#methodsArray
-     * @type {Method[]}
-     * @readonly
-     */
-    methodsArray: {
-        get: function() {
-            return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
-        }
+/**
+ * Methods of this service as an array for iteration.
+ * @name Service#methodsArray
+ * @type {Method[]}
+ * @readonly
+ */
+Object.defineProperty(ServicePrototype, "methodsArray", {
+    get: function() {
+        return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
     }
-
 });
 
 function clearCache(service) {

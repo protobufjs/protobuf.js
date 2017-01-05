@@ -1,6 +1,7 @@
 "use strict";
 module.exports = MapField;
 
+// extends Field
 var Field = require("./field");
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;

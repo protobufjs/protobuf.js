@@ -1,6 +1,7 @@
 "use strict";
 module.exports = Root;
 
+// extends Namespace
 var Namespace = require("./namespace");
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);

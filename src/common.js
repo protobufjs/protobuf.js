@@ -24,10 +24,14 @@ function common(name, json) {
 }
 
 // Not provided because of limited use (feel free to discuss or to provide yourself):
-// - google/protobuf/descriptor.proto
-// - google/protobuf/field_mask.proto
-// - google/protobuf/source_context.proto
-// - google/protobuf/type.proto
+//
+// google/protobuf/descriptor.proto
+// google/protobuf/field_mask.proto
+// google/protobuf/source_context.proto
+// google/protobuf/type.proto
+//
+// Stripped and pre-parsed versions of these non-bundled files are instead available as part of
+// the repository or package within the google/protobuf directory.
 
 common("any", {
     Any: {
@@ -84,7 +88,14 @@ common("struct", {
     Value: {
         oneofs: {
             kind: {
-                oneof: [ "nullValue", "numberValue", "stringValue", "boolValue", "structValue", "listValue" ]
+                oneof: [
+                    "nullValue",
+                    "numberValue",
+                    "stringValue",
+                    "boolValue",
+                    "structValue",
+                    "listValue"
+                ]
             }
         },
         fields: {

@@ -1,6 +1,7 @@
 "use strict";
 module.exports = Field;
 
+// extends ReflectionObject
 var ReflectionObject = require("./object");
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
@@ -157,23 +158,27 @@ function Field(name, id, type, rule, extend, options) {
      * @private
      */
     this._packed = null;
-}
-
-Object.defineProperties(FieldPrototype, {
 
     /**
-     * Determines whether this field is packed. Only relevant when repeated and working with proto2.
-     * @name Field#packed
-     * @type {boolean}
-     * @readonly
+     * Safe property accessor on messages used by codegen.
+     * @type {string}
+     * @private
      */
-    packed: {
-        get: function() {
-            // defaults to packed=true if not explicity set to false
-            if (this._packed === null)
-                this._packed = this.getOption("packed") !== false;
-            return this._packed;
-        }
+    this._prop = util.safeProp(this.name);
+}
+
+/**
+ * Determines whether this field is packed. Only relevant when repeated and working with proto2.
+ * @name Field#packed
+ * @type {boolean}
+ * @readonly
+ */
+Object.defineProperties(FieldPrototype, {
+    get: function() {
+        // defaults to packed=true if not explicity set to false
+        if (this._packed === null)
+            this._packed = this.getOption("packed") !== false;
+        return this._packed;
     }
 });
 
