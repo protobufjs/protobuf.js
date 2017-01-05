@@ -13,8 +13,7 @@ browsers:
   - name: opera
     version: [11, 12]
   - name: android
-    version: [4.0, 4.4, latest]
-    platform: Linux
+    version: [4.4, 5.0, latest]
   - name: iphone
     version: [8.1, 9.0, latest]
 scripts:
