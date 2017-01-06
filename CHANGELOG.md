@@ -1,3 +1,21 @@
+# [6.4.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.2)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c2c39fc7cec5634ecd1fbaebbe199bf097269097) Fixed invalid definition of Field#packed property, also introduced decoder.compat mode (packed fields, on by default)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/11fb1a66ae31af675d0d9ce0240cd8e920ae75e7) Always decode packed/non-packed based on wire format only, see [#602](https://github.com/dcodeIO/protobuf.js/issues/602)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/c9a61e574f5a2b06f6b15b14c0c0ff56f8381d1f) Use full library for JSON modules and runtime dependency for static modules, fixes [#621](https://github.com/dcodeIO/protobuf.js/issues/621)<br />
+
+## CLI
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e88d13ca7ee971451b57d056f747215f37dfd3d7) Additional workarounds for on demand CLI dependencies, see [#618](https://github.com/dcodeIO/protobuf.js/issues/618)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/44f6357557ab3d881310024342bcc1e0d336a20c) Revised automatic setup of cli dependencies, see [#618](https://github.com/dcodeIO/protobuf.js/issues/618)<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e027a3c7855368837e477ce074ac65f191bf774a) Removed Android 4.0 test (no longer supported by sauce)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/8ba3c5efd182bc80fc36f9d5fe5e2b615b358236) Removed some unused utility, slightly more efficient codegen, additional comments<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f22a34a071753bca416732ec4d01892263f543fb) Updated tests for new package.json layout<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f22a34a071753bca416732ec4d01892263f543fb) Added break/continue label support to codegen<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f2ffa0731aea7c431c59e452e0f74247d815a352) Updated dependencies, rebuilt dist files and changed logo to use an absolute url<br />
+
 # [6.4.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.1)
 
 ## Fixed
