@@ -3189,7 +3189,14 @@ $root.jspb = (function() {
                         if (!(message.repeatedFloatField && message.repeatedFloatField.length)) {
                             message.repeatedFloatField = [];
                         }
-                        message.repeatedFloatField.push(reader.float());
+                        if ((tag & 7) === 2) {
+                            var end2 = reader.uint32() + reader.pos;
+                            while (reader.pos < end2) {
+                                message.repeatedFloatField.push(reader.float());
+                            }
+                        } else {
+                            message.repeatedFloatField.push(reader.float());
+                        }
                         break;
 
                     case 4:
@@ -3208,7 +3215,14 @@ $root.jspb = (function() {
                         if (!(message.repeatedDoubleField && message.repeatedDoubleField.length)) {
                             message.repeatedDoubleField = [];
                         }
-                        message.repeatedDoubleField.push(reader.double());
+                        if ((tag & 7) === 2) {
+                            var end2 = reader.uint32() + reader.pos;
+                            while (reader.pos < end2) {
+                                message.repeatedDoubleField.push(reader.double());
+                            }
+                        } else {
+                            message.repeatedDoubleField.push(reader.double());
+                        }
                         break;
 
                     case 8:
@@ -6563,14 +6577,28 @@ $root.google = (function() {
                         if (!(message.publicDependency && message.publicDependency.length)) {
                             message.publicDependency = [];
                         }
-                        message.publicDependency.push(reader.int32());
+                        if ((tag & 7) === 2) {
+                            var end2 = reader.uint32() + reader.pos;
+                            while (reader.pos < end2) {
+                                message.publicDependency.push(reader.int32());
+                            }
+                        } else {
+                            message.publicDependency.push(reader.int32());
+                        }
                         break;
 
                     case 11:
                         if (!(message.weakDependency && message.weakDependency.length)) {
                             message.weakDependency = [];
                         }
-                        message.weakDependency.push(reader.int32());
+                        if ((tag & 7) === 2) {
+                            var end2 = reader.uint32() + reader.pos;
+                            while (reader.pos < end2) {
+                                message.weakDependency.push(reader.int32());
+                            }
+                        } else {
+                            message.weakDependency.push(reader.int32());
+                        }
                         break;
 
                     case 4:

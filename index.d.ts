@@ -224,6 +224,7 @@ interface MessageConversionOptions {
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
+ * @property {boolean} compat=true Generates backward/forward compatible decoders (packed fields)
  */
 export function decoder(mtype: Type): Codegen;
 

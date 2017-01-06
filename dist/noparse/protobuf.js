@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.2 (c) 2016, Daniel Wirtz
- * Compiled Thu, 05 Jan 2017 23:53:37 UTC
+ * Compiled Fri, 06 Jan 2017 00:11:13 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1144,6 +1144,8 @@ converters.message = {
 "use strict";
 module.exports = decoder;
 
+decoder.compat = true;
+
 var Enum    = require(16),
     types   = require(31),
     util    = require(32);
@@ -1152,6 +1154,7 @@ var Enum    = require(16),
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
+ * @property {boolean} compat=true Generates backward/forward compatible decoders (packed fields)
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -1199,7 +1202,7 @@ function decoder(mtype) {
                     ("%s=[]", ref);
 
             // Packable (always check for forward and backward compatiblity)
-            if (/* field.packed && */types.packed[type] !== undefined) gen
+            if ((decoder.compat || field.packed) && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2)")
@@ -1665,7 +1668,7 @@ function Field(name, id, type, rule, extend, options) {
  * @type {boolean}
  * @readonly
  */
-Object.defineProperties(FieldPrototype, {
+Object.defineProperty(FieldPrototype, "packed", {
     get: function() {
         // defaults to packed=true if not explicity set to false
         if (this._packed === null)

@@ -1,6 +1,8 @@
 "use strict";
 module.exports = decoder;
 
+decoder.compat = true;
+
 var Enum    = require("./enum"),
     types   = require("./types"),
     util    = require("./util");
@@ -9,6 +11,7 @@ var Enum    = require("./enum"),
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance
+ * @property {boolean} compat=true Generates backward/forward compatible decoders (packed fields)
  */
 function decoder(mtype) {
     /* eslint-disable no-unexpected-multiline */
@@ -56,7 +59,7 @@ function decoder(mtype) {
                     ("%s=[]", ref);
 
             // Packable (always check for forward and backward compatiblity)
-            if (/* field.packed && */types.packed[type] !== undefined) gen
+            if ((decoder.compat || field.packed) && types.packed[type] !== undefined) gen
                 ("if((t&7)===2){")
                     ("var c2=r.uint32()+r.pos")
                     ("while(r.pos<c2)")

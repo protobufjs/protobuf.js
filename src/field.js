@@ -173,7 +173,7 @@ function Field(name, id, type, rule, extend, options) {
  * @type {boolean}
  * @readonly
  */
-Object.defineProperties(FieldPrototype, {
+Object.defineProperty(FieldPrototype, "packed", {
     get: function() {
         // defaults to packed=true if not explicity set to false
         if (this._packed === null)
