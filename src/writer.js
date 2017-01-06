@@ -121,7 +121,7 @@ function Writer() {
     // list of operations to perform when finish() is called. This both allows us to allocate
     // buffers of the exact required size and reduces the amount of work we have to do compared
     // to first calculating over objects and then encoding over objects. In our case, the encoding
-    // part is just a linked list walk calling linked operations with already prepared values.
+    // part is just a linked list walk calling operations with already prepared values.
 }
 
 /**

@@ -36,7 +36,10 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
     }
     /* istanbul ignore next */
     : function writeBytesBuffer_copy(val, buf, pos) {
-        val.copy(buf, pos, 0, val.length);
+        if (val.copy)
+            val.copy(buf, pos, 0, val.length);
+        else for (var i = 0; i < val.length;)
+            buf[pos++] = val[i++];
     };
 
 /**
