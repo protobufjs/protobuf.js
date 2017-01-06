@@ -1,3 +1,11 @@
+# [6.4.4](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.4)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/26d68e36e438b590589e5beaec418c63b8f939cf) Dynamically resolve jsdoc when running pbts, fixes [#622](https://github.com/dcodeIO/protobuf.js/issues/622)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/69c04d7d374e70337352cec9b445301cd7fe60d6) Explain 6.4.2 vs 6.4.3 in changelog<br />
+
 # [6.4.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.4)
 
 ## Fixed
