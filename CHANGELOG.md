@@ -1,3 +1,8 @@
+# [6.4.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.4)
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/16274ac9e9fc87954c5edf58dd3776e6cf49c2e6) Messed up 6.4.2, is 6.4.3 now<br />
+
 # [6.4.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.2)
 
 ## Fixed
