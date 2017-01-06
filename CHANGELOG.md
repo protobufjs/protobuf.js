@@ -1,10 +1,5 @@
 # [6.4.3](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.4)
 
-## Other
-[:hash:](https://github.com/dcodeIO/protobuf.js/commit/16274ac9e9fc87954c5edf58dd3776e6cf49c2e6) Messed up 6.4.2, is 6.4.3 now<br />
-
-# [6.4.2](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.2)
-
 ## Fixed
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/c2c39fc7cec5634ecd1fbaebbe199bf097269097) Fixed invalid definition of Field#packed property, also introduced decoder.compat mode (packed fields, on by default)<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/11fb1a66ae31af675d0d9ce0240cd8e920ae75e7) Always decode packed/non-packed based on wire format only, see [#602](https://github.com/dcodeIO/protobuf.js/issues/602)<br />
@@ -20,6 +15,8 @@
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/f22a34a071753bca416732ec4d01892263f543fb) Updated tests for new package.json layout<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/f22a34a071753bca416732ec4d01892263f543fb) Added break/continue label support to codegen<br />
 [:hash:](https://github.com/dcodeIO/protobuf.js/commit/f2ffa0731aea7c431c59e452e0f74247d815a352) Updated dependencies, rebuilt dist files and changed logo to use an absolute url<br />
+
+6.4.2 had been accidentally published as 6.4.3.
 
 # [6.4.1](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.1)
 
