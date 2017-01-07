@@ -519,11 +519,12 @@ WriterPrototype.ldelim = function ldelim() {
     var head = this.head,
         tail = this.tail,
         len  = this.len;
-    this.reset()
-        .uint32(len)
-        .tail.next = head.next; // skip noop
-    this.tail = tail;
-    this.len += len;
+    this.reset().uint32(len);
+    if (len) {
+        this.tail.next = head.next; // skip noop
+        this.tail = tail;
+        this.len += len;
+    }
     return this;
 };
 
