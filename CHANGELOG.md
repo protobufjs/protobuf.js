@@ -1,3 +1,15 @@
+# [6.4.5](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.5)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1154ce0867306e810cf62a5b41bdb0b765aa8ff3) Properly handle empty/noop Writer#ldelim, fixes [#625](https://github.com/dcodeIO/protobuf.js/issues/625)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/f303049f92c53970619375653be46fbb4e3b7d78) Properly annotate map fields in pbjs, fixes [#624](https://github.com/dcodeIO/protobuf.js/issues/624)<br />
+
+## New
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/4b786282a906387e071a5a28e4842a46df588c7d) Made sure that Writer#bytes is always able to handle plain arrays<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/1e6a8d10f291a16631376dd85d5dd385937e6a55) Slightly restructured utility to better support static code default values<br />
+
 # [6.4.4](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.4)
 
 ## Fixed
