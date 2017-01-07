@@ -56,15 +56,3 @@ util.lcFirst = function lcFirst(str) {
 util.ucFirst = function ucFirst(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
 };
-
-/**
- * Creates a new buffer of whatever type supported by the environment.
- * @param {number} [size=0] Buffer size
- * @returns {Uint8Array} Buffer
- */
-util.newBuffer = function newBuffer(size) {
-    size = size || 0;
-    return util.Buffer
-        ? util.Buffer.allocUnsafe(size)
-        : new (typeof Uint8Array !== "undefined" ? Uint8Array : Array)(size);
-};

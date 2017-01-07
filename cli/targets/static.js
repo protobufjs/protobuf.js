@@ -283,10 +283,14 @@ function buildType(ref, type) {
         else if (field.map)
             push("$prototype" + prop + " = $protobuf.util.emptyObject;");
         else if (field.long)
-            push("$prototype" + prop + " = $protobuf.util.Long ? $protobuf.util.Long.fromValue(" + JSON.stringify(field.typeDefault) + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
-        else if (field.bytes)
-            push("$prototype" + prop + " = " + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ";");
-        else
+            push("$prototype" + prop + " = $protobuf.util.Long ? $protobuf.util.Long.fromBits("
+                    + JSON.stringify(field.typeDefault.low) + ","
+                    + JSON.stringify(field.typeDefault.high) + ","
+                    + JSON.stringify(field.typeDefault.unsigned)
+                + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
+        else if (field.bytes) {
+            push("$prototype" + prop + " = $protobuf.util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
+        } else
             push("$prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
     });
 

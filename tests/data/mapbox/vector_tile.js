@@ -253,19 +253,19 @@ $root.vector_tile = (function() {
              * Value intValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.intValue = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":false}) : 0;
+            $prototype.intValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value uintValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.uintValue = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":true}) : 0;
+            $prototype.uintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Value sintValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.sintValue = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":false}) : 0;
+            $prototype.sintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value boolValue.
@@ -517,7 +517,7 @@ $root.vector_tile = (function() {
              * Feature id.
              * @type {number|$protobuf.Long}
              */
-            $prototype.id = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":true}) : 0;
+            $prototype.id = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Feature tags.

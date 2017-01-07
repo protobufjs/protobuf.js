@@ -12,7 +12,7 @@ var utf8 = exports;
  * @param {string} string String
  * @returns {number} Byte length
  */
-utf8.length = function length(string) {
+utf8.length = function utf8_length(string) {
     var len = 0,
         c = 0;
     for (var i = 0; i < string.length; ++i) {
@@ -37,7 +37,7 @@ utf8.length = function length(string) {
  * @param {number} end Source end
  * @returns {string} String read
  */
-utf8.read = function(buffer, start, end) {
+utf8.read = function utf8_read(buffer, start, end) {
     var len = end - start;
     if (len < 1)
         return "";
@@ -77,7 +77,7 @@ utf8.read = function(buffer, start, end) {
  * @param {number} offset Destination offset
  * @returns {number} Bytes written
  */
-utf8.write = function(string, buffer, offset) {
+utf8.write = function utf8_write(string, buffer, offset) {
     var start = offset,
         c1, // character 1
         c2; // character 2

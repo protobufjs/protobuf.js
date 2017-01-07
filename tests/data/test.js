@@ -2785,7 +2785,7 @@ $root.jspb = (function() {
              * DefaultValues intField.
              * @type {number|$protobuf.Long}
              */
-            $prototype.intField = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":11,"high":0,"unsigned":false}) : 11;
+            $prototype.intField = $protobuf.util.Long ? $protobuf.util.Long.fromBits(11,0,false) : 11;
 
             /**
              * DefaultValues enumField.
@@ -2803,7 +2803,7 @@ $root.jspb = (function() {
              * DefaultValues bytesField.
              * @type {Uint8Array}
              */
-            $prototype.bytesField = [109,111,111];
+            $prototype.bytesField = $protobuf.util.newBuffer([109,111,111]);
 
             // Referenced types
             var $types = [null, null, null, "jspb.test.DefaultValues.Enum", null, null]; $lazyTypes.push($types);
@@ -3422,7 +3422,7 @@ $root.jspb = (function() {
              * TestClone bytesField.
              * @type {Uint8Array}
              */
-            $prototype.bytesField = [];
+            $prototype.bytesField = $protobuf.util.newBuffer([]);
 
             /**
              * TestClone unused.
@@ -4823,7 +4823,7 @@ $root.jspb = (function() {
              * TestEndsWithBytes data.
              * @type {Uint8Array}
              */
-            $prototype.data = [];
+            $prototype.data = $protobuf.util.newBuffer([]);
 
             /**
              * Creates a new TestEndsWithBytes instance using the specified properties.
@@ -11470,13 +11470,13 @@ $root.google = (function() {
              * UninterpretedOption positiveIntValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.positiveIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":true}) : 0;
+            $prototype.positiveIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
 
             /**
              * UninterpretedOption negativeIntValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.negativeIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":false}) : 0;
+            $prototype.negativeIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
 
             /**
              * UninterpretedOption doubleValue.
@@ -11488,7 +11488,7 @@ $root.google = (function() {
              * UninterpretedOption stringValue.
              * @type {Uint8Array}
              */
-            $prototype.stringValue = [];
+            $prototype.stringValue = $protobuf.util.newBuffer([]);
 
             /**
              * UninterpretedOption aggregateValue.

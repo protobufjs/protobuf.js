@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.4.4 (c) 2016, Daniel Wirtz
- * Compiled Fri, 06 Jan 2017 02:04:13 UTC
+ * protobuf.js v6.4.5 (c) 2016, Daniel Wirtz
+ * Compiled Sat, 07 Jan 2017 14:41:13 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1240,7 +1240,18 @@ util.inquire  = require(2);
 util.utf8     = require(4);
 util.pool     = require(3);
 
-util.LongBits = require(9);
+/**
+ * An immuable empty array.
+ * @memberof util
+ * @type {Array.<*>}
+ */
+util.emptyArray = Object.freeze ? Object.freeze([]) : [];
+
+/**
+ * An immutable empty object.
+ * @type {Object}
+ */
+util.emptyObject = Object.freeze ? Object.freeze({}) : {};
 
 /**
  * Whether running within node or not.
@@ -1248,6 +1259,34 @@ util.LongBits = require(9);
  * @type {boolean}
  */
 util.isNode = Boolean(global.process && global.process.versions && global.process.versions.node);
+
+/**
+ * Tests if the specified value is an integer.
+ * @function
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is an integer
+ */
+util.isInteger = Number.isInteger || function isInteger(value) {
+    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+};
+
+/**
+ * Tests if the specified value is a string.
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a string
+ */
+util.isString = function isString(value) {
+    return typeof value === "string" || value instanceof String;
+};
+
+/**
+ * Tests if the specified value is a non-null object.
+ * @param {*} value Value to test
+ * @returns {boolean} `true` if the value is a non-null object
+ */
+util.isObject = function isObject(value) {
+    return value && typeof value === "object";
+};
 
 /**
  * Node's Buffer class if available.
@@ -1278,44 +1317,49 @@ util.Buffer = (function() {
 })();
 
 /**
+ * Creates a new buffer of whatever type supported by the environment.
+ * @param {number|number[]} [sizeOrArray=0] Buffer size or number array
+ * @returns {Uint8Array} Buffer
+ */
+util.newBuffer = function newBuffer(sizeOrArray) {
+    return typeof sizeOrArray === "number"
+        ? util.Buffer
+            ? util.Buffer.allocUnsafe(sizeOrArray) // polyfilled
+            : new util.Array(sizeOrArray)
+        : util.Buffer
+            ? util.Buffer.from(sizeOrArray) // polyfilled
+            : typeof Uint8Array === "undefined"
+                ? sizeOrArray
+                : new Uint8Array(sizeOrArray);
+};
+
+/**
  * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
  * @type {?function(new: Uint8Array, *)}
  */
 util.Array = typeof Uint8Array === "undefined" ? Array : Uint8Array;
 
 /**
+ * Tests if two arrays are not equal.
+ * @param {Array.<*>} a Array 1
+ * @param {Array.<*>} b Array 2
+ * @returns {boolean} `true` if not equal, otherwise `false`
+ */
+util.arrayNe = function arrayNe(a, b) {
+    if (a.length === b.length)
+        for (var i = 0; i < a.length; ++i)
+            if (a[i] !== b[i])
+                return true;
+    return false;
+};
+
+util.LongBits = require(9);
+
+/**
  * Long.js's Long class if available.
  * @type {?function(new: Long)}
  */
 util.Long = global.dcodeIO && global.dcodeIO.Long || util.inquire("long");
-
-/**
- * Tests if the specified value is an integer.
- * @function
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is an integer
- */
-util.isInteger = Number.isInteger || function isInteger(value) {
-    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
-};
-
-/**
- * Tests if the specified value is a string.
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is a string
- */
-util.isString = function isString(value) {
-    return typeof value === "string" || value instanceof String;
-};
-
-/**
- * Tests if the specified value is a non-null object.
- * @param {*} value Value to test
- * @returns {boolean} `true` if the value is a non-null object
- */
-util.isObject = function isObject(value) {
-    return value && typeof value === "object";
-};
 
 /**
  * Converts a number or long to an 8 characters long hash string.
@@ -1356,40 +1400,13 @@ util.longNe = function longNe(val, lo, hi) {
 };
 
 /**
- * An immuable empty array.
- * @memberof util
- * @type {Array.<*>}
- */
-util.emptyArray = Object.freeze ? Object.freeze([]) : [];
-
-/**
- * An immutable empty object.
- * @type {Object}
- */
-util.emptyObject = Object.freeze ? Object.freeze({}) : {};
-
-/**
- * Tests if two arrays are not equal.
- * @param {Array.<*>} a Array 1
- * @param {Array.<*>} b Array 2
- * @returns {boolean} `true` if not equal, otherwise `false`
- */
-util.arrayNe = function arrayNe(a, b) {
-    if (a.length === b.length)
-        for (var i = 0; i < a.length; ++i)
-            if (a[i] !== b[i])
-                return true;
-    return false;
-};
-
-/**
  * Merges the properties of the source object into the destination object.
  * @param {Object.<string,*>} dst Destination object
  * @param {Object.<string,*>} src Source object
  * @param {boolean} [ifNotSet=false] Merges only if the key is not already set
  * @returns {Object.<string,*>} Destination object
  */
-util.merge = function merge(dst, src, ifNotSet) {
+util.merge = function merge(dst, src, ifNotSet) { // used by converters
     if (src) {
         var keys = Object.keys(src);
         for (var i = 0; i < keys.length; ++i)
@@ -1525,7 +1542,7 @@ function Writer() {
     // list of operations to perform when finish() is called. This both allows us to allocate
     // buffers of the exact required size and reduces the amount of work we have to do compared
     // to first calculating over objects and then encoding over objects. In our case, the encoding
-    // part is just a linked list walk calling linked operations with already prepared values.
+    // part is just a linked list walk calling operations with already prepared values.
 }
 
 /**
@@ -1923,11 +1940,12 @@ WriterPrototype.ldelim = function ldelim() {
     var head = this.head,
         tail = this.tail,
         len  = this.len;
-    this.reset()
-        .uint32(len)
-        .tail.next = head.next; // skip noop
-    this.tail = tail;
-    this.len += len;
+    this.reset().uint32(len);
+    if (len) {
+        this.tail.next = head.next; // skip noop
+        this.tail = tail;
+        this.len += len;
+    }
     return this;
 };
 
@@ -1987,7 +2005,10 @@ var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffe
     }
     /* istanbul ignore next */
     : function writeBytesBuffer_copy(val, buf, pos) {
-        val.copy(buf, pos, 0, val.length);
+        if (val.copy)
+            val.copy(buf, pos, 0, val.length);
+        else for (var i = 0; i < val.length;)
+            buf[pos++] = val[i++];
     };
 
 /**

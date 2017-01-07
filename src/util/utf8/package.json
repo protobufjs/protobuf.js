@@ -1,7 +1,7 @@
 {
   "name": "@protobufjs/utf8",
   "description": "A minimal UTF8 implementation for number arrays.",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",

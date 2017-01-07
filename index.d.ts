@@ -2251,29 +2251,24 @@ export namespace util {
     function pool(alloc: PoolAllocator, slice: PoolSlicer, size?: number): PoolAllocator;
 
     /**
+     * An immuable empty array.
+     * @memberof util
+     * @type {Array.<*>}
+     */
+    var emptyArray: any[];
+
+    /**
+     * An immutable empty object.
+     * @type {Object}
+     */
+    var emptyObject: Object;
+
+    /**
      * Whether running within node or not.
      * @memberof util
      * @type {boolean}
      */
     var isNode: boolean;
-
-    /**
-     * Node's Buffer class if available.
-     * @type {?function(new: Buffer)}
-     */
-    var Buffer: () => any;
-
-    /**
-     * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
-     * @type {?function(new: Uint8Array, *)}
-     */
-    var Array: () => any;
-
-    /**
-     * Long.js's Long class if available.
-     * @type {?function(new: Long)}
-     */
-    var Long: () => any;
 
     /**
      * Tests if the specified value is an integer.
@@ -2298,6 +2293,39 @@ export namespace util {
     function isObject(value: any): boolean;
 
     /**
+     * Node's Buffer class if available.
+     * @type {?function(new: Buffer)}
+     */
+    var Buffer: () => any;
+
+    /**
+     * Creates a new buffer of whatever type supported by the environment.
+     * @param {number|number[]} [sizeOrArray=0] Buffer size or number array
+     * @returns {Uint8Array} Buffer
+     */
+    function newBuffer(sizeOrArray?: (number|number[])): Uint8Array;
+
+    /**
+     * Array implementation used in the browser. `Uint8Array` if supported, otherwise `Array`.
+     * @type {?function(new: Uint8Array, *)}
+     */
+    var Array: () => any;
+
+    /**
+     * Tests if two arrays are not equal.
+     * @param {Array.<*>} a Array 1
+     * @param {Array.<*>} b Array 2
+     * @returns {boolean} `true` if not equal, otherwise `false`
+     */
+    function arrayNe(a: any[], b: any[]): boolean;
+
+    /**
+     * Long.js's Long class if available.
+     * @type {?function(new: Long)}
+     */
+    var Long: () => any;
+
+    /**
      * Converts a number or long to an 8 characters long hash string.
      * @param {Long|number} value Value to convert
      * @returns {string} Hash
@@ -2320,27 +2348,6 @@ export namespace util {
      * @returns {boolean} `true` if not equal
      */
     function longNe(val: (number|string|Long), lo: number, hi: number): boolean;
-
-    /**
-     * An immuable empty array.
-     * @memberof util
-     * @type {Array.<*>}
-     */
-    var emptyArray: any[];
-
-    /**
-     * An immutable empty object.
-     * @type {Object}
-     */
-    var emptyObject: Object;
-
-    /**
-     * Tests if two arrays are not equal.
-     * @param {Array.<*>} a Array 1
-     * @param {Array.<*>} b Array 2
-     * @returns {boolean} `true` if not equal, otherwise `false`
-     */
-    function arrayNe(a: any[], b: any[]): boolean;
 
     /**
      * Merges the properties of the source object into the destination object.
@@ -2417,13 +2424,6 @@ export namespace util {
      * @returns {string} Converted string
      */
     function ucFirst(str: string): string;
-
-    /**
-     * Creates a new buffer of whatever type supported by the environment.
-     * @param {number} [size=0] Buffer size
-     * @returns {Uint8Array} Buffer
-     */
-    function newBuffer(size?: number): Uint8Array;
 }
 
 /**
