@@ -2785,7 +2785,7 @@ $root.jspb = (function() {
              * DefaultValues intField.
              * @type {number|$protobuf.Long}
              */
-            $prototype.intField = $protobuf.util.emptyObject;
+            $prototype.intField = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":11,"high":0,"unsigned":false}) : 11;
 
             /**
              * DefaultValues enumField.
@@ -2803,7 +2803,7 @@ $root.jspb = (function() {
              * DefaultValues bytesField.
              * @type {Uint8Array}
              */
-            $prototype.bytesField = $protobuf.util.emptyObject;
+            $prototype.bytesField = [109,111,111];
 
             // Referenced types
             var $types = [null, null, null, "jspb.test.DefaultValues.Enum", null, null]; $lazyTypes.push($types);
@@ -3422,7 +3422,7 @@ $root.jspb = (function() {
              * TestClone bytesField.
              * @type {Uint8Array}
              */
-            $prototype.bytesField = $protobuf.util.emptyArray;
+            $prototype.bytesField = [];
 
             /**
              * TestClone unused.
@@ -4823,7 +4823,7 @@ $root.jspb = (function() {
              * TestEndsWithBytes data.
              * @type {Uint8Array}
              */
-            $prototype.data = $protobuf.util.emptyArray;
+            $prototype.data = [];
 
             /**
              * Creates a new TestEndsWithBytes instance using the specified properties.
@@ -4992,61 +4992,61 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringString.
-             * @type {string}
+             * @type {Object.<string,string>}
              */
             $prototype.mapStringString = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt32.
-             * @type {number}
+             * @type {Object.<string,number>}
              */
             $prototype.mapStringInt32 = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringInt64.
-             * @type {number|$protobuf.Long}
+             * @type {Object.<string,number|$protobuf.Long>}
              */
             $prototype.mapStringInt64 = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringBool.
-             * @type {boolean}
+             * @type {Object.<string,boolean>}
              */
             $prototype.mapStringBool = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringDouble.
-             * @type {number}
+             * @type {Object.<string,number>}
              */
             $prototype.mapStringDouble = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringEnum.
-             * @type {number}
+             * @type {Object.<string,number>}
              */
             $prototype.mapStringEnum = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapStringMsg.
-             * @type {jspb.test.MapValueMessageNoBinary}
+             * @type {Object.<string,jspb.test.MapValueMessageNoBinary>}
              */
             $prototype.mapStringMsg = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt32String.
-             * @type {string}
+             * @type {Object.<string,string>}
              */
             $prototype.mapInt32String = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapInt64String.
-             * @type {string}
+             * @type {Object.<string,string>}
              */
             $prototype.mapInt64String = $protobuf.util.emptyObject;
 
             /**
              * TestMapFieldsNoBinary mapBoolString.
-             * @type {string}
+             * @type {Object.<string,string>}
              */
             $prototype.mapBoolString = $protobuf.util.emptyObject;
 
@@ -5058,7 +5058,7 @@ $root.jspb = (function() {
 
             /**
              * TestMapFieldsNoBinary mapStringTestmapfields.
-             * @type {jspb.test.TestMapFieldsNoBinary}
+             * @type {Object.<string,jspb.test.TestMapFieldsNoBinary>}
              */
             $prototype.mapStringTestmapfields = $protobuf.util.emptyObject;
 
@@ -11470,13 +11470,13 @@ $root.google = (function() {
              * UninterpretedOption positiveIntValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.positiveIntValue = $protobuf.util.emptyObject;
+            $prototype.positiveIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":true}) : 0;
 
             /**
              * UninterpretedOption negativeIntValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.negativeIntValue = $protobuf.util.emptyObject;
+            $prototype.negativeIntValue = $protobuf.util.Long ? $protobuf.util.Long.fromValue({"low":0,"high":0,"unsigned":false}) : 0;
 
             /**
              * UninterpretedOption doubleValue.
@@ -11488,7 +11488,7 @@ $root.google = (function() {
              * UninterpretedOption stringValue.
              * @type {Uint8Array}
              */
-            $prototype.stringValue = $protobuf.util.emptyArray;
+            $prototype.stringValue = [];
 
             /**
              * UninterpretedOption aggregateValue.

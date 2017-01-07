@@ -90,31 +90,31 @@ $root.Package = (function() {
 
     /**
      * Package bin.
-     * @type {string}
+     * @type {Object.<string,string>}
      */
     $prototype.bin = $protobuf.util.emptyObject;
 
     /**
      * Package scripts.
-     * @type {string}
+     * @type {Object.<string,string>}
      */
     $prototype.scripts = $protobuf.util.emptyObject;
 
     /**
      * Package dependencies.
-     * @type {string}
+     * @type {Object.<string,string>}
      */
     $prototype.dependencies = $protobuf.util.emptyObject;
 
     /**
      * Package optionalDependencies.
-     * @type {string}
+     * @type {Object.<string,string>}
      */
     $prototype.optionalDependencies = $protobuf.util.emptyObject;
 
     /**
      * Package devDependencies.
-     * @type {string}
+     * @type {Object.<string,string>}
      */
     $prototype.devDependencies = $protobuf.util.emptyObject;
 

@@ -394,18 +394,18 @@ export namespace jspb {
 
         class TestMapFieldsNoBinary {
             constructor(properties?: Object);
-            mapStringString: string;
-            mapStringInt32: number;
-            mapStringInt64: (number|$protobuf.Long);
-            mapStringBool: boolean;
-            mapStringDouble: number;
-            mapStringEnum: number;
-            mapStringMsg: jspb.test.MapValueMessageNoBinary;
-            mapInt32String: string;
-            mapInt64String: string;
-            mapBoolString: string;
+            mapStringString: { [k: string]: string };
+            mapStringInt32: { [k: string]: number };
+            mapStringInt64: { [k: string]: (number|$protobuf.Long) };
+            mapStringBool: { [k: string]: boolean };
+            mapStringDouble: { [k: string]: number };
+            mapStringEnum: { [k: string]: number };
+            mapStringMsg: { [k: string]: jspb.test.MapValueMessageNoBinary };
+            mapInt32String: { [k: string]: string };
+            mapInt64String: { [k: string]: string };
+            mapBoolString: { [k: string]: string };
             testMapFields: jspb.test.TestMapFieldsNoBinary;
-            mapStringTestmapfields: jspb.test.TestMapFieldsNoBinary;
+            mapStringTestmapfields: { [k: string]: jspb.test.TestMapFieldsNoBinary };
             static create(properties?: Object): jspb.test.TestMapFieldsNoBinary;
             static encode(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;
             static encodeDelimited(message: (jspb.test.TestMapFieldsNoBinary|Object), writer?: $protobuf.Writer): $protobuf.Writer;

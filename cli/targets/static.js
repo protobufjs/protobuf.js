@@ -199,6 +199,37 @@ function buildFunction(type, functionName, gen, scope) {
     push("};})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + ");");
 }
 
+function toJsType(field) {
+    switch (field.type) {
+        case "double":
+        case "float":
+        case "int32":
+        case "uint32":
+        case "sint32":
+        case "fixed32":
+        case "sfixed32":
+            return "number";
+        case "int64":
+        case "uint64":
+        case "sint64":
+        case "fixed64":
+        case "sfixed64":
+            return "number|$protobuf.Long";
+        case "bool":
+            return "boolean";
+        case "string":
+            return "string";
+        case "bytes":
+            return "Uint8Array";
+        default:
+            if (field.resolvedType instanceof Enum)
+                return "number";
+            if (field.resolvedType instanceof Type)
+                return field.resolvedType.fullName.substring(1);
+            return "*"; // should not happen
+    }
+}
+
 function buildType(ref, type) {
     var fullName = type.fullName.substring(1);
 
@@ -233,44 +264,10 @@ function buildType(ref, type) {
     // default values
     type.fieldsArray.forEach(function(field) {
         field.resolve();
-        var jsType;
-        switch (field.type) {
-            case "double":
-            case "float":
-            case "int32":
-            case "uint32":
-            case "sint32":
-            case "fixed32":
-            case "sfixed32":
-                jsType = "number";
-                break;
-            case "int64":
-            case "uint64":
-            case "sint64":
-            case "fixed64":
-            case "sfixed64":
-                jsType = "number|$protobuf.Long";
-                break;
-            case "bool":
-                jsType = "boolean";
-                break;
-            case "string":
-                jsType = "string";
-                break;
-            case "bytes":
-                jsType = "Uint8Array";
-                break;
-            default:
-                if (field.resolvedType instanceof Enum) {
-                    jsType = "number";
-                } else if (field.resolvedType instanceof Type) {
-                    jsType = field.resolvedType.fullName.substring(1);
-                } else {
-                    jsType = "*"; // should not happen
-                }
-                break;
-        }
-        if (field.repeated)
+        var jsType = toJsType(field);
+        if (field.map)
+            jsType = "Object.<string," + jsType + ">"; // keys are always strings
+        else if (field.repeated)
             jsType = "Array.<" + jsType + ">";
         var prop = util.safeProp(field.name);
         if (config.comments) {
@@ -281,12 +278,16 @@ function buildType(ref, type) {
                 "@type {" + jsType + "}"
             ]);
         }
-        if (Array.isArray(field.defaultValue)) {
+        if (field.repeated)
             push("$prototype" + prop + " = $protobuf.util.emptyArray;");
-        } else if (util.isObject(field.defaultValue))
+        else if (field.map)
             push("$prototype" + prop + " = $protobuf.util.emptyObject;");
+        else if (field.long)
+            push("$prototype" + prop + " = $protobuf.util.Long ? $protobuf.util.Long.fromValue(" + JSON.stringify(field.typeDefault) + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
+        else if (field.bytes)
+            push("$prototype" + prop + " = " + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ";");
         else
-            push("$prototype" + prop + " = " + JSON.stringify(field.defaultValue) + ";");
+            push("$prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
     });
 
     // virtual oneof fields
