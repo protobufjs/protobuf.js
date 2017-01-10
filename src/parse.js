@@ -468,11 +468,10 @@ function parse(source, root, options) {
                 if (!isName(token))
                     throw illegal(token, "name");
 
-                name = name + "." + token;
                 if (skip(":", true))
-                    setOption(parent, name, readValue(true));
+                    setOption(parent, name + "." + token, readValue(true));
                 else
-                    parseOptionValue(parent, name);
+                    parseOptionValue(parent, name + "." + token);
             }
         } else
             setOption(parent, name, readValue(true));

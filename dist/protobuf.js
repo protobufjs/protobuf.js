@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.6 (c) 2016, Daniel Wirtz
- * Compiled Tue, 10 Jan 2017 15:46:14 UTC
+ * Compiled Tue, 10 Jan 2017 15:56:54 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3646,11 +3646,10 @@ function parse(source, root, options) {
                 if (!isName(token))
                     throw illegal(token, "name");
 
-                name = name + "." + token;
                 if (skip(":", true))
-                    setOption(parent, name, readValue(true));
+                    setOption(parent, name + "." + token, readValue(true));
                 else
-                    parseOptionValue(parent, name);
+                    parseOptionValue(parent, name + "." + token);
             }
         } else
             setOption(parent, name, readValue(true));
