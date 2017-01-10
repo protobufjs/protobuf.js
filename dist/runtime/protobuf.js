@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.4.5 (c) 2016, Daniel Wirtz
- * Compiled Sat, 07 Jan 2017 14:41:13 UTC
+ * protobuf.js v6.4.6 (c) 2016, Daniel Wirtz
+ * Compiled Tue, 10 Jan 2017 15:46:14 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1407,12 +1407,10 @@ util.longNe = function longNe(val, lo, hi) {
  * @returns {Object.<string,*>} Destination object
  */
 util.merge = function merge(dst, src, ifNotSet) { // used by converters
-    if (src) {
-        var keys = Object.keys(src);
-        for (var i = 0; i < keys.length; ++i)
+    if (src)
+        for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
             if (dst[keys[i]] === undefined || !ifNotSet)
                 dst[keys[i]] = src[keys[i]];
-    }
     return dst;
 };
 

@@ -44,13 +44,11 @@ function decoder(mtype) {
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
                 ("var k=r.%s()", keyType)
-                ("if(typeof k===\"object\")")
-                    ("k=util.longToHash(k)")
                 ("r.pos++"); // assumes id 2 + value wireType
             if (types.basic[type] === undefined) gen
-                ("%s[k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
             else gen
-                ("%s[k]=r.%s()", ref, type);
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=r.%s()", ref, type);
 
         // Repeated fields
         } else if (field.repeated) { gen

@@ -788,23 +788,50 @@ export class Method extends ReflectionObject {
 
 /**
  * Constructs a new namespace instance.
- * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
- * @extends ReflectionObject
+ * @name Namespace
+ * @classdesc Reflected namespace.
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Namespace name
  * @param {Object.<string,*>} [options] Declared options
  */
-export class Namespace extends ReflectionObject {
+export class Namespace extends NamespaceBase {
 
     /**
      * Constructs a new namespace instance.
-     * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
-     * @extends ReflectionObject
+     * @name Namespace
+     * @classdesc Reflected namespace.
+     * @extends NamespaceBase
      * @constructor
      * @param {string} name Namespace name
      * @param {Object.<string,*>} [options] Declared options
      */
     constructor(name: string, options?: { [k: string]: any });
+
+    /**
+     * Constructs a namespace from JSON.
+     * @name Namespace.fromJSON
+     * @function
+     * @param {string} name Namespace name
+     * @param {Object.<string,*>} json JSON object
+     * @returns {Namespace} Created namespace
+     * @throws {TypeError} If arguments are invalid
+     */
+    static fromJSON(name: string, json: { [k: string]: any }): Namespace;
+}
+
+/**
+ * This is not an actual class but here for the sake of having consistent type definitions.
+ * @classdesc Base of all reflection objects containing nested objects.
+ * @exports NamespaceBase
+ * @extends ReflectionObject
+ * @abstract
+ * @constructor
+ * @param {string} name Namespace name
+ * @param {Object.<string,*>} [options] Declared options
+ * @see {@link Namespace}
+ */
+export abstract class NamespaceBase extends ReflectionObject {
 
     /**
      * Nested objects by name.
@@ -814,7 +841,7 @@ export class Namespace extends ReflectionObject {
 
     /**
      * Nested objects of this namespace as an array for iteration.
-     * @name Namespace#nestedArray
+     * @name NamespaceBase#nestedArray
      * @type {ReflectionObject[]}
      * @readonly
      */
@@ -828,17 +855,8 @@ export class Namespace extends ReflectionObject {
     static testJSON(json: any): boolean;
 
     /**
-     * Constructs a namespace from JSON.
-     * @param {string} name Namespace name
-     * @param {Object.<string,*>} json JSON object
-     * @returns {Namespace} Created namespace
-     * @throws {TypeError} If arguments are invalid
-     */
-    static fromJSON(name: string, json: { [k: string]: any }): Namespace;
-
-    /**
      * Converts an array of reflection objects to JSON.
-     * @memberof Namespace
+     * @memberof NamespaceBase
      * @param {ReflectionObject[]} array Object array
      * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
      */
@@ -910,7 +928,7 @@ export class Namespace extends ReflectionObject {
 
     /**
      * Looks up the reflection object at the specified path, relative to this namespace.
-     * @name Namespace#lookup
+     * @name NamespaceBase#lookup
      * @function
      * @param {string|string[]} path Path to look up
      * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
@@ -1349,16 +1367,16 @@ export class BufferReader extends Reader {
 /**
  * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {Object.<string,*>} [options] Top level options
  */
-export class Root extends Namespace {
+export class Root extends NamespaceBase {
 
     /**
      * Constructs a new root namespace instance.
      * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
-     * @extends Namespace
+     * @extends NamespaceBase
      * @constructor
      * @param {Object.<string,*>} [options] Top level options
      */
@@ -1378,11 +1396,11 @@ export class Root extends Namespace {
 
     /**
      * Loads a JSON definition into a root namespace.
-     * @param {Object.<string,*>|*} json JSON definition
+     * @param {Object.<string,*>} json JSON definition
      * @param {Root} [root] Root namespace, defaults to create a new one if omitted
      * @returns {Root} Root namespace
      */
-    static fromJSON(json: ({ [k: string]: any }|any), root?: Root): Root;
+    static fromJSON(json: { [k: string]: any }, root?: Root): Root;
 
     /**
      * Resolves the path of an imported file, relative to the importing origin.

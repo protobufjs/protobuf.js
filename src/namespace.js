@@ -3,7 +3,7 @@ module.exports = Namespace;
 
 // extends ReflectionObject
 var ReflectionObject = require("./object");
-/** @alias Namespace.prototype */
+/** @alias NamespaceBase.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
 Namespace.className = "Namespace";
@@ -33,11 +33,24 @@ function initNested() {
 
 /**
  * Constructs a new namespace instance.
- * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
- * @extends ReflectionObject
+ * @name Namespace
+ * @classdesc Reflected namespace.
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Namespace name
  * @param {Object.<string,*>} [options] Declared options
+ */
+
+/**
+ * This is not an actual class but here for the sake of having consistent type definitions.
+ * @classdesc Base of all reflection objects containing nested objects.
+ * @exports NamespaceBase
+ * @extends ReflectionObject
+ * @abstract
+ * @constructor
+ * @param {string} name Namespace name
+ * @param {Object.<string,*>} [options] Declared options
+ * @see {@link Namespace}
  */
 function Namespace(name, options) {
     ReflectionObject.call(this, name, options);
@@ -73,7 +86,7 @@ function clearCache(namespace) {
 
 /**
  * Nested objects of this namespace as an array for iteration.
- * @name Namespace#nestedArray
+ * @name NamespaceBase#nestedArray
  * @type {ReflectionObject[]}
  * @readonly
  */
@@ -101,6 +114,8 @@ Namespace.testJSON = function testJSON(json) {
 
 /**
  * Constructs a namespace from JSON.
+ * @name Namespace.fromJSON
+ * @function
  * @param {string} name Namespace name
  * @param {Object.<string,*>} json JSON object
  * @returns {Namespace} Created namespace
@@ -122,7 +137,7 @@ NamespacePrototype.toJSON = function toJSON() {
 
 /**
  * Converts an array of reflection objects to JSON.
- * @memberof Namespace
+ * @memberof NamespaceBase
  * @param {ReflectionObject[]} array Object array
  * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
  */
@@ -352,7 +367,7 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
 
 /**
  * Looks up the reflection object at the specified path, relative to this namespace.
- * @name Namespace#lookup
+ * @name NamespaceBase#lookup
  * @function
  * @param {string|string[]} path Path to look up
  * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked

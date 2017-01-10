@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.4.5 (c) 2016, Daniel Wirtz
- * Compiled Sat, 07 Jan 2017 14:41:13 UTC
+ * protobuf.js v6.4.6 (c) 2016, Daniel Wirtz
+ * Compiled Tue, 10 Jan 2017 15:46:14 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1187,13 +1187,11 @@ function decoder(mtype) {
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
                 ("var k=r.%s()", keyType)
-                ("if(typeof k===\"object\")")
-                    ("k=util.longToHash(k)")
                 ("r.pos++"); // assumes id 2 + value wireType
             if (types.basic[type] === undefined) gen
-                ("%s[k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=types[%d].decode(r,r.uint32())", ref, i); // can't be groups
             else gen
-                ("%s[k]=r.%s()", ref, type);
+                ("%s[typeof k===\"object\"?util.longToHash(k):k]=r.%s()", ref, type);
 
         // Repeated fields
         } else if (field.repeated) { gen
@@ -2148,7 +2146,7 @@ module.exports = Namespace;
 
 // extends ReflectionObject
 var ReflectionObject = require(22);
-/** @alias Namespace.prototype */
+/** @alias NamespaceBase.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
 Namespace.className = "Namespace";
@@ -2178,11 +2176,24 @@ function initNested() {
 
 /**
  * Constructs a new namespace instance.
- * @classdesc Reflected namespace and base class of all reflection objects containing nested objects.
- * @extends ReflectionObject
+ * @name Namespace
+ * @classdesc Reflected namespace.
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Namespace name
  * @param {Object.<string,*>} [options] Declared options
+ */
+
+/**
+ * This is not an actual class but here for the sake of having consistent type definitions.
+ * @classdesc Base of all reflection objects containing nested objects.
+ * @exports NamespaceBase
+ * @extends ReflectionObject
+ * @abstract
+ * @constructor
+ * @param {string} name Namespace name
+ * @param {Object.<string,*>} [options] Declared options
+ * @see {@link Namespace}
  */
 function Namespace(name, options) {
     ReflectionObject.call(this, name, options);
@@ -2218,7 +2229,7 @@ function clearCache(namespace) {
 
 /**
  * Nested objects of this namespace as an array for iteration.
- * @name Namespace#nestedArray
+ * @name NamespaceBase#nestedArray
  * @type {ReflectionObject[]}
  * @readonly
  */
@@ -2246,6 +2257,8 @@ Namespace.testJSON = function testJSON(json) {
 
 /**
  * Constructs a namespace from JSON.
+ * @name Namespace.fromJSON
+ * @function
  * @param {string} name Namespace name
  * @param {Object.<string,*>} json JSON object
  * @returns {Namespace} Created namespace
@@ -2267,7 +2280,7 @@ NamespacePrototype.toJSON = function toJSON() {
 
 /**
  * Converts an array of reflection objects to JSON.
- * @memberof Namespace
+ * @memberof NamespaceBase
  * @param {ReflectionObject[]} array Object array
  * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
  */
@@ -2497,7 +2510,7 @@ NamespacePrototype.lookup = function lookup(path, filterType, parentAlreadyCheck
 
 /**
  * Looks up the reflection object at the specified path, relative to this namespace.
- * @name Namespace#lookup
+ * @name NamespaceBase#lookup
  * @function
  * @param {string|string[]} path Path to look up
  * @param {boolean} [parentAlreadyChecked=false] Whether the parent has already been checked
@@ -3515,7 +3528,7 @@ var parse,  // cyclic, might be excluded
 /**
  * Constructs a new root namespace instance.
  * @classdesc Root namespace wrapping all types, enums, services, sub-namespaces etc. that belong together.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {Object.<string,*>} [options] Top level options
  */
@@ -3537,12 +3550,11 @@ function Root(options) {
 
 /**
  * Loads a JSON definition into a root namespace.
- * @param {Object.<string,*>|*} json JSON definition
+ * @param {Object.<string,*>} json JSON definition
  * @param {Root} [root] Root namespace, defaults to create a new one if omitted
  * @returns {Root} Root namespace
  */
 Root.fromJSON = function fromJSON(json, root) {
-    // note that `json` actually must be of type `Object.<string,*>` but TypeScript
     if (!root)
         root = new Root();
     return root.setOptions(json.options).addJSON(json.nested);
@@ -3831,11 +3843,7 @@ rpc.Service = require(28);
 "use strict";
 module.exports = Service;
 
-// extends EventEmitter
 var EventEmitter = require(32).EventEmitter;
-/** @alias rpc.Service.prototype */
-var ServicePrototype = Service.prototype = Object.create(EventEmitter.prototype);
-ServicePrototype.constructor = Service;
 
 /**
  * Constructs a new RPC service instance.
@@ -3855,12 +3863,14 @@ function Service(rpcImpl) {
     this.$rpc = rpcImpl;
 }
 
+(Service.prototype = Object.create(EventEmitter.prototype)).constructor = Service;
+
 /**
  * Ends this service and emits the `end` event.
  * @param {boolean} [endedByRPC=false] Whether the service has been ended by the RPC implementation.
  * @returns {rpc.Service} `this`
  */
-ServicePrototype.end = function end(endedByRPC) {
+Service.prototype.end = function end(endedByRPC) {
     if (this.$rpc) {
         if (!endedByRPC) // signal end to rpcImpl
             this.$rpc(null, null, null);
@@ -5153,12 +5163,10 @@ util.longNe = function longNe(val, lo, hi) {
  * @returns {Object.<string,*>} Destination object
  */
 util.merge = function merge(dst, src, ifNotSet) { // used by converters
-    if (src) {
-        var keys = Object.keys(src);
-        for (var i = 0; i < keys.length; ++i)
+    if (src)
+        for (var keys = Object.keys(src), i = 0; i < keys.length; ++i)
             if (dst[keys[i]] === undefined || !ifNotSet)
                 dst[keys[i]] = src[keys[i]];
-    }
     return dst;
 };
 
