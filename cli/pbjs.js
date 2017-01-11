@@ -8,8 +8,8 @@ util.setup();
 
 var protobuf = require(".."),
     minimist = require("minimist"),
-    chalk = require("chalk"),
-    glob = require("glob");
+    chalk    = require("chalk"),
+    glob     = require("glob");
 
 var targets  = util.requireAll("./targets");
 

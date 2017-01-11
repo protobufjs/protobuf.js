@@ -1,3 +1,17 @@
+# [6.4.6](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.6)
+
+## Fixed
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/e11012ce047e8b231ba7d8cc896b8e3a88bcb902) Case-sensitively test for legacy group definitions, fixes [#638](https://github.com/dcodeIO/protobuf.js/issues/638)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/7e57f4cdd284f886b936511b213a6468e4ddcdce) Properly parse text format options + simple test case, fixes [#636](https://github.com/dcodeIO/protobuf.js/issues/636)<br />
+
+## Docs
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fe4d97bbc4d33ce94352dde62ddcd44ead02d7ad) Added SVG logo, see [#629](https://github.com/dcodeIO/protobuf.js/issues/629)<br />
+
+## Other
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/57990f7ed8ad5c512c28ad040908cee23bbf2aa8) Also refactored Service and Type to inherit from NamespaceBase, see [#635](https://github.com/dcodeIO/protobuf.js/issues/635)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fe4d97bbc4d33ce94352dde62ddcd44ead02d7ad) Moved TS-compatible Namespace features to a virtual NamespaceBase class, compiles with strictNullChecks by default now, see [#635](https://github.com/dcodeIO/protobuf.js/issues/635)<br />
+[:hash:](https://github.com/dcodeIO/protobuf.js/commit/fe4d97bbc4d33ce94352dde62ddcd44ead02d7ad) Minor codegen enhancements<br />
+
 # [6.4.5](https://github.com/dcodeIO/protobuf.js/releases/tag/6.4.5)
 
 ## Fixed
