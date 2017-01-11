@@ -837,7 +837,11 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="Namespace.arrayToJSON"><a href="Namespace.html#.arrayToJSON">arrayToJSON</a></li>
+            
                 <li data-name="Namespace.fromJSON"><a href="Namespace.html#.fromJSON">fromJSON</a></li>
+            
+                <li data-name="Namespace.testJSON"><a href="Namespace.html#.testJSON">testJSON</a></li>
             
                 <li data-name="Namespace#add"><a href="Namespace.html#add">add</a></li>
             
@@ -917,10 +921,6 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
-            
-                <li data-name="NamespaceBase.arrayToJSON"><a href="NamespaceBase.html#.arrayToJSON">arrayToJSON</a></li>
-            
-                <li data-name="NamespaceBase.testJSON"><a href="NamespaceBase.html#.testJSON">testJSON</a></li>
             
                 <li data-name="NamespaceBase#add"><a href="NamespaceBase.html#add">add</a></li>
             
@@ -2196,6 +2196,154 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".arrayToJSON">
+            
+            Namespace.arrayToJSON<span class="signature">(array)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object&lt;string, *> | undefined }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L80">line 80</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Converts an array of reflection objects to JSON.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="ReflectionObject.html">ReflectionObject</a>></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Object array</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Object.&lt;string, *>
+                         | 
+                    
+                        undefined
+                        
+                    
+            </td>
+            <td class="description last">JSON object or <code>undefined</code> when array is empty</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".fromJSON">
             
             Namespace.fromJSON<span class="signature">(name, json)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Namespace.html">Namespace</a> }</span>
@@ -2203,7 +2351,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L115">line 115</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L70">line 70</a>
         </div>
         
     </div>
@@ -2391,6 +2539,151 @@
         
             
 <dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".testJSON">
+            
+            Namespace.testJSON<span class="signature">(json)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ boolean }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L50">line 50</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Tests if the specified JSON object describes not another reflection object.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>JSON object</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last"><code>true</code> if the object describes not another reflection object</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <div class="nameContainer inherited">
         <h4 class="name" id="add">
             
@@ -2401,7 +2694,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L207">line 207</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L208">line 208</a>
         </div>
         
     </div>
@@ -2602,7 +2895,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L160">line 160</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L161">line 161</a>
         </div>
         
     </div>
@@ -2749,7 +3042,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L273">line 273</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L274">line 274</a>
         </div>
         
     </div>
@@ -2934,7 +3227,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L181">line 181</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L182">line 182</a>
         </div>
         
     </div>
@@ -3081,7 +3374,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L194">line 194</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L195">line 195</a>
         </div>
         
     </div>
@@ -3403,7 +3696,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L346">line 346</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L347">line 347</a>
         </div>
         
     </div>
@@ -3632,7 +3925,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L368">line 368</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L369">line 369</a>
         </div>
         
     </div>
@@ -3829,7 +4122,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L424">line 424</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L425">line 425</a>
         </div>
         
     </div>
@@ -4007,7 +4300,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L405">line 405</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L406">line 406</a>
         </div>
         
     </div>
@@ -4185,7 +4478,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L386">line 386</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L387">line 387</a>
         </div>
         
     </div>
@@ -4657,7 +4950,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L251">line 251</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L252">line 252</a>
         </div>
         
     </div>
@@ -4960,7 +5253,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L329">line 329</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js">namespace.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js#L330">line 330</a>
         </div>
         
     </div>
