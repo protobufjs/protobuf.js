@@ -300,7 +300,7 @@ function parse(source, root, options) {
 
     function parseField(parent, rule, extend) {
         var type = next();
-        if (lower(type) === "group") {
+        if (type === "group") {
             parseGroup(parent, rule);
             return;
         }
