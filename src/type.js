@@ -24,10 +24,59 @@ var Enum      = require("./enum"),
     verifier  = require("./verifier"),
     converter = require("./converter");
 
+var nestedTypes = [ Enum, Type, Field, Service ];
+
+/**
+ * Tests if the specified JSON object describes a message type.
+ * @param {*} json JSON object to test
+ * @returns {boolean} `true` if the object describes a message type
+ */
+Type.testJSON = function testJSON(json) {
+    return Boolean(json && json.fields);
+};
+
+/**
+ * Creates a type from JSON.
+ * @param {string} name Message name
+ * @param {Object.<string,*>} json JSON object
+ * @returns {Type} Created message type
+ */
+Type.fromJSON = function fromJSON(name, json) {
+    var type = new Type(name, json.options);
+    type.extensions = json.extensions;
+    type.reserved = json.reserved;
+    if (json.fields)
+        Object.keys(json.fields).forEach(function(fieldName) {
+            type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
+        });
+    if (json.oneofs)
+        Object.keys(json.oneofs).forEach(function(oneOfName) {
+            type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
+        });
+    if (json.nested)
+        Object.keys(json.nested).forEach(function(nestedName) {
+            var nested = json.nested[nestedName];
+            for (var i = 0; i < nestedTypes.length; ++i) {
+                if (nestedTypes[i].testJSON(nested)) {
+                    type.add(nestedTypes[i].fromJSON(nestedName, nested));
+                    return;
+                }
+            }
+            throw Error("invalid nested object in " + type + ": " + nestedName);
+        });
+    if (json.extensions && json.extensions.length)
+        type.extensions = json.extensions;
+    if (json.reserved && json.reserved.length)
+        type.reserved = json.reserved;
+    if (json.group)
+        type.group = true;
+    return type;
+};
+
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Message name
  * @param {Object.<string,*>} [options] Declared options
@@ -172,55 +221,6 @@ function clearCache(type) {
     delete type.verify;
     return type;
 }
-
-/**
- * Tests if the specified JSON object describes a message type.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a message type
- */
-Type.testJSON = function testJSON(json) {
-    return Boolean(json && json.fields);
-};
-
-var nestedTypes = [ Enum, Type, Field, Service ];
-
-/**
- * Creates a type from JSON.
- * @param {string} name Message name
- * @param {Object.<string,*>} json JSON object
- * @returns {Type} Created message type
- */
-Type.fromJSON = function fromJSON(name, json) {
-    var type = new Type(name, json.options);
-    type.extensions = json.extensions;
-    type.reserved = json.reserved;
-    if (json.fields)
-        Object.keys(json.fields).forEach(function(fieldName) {
-            type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
-        });
-    if (json.oneofs)
-        Object.keys(json.oneofs).forEach(function(oneOfName) {
-            type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
-        });
-    if (json.nested)
-        Object.keys(json.nested).forEach(function(nestedName) {
-            var nested = json.nested[nestedName];
-            for (var i = 0; i < nestedTypes.length; ++i) {
-                if (nestedTypes[i].testJSON(nested)) {
-                    type.add(nestedTypes[i].fromJSON(nestedName, nested));
-                    return;
-                }
-            }
-            throw Error("invalid nested object in " + type + ": " + nestedName);
-        });
-    if (json.extensions && json.extensions.length)
-        type.extensions = json.extensions;
-    if (json.reserved && json.reserved.length)
-        type.reserved = json.reserved;
-    if (json.group)
-        type.group = true;
-    return type;
-};
 
 /**
  * @override

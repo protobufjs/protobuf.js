@@ -17,7 +17,7 @@ var Method = require("./method"),
 /**
  * Constructs a new service instance.
  * @classdesc Reflected service.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Service name
  * @param {Object.<string,*>} [options] Service options
@@ -38,23 +38,6 @@ function Service(name, options) {
      * @private
      */
     this._methodsArray = null;
-}
-
-/**
- * Methods of this service as an array for iteration.
- * @name Service#methodsArray
- * @type {Method[]}
- * @readonly
- */
-Object.defineProperty(ServicePrototype, "methodsArray", {
-    get: function() {
-        return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
-    }
-});
-
-function clearCache(service) {
-    service._methodsArray = null;
-    return service;
 }
 
 /**
@@ -81,6 +64,23 @@ Service.fromJSON = function fromJSON(name, json) {
         });
     return service;
 };
+
+/**
+ * Methods of this service as an array for iteration.
+ * @name Service#methodsArray
+ * @type {Method[]}
+ * @readonly
+ */
+Object.defineProperty(ServicePrototype, "methodsArray", {
+    get: function() {
+        return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
+    }
+});
+
+function clearCache(service) {
+    service._methodsArray = null;
+    return service;
+}
 
 /**
  * @override

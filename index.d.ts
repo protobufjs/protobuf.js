@@ -809,8 +809,16 @@ export class Namespace extends NamespaceBase {
     constructor(name: string, options?: { [k: string]: any });
 
     /**
+     * Tests if the specified JSON object describes not another reflection object.
+     * @memberof Namespace
+     * @param {*} json JSON object
+     * @returns {boolean} `true` if the object describes not another reflection object
+     */
+    static testJSON(json: any): boolean;
+
+    /**
      * Constructs a namespace from JSON.
-     * @name Namespace.fromJSON
+     * @memberof Namespace
      * @function
      * @param {string} name Namespace name
      * @param {Object.<string,*>} json JSON object
@@ -818,11 +826,19 @@ export class Namespace extends NamespaceBase {
      * @throws {TypeError} If arguments are invalid
      */
     static fromJSON(name: string, json: { [k: string]: any }): Namespace;
+
+    /**
+     * Converts an array of reflection objects to JSON.
+     * @memberof Namespace
+     * @param {ReflectionObject[]} array Object array
+     * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
+     */
+    static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
 }
 
 /**
- * This is not an actual class but here for the sake of having consistent type definitions.
- * @classdesc Base of all reflection objects containing nested objects.
+ * Not an actual constructor. Use {@link Namespace} instead.
+ * @classdesc Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions.
  * @exports NamespaceBase
  * @extends ReflectionObject
  * @abstract
@@ -846,21 +862,6 @@ export abstract class NamespaceBase extends ReflectionObject {
      * @readonly
      */
     readonly nestedArray: ReflectionObject[];
-
-    /**
-     * Tests if the specified JSON object describes not another reflection object.
-     * @param {*} json JSON object
-     * @returns {boolean} `true` if the object describes not another reflection object
-     */
-    static testJSON(json: any): boolean;
-
-    /**
-     * Converts an array of reflection objects to JSON.
-     * @memberof NamespaceBase
-     * @param {ReflectionObject[]} array Object array
-     * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
-     */
-    static arrayToJSON(array: ReflectionObject[]): ({ [k: string]: any }|undefined);
 
     /**
      * Adds nested elements to this namespace from JSON.
@@ -1451,7 +1452,7 @@ export namespace rpc {
     /**
      * Constructs a new RPC service instance.
      * @classdesc An RPC service as returned by {@link Service#create}.
-     * @memberof rpc
+     * @exports rpc.Service
      * @extends util.EventEmitter
      * @constructor
      * @param {RPCImpl} rpcImpl RPC implementation
@@ -1461,7 +1462,7 @@ export namespace rpc {
         /**
          * Constructs a new RPC service instance.
          * @classdesc An RPC service as returned by {@link Service#create}.
-         * @memberof rpc
+         * @exports rpc.Service
          * @extends util.EventEmitter
          * @constructor
          * @param {RPCImpl} rpcImpl RPC implementation
@@ -1486,18 +1487,18 @@ export namespace rpc {
 /**
  * Constructs a new service instance.
  * @classdesc Reflected service.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Service name
  * @param {Object.<string,*>} [options] Service options
  * @throws {TypeError} If arguments are invalid
  */
-export class Service extends Namespace {
+export class Service extends NamespaceBase {
 
     /**
      * Constructs a new service instance.
      * @classdesc Reflected service.
-     * @extends Namespace
+     * @extends NamespaceBase
      * @constructor
      * @param {string} name Service name
      * @param {Object.<string,*>} [options] Service options
@@ -1510,14 +1511,6 @@ export class Service extends Namespace {
      * @type {Object.<string,Method>}
      */
     methods: { [k: string]: Method };
-
-    /**
-     * Methods of this service as an array for iteration.
-     * @name Service#methodsArray
-     * @type {Method[]}
-     * @readonly
-     */
-    readonly methodsArray: Method[];
 
     /**
      * Tests if the specified JSON object describes a service.
@@ -1534,6 +1527,14 @@ export class Service extends Namespace {
      * @throws {TypeError} If arguments are invalid
      */
     static fromJSON(name: string, json: { [k: string]: any }): Service;
+
+    /**
+     * Methods of this service as an array for iteration.
+     * @name Service#methodsArray
+     * @type {Method[]}
+     * @readonly
+     */
+    readonly methodsArray: Method[];
 
     /**
      * Creates a runtime service using the specified rpc implementation.
@@ -1587,22 +1588,37 @@ export function tokenize(source: string): TokenizerHandle;
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Message name
  * @param {Object.<string,*>} [options] Declared options
  */
-export class Type extends Namespace {
+export class Type extends NamespaceBase {
 
     /**
      * Constructs a new reflected message type instance.
      * @classdesc Reflected message type.
-     * @extends Namespace
+     * @extends NamespaceBase
      * @constructor
      * @param {string} name Message name
      * @param {Object.<string,*>} [options] Declared options
      */
     constructor(name: string, options?: { [k: string]: any });
+
+    /**
+     * Tests if the specified JSON object describes a message type.
+     * @param {*} json JSON object to test
+     * @returns {boolean} `true` if the object describes a message type
+     */
+    static testJSON(json: any): boolean;
+
+    /**
+     * Creates a type from JSON.
+     * @param {string} name Message name
+     * @param {Object.<string,*>} json JSON object
+     * @returns {Type} Created message type
+     */
+    static fromJSON(name: string, json: { [k: string]: any }): Type;
 
     /**
      * Message fields.
@@ -1658,21 +1674,6 @@ export class Type extends Namespace {
      * @type {Class}
      */
     ctor: Class;
-
-    /**
-     * Tests if the specified JSON object describes a message type.
-     * @param {*} json JSON object to test
-     * @returns {boolean} `true` if the object describes a message type
-     */
-    static testJSON(json: any): boolean;
-
-    /**
-     * Creates a type from JSON.
-     * @param {string} name Message name
-     * @param {Object.<string,*>} json JSON object
-     * @returns {Type} Created message type
-     */
-    static fromJSON(name: string, json: { [k: string]: any }): Type;
 
     /**
      * Adds a nested object to this type.

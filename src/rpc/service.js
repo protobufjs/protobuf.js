@@ -6,7 +6,7 @@ var EventEmitter = require("../util").EventEmitter;
 /**
  * Constructs a new RPC service instance.
  * @classdesc An RPC service as returned by {@link Service#create}.
- * @memberof rpc
+ * @exports rpc.Service
  * @extends util.EventEmitter
  * @constructor
  * @param {RPCImpl} rpcImpl RPC implementation

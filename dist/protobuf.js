@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.4.6 (c) 2016, Daniel Wirtz
- * Compiled Tue, 10 Jan 2017 15:56:54 UTC
+ * Compiled Wed, 11 Jan 2017 01:12:50 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -2404,8 +2404,55 @@ function initNested() {
  */
 
 /**
- * This is not an actual class but here for the sake of having consistent type definitions.
- * @classdesc Base of all reflection objects containing nested objects.
+ * Tests if the specified JSON object describes not another reflection object.
+ * @memberof Namespace
+ * @param {*} json JSON object
+ * @returns {boolean} `true` if the object describes not another reflection object
+ */
+Namespace.testJSON = function testJSON(json) {
+    return Boolean(json
+        && !json.fields                   // Type
+        && !json.values                   // Enum
+        && json.id === undefined          // Field, MapField
+        && !json.oneof                    // OneOf
+        && !json.methods                  // Service
+        && json.requestType === undefined // Method
+    );
+};
+
+/**
+ * Constructs a namespace from JSON.
+ * @memberof Namespace
+ * @function
+ * @param {string} name Namespace name
+ * @param {Object.<string,*>} json JSON object
+ * @returns {Namespace} Created namespace
+ * @throws {TypeError} If arguments are invalid
+ */
+Namespace.fromJSON = function fromJSON(name, json) {
+    return new Namespace(name, json.options).addJSON(json.nested);
+};
+
+/**
+ * Converts an array of reflection objects to JSON.
+ * @memberof Namespace
+ * @param {ReflectionObject[]} array Object array
+ * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
+ */
+function arrayToJSON(array) {
+    if (!(array && array.length))
+        return undefined;
+    var obj = {};
+    for (var i = 0; i < array.length; ++i)
+        obj[array[i].name] = array[i].toJSON();
+    return obj;
+}
+
+Namespace.arrayToJSON = arrayToJSON;
+
+/**
+ * Not an actual constructor. Use {@link Namespace} instead.
+ * @classdesc Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions.
  * @exports NamespaceBase
  * @extends ReflectionObject
  * @abstract
@@ -2459,35 +2506,6 @@ Object.defineProperty(NamespacePrototype, "nestedArray", {
 });
 
 /**
- * Tests if the specified JSON object describes not another reflection object.
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes not another reflection object
- */
-Namespace.testJSON = function testJSON(json) {
-    return Boolean(json
-        && !json.fields                   // Type
-        && !json.values                   // Enum
-        && json.id === undefined          // Field, MapField
-        && !json.oneof                    // OneOf
-        && !json.methods                  // Service
-        && json.requestType === undefined // Method
-    );
-};
-
-/**
- * Constructs a namespace from JSON.
- * @name Namespace.fromJSON
- * @function
- * @param {string} name Namespace name
- * @param {Object.<string,*>} json JSON object
- * @returns {Namespace} Created namespace
- * @throws {TypeError} If arguments are invalid
- */
-Namespace.fromJSON = function fromJSON(name, json) {
-    return new Namespace(name, json.options).addJSON(json.nested);
-};
-
-/**
  * @override
  */
 NamespacePrototype.toJSON = function toJSON() {
@@ -2496,23 +2514,6 @@ NamespacePrototype.toJSON = function toJSON() {
         nested  : arrayToJSON(this.nestedArray)
     };
 };
-
-/**
- * Converts an array of reflection objects to JSON.
- * @memberof NamespaceBase
- * @param {ReflectionObject[]} array Object array
- * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
- */
-function arrayToJSON(array) {
-    if (!(array && array.length))
-        return undefined;
-    var obj = {};
-    for (var i = 0; i < array.length; ++i)
-        obj[array[i].name] = array[i].toJSON();
-    return obj;
-}
-
-Namespace.arrayToJSON = arrayToJSON;
 
 /**
  * Adds nested elements to this namespace from JSON.
@@ -3478,7 +3479,7 @@ function parse(source, root, options) {
 
     function parseField(parent, rule, extend) {
         var type = next();
-        if (lower(type) === "group") {
+        if (type === "group") {
             parseGroup(parent, rule);
             return;
         }
@@ -4741,7 +4742,7 @@ var EventEmitter = require(35).EventEmitter;
 /**
  * Constructs a new RPC service instance.
  * @classdesc An RPC service as returned by {@link Service#create}.
- * @memberof rpc
+ * @exports rpc.Service
  * @extends util.EventEmitter
  * @constructor
  * @param {RPCImpl} rpcImpl RPC implementation
@@ -4793,7 +4794,7 @@ var Method = require(21),
 /**
  * Constructs a new service instance.
  * @classdesc Reflected service.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Service name
  * @param {Object.<string,*>} [options] Service options
@@ -4814,23 +4815,6 @@ function Service(name, options) {
      * @private
      */
     this._methodsArray = null;
-}
-
-/**
- * Methods of this service as an array for iteration.
- * @name Service#methodsArray
- * @type {Method[]}
- * @readonly
- */
-Object.defineProperty(ServicePrototype, "methodsArray", {
-    get: function() {
-        return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
-    }
-});
-
-function clearCache(service) {
-    service._methodsArray = null;
-    return service;
 }
 
 /**
@@ -4857,6 +4841,23 @@ Service.fromJSON = function fromJSON(name, json) {
         });
     return service;
 };
+
+/**
+ * Methods of this service as an array for iteration.
+ * @name Service#methodsArray
+ * @type {Method[]}
+ * @readonly
+ */
+Object.defineProperty(ServicePrototype, "methodsArray", {
+    get: function() {
+        return this._methodsArray || (this._methodsArray = util.toArray(this.methods));
+    }
+});
+
+function clearCache(service) {
+    service._methodsArray = null;
+    return service;
+}
 
 /**
  * @override
@@ -5222,10 +5223,59 @@ var Enum      = require(17),
     verifier  = require(38),
     converter = require(13);
 
+var nestedTypes = [ Enum, Type, Field, Service ];
+
+/**
+ * Tests if the specified JSON object describes a message type.
+ * @param {*} json JSON object to test
+ * @returns {boolean} `true` if the object describes a message type
+ */
+Type.testJSON = function testJSON(json) {
+    return Boolean(json && json.fields);
+};
+
+/**
+ * Creates a type from JSON.
+ * @param {string} name Message name
+ * @param {Object.<string,*>} json JSON object
+ * @returns {Type} Created message type
+ */
+Type.fromJSON = function fromJSON(name, json) {
+    var type = new Type(name, json.options);
+    type.extensions = json.extensions;
+    type.reserved = json.reserved;
+    if (json.fields)
+        Object.keys(json.fields).forEach(function(fieldName) {
+            type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
+        });
+    if (json.oneofs)
+        Object.keys(json.oneofs).forEach(function(oneOfName) {
+            type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
+        });
+    if (json.nested)
+        Object.keys(json.nested).forEach(function(nestedName) {
+            var nested = json.nested[nestedName];
+            for (var i = 0; i < nestedTypes.length; ++i) {
+                if (nestedTypes[i].testJSON(nested)) {
+                    type.add(nestedTypes[i].fromJSON(nestedName, nested));
+                    return;
+                }
+            }
+            throw Error("invalid nested object in " + type + ": " + nestedName);
+        });
+    if (json.extensions && json.extensions.length)
+        type.extensions = json.extensions;
+    if (json.reserved && json.reserved.length)
+        type.reserved = json.reserved;
+    if (json.group)
+        type.group = true;
+    return type;
+};
+
 /**
  * Constructs a new reflected message type instance.
  * @classdesc Reflected message type.
- * @extends Namespace
+ * @extends NamespaceBase
  * @constructor
  * @param {string} name Message name
  * @param {Object.<string,*>} [options] Declared options
@@ -5370,55 +5420,6 @@ function clearCache(type) {
     delete type.verify;
     return type;
 }
-
-/**
- * Tests if the specified JSON object describes a message type.
- * @param {*} json JSON object to test
- * @returns {boolean} `true` if the object describes a message type
- */
-Type.testJSON = function testJSON(json) {
-    return Boolean(json && json.fields);
-};
-
-var nestedTypes = [ Enum, Type, Field, Service ];
-
-/**
- * Creates a type from JSON.
- * @param {string} name Message name
- * @param {Object.<string,*>} json JSON object
- * @returns {Type} Created message type
- */
-Type.fromJSON = function fromJSON(name, json) {
-    var type = new Type(name, json.options);
-    type.extensions = json.extensions;
-    type.reserved = json.reserved;
-    if (json.fields)
-        Object.keys(json.fields).forEach(function(fieldName) {
-            type.add(Field.fromJSON(fieldName, json.fields[fieldName]));
-        });
-    if (json.oneofs)
-        Object.keys(json.oneofs).forEach(function(oneOfName) {
-            type.add(OneOf.fromJSON(oneOfName, json.oneofs[oneOfName]));
-        });
-    if (json.nested)
-        Object.keys(json.nested).forEach(function(nestedName) {
-            var nested = json.nested[nestedName];
-            for (var i = 0; i < nestedTypes.length; ++i) {
-                if (nestedTypes[i].testJSON(nested)) {
-                    type.add(nestedTypes[i].fromJSON(nestedName, nested));
-                    return;
-                }
-            }
-            throw Error("invalid nested object in " + type + ": " + nestedName);
-        });
-    if (json.extensions && json.extensions.length)
-        type.extensions = json.extensions;
-    if (json.reserved && json.reserved.length)
-        type.reserved = json.reserved;
-    if (json.group)
-        type.group = true;
-    return type;
-};
 
 /**
  * @override

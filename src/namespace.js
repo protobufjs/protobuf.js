@@ -42,8 +42,55 @@ function initNested() {
  */
 
 /**
- * This is not an actual class but here for the sake of having consistent type definitions.
- * @classdesc Base of all reflection objects containing nested objects.
+ * Tests if the specified JSON object describes not another reflection object.
+ * @memberof Namespace
+ * @param {*} json JSON object
+ * @returns {boolean} `true` if the object describes not another reflection object
+ */
+Namespace.testJSON = function testJSON(json) {
+    return Boolean(json
+        && !json.fields                   // Type
+        && !json.values                   // Enum
+        && json.id === undefined          // Field, MapField
+        && !json.oneof                    // OneOf
+        && !json.methods                  // Service
+        && json.requestType === undefined // Method
+    );
+};
+
+/**
+ * Constructs a namespace from JSON.
+ * @memberof Namespace
+ * @function
+ * @param {string} name Namespace name
+ * @param {Object.<string,*>} json JSON object
+ * @returns {Namespace} Created namespace
+ * @throws {TypeError} If arguments are invalid
+ */
+Namespace.fromJSON = function fromJSON(name, json) {
+    return new Namespace(name, json.options).addJSON(json.nested);
+};
+
+/**
+ * Converts an array of reflection objects to JSON.
+ * @memberof Namespace
+ * @param {ReflectionObject[]} array Object array
+ * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
+ */
+function arrayToJSON(array) {
+    if (!(array && array.length))
+        return undefined;
+    var obj = {};
+    for (var i = 0; i < array.length; ++i)
+        obj[array[i].name] = array[i].toJSON();
+    return obj;
+}
+
+Namespace.arrayToJSON = arrayToJSON;
+
+/**
+ * Not an actual constructor. Use {@link Namespace} instead.
+ * @classdesc Base class of all reflection objects containing nested objects. This is not an actual class but here for the sake of having consistent type definitions.
  * @exports NamespaceBase
  * @extends ReflectionObject
  * @abstract
@@ -97,35 +144,6 @@ Object.defineProperty(NamespacePrototype, "nestedArray", {
 });
 
 /**
- * Tests if the specified JSON object describes not another reflection object.
- * @param {*} json JSON object
- * @returns {boolean} `true` if the object describes not another reflection object
- */
-Namespace.testJSON = function testJSON(json) {
-    return Boolean(json
-        && !json.fields                   // Type
-        && !json.values                   // Enum
-        && json.id === undefined          // Field, MapField
-        && !json.oneof                    // OneOf
-        && !json.methods                  // Service
-        && json.requestType === undefined // Method
-    );
-};
-
-/**
- * Constructs a namespace from JSON.
- * @name Namespace.fromJSON
- * @function
- * @param {string} name Namespace name
- * @param {Object.<string,*>} json JSON object
- * @returns {Namespace} Created namespace
- * @throws {TypeError} If arguments are invalid
- */
-Namespace.fromJSON = function fromJSON(name, json) {
-    return new Namespace(name, json.options).addJSON(json.nested);
-};
-
-/**
  * @override
  */
 NamespacePrototype.toJSON = function toJSON() {
@@ -134,23 +152,6 @@ NamespacePrototype.toJSON = function toJSON() {
         nested  : arrayToJSON(this.nestedArray)
     };
 };
-
-/**
- * Converts an array of reflection objects to JSON.
- * @memberof NamespaceBase
- * @param {ReflectionObject[]} array Object array
- * @returns {Object.<string,*>|undefined} JSON object or `undefined` when array is empty
- */
-function arrayToJSON(array) {
-    if (!(array && array.length))
-        return undefined;
-    var obj = {};
-    for (var i = 0; i < array.length; ++i)
-        obj[array[i].name] = array[i].toJSON();
-    return obj;
-}
-
-Namespace.arrayToJSON = arrayToJSON;
 
 /**
  * Adds nested elements to this namespace from JSON.
