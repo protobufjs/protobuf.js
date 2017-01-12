@@ -30,9 +30,7 @@ message Test2 {
  */
 enum Test3 {
 
-    /**
-     * Value with a comment.
-     */
+    /** Value with a comment. */
     ONE = 1;
 
     // Value with no comment.

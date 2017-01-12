@@ -307,6 +307,8 @@ protobuf.load("bundle.json", function(err, root) {
 });
 ```
 
+**ProTip!** Documenting your .proto files with `/** ... */`-blocks translates to generated static code.
+
 ### Generating TypeScript definitions from static modules
 
 Likewise, the `pbts` command line utility can be used to generate TypeScript definitions from `pbjs`-generated static modules.
