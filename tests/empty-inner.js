@@ -25,7 +25,7 @@ tape.test("empty inner message fields", function(test) {
         }
     });
     var Outer = root.lookup("Outer");
-    var msg = Outer.from({
+    var msg = Outer.fromObject({
         inner: {}
     });
     var buf = Outer.encode(msg).finish();

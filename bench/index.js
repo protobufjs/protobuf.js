@@ -94,17 +94,17 @@ setTimeout(function() {
     .run();
 
     var dataMessage = Test.from(data);
-    var dataJson = dataMessage.asJSON();
+    var dataObject = dataMessage.toObject();
 
-    newSuite("converting from JSON")
-    .add("Message.from", function() {
-        Test.from(dataJson);
+    newSuite("message from object")
+    .add("Type.fromObject", function() {
+        Test.fromObject(dataObject);
     })
     .run();
     
-    newSuite("converting to JSON")
-    .add("Message#asJSON", function() {
-        dataMessage.asJSON();
+    newSuite("message to object")
+    .add("Type.toObject", function() {
+        Test.toObject(dataMessage);
     })
     .run();
 

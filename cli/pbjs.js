@@ -91,7 +91,7 @@ exports.main = function(args, callback) {
                 "",
                 chalk.bold.gray("  Static targets only:"),
                 "",
-                "  --no-create     Does not generate create functions used for runtime compatibility.",
+                "  --no-create     Does not generate create functions used for reflection compatibility.",
                 "  --no-encode     Does not generate encode functions.",
                 "  --no-decode     Does not generate decode functions.",
                 "  --no-verify     Does not generate verify functions.",

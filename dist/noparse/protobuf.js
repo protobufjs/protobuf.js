@@ -1,6 +1,6 @@
 /*!
- * protobuf.js v6.4.6 (c) 2016, Daniel Wirtz
- * Compiled Wed, 11 Jan 2017 01:12:50 UTC
+ * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
+ * Compiled Thu, 12 Jan 2017 04:06:51 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -306,6 +306,8 @@ function sprintf(format) {
         switch ($1) {
             case "j":
                 return JSON.stringify(arg);
+            case "d":
+                return Number(arg);
             default:
                 return String(arg);
         }
@@ -623,7 +625,7 @@ var utf8 = exports;
  * @param {string} string String
  * @returns {number} Byte length
  */
-utf8.length = function length(string) {
+utf8.length = function utf8_length(string) {
     var len = 0,
         c = 0;
     for (var i = 0; i < string.length; ++i) {
@@ -648,7 +650,7 @@ utf8.length = function length(string) {
  * @param {number} end Source end
  * @returns {string} String read
  */
-utf8.read = function(buffer, start, end) {
+utf8.read = function utf8_read(buffer, start, end) {
     var len = end - start;
     if (len < 1)
         return "";
@@ -688,7 +690,7 @@ utf8.read = function(buffer, start, end) {
  * @param {number} offset Destination offset
  * @returns {number} Bytes written
  */
-utf8.write = function(string, buffer, offset) {
+utf8.write = function utf8_write(string, buffer, offset) {
     var start = offset,
         c1, // character 1
         c2; // character 2
@@ -719,8 +721,8 @@ utf8.write = function(string, buffer, offset) {
 "use strict";
 module.exports = Class;
 
-var Message = require(19),
-    util    = require(32);
+var Message = require(18),
+    util    = require(31);
 
 var Type; // cyclic
 
@@ -743,7 +745,7 @@ function Class(type) {
  */
 function create(type, ctor) {
     if (!Type)
-        Type = require(30);
+        Type = require(29);
 
     /* istanbul ignore next */
     if (!(type instanceof Type))
@@ -815,12 +817,29 @@ Class.create = create;
 Class.prototype = Message;
 
 /**
- * Creates a message from a JSON object by converting strings and numbers to their respective field types.
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * @name Class#fromObject
+ * @function
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
+ */
+
+/**
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * This is an alias of {@link Class#fromObject}.
  * @name Class#from
  * @function
- * @param {Object.<string,*>} object JSON object
- * @param {MessageConversionOptions} [options] Options
+ * @param {Object.<string,*>} object Plain object
  * @returns {Message} Message instance
+ */
+
+/**
+ * Creates a plain object from a message of this type. Also converts values to other types if specified.
+ * @name Class#toObject
+ * @function
+ * @param {Message} message Message instance
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
  */
 
 /**
@@ -865,290 +884,259 @@ Class.prototype = Message;
  * @returns {?string} `null` if valid, otherwise the reason why it is not
  */
 
-/**
- * Converts an object or runtime message of this type.
- * @name Class#convert
- * @function
- * @param {Message|Object} source Source object or runtime message
- * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Converted object or runtime message
- */
-
-},{"19":19,"30":30,"32":32}],12:[function(require,module,exports){
+},{"18":18,"29":29,"31":31}],12:[function(require,module,exports){
 "use strict";
-module.exports = converter;
+var converter = exports;
 
-var Enum       = require(16),
-    converters = require(13),
-    util       = require(32);
+var Enum = require(15),
+    util = require(31);
 
-var sprintf    = util.codegen.sprintf;
-
-function genConvert(field, fieldIndex, prop) {
-    if (field.resolvedType)
-        return field.resolvedType instanceof Enum
-            // enums
-            ? sprintf("f.enums(s%s,%d,types[%d].values,o)", prop, field.typeDefault, fieldIndex)
-            // recurse into messages
-            : sprintf("types[%d].convert(s%s,f,o)", fieldIndex, prop);
-    switch (field.type) {
-        case "int64":
-        case "uint64":
-        case "sint64":
-        case "fixed64":
-        case "sfixed64":
-            // longs
-            return sprintf("f.longs(s%s,%d,%d,%j,o)", prop, field.typeDefault.low, field.typeDefault.high, field.type.charAt(0) === "u");
-        case "bytes":
-            // bytes
-            return sprintf("f.bytes(s%s,%j,o)", prop, Array.prototype.slice.call(field.typeDefault));
+function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
+    if (field.resolvedType) {
+        if (field.resolvedType instanceof Enum) {
+            var values = field.resolvedType.values;
+            gen
+            ("switch(d%s){", prop);
+            Object.keys(values).forEach(function(key) {
+                if (field.repeated && values[key] === field.typeDefault) gen
+                ("default:");
+                gen
+                ("case%j:", key)
+                ("case %j:", values[key])
+                    ("m%s=%j", prop, values[key])
+                    ("break");
+            });
+            gen
+            ("}");
+        } else gen
+            ("m%s=types[%d].fromObject(d%s)", prop, fieldIndex, prop);
+    } else {
+        var isUnsigned = false;
+        switch (field.type) {
+            case "double":
+            case "float":gen
+                ("m%s=Number(d%s)", prop, prop);
+                break;
+            case "uint32":
+            case "fixed32": gen
+                ("m%s=d%s>>>0", prop, prop);
+                break;
+            case "int32":
+            case "sint32":
+            case "sfixed32": gen
+                ("m%s=d%s|0", prop, prop);
+                break;
+            case "uint64":
+                isUnsigned = true;
+                // eslint-disable-line no-fallthrough
+            case "int64":
+            case "sint64":
+            case "fixed64":
+            case "sfixed64": gen
+                ("if(util.Long)")
+                    ("(m%s=util.Long.fromValue(d%s)).unsigned=%j", prop, prop, isUnsigned)
+                ("else if(typeof d%s===\"string\")", prop)
+                    ("m%s=parseInt(d%s,10)", prop, prop)
+                ("else if(typeof d%s===\"number\")", prop)
+                    ("m%s=d%s", prop, prop)
+                ("else if(typeof d%s===\"object\")", prop)
+                    ("m%s=new util.LongBits(d%s.low,d%s.high).toNumber(%s)", prop, prop, prop, isUnsigned ? "true" : "");
+                break;
+            case "bytes": gen
+                ("if(typeof d%s===\"string\")", prop)
+                    ("util.base64.decode(d%s,m%s=util.newBuffer(util.base64.length(d%s)),0)", prop, prop, prop, prop)
+                ("else if(d%s&&d%s.length)", prop, prop)
+                    ("m%s=d%s", prop, prop);
+                break;
+            case "string": gen
+                ("m%s=String(d%s)", prop, prop);
+                break;
+            case "bool": gen
+                ("m%s=Boolean(d%s)", prop, prop);
+                break;
+            default: gen /* bool, uint32, string etc. */
+                ("m%s=d%s", prop, prop);
+                break;
+        }
     }
-    return null;
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
-/**
- * Generates a conveter specific to the specified message type.
- * @param {Type} mtype Message type
- * @param {function} generateField Field generator
- * @returns {Codegen} Codegen instance
- * @property {ConverterImpl} json Converter implementation producing JSON
- * @property {ConverterImpl} message Converter implementation producing runtime messages
- */
-function converter(mtype) {
-    /* eslint-disable no-unexpected-multiline */
+converter.fromObject = function fromObject(mtype) {
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
-    var gen = util.codegen("s", "f", "o")
+    var gen = util.codegen("d")
+    ("var m=new(this.ctor)");
+    for (var i = 0; i < fields.length; ++i) {
+        var field  = fields[i].resolve(),
+            prop   = field._prop;
+
+        // Map fields
+        if (field.map) { gen
+    ("if(d%s){", prop, prop)
+        ("m%s={}", prop)
+        ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
+            genConvertValue_fromObject(gen, field, i, prop + "[ks[i]]");
+            gen
+        ("}")
+    ("}");
+
+        // Repeated fields
+        } else if (field.repeated) { gen
+    ("if(d%s){", prop)
+        ("m%s=[]", prop)
+        ("for(var i=0;i<d%s.length;++i){", prop);
+            genConvertValue_fromObject(gen, field, i, prop + "[i]");
+            gen
+        ("}")
+    ("}");
+
+        // Non-repeated fields
+        } else {
+            if (field.resolvedType instanceof Enum) gen // no need to test for null/undefined if an enum (uses switch)
+    ("if(d%s!==undefined&&d%s!==null){", prop, prop);
+        genConvertValue_fromObject(gen, field, i, prop);
+            if (field.resolvedType instanceof Enum) gen
+    ("}");
+        }
+    }
+    return gen
+    ("return m");
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
+};
+
+function genConvertValue_toObject(gen, field, fieldIndex, prop) {
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
+    if (field.resolvedType) {
+        if (field.resolvedType instanceof Enum) gen
+            ("d%s=o.enums===String?types[%d].values[m%s]:m%s", prop, fieldIndex, prop, prop);
+        else gen
+            ("d%s=types[%d].ctor.prototype.toObject.call(m%s,o)", prop, fieldIndex, prop);
+    } else {
+        var isUnsigned = false;
+        switch (field.type) {
+            case "uint64":
+                isUnsigned = true;
+                // eslint-disable-line no-fallthrough
+            case "int64":
+            case "sint64":
+            case "fixed64":
+            case "sfixed64": gen
+            ("if(typeof m%s===\"number\")", prop)
+                ("d%s=o.longs===String?String(m%s):m%s", prop, prop, prop)
+            ("else") // Long-like
+                ("d%s=o.longs===String?util.Long.prototype.toString.call(m%s):o.longs===Number?new util.LongBits(m%s.low,m%s.high).toNumber(%s):m%s", prop, prop, prop, prop, isUnsigned ? "true": "", prop);
+                break;
+            case "bytes": gen
+            ("d%s=o.bytes===String?util.base64.encode(m%s,0,m%s.length):o.bytes===Array?Array.prototype.slice.call(m%s):m%s", prop, prop, prop, prop, prop);
+                break;
+            default: gen
+            ("d%s=m%s", prop, prop);
+                break;
+        }
+    }
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
+}
+
+converter.toObject = function toObject(mtype) {
+    /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
+    var fields = mtype.fieldsArray;
+    var gen = util.codegen("m", "o")
     ("if(!o)")
         ("o={}")
-    ("var d=f.create(s,this,o)");
-    if (fields.length) { gen
-    ("if(d){");
-        var convert;
-        fields.forEach(function(field, i) {
-            var prop = field.resolve()._prop;
-
-            // repeated
-            if (field.repeated) { gen
-        ("if(s%s&&s%s.length){", prop, prop)
-            ("d%s=[]", prop)
-            ("for(var i=0;i<s%s.length;++i)", prop);
-                if (convert = genConvert(field, i, prop + "[i]")) gen
-                ("d%s.push(%s)", prop, convert);
-                else gen
-                ("d%s.push(s%s[i])", prop, prop);
-                gen
-        ("}else if(o.defaults||o.arrays)")
-            ("d%s=[]", prop);
-
-            // non-repeated
-            } else if (convert = genConvert(field, i, prop)) {
-                if (field.long) gen
-        ("if(o.defaults||s%s!==undefined&&s%s!==null&&util.longNe(s%s,%d,%d))", prop, prop, prop, field.typeDefault.low, field.typeDefault.high);
-                else if (field.resolvedType && !(field.resolvedType instanceof Enum)) gen
-        ("if(o.defaults||s%s!==undefined&&s%s!==null)", prop, prop);
-                else gen
-        ("if(o.defaults||s%s!==undefined&&s%s!==%j)", prop, prop, field.typeDefault);
-                gen
-            ("d%s=%s", prop, convert);
-            } else gen
-        ("if(d%s===undefined&&o.defaults)", prop)
-            ("d%s=%j", prop, field.typeDefault /* == field.defaultValue */);
-
+    ("var d={}");
+    var repeatedFields = fields.filter(function(field) { return field.repeated; });
+    if (repeatedFields.length) { gen
+    ("if(o.arrays||o.defaults){");
+        fields.forEach(function(field) {
+            if (field.resolve().repeated) gen
+        ("d%s=[]", field._prop);
         });
         gen
     ("}");
     }
+    var mapFields = fields.filter(function(field) { return field.map; });
+    if (mapFields.length) { gen
+    ("if(o.objects||o.defaults){");
+        fields.forEach(function(field) {
+            if (field.map) gen
+        ("d%s={}", field._prop);
+        });
+        gen
+    ("}");
+    }
+    var otherFields = fields.filter(function(field) { return !(field.repeated || field.map); });
+    if (otherFields.length) { gen
+    ("if(o.defaults){");
+        fields.forEach(function(field) {
+            if (field.repeated || field.map)
+                return;
+            if (field.resolvedType instanceof Enum) gen
+        ("d%s=o.enums===String?%j:%j", field._prop, field.resolvedType.valuesById[field.typeDefault], field.typeDefault);
+            else if (field.long) gen
+        ("if(util.Long){")
+            ("var n=new util.Long(%d,%d,%j)", field.typeDefault.low, field.typeDefault.high, field.typeDefault.unsigned)
+            ("d%s=o.longs===String?n.toString():o.longs===Number?n.toNumber():n", field._prop)
+        ("}else")
+            ("d%s=o.longs===String?%j:%d", field._prop, field.typeDefault.toString(), field.typeDefault.toNumber());
+            else if (field.bytes) gen
+        ("d%s=o.bytes===String?%j:%s", field._prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
+            else gen
+        ("d%s=%j", field._prop, field.typeDefault); // also messages (=null)
+        });
+        gen
+    ("}");
+    }
+    gen
+    ("for(var ks=Object.keys(m),i=0;i<ks.length;++i){")
+        ("switch(ks[i]){");
+    for (var i = 0; i < fields.length; ++i) {
+        var field = fields[i],
+            prop  = field._prop;
+        gen
+        ("case%j:", field.name);
+        if (field.map) { gen
+            ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
+                ("d%s={}", prop)
+                ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
+            genConvertValue_toObject(gen, field, i, prop + "[ks2[j]]");
+            gen
+                ("}")
+            ("}");
+        } else if (field.repeated) { gen
+            ("if(m%s.length){", prop)
+                ("d%s=[]", prop)
+                ("for(var j=0;j<m%s.length;++j){", prop);
+            genConvertValue_toObject(gen, field, i, prop + "[j]");
+            gen
+                ("}")
+            ("}");
+        } else { gen
+            ("if(m%s!==undefined&&m%s!==null){", prop, prop);
+            genConvertValue_toObject(gen, field, i, prop);
+            gen
+            ("}");
+        }
+        gen
+            ("break");
+    }
     return gen
+        ("}")
+    ("}")
     ("return d");
-    /* eslint-enable no-unexpected-multiline */
-}
-
-util.merge(converter, converters);
-
-/**
- * A converter implementation as used by {@link Type#convert} respectively {@link Message.convert}.
- * @typedef ConverterImpl
- * @type {Object}
- * @property {ConverterCreate} create Function for creating a new destination object
- * @property {ConverterEnums} enums Function for converting enum values
- * @property {ConverterLongs} longs Function for converting long values
- * @property {ConverterBytes} bytes Function for converting bytes values
- */
-
-/**
- * A function for creating a new destination object.
- * @typedef ConverterCreate
- * @type {function}
- * @param {Message|Object} value Source object or message
- * @param {Function} typeOrCtor Reflected type or message constructor
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Destination object or message
- */
-
-/**
- * A function for converting enum values.
- * @typedef ConverterEnums
- * @type {function}
- * @param {number|string} value Actual value
- * @param {number} defaultValue Default value
- * @param {Object.<string,number>} values Possible values
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {number|string} Converted value
- */
-
-/**
- * A function for converting long values.
- * @typedef ConverterLongs
- * @type {function}
- * @param {number|string|Long} value Actual value
- * @param {Long} defaultValue Default value
- * @param {boolean} unsigned Whether unsigned or not
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {number|string|Long} Converted value
- */
-
-/**
- * A function for converting bytes values.
- * @typedef ConverterBytes
- * @type {function}
- * @param {string|number[]|Uint8Array} value Actual value
- * @param {number[]} defaultValue Default value
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {string|number[]|Uint8Array} Converted value 
- */
-
-},{"13":13,"16":16,"32":32}],13:[function(require,module,exports){
-"use strict";
-var converters = exports;
-
-var util = require(34);
-
-/**
- * JSON conversion options as used by {@link Message#asJSON}.
- * @typedef JSONConversionOptions
- * @type {Object}
- * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
- * @property {*} [longs] Long conversion type. Only relevant with a long library.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to a possibly unsafe number without, and a `Long` with a long library.
- * @property {*} [enums=Number] Enum value conversion type.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to the numeric ids.
- * @property {*} [bytes] Bytes value conversion type.
- * Valid values are `Array` and `String` (the global types).
- * Defaults to return the underlying buffer type.
- * @property {boolean} [defaults=false] Also sets default values on the resulting object
- * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
- */
-
-/**
- * Converter implementation producing JSON.
- * @type {ConverterImpl}
- */
-converters.json = {
-    create: function(value, typeOrCtor, options) {
-        if (!value) // inner messages
-            return null;
-        return options.fieldsOnly
-            ? {}
-            : util.merge({}, value);
-    },
-    enums: function(value, defaultValue, values, options) {
-        if (value === undefined)
-            value = defaultValue;
-        return options.enums === String && typeof value === "number"
-            ? values[value]
-            : value;
-    },
-    longs: function(value, defaultLow, defaultHigh, unsigned, options) {
-        if (value === undefined || value === null)
-            value = { low: defaultLow, high: defaultHigh };
-        if (options.longs === Number)
-            return typeof value === "number"
-                ? value
-                : util.LongBits.from(value).toNumber(unsigned);
-        if (options.longs === String) {
-            if (typeof value === "number")
-                return util.Long.fromNumber(value, unsigned).toString();
-            value = util.Long.fromValue(value); // has no unsigned option
-            value.unsigned = unsigned;
-            return value.toString();
-        }
-        return value;
-    },
-    bytes: function(value, defaultValue, options) {
-        if (!value) {
-            value = defaultValue;
-        } else if (!value.length && !options.defaults)
-            return undefined;
-        return options.bytes === String
-            ? util.base64.encode(value, 0, value.length)
-            : options.bytes === Array
-            ? Array.prototype.slice.call(value)
-            : options.bytes === util.Buffer && !util.Buffer.isBuffer(value)
-            ? util.Buffer.from(value) // polyfilled
-            : value;
-    }
+    /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-/**
- * Message conversion options as used by {@link Message.from} and {@link Type#from}.
- * @typedef MessageConversionOptions
- * @type {Object}
- * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
- */
-// Note that options.defaults and options.arrays also affect the message converter.
-// As defaults are already on the prototype, usage is not recommended and thus undocumented.
-
-/**
- * Converter implementation producing runtime messages.
- * @type {ConverterImpl}
- */
-converters.message = {
-    create: function(value, typeOrCtor, options) {
-        if (!value)
-            return null;
-        // can't use instanceof Type here because converters are also part of the minimal runtime
-        return new (typeOrCtor.ctor ? typeOrCtor.ctor : typeOrCtor)(options.fieldsOnly ? undefined : value);
-    },
-    enums: function(value, defaultValue, values) {
-        if (typeof value === "string")
-            return values[value];
-        return value;
-    },
-    longs: function(value, defaultLow, defaultHigh, unsigned) {
-        if (typeof value === "string")
-            return util.Long.fromString(value, unsigned);
-        if (typeof value === "number")
-            return util.Long.fromNumber(value, unsigned);
-        return value;
-    },
-    bytes: function(value/*, defaultValue*/) {
-        if (util.Buffer)
-            return util.Buffer.isBuffer(value)
-                ? value
-                : util.Buffer.from(value, "base64"); // polyfilled
-        if (typeof value === "string") {
-            var buf = util.newBuffer(util.base64.length(value));
-            util.base64.decode(value, buf, 0);
-            return buf;
-        }
-        return value instanceof util.Array
-            ? value
-            : new util.Array(value);
-    }
-};
-
-},{"34":34}],14:[function(require,module,exports){
+},{"15":15,"31":31}],13:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
 
 decoder.compat = true;
 
-var Enum    = require(16),
-    types   = require(31),
-    util    = require(32);
+var Enum    = require(15),
+    types   = require(30),
+    util    = require(31);
 
 /**
  * Generates a decoder specific to the specified message type.
@@ -1234,13 +1222,13 @@ function decoder(mtype) {
     /* eslint-enable no-unexpected-multiline */
 }
 
-},{"16":16,"31":31,"32":32}],15:[function(require,module,exports){
+},{"15":15,"30":30,"31":31}],14:[function(require,module,exports){
 "use strict";
 module.exports = encoder;
 
-var Enum     = require(16),
-    types    = require(31),
-    util     = require(32);
+var Enum     = require(15),
+    types    = require(30),
+    util     = require(31);
 
 function genEncodeType(gen, field, fieldIndex, ref) {
     return field.resolvedType.group
@@ -1361,18 +1349,18 @@ function encoder(mtype) {
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
-},{"16":16,"31":31,"32":32}],16:[function(require,module,exports){
+},{"15":15,"30":30,"31":31}],15:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(21);
 /** @alias Enum.prototype */
 var EnumPrototype = ReflectionObject.extend(Enum);
 
 Enum.className = "Enum";
 
-var util = require(32);
+var util = require(31);
 
 /**
  * Constructs a new enum instance.
@@ -1490,20 +1478,20 @@ EnumPrototype.remove = function(name) {
     return this;
 };
 
-},{"22":22,"32":32}],17:[function(require,module,exports){
+},{"21":21,"31":31}],16:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(21);
 /** @alias Field.prototype */
 var FieldPrototype = ReflectionObject.extend(Field);
 
 Field.className = "Field";
 
-var Enum      = require(16),
-    types     = require(31),
-    util      = require(32);
+var Enum      = require(15),
+    types     = require(30),
+    util      = require(31);
 
 var Type,     // cyclic
     MapField; // cyclic
@@ -1703,7 +1691,7 @@ Field.testJSON = function testJSON(json) {
 Field.fromJSON = function fromJSON(name, json) {
     if (json.keyType !== undefined) {
         if (!MapField)
-            MapField = require(18);
+            MapField = require(17);
         return MapField.fromJSON(name, json);
     }
     return new Field(name, json.id, json.type, json.rule, json.extend, json.options);
@@ -1734,7 +1722,7 @@ FieldPrototype.resolve = function resolve() {
     if ((this.typeDefault = types.defaults[this.type]) === undefined) {
         // if not a basic type, resolve it
         if (!Type)
-            Type = require(30);
+            Type = require(29);
         if (this.resolvedType = this.parent.lookup(this.type, Type))
             this.typeDefault = null;
         else if (this.resolvedType = this.parent.lookup(this.type, Enum))
@@ -1776,12 +1764,12 @@ FieldPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"16":16,"18":18,"22":22,"30":30,"31":31,"32":32}],18:[function(require,module,exports){
+},{"15":15,"17":17,"21":21,"29":29,"30":30,"31":31}],17:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
 // extends Field
-var Field = require(17);
+var Field = require(16);
 /** @alias Field.prototype */
 var FieldPrototype = Field.prototype;
 /** @alias MapField.prototype */
@@ -1789,8 +1777,8 @@ var MapFieldPrototype = Field.extend(MapField);
 
 MapField.className = "MapField";
 
-var types   = require(31),
-    util    = require(32);
+var types   = require(30),
+    util    = require(31);
 
 /**
  * Constructs a new map field instance.
@@ -1873,11 +1861,9 @@ MapFieldPrototype.resolve = function resolve() {
     return FieldPrototype.resolve.call(this);
 };
 
-},{"17":17,"31":31,"32":32}],19:[function(require,module,exports){
+},{"16":16,"30":30,"31":31}],18:[function(require,module,exports){
 "use strict";
 module.exports = Message;
-
-var converters = require(13);
 
 /**
  * Constructs a new message instance.
@@ -1903,34 +1889,12 @@ function Message(properties) {
  * @readonly
  */
 
-/** @alias Message.prototype */
-var MessagePrototype = Message.prototype;
-
 /**
  * Reference to the reflected type.
  * @name Message#$type
  * @type {Type}
  * @readonly
  */
-
-/**
- * Converts this message to a JSON object.
- * @param {JSONConversionOptions} [options] Conversion options
- * @returns {Object.<string,*>} JSON object
- */
-MessagePrototype.asJSON = function asJSON(options) {
-    return this.$type.convert(this, converters.json, options);
-};
-
-/**
- * Creates a message from a JSON object by converting strings and numbers to their respective field types.
- * @param {Object.<string,*>} object JSON object
- * @param {MessageConversionOptions} [options] Options
- * @returns {Message} Message instance
- */
-Message.from = function from(object, options) {
-    return this.$type.convert(object, converters.message, options);
-};
 
 /**
  * Encodes a message of this type.
@@ -1986,29 +1950,67 @@ Message.verify = function verify(message) {
 };
 
 /**
- * Converts an object or runtime message of this type.
- * @param {Message|Object} source Source object or runtime message
- * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Converted object or runtime message
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
  */
-Message.convert = function convert(source, impl, options) {
-    return this.$type.convert(source, impl, options);
+Message.fromObject = function fromObject(object) {
+    return this.$type.fromObject(object);
 };
 
-},{"13":13}],20:[function(require,module,exports){
+/**
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * This is an alias of {@link Message.fromObject}.
+ * @function
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
+ */
+Message.from = Message.fromObject;
+
+/**
+ * Creates a plain object from a message of this type. Also converts values to other types if specified.
+ * @param {Message} message Message instance
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
+ */
+Message.toObject = function toObject(message, options) {
+    return this.$type.toObject(message, options);
+};
+
+/**
+ * Creates a plain object from this message. Also converts values to other types if specified.
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
+ */
+Message.prototype.toObject = function toObject(options) {
+    return this.$type.toObject(this, options);
+};
+
+/**
+ * Converts this message to JSON.
+ * @returns {Object.<string,*>} JSON object
+ */
+Message.prototype.toJSON = function toJSON() {
+    return this.$type.toObject(this, {
+        longs: String,
+        enums: String,
+        bytes: String
+    });
+};
+
+},{}],19:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(21);
 /** @alias Method.prototype */
 var MethodPrototype = ReflectionObject.extend(Method);
 
 Method.className = "Method";
 
-var Type = require(30),
-    util = require(32);
+var Type = require(29),
+    util = require(31);
 
 /**
  * Constructs a new service method instance.
@@ -2140,20 +2142,20 @@ MethodPrototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"22":22,"30":30,"32":32}],21:[function(require,module,exports){
+},{"21":21,"29":29,"31":31}],20:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(21);
 /** @alias NamespaceBase.prototype */
 var NamespacePrototype = ReflectionObject.extend(Namespace);
 
 Namespace.className = "Namespace";
 
-var Enum    = require(16),
-    Field   = require(17),
-    util    = require(32);
+var Enum    = require(15),
+    Field   = require(16),
+    util    = require(31);
 
 var Type,    // cyclic
     Service; // cyclic
@@ -2165,10 +2167,10 @@ function initNested() {
 
     /* istanbul ignore next */
     if (!Type)
-        Type = require(30);
+        Type = require(29);
     /* istanbul ignore next */
     if (!Service)
-        Service = require(29);
+        Service = require(28);
 
     nestedTypes = [ Enum, Type, Service, Field, Namespace ];
     nestedError = "one of " + nestedTypes.map(function(ctor) { return ctor.name; }).join(", ");
@@ -2443,10 +2445,10 @@ NamespacePrototype.define = function define(path, json) {
 NamespacePrototype.resolve = function resolve() {
     /* istanbul ignore next */
     if (!Type)
-        Type = require(30);
+        Type = require(29);
     /* istanbul ignore next */
     if (!Service)
-        Type = require(29);
+        Type = require(28);
 
     // Add uppercased (and thus conflict-free) nested types, services and enums as properties
     // of the type just like static code does. This allows using a .d.ts generated for a static
@@ -2531,7 +2533,7 @@ NamespacePrototype.lookupType = function lookupType(path) {
 
     /* istanbul ignore next */
     if (!Type)
-        Type = require(30);
+        Type = require(29);
 
     var found = this.lookup(path, Type);
     if (!found)
@@ -2550,7 +2552,7 @@ NamespacePrototype.lookupService = function lookupService(path) {
 
     /* istanbul ignore next */
     if (!Service)
-        Service = require(29);
+        Service = require(28);
 
     var found = this.lookup(path, Service);
     if (!found)
@@ -2572,11 +2574,11 @@ NamespacePrototype.lookupEnum = function lookupEnum(path) {
     return found.values;
 };
 
-},{"16":16,"17":17,"22":22,"29":29,"30":30,"32":32}],22:[function(require,module,exports){
+},{"15":15,"16":16,"21":21,"28":28,"29":29,"31":31}],21:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
-var util = require(32);
+var util = require(31);
 
 ReflectionObject.className = "ReflectionObject";
 ReflectionObject.extend = util.extend;
@@ -2685,7 +2687,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
     this.resolved = false;
     var root = parent.root;
     if (!Root)
-        Root = require(26);
+        Root = require(25);
     if (root instanceof Root)
         root._handleAdd(this);
 };
@@ -2698,7 +2700,7 @@ ReflectionObjectPrototype.onAdd = function onAdd(parent) {
 ReflectionObjectPrototype.onRemove = function onRemove(parent) {
     var root = parent.root;
     if (!Root)
-        Root = require(26);
+        Root = require(25);
     if (root instanceof Root)
         root._handleRemove(this);
     this.parent = null;
@@ -2713,7 +2715,7 @@ ReflectionObjectPrototype.resolve = function resolve() {
     if (this.resolved)
         return this;
     if (!Root)
-        Root = require(26);
+        Root = require(25);
     if (this.root instanceof Root)
         this.resolved = true; // only if part of a root
     return this;
@@ -2769,19 +2771,19 @@ ReflectionObjectPrototype.toString = function toString() {
     return className;
 };
 
-},{"26":26,"32":32}],23:[function(require,module,exports){
+},{"25":25,"31":31}],22:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
 // extends ReflectionObject
-var ReflectionObject = require(22);
+var ReflectionObject = require(21);
 /** @alias OneOf.prototype */
 var OneOfPrototype = ReflectionObject.extend(OneOf);
 
 OneOf.className = "OneOf";
 
-var Field = require(17),
-    util  = require(32);
+var Field = require(16),
+    util  = require(31);
 
 /**
  * Constructs a new oneof instance.
@@ -2957,11 +2959,11 @@ OneOfPrototype.onRemove = function onRemove(parent) {
     ReflectionObject.prototype.onRemove.call(this, parent);
 };
 
-},{"17":17,"22":22,"32":32}],24:[function(require,module,exports){
+},{"16":16,"21":21,"31":31}],23:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
-var util      = require(34);
+var util      = require(33);
 
 var BufferReader; // cyclic
 
@@ -3009,7 +3011,7 @@ function Reader(buffer) {
 Reader.create = util.Buffer
     ? function create_buffer_setup(buffer) {
         if (!BufferReader)
-            BufferReader = require(25);
+            BufferReader = require(24);
         return (Reader.create = function create_buffer(buffer) {
             return util.Buffer.isBuffer(buffer)
                 ? new BufferReader(buffer)
@@ -3475,17 +3477,17 @@ Reader._configure = configure;
 
 configure();
 
-},{"25":25,"34":34}],25:[function(require,module,exports){
+},{"24":24,"33":33}],24:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
 // extends Reader
-var Reader = require(24);
+var Reader = require(23);
 /** @alias BufferReader.prototype */
 var BufferReaderPrototype = BufferReader.prototype = Object.create(Reader.prototype);
 BufferReaderPrototype.constructor = BufferReader;
 
-var util = require(34);
+var util = require(33);
 
 /**
  * Constructs a new buffer reader instance.
@@ -3509,19 +3511,19 @@ BufferReaderPrototype.string = function read_string_buffer() {
     return this.buf.utf8Slice(this.pos, this.pos = Math.min(this.pos + len, this.len));
 };
 
-},{"24":24,"34":34}],26:[function(require,module,exports){
+},{"23":23,"33":33}],25:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
 // extends Namespace
-var Namespace = require(21);
+var Namespace = require(20);
 /** @alias Root.prototype */
 var RootPrototype = Namespace.extend(Root);
 
 Root.className = "Root";
 
-var Field  = require(17),
-    util   = require(32);
+var Field  = require(16),
+    util   = require(31);
 
 var parse,  // cyclic, might be excluded
     common; // might be excluded
@@ -3829,7 +3831,7 @@ RootPrototype._handleRemove = function handleRemove(object) {
     }
 };
 
-},{"17":17,"21":21,"32":32,"undefined":undefined}],27:[function(require,module,exports){
+},{"16":16,"20":20,"31":31,"undefined":undefined}],26:[function(require,module,exports){
 "use strict";
 
 /**
@@ -3838,13 +3840,13 @@ RootPrototype._handleRemove = function handleRemove(object) {
  */
 var rpc = exports;
 
-rpc.Service = require(28);
+rpc.Service = require(27);
 
-},{"28":28}],28:[function(require,module,exports){
+},{"27":27}],27:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
-var EventEmitter = require(32).EventEmitter;
+var EventEmitter = require(31).EventEmitter;
 
 /**
  * Constructs a new RPC service instance.
@@ -3881,12 +3883,12 @@ Service.prototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"32":32}],29:[function(require,module,exports){
+},{"31":31}],28:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
 // extends Namespace
-var Namespace = require(21);
+var Namespace = require(20);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Service.prototype */
@@ -3894,9 +3896,9 @@ var ServicePrototype = Namespace.extend(Service);
 
 Service.className = "Service";
 
-var Method = require(20),
-    util   = require(32),
-    rpc    = require(27);
+var Method = require(19),
+    util   = require(31),
+    rpc    = require(26);
 
 /**
  * Constructs a new service instance.
@@ -4098,12 +4100,12 @@ ServicePrototype.create = function create(rpcImpl, requestDelimited, responseDel
     return rpcService;
 };
 
-},{"20":20,"21":21,"27":27,"32":32}],30:[function(require,module,exports){
+},{"19":19,"20":20,"26":26,"31":31}],29:[function(require,module,exports){
 "use strict";
 module.exports = Type;
 
 // extends Namespace
-var Namespace = require(21);
+var Namespace = require(20);
 /** @alias Namespace.prototype */
 var NamespacePrototype = Namespace.prototype;
 /** @alias Type.prototype */
@@ -4111,18 +4113,18 @@ var TypePrototype = Namespace.extend(Type);
 
 Type.className = "Type";
 
-var Enum      = require(16),
-    OneOf     = require(23),
-    Field     = require(17),
-    Service   = require(29),
+var Enum      = require(15),
+    OneOf     = require(22),
+    Field     = require(16),
+    Service   = require(28),
     Class     = require(11),
-    Message   = require(19),
-    Reader    = require(24),
-    Writer    = require(36),
-    util      = require(32),
-    encoder   = require(15),
-    decoder   = require(14),
-    verifier  = require(35),
+    Message   = require(18),
+    Reader    = require(23),
+    Writer    = require(35),
+    util      = require(31),
+    encoder   = require(14),
+    decoder   = require(13),
+    verifier  = require(34),
     converter = require(12);
 
 var nestedTypes = [ Enum, Type, Field, Service ];
@@ -4421,16 +4423,6 @@ TypePrototype.create = function create(properties) {
 };
 
 /**
- * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
- * @param {Object.<string,*>} object JSON object
- * @param {MessageConversionOptions} [options] Conversion options
- * @returns {Message} Runtime message
- */
-TypePrototype.from = function from(object, options) {
-    return this.convert(object, converter.message, options);
-};
-
-/**
  * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
  * @returns {Type} `this`
  */
@@ -4453,7 +4445,11 @@ TypePrototype.setup = function setup() {
         types : types,
         util  : util
     });
-    this.convert = converter(this).eof(fullName + "$convert", {
+    this.fromObject = this.from = converter.fromObject(this).eof(fullName + "$fromObject", {
+        types : types,
+        util  : util
+    });
+    this.toObject = converter.toObject(this).eof(fullName + "$toObject", {
         types : types,
         util  : util
     });
@@ -4510,17 +4506,52 @@ TypePrototype.verify = function verify_setup(message) {
 };
 
 /**
- * Converts an object or runtime message.
- * @param {Message|Object} source Source object or runtime message
- * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Converted object or runtime message
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
  */
-TypePrototype.convert = function convert_setup(source, impl, options) {
-    return this.setup().convert(source, impl, options); // overrides this method
+TypePrototype.fromObject = function fromObject(object) {
+    return this.setup().fromObject(object);
 };
 
-},{"11":11,"12":12,"14":14,"15":15,"16":16,"17":17,"19":19,"21":21,"23":23,"24":24,"29":29,"32":32,"35":35,"36":36}],31:[function(require,module,exports){
+/**
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * This is an alias of {@link Type#fromObject}.
+ * @function
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
+ */
+TypePrototype.from = TypePrototype.fromObject;
+
+/**
+ * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
+ * @typedef ConversionOptions
+ * @type {Object}
+ * @property {*} [longs] Long conversion type.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to copy the present value, which is a possibly unsafe number without and a Long with a long library.
+ * @property {*} [enums] Enum value conversion type.
+ * Only valid value is `String` (the global type).
+ * Defaults to copy the present value, which is the numeric id.
+ * @property {*} [bytes] Bytes value conversion type.
+ * Valid values are `Array` and `String` (the global types).
+ * Defaults to copy the present value, which usually is Buffer under node and an Uint8Array in the browser.
+ * @property {boolean} [defaults=false] Also sets default values on the resulting object
+ * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
+ * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
+ */
+
+/**
+ * Creates a plain object from a message of this type. Also converts values to other types if specified.
+ * @param {Message} message Message instance
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
+ */
+TypePrototype.toObject = function toObject(message, options) {
+    return this.setup().toObject(message, options);
+};
+
+},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"18":18,"20":20,"22":22,"23":23,"28":28,"31":31,"34":34,"35":35}],30:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4529,7 +4560,7 @@ TypePrototype.convert = function convert_setup(source, impl, options) {
  */
 var types = exports;
 
-var util = require(32);
+var util = require(31);
 
 var s = [
     "double",   // 0
@@ -4714,14 +4745,14 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"32":32}],32:[function(require,module,exports){
+},{"31":31}],31:[function(require,module,exports){
 "use strict";
 
 /**
  * Various utility functions.
  * @namespace
  */
-var util = module.exports = require(34);
+var util = module.exports = require(33);
 
 util.asPromise    = require(1);
 util.codegen      = require(3);
@@ -4774,12 +4805,12 @@ util.ucFirst = function ucFirst(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
 };
 
-},{"1":1,"3":3,"34":34,"4":4,"5":5,"6":6,"8":8}],33:[function(require,module,exports){
+},{"1":1,"3":3,"33":33,"4":4,"5":5,"6":6,"8":8}],32:[function(require,module,exports){
 "use strict";
 
 module.exports = LongBits;
 
-var util = require(34);
+var util = require(33);
 
 /**
  * Any compatible Long instance.
@@ -4986,7 +5017,7 @@ LongBitsPrototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"34":34}],34:[function(require,module,exports){
+},{"33":33}],33:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5110,7 +5141,7 @@ util.arrayNe = function arrayNe(a, b) {
     return false;
 };
 
-util.LongBits = require(33);
+util.LongBits = require(32);
 
 /**
  * Long.js's Long class if available.
@@ -5173,12 +5204,12 @@ util.merge = function merge(dst, src, ifNotSet) { // used by converters
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"10":10,"2":2,"33":33,"7":7,"9":9}],35:[function(require,module,exports){
+},{"10":10,"2":2,"32":32,"7":7,"9":9}],34:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
-var Enum      = require(16),
-    util      = require(32);
+var Enum      = require(15),
+    util      = require(31);
 
 function invalid(field, expected) {
     return field.fullName.substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
@@ -5324,11 +5355,11 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
-},{"16":16,"32":32}],36:[function(require,module,exports){
+},{"15":15,"31":31}],35:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
-var util      = require(34);
+var util      = require(33);
 
 var BufferWriter; // cyclic
 
@@ -5459,7 +5490,7 @@ function Writer() {
 Writer.create = util.Buffer
     ? function create_buffer_setup() {
         if (!BufferWriter)
-            BufferWriter = require(37);
+            BufferWriter = require(36);
         return (Writer.create = function create_buffer() {
             return new BufferWriter();
         })();
@@ -5772,7 +5803,7 @@ WriterPrototype.double = function write_double(value) {
 
 var writeBytes = util.Array.prototype.set
     ? function writeBytes_set(val, buf, pos) {
-        buf.set(val, pos);
+        buf.set(val, pos); // also works for plain array values
     }
     /* istanbul ignore next */
     : function writeBytes_for(val, buf, pos) {
@@ -5872,17 +5903,17 @@ WriterPrototype.finish = function finish() {
     return buf;
 };
 
-},{"34":34,"37":37}],37:[function(require,module,exports){
+},{"33":33,"36":36}],36:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
 // extends Writer
-var Writer = require(36);
+var Writer = require(35);
 /** @alias BufferWriter.prototype */
 var BufferWriterPrototype = BufferWriter.prototype = Object.create(Writer.prototype);
 BufferWriterPrototype.constructor = BufferWriter;
 
-var util = require(34);
+var util = require(33);
 
 var Buffer = util.Buffer;
 
@@ -5908,12 +5939,13 @@ BufferWriter.alloc = function alloc_buffer(size) {
 var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name === "set"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
+                           // also works for plain array values
     }
     /* istanbul ignore next */
     : function writeBytesBuffer_copy(val, buf, pos) {
-        if (val.copy)
+        if (val.copy) // Buffer values
             val.copy(buf, pos, 0, val.length);
-        else for (var i = 0; i < val.length;)
+        else for (var i = 0; i < val.length;) // plain array values
             buf[pos++] = val[i++];
     };
 
@@ -5948,7 +5980,7 @@ BufferWriterPrototype.string = function write_string_buffer(value) {
     return this;
 };
 
-},{"34":34,"36":36}],38:[function(require,module,exports){
+},{"33":33,"35":35}],37:[function(require,module,exports){
 (function (global){
 "use strict";
 var protobuf = global.protobuf = exports;
@@ -6039,35 +6071,35 @@ try {
 } catch (e) {} // eslint-disable-line no-empty
 
 // Serialization
-protobuf.Writer           = require(36);
-protobuf.BufferWriter     = require(37);
-protobuf.Reader           = require(24);
-protobuf.BufferReader     = require(25);
-protobuf.encoder          = require(15);
-protobuf.decoder          = require(14);
-protobuf.verifier         = require(35);
+protobuf.Writer           = require(35);
+protobuf.BufferWriter     = require(36);
+protobuf.Reader           = require(23);
+protobuf.BufferReader     = require(24);
+protobuf.encoder          = require(14);
+protobuf.decoder          = require(13);
+protobuf.verifier         = require(34);
 protobuf.converter        = require(12);
 
 // Reflection
-protobuf.ReflectionObject = require(22);
-protobuf.Namespace        = require(21);
-protobuf.Root             = require(26);
-protobuf.Enum             = require(16);
-protobuf.Type             = require(30);
-protobuf.Field            = require(17);
-protobuf.OneOf            = require(23);
-protobuf.MapField         = require(18);
-protobuf.Service          = require(29);
-protobuf.Method           = require(20);
+protobuf.ReflectionObject = require(21);
+protobuf.Namespace        = require(20);
+protobuf.Root             = require(25);
+protobuf.Enum             = require(15);
+protobuf.Type             = require(29);
+protobuf.Field            = require(16);
+protobuf.OneOf            = require(22);
+protobuf.MapField         = require(17);
+protobuf.Service          = require(28);
+protobuf.Method           = require(19);
 
 // Runtime
 protobuf.Class            = require(11);
-protobuf.Message          = require(19);
+protobuf.Message          = require(18);
 
 // Utility
-protobuf.types            = require(31);
-protobuf.rpc              = require(27);
-protobuf.util             = require(32);
+protobuf.types            = require(30);
+protobuf.rpc              = require(26);
+protobuf.util             = require(31);
 protobuf.configure        = configure;
 
 /* istanbul ignore next */
@@ -6092,7 +6124,7 @@ if (typeof define === "function" && define.amd)
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"11":11,"12":12,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"27":27,"29":29,"30":30,"31":31,"32":32,"35":35,"36":36,"37":37,"undefined":undefined}]},{},[38])
+},{"11":11,"12":12,"13":13,"14":14,"15":15,"16":16,"17":17,"18":18,"19":19,"20":20,"21":21,"22":22,"23":23,"24":24,"25":25,"26":26,"28":28,"29":29,"30":30,"31":31,"34":34,"35":35,"36":36,"undefined":undefined}]},{},[37])
 
 
 //# sourceMappingURL=protobuf.js.map

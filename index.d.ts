@@ -26,14 +26,33 @@ export class Class {
     static create(type: Type, ctor?: any): Message;
 
     /**
-     * Creates a message from a JSON object by converting strings and numbers to their respective field types.
-     * @name Class#from
+     * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+     * @name Class#fromObject
      * @function
-     * @param {Object.<string,*>} object JSON object
-     * @param {MessageConversionOptions} [options] Options
+     * @param {Object.<string,*>} object Plain object
      * @returns {Message} Message instance
      */
-    from(object: { [k: string]: any }, options?: MessageConversionOptions): Message;
+    fromObject(object: { [k: string]: any }): Message;
+
+    /**
+     * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link Class#fromObject}.
+     * @name Class#from
+     * @function
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Message} Message instance
+     */
+    from(object: { [k: string]: any }): Message;
+
+    /**
+     * Creates a plain object from a message of this type. Also converts values to other types if specified.
+     * @name Class#toObject
+     * @function
+     * @param {Message} message Message instance
+     * @param {ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
 
     /**
      * Encodes a message of this type.
@@ -81,17 +100,6 @@ export class Class {
      * @returns {?string} `null` if valid, otherwise the reason why it is not
      */
     verify(message: (Message|Object)): string;
-
-    /**
-     * Converts an object or runtime message of this type.
-     * @name Class#convert
-     * @function
-     * @param {Message|Object} source Source object or runtime message
-     * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
-     * @param {Object.<string,*>} [options] Conversion options
-     * @returns {Message|Object} Converted object or runtime message
-     */
-    convert(source: (Message|Object), impl: ConverterImpl, options?: { [k: string]: any }): (Message|Object);
 }
 
 /**
@@ -108,117 +116,6 @@ export class Class {
  * @property {Object.<string,*>} google/protobuf/wrappers.proto Wrappers
  */
 export function common(name: string, json: { [k: string]: any }): void;
-
-/**
- * Generates a conveter specific to the specified message type.
- * @param {Type} mtype Message type
- * @param {function} generateField Field generator
- * @returns {Codegen} Codegen instance
- * @property {ConverterImpl} json Converter implementation producing JSON
- * @property {ConverterImpl} message Converter implementation producing runtime messages
- */
-export function converter(mtype: Type, generateField: () => any): Codegen;
-
-/**
- * A converter implementation as used by {@link Type#convert} respectively {@link Message.convert}.
- * @typedef ConverterImpl
- * @type {Object}
- * @property {ConverterCreate} create Function for creating a new destination object
- * @property {ConverterEnums} enums Function for converting enum values
- * @property {ConverterLongs} longs Function for converting long values
- * @property {ConverterBytes} bytes Function for converting bytes values
- */
-
-interface ConverterImpl {
-    create: ConverterCreate;
-    enums: ConverterEnums;
-    longs: ConverterLongs;
-    bytes: ConverterBytes;
-}
-
-/**
- * A function for creating a new destination object.
- * @typedef ConverterCreate
- * @type {function}
- * @param {Message|Object} value Source object or message
- * @param {Function} typeOrCtor Reflected type or message constructor
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Destination object or message
- */
-type ConverterCreate = (value: (Message|Object), typeOrCtor: () => any, options?: { [k: string]: any }) => (Message|Object);
-
-/**
- * A function for converting enum values.
- * @typedef ConverterEnums
- * @type {function}
- * @param {number|string} value Actual value
- * @param {number} defaultValue Default value
- * @param {Object.<string,number>} values Possible values
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {number|string} Converted value
- */
-type ConverterEnums = (value: (number|string), defaultValue: number, values: { [k: string]: number }, options?: { [k: string]: any }) => (number|string);
-
-/**
- * A function for converting long values.
- * @typedef ConverterLongs
- * @type {function}
- * @param {number|string|Long} value Actual value
- * @param {Long} defaultValue Default value
- * @param {boolean} unsigned Whether unsigned or not
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {number|string|Long} Converted value
- */
-type ConverterLongs = (value: (number|string|Long), defaultValue: Long, unsigned: boolean, options?: { [k: string]: any }) => (number|string|Long);
-
-/**
- * A function for converting bytes values.
- * @typedef ConverterBytes
- * @type {function}
- * @param {string|number[]|Uint8Array} value Actual value
- * @param {number[]} defaultValue Default value
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {string|number[]|Uint8Array} Converted value
- */
-type ConverterBytes = (value: (string|number[]|Uint8Array), defaultValue: number[], options?: { [k: string]: any }) => (string|number[]|Uint8Array);
-
-/**
- * JSON conversion options as used by {@link Message#asJSON}.
- * @typedef JSONConversionOptions
- * @type {Object}
- * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
- * @property {*} [longs] Long conversion type. Only relevant with a long library.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to a possibly unsafe number without, and a `Long` with a long library.
- * @property {*} [enums=Number] Enum value conversion type.
- * Valid values are `String` and `Number` (the global types).
- * Defaults to the numeric ids.
- * @property {*} [bytes] Bytes value conversion type.
- * Valid values are `Array` and `String` (the global types).
- * Defaults to return the underlying buffer type.
- * @property {boolean} [defaults=false] Also sets default values on the resulting object
- * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
- */
-
-interface JSONConversionOptions {
-    fieldsOnly?: boolean;
-    longs?: any;
-    enums?: any;
-    bytes?: any;
-    defaults?: boolean;
-    arrays?: boolean;
-}
-
-/**
- * Message conversion options as used by {@link Message.from} and {@link Type#from}.
- * @typedef MessageConversionOptions
- * @type {Object}
- * @property {boolean} [fieldsOnly=false] Keeps only properties that reference a field
- */
-
-interface MessageConversionOptions {
-    fieldsOnly?: boolean;
-}
 
 /**
  * Generates a decoder specific to the specified message type.
@@ -630,21 +527,6 @@ export class Message {
     readonly $type: Type;
 
     /**
-     * Converts this message to a JSON object.
-     * @param {JSONConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} JSON object
-     */
-    asJSON(options?: JSONConversionOptions): { [k: string]: any };
-
-    /**
-     * Creates a message from a JSON object by converting strings and numbers to their respective field types.
-     * @param {Object.<string,*>} object JSON object
-     * @param {MessageConversionOptions} [options] Options
-     * @returns {Message} Message instance
-     */
-    static from(object: { [k: string]: any }, options?: MessageConversionOptions): Message;
-
-    /**
      * Encodes a message of this type.
      * @param {Message|Object} message Message to encode
      * @param {Writer} [writer] Writer to use
@@ -688,13 +570,41 @@ export class Message {
     static verify(message: (Message|Object)): string;
 
     /**
-     * Converts an object or runtime message of this type.
-     * @param {Message|Object} source Source object or runtime message
-     * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
-     * @param {Object.<string,*>} [options] Conversion options
-     * @returns {Message|Object} Converted object or runtime message
+     * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Message} Message instance
      */
-    static convert(source: (Message|Object), impl: ConverterImpl, options?: { [k: string]: any }): (Message|Object);
+    static fromObject(object: { [k: string]: any }): Message;
+
+    /**
+     * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link Message.fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Message} Message instance
+     */
+    static from(object: { [k: string]: any }): Message;
+
+    /**
+     * Creates a plain object from a message of this type. Also converts values to other types if specified.
+     * @param {Message} message Message instance
+     * @param {ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    static toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
+
+    /**
+     * Creates a plain object from this message. Also converts values to other types if specified.
+     * @param {ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    toObject(options?: ConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this message to JSON.
+     * @returns {Object.<string,*>} JSON object
+     */
+    toJSON(): { [k: string]: any };
 }
 
 /**
@@ -1701,14 +1611,6 @@ export class Type extends NamespaceBase {
     create(properties?: { [k: string]: any }): Message;
 
     /**
-     * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
-     * @param {Object.<string,*>} object JSON object
-     * @param {MessageConversionOptions} [options] Conversion options
-     * @returns {Message} Runtime message
-     */
-    from(object: { [k: string]: any }, options?: MessageConversionOptions): Message;
-
-    /**
      * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
      * @returns {Type} `this`
      */
@@ -1753,13 +1655,55 @@ export class Type extends NamespaceBase {
     verify(message: (Message|Object)): string;
 
     /**
-     * Converts an object or runtime message.
-     * @param {Message|Object} source Source object or runtime message
-     * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
-     * @param {Object.<string,*>} [options] Conversion options
-     * @returns {Message|Object} Converted object or runtime message
+     * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Message} Message instance
      */
-    convert(source: (Message|Object), impl: ConverterImpl, options?: { [k: string]: any }): (Message|Object);
+    fromObject(object: { [k: string]: any }): Message;
+
+    /**
+     * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link Type#fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Message} Message instance
+     */
+    from(object: { [k: string]: any }): Message;
+
+    /**
+     * Creates a plain object from a message of this type. Also converts values to other types if specified.
+     * @param {Message} message Message instance
+     * @param {ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    toObject(message: Message, options?: ConversionOptions): { [k: string]: any };
+}
+
+/**
+ * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
+ * @typedef ConversionOptions
+ * @type {Object}
+ * @property {*} [longs] Long conversion type.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to copy the present value, which is a possibly unsafe number without and a Long with a long library.
+ * @property {*} [enums] Enum value conversion type.
+ * Only valid value is `String` (the global type).
+ * Defaults to copy the present value, which is the numeric id.
+ * @property {*} [bytes] Bytes value conversion type.
+ * Valid values are `Array` and `String` (the global types).
+ * Defaults to copy the present value, which usually is Buffer under node and an Uint8Array in the browser.
+ * @property {boolean} [defaults=false] Also sets default values on the resulting object
+ * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
+ * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
+ */
+
+interface ConversionOptions {
+    longs?: any;
+    enums?: any;
+    bytes?: any;
+    defaults?: boolean;
+    arrays?: boolean;
+    objects?: boolean;
 }
 
 /**

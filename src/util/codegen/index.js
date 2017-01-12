@@ -126,6 +126,8 @@ function sprintf(format) {
         switch ($1) {
             case "j":
                 return JSON.stringify(arg);
+            case "d":
+                return Number(arg);
             default:
                 return String(arg);
         }

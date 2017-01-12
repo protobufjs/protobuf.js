@@ -146,50 +146,78 @@ $root.vector_tile = (function() {
         };})($types);
 
         /**
-         * Converts a Tile message.
-         * @function
-         * @param {vector_tile.Tile|Object} source Tile message or plain object to convert
-         * @param {*} impl Converter implementation to use
-         * @param {Object.<string,*>} [options] Conversion options
-         * @returns {vector_tile.Tile|Object} Converted message
+         * Creates a Tile message from a plain object. Also converts values to their respective internal types.
+         * @param {Object.<string,*>} object Plain object
+         * @returns {vector_tile.Tile} Tile
          */
-        Tile.convert = (function(types) { return function convert(src, impl, options) {
-            if (!options) {
-                options = {};
-            }
-            var dst = impl.create(src, this, options);
-            if (dst) {
-                if (src.layers && src.layers.length) {
-                    dst.layers = [];
-                    for (var i = 0; i < src.layers.length; ++i) {
-                        dst.layers.push(types[0].convert(src.layers[i], impl, options));
-                    }
-                } else {
-                    if (options.defaults || options.arrays) {
-                        dst.layers = [];
-                    }
+        Tile.fromObject = (function(types) { return function fromObject(object) {
+            var message = new $root.vector_tile.Tile();
+            if (object.layers) {
+                message.layers = [];
+                for (var i = 0; i < object.layers.length; ++i) {
+                    message.layers[i] = types[0].fromObject(object.layers[i]);
                 }
             }
-            return dst;
+            return message;
         };})($types);
 
         /**
-         * Creates a Tile message from JSON.
-         * @param {Object.<string,*>} source Source object
-         * @param {Object.<string,*>} [options] Conversion options
+         * Creates a Tile message from a plain object. Also converts values to their respective internal types.
+         * This is an alias of {@link vector_tile.Tile.fromObject}.
+         * @function
+         * @param {Object.<string,*>} object Plain object
          * @returns {vector_tile.Tile} Tile
          */
-        Tile.from = function from(source, options) {
-            return this.convert(source, $protobuf.converters.message, options);
+        Tile.from = Tile.fromObject;
+
+        /**
+         * Creates a plain object from a Tile message. Also converts values to other types if specified.
+         * @param {vector_tile.Tile} message Tile
+         * @param {$protobuf.ConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Tile.toObject = (function(types) { return function toObject(message, options) {
+            if (!options) {
+                options = {};
+            }
+            var object = {};
+            if (options.arrays || options.defaults) {
+                object.layers = [];
+            }
+            for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                switch (keys[i]) {
+                case "layers":
+                    if (message.layers.length) {
+                        object.layers = [];
+                        for (var j = 0; j < message.layers.length; ++j) {
+                            object.layers[j] = types[0].ctor.prototype.toObject.call(message.layers[j], options);
+                        }
+                    }
+                    break;
+                }
+            }
+            return object;
+        };})($types);
+
+        /**
+         * Creates a plain object from this Tile message. Also converts values to other types if specified.
+         * @param {$protobuf.ConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        $prototype.toObject = function toObject(options) {
+            return this.constructor.toObject(this, options);
         };
 
         /**
-         * Converts this Tile message to JSON.
-         * @param {Object.<string,*>} [options] Conversion options
+         * Converts this Tile to JSON.
          * @returns {Object.<string,*>} JSON object
          */
-        $prototype.asJSON = function asJSON(options) {
-            return this.constructor.convert(this, $protobuf.converters.json, options);
+        $prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, {
+                longs: String,
+                enums: String,
+                bytes: String
+            });
         };
 
         /**
@@ -434,61 +462,187 @@ $root.vector_tile = (function() {
             };})($protobuf.util);
 
             /**
-             * Converts a Value message.
-             * @function
-             * @param {vector_tile.Tile.Value|Object} source Value message or plain object to convert
-             * @param {*} impl Converter implementation to use
-             * @param {Object.<string,*>} [options] Conversion options
-             * @returns {vector_tile.Tile.Value|Object} Converted message
+             * Creates a Value message from a plain object. Also converts values to their respective internal types.
+             * @param {Object.<string,*>} object Plain object
+             * @returns {vector_tile.Tile.Value} Value
              */
-            Value.convert = (function(util) { return function convert(src, impl, options) {
-                if (!options) {
-                    options = {};
-                }
-                var dst = impl.create(src, this, options);
-                if (dst) {
-                    if (dst.stringValue === undefined && options.defaults) {
-                        dst.stringValue = "";
-                    }
-                    if (dst.floatValue === undefined && options.defaults) {
-                        dst.floatValue = 0;
-                    }
-                    if (dst.doubleValue === undefined && options.defaults) {
-                        dst.doubleValue = 0;
-                    }
-                    if (options.defaults || src.intValue !== undefined && src.intValue !== null && util.longNe(src.intValue, 0, 0)) {
-                        dst.intValue = impl.longs(src.intValue, 0, 0, false, options);
-                    }
-                    if (options.defaults || src.uintValue !== undefined && src.uintValue !== null && util.longNe(src.uintValue, 0, 0)) {
-                        dst.uintValue = impl.longs(src.uintValue, 0, 0, true, options);
-                    }
-                    if (options.defaults || src.sintValue !== undefined && src.sintValue !== null && util.longNe(src.sintValue, 0, 0)) {
-                        dst.sintValue = impl.longs(src.sintValue, 0, 0, false, options);
-                    }
-                    if (dst.boolValue === undefined && options.defaults) {
-                        dst.boolValue = false;
+            Value.fromObject = (function(util) { return function fromObject(object) {
+                var message = new $root.vector_tile.Tile.Value();
+                message.stringValue = String(object.stringValue);
+                message.floatValue = Number(object.floatValue);
+                message.doubleValue = Number(object.doubleValue);
+                if (util.Long) {
+                    (message.intValue = util.Long.fromValue(object.intValue)).unsigned = false;
+                } else {
+                    if (typeof object.intValue === "string") {
+                        message.intValue = parseInt(object.intValue, 10);
+                    } else {
+                        if (typeof object.intValue === "number") {
+                            message.intValue = object.intValue;
+                        } else {
+                            if (typeof object.intValue === "object") {
+                                message.intValue = new util.LongBits(object.intValue.low, object.intValue.high).toNumber();
+                            }
+                        }
                     }
                 }
-                return dst;
+                if (util.Long) {
+                    (message.uintValue = util.Long.fromValue(object.uintValue)).unsigned = true;
+                } else {
+                    if (typeof object.uintValue === "string") {
+                        message.uintValue = parseInt(object.uintValue, 10);
+                    } else {
+                        if (typeof object.uintValue === "number") {
+                            message.uintValue = object.uintValue;
+                        } else {
+                            if (typeof object.uintValue === "object") {
+                                message.uintValue = new util.LongBits(object.uintValue.low, object.uintValue.high).toNumber(true);
+                            }
+                        }
+                    }
+                }
+                if (util.Long) {
+                    (message.sintValue = util.Long.fromValue(object.sintValue)).unsigned = false;
+                } else {
+                    if (typeof object.sintValue === "string") {
+                        message.sintValue = parseInt(object.sintValue, 10);
+                    } else {
+                        if (typeof object.sintValue === "number") {
+                            message.sintValue = object.sintValue;
+                        } else {
+                            if (typeof object.sintValue === "object") {
+                                message.sintValue = new util.LongBits(object.sintValue.low, object.sintValue.high).toNumber();
+                            }
+                        }
+                    }
+                }
+                message.boolValue = Boolean(object.boolValue);
+                return message;
             };})($protobuf.util);
 
             /**
-             * Creates a Value message from JSON.
-             * @param {Object.<string,*>} source Source object
-             * @param {Object.<string,*>} [options] Conversion options
+             * Creates a Value message from a plain object. Also converts values to their respective internal types.
+             * This is an alias of {@link vector_tile.Tile.Value.fromObject}.
+             * @function
+             * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Value} Value
              */
-            Value.from = function from(source, options) {
-                return this.convert(source, $protobuf.converters.message, options);
+            Value.from = Value.fromObject;
+
+            /**
+             * Creates a plain object from a Value message. Also converts values to other types if specified.
+             * @param {vector_tile.Tile.Value} message Value
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Value.toObject = (function(util) { return function toObject(message, options) {
+                if (!options) {
+                    options = {};
+                }
+                var object = {};
+                if (options.defaults) {
+                    object.stringValue = "";
+                    object.floatValue = 0;
+                    object.doubleValue = 0;
+                    if (util.Long) {
+                        var long = new util.Long(0, 0, false);
+                        object.intValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else {
+                        object.intValue = options.longs === String ? "0" : 0;
+                    }
+                    if (util.Long) {
+                        var long = new util.Long(0, 0, true);
+                        object.uintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else {
+                        object.uintValue = options.longs === String ? "0" : 0;
+                    }
+                    if (util.Long) {
+                        var long = new util.Long(0, 0, false);
+                        object.sintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else {
+                        object.sintValue = options.longs === String ? "0" : 0;
+                    }
+                    object.boolValue = false;
+                }
+                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                    switch (keys[i]) {
+                    case "stringValue":
+                        if (message.stringValue !== undefined && message.stringValue !== null) {
+                            object.stringValue = message.stringValue;
+                        }
+                        break;
+
+                    case "floatValue":
+                        if (message.floatValue !== undefined && message.floatValue !== null) {
+                            object.floatValue = message.floatValue;
+                        }
+                        break;
+
+                    case "doubleValue":
+                        if (message.doubleValue !== undefined && message.doubleValue !== null) {
+                            object.doubleValue = message.doubleValue;
+                        }
+                        break;
+
+                    case "intValue":
+                        if (message.intValue !== undefined && message.intValue !== null) {
+                            if (typeof message.intValue === "number") {
+                                object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
+                            } else {
+                                object.intValue = options.longs === String ? util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new util.LongBits(message.intValue.low, message.intValue.high).toNumber() : message.intValue;
+                            }
+                        }
+                        break;
+
+                    case "uintValue":
+                        if (message.uintValue !== undefined && message.uintValue !== null) {
+                            if (typeof message.uintValue === "number") {
+                                object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
+                            } else {
+                                object.uintValue = options.longs === String ? util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new util.LongBits(message.uintValue.low, message.uintValue.high).toNumber(true) : message.uintValue;
+                            }
+                        }
+                        break;
+
+                    case "sintValue":
+                        if (message.sintValue !== undefined && message.sintValue !== null) {
+                            if (typeof message.sintValue === "number") {
+                                object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
+                            } else {
+                                object.sintValue = options.longs === String ? util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new util.LongBits(message.sintValue.low, message.sintValue.high).toNumber() : message.sintValue;
+                            }
+                        }
+                        break;
+
+                    case "boolValue":
+                        if (message.boolValue !== undefined && message.boolValue !== null) {
+                            object.boolValue = message.boolValue;
+                        }
+                        break;
+                    }
+                }
+                return object;
+            };})($protobuf.util);
+
+            /**
+             * Creates a plain object from this Value message. Also converts values to other types if specified.
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            $prototype.toObject = function toObject(options) {
+                return this.constructor.toObject(this, options);
             };
 
             /**
-             * Converts this Value message to JSON.
-             * @param {Object.<string,*>} [options] Conversion options
+             * Converts this Value to JSON.
              * @returns {Object.<string,*>} JSON object
              */
-            $prototype.asJSON = function asJSON(options) {
-                return this.constructor.convert(this, $protobuf.converters.json, options);
+            $prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, {
+                    longs: String,
+                    enums: String,
+                    bytes: String
+                });
             };
 
             return Value;
@@ -710,66 +864,157 @@ $root.vector_tile = (function() {
             };})($protobuf.util);
 
             /**
-             * Converts a Feature message.
-             * @function
-             * @param {vector_tile.Tile.Feature|Object} source Feature message or plain object to convert
-             * @param {*} impl Converter implementation to use
-             * @param {Object.<string,*>} [options] Conversion options
-             * @returns {vector_tile.Tile.Feature|Object} Converted message
+             * Creates a Feature message from a plain object. Also converts values to their respective internal types.
+             * @param {Object.<string,*>} object Plain object
+             * @returns {vector_tile.Tile.Feature} Feature
              */
-            Feature.convert = (function(util, types) { return function convert(src, impl, options) {
+            Feature.fromObject = (function(util) { return function fromObject(object) {
+                var message = new $root.vector_tile.Tile.Feature();
+                if (util.Long) {
+                    (message.id = util.Long.fromValue(object.id)).unsigned = true;
+                } else {
+                    if (typeof object.id === "string") {
+                        message.id = parseInt(object.id, 10);
+                    } else {
+                        if (typeof object.id === "number") {
+                            message.id = object.id;
+                        } else {
+                            if (typeof object.id === "object") {
+                                message.id = new util.LongBits(object.id.low, object.id.high).toNumber(true);
+                            }
+                        }
+                    }
+                }
+                if (object.tags) {
+                    message.tags = [];
+                    for (var i = 0; i < object.tags.length; ++i) {
+                        message.tags[i] = object.tags[i] >>> 0;
+                    }
+                }
+                if (object.type !== undefined && object.type !== null) {
+                    switch (object.type) {
+                    case "UNKNOWN":
+                    case 0:
+                        message.type = 0;
+                        break;
+
+                    case "POINT":
+                    case 1:
+                        message.type = 1;
+                        break;
+
+                    case "LINESTRING":
+                    case 2:
+                        message.type = 2;
+                        break;
+
+                    case "POLYGON":
+                    case 3:
+                        message.type = 3;
+                        break;
+                    }
+                }
+                if (object.geometry) {
+                    message.geometry = [];
+                    for (var i = 0; i < object.geometry.length; ++i) {
+                        message.geometry[i] = object.geometry[i] >>> 0;
+                    }
+                }
+                return message;
+            };})($protobuf.util);
+
+            /**
+             * Creates a Feature message from a plain object. Also converts values to their respective internal types.
+             * This is an alias of {@link vector_tile.Tile.Feature.fromObject}.
+             * @function
+             * @param {Object.<string,*>} object Plain object
+             * @returns {vector_tile.Tile.Feature} Feature
+             */
+            Feature.from = Feature.fromObject;
+
+            /**
+             * Creates a plain object from a Feature message. Also converts values to other types if specified.
+             * @param {vector_tile.Tile.Feature} message Feature
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Feature.toObject = (function(util, types) { return function toObject(message, options) {
                 if (!options) {
                     options = {};
                 }
-                var dst = impl.create(src, this, options);
-                if (dst) {
-                    if (options.defaults || src.id !== undefined && src.id !== null && util.longNe(src.id, 0, 0)) {
-                        dst.id = impl.longs(src.id, 0, 0, true, options);
-                    }
-                    if (src.tags && src.tags.length) {
-                        dst.tags = [];
-                        for (var i = 0; i < src.tags.length; ++i) {
-                            dst.tags.push(src.tags[i]);
-                        }
+                var object = {};
+                if (options.arrays || options.defaults) {
+                    object.tags = [];
+                    object.geometry = [];
+                }
+                if (options.defaults) {
+                    if (util.Long) {
+                        var long = new util.Long(0, 0, true);
+                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else {
-                        if (options.defaults || options.arrays) {
-                            dst.tags = [];
-                        }
+                        object.id = options.longs === String ? "0" : 0;
                     }
-                    if (options.defaults || src.type !== undefined && src.type !== undefined) {
-                        dst.type = impl.enums(src.type, undefined, types[2], options);
-                    }
-                    if (src.geometry && src.geometry.length) {
-                        dst.geometry = [];
-                        for (var i = 0; i < src.geometry.length; ++i) {
-                            dst.geometry.push(src.geometry[i]);
+                    object.type = options.enums === String ? undefined : undefined;
+                }
+                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                    switch (keys[i]) {
+                    case "id":
+                        if (message.id !== undefined && message.id !== null) {
+                            if (typeof message.id === "number") {
+                                object.id = options.longs === String ? String(message.id) : message.id;
+                            } else {
+                                object.id = options.longs === String ? util.Long.prototype.toString.call(message.id) : options.longs === Number ? new util.LongBits(message.id.low, message.id.high).toNumber(true) : message.id;
+                            }
                         }
-                    } else {
-                        if (options.defaults || options.arrays) {
-                            dst.geometry = [];
+                        break;
+
+                    case "tags":
+                        if (message.tags.length) {
+                            object.tags = [];
+                            for (var j = 0; j < message.tags.length; ++j) {
+                                object.tags[j] = message.tags[j];
+                            }
                         }
+                        break;
+
+                    case "type":
+                        if (message.type !== undefined && message.type !== null) {
+                            object.type = options.enums === String ? types[2][message.type] : message.type;
+                        }
+                        break;
+
+                    case "geometry":
+                        if (message.geometry.length) {
+                            object.geometry = [];
+                            for (var j = 0; j < message.geometry.length; ++j) {
+                                object.geometry[j] = message.geometry[j];
+                            }
+                        }
+                        break;
                     }
                 }
-                return dst;
+                return object;
             };})($protobuf.util, $types);
 
             /**
-             * Creates a Feature message from JSON.
-             * @param {Object.<string,*>} source Source object
-             * @param {Object.<string,*>} [options] Conversion options
-             * @returns {vector_tile.Tile.Feature} Feature
+             * Creates a plain object from this Feature message. Also converts values to other types if specified.
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
              */
-            Feature.from = function from(source, options) {
-                return this.convert(source, $protobuf.converters.message, options);
+            $prototype.toObject = function toObject(options) {
+                return this.constructor.toObject(this, options);
             };
 
             /**
-             * Converts this Feature message to JSON.
-             * @param {Object.<string,*>} [options] Conversion options
+             * Converts this Feature to JSON.
              * @returns {Object.<string,*>} JSON object
              */
-            $prototype.asJSON = function asJSON(options) {
-                return this.constructor.convert(this, $protobuf.converters.json, options);
+            $prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, {
+                    longs: String,
+                    enums: String,
+                    bytes: String
+                });
             };
 
             return Feature;
@@ -1006,79 +1251,136 @@ $root.vector_tile = (function() {
             };})($protobuf.util, $types);
 
             /**
-             * Converts a Layer message.
-             * @function
-             * @param {vector_tile.Tile.Layer|Object} source Layer message or plain object to convert
-             * @param {*} impl Converter implementation to use
-             * @param {Object.<string,*>} [options] Conversion options
-             * @returns {vector_tile.Tile.Layer|Object} Converted message
+             * Creates a Layer message from a plain object. Also converts values to their respective internal types.
+             * @param {Object.<string,*>} object Plain object
+             * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.convert = (function(types) { return function convert(src, impl, options) {
-                if (!options) {
-                    options = {};
-                }
-                var dst = impl.create(src, this, options);
-                if (dst) {
-                    if (dst.version === undefined && options.defaults) {
-                        dst.version = 1;
-                    }
-                    if (dst.name === undefined && options.defaults) {
-                        dst.name = "";
-                    }
-                    if (src.features && src.features.length) {
-                        dst.features = [];
-                        for (var i = 0; i < src.features.length; ++i) {
-                            dst.features.push(types[2].convert(src.features[i], impl, options));
-                        }
-                    } else {
-                        if (options.defaults || options.arrays) {
-                            dst.features = [];
-                        }
-                    }
-                    if (src.keys && src.keys.length) {
-                        dst.keys = [];
-                        for (var i = 0; i < src.keys.length; ++i) {
-                            dst.keys.push(src.keys[i]);
-                        }
-                    } else {
-                        if (options.defaults || options.arrays) {
-                            dst.keys = [];
-                        }
-                    }
-                    if (src.values && src.values.length) {
-                        dst.values = [];
-                        for (var i = 0; i < src.values.length; ++i) {
-                            dst.values.push(types[4].convert(src.values[i], impl, options));
-                        }
-                    } else {
-                        if (options.defaults || options.arrays) {
-                            dst.values = [];
-                        }
-                    }
-                    if (dst.extent === undefined && options.defaults) {
-                        dst.extent = 4096;
+            Layer.fromObject = (function(types) { return function fromObject(object) {
+                var message = new $root.vector_tile.Tile.Layer();
+                message.version = object.version >>> 0;
+                message.name = String(object.name);
+                if (object.features) {
+                    message.features = [];
+                    for (var i = 0; i < object.features.length; ++i) {
+                        message.features[i] = types[2].fromObject(object.features[i]);
                     }
                 }
-                return dst;
+                if (object.keys) {
+                    message.keys = [];
+                    for (var i = 0; i < object.keys.length; ++i) {
+                        message.keys[i] = String(object.keys[i]);
+                    }
+                }
+                if (object.values) {
+                    message.values = [];
+                    for (var i = 0; i < object.values.length; ++i) {
+                        message.values[i] = types[4].fromObject(object.values[i]);
+                    }
+                }
+                message.extent = object.extent >>> 0;
+                return message;
             };})($types);
 
             /**
-             * Creates a Layer message from JSON.
-             * @param {Object.<string,*>} source Source object
-             * @param {Object.<string,*>} [options] Conversion options
+             * Creates a Layer message from a plain object. Also converts values to their respective internal types.
+             * This is an alias of {@link vector_tile.Tile.Layer.fromObject}.
+             * @function
+             * @param {Object.<string,*>} object Plain object
              * @returns {vector_tile.Tile.Layer} Layer
              */
-            Layer.from = function from(source, options) {
-                return this.convert(source, $protobuf.converters.message, options);
+            Layer.from = Layer.fromObject;
+
+            /**
+             * Creates a plain object from a Layer message. Also converts values to other types if specified.
+             * @param {vector_tile.Tile.Layer} message Layer
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Layer.toObject = (function(types) { return function toObject(message, options) {
+                if (!options) {
+                    options = {};
+                }
+                var object = {};
+                if (options.arrays || options.defaults) {
+                    object.features = [];
+                    object.keys = [];
+                    object.values = [];
+                }
+                if (options.defaults) {
+                    object.version = 1;
+                    object.name = "";
+                    object.extent = 4096;
+                }
+                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                    switch (keys[i]) {
+                    case "version":
+                        if (message.version !== undefined && message.version !== null) {
+                            object.version = message.version;
+                        }
+                        break;
+
+                    case "name":
+                        if (message.name !== undefined && message.name !== null) {
+                            object.name = message.name;
+                        }
+                        break;
+
+                    case "features":
+                        if (message.features.length) {
+                            object.features = [];
+                            for (var j = 0; j < message.features.length; ++j) {
+                                object.features[j] = types[2].ctor.prototype.toObject.call(message.features[j], options);
+                            }
+                        }
+                        break;
+
+                    case "keys":
+                        if (message.keys.length) {
+                            object.keys = [];
+                            for (var j = 0; j < message.keys.length; ++j) {
+                                object.keys[j] = message.keys[j];
+                            }
+                        }
+                        break;
+
+                    case "values":
+                        if (message.values.length) {
+                            object.values = [];
+                            for (var j = 0; j < message.values.length; ++j) {
+                                object.values[j] = types[4].ctor.prototype.toObject.call(message.values[j], options);
+                            }
+                        }
+                        break;
+
+                    case "extent":
+                        if (message.extent !== undefined && message.extent !== null) {
+                            object.extent = message.extent;
+                        }
+                        break;
+                    }
+                }
+                return object;
+            };})($types);
+
+            /**
+             * Creates a plain object from this Layer message. Also converts values to other types if specified.
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            $prototype.toObject = function toObject(options) {
+                return this.constructor.toObject(this, options);
             };
 
             /**
-             * Converts this Layer message to JSON.
-             * @param {Object.<string,*>} [options] Conversion options
+             * Converts this Layer to JSON.
              * @returns {Object.<string,*>} JSON object
              */
-            $prototype.asJSON = function asJSON(options) {
-                return this.constructor.convert(this, $protobuf.converters.json, options);
+            $prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, {
+                    longs: String,
+                    enums: String,
+                    bytes: String
+                });
             };
 
             return Layer;

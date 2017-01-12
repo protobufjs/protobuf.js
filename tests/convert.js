@@ -10,10 +10,10 @@ tape.test("convert", function(test) {
 
         var Message = root.lookup("Message");
 
-        test.test("Message#asJSON", function(test) {
+        test.test("Message#toObject", function(test) {
 
             test.test("called with defaults = true", function(test) {
-                var obj = Message.create().asJSON({ defaults: true });
+                var obj = Message.create().toObject({ defaults: true });
 
                 test.equal(obj.stringVal, "", "should set stringVal");
                 test.same(obj.stringRepeated, [], "should set stringRepeated");
@@ -27,11 +27,13 @@ tape.test("convert", function(test) {
                 test.equal(obj.enumVal, 1, "should set enumVal to the first defined value");
                 test.same(obj.enumRepeated, [], "should set enumRepeated");
 
+                test.same(obj.int64Map, {}, "should set int64Map");
+
                 test.end();
             });
 
             test.test("called with defaults = undefined", function(test) {
-                var obj = Message.create().asJSON();
+                var obj = Message.create().toObject();
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
                 test.equal(obj.stringRepeated, undefined, "should not set stringRepeated");
@@ -45,11 +47,13 @@ tape.test("convert", function(test) {
                 test.equal(obj.enumVal, undefined, "should not set enumVal");
                 test.equal(obj.enumRepeated, undefined, "should not set enumRepeated");
 
+                test.equal(obj.int64Map, undefined, "should not set int64 map");
+
                 test.end();
             });
 
             test.test("called with arrays = true", function(test) {
-                var obj = Message.create().asJSON({ arrays: true });
+                var obj = Message.create().toObject({ arrays: true });
 
                 test.equal(obj.stringVal, undefined, "should not set stringVal");
                 test.same(obj.stringRepeated, [], "should set stringRepeated");
@@ -63,6 +67,28 @@ tape.test("convert", function(test) {
                 test.equal(obj.enumVal, undefined, "should not set enumVal");
                 test.same(obj.enumRepeated, [], "should set enumRepeated");
 
+                test.equal(obj.int64Map, undefined, "should not set int64Map");
+
+                test.end();
+            });
+
+            test.test("called with objects = true", function(test) {
+                var obj = Message.create().toObject({ objects: true });
+
+                test.equal(obj.stringVal, undefined, "should not set stringVal");
+                test.equal(obj.stringRepeated, undefined, "should not set stringRepeated");
+
+                test.equal(obj.uint64Val, undefined, "should not set uint64Val");
+                test.same(obj.uint64Repeated, undefined, "should not set uint64Repeated");
+
+                test.equal(obj.bytesVal, undefined, "should not set bytesVal");
+                test.same(obj.bytesRepeated, undefined, "should not set bytesRepeated");
+
+                test.equal(obj.enumVal, undefined, "should not set enumVal");
+                test.same(obj.enumRepeated, undefined, "should not set enumRepeated");
+
+                test.same(obj.int64Map, {}, "should set int64Map");
+
                 test.end();
             });
 
@@ -75,18 +101,27 @@ tape.test("convert", function(test) {
                     bytesVal: buf,
                     bytesRepeated: [buf, buf],
                     enumVal: 2,
-                    enumRepeated: [1, 2]
+                    enumRepeated: [1, 2],
+                    int64Map: {
+                        a: protobuf.util.Long.fromNumber(2),
+                        b: protobuf.util.Long.fromNumber(3)
+                    }
                 });
 
-                test.equal(msg.asJSON({ longs: Number }).uint64Val, 1, "longs to numbers");
-                test.equal(msg.asJSON({ longs: String }).uint64Val, "1", "longs to strings");
+                var msgLongsToNumber = msg.toObject({ longs: Number }),
+                    msgLongsToString = msg.toObject({ longs: String });
 
-                test.equal(Object.prototype.toString.call(msg.asJSON({ bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
-                test.equal(msg.asJSON({ bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");
+                test.equal(msgLongsToNumber.uint64Val, 1, "longs to numbers");
+                test.equal(msgLongsToString.uint64Val, "1", "longs to strings");
+                test.same(msgLongsToNumber.int64Map, { a: 2, b: 3}, "long map values to numbers");
+                test.same(msgLongsToString.int64Map, { a: "2", b: "3"}, "long map values to strings");
+
+                test.equal(Object.prototype.toString.call(msg.toObject({ bytes: Array }).bytesVal), "[object Array]", "bytes to arrays");
+                test.equal(msg.toObject({ bytes: String }).bytesVal, "MTEx", "bytes to base64 strings");
                 if (protobuf.util.isNode)
-                    test.ok(Buffer.isBuffer(msg.asJSON({ bytes: Buffer }).bytesVal), "bytes to buffers");
+                    test.ok(Buffer.isBuffer(msg.toObject({ bytes: Buffer }).bytesVal), "bytes to buffers");
 
-                test.equal(msg.asJSON({ enums: String }).enumVal, "TWO", "enums to strings");
+                test.equal(msg.toObject({ enums: String }).enumVal, "TWO", "enums to strings");
 
                 test.end();
             });
@@ -94,15 +129,19 @@ tape.test("convert", function(test) {
             test.end();
         });
 
-        test.test("Message.from", function(test) {
+        test.test("Message.fromObject", function(test) {
            
-            var msg = Message.from({
+            var msg = Message.fromObject({
                 uint64Val: 1,
                 uint64Repeated: [1, "2"],
                 bytesVal: "MTEx",
                 bytesRepeated: ["MTEx", [49, 49, 49]],
                 enumVal: "ONE",
-                enumRepeated: [2, "TWO"]
+                enumRepeated: [2, "TWO"],
+                int64Map: {
+                    a: 2,
+                    b: "3"
+                }
             });
             var buf = protobuf.util.newBuffer(3);
             buf[0] = buf[1] = buf[2] = 49; // "111"
@@ -113,6 +152,7 @@ tape.test("convert", function(test) {
             test.same(msg.bytesRepeated, [ buf, buf ], "should set bytesRepeated from a base64 string and a plain array");
             test.equal(msg.enumVal, 1, "should set enumVal from a string");
             test.same(msg.enumRepeated, [ 2, 2 ], "should set enumRepeated from a number and a string");
+            test.same(msg.int64Map, { a: { low: 2, high: 0, unsigned: false }, b: { low: 3, high: 0, unsigned: false } }, "should set int64Map from a number and a string");
 
             test.end();
         });

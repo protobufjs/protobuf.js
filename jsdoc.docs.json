@@ -20,20 +20,7 @@
             "outputSourceFiles" : false
         },
         "applicationName": "protobuf.js",
-        "disqus": "",
-        "googleAnalytics": "",
-        "openGraph": {
-            "title": "",
-            "type": "website",
-            "image": "",
-            "site_name": "",
-            "url": ""
-        },
-        "meta": {
-            "title": "",
-            "description": "",
-            "keyword": ""
-        },
+        "googleAnalytics": "UA-40277577-3",
         "linenums"      : true
     },
     "markdown"  : {

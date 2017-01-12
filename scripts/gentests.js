@@ -8,7 +8,8 @@ var fs   = require("fs"),
     "tests/data/rpc.proto",
     "tests/data/mapbox/vector_tile.proto",
     "tests/data/ambiguous-names.proto",
-    "tests/data/test.proto"
+    "tests/data/test.proto",
+    "tests/data/convert.proto"
 ]
 .forEach(function(file) {
     var out = file.replace(/\.proto$/, ".js");

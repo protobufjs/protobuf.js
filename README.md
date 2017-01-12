@@ -175,13 +175,13 @@ While only useful for the adventurous cherishing an aversion to [generated stati
 ```js
 var writer = protobuf.Writer.create();
 var buffer = writer
-    .int32(/* id */ 1 << 3 | /* wireType */ 2)
+    .uint32(/* id */ 1 << 3 | /* wireType */ 2)
     .string("hello world!")
     .finish();
 
 var reader = protobuf.Reader.create(buffer);
 while (reader.pos < reader.len) {
-    var tag = reader.int32();
+    var tag = reader.uint32();
     switch (/* id */ tag >>> 3) {
         case 1:
             console.log(reader.string());

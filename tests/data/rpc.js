@@ -215,43 +215,70 @@ $root.MyRequest = (function() {
     };})($protobuf.util);
 
     /**
-     * Converts a MyRequest message.
-     * @function
-     * @param {MyRequest|Object} source MyRequest message or plain object to convert
-     * @param {*} impl Converter implementation to use
-     * @param {Object.<string,*>} [options] Conversion options
-     * @returns {MyRequest|Object} Converted message
+     * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {MyRequest} MyRequest
      */
-    MyRequest.convert = (function() { return function convert(src, impl, options) {
-        if (!options) {
-            options = {};
-        }
-        var dst = impl.create(src, this, options);
-        if (dst) {
-            if (dst.path === undefined && options.defaults) {
-                dst.path = "";
-            }
-        }
-        return dst;
+    MyRequest.fromObject = (function() { return function fromObject(object) {
+        var message = new $root.MyRequest();
+        message.path = String(object.path);
+        return message;
     };})();
 
     /**
-     * Creates a MyRequest message from JSON.
-     * @param {Object.<string,*>} source Source object
-     * @param {Object.<string,*>} [options] Conversion options
+     * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link MyRequest.fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.from = function from(source, options) {
-        return this.convert(source, $protobuf.converters.message, options);
+    MyRequest.from = MyRequest.fromObject;
+
+    /**
+     * Creates a plain object from a MyRequest message. Also converts values to other types if specified.
+     * @param {MyRequest} message MyRequest
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    MyRequest.toObject = (function() { return function toObject(message, options) {
+        if (!options) {
+            options = {};
+        }
+        var object = {};
+        if (options.defaults) {
+            object.path = "";
+        }
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+            switch (keys[i]) {
+            case "path":
+                if (message.path !== undefined && message.path !== null) {
+                    object.path = message.path;
+                }
+                break;
+            }
+        }
+        return object;
+    };})();
+
+    /**
+     * Creates a plain object from this MyRequest message. Also converts values to other types if specified.
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    $prototype.toObject = function toObject(options) {
+        return this.constructor.toObject(this, options);
     };
 
     /**
-     * Converts this MyRequest message to JSON.
-     * @param {Object.<string,*>} [options] Conversion options
+     * Converts this MyRequest to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.asJSON = function asJSON(options) {
-        return this.constructor.convert(this, $protobuf.converters.json, options);
+    $prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, {
+            longs: String,
+            enums: String,
+            bytes: String
+        });
     };
 
     return MyRequest;
@@ -371,43 +398,70 @@ $root.MyResponse = (function() {
     };})($protobuf.util);
 
     /**
-     * Converts a MyResponse message.
-     * @function
-     * @param {MyResponse|Object} source MyResponse message or plain object to convert
-     * @param {*} impl Converter implementation to use
-     * @param {Object.<string,*>} [options] Conversion options
-     * @returns {MyResponse|Object} Converted message
+     * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {MyResponse} MyResponse
      */
-    MyResponse.convert = (function() { return function convert(src, impl, options) {
-        if (!options) {
-            options = {};
-        }
-        var dst = impl.create(src, this, options);
-        if (dst) {
-            if (dst.status === undefined && options.defaults) {
-                dst.status = 0;
-            }
-        }
-        return dst;
+    MyResponse.fromObject = (function() { return function fromObject(object) {
+        var message = new $root.MyResponse();
+        message.status = object.status | 0;
+        return message;
     };})();
 
     /**
-     * Creates a MyResponse message from JSON.
-     * @param {Object.<string,*>} source Source object
-     * @param {Object.<string,*>} [options] Conversion options
+     * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link MyResponse.fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.from = function from(source, options) {
-        return this.convert(source, $protobuf.converters.message, options);
+    MyResponse.from = MyResponse.fromObject;
+
+    /**
+     * Creates a plain object from a MyResponse message. Also converts values to other types if specified.
+     * @param {MyResponse} message MyResponse
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    MyResponse.toObject = (function() { return function toObject(message, options) {
+        if (!options) {
+            options = {};
+        }
+        var object = {};
+        if (options.defaults) {
+            object.status = 0;
+        }
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+            switch (keys[i]) {
+            case "status":
+                if (message.status !== undefined && message.status !== null) {
+                    object.status = message.status;
+                }
+                break;
+            }
+        }
+        return object;
+    };})();
+
+    /**
+     * Creates a plain object from this MyResponse message. Also converts values to other types if specified.
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    $prototype.toObject = function toObject(options) {
+        return this.constructor.toObject(this, options);
     };
 
     /**
-     * Converts this MyResponse message to JSON.
-     * @param {Object.<string,*>} [options] Conversion options
+     * Converts this MyResponse to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.asJSON = function asJSON(options) {
-        return this.constructor.convert(this, $protobuf.converters.json, options);
+    $prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, {
+            longs: String,
+            enums: String,
+            bytes: String
+        });
     };
 
     return MyResponse;

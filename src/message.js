@@ -1,8 +1,6 @@
 "use strict";
 module.exports = Message;
 
-var converters = require("./converters");
-
 /**
  * Constructs a new message instance.
  *
@@ -27,34 +25,12 @@ function Message(properties) {
  * @readonly
  */
 
-/** @alias Message.prototype */
-var MessagePrototype = Message.prototype;
-
 /**
  * Reference to the reflected type.
  * @name Message#$type
  * @type {Type}
  * @readonly
  */
-
-/**
- * Converts this message to a JSON object.
- * @param {JSONConversionOptions} [options] Conversion options
- * @returns {Object.<string,*>} JSON object
- */
-MessagePrototype.asJSON = function asJSON(options) {
-    return this.$type.convert(this, converters.json, options);
-};
-
-/**
- * Creates a message from a JSON object by converting strings and numbers to their respective field types.
- * @param {Object.<string,*>} object JSON object
- * @param {MessageConversionOptions} [options] Options
- * @returns {Message} Message instance
- */
-Message.from = function from(object, options) {
-    return this.$type.convert(object, converters.message, options);
-};
 
 /**
  * Encodes a message of this type.
@@ -110,12 +86,50 @@ Message.verify = function verify(message) {
 };
 
 /**
- * Converts an object or runtime message of this type.
- * @param {Message|Object} source Source object or runtime message
- * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Converted object or runtime message
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
  */
-Message.convert = function convert(source, impl, options) {
-    return this.$type.convert(source, impl, options);
+Message.fromObject = function fromObject(object) {
+    return this.$type.fromObject(object);
+};
+
+/**
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * This is an alias of {@link Message.fromObject}.
+ * @function
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
+ */
+Message.from = Message.fromObject;
+
+/**
+ * Creates a plain object from a message of this type. Also converts values to other types if specified.
+ * @param {Message} message Message instance
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
+ */
+Message.toObject = function toObject(message, options) {
+    return this.$type.toObject(message, options);
+};
+
+/**
+ * Creates a plain object from this message. Also converts values to other types if specified.
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
+ */
+Message.prototype.toObject = function toObject(options) {
+    return this.$type.toObject(this, options);
+};
+
+/**
+ * Converts this message to JSON.
+ * @returns {Object.<string,*>} JSON object
+ */
+Message.prototype.toJSON = function toJSON() {
+    return this.$type.toObject(this, {
+        longs: String,
+        enums: String,
+        bytes: String
+    });
 };

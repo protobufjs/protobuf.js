@@ -1,7 +1,7 @@
 {
   "name": "@protobufjs/codegen",
   "description": "A closure for generating functions programmatically.",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Daniel Wirtz <dcode+protobufjs@dcode.io>",
   "repository": {
     "type": "git",

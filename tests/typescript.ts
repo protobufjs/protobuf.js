@@ -33,4 +33,4 @@ var hello = new Hello();
 var buf = Hello.encode(hello.foo()).finish();
 
 var hello2 = Hello.decode(buf) as Hello;
-console.log(hello2.foo().asJSON());
+console.log(hello2.foo().toObject());

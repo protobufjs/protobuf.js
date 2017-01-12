@@ -320,16 +320,6 @@ TypePrototype.create = function create(properties) {
 };
 
 /**
- * Creates a new message of this type from a JSON object by converting strings and numbers to their respective field types.
- * @param {Object.<string,*>} object JSON object
- * @param {MessageConversionOptions} [options] Conversion options
- * @returns {Message} Runtime message
- */
-TypePrototype.from = function from(object, options) {
-    return this.convert(object, converter.message, options);
-};
-
-/**
  * Sets up {@link Type#encode|encode}, {@link Type#decode|decode} and {@link Type#verify|verify}.
  * @returns {Type} `this`
  */
@@ -352,7 +342,11 @@ TypePrototype.setup = function setup() {
         types : types,
         util  : util
     });
-    this.convert = converter(this).eof(fullName + "$convert", {
+    this.fromObject = this.from = converter.fromObject(this).eof(fullName + "$fromObject", {
+        types : types,
+        util  : util
+    });
+    this.toObject = converter.toObject(this).eof(fullName + "$toObject", {
         types : types,
         util  : util
     });
@@ -409,12 +403,47 @@ TypePrototype.verify = function verify_setup(message) {
 };
 
 /**
- * Converts an object or runtime message.
- * @param {Message|Object} source Source object or runtime message
- * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Converted object or runtime message
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
  */
-TypePrototype.convert = function convert_setup(source, impl, options) {
-    return this.setup().convert(source, impl, options); // overrides this method
+TypePrototype.fromObject = function fromObject(object) {
+    return this.setup().fromObject(object);
+};
+
+/**
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * This is an alias of {@link Type#fromObject}.
+ * @function
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
+ */
+TypePrototype.from = TypePrototype.fromObject;
+
+/**
+ * Conversion options as used by {@link Type#toObject} and {@link Message.toObject}.
+ * @typedef ConversionOptions
+ * @type {Object}
+ * @property {*} [longs] Long conversion type.
+ * Valid values are `String` and `Number` (the global types).
+ * Defaults to copy the present value, which is a possibly unsafe number without and a Long with a long library.
+ * @property {*} [enums] Enum value conversion type.
+ * Only valid value is `String` (the global type).
+ * Defaults to copy the present value, which is the numeric id.
+ * @property {*} [bytes] Bytes value conversion type.
+ * Valid values are `Array` and `String` (the global types).
+ * Defaults to copy the present value, which usually is Buffer under node and an Uint8Array in the browser.
+ * @property {boolean} [defaults=false] Also sets default values on the resulting object
+ * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
+ * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
+ */
+
+/**
+ * Creates a plain object from a message of this type. Also converts values to other types if specified.
+ * @param {Message} message Message instance
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
+ */
+TypePrototype.toObject = function toObject(message, options) {
+    return this.setup().toObject(message, options);
 };

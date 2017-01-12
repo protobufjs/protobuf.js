@@ -123,43 +123,70 @@ $root.A = (function() {
     };})($protobuf.util);
 
     /**
-     * Converts a A message.
-     * @function
-     * @param {A|Object} source A message or plain object to convert
-     * @param {*} impl Converter implementation to use
-     * @param {Object.<string,*>} [options] Conversion options
-     * @returns {A|Object} Converted message
+     * Creates a A message from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {A} A
      */
-    A.convert = (function() { return function convert(src, impl, options) {
-        if (!options) {
-            options = {};
-        }
-        var dst = impl.create(src, this, options);
-        if (dst) {
-            if (dst.whatever === undefined && options.defaults) {
-                dst.whatever = "";
-            }
-        }
-        return dst;
+    A.fromObject = (function() { return function fromObject(object) {
+        var message = new $root.A();
+        message.whatever = String(object.whatever);
+        return message;
     };})();
 
     /**
-     * Creates a A message from JSON.
-     * @param {Object.<string,*>} source Source object
-     * @param {Object.<string,*>} [options] Conversion options
+     * Creates a A message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link A.fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
      * @returns {A} A
      */
-    A.from = function from(source, options) {
-        return this.convert(source, $protobuf.converters.message, options);
+    A.from = A.fromObject;
+
+    /**
+     * Creates a plain object from a A message. Also converts values to other types if specified.
+     * @param {A} message A
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    A.toObject = (function() { return function toObject(message, options) {
+        if (!options) {
+            options = {};
+        }
+        var object = {};
+        if (options.defaults) {
+            object.whatever = "";
+        }
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+            switch (keys[i]) {
+            case "whatever":
+                if (message.whatever !== undefined && message.whatever !== null) {
+                    object.whatever = message.whatever;
+                }
+                break;
+            }
+        }
+        return object;
+    };})();
+
+    /**
+     * Creates a plain object from this A message. Also converts values to other types if specified.
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    $prototype.toObject = function toObject(options) {
+        return this.constructor.toObject(this, options);
     };
 
     /**
-     * Converts this A message to JSON.
-     * @param {Object.<string,*>} [options] Conversion options
+     * Converts this A to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.asJSON = function asJSON(options) {
-        return this.constructor.convert(this, $protobuf.converters.json, options);
+    $prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, {
+            longs: String,
+            enums: String,
+            bytes: String
+        });
     };
 
     return A;
@@ -283,43 +310,70 @@ $root.B = (function() {
     };})($types);
 
     /**
-     * Converts a B message.
-     * @function
-     * @param {B|Object} source B message or plain object to convert
-     * @param {*} impl Converter implementation to use
-     * @param {Object.<string,*>} [options] Conversion options
-     * @returns {B|Object} Converted message
+     * Creates a B message from a plain object. Also converts values to their respective internal types.
+     * @param {Object.<string,*>} object Plain object
+     * @returns {B} B
      */
-    B.convert = (function(types) { return function convert(src, impl, options) {
-        if (!options) {
-            options = {};
-        }
-        var dst = impl.create(src, this, options);
-        if (dst) {
-            if (options.defaults || src.A !== undefined && src.A !== null) {
-                dst.A = types[0].convert(src.A, impl, options);
-            }
-        }
-        return dst;
+    B.fromObject = (function(types) { return function fromObject(object) {
+        var message = new $root.B();
+        message.A = types[0].fromObject(object.A);
+        return message;
     };})($types);
 
     /**
-     * Creates a B message from JSON.
-     * @param {Object.<string,*>} source Source object
-     * @param {Object.<string,*>} [options] Conversion options
+     * Creates a B message from a plain object. Also converts values to their respective internal types.
+     * This is an alias of {@link B.fromObject}.
+     * @function
+     * @param {Object.<string,*>} object Plain object
      * @returns {B} B
      */
-    B.from = function from(source, options) {
-        return this.convert(source, $protobuf.converters.message, options);
+    B.from = B.fromObject;
+
+    /**
+     * Creates a plain object from a B message. Also converts values to other types if specified.
+     * @param {B} message B
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    B.toObject = (function(types) { return function toObject(message, options) {
+        if (!options) {
+            options = {};
+        }
+        var object = {};
+        if (options.defaults) {
+            object.A = null;
+        }
+        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+            switch (keys[i]) {
+            case "A":
+                if (message.A !== undefined && message.A !== null) {
+                    object.A = types[0].ctor.prototype.toObject.call(message.A, options);
+                }
+                break;
+            }
+        }
+        return object;
+    };})($types);
+
+    /**
+     * Creates a plain object from this B message. Also converts values to other types if specified.
+     * @param {$protobuf.ConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    $prototype.toObject = function toObject(options) {
+        return this.constructor.toObject(this, options);
     };
 
     /**
-     * Converts this B message to JSON.
-     * @param {Object.<string,*>} [options] Conversion options
+     * Converts this B to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.asJSON = function asJSON(options) {
-        return this.constructor.convert(this, $protobuf.converters.json, options);
+    $prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, {
+            longs: String,
+            enums: String,
+            bytes: String
+        });
     };
 
     return B;

@@ -33,12 +33,13 @@ BufferWriter.alloc = function alloc_buffer(size) {
 var writeBytesBuffer = Buffer && Buffer.prototype instanceof Uint8Array && Buffer.prototype.set.name === "set"
     ? function writeBytesBuffer_set(val, buf, pos) {
         buf.set(val, pos); // faster than copy (requires node >= 4 where Buffers extend Uint8Array and set is properly inherited)
+                           // also works for plain array values
     }
     /* istanbul ignore next */
     : function writeBytesBuffer_copy(val, buf, pos) {
-        if (val.copy)
+        if (val.copy) // Buffer values
             val.copy(buf, pos, 0, val.length);
-        else for (var i = 0; i < val.length;)
+        else for (var i = 0; i < val.length;) // plain array values
             buf[pos++] = val[i++];
     };
 

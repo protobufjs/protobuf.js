@@ -17,7 +17,7 @@ tape.test("bench.proto and bench.json", function(test) {
         var decoded = Test.decode(Test.encode(data).finish());
         test.deepEqual(decoded, data, "should reproduce the original data when encoded and decoded again");
 
-        test.deepEqual(decoded.asJSON(), data, "should reproduce the original data asJSON");
+        test.deepEqual(decoded.toObject(), data, "should convert back to the original object");
 
         test.end();
     });

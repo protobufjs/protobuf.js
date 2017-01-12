@@ -445,7 +445,7 @@ WriterPrototype.double = function write_double(value) {
 
 var writeBytes = util.Array.prototype.set
     ? function writeBytes_set(val, buf, pos) {
-        buf.set(val, pos);
+        buf.set(val, pos); // also works for plain array values
     }
     /* istanbul ignore next */
     : function writeBytes_for(val, buf, pos) {

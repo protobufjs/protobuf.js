@@ -154,11 +154,12 @@ function beautify(code) {
         .replace(/\bc2\b/g, "end2")
         .replace(/\bk\b/g, "key")
         .replace(/\bks\b/g, "keys")
+        .replace(/\bks2\b/g, "keys2")
         .replace(/\be\b/g, "err")
         .replace(/\bf\b/g, "impl")
         .replace(/\bo\b/g, "options")
-        .replace(/\bs\b/g, "src")
-        .replace(/\bd\b/g, "dst"),
+        .replace(/\bd\b/g, "object")
+        .replace(/\bn\b/g, "long"),
         {
             fromString: true,
             compress: false,
@@ -443,40 +444,63 @@ function buildType(ref, type) {
     if (config.convert) {
         push("");
         pushComment([
-            "Converts " + aOrAn(type.name) + " message.",
-            "@function",
-            "@param {" + fullName + "|Object} source " + type.name + " message or plain object to convert",
-            "@param {*} impl Converter implementation to use",
-            "@param {Object.<string,*>} [options] Conversion options",
-            "@returns {" + fullName + "|Object} Converted message"
+            "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
+            "@param {Object.<string,*>} object Plain object",
+            "@returns {" + fullName + "} " + type.name
         ]);
-        buildFunction(type, "convert", protobuf.converter(type), {
+        buildFunction(type, "fromObject", protobuf.converter.fromObject(type), {
             util  : "$protobuf.util",
             types : hasTypes ? "$types" : undefined
         });
 
         push("");
         pushComment([
-            "Creates " + aOrAn(type.name) + " message from JSON.",
-            "@param {Object.<string,*>} source Source object",
-            "@param {Object.<string,*>} [options] Conversion options",
+            "Creates " + aOrAn(type.name) + " message from a plain object. Also converts values to their respective internal types.",
+            "This is an alias of {@link " + fullName + ".fromObject}.",
+            "@function",
+            "@param {Object.<string,*>} object Plain object",
             "@returns {" + fullName + "} " + type.name
         ]);
-        push(name(type.name) + ".from = function from(source, options) {");
+        push(name(type.name) + ".from = " + name(type.name) + ".fromObject;");
+
+        push("");
+        pushComment([
+            "Creates a plain object from " + aOrAn(type.name) + " message. Also converts values to other types if specified.",
+            "@param {" + fullName + "} message " + type.name,
+            "@param {$protobuf.ConversionOptions} [options] Conversion options",
+            "@returns {Object.<string,*>} Plain object"
+        ]);
+        buildFunction(type, "toObject", protobuf.converter.toObject(type), {
+            util  : "$protobuf.util",
+            types : hasTypes ? "$types" : undefined
+        });
+
+        push("");
+        pushComment([
+            "Creates a plain object from this " + type.name + " message. Also converts values to other types if specified.",
+            "@param {$protobuf.ConversionOptions} [options] Conversion options",
+            "@returns {Object.<string,*>} Plain object"
+        ]);
+        push("$prototype.toObject = function toObject(options) {");
         ++indent;
-        push("return this.convert(source, $protobuf.converters.message, options);");
+            push("return this.constructor.toObject(this, options);");
         --indent;
         push("};");
 
         push("");
         pushComment([
-            "Converts this " + type.name + " message to JSON.",
-            "@param {Object.<string,*>} [options] Conversion options",
+            "Converts this " + type.name + " to JSON.",
             "@returns {Object.<string,*>} JSON object"
         ]);
-        push("$prototype.asJSON = function asJSON(options) {");
+        push("$prototype.toJSON = function toJSON() {");
         ++indent;
-        push("return this.constructor.convert(this, $protobuf.converters.json, options);");
+            push("return this.constructor.toObject(this, {");
+            ++indent;
+                push("longs: String,");
+                push("enums: String,");
+                push("bytes: String");
+            --indent;
+            push("});");
         --indent;
         push("};");
     }

@@ -97,12 +97,29 @@ Class.create = create;
 Class.prototype = Message;
 
 /**
- * Creates a message from a JSON object by converting strings and numbers to their respective field types.
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * @name Class#fromObject
+ * @function
+ * @param {Object.<string,*>} object Plain object
+ * @returns {Message} Message instance
+ */
+
+/**
+ * Creates a new message of this type from a plain object. Also converts values to their respective internal types.
+ * This is an alias of {@link Class#fromObject}.
  * @name Class#from
  * @function
- * @param {Object.<string,*>} object JSON object
- * @param {MessageConversionOptions} [options] Options
+ * @param {Object.<string,*>} object Plain object
  * @returns {Message} Message instance
+ */
+
+/**
+ * Creates a plain object from a message of this type. Also converts values to other types if specified.
+ * @name Class#toObject
+ * @function
+ * @param {Message} message Message instance
+ * @param {ConversionOptions} [options] Conversion options
+ * @returns {Object.<string,*>} Plain object
  */
 
 /**
@@ -145,14 +162,4 @@ Class.prototype = Message;
  * @function
  * @param {Message|Object} message Message or plain object to verify
  * @returns {?string} `null` if valid, otherwise the reason why it is not
- */
-
-/**
- * Converts an object or runtime message of this type.
- * @name Class#convert
- * @function
- * @param {Message|Object} source Source object or runtime message
- * @param {ConverterImpl} impl Converter implementation to use, i.e. {@link converters.json} or {@link converters.message}
- * @param {Object.<string,*>} [options] Conversion options
- * @returns {Message|Object} Converted object or runtime message
  */
