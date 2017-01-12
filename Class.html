@@ -53,6 +53,33 @@
             </span>
         </li>
     
+        <li class="item" data-name="converter">
+            <span class="title">
+                <a href="converter.html">converter</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="converter.fromObject"><a href="converter.html#.fromObject">fromObject</a></li>
+            
+                <li data-name="converter.toObject"><a href="converter.html#.toObject">toObject</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="rpc">
             <span class="title">
                 <a href="rpc.html">rpc</a>
@@ -426,8 +453,6 @@
             
                 <li data-name="Class.create"><a href="Class.html#.create">create</a></li>
             
-                <li data-name="Class#convert"><a href="Class.html#convert">convert</a></li>
-            
                 <li data-name="Class#decode"><a href="Class.html#decode">decode</a></li>
             
                 <li data-name="Class#decodeDelimited"><a href="Class.html#decodeDelimited">decodeDelimited</a></li>
@@ -437,6 +462,10 @@
                 <li data-name="Class#encodeDelimited"><a href="Class.html#encodeDelimited">encodeDelimited</a></li>
             
                 <li data-name="Class#from"><a href="Class.html#from">from</a></li>
+            
+                <li data-name="Class#fromObject"><a href="Class.html#fromObject">fromObject</a></li>
+            
+                <li data-name="Class#toObject"><a href="Class.html#toObject">toObject</a></li>
             
                 <li data-name="Class#verify"><a href="Class.html#verify">verify</a></li>
             
@@ -716,8 +745,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Message.convert"><a href="Message.html#.convert">convert</a></li>
-            
                 <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
             
                 <li data-name="Message.decodeDelimited"><a href="Message.html#.decodeDelimited">decodeDelimited</a></li>
@@ -728,9 +755,15 @@
             
                 <li data-name="Message.from"><a href="Message.html#.from">from</a></li>
             
+                <li data-name="Message.fromObject"><a href="Message.html#.fromObject">fromObject</a></li>
+            
+                <li data-name="Message.toObject"><a href="Message.html#.toObject">toObject</a></li>
+            
                 <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
             
-                <li data-name="Message#asJSON"><a href="Message.html#asJSON">asJSON</a></li>
+                <li data-name="Message#toJSON"><a href="Message.html#toJSON">toJSON</a></li>
+            
+                <li data-name="Message#toObject"><a href="Message.html#toObject">toObject</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1422,8 +1455,6 @@
             
                 <li data-name="Type#addJSON"><a href="Type.html#addJSON">addJSON</a></li>
             
-                <li data-name="Type#convert"><a href="Type.html#convert">convert</a></li>
-            
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
@@ -1437,6 +1468,8 @@
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
                 <li data-name="Type#from"><a href="Type.html#from">from</a></li>
+            
+                <li data-name="Type#fromObject"><a href="Type.html#fromObject">fromObject</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
@@ -1471,6 +1504,8 @@
                 <li data-name="Type#setup"><a href="Type.html#setup">setup</a></li>
             
                 <li data-name="Type#toJSON"><a href="Type.html#toJSON">toJSON</a></li>
+            
+                <li data-name="Type#toObject"><a href="Type.html#toObject">toObject</a></li>
             
                 <li data-name="Type#toString"><a href="Type.html#toString">toString</a></li>
             
@@ -1974,220 +2009,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="convert">
-            
-            convert<span class="signature">(source, impl, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> | Object }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L150">line 150</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Converts an object or runtime message of this type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
-
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Source object or runtime message</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>impl</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ConverterImpl">ConverterImpl</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Converter implementation to use, i.e. <a href="converters.html#.json">converters.json</a> or <a href="converters.html#.message">converters.message</a></p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Message.html">Message</a>
-                         | 
-                    
-                        Object
-                        
-                    
-            </td>
-            <td class="description last">Converted object or runtime message</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="decode">
             
             decode<span class="signature">(readerOrBuffer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
@@ -2195,7 +2016,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L126">line 126</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L143">line 143</a>
         </div>
         
     </div>
@@ -2343,7 +2164,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L134">line 134</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L151">line 151</a>
         </div>
         
     </div>
@@ -2491,7 +2312,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L108">line 108</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L125">line 125</a>
         </div>
         
     </div>
@@ -2674,7 +2495,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L117">line 117</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L134">line 134</a>
         </div>
         
     </div>
@@ -2852,12 +2673,12 @@
     <div class="nameContainer">
         <h4 class="name" id="from">
             
-            from<span class="signature">(object, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+            from<span class="signature">(object)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
         </h4>
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L99">line 99</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L107">line 107</a>
         </div>
         
     </div>
@@ -2868,7 +2689,7 @@
     
     
     <div class="description">
-        <p>Creates a message from a JSON object by converting strings and numbers to their respective field types.</p>
+        <p>Creates a new message of this type from a plain object. Also converts values to their respective internal types.<br>This is an alias of <a href="Class.html#fromObject">Class#fromObject</a>.</p>
     </div>
     
 
@@ -2915,42 +2736,7 @@
             
             <td class="description last">
                 
-                    
-                    
-                        
-                    
-                
-                <p>JSON object</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#MessageConversionOptions">MessageConversionOptions</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Options</p></td>
+                <p>Plain object</p></td>
         </tr>
 	
 	
@@ -3030,6 +2816,331 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="fromObject">
+            
+            fromObject<span class="signature">(object)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L99">line 99</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a new message of this type from a plain object. Also converts values to their respective internal types.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Plain object</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Message.html">Message</a>
+                        
+                    
+            </td>
+            <td class="description last">Message instance</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="toObject">
+            
+            toObject<span class="signature">(message, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ Object&lt;string, *> }</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L116">line 116</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a plain object from a message of this type. Also converts values to other types if specified.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Message.html">Message</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>Message instance</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#ConversionOptions">ConversionOptions</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Conversion options</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Object.&lt;string, *>
+                        
+                    
+            </td>
+            <td class="description last">Plain object</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="verify">
             
             verify<span class="signature">(message)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string }</span>
@@ -3037,7 +3148,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L142">line 142</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js">class.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js#L159">line 159</a>
         </div>
         
     </div>

@@ -53,6 +53,33 @@
             </span>
         </li>
     
+        <li class="item" data-name="converter">
+            <span class="title">
+                <a href="converter.html">converter</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="converter.fromObject"><a href="converter.html#.fromObject">fromObject</a></li>
+            
+                <li data-name="converter.toObject"><a href="converter.html#.toObject">toObject</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="rpc">
             <span class="title">
                 <a href="rpc.html">rpc</a>
@@ -426,8 +453,6 @@
             
                 <li data-name="Class.create"><a href="Class.html#.create">create</a></li>
             
-                <li data-name="Class#convert"><a href="Class.html#convert">convert</a></li>
-            
                 <li data-name="Class#decode"><a href="Class.html#decode">decode</a></li>
             
                 <li data-name="Class#decodeDelimited"><a href="Class.html#decodeDelimited">decodeDelimited</a></li>
@@ -437,6 +462,10 @@
                 <li data-name="Class#encodeDelimited"><a href="Class.html#encodeDelimited">encodeDelimited</a></li>
             
                 <li data-name="Class#from"><a href="Class.html#from">from</a></li>
+            
+                <li data-name="Class#fromObject"><a href="Class.html#fromObject">fromObject</a></li>
+            
+                <li data-name="Class#toObject"><a href="Class.html#toObject">toObject</a></li>
             
                 <li data-name="Class#verify"><a href="Class.html#verify">verify</a></li>
             
@@ -716,8 +745,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="Message.convert"><a href="Message.html#.convert">convert</a></li>
-            
                 <li data-name="Message.decode"><a href="Message.html#.decode">decode</a></li>
             
                 <li data-name="Message.decodeDelimited"><a href="Message.html#.decodeDelimited">decodeDelimited</a></li>
@@ -728,9 +755,15 @@
             
                 <li data-name="Message.from"><a href="Message.html#.from">from</a></li>
             
+                <li data-name="Message.fromObject"><a href="Message.html#.fromObject">fromObject</a></li>
+            
+                <li data-name="Message.toObject"><a href="Message.html#.toObject">toObject</a></li>
+            
                 <li data-name="Message.verify"><a href="Message.html#.verify">verify</a></li>
             
-                <li data-name="Message#asJSON"><a href="Message.html#asJSON">asJSON</a></li>
+                <li data-name="Message#toJSON"><a href="Message.html#toJSON">toJSON</a></li>
+            
+                <li data-name="Message#toObject"><a href="Message.html#toObject">toObject</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1422,8 +1455,6 @@
             
                 <li data-name="Type#addJSON"><a href="Type.html#addJSON">addJSON</a></li>
             
-                <li data-name="Type#convert"><a href="Type.html#convert">convert</a></li>
-            
                 <li data-name="Type#create"><a href="Type.html#create">create</a></li>
             
                 <li data-name="Type#decode"><a href="Type.html#decode">decode</a></li>
@@ -1437,6 +1468,8 @@
                 <li data-name="Type#encodeDelimited"><a href="Type.html#encodeDelimited">encodeDelimited</a></li>
             
                 <li data-name="Type#from"><a href="Type.html#from">from</a></li>
+            
+                <li data-name="Type#fromObject"><a href="Type.html#fromObject">fromObject</a></li>
             
                 <li data-name="Type#get"><a href="Type.html#get">get</a></li>
             
@@ -1471,6 +1504,8 @@
                 <li data-name="Type#setup"><a href="Type.html#setup">setup</a></li>
             
                 <li data-name="Type#toJSON"><a href="Type.html#toJSON">toJSON</a></li>
+            
+                <li data-name="Type#toObject"><a href="Type.html#toObject">toObject</a></li>
             
                 <li data-name="Type#toString"><a href="Type.html#toString">toString</a></li>
             
@@ -1762,7 +1797,7 @@
     
         
         <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">common.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js#L18">line 18</a>
+            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js">common.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/common.js#L17">line 17</a>
         </div>
         
     </div>
@@ -2175,248 +2210,6 @@
                     
             </td>
             <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="converter">
-            
-            converter<span class="signature">(mtype, generateField)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="global.html#Codegen">Codegen</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js">converter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js#L40">line 40</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Generates a conveter specific to the specified message type.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>mtype</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Type.html">Type</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Message type</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>generateField</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Field generator</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>json</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ConverterImpl">ConverterImpl</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Converter implementation producing JSON</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ConverterImpl">ConverterImpl</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Converter implementation producing runtime messages</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="global.html#Codegen">Codegen</a>
-                        
-                    
-            </td>
-            <td class="description last">Codegen instance</td>
         </tr>
     
     </tbody>
@@ -4677,683 +4470,7 @@
                 
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="ConverterBytes">
-            
-            ConverterBytes<span class="signature">(value, defaultValue, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ string | number[] | Uint8Array }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js">converter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js#L133">line 133</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>A function for converting bytes values.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;number></span>
-|
-
-<span class="param-type">Uint8Array</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Actual value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>defaultValue</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Default value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        string
-                         | 
-                    
-                        Array.&lt;number>
-                         | 
-                    
-                        Uint8Array
-                        
-                    
-            </td>
-            <td class="description last">Converted value</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="ConverterCreate">
-            
-            ConverterCreate<span class="signature">(value, typeOrCtor, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ <a href="Message.html">Message</a> | Object }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js">converter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js#L101">line 101</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>A function for creating a new destination object.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Message.html">Message</a></span>
-|
-
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Source object or message</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>typeOrCtor</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Reflected type or message constructor</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Message.html">Message</a>
-                         | 
-                    
-                        Object
-                        
-                    
-            </td>
-            <td class="description last">Destination object or message</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="ConverterEnums">
-            
-            ConverterEnums<span class="signature">(value, defaultValue, values, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ number | string }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js">converter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js#L111">line 111</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>A function for converting enum values.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Actual value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>defaultValue</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Default value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>values</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, number></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Possible values</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        number
-                         | 
-                    
-                        string
-                        
-                    
-            </td>
-            <td class="description last">Converted value</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="ConverterImpl">ConverterImpl <span class="type-signature type">{ Object }</span></h4>
+        <h4 class="name" id="ConversionOptions">ConversionOptions <span class="type-signature type">{ Object }</span></h4>
     </div>
     
     
@@ -5361,7 +4478,7 @@
 <dd>
     
     <div class="description">
-        <p>A converter implementation as used by <a href="Type.html#convert">Type#convert</a> respectively <a href="Message.html#.convert">Message.convert</a>.</p>
+        <p>Conversion options as used by <a href="Type.html#toObject">Type#toObject</a> and <a href="Message.html#.toObject">Message.toObject</a>.</p>
     </div>
     
     
@@ -5383,7 +4500,11 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
 		
+		
+		
+		<th>Default</th>
 		
 		
 		<th class="last">Description</th>
@@ -5395,23 +4516,35 @@
 	
         <tr>
             
-                <td class="name"><code>create</code></td>
+                <td class="name"><code>longs</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ConverterCreate">ConverterCreate</a></span>
+<span class="param-type">*</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Function for creating a new destination object</p></td>
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"><p>Long conversion type.<br>Valid values are <code>String</code> and <code>Number</code> (the global types).<br>Defaults to copy the present value, which is a possibly unsafe number without and a Long with a long library.</p></td>
         </tr>
 	
 	
@@ -5424,40 +4557,29 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ConverterEnums">ConverterEnums</a></span>
+<span class="param-type">*</span>
 
 
             
             </td>
             
             
-            
-            
-            
-            <td class="description last"><p>Function for converting enum values</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>longs</code></td>
-            
-            
-            <td class="type">
-            
+                <td class="attributes">
                 
-<span class="param-type"><a href="global.html#ConverterLongs">ConverterLongs</a></span>
-
-
-            
-            </td>
-            
-            
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Function for converting long values</p></td>
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"><p>Enum value conversion type.<br>Only valid value is <code>String</code> (the global type).<br>Defaults to copy the present value, which is the numeric id.</p></td>
         </tr>
 	
 	
@@ -5470,17 +4592,140 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ConverterBytes">ConverterBytes</a></span>
+<span class="param-type">*</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Function for converting bytes values</p></td>
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"><p>Bytes value conversion type.<br>Valid values are <code>Array</code> and <code>String</code> (the global types).<br>Defaults to copy the present value, which usually is Buffer under node and an Uint8Array in the browser.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>defaults</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last"><p>Also sets default values on the resulting object</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last"><p>Sets empty arrays for missing repeated fields even if <code>defaults=false</code></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>objects</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            <td class="description last"><p>Sets empty objects for missing map fields even if <code>defaults=false</code></p></td>
         </tr>
 	
 	
@@ -5510,254 +4755,6 @@
     
 </dl>
 
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="ConverterLongs">
-            
-            ConverterLongs<span class="signature">(value, defaultValue, unsigned, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ number | string | <a href="global.html#Long">Long</a> }</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js">converter.js</a>, <a target="_blank" href="https://github.com/dcodeIO/protobuf.js/blob/master/src/converter.js#L122">line 122</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>A function for converting long values.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
-|
-
-<span class="param-type"><a href="global.html#Long">Long</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Actual value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>defaultValue</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Long">Long</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Default value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>unsigned</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Whether unsigned or not</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, *></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Conversion options</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        number
-                         | 
-                    
-                        string
-                         | 
-                    
-                        <a href="global.html#Long">Long</a>
-                        
-                    
-            </td>
-            <td class="description last">Converted value</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
     
     
 </dd>
@@ -5940,301 +4937,6 @@
 </table>
 
     
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="JSONConversionOptions">JSONConversionOptions <span class="type-signature type">{ Object }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>JSON conversion options as used by <a href="Message.html#asJSON">Message#asJSON</a>.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>fieldsOnly</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last"><p>Keeps only properties that reference a field</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>longs</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>Long conversion type. Only relevant with a long library.<br>Valid values are <code>String</code> and <code>Number</code> (the global types).<br>Defaults to a possibly unsafe number without, and a <code>Long</code> with a long library.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>enums</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    Number
-                
-                </td>
-            
-            
-            <td class="description last"><p>Enum value conversion type.<br>Valid values are <code>String</code> and <code>Number</code> (the global types).<br>Defaults to the numeric ids.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>bytes</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>Bytes value conversion type.<br>Valid values are <code>Array</code> and <code>String</code> (the global types).<br>Defaults to return the underlying buffer type.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>defaults</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last"><p>Also sets default values on the resulting object</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>arrays</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last"><p>Sets empty arrays for missing repeated fields even if <code>defaults=false</code></p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
     
     
 </dd>
@@ -6530,120 +5232,6 @@
             
             
             <td class="description last"><p>Whether unsigned or not</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-            
-                
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="MessageConversionOptions">MessageConversionOptions <span class="type-signature type">{ Object }</span></h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Message conversion options as used by <a href="Message.html#.from">Message.from</a> and <a href="Type.html#from">Type#from</a>.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>fieldsOnly</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-            
-            <td class="description last"><p>Keeps only properties that reference a field</p></td>
         </tr>
 	
 	
