@@ -116,10 +116,10 @@ converter.fromObject = function fromObject(mtype) {
 
         // Non-repeated fields
         } else {
-            if (field.resolvedType instanceof Enum) gen // no need to test for null/undefined if an enum (uses switch)
+            if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!==undefined&&d%s!==null){", prop, prop);
         genConvertValue_fromObject(gen, field, i, prop);
-            if (field.resolvedType instanceof Enum) gen
+            if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
     }

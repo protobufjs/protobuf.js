@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 04:23:04 UTC
+ * Compiled Thu, 12 Jan 2017 04:58:55 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -886,7 +886,6 @@ Class.prototype = Message;
 
 },{"19":19,"32":32,"34":34}],12:[function(require,module,exports){
 "use strict";
-
 module.exports = common;
 
 /**
@@ -1105,6 +1104,10 @@ common("wrappers", {
 
 },{}],13:[function(require,module,exports){
 "use strict";
+/**
+ * Runtime message from/to plain object converters.
+ * @namespace
+ */
 var converter = exports;
 
 var Enum = require(16),
@@ -1182,6 +1185,11 @@ function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
+/**
+ * Generates a plain object to runtime message converter specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
@@ -1213,10 +1221,10 @@ converter.fromObject = function fromObject(mtype) {
 
         // Non-repeated fields
         } else {
-            if (field.resolvedType instanceof Enum) gen // no need to test for null/undefined if an enum (uses switch)
+            if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!==undefined&&d%s!==null){", prop, prop);
         genConvertValue_fromObject(gen, field, i, prop);
-            if (field.resolvedType instanceof Enum) gen
+            if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
     }
@@ -1258,6 +1266,11 @@ function genConvertValue_toObject(gen, field, fieldIndex, prop) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
+/**
+ * Generates a runtime message to plain object converter specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
