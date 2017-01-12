@@ -78,13 +78,20 @@ exports.setup = function() {
     // find out which modules are missing
     var pkg = require(path.join(__dirname, "..", "package.json"));
     var install = [];
+    var semver;
     pkg.cliDependencies.forEach(function(name) {
+        var version = pkg.dependencies[name] || pkg.devDependencies[name];
         try {
-            require.resolve(name + "/package.json"); // jsdoc has no main file
+            var mPath = require.resolve(name + "/package.json"); // jsdoc has no main file
+            var mPkg  = JSON.parse(fs.readFileSync(mPath));
+            if (semver && !semver.satisfies(mPkg.version, version))
+                throw Error(mPkg.version + " is outdated");
         } catch (e) {
-            var version = pkg.dependencies[name] || pkg.devDependencies[name];
+            process.stderr.write("installing " + name + "@" + version + " (" + e.message + ")\n");
             install.push(version ? name + "@" + version : name);
         }
+        if (name === "semver")
+            semver = require("semver");
     });
     if (!install.length) {
         try { fs.rmdirSync(path.join(__dirname, "node_modules")); } catch (e) {}
@@ -92,7 +99,6 @@ exports.setup = function() {
     }
 
     // if any are missing, install them. this relies on an empty package.json in cli/.
-    process.stderr.write("installing CLI dependencies: " + install.join(", ") + "\n");
     child_process.execSync("npm --silent install " + install.join(" "), {
         cwd: __dirname,
         stdio: "ignore"
