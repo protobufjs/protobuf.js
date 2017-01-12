@@ -174,8 +174,8 @@ function beautify(code) {
 
 function buildFunction(type, functionName, gen, scope) {
     var code = gen.str(functionName)
-        .replace("(this.ctor)", " $root" + type.fullName) // types: construct directly instead of using reflected ctor
-        .replace(/(types\[\d+])(\.values)/,"$1"); // enums: use types[N] instead of reflected types[N].values
+        .replace(/\(this.ctor\)/g, " $root" + type.fullName) // types: construct directly instead of using reflected ctor
+        .replace(/(types\[\d+])(\.values)/g,"$1"); // enums: use types[N] instead of reflected types[N].values
 
     if (config.beautify)
         code = beautify(code);
