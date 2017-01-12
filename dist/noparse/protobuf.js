@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 17:03:48 UTC
+ * Compiled Thu, 12 Jan 2017 22:35:30 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1035,7 +1035,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
         if (field.resolvedType instanceof Enum) gen
             ("d%s=o.enums===String?types[%d].values[m%s]:m%s", prop, fieldIndex, prop, prop);
         else gen
-            ("d%s=types[%d].ctor.prototype.toObject.call(m%s,o)", prop, fieldIndex, prop);
+            ("d%s=types[%d].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -1408,6 +1408,12 @@ function Enum(name, values, options) {
      */
     this.values = Object.create(this.valuesById); // toJSON, marker
 
+    /**
+     * Value comment texts, if any.
+     * @type {Object.<string,string>}
+     */
+    this.comments = {};
+
     // Note that values inherit valuesById on their prototype which makes them a TypeScript-
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
@@ -1459,11 +1465,12 @@ EnumPrototype.toJSON = function toJSON() {
  * Adds a value to this enum.
  * @param {string} name Value name
  * @param {number} id Value id
+ * @param {?string} comment Comment, if any
  * @returns {Enum} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
  */
-EnumPrototype.add = function(name, id) {
+EnumPrototype.add = function(name, id, comment) {
 
     /* istanbul ignore next */
     if (!util.isString(name))
@@ -1479,6 +1486,7 @@ EnumPrototype.add = function(name, id) {
         throw Error("duplicate id " + id + " in " + this);
 
     this.valuesById[this.values[name] = id] = name;
+    this.comments[name] = comment || null;
     return this;
 };
 
@@ -1497,6 +1505,7 @@ EnumPrototype.remove = function(name) {
         throw Error("'" + name + "' is not a name of " + this);
     delete this.valuesById[val];
     delete this.values[name];
+    delete this.comments[name];
     return this;
 };
 
@@ -2647,6 +2656,12 @@ function ReflectionObject(name, options) {
      * @type {boolean}
      */
     this.resolved = false;
+
+    /**
+     * Comment text, if any.
+     * @type {?string}
+     */
+    this.comment = null;
 }
 
 /** @alias ReflectionObject.prototype */

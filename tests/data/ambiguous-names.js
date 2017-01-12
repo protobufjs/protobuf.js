@@ -351,7 +351,7 @@ $root.B = (function() {
             switch (keys[i]) {
             case "A":
                 if (message.A !== undefined && message.A !== null) {
-                    object.A = types[0].ctor.prototype.toObject.call(message.A, options);
+                    object.A = types[0].toObject(message.A, options);
                 }
                 break;
             }

@@ -1,3 +1,5 @@
+/*eslint-disable strict, no-console*/
+
 var protobuf = require("..");
 
 // Load a definition with services:
@@ -47,7 +49,6 @@ var greeter = Greeter.create(/* rpcImpl */ (function() { // API documentation: S
         if (ended)
             return;
         if (!requestData) {
-            console.log("rpc ended client-side.");
             ended = true;
             return;
         }
@@ -55,11 +56,11 @@ var greeter = Greeter.create(/* rpcImpl */ (function() { // API documentation: S
             try {
                 // begin exemplary server side code
                 var hello = Hello.decodeDelimited(requestData);
-                var responseData = World.encodeDelimited({ message: 'Hello ' + hello.name + ' !' }).finish();
+                var responseData = World.encodeDelimited({ message: "Hello " + hello.name }).finish();
                 // end exemplary server side code
-                callback(null, responseData);
+                return callback(null, responseData);
             } catch (err) {
-                callback(err);
+                return callback(err);
             }
         }, Math.random() * 500);
     };
@@ -68,27 +69,26 @@ var greeter = Greeter.create(/* rpcImpl */ (function() { // API documentation: S
 // Listen for events:
 
 greeter.on("data", function(response, method) {
-    console.log("data:", response.message);
+    console.log("data in " + method.name + ":", response.message);
 });
 
-greeter.on("end", function(method) {
-    console.log("ended.");
+greeter.on("end", function() {
+    console.log("end");
 });
 
 greeter.on("error", function(err, method) {
-    console.log("error:", err);
+    console.log("error in " + method.name + ":", err);
 });
 
 // Call methods:
 
-greeter.sayHello({ name: 'protocol' });
-greeter.sayHello({ name: 'buffers' });
-greeter.sayHello(Hello.create({ name: 'for' })); // or use runtime messages
+greeter.sayHello({ name: "one" });
+greeter.sayHello(Hello.create({ name: "two" })); // or use runtime messages
 
 // Listen to and emit your own events if you like:
 
 greeter.on("status", function(code, text) {
-    console.log("status:", code, text);
+    console.log("custom status:", code, text);
 });
 
 greeter.emit("status", 200, "OK");
@@ -100,5 +100,5 @@ setTimeout(function() {
     // ^ Signals rpcImpl that the service has been ended client-side by calling it with a null buffer.
     //   Likewise, rpcImpl can also end the stream by calling its callback with an explicit null buffer.
 
-    greeter.sayHello({ name: 'javascript' }); // does nothing
-}, 1000);
+    greeter.sayHello({ name: "three" }); // does nothing
+}, 501);

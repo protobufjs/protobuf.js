@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+/**
+ * Message
+ * with
+a
+ ** comment.
+ */
+message Test1 {
+    /**
+     * Field with a comment.
+     */
+    string field1 = 1;
+    // Field with a comment.
+    uint32 field2 = 2;
+}
+
+// Message
+// with
+// a
+// comment.
+message Test2 {
+}
+
+/* Message
+with */
+// a
+// comment.
+enum Test3 {
+    /**
+     * Value with a comment.
+     */
+    ONE = 1;
+    
+    // Value with a comment.
+    TWO = 2;
+
+    THREE = 3; // Value with a comment.
+}

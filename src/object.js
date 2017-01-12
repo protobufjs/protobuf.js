@@ -48,6 +48,12 @@ function ReflectionObject(name, options) {
      * @type {boolean}
      */
     this.resolved = false;
+
+    /**
+     * Comment text, if any.
+     * @type {?string}
+     */
+    this.comment = null;
 }
 
 /** @alias ReflectionObject.prototype */

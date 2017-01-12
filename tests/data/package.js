@@ -119,7 +119,7 @@ $root.Package = (function() {
     $prototype.devDependencies = $protobuf.util.emptyObject;
 
     /**
-     * Package types.
+     * map<string, bool>   browser = 16;
      * @type {string}
      */
     $prototype.types = "";
@@ -663,7 +663,7 @@ $root.Package = (function() {
 
             case "repository":
                 if (message.repository !== undefined && message.repository !== null) {
-                    object.repository = types[5].ctor.prototype.toObject.call(message.repository, options);
+                    object.repository = types[5].toObject(message.repository, options);
                 }
                 break;
 

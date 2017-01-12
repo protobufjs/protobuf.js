@@ -173,7 +173,7 @@ message CloneExtension {
 }
 
 message TestGroup {
-  /* repeated group RepeatedGroup = 1 {
+  repeated group RepeatedGroup = 1 {
     required string id = 1;
     repeated bool some_bool = 2;
   }
@@ -182,15 +182,15 @@ message TestGroup {
   }
   optional group OptionalGroup = 3 {
     required string id = 1;
-  } */
+  }
   optional string id = 4;
   required Simple2 required_simple = 5;
   optional Simple2 optional_simple = 6;
 }
 
-/* message TestGroup1 {
+message TestGroup1 {
   optional TestGroup.RepeatedGroup group = 1;
-} */
+}
 
 message TestReservedNames {
   optional int32 extension = 1;

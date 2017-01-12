@@ -34,6 +34,12 @@ function Enum(name, values, options) {
      */
     this.values = Object.create(this.valuesById); // toJSON, marker
 
+    /**
+     * Value comment texts, if any.
+     * @type {Object.<string,string>}
+     */
+    this.comments = {};
+
     // Note that values inherit valuesById on their prototype which makes them a TypeScript-
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
@@ -85,11 +91,12 @@ EnumPrototype.toJSON = function toJSON() {
  * Adds a value to this enum.
  * @param {string} name Value name
  * @param {number} id Value id
+ * @param {?string} comment Comment, if any
  * @returns {Enum} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
  */
-EnumPrototype.add = function(name, id) {
+EnumPrototype.add = function(name, id, comment) {
 
     /* istanbul ignore next */
     if (!util.isString(name))
@@ -105,6 +112,7 @@ EnumPrototype.add = function(name, id) {
         throw Error("duplicate id " + id + " in " + this);
 
     this.valuesById[this.values[name] = id] = name;
+    this.comments[name] = comment || null;
     return this;
 };
 
@@ -123,5 +131,6 @@ EnumPrototype.remove = function(name) {
         throw Error("'" + name + "' is not a name of " + this);
     delete this.valuesById[val];
     delete this.values[name];
+    delete this.comments[name];
     return this;
 };

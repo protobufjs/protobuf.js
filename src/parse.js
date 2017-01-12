@@ -79,7 +79,8 @@ function parse(source, root, options) {
         next = tn.next,
         push = tn.push,
         peek = tn.peek,
-        skip = tn.skip;
+        skip = tn.skip,
+        cmnt = tn.cmnt;
 
     var head = true,
         pkg,
@@ -255,6 +256,7 @@ function parse(source, root, options) {
         if (!isName(name))
             throw illegal(name, "type name");
         var type = new Type(name);
+        type.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -313,6 +315,7 @@ function parse(source, root, options) {
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new Field(name, id, type, rule, extend));
+        field.comment = cmnt();
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
         if (field.repeated && types.packed[type] !== undefined && !isProto3)
@@ -331,6 +334,7 @@ function parse(source, root, options) {
         var id = parseId(next());
         var type = new Type(name);
         type.group = true;
+        type.comment = cmnt();
         var field = new Field(fieldName, id, name, rule);
         skip("{");
         while ((token = next()) !== "}") {
@@ -376,6 +380,7 @@ function parse(source, root, options) {
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new MapField(name, id, keyType, valueType));
+        field.comment = cmnt();
         parent.add(field);
     }
 
@@ -388,6 +393,7 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         var oneof = new OneOf(name);
+        oneof.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (token === "option") {
@@ -412,13 +418,14 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         var enm = new Enum(name);
+        enm.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (lower(token) === "option") {
                     parseOption(enm, token);
                     skip(";");
                 } else
-                    parseEnumField(enm, token);
+                    parseEnumValue(enm, token);
             }
             skip(";", true);
         } else
@@ -426,7 +433,7 @@ function parse(source, root, options) {
         parent.add(enm);
     }
 
-    function parseEnumField(parent, token) {
+    function parseEnumValue(parent, token) {
 
         /* istanbul ignore next */
         if (!isName(token))
@@ -434,9 +441,15 @@ function parse(source, root, options) {
 
         var name = token;
         skip("=");
-        var value = parseId(next(), true);
-        parent.add(name, value);
+        var value = parseId(next(), true),
+            comment = cmnt(),
+            line = tn.line();
+        parent.add(name, value, comment);
         parseInlineOptions({}); // skips enum value options
+        if (!comment) {
+            peek(); // trailing comment?
+            parent.comments[name] = cmnt(/* if on */ line);
+        }
     }
 
     function parseOption(parent, token) {
@@ -505,6 +518,7 @@ function parse(source, root, options) {
 
         var name = token;
         var service = new Service(name);
+        service.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -555,6 +569,7 @@ function parse(source, root, options) {
         responseType = token;
         skip(")");
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
+        method.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);

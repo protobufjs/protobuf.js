@@ -190,7 +190,7 @@ $root.vector_tile = (function() {
                     if (message.layers.length) {
                         object.layers = [];
                         for (var j = 0; j < message.layers.length; ++j) {
-                            object.layers[j] = types[0].ctor.prototype.toObject.call(message.layers[j], options);
+                            object.layers[j] = types[0].toObject(message.layers[j], options);
                         }
                     }
                     break;
@@ -1349,7 +1349,7 @@ $root.vector_tile = (function() {
                         if (message.features.length) {
                             object.features = [];
                             for (var j = 0; j < message.features.length; ++j) {
-                                object.features[j] = types[2].ctor.prototype.toObject.call(message.features[j], options);
+                                object.features[j] = types[2].toObject(message.features[j], options);
                             }
                         }
                         break;
@@ -1367,7 +1367,7 @@ $root.vector_tile = (function() {
                         if (message.values.length) {
                             object.values = [];
                             for (var j = 0; j < message.values.length; ++j) {
-                                object.values[j] = types[4].ctor.prototype.toObject.call(message.values[j], options);
+                                object.values[j] = types[4].toObject(message.values[j], options);
                             }
                         }
                         break;

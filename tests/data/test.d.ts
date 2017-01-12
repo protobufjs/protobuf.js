@@ -345,6 +345,9 @@ export namespace jspb {
 
         class TestGroup {
             constructor(properties?: Object);
+            repeatedGroup: jspb.test.TestGroup.RepeatedGroup[];
+            requiredGroup: jspb.test.TestGroup.RequiredGroup;
+            optionalGroup: jspb.test.TestGroup.OptionalGroup;
             id: string;
             requiredSimple: jspb.test.Simple2;
             optionalSimple: jspb.test.Simple2;
@@ -356,6 +359,74 @@ export namespace jspb {
             static verify(message: (jspb.test.TestGroup|Object)): string;
             static fromObject: any;
             static from(object: { [k: string]: any }): jspb.test.TestGroup;
+            static toObject: any;
+            toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+            toJSON(): { [k: string]: any };
+        }
+
+        namespace TestGroup {
+
+            class RepeatedGroup {
+                constructor(properties?: Object);
+                id: string;
+                someBool: boolean[];
+                static create(properties?: Object): jspb.test.TestGroup.RepeatedGroup;
+                static encode(message: (jspb.test.TestGroup.RepeatedGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+                static encodeDelimited(message: (jspb.test.TestGroup.RepeatedGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RepeatedGroup;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.RepeatedGroup;
+                static verify(message: (jspb.test.TestGroup.RepeatedGroup|Object)): string;
+                static fromObject: any;
+                static from(object: { [k: string]: any }): jspb.test.TestGroup.RepeatedGroup;
+                static toObject: any;
+                toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                toJSON(): { [k: string]: any };
+            }
+
+            class RequiredGroup {
+                constructor(properties?: Object);
+                id: string;
+                static create(properties?: Object): jspb.test.TestGroup.RequiredGroup;
+                static encode(message: (jspb.test.TestGroup.RequiredGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+                static encodeDelimited(message: (jspb.test.TestGroup.RequiredGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RequiredGroup;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.RequiredGroup;
+                static verify(message: (jspb.test.TestGroup.RequiredGroup|Object)): string;
+                static fromObject: any;
+                static from(object: { [k: string]: any }): jspb.test.TestGroup.RequiredGroup;
+                static toObject: any;
+                toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                toJSON(): { [k: string]: any };
+            }
+
+            class OptionalGroup {
+                constructor(properties?: Object);
+                id: string;
+                static create(properties?: Object): jspb.test.TestGroup.OptionalGroup;
+                static encode(message: (jspb.test.TestGroup.OptionalGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+                static encodeDelimited(message: (jspb.test.TestGroup.OptionalGroup|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+                static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.OptionalGroup;
+                static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.OptionalGroup;
+                static verify(message: (jspb.test.TestGroup.OptionalGroup|Object)): string;
+                static fromObject: any;
+                static from(object: { [k: string]: any }): jspb.test.TestGroup.OptionalGroup;
+                static toObject: any;
+                toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
+                toJSON(): { [k: string]: any };
+            }
+        }
+
+        class TestGroup1 {
+            constructor(properties?: Object);
+            group: jspb.test.TestGroup.RepeatedGroup;
+            static create(properties?: Object): jspb.test.TestGroup1;
+            static encode(message: (jspb.test.TestGroup1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+            static encodeDelimited(message: (jspb.test.TestGroup1|Object), writer?: $protobuf.Writer): $protobuf.Writer;
+            static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup1;
+            static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup1;
+            static verify(message: (jspb.test.TestGroup1|Object)): string;
+            static fromObject: any;
+            static from(object: { [k: string]: any }): jspb.test.TestGroup1;
             static toObject: any;
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };

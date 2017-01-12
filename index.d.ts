@@ -188,6 +188,12 @@ export class Enum extends ReflectionObject {
     values: { [k: string]: number };
 
     /**
+     * Value comment texts, if any.
+     * @type {Object.<string,string>}
+     */
+    comments: { [k: string]: string };
+
+    /**
      * Tests if the specified JSON object describes an enum.
      * @param {*} json JSON object to test
      * @returns {boolean} `true` if the object describes an enum
@@ -207,11 +213,12 @@ export class Enum extends ReflectionObject {
      * Adds a value to this enum.
      * @param {string} name Value name
      * @param {number} id Value id
+     * @param {?string} comment Comment, if any
      * @returns {Enum} `this`
      * @throws {TypeError} If arguments are invalid
      * @throws {Error} If there is already a value with this name or id
      */
-    add(name: string, id: number): Enum;
+    add(name: string, id: number, comment: string): Enum;
 
     /**
      * Removes a value from this enum
@@ -932,6 +939,12 @@ export abstract class ReflectionObject {
     resolved: boolean;
 
     /**
+     * Comment text, if any.
+     * @type {?string}
+     */
+    comment: string;
+
+    /**
      * Reference to the root namespace.
      * @name ReflectionObject#root
      * @type {Root}
@@ -1506,6 +1519,7 @@ type RPCCallback = (error: Error, responseData?: Uint8Array) => void;
  * @property {function():?string} peek Peeks for the next token (`null` on eof)
  * @property {function(string)} push Pushes a token back to the stack
  * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
+ * @property {function():?string} cmnt Gets the comment on the previous line, if any
  */
 type TokenizerHandle = { [k: string]: any };
 

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 17:03:48 UTC
+ * Compiled Thu, 12 Jan 2017 22:35:30 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1253,7 +1253,7 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
         if (field.resolvedType instanceof Enum) gen
             ("d%s=o.enums===String?types[%d].values[m%s]:m%s", prop, fieldIndex, prop, prop);
         else gen
-            ("d%s=types[%d].ctor.prototype.toObject.call(m%s,o)", prop, fieldIndex, prop);
+            ("d%s=types[%d].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
         switch (field.type) {
@@ -1626,6 +1626,12 @@ function Enum(name, values, options) {
      */
     this.values = Object.create(this.valuesById); // toJSON, marker
 
+    /**
+     * Value comment texts, if any.
+     * @type {Object.<string,string>}
+     */
+    this.comments = {};
+
     // Note that values inherit valuesById on their prototype which makes them a TypeScript-
     // compatible enum. This is used by pbts to write actual enum definitions that work for
     // static and reflection code alike instead of emitting generic object definitions.
@@ -1677,11 +1683,12 @@ EnumPrototype.toJSON = function toJSON() {
  * Adds a value to this enum.
  * @param {string} name Value name
  * @param {number} id Value id
+ * @param {?string} comment Comment, if any
  * @returns {Enum} `this`
  * @throws {TypeError} If arguments are invalid
  * @throws {Error} If there is already a value with this name or id
  */
-EnumPrototype.add = function(name, id) {
+EnumPrototype.add = function(name, id, comment) {
 
     /* istanbul ignore next */
     if (!util.isString(name))
@@ -1697,6 +1704,7 @@ EnumPrototype.add = function(name, id) {
         throw Error("duplicate id " + id + " in " + this);
 
     this.valuesById[this.values[name] = id] = name;
+    this.comments[name] = comment || null;
     return this;
 };
 
@@ -1715,6 +1723,7 @@ EnumPrototype.remove = function(name) {
         throw Error("'" + name + "' is not a name of " + this);
     delete this.valuesById[val];
     delete this.values[name];
+    delete this.comments[name];
     return this;
 };
 
@@ -2865,6 +2874,12 @@ function ReflectionObject(name, options) {
      * @type {boolean}
      */
     this.resolved = false;
+
+    /**
+     * Comment text, if any.
+     * @type {?string}
+     */
+    this.comment = null;
 }
 
 /** @alias ReflectionObject.prototype */
@@ -3281,7 +3296,8 @@ function parse(source, root, options) {
         next = tn.next,
         push = tn.push,
         peek = tn.peek,
-        skip = tn.skip;
+        skip = tn.skip,
+        cmnt = tn.cmnt;
 
     var head = true,
         pkg,
@@ -3457,6 +3473,7 @@ function parse(source, root, options) {
         if (!isName(name))
             throw illegal(name, "type name");
         var type = new Type(name);
+        type.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -3515,6 +3532,7 @@ function parse(source, root, options) {
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new Field(name, id, type, rule, extend));
+        field.comment = cmnt();
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
         if (field.repeated && types.packed[type] !== undefined && !isProto3)
@@ -3533,6 +3551,7 @@ function parse(source, root, options) {
         var id = parseId(next());
         var type = new Type(name);
         type.group = true;
+        type.comment = cmnt();
         var field = new Field(fieldName, id, name, rule);
         skip("{");
         while ((token = next()) !== "}") {
@@ -3578,6 +3597,7 @@ function parse(source, root, options) {
         skip("=");
         var id = parseId(next());
         var field = parseInlineOptions(new MapField(name, id, keyType, valueType));
+        field.comment = cmnt();
         parent.add(field);
     }
 
@@ -3590,6 +3610,7 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         var oneof = new OneOf(name);
+        oneof.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (token === "option") {
@@ -3614,13 +3635,14 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         var enm = new Enum(name);
+        enm.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 if (lower(token) === "option") {
                     parseOption(enm, token);
                     skip(";");
                 } else
-                    parseEnumField(enm, token);
+                    parseEnumValue(enm, token);
             }
             skip(";", true);
         } else
@@ -3628,7 +3650,7 @@ function parse(source, root, options) {
         parent.add(enm);
     }
 
-    function parseEnumField(parent, token) {
+    function parseEnumValue(parent, token) {
 
         /* istanbul ignore next */
         if (!isName(token))
@@ -3636,9 +3658,15 @@ function parse(source, root, options) {
 
         var name = token;
         skip("=");
-        var value = parseId(next(), true);
-        parent.add(name, value);
+        var value = parseId(next(), true),
+            comment = cmnt(),
+            line = tn.line();
+        parent.add(name, value, comment);
         parseInlineOptions({}); // skips enum value options
+        if (!comment) {
+            peek(); // trailing comment?
+            parent.comments[name] = cmnt(/* if on */ line);
+        }
     }
 
     function parseOption(parent, token) {
@@ -3707,6 +3735,7 @@ function parse(source, root, options) {
 
         var name = token;
         var service = new Service(name);
+        service.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -3757,6 +3786,7 @@ function parse(source, root, options) {
         responseType = token;
         skip(")");
         var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
+        method.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
                 var tokenLower = lower(token);
@@ -5044,8 +5074,8 @@ function unescape(str) {
  * @property {function():?string} peek Peeks for the next token (`null` on eof)
  * @property {function(string)} push Pushes a token back to the stack
  * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
+ * @property {function():?string} cmnt Gets the comment on the previous line, if any
  */
-/**/
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
@@ -5058,7 +5088,11 @@ function tokenize(source) {
 
     var offset = 0,
         length = source.length,
-        line = 1;
+        line = 1,
+        comment = null,
+        commentLine = 0,
+        commentType = 0;
+
 
     var stack = [];
 
@@ -5103,6 +5137,33 @@ function tokenize(source) {
     }
 
     /**
+     * Remembers the comment between start and end.
+     * @param {number} start Start offset
+     * @param {number} end End offset
+     * @returns {undefined}
+     * @inner
+     */
+    function setComment(start, end, type) {
+        var count = 0;
+        var text = source
+            .substring(start, end)
+            .split(/\n/g)
+            .map(function(line) {
+                ++count;
+                return line.replace(/ *[*/]+ */, "").trim();
+            })
+            .join("\n")
+            .trim();
+        if (comment && commentLine === line - count && type === commentType)
+            comment += "\n" + text;
+        else {
+            comment = text;
+            commentType = type;
+        }
+        commentLine = line;
+    }
+
+    /**
      * Obtains the next token.
      * @returns {?string} Next token or `null` on eof
      * @inner
@@ -5114,7 +5175,8 @@ function tokenize(source) {
             return readString();
         var repeat,
             prev,
-            curr;
+            curr,
+            start;
         do {
             if (offset === length)
                 return null;
@@ -5129,13 +5191,16 @@ function tokenize(source) {
                 if (++offset === length)
                     throw illegal("comment");
                 if (charAt(offset) === "/") { // Line
+                    start = offset + 1;
                     while (charAt(++offset) !== "\n")
                         if (offset === length)
                             return null;
                     ++offset;
+                    setComment(start, offset - 1, 0);
                     ++line;
                     repeat = true;
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
+                    start = offset + 1;
                     do {
                         if (curr === "\n")
                             ++line;
@@ -5145,6 +5210,7 @@ function tokenize(source) {
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
                     ++offset;
+                    setComment(start, offset - 2, 1);
                     repeat = true;
                 } else
                     return "/";
@@ -5210,12 +5276,29 @@ function tokenize(source) {
         return false;
     }
 
+    /**
+     * Gets the comment on the previous line.
+     * @returns {?string} Comment, if any
+     * @inner
+     */
+    function cmnt(ifOnLine) {
+        var ret = (ifOnLine !== undefined
+            ? commentLine === ifOnLine
+            : commentLine === line - 1) && comment || null;
+        if (comment) {
+            comment = null;
+            commentLine = -1;
+        }
+        return ret;
+    }
+
     return {
         line: function() { return line; },
         next: next,
         peek: peek,
         push: push,
-        skip: skip
+        skip: skip,
+        cmnt: cmnt
     };
     /* eslint-enable callback-return */
 }

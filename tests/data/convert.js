@@ -581,7 +581,7 @@ $root.Message = (function() {
                 if (message.enumRepeated.length) {
                     object.enumRepeated = [];
                     for (var j = 0; j < message.enumRepeated.length; ++j) {
-                        object.enumRepeated[j] = options.enums === String ? types[7].values[message.enumRepeated[j]] : message.enumRepeated[j];
+                        object.enumRepeated[j] = options.enums === String ? types[7][message.enumRepeated[j]] : message.enumRepeated[j];
                     }
                 }
                 break;

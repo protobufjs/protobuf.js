@@ -27,8 +27,8 @@ function unescape(str) {
  * @property {function():?string} peek Peeks for the next token (`null` on eof)
  * @property {function(string)} push Pushes a token back to the stack
  * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
+ * @property {function():?string} cmnt Gets the comment on the previous line, if any
  */
-/**/
 
 /**
  * Tokenizes the given .proto source and returns an object with useful utility functions.
@@ -41,7 +41,11 @@ function tokenize(source) {
 
     var offset = 0,
         length = source.length,
-        line = 1;
+        line = 1,
+        comment = null,
+        commentLine = 0,
+        commentType = 0;
+
 
     var stack = [];
 
@@ -86,6 +90,33 @@ function tokenize(source) {
     }
 
     /**
+     * Remembers the comment between start and end.
+     * @param {number} start Start offset
+     * @param {number} end End offset
+     * @returns {undefined}
+     * @inner
+     */
+    function setComment(start, end, type) {
+        var count = 0;
+        var text = source
+            .substring(start, end)
+            .split(/\n/g)
+            .map(function(line) {
+                ++count;
+                return line.replace(/ *[*/]+ */, "").trim();
+            })
+            .join("\n")
+            .trim();
+        if (comment && commentLine === line - count && type === commentType)
+            comment += "\n" + text;
+        else {
+            comment = text;
+            commentType = type;
+        }
+        commentLine = line;
+    }
+
+    /**
      * Obtains the next token.
      * @returns {?string} Next token or `null` on eof
      * @inner
@@ -97,7 +128,8 @@ function tokenize(source) {
             return readString();
         var repeat,
             prev,
-            curr;
+            curr,
+            start;
         do {
             if (offset === length)
                 return null;
@@ -112,13 +144,16 @@ function tokenize(source) {
                 if (++offset === length)
                     throw illegal("comment");
                 if (charAt(offset) === "/") { // Line
+                    start = offset + 1;
                     while (charAt(++offset) !== "\n")
                         if (offset === length)
                             return null;
                     ++offset;
+                    setComment(start, offset - 1, 0);
                     ++line;
                     repeat = true;
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
+                    start = offset + 1;
                     do {
                         if (curr === "\n")
                             ++line;
@@ -128,6 +163,7 @@ function tokenize(source) {
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
                     ++offset;
+                    setComment(start, offset - 2, 1);
                     repeat = true;
                 } else
                     return "/";
@@ -193,12 +229,29 @@ function tokenize(source) {
         return false;
     }
 
+    /**
+     * Gets the comment on the previous line.
+     * @returns {?string} Comment, if any
+     * @inner
+     */
+    function cmnt(ifOnLine) {
+        var ret = (ifOnLine !== undefined
+            ? commentLine === ifOnLine
+            : commentLine === line - 1) && comment || null;
+        if (comment) {
+            comment = null;
+            commentLine = -1;
+        }
+        return ret;
+    }
+
     return {
         line: function() { return line; },
         next: next,
         peek: peek,
         push: push,
-        skip: skip
+        skip: skip,
+        cmnt: cmnt
     };
     /* eslint-enable callback-return */
 }

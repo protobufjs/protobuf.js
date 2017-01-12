@@ -1,3 +1,4 @@
+"use strict";
 var fs   = require("fs"),
     path = require("path"),
     pbjs = require("../cli/pbjs"),
@@ -9,7 +10,8 @@ var fs   = require("fs"),
     "tests/data/mapbox/vector_tile.proto",
     "tests/data/ambiguous-names.proto",
     "tests/data/test.proto",
-    "tests/data/convert.proto"
+    "tests/data/convert.proto",
+    "tests/data/comments.proto"
 ]
 .forEach(function(file) {
     var out = file.replace(/\.proto$/, ".js");
@@ -23,8 +25,8 @@ var fs   = require("fs"),
         if (err)
             throw err;
         var pathToRuntime = path.relative(path.dirname(out), "runtime").replace(/\\/g, "/");
-        fs.writeFileSync(out, fs.readFileSync(out).toString("utf8").replace(/\"protobufjs\/runtime\"/g, JSON.stringify(pathToRuntime)), "utf8");
-        console.log("pbjs: " + file + " -> " + out);
+        fs.writeFileSync(out, fs.readFileSync(out).toString("utf8").replace(/"protobufjs\/runtime"/g, JSON.stringify(pathToRuntime)), "utf8");
+        process.stdout.write("pbjs: " + file + " -> " + out + "\n");
     })
 });
 
@@ -41,7 +43,7 @@ var fs   = require("fs"),
         if (err)
             throw err;
         var pathToProtobufjs = path.relative(path.dirname(out), "").replace(/\\/g, "/");
-        fs.writeFileSync(out, fs.readFileSync(out).toString("utf8").replace(/\"protobufjs\"/g, JSON.stringify(pathToProtobufjs)), "utf8");
-        console.log("pbts: " + file + " -> " + out);
+        fs.writeFileSync(out, fs.readFileSync(out).toString("utf8").replace(/"protobufjs"/g, JSON.stringify(pathToProtobufjs)), "utf8");
+        process.stdout.write("pbts: " + file + " -> " + out + "\n");
     });
 });

@@ -658,6 +658,7 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new Simple2.
+             * @classdesc A message that differs from Simple1 only by name
              * @exports jspb.test.Simple2
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -907,7 +908,7 @@ $root.jspb = (function() {
             $prototype.normal = "";
 
             /**
-             * SpecialCases default.
+             * Examples of Js reserved names that are converted to pb_<name>.
              * @name jspb.test.SpecialCases#default
              * @type {string}
              */
@@ -1419,7 +1420,7 @@ $root.jspb = (function() {
 
                     case "aNestedMessage":
                         if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                            object.aNestedMessage = types[2].ctor.prototype.toObject.call(message.aNestedMessage, options);
+                            object.aNestedMessage = types[2].toObject(message.aNestedMessage, options);
                         }
                         break;
 
@@ -1427,7 +1428,7 @@ $root.jspb = (function() {
                         if (message.aRepeatedMessage.length) {
                             object.aRepeatedMessage = [];
                             for (var j = 0; j < message.aRepeatedMessage.length; ++j) {
-                                object.aRepeatedMessage[j] = types[3].ctor.prototype.toObject.call(message.aRepeatedMessage[j], options);
+                                object.aRepeatedMessage[j] = types[3].toObject(message.aRepeatedMessage[j], options);
                             }
                         }
                         break;
@@ -2042,13 +2043,13 @@ $root.jspb = (function() {
 
                     case ".jspb.test.IsExtension.extField":
                         if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
-                            object[".jspb.test.IsExtension.extField"] = types[3].ctor.prototype.toObject.call(message[".jspb.test.IsExtension.extField"], options);
+                            object[".jspb.test.IsExtension.extField"] = types[3].toObject(message[".jspb.test.IsExtension.extField"], options);
                         }
                         break;
 
                     case ".jspb.test.IndirectExtension.simple":
                         if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
-                            object[".jspb.test.IndirectExtension.simple"] = types[4].ctor.prototype.toObject.call(message[".jspb.test.IndirectExtension.simple"], options);
+                            object[".jspb.test.IndirectExtension.simple"] = types[4].toObject(message[".jspb.test.IndirectExtension.simple"], options);
                         }
                         break;
 
@@ -2071,14 +2072,14 @@ $root.jspb = (function() {
                         if (message[".jspb.test.IndirectExtension.repeatedSimple"].length) {
                             object[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                             for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++j) {
-                                object[".jspb.test.IndirectExtension.repeatedSimple"][j] = types[7].ctor.prototype.toObject.call(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
+                                object[".jspb.test.IndirectExtension.repeatedSimple"][j] = types[7].toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
                             }
                         }
                         break;
 
                     case ".jspb.test.simple1":
                         if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
-                            object[".jspb.test.simple1"] = types[8].ctor.prototype.toObject.call(message[".jspb.test.simple1"], options);
+                            object[".jspb.test.simple1"] = types[8].toObject(message[".jspb.test.simple1"], options);
                         }
                         break;
                     }
@@ -2388,7 +2389,7 @@ $root.jspb = (function() {
 
                     case "aNestedMessage":
                         if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                            object.aNestedMessage = types[2].ctor.prototype.toObject.call(message.aNestedMessage, options);
+                            object.aNestedMessage = types[2].toObject(message.aNestedMessage, options);
                         }
                         break;
 
@@ -2396,7 +2397,7 @@ $root.jspb = (function() {
                         if (message.aRepeatedMessage.length) {
                             object.aRepeatedMessage = [];
                             for (var j = 0; j < message.aRepeatedMessage.length; ++j) {
-                                object.aRepeatedMessage[j] = types[3].ctor.prototype.toObject.call(message.aRepeatedMessage[j], options);
+                                object.aRepeatedMessage[j] = types[3].toObject(message.aRepeatedMessage[j], options);
                             }
                         }
                         break;
@@ -2775,6 +2776,7 @@ $root.jspb = (function() {
 
                 /**
                  * Constructs a new Complex.
+                 * @classdesc Make sure this doesn't conflict with the other Complex message.
                  * @exports jspb.test.OuterMessage.Complex
                  * @constructor
                  * @param {Object} [properties] Properties to set
@@ -4403,7 +4405,7 @@ $root.jspb = (function() {
 
                     case "simple1":
                         if (message.simple1 !== undefined && message.simple1 !== null) {
-                            object.simple1 = types[1].ctor.prototype.toObject.call(message.simple1, options);
+                            object.simple1 = types[1].toObject(message.simple1, options);
                         }
                         break;
 
@@ -4411,7 +4413,7 @@ $root.jspb = (function() {
                         if (message.simple2.length) {
                             object.simple2 = [];
                             for (var j = 0; j < message.simple2.length; ++j) {
-                                object.simple2[j] = types[2].ctor.prototype.toObject.call(message.simple2[j], options);
+                                object.simple2[j] = types[2].toObject(message.simple2[j], options);
                             }
                         }
                         break;
@@ -4430,7 +4432,7 @@ $root.jspb = (function() {
 
                     case ".jspb.test.CloneExtension.extField":
                         if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
-                            object[".jspb.test.CloneExtension.extField"] = types[5].ctor.prototype.toObject.call(message[".jspb.test.CloneExtension.extField"], options);
+                            object[".jspb.test.CloneExtension.extField"] = types[5].toObject(message[".jspb.test.CloneExtension.extField"], options);
                         }
                         break;
                     }
@@ -4667,6 +4669,24 @@ $root.jspb = (function() {
             var $prototype = TestGroup.prototype;
 
             /**
+             * TestGroup repeatedGroup.
+             * @type {Array.<jspb.test.TestGroup.RepeatedGroup>}
+             */
+            $prototype.repeatedGroup = $protobuf.util.emptyArray;
+
+            /**
+             * TestGroup requiredGroup.
+             * @type {jspb.test.TestGroup.RequiredGroup}
+             */
+            $prototype.requiredGroup = null;
+
+            /**
+             * TestGroup optionalGroup.
+             * @type {jspb.test.TestGroup.OptionalGroup}
+             */
+            $prototype.optionalGroup = null;
+
+            /**
              * TestGroup id.
              * @type {string}
              */
@@ -4685,7 +4705,7 @@ $root.jspb = (function() {
             $prototype.optionalSimple = null;
 
             // Referenced types
-            var $types = [null, "jspb.test.Simple2", "jspb.test.Simple2"]; $lazyTypes.push($types);
+            var $types = ["jspb.test.TestGroup.RepeatedGroup", "jspb.test.TestGroup.RequiredGroup", "jspb.test.TestGroup.OptionalGroup", null, "jspb.test.Simple2", "jspb.test.Simple2"]; $lazyTypes.push($types);
 
             /**
              * Creates a new TestGroup instance using the specified properties.
@@ -4707,12 +4727,21 @@ $root.jspb = (function() {
                 if (!writer) {
                     writer = Writer.create();
                 }
+                if (message.repeatedGroup) {
+                    for (var i = 0; i < message.repeatedGroup.length; ++i) {
+                        types[0].encode(message.repeatedGroup[i], writer.uint32(11)).uint32(12);
+                    }
+                }
+                types[1].encode(message.requiredGroup, writer.uint32(19)).uint32(20);
+                if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
+                    types[2].encode(message.optionalGroup, writer.uint32(27)).uint32(28);
+                }
                 if (message.id !== undefined && message.id !== "") {
                     writer.uint32(34).string(message.id);
                 }
-                types[1].encode(message.requiredSimple, writer.uint32(42).fork()).ldelim();
+                types[4].encode(message.requiredSimple, writer.uint32(42).fork()).ldelim();
                 if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
-                    types[2].encode(message.optionalSimple, writer.uint32(50).fork()).ldelim();
+                    types[5].encode(message.optionalSimple, writer.uint32(50).fork()).ldelim();
                 }
                 return writer;
             };})($protobuf.Writer, $types);
@@ -4742,16 +4771,31 @@ $root.jspb = (function() {
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
+                    case 1:
+                        if (!(message.repeatedGroup && message.repeatedGroup.length)) {
+                            message.repeatedGroup = [];
+                        }
+                        message.repeatedGroup.push(types[0].decode(reader));
+                        break;
+
+                    case 2:
+                        message.requiredGroup = types[1].decode(reader);
+                        break;
+
+                    case 3:
+                        message.optionalGroup = types[2].decode(reader);
+                        break;
+
                     case 4:
                         message.id = reader.string();
                         break;
 
                     case 5:
-                        message.requiredSimple = types[1].decode(reader, reader.uint32());
+                        message.requiredSimple = types[4].decode(reader, reader.uint32());
                         break;
 
                     case 6:
-                        message.optionalSimple = types[2].decode(reader, reader.uint32());
+                        message.optionalSimple = types[5].decode(reader, reader.uint32());
                         break;
 
                     default:
@@ -4779,18 +4823,39 @@ $root.jspb = (function() {
              * @returns {?string} `null` if valid, otherwise the reason why it is not
              */
             TestGroup.verify = (function(util, types) { return function verify(message) {
+                if (message.repeatedGroup !== undefined) {
+                    if (!Array.isArray(message.repeatedGroup)) {
+                        return "jspb.test.TestGroup.repeatedGroup: array expected";
+                    }
+                    for (var i = 0; i < message.repeatedGroup.length; ++i) {
+                        var err;
+                        if (err = types[0].verify(message.repeatedGroup[i])) {
+                            return err;
+                        }
+                    }
+                }
+                var err;
+                if (err = types[1].verify(message.requiredGroup)) {
+                    return err;
+                }
+                if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
+                    var err;
+                    if (err = types[2].verify(message.optionalGroup)) {
+                        return err;
+                    }
+                }
                 if (message.id !== undefined) {
                     if (!util.isString(message.id)) {
                         return "jspb.test.TestGroup.id: string expected";
                     }
                 }
                 var err;
-                if (err = types[1].verify(message.requiredSimple)) {
+                if (err = types[4].verify(message.requiredSimple)) {
                     return err;
                 }
                 if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
                     var err;
-                    if (err = types[2].verify(message.optionalSimple)) {
+                    if (err = types[5].verify(message.optionalSimple)) {
                         return err;
                     }
                 }
@@ -4804,14 +4869,26 @@ $root.jspb = (function() {
              */
             TestGroup.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.jspb.test.TestGroup();
+                if (object.repeatedGroup) {
+                    message.repeatedGroup = [];
+                    for (var i = 0; i < object.repeatedGroup.length; ++i) {
+                        message.repeatedGroup[i] = types[0].fromObject(object.repeatedGroup[i]);
+                    }
+                }
+                if (object.requiredGroup !== undefined && object.requiredGroup !== null) {
+                    message.requiredGroup = types[1].fromObject(object.requiredGroup);
+                }
+                if (object.optionalGroup !== undefined && object.optionalGroup !== null) {
+                    message.optionalGroup = types[2].fromObject(object.optionalGroup);
+                }
                 if (object.id !== undefined && object.id !== null) {
                     message.id = String(object.id);
                 }
                 if (object.requiredSimple !== undefined && object.requiredSimple !== null) {
-                    message.requiredSimple = types[1].fromObject(object.requiredSimple);
+                    message.requiredSimple = types[4].fromObject(object.requiredSimple);
                 }
                 if (object.optionalSimple !== undefined && object.optionalSimple !== null) {
-                    message.optionalSimple = types[2].fromObject(object.optionalSimple);
+                    message.optionalSimple = types[5].fromObject(object.optionalSimple);
                 }
                 return message;
             };})($types);
@@ -4836,13 +4913,39 @@ $root.jspb = (function() {
                     options = {};
                 }
                 var object = {};
+                if (options.arrays || options.defaults) {
+                    object.repeatedGroup = [];
+                }
                 if (options.defaults) {
+                    object.requiredGroup = null;
+                    object.optionalGroup = null;
                     object.id = "";
                     object.requiredSimple = null;
                     object.optionalSimple = null;
                 }
                 for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
                     switch (keys[i]) {
+                    case "repeatedGroup":
+                        if (message.repeatedGroup.length) {
+                            object.repeatedGroup = [];
+                            for (var j = 0; j < message.repeatedGroup.length; ++j) {
+                                object.repeatedGroup[j] = types[0].toObject(message.repeatedGroup[j], options);
+                            }
+                        }
+                        break;
+
+                    case "requiredGroup":
+                        if (message.requiredGroup !== undefined && message.requiredGroup !== null) {
+                            object.requiredGroup = types[1].toObject(message.requiredGroup, options);
+                        }
+                        break;
+
+                    case "optionalGroup":
+                        if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
+                            object.optionalGroup = types[2].toObject(message.optionalGroup, options);
+                        }
+                        break;
+
                     case "id":
                         if (message.id !== undefined && message.id !== null) {
                             object.id = message.id;
@@ -4851,13 +4954,13 @@ $root.jspb = (function() {
 
                     case "requiredSimple":
                         if (message.requiredSimple !== undefined && message.requiredSimple !== null) {
-                            object.requiredSimple = types[1].ctor.prototype.toObject.call(message.requiredSimple, options);
+                            object.requiredSimple = types[4].toObject(message.requiredSimple, options);
                         }
                         break;
 
                     case "optionalSimple":
                         if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
-                            object.optionalSimple = types[2].ctor.prototype.toObject.call(message.optionalSimple, options);
+                            object.optionalSimple = types[5].toObject(message.optionalSimple, options);
                         }
                         break;
                     }
@@ -4886,7 +4989,801 @@ $root.jspb = (function() {
                 });
             };
 
+            TestGroup.RepeatedGroup = (function() {
+
+                /**
+                 * Constructs a new RepeatedGroup.
+                 * @exports jspb.test.TestGroup.RepeatedGroup
+                 * @constructor
+                 * @param {Object} [properties] Properties to set
+                 */
+                function RepeatedGroup(properties) {
+                    if (properties) {
+                        var keys = Object.keys(properties);
+                        for (var i = 0; i < keys.length; ++i)
+                            this[keys[i]] = properties[keys[i]];
+                    }
+                }
+
+                /** @alias jspb.test.TestGroup.RepeatedGroup.prototype */
+                var $prototype = RepeatedGroup.prototype;
+
+                /**
+                 * RepeatedGroup id.
+                 * @type {string}
+                 */
+                $prototype.id = "";
+
+                /**
+                 * RepeatedGroup someBool.
+                 * @type {Array.<boolean>}
+                 */
+                $prototype.someBool = $protobuf.util.emptyArray;
+
+                /**
+                 * Creates a new RepeatedGroup instance using the specified properties.
+                 * @param {Object} [properties] Properties to set
+                 * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup instance
+                 */
+                RepeatedGroup.create = function create(properties) {
+                    return new RepeatedGroup(properties);
+                };
+
+                /**
+                 * Encodes the specified RepeatedGroup message.
+                 * @function
+                 * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                RepeatedGroup.encode = (function(Writer) { return function encode(message, writer) {
+                    if (!writer) {
+                        writer = Writer.create();
+                    }
+                    writer.uint32(10).string(message.id);
+                    if (message.someBool) {
+                        for (var i = 0; i < message.someBool.length; ++i) {
+                            writer.uint32(16).bool(message.someBool[i]);
+                        }
+                    }
+                    return writer;
+                };})($protobuf.Writer);
+
+                /**
+                 * Encodes the specified RepeatedGroup message, length delimited.
+                 * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                RepeatedGroup.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a RepeatedGroup message from the specified reader or buffer.
+                 * @function
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
+                 */
+                RepeatedGroup.decode = (function(Reader) { return function decode(reader, len) {
+                    if (!(reader instanceof Reader)) {
+                        reader = Reader.create(reader);
+                    }
+                    var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup.RepeatedGroup();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        if ((tag & 7) === 4) {
+                            break;
+                        }
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.id = reader.string();
+                            break;
+
+                        case 2:
+                            if (!(message.someBool && message.someBool.length)) {
+                                message.someBool = [];
+                            }
+                            if ((tag & 7) === 2) {
+                                var end2 = reader.uint32() + reader.pos;
+                                while (reader.pos < end2) {
+                                    message.someBool.push(reader.bool());
+                                }
+                            } else {
+                                message.someBool.push(reader.bool());
+                            }
+                            break;
+
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };})($protobuf.Reader);
+
+                /**
+                 * Decodes a RepeatedGroup message from the specified reader or buffer, length delimited.
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
+                 */
+                RepeatedGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
+                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+                };
+
+                /**
+                 * Verifies a RepeatedGroup message.
+                 * @function
+                 * @param {jspb.test.TestGroup.RepeatedGroup|Object} message RepeatedGroup message or plain object to verify
+                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 */
+                RepeatedGroup.verify = (function(util) { return function verify(message) {
+                    if (!util.isString(message.id)) {
+                        return "jspb.test.TestGroup.RepeatedGroup.id: string expected";
+                    }
+                    if (message.someBool !== undefined) {
+                        if (!Array.isArray(message.someBool)) {
+                            return "jspb.test.TestGroup.RepeatedGroup.someBool: array expected";
+                        }
+                        for (var i = 0; i < message.someBool.length; ++i) {
+                            if (typeof message.someBool[i] !== "boolean") {
+                                return "jspb.test.TestGroup.RepeatedGroup.someBool: boolean[] expected";
+                            }
+                        }
+                    }
+                    return null;
+                };})($protobuf.util);
+
+                /**
+                 * Creates a RepeatedGroup message from a plain object. Also converts values to their respective internal types.
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
+                 */
+                RepeatedGroup.fromObject = (function() { return function fromObject(object) {
+                    var message = new $root.jspb.test.TestGroup.RepeatedGroup();
+                    if (object.id !== undefined && object.id !== null) {
+                        message.id = String(object.id);
+                    }
+                    if (object.someBool) {
+                        message.someBool = [];
+                        for (var i = 0; i < object.someBool.length; ++i) {
+                            message.someBool[i] = Boolean(object.someBool[i]);
+                        }
+                    }
+                    return message;
+                };})();
+
+                /**
+                 * Creates a RepeatedGroup message from a plain object. Also converts values to their respective internal types.
+                 * This is an alias of {@link jspb.test.TestGroup.RepeatedGroup.fromObject}.
+                 * @function
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {jspb.test.TestGroup.RepeatedGroup} RepeatedGroup
+                 */
+                RepeatedGroup.from = RepeatedGroup.fromObject;
+
+                /**
+                 * Creates a plain object from a RepeatedGroup message. Also converts values to other types if specified.
+                 * @param {jspb.test.TestGroup.RepeatedGroup} message RepeatedGroup
+                 * @param {$protobuf.ConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                RepeatedGroup.toObject = (function() { return function toObject(message, options) {
+                    if (!options) {
+                        options = {};
+                    }
+                    var object = {};
+                    if (options.arrays || options.defaults) {
+                        object.someBool = [];
+                    }
+                    if (options.defaults) {
+                        object.id = "";
+                    }
+                    for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                        switch (keys[i]) {
+                        case "id":
+                            if (message.id !== undefined && message.id !== null) {
+                                object.id = message.id;
+                            }
+                            break;
+
+                        case "someBool":
+                            if (message.someBool.length) {
+                                object.someBool = [];
+                                for (var j = 0; j < message.someBool.length; ++j) {
+                                    object.someBool[j] = message.someBool[j];
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    return object;
+                };})();
+
+                /**
+                 * Creates a plain object from this RepeatedGroup message. Also converts values to other types if specified.
+                 * @param {$protobuf.ConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                $prototype.toObject = function toObject(options) {
+                    return this.constructor.toObject(this, options);
+                };
+
+                /**
+                 * Converts this RepeatedGroup to JSON.
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                $prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, {
+                        longs: String,
+                        enums: String,
+                        bytes: String
+                    });
+                };
+
+                return RepeatedGroup;
+            })();
+
+            TestGroup.RequiredGroup = (function() {
+
+                /**
+                 * Constructs a new RequiredGroup.
+                 * @exports jspb.test.TestGroup.RequiredGroup
+                 * @constructor
+                 * @param {Object} [properties] Properties to set
+                 */
+                function RequiredGroup(properties) {
+                    if (properties) {
+                        var keys = Object.keys(properties);
+                        for (var i = 0; i < keys.length; ++i)
+                            this[keys[i]] = properties[keys[i]];
+                    }
+                }
+
+                /** @alias jspb.test.TestGroup.RequiredGroup.prototype */
+                var $prototype = RequiredGroup.prototype;
+
+                /**
+                 * RequiredGroup id.
+                 * @type {string}
+                 */
+                $prototype.id = "";
+
+                /**
+                 * Creates a new RequiredGroup instance using the specified properties.
+                 * @param {Object} [properties] Properties to set
+                 * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup instance
+                 */
+                RequiredGroup.create = function create(properties) {
+                    return new RequiredGroup(properties);
+                };
+
+                /**
+                 * Encodes the specified RequiredGroup message.
+                 * @function
+                 * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                RequiredGroup.encode = (function(Writer) { return function encode(message, writer) {
+                    if (!writer) {
+                        writer = Writer.create();
+                    }
+                    writer.uint32(10).string(message.id);
+                    return writer;
+                };})($protobuf.Writer);
+
+                /**
+                 * Encodes the specified RequiredGroup message, length delimited.
+                 * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                RequiredGroup.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a RequiredGroup message from the specified reader or buffer.
+                 * @function
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
+                 */
+                RequiredGroup.decode = (function(Reader) { return function decode(reader, len) {
+                    if (!(reader instanceof Reader)) {
+                        reader = Reader.create(reader);
+                    }
+                    var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup.RequiredGroup();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        if ((tag & 7) === 4) {
+                            break;
+                        }
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.id = reader.string();
+                            break;
+
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };})($protobuf.Reader);
+
+                /**
+                 * Decodes a RequiredGroup message from the specified reader or buffer, length delimited.
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
+                 */
+                RequiredGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
+                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+                };
+
+                /**
+                 * Verifies a RequiredGroup message.
+                 * @function
+                 * @param {jspb.test.TestGroup.RequiredGroup|Object} message RequiredGroup message or plain object to verify
+                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 */
+                RequiredGroup.verify = (function(util) { return function verify(message) {
+                    if (!util.isString(message.id)) {
+                        return "jspb.test.TestGroup.RequiredGroup.id: string expected";
+                    }
+                    return null;
+                };})($protobuf.util);
+
+                /**
+                 * Creates a RequiredGroup message from a plain object. Also converts values to their respective internal types.
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
+                 */
+                RequiredGroup.fromObject = (function() { return function fromObject(object) {
+                    var message = new $root.jspb.test.TestGroup.RequiredGroup();
+                    if (object.id !== undefined && object.id !== null) {
+                        message.id = String(object.id);
+                    }
+                    return message;
+                };})();
+
+                /**
+                 * Creates a RequiredGroup message from a plain object. Also converts values to their respective internal types.
+                 * This is an alias of {@link jspb.test.TestGroup.RequiredGroup.fromObject}.
+                 * @function
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {jspb.test.TestGroup.RequiredGroup} RequiredGroup
+                 */
+                RequiredGroup.from = RequiredGroup.fromObject;
+
+                /**
+                 * Creates a plain object from a RequiredGroup message. Also converts values to other types if specified.
+                 * @param {jspb.test.TestGroup.RequiredGroup} message RequiredGroup
+                 * @param {$protobuf.ConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                RequiredGroup.toObject = (function() { return function toObject(message, options) {
+                    if (!options) {
+                        options = {};
+                    }
+                    var object = {};
+                    if (options.defaults) {
+                        object.id = "";
+                    }
+                    for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                        switch (keys[i]) {
+                        case "id":
+                            if (message.id !== undefined && message.id !== null) {
+                                object.id = message.id;
+                            }
+                            break;
+                        }
+                    }
+                    return object;
+                };})();
+
+                /**
+                 * Creates a plain object from this RequiredGroup message. Also converts values to other types if specified.
+                 * @param {$protobuf.ConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                $prototype.toObject = function toObject(options) {
+                    return this.constructor.toObject(this, options);
+                };
+
+                /**
+                 * Converts this RequiredGroup to JSON.
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                $prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, {
+                        longs: String,
+                        enums: String,
+                        bytes: String
+                    });
+                };
+
+                return RequiredGroup;
+            })();
+
+            TestGroup.OptionalGroup = (function() {
+
+                /**
+                 * Constructs a new OptionalGroup.
+                 * @exports jspb.test.TestGroup.OptionalGroup
+                 * @constructor
+                 * @param {Object} [properties] Properties to set
+                 */
+                function OptionalGroup(properties) {
+                    if (properties) {
+                        var keys = Object.keys(properties);
+                        for (var i = 0; i < keys.length; ++i)
+                            this[keys[i]] = properties[keys[i]];
+                    }
+                }
+
+                /** @alias jspb.test.TestGroup.OptionalGroup.prototype */
+                var $prototype = OptionalGroup.prototype;
+
+                /**
+                 * OptionalGroup id.
+                 * @type {string}
+                 */
+                $prototype.id = "";
+
+                /**
+                 * Creates a new OptionalGroup instance using the specified properties.
+                 * @param {Object} [properties] Properties to set
+                 * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup instance
+                 */
+                OptionalGroup.create = function create(properties) {
+                    return new OptionalGroup(properties);
+                };
+
+                /**
+                 * Encodes the specified OptionalGroup message.
+                 * @function
+                 * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                OptionalGroup.encode = (function(Writer) { return function encode(message, writer) {
+                    if (!writer) {
+                        writer = Writer.create();
+                    }
+                    writer.uint32(10).string(message.id);
+                    return writer;
+                };})($protobuf.Writer);
+
+                /**
+                 * Encodes the specified OptionalGroup message, length delimited.
+                 * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                OptionalGroup.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes an OptionalGroup message from the specified reader or buffer.
+                 * @function
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
+                 */
+                OptionalGroup.decode = (function(Reader) { return function decode(reader, len) {
+                    if (!(reader instanceof Reader)) {
+                        reader = Reader.create(reader);
+                    }
+                    var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup.OptionalGroup();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        if ((tag & 7) === 4) {
+                            break;
+                        }
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.id = reader.string();
+                            break;
+
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };})($protobuf.Reader);
+
+                /**
+                 * Decodes an OptionalGroup message from the specified reader or buffer, length delimited.
+                 * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+                 * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
+                 */
+                OptionalGroup.decodeDelimited = function decodeDelimited(readerOrBuffer) {
+                    readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                    return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+                };
+
+                /**
+                 * Verifies an OptionalGroup message.
+                 * @function
+                 * @param {jspb.test.TestGroup.OptionalGroup|Object} message OptionalGroup message or plain object to verify
+                 * @returns {?string} `null` if valid, otherwise the reason why it is not
+                 */
+                OptionalGroup.verify = (function(util) { return function verify(message) {
+                    if (!util.isString(message.id)) {
+                        return "jspb.test.TestGroup.OptionalGroup.id: string expected";
+                    }
+                    return null;
+                };})($protobuf.util);
+
+                /**
+                 * Creates an OptionalGroup message from a plain object. Also converts values to their respective internal types.
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
+                 */
+                OptionalGroup.fromObject = (function() { return function fromObject(object) {
+                    var message = new $root.jspb.test.TestGroup.OptionalGroup();
+                    if (object.id !== undefined && object.id !== null) {
+                        message.id = String(object.id);
+                    }
+                    return message;
+                };})();
+
+                /**
+                 * Creates an OptionalGroup message from a plain object. Also converts values to their respective internal types.
+                 * This is an alias of {@link jspb.test.TestGroup.OptionalGroup.fromObject}.
+                 * @function
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {jspb.test.TestGroup.OptionalGroup} OptionalGroup
+                 */
+                OptionalGroup.from = OptionalGroup.fromObject;
+
+                /**
+                 * Creates a plain object from an OptionalGroup message. Also converts values to other types if specified.
+                 * @param {jspb.test.TestGroup.OptionalGroup} message OptionalGroup
+                 * @param {$protobuf.ConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                OptionalGroup.toObject = (function() { return function toObject(message, options) {
+                    if (!options) {
+                        options = {};
+                    }
+                    var object = {};
+                    if (options.defaults) {
+                        object.id = "";
+                    }
+                    for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                        switch (keys[i]) {
+                        case "id":
+                            if (message.id !== undefined && message.id !== null) {
+                                object.id = message.id;
+                            }
+                            break;
+                        }
+                    }
+                    return object;
+                };})();
+
+                /**
+                 * Creates a plain object from this OptionalGroup message. Also converts values to other types if specified.
+                 * @param {$protobuf.ConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                $prototype.toObject = function toObject(options) {
+                    return this.constructor.toObject(this, options);
+                };
+
+                /**
+                 * Converts this OptionalGroup to JSON.
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                $prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, {
+                        longs: String,
+                        enums: String,
+                        bytes: String
+                    });
+                };
+
+                return OptionalGroup;
+            })();
+
             return TestGroup;
+        })();
+
+        test.TestGroup1 = (function() {
+
+            /**
+             * Constructs a new TestGroup1.
+             * @exports jspb.test.TestGroup1
+             * @constructor
+             * @param {Object} [properties] Properties to set
+             */
+            function TestGroup1(properties) {
+                if (properties) {
+                    var keys = Object.keys(properties);
+                    for (var i = 0; i < keys.length; ++i)
+                        this[keys[i]] = properties[keys[i]];
+                }
+            }
+
+            /** @alias jspb.test.TestGroup1.prototype */
+            var $prototype = TestGroup1.prototype;
+
+            /**
+             * TestGroup1 group.
+             * @type {jspb.test.TestGroup.RepeatedGroup}
+             */
+            $prototype.group = null;
+
+            // Referenced types
+            var $types = ["jspb.test.TestGroup.RepeatedGroup"]; $lazyTypes.push($types);
+
+            /**
+             * Creates a new TestGroup1 instance using the specified properties.
+             * @param {Object} [properties] Properties to set
+             * @returns {jspb.test.TestGroup1} TestGroup1 instance
+             */
+            TestGroup1.create = function create(properties) {
+                return new TestGroup1(properties);
+            };
+
+            /**
+             * Encodes the specified TestGroup1 message.
+             * @function
+             * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            TestGroup1.encode = (function(Writer, types) { return function encode(message, writer) {
+                if (!writer) {
+                    writer = Writer.create();
+                }
+                if (message.group !== undefined && message.group !== null) {
+                    types[0].encode(message.group, writer.uint32(11)).uint32(12);
+                }
+                return writer;
+            };})($protobuf.Writer, $types);
+
+            /**
+             * Encodes the specified TestGroup1 message, length delimited.
+             * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            TestGroup1.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a TestGroup1 message from the specified reader or buffer.
+             * @function
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {jspb.test.TestGroup1} TestGroup1
+             */
+            TestGroup1.decode = (function(Reader, types) { return function decode(reader, len) {
+                if (!(reader instanceof Reader)) {
+                    reader = Reader.create(reader);
+                }
+                var end = len === undefined ? reader.len : reader.pos + len, message = new $root.jspb.test.TestGroup1();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.group = types[0].decode(reader);
+                        break;
+
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };})($protobuf.Reader, $types);
+
+            /**
+             * Decodes a TestGroup1 message from the specified reader or buffer, length delimited.
+             * @param {$protobuf.Reader|Uint8Array} readerOrBuffer Reader or buffer to decode from
+             * @returns {jspb.test.TestGroup1} TestGroup1
+             */
+            TestGroup1.decodeDelimited = function decodeDelimited(readerOrBuffer) {
+                readerOrBuffer = readerOrBuffer instanceof $protobuf.Reader ? readerOrBuffer : $protobuf.Reader(readerOrBuffer);
+                return this.decode(readerOrBuffer, readerOrBuffer.uint32());
+            };
+
+            /**
+             * Verifies a TestGroup1 message.
+             * @function
+             * @param {jspb.test.TestGroup1|Object} message TestGroup1 message or plain object to verify
+             * @returns {?string} `null` if valid, otherwise the reason why it is not
+             */
+            TestGroup1.verify = (function(types) { return function verify(message) {
+                if (message.group !== undefined && message.group !== null) {
+                    var err;
+                    if (err = types[0].verify(message.group)) {
+                        return err;
+                    }
+                }
+                return null;
+            };})($types);
+
+            /**
+             * Creates a TestGroup1 message from a plain object. Also converts values to their respective internal types.
+             * @param {Object.<string,*>} object Plain object
+             * @returns {jspb.test.TestGroup1} TestGroup1
+             */
+            TestGroup1.fromObject = (function(types) { return function fromObject(object) {
+                var message = new $root.jspb.test.TestGroup1();
+                if (object.group !== undefined && object.group !== null) {
+                    message.group = types[0].fromObject(object.group);
+                }
+                return message;
+            };})($types);
+
+            /**
+             * Creates a TestGroup1 message from a plain object. Also converts values to their respective internal types.
+             * This is an alias of {@link jspb.test.TestGroup1.fromObject}.
+             * @function
+             * @param {Object.<string,*>} object Plain object
+             * @returns {jspb.test.TestGroup1} TestGroup1
+             */
+            TestGroup1.from = TestGroup1.fromObject;
+
+            /**
+             * Creates a plain object from a TestGroup1 message. Also converts values to other types if specified.
+             * @param {jspb.test.TestGroup1} message TestGroup1
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            TestGroup1.toObject = (function(types) { return function toObject(message, options) {
+                if (!options) {
+                    options = {};
+                }
+                var object = {};
+                if (options.defaults) {
+                    object.group = null;
+                }
+                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
+                    switch (keys[i]) {
+                    case "group":
+                        if (message.group !== undefined && message.group !== null) {
+                            object.group = types[0].toObject(message.group, options);
+                        }
+                        break;
+                    }
+                }
+                return object;
+            };})($types);
+
+            /**
+             * Creates a plain object from this TestGroup1 message. Also converts values to other types if specified.
+             * @param {$protobuf.ConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            $prototype.toObject = function toObject(options) {
+                return this.constructor.toObject(this, options);
+            };
+
+            /**
+             * Converts this TestGroup1 to JSON.
+             * @returns {Object.<string,*>} JSON object
+             */
+            $prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, {
+                    longs: String,
+                    enums: String,
+                    bytes: String
+                });
+            };
+
+            return TestGroup1;
         })();
 
         test.TestReservedNames = (function() {
@@ -5736,7 +6633,7 @@ $root.jspb = (function() {
 
                     case "rone":
                         if (message.rone !== undefined && message.rone !== null) {
-                            object.rone = types[2].ctor.prototype.toObject.call(message.rone, options);
+                            object.rone = types[2].toObject(message.rone, options);
                         }
                         break;
 
@@ -6728,7 +7625,7 @@ $root.jspb = (function() {
                         if (message.mapStringMsg && message.mapStringMsg !== util.emptyObject) {
                             object.mapStringMsg = {};
                             for (var keys2 = Object.keys(message.mapStringMsg), j = 0; j < keys2.length; ++j) {
-                                object.mapStringMsg[keys2[j]] = types[6].ctor.prototype.toObject.call(message.mapStringMsg[keys2[j]], options);
+                                object.mapStringMsg[keys2[j]] = types[6].toObject(message.mapStringMsg[keys2[j]], options);
                             }
                         }
                         break;
@@ -6762,7 +7659,7 @@ $root.jspb = (function() {
 
                     case "testMapFields":
                         if (message.testMapFields !== undefined && message.testMapFields !== null) {
-                            object.testMapFields = types[10].ctor.prototype.toObject.call(message.testMapFields, options);
+                            object.testMapFields = types[10].toObject(message.testMapFields, options);
                         }
                         break;
 
@@ -6770,7 +7667,7 @@ $root.jspb = (function() {
                         if (message.mapStringTestmapfields && message.mapStringTestmapfields !== util.emptyObject) {
                             object.mapStringTestmapfields = {};
                             for (var keys2 = Object.keys(message.mapStringTestmapfields), j = 0; j < keys2.length; ++j) {
-                                object.mapStringTestmapfields[keys2[j]] = types[11].ctor.prototype.toObject.call(message.mapStringTestmapfields[keys2[j]], options);
+                                object.mapStringTestmapfields[keys2[j]] = types[11].toObject(message.mapStringTestmapfields[keys2[j]], options);
                             }
                         }
                         break;
@@ -7529,6 +8426,8 @@ $root.google = (function() {
 
             /**
              * Constructs a new FileDescriptorSet.
+             * @classdesc The protocol compiler can output a FileDescriptorSet containing the .proto
+             * files it parses.
              * @exports google.protobuf.FileDescriptorSet
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -7697,7 +8596,7 @@ $root.google = (function() {
                         if (message.file.length) {
                             object.file = [];
                             for (var j = 0; j < message.file.length; ++j) {
-                                object.file[j] = types[0].ctor.prototype.toObject.call(message.file[j], options);
+                                object.file[j] = types[0].toObject(message.file[j], options);
                             }
                         }
                         break;
@@ -7734,6 +8633,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new FileDescriptorProto.
+             * @classdesc Describes a complete .proto file.
              * @exports google.protobuf.FileDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -7756,32 +8656,33 @@ $root.google = (function() {
             $prototype.name = "";
 
             /**
-             * FileDescriptorProto package.
+             * file name, relative to root of source tree
              * @name google.protobuf.FileDescriptorProto#package
              * @type {string}
              */
             $prototype["package"] = "";
 
             /**
-             * FileDescriptorProto dependency.
+             * Names of files imported by this file.
              * @type {Array.<string>}
              */
             $prototype.dependency = $protobuf.util.emptyArray;
 
             /**
-             * FileDescriptorProto publicDependency.
+             * Indexes of the public imported files in the dependency list above.
              * @type {Array.<number>}
              */
             $prototype.publicDependency = $protobuf.util.emptyArray;
 
             /**
-             * FileDescriptorProto weakDependency.
+             * Indexes of the weak imported files in the dependency list.
+             * For Google-internal migration only. Do not use.
              * @type {Array.<number>}
              */
             $prototype.weakDependency = $protobuf.util.emptyArray;
 
             /**
-             * FileDescriptorProto messageType.
+             * All top-level definitions in this file.
              * @type {Array.<google.protobuf.DescriptorProto>}
              */
             $prototype.messageType = $protobuf.util.emptyArray;
@@ -7811,13 +8712,17 @@ $root.google = (function() {
             $prototype.options = null;
 
             /**
-             * FileDescriptorProto sourceCodeInfo.
+             * This field contains optional information about the original source code.
+             * You may safely remove this entire field without harming runtime
+             * functionality of the descriptors -- the information is needed only by
+             * development tools.
              * @type {google.protobuf.SourceCodeInfo}
              */
             $prototype.sourceCodeInfo = null;
 
             /**
-             * FileDescriptorProto syntax.
+             * The syntax of the proto file.
+             * The supported values are "proto2" and "proto3".
              * @type {string}
              */
             $prototype.syntax = "";
@@ -8283,7 +9188,7 @@ $root.google = (function() {
                         if (message.messageType.length) {
                             object.messageType = [];
                             for (var j = 0; j < message.messageType.length; ++j) {
-                                object.messageType[j] = types[5].ctor.prototype.toObject.call(message.messageType[j], options);
+                                object.messageType[j] = types[5].toObject(message.messageType[j], options);
                             }
                         }
                         break;
@@ -8292,7 +9197,7 @@ $root.google = (function() {
                         if (message.enumType.length) {
                             object.enumType = [];
                             for (var j = 0; j < message.enumType.length; ++j) {
-                                object.enumType[j] = types[6].ctor.prototype.toObject.call(message.enumType[j], options);
+                                object.enumType[j] = types[6].toObject(message.enumType[j], options);
                             }
                         }
                         break;
@@ -8301,7 +9206,7 @@ $root.google = (function() {
                         if (message.service.length) {
                             object.service = [];
                             for (var j = 0; j < message.service.length; ++j) {
-                                object.service[j] = types[7].ctor.prototype.toObject.call(message.service[j], options);
+                                object.service[j] = types[7].toObject(message.service[j], options);
                             }
                         }
                         break;
@@ -8310,20 +9215,20 @@ $root.google = (function() {
                         if (message.extension.length) {
                             object.extension = [];
                             for (var j = 0; j < message.extension.length; ++j) {
-                                object.extension[j] = types[8].ctor.prototype.toObject.call(message.extension[j], options);
+                                object.extension[j] = types[8].toObject(message.extension[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[9].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[9].toObject(message.options, options);
                         }
                         break;
 
                     case "sourceCodeInfo":
                         if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
-                            object.sourceCodeInfo = types[10].ctor.prototype.toObject.call(message.sourceCodeInfo, options);
+                            object.sourceCodeInfo = types[10].toObject(message.sourceCodeInfo, options);
                         }
                         break;
 
@@ -8365,6 +9270,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new DescriptorProto.
+             * @classdesc Describes a message type.
              * @exports google.protobuf.DescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -8435,7 +9341,8 @@ $root.google = (function() {
             $prototype.reservedRange = $protobuf.util.emptyArray;
 
             /**
-             * DescriptorProto reservedName.
+             * Reserved field names, which may not be used by fields in the same message.
+             * A given name may only be reserved once.
              * @type {Array.<string>}
              */
             $prototype.reservedName = $protobuf.util.emptyArray;
@@ -8837,7 +9744,7 @@ $root.google = (function() {
                         if (message.field.length) {
                             object.field = [];
                             for (var j = 0; j < message.field.length; ++j) {
-                                object.field[j] = types[1].ctor.prototype.toObject.call(message.field[j], options);
+                                object.field[j] = types[1].toObject(message.field[j], options);
                             }
                         }
                         break;
@@ -8846,7 +9753,7 @@ $root.google = (function() {
                         if (message.extension.length) {
                             object.extension = [];
                             for (var j = 0; j < message.extension.length; ++j) {
-                                object.extension[j] = types[2].ctor.prototype.toObject.call(message.extension[j], options);
+                                object.extension[j] = types[2].toObject(message.extension[j], options);
                             }
                         }
                         break;
@@ -8855,7 +9762,7 @@ $root.google = (function() {
                         if (message.nestedType.length) {
                             object.nestedType = [];
                             for (var j = 0; j < message.nestedType.length; ++j) {
-                                object.nestedType[j] = types[3].ctor.prototype.toObject.call(message.nestedType[j], options);
+                                object.nestedType[j] = types[3].toObject(message.nestedType[j], options);
                             }
                         }
                         break;
@@ -8864,7 +9771,7 @@ $root.google = (function() {
                         if (message.enumType.length) {
                             object.enumType = [];
                             for (var j = 0; j < message.enumType.length; ++j) {
-                                object.enumType[j] = types[4].ctor.prototype.toObject.call(message.enumType[j], options);
+                                object.enumType[j] = types[4].toObject(message.enumType[j], options);
                             }
                         }
                         break;
@@ -8873,7 +9780,7 @@ $root.google = (function() {
                         if (message.extensionRange.length) {
                             object.extensionRange = [];
                             for (var j = 0; j < message.extensionRange.length; ++j) {
-                                object.extensionRange[j] = types[5].ctor.prototype.toObject.call(message.extensionRange[j], options);
+                                object.extensionRange[j] = types[5].toObject(message.extensionRange[j], options);
                             }
                         }
                         break;
@@ -8882,14 +9789,14 @@ $root.google = (function() {
                         if (message.oneofDecl.length) {
                             object.oneofDecl = [];
                             for (var j = 0; j < message.oneofDecl.length; ++j) {
-                                object.oneofDecl[j] = types[6].ctor.prototype.toObject.call(message.oneofDecl[j], options);
+                                object.oneofDecl[j] = types[6].toObject(message.oneofDecl[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[7].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[7].toObject(message.options, options);
                         }
                         break;
 
@@ -8897,7 +9804,7 @@ $root.google = (function() {
                         if (message.reservedRange.length) {
                             object.reservedRange = [];
                             for (var j = 0; j < message.reservedRange.length; ++j) {
-                                object.reservedRange[j] = types[8].ctor.prototype.toObject.call(message.reservedRange[j], options);
+                                object.reservedRange[j] = types[8].toObject(message.reservedRange[j], options);
                             }
                         }
                         break;
@@ -9153,6 +10060,9 @@ $root.google = (function() {
 
                 /**
                  * Constructs a new ReservedRange.
+                 * @classdesc Range of reserved tag numbers. Reserved tag numbers may not be used by
+                 * fields or extension ranges in the same message. Reserved ranges may
+                 * not overlap.
                  * @exports google.protobuf.DescriptorProto.ReservedRange
                  * @constructor
                  * @param {Object} [properties] Properties to set
@@ -9175,7 +10085,7 @@ $root.google = (function() {
                 $prototype.start = 0;
 
                 /**
-                 * ReservedRange end.
+                 * Inclusive.
                  * @type {number}
                  */
                 $prototype.end = 0;
@@ -9369,6 +10279,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new FieldDescriptorProto.
+             * @classdesc Describes a field within a message.
              * @exports google.protobuf.FieldDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -9403,37 +10314,51 @@ $root.google = (function() {
             $prototype.label = 1;
 
             /**
-             * FieldDescriptorProto type.
+             * If type_name is set, this need not be set.  If both this and type_name
+             * are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
              * @type {number}
              */
             $prototype.type = 1;
 
             /**
-             * FieldDescriptorProto typeName.
+             * For message and enum types, this is the name of the type.  If the name
+             * starts with a '.', it is fully-qualified.  Otherwise, C++-like scoping
+             * rules are used to find the type (i.e. first the nested types within this
+             * message are searched, then within the parent, on up to the root
+             * namespace).
              * @type {string}
              */
             $prototype.typeName = "";
 
             /**
-             * FieldDescriptorProto extendee.
+             * For extensions, this is the name of the type being extended.  It is
+             * resolved in the same manner as type_name.
              * @type {string}
              */
             $prototype.extendee = "";
 
             /**
-             * FieldDescriptorProto defaultValue.
+             * For numeric types, contains the original text representation of the value.
+             * For booleans, "true" or "false".
+             * For strings, contains the default text contents (not escaped in any way).
+             * For bytes, contains the C escaped value.  All bytes >= 128 are escaped.
+             * TODO(kenton):  Base-64 encode?
              * @type {string}
              */
             $prototype.defaultValue = "";
 
             /**
-             * FieldDescriptorProto oneofIndex.
+             * If set, gives the index of a oneof in the containing type's oneof_decl
+             * list.  This field is a member of that oneof.
              * @type {number}
              */
             $prototype.oneofIndex = 0;
 
             /**
-             * FieldDescriptorProto jsonName.
+             * JSON name of this field. The value is set by protocol compiler. If the
+             * user has set a "json_name" option on this field, that option's value
+             * will be used. Otherwise, it's deduced from the field's name by converting
+             * it to camelCase.
              * @type {string}
              */
             $prototype.jsonName = "";
@@ -9866,7 +10791,7 @@ $root.google = (function() {
 
                     case "type":
                         if (message.type !== undefined && message.type !== null) {
-                            object.type = options.enums === String ? types[3].values[message.type] : message.type;
+                            object.type = options.enums === String ? types[3][message.type] : message.type;
                         }
                         break;
 
@@ -9902,7 +10827,7 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[9].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[9].toObject(message.options, options);
                         }
                         break;
                     }
@@ -9936,7 +10861,8 @@ $root.google = (function() {
              * @name Type
              * @memberof google.protobuf.FieldDescriptorProto
              * @enum {number}
-             * @property {number} TYPE_DOUBLE=1 TYPE_DOUBLE value
+             * @property {number} TYPE_DOUBLE=1 0 is reserved for errors.
+             * Order is weird for historical reasons.
              * @property {number} TYPE_FLOAT=2 TYPE_FLOAT value
              * @property {number} TYPE_INT64=3 TYPE_INT64 value
              * @property {number} TYPE_UINT64=4 TYPE_UINT64 value
@@ -9945,15 +10871,15 @@ $root.google = (function() {
              * @property {number} TYPE_FIXED32=7 TYPE_FIXED32 value
              * @property {number} TYPE_BOOL=8 TYPE_BOOL value
              * @property {number} TYPE_STRING=9 TYPE_STRING value
-             * @property {number} TYPE_GROUP=10 TYPE_GROUP value
+             * @property {number} TYPE_GROUP=10 Tag-delimited aggregate.
              * @property {number} TYPE_MESSAGE=11 TYPE_MESSAGE value
              * @property {number} TYPE_BYTES=12 TYPE_BYTES value
              * @property {number} TYPE_UINT32=13 TYPE_UINT32 value
              * @property {number} TYPE_ENUM=14 TYPE_ENUM value
              * @property {number} TYPE_SFIXED32=15 TYPE_SFIXED32 value
              * @property {number} TYPE_SFIXED64=16 TYPE_SFIXED64 value
-             * @property {number} TYPE_SINT32=17 TYPE_SINT32 value
-             * @property {number} TYPE_SINT64=18 TYPE_SINT64 value
+             * @property {number} TYPE_SINT32=17 Uses ZigZag encoding.
+             * @property {number} TYPE_SINT64=18 Uses ZigZag encoding.
              */
             FieldDescriptorProto.Type = (function() {
                 var valuesById = {},
@@ -9984,7 +10910,7 @@ $root.google = (function() {
              * @name Label
              * @memberof google.protobuf.FieldDescriptorProto
              * @enum {number}
-             * @property {number} LABEL_OPTIONAL=1 LABEL_OPTIONAL value
+             * @property {number} LABEL_OPTIONAL=1 0 is reserved for errors
              * @property {number} LABEL_REQUIRED=2 LABEL_REQUIRED value
              * @property {number} LABEL_REPEATED=3 LABEL_REPEATED value
              */
@@ -10004,6 +10930,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new OneofDescriptorProto.
+             * @classdesc Describes a oneof.
              * @exports google.protobuf.OneofDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -10185,7 +11112,7 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[1].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[1].toObject(message.options, options);
                         }
                         break;
                     }
@@ -10221,6 +11148,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new EnumDescriptorProto.
+             * @classdesc Describes an enum type.
              * @exports google.protobuf.EnumDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -10442,14 +11370,14 @@ $root.google = (function() {
                         if (message.value.length) {
                             object.value = [];
                             for (var j = 0; j < message.value.length; ++j) {
-                                object.value[j] = types[1].ctor.prototype.toObject.call(message.value[j], options);
+                                object.value[j] = types[1].toObject(message.value[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[2].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[2].toObject(message.options, options);
                         }
                         break;
                     }
@@ -10485,6 +11413,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new EnumValueDescriptorProto.
+             * @classdesc Describes a value within an enum.
              * @exports google.protobuf.EnumValueDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -10694,7 +11623,7 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[2].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[2].toObject(message.options, options);
                         }
                         break;
                     }
@@ -10730,6 +11659,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new ServiceDescriptorProto.
+             * @classdesc Describes a service.
              * @exports google.protobuf.ServiceDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -10951,14 +11881,14 @@ $root.google = (function() {
                         if (message.method.length) {
                             object.method = [];
                             for (var j = 0; j < message.method.length; ++j) {
-                                object.method[j] = types[1].ctor.prototype.toObject.call(message.method[j], options);
+                                object.method[j] = types[1].toObject(message.method[j], options);
                             }
                         }
                         break;
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[2].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[2].toObject(message.options, options);
                         }
                         break;
                     }
@@ -10994,6 +11924,7 @@ $root.google = (function() {
 
             /**
              * Constructs a new MethodDescriptorProto.
+             * @classdesc Describes a method of a service.
              * @exports google.protobuf.MethodDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -11016,7 +11947,8 @@ $root.google = (function() {
             $prototype.name = "";
 
             /**
-             * MethodDescriptorProto inputType.
+             * Input and output type names.  These are resolved in the same way as
+             * FieldDescriptorProto.type_name, but must refer to a message type.
              * @type {string}
              */
             $prototype.inputType = "";
@@ -11034,13 +11966,13 @@ $root.google = (function() {
             $prototype.options = null;
 
             /**
-             * MethodDescriptorProto clientStreaming.
+             * Identifies if client streams multiple client messages
              * @type {boolean}
              */
             $prototype.clientStreaming = false;
 
             /**
-             * MethodDescriptorProto serverStreaming.
+             * Identifies if server streams multiple server messages
              * @type {boolean}
              */
             $prototype.serverStreaming = false;
@@ -11275,7 +12207,7 @@ $root.google = (function() {
 
                     case "options":
                         if (message.options !== undefined && message.options !== null) {
-                            object.options = types[3].ctor.prototype.toObject.call(message.options, options);
+                            object.options = types[3].toObject(message.options, options);
                         }
                         break;
 
@@ -11339,31 +12271,48 @@ $root.google = (function() {
             var $prototype = FileOptions.prototype;
 
             /**
-             * FileOptions javaPackage.
+             * Sets the Java package where classes generated from this .proto will be
+             * placed.  By default, the proto package is used, but this is often
+             * inappropriate because proto packages do not normally start with backwards
+             * domain names.
              * @type {string}
              */
             $prototype.javaPackage = "";
 
             /**
-             * FileOptions javaOuterClassname.
+             * If set, all the classes from the .proto file are wrapped in a single
+             * outer class with the given name.  This applies to both Proto1
+             * (equivalent to the old "--one_java_file" option) and Proto2 (where
+             * a .proto always translates to a single class, but you may want to
+             * explicitly choose the class name).
              * @type {string}
              */
             $prototype.javaOuterClassname = "";
 
             /**
-             * FileOptions javaMultipleFiles.
+             * If set true, then the Java code generator will generate a separate .java
+             * file for each top-level message, enum, and service defined in the .proto
+             * file.  Thus, these types willnot* be nested inside the outer class
+             * named by java_outer_classname.  However, the outer class will still be
+             * generated to contain the file's getDescriptor() method as well as any
+             * top-level extensions defined in the file.
              * @type {boolean}
              */
             $prototype.javaMultipleFiles = false;
 
             /**
-             * FileOptions javaGenerateEqualsAndHash.
+             * This option does nothing.
              * @type {boolean}
              */
             $prototype.javaGenerateEqualsAndHash = false;
 
             /**
-             * FileOptions javaStringCheckUtf8.
+             * If set true, then the Java2 code generator will generate code that
+             * throws an exception whenever an attempt is made to assign a non-UTF-8
+             * byte sequence to a string field.
+             * Message reflection will do the same.
+             * However, an extension field still accepts non-UTF-8 byte sequences.
+             * This option has no effect on when used with the lite runtime.
              * @type {boolean}
              */
             $prototype.javaStringCheckUtf8 = false;
@@ -11375,13 +12324,26 @@ $root.google = (function() {
             $prototype.optimizeFor = undefined;
 
             /**
-             * FileOptions goPackage.
+             * Sets the Go package where structs generated from this .proto will be
+             * placed. If omitted, the Go package will be derived from the following:
+             * - The basename of the package import path, if provided.
+             * - Otherwise, the package statement in the .proto file, if present.
+             * - Otherwise, the basename of the .proto file, without extension.
              * @type {string}
              */
             $prototype.goPackage = "";
 
             /**
-             * FileOptions ccGenericServices.
+             * Should generic services be generated in each language?  "Generic" services
+             * are not specific to any particular RPC system.  They are generated by the
+             * main code generators in each language (without additional plugins).
+             * Generic services were the only kind of service generation supported by
+             * early versions of google.protobuf.
+             * 
+             * Generic services are now considered deprecated in favor of using plugins
+             * that generate code specific to your particular RPC system.  Therefore,
+             * these default to false.  Old code which depends on generic services should
+             * explicitly set them to true.
              * @type {boolean}
              */
             $prototype.ccGenericServices = false;
@@ -11399,31 +12361,36 @@ $root.google = (function() {
             $prototype.pyGenericServices = false;
 
             /**
-             * FileOptions deprecated.
+             * Is this file deprecated?
+             * Depending on the target platform, this can emit Deprecated annotations
+             * for everything in the file, or it will be completely ignored; in the very
+             * least, this is a formalization for deprecating files.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * FileOptions ccEnableArenas.
+             * Enables the use of arenas for the proto messages in this file. This applies
+             * only to generated classes for C++.
              * @type {boolean}
              */
             $prototype.ccEnableArenas = false;
 
             /**
-             * FileOptions objcClassPrefix.
+             * Sets the objective c class prefix which is prepended to all objective c
+             * generated classes from this .proto. There is no default.
              * @type {string}
              */
             $prototype.objcClassPrefix = "";
 
             /**
-             * FileOptions csharpNamespace.
+             * Namespace for generated classes; defaults to the package.
              * @type {string}
              */
             $prototype.csharpNamespace = "";
 
             /**
-             * FileOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -11904,7 +12871,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[14].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[14].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -11935,13 +12902,13 @@ $root.google = (function() {
             };
 
             /**
-             * OptimizeMode enum.
+             * Generated classes can be optimized for speed or code size.
              * @name OptimizeMode
              * @memberof google.protobuf.FileOptions
              * @enum {number}
              * @property {number} SPEED=1 SPEED value
-             * @property {number} CODE_SIZE=2 CODE_SIZE value
-             * @property {number} LITE_RUNTIME=3 LITE_RUNTIME value
+             * @property {number} CODE_SIZE=2 Use ReflectionOps to implement these methods.
+             * @property {number} LITE_RUNTIME=3 Generate code using MessageLite and the lite runtime.
              */
             FileOptions.OptimizeMode = (function() {
                 var valuesById = {},
@@ -11975,31 +12942,73 @@ $root.google = (function() {
             var $prototype = MessageOptions.prototype;
 
             /**
-             * MessageOptions messageSetWireFormat.
+             * Set true to use the old proto1 MessageSet wire format for extensions.
+             * This is provided for backwards-compatibility with the MessageSet wire
+             * format.  You should not use this for any other reason:  It's less
+             * efficient, has fewer features, and is more complicated.
+             * 
+             * The message must be defined exactly as follows:
+             * message Foo {
+             * option message_set_wire_format = true;
+             * extensions 4 to max;
+             * }
+             * Note that the message cannot have any defined fields; MessageSets only
+             * have extensions.
+             * 
+             * All extensions of your type must be singular messages; e.g. they cannot
+             * be int32s, enums, or repeated messages.
+             * 
+             * Because this is an option, the above two restrictions are not enforced by
+             * the protocol compiler.
              * @type {boolean}
              */
             $prototype.messageSetWireFormat = false;
 
             /**
-             * MessageOptions noStandardDescriptorAccessor.
+             * Disables the generation of the standard "descriptor()" accessor, which can
+             * conflict with a field of the same name.  This is meant to make migration
+             * from proto1 easier; new code should avoid fields named "descriptor".
              * @type {boolean}
              */
             $prototype.noStandardDescriptorAccessor = false;
 
             /**
-             * MessageOptions deprecated.
+             * Is this message deprecated?
+             * Depending on the target platform, this can emit Deprecated annotations
+             * for the message, or it will be completely ignored; in the very least,
+             * this is a formalization for deprecating messages.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * MessageOptions mapEntry.
+             * Whether the message is an automatically generated map entry type for the
+             * maps field.
+             * 
+             * For maps fields:
+             * map<KeyType, ValueType> map_field = 1;
+             * The parsed descriptor looks like:
+             * message MapFieldEntry {
+             * option map_entry = true;
+             * optional KeyType key = 1;
+             * optional ValueType value = 2;
+             * }
+             * repeated MapFieldEntry map_field = 1;
+             * 
+             * Implementations may choose not to generate the map_entry=true message, but
+             * use a native map in the target language to hold the keys and values.
+             * The reflection APIs in such implementions still need to work as
+             * if the field is a repeated message field.
+             * 
+             * NOTE: Do not set the option in .proto files. Always use the maps syntax
+             * instead. The option should only be implicitly set by the proto compiler
+             * parser.
              * @type {boolean}
              */
             $prototype.mapEntry = false;
 
             /**
-             * MessageOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -12241,7 +13250,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[4].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[4].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -12294,43 +13303,88 @@ $root.google = (function() {
             var $prototype = FieldOptions.prototype;
 
             /**
-             * FieldOptions ctype.
+             * The ctype option instructs the C++ code generator to use a different
+             * representation of the field than it normally would.  See the specific
+             * options below.  This option is not yet implemented in the open source
+             * release -- sorry, we'll try to include it in a future version!
              * @type {number}
              */
             $prototype.ctype = undefined;
 
             /**
-             * FieldOptions packed.
+             * The packed option can be enabled for repeated primitive fields to enable
+             * a more efficient representation on the wire. Rather than repeatedly
+             * writing the tag and type for each element, the entire array is encoded as
+             * a single length-delimited blob. In proto3, only explicit setting it to
+             * false will avoid using packed encoding.
              * @type {boolean}
              */
             $prototype.packed = false;
 
             /**
-             * FieldOptions jstype.
+             * The jstype option determines the JavaScript type used for values of the
+             * field.  The option is permitted only for 64 bit integral and fixed types
+             * (int64, uint64, sint64, fixed64, sfixed64).  By default these types are
+             * represented as JavaScript strings.  This avoids loss of precision that can
+             * happen when a large value is converted to a floating point JavaScript
+             * numbers.  Specifying JS_NUMBER for the jstype causes the generated
+             * JavaScript code to use the JavaScript "number" type instead of strings.
+             * This option is an enum to permit additional types to be added,
+             * e.g. goog.math.Integer.
              * @type {number}
              */
             $prototype.jstype = undefined;
 
             /**
-             * FieldOptions lazy.
+             * Should this field be parsed lazily?  Lazy applies only to message-type
+             * fields.  It means that when the outer message is initially parsed, the
+             * inner message's contents will not be parsed but instead stored in encoded
+             * form.  The inner message will actually be parsed when it is first accessed.
+             * 
+             * This is only a hint.  Implementations are free to choose whether to use
+             * eager or lazy parsing regardless of the value of this option.  However,
+             * setting this option true suggests that the protocol author believes that
+             * using lazy parsing on this field is worth the additional bookkeeping
+             * overhead typically needed to implement it.
+             * 
+             * This option does not affect the public interface of any generated code;
+             * all method signatures remain the same.  Furthermore, thread-safety of the
+             * interface is not affected by this option; const methods remain safe to
+             * call from multiple threads concurrently, while non-const methods continue
+             * to require exclusive access.
+             * 
+             * 
+             * Note that implementations may choose not to check required fields within
+             * a lazy sub-message.  That is, calling IsInitialized() on the outer message
+             * may return true even if the inner message has missing required fields.
+             * This is necessary because otherwise the inner message would have to be
+             * parsed in order to perform the check, defeating the purpose of lazy
+             * parsing.  An implementation which chooses not to check required fields
+             * must be consistent about it.  That is, for any particular sub-message, the
+             * implementation must eitheralways* check its required fields, or *never*
+             * check its required fields, regardless of whether or not the message has
+             * been parsed.
              * @type {boolean}
              */
             $prototype.lazy = false;
 
             /**
-             * FieldOptions deprecated.
+             * Is this field deprecated?
+             * Depending on the target platform, this can emit Deprecated annotations
+             * for accessors, or it will be completely ignored; in the very least, this
+             * is a formalization for deprecating fields.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * FieldOptions weak.
+             * For Google-internal migration only. Do not use.
              * @type {boolean}
              */
             $prototype.weak = false;
 
             /**
-             * FieldOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -12628,7 +13682,7 @@ $root.google = (function() {
 
                     case "jstype":
                         if (message.jstype !== undefined && message.jstype !== null) {
-                            object.jstype = options.enums === String ? types[2].values[message.jstype] : message.jstype;
+                            object.jstype = options.enums === String ? types[2][message.jstype] : message.jstype;
                         }
                         break;
 
@@ -12654,7 +13708,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[6].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[6].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -12689,7 +13743,7 @@ $root.google = (function() {
              * @name CType
              * @memberof google.protobuf.FieldOptions
              * @enum {number}
-             * @property {number} STRING=0 STRING value
+             * @property {number} STRING=0 Default mode.
              * @property {number} CORD=1 CORD value
              * @property {number} STRING_PIECE=2 STRING_PIECE value
              */
@@ -12707,9 +13761,9 @@ $root.google = (function() {
              * @name JSType
              * @memberof google.protobuf.FieldOptions
              * @enum {number}
-             * @property {number} JS_NORMAL=0 JS_NORMAL value
-             * @property {number} JS_STRING=1 JS_STRING value
-             * @property {number} JS_NUMBER=2 JS_NUMBER value
+             * @property {number} JS_NORMAL=0 Use the default type.
+             * @property {number} JS_STRING=1 Use JavaScript strings.
+             * @property {number} JS_NUMBER=2 Use JavaScript numbers.
              */
             FieldOptions.JSType = (function() {
                 var valuesById = {},
@@ -12743,7 +13797,7 @@ $root.google = (function() {
             var $prototype = OneofOptions.prototype;
 
             /**
-             * OneofOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -12895,7 +13949,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[0].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[0].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -12948,19 +14002,23 @@ $root.google = (function() {
             var $prototype = EnumOptions.prototype;
 
             /**
-             * EnumOptions allowAlias.
+             * Set this option to true to allow mapping different tag names to the same
+             * value.
              * @type {boolean}
              */
             $prototype.allowAlias = false;
 
             /**
-             * EnumOptions deprecated.
+             * Is this enum deprecated?
+             * Depending on the target platform, this can emit Deprecated annotations
+             * for the enum, or it will be completely ignored; in the very least, this
+             * is a formalization for deprecating enums.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * EnumOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -13181,7 +14239,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[2].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[2].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -13240,13 +14298,16 @@ $root.google = (function() {
             var $prototype = EnumValueOptions.prototype;
 
             /**
-             * EnumValueOptions deprecated.
+             * Is this enum value deprecated?
+             * Depending on the target platform, this can emit Deprecated annotations
+             * for the enum value, or it will be completely ignored; in the very least,
+             * this is a formalization for deprecating enum values.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * EnumValueOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -13422,7 +14483,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[1].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[1].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -13475,13 +14536,16 @@ $root.google = (function() {
             var $prototype = ServiceOptions.prototype;
 
             /**
-             * ServiceOptions deprecated.
+             * Is this service deprecated?
+             * Depending on the target platform, this can emit Deprecated annotations
+             * for the service, or it will be completely ignored; in the very least,
+             * this is a formalization for deprecating services.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * ServiceOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -13657,7 +14721,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[1].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[1].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -13710,7 +14774,10 @@ $root.google = (function() {
             var $prototype = MethodOptions.prototype;
 
             /**
-             * MethodOptions deprecated.
+             * Is this method deprecated?
+             * Depending on the target platform, this can emit Deprecated annotations
+             * for the method, or it will be completely ignored; in the very least,
+             * this is a formalization for deprecating methods.
              * @type {boolean}
              */
             $prototype.deprecated = false;
@@ -13722,7 +14789,7 @@ $root.google = (function() {
             $prototype.idempotencyLevel = undefined;
 
             /**
-             * MethodOptions uninterpretedOption.
+             * The parser stores options it doesn't recognize here. See above.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -13939,7 +15006,7 @@ $root.google = (function() {
                         if (message.uninterpretedOption.length) {
                             object.uninterpretedOption = [];
                             for (var j = 0; j < message.uninterpretedOption.length; ++j) {
-                                object.uninterpretedOption[j] = types[2].ctor.prototype.toObject.call(message.uninterpretedOption[j], options);
+                                object.uninterpretedOption[j] = types[2].toObject(message.uninterpretedOption[j], options);
                             }
                         }
                         break;
@@ -13970,13 +15037,15 @@ $root.google = (function() {
             };
 
             /**
-             * IdempotencyLevel enum.
+             * Is this method side-effect-free (or safe in HTTP parlance), or idempotent,
+             * or neither? HTTP based RPC implementation may choose GET verb for safe
+             * methods, and PUT verb for idempotent methods instead of the default POST.
              * @name IdempotencyLevel
              * @memberof google.protobuf.MethodOptions
              * @enum {number}
              * @property {number} IDEMPOTENCY_UNKNOWN=0 IDEMPOTENCY_UNKNOWN value
-             * @property {number} NO_SIDE_EFFECTS=1 NO_SIDE_EFFECTS value
-             * @property {number} IDEMPOTENT=2 IDEMPOTENT value
+             * @property {number} NO_SIDE_EFFECTS=1 implies idempotent
+             * @property {number} IDEMPOTENT=2 idempotent, but may have side effects
              */
             MethodOptions.IdempotencyLevel = (function() {
                 var valuesById = {},
@@ -13994,6 +15063,12 @@ $root.google = (function() {
 
             /**
              * Constructs a new UninterpretedOption.
+             * @classdesc A message representing a option the parser does not recognize. This only
+             * appears in options protos created by the compiler::Parser class.
+             * DescriptorPool resolves these when building Descriptor objects. Therefore,
+             * options protos in descriptor objects (e.g. returned by Descriptor::options(),
+             * or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
+             * in them.
              * @exports google.protobuf.UninterpretedOption
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -14016,7 +15091,8 @@ $root.google = (function() {
             $prototype.name = $protobuf.util.emptyArray;
 
             /**
-             * UninterpretedOption identifierValue.
+             * The value of the uninterpreted option, in whatever type the tokenizer
+             * identified it as during parsing. Exactly one of these should be set.
              * @type {string}
              */
             $prototype.identifierValue = "";
@@ -14340,7 +15416,7 @@ $root.google = (function() {
                         if (message.name.length) {
                             object.name = [];
                             for (var j = 0; j < message.name.length; ++j) {
-                                object.name[j] = types[0].ctor.prototype.toObject.call(message.name[j], options);
+                                object.name[j] = types[0].toObject(message.name[j], options);
                             }
                         }
                         break;
@@ -14418,6 +15494,11 @@ $root.google = (function() {
 
                 /**
                  * Constructs a new NamePart.
+                 * @classdesc The name of the uninterpreted option.  Each string represents a segment in
+                 * a dot-separated name.  is_extension is true iff a segment represents an
+                 * extension (denoted with parentheses in options specs in .proto files).
+                 * E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
+                 * "foo.(bar.baz).qux".
                  * @exports google.protobuf.UninterpretedOption.NamePart
                  * @constructor
                  * @param {Object} [properties] Properties to set
@@ -14626,6 +15707,8 @@ $root.google = (function() {
 
             /**
              * Constructs a new SourceCodeInfo.
+             * @classdesc Encapsulates information about the original source file from which a
+             * FileDescriptorProto was generated.
              * @exports google.protobuf.SourceCodeInfo
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -14642,7 +15725,49 @@ $root.google = (function() {
             var $prototype = SourceCodeInfo.prototype;
 
             /**
-             * SourceCodeInfo location.
+             * A Location identifies a piece of source code in a .proto file which
+             * corresponds to a particular definition.  This information is intended
+             * to be useful to IDEs, code indexers, documentation generators, and similar
+             * tools.
+             * 
+             * For example, say we have a file like:
+             * message Foo {
+             * optional string foo = 1;
+             * }
+             * Let's look at just the field definition:
+             * optional string foo = 1;
+             * ^       ^^     ^^  ^  ^^^
+             * a       bc     de  f  ghi
+             * We have the following locations:
+             * span   path               represents
+             * [a,i)  [ 4, 0, 2, 0 ]     The whole field definition.
+             * [a,b)  [ 4, 0, 2, 0, 4 ]  The label (optional).
+             * [c,d)  [ 4, 0, 2, 0, 5 ]  The type (string).
+             * [e,f)  [ 4, 0, 2, 0, 1 ]  The name (foo).
+             * [g,h)  [ 4, 0, 2, 0, 3 ]  The number (1).
+             * 
+             * Notes:
+             * - A location may refer to a repeated field itself (i.e. not to any
+             * particular index within it).  This is used whenever a set of elements are
+             * logically enclosed in a single code segment.  For example, an entire
+             * extend block (possibly containing multiple extension definitions) will
+             * have an outer location whose path refers to the "extensions" repeated
+             * field without an index.
+             * - Multiple locations may have the same path.  This happens when a single
+             * logical declaration is spread out across multiple places.  The most
+             * obvious example is the "extend" block again -- there may be multiple
+             * extend blocks in the same scope, each of which will have the same path.
+             * - A location's span is not always a subset of its parent's span.  For
+             * example, the "extendee" of an extension declaration appears at the
+             * beginning of the "extend" block and is shared by all extensions within
+             * the block.
+             * - Just because a location's span is a subset of some other location's span
+             * does not mean that it is a descendent.  For example, a "group" defines
+             * both a type and a field in a single declaration.  Thus, the locations
+             * corresponding to the type and field and their components will overlap.
+             * - Code which tries to interpret locations should probably be designed to
+             * ignore those that it doesn't understand, as more types of locations could
+             * be recorded in the future.
              * @type {Array.<google.protobuf.SourceCodeInfo.Location>}
              */
             $prototype.location = $protobuf.util.emptyArray;
@@ -14794,7 +15919,7 @@ $root.google = (function() {
                         if (message.location.length) {
                             object.location = [];
                             for (var j = 0; j < message.location.length; ++j) {
-                                object.location[j] = types[0].ctor.prototype.toObject.call(message.location[j], options);
+                                object.location[j] = types[0].toObject(message.location[j], options);
                             }
                         }
                         break;
@@ -14844,19 +15969,91 @@ $root.google = (function() {
                 var $prototype = Location.prototype;
 
                 /**
-                 * Location path.
+                 * Identifies which part of the FileDescriptorProto was defined at this
+                 * location.
+                 * 
+                 * Each element is a field number or an index.  They form a path from
+                 * the root FileDescriptorProto to the place where the definition.  For
+                 * example, this path:
+                 * [ 4, 3, 2, 7, 1 ]
+                 * refers to:
+                 * file.message_type(3)4, 3
+                 * .field(7)2, 7
+                 * .name()1
+                 * This is because FileDescriptorProto.message_type has field number 4:
+                 * repeated DescriptorProto message_type = 4;
+                 * and DescriptorProto.field has field number 2:
+                 * repeated FieldDescriptorProto field = 2;
+                 * and FieldDescriptorProto.name has field number 1:
+                 * optional string name = 1;
+                 * 
+                 * Thus, the above path gives the location of a field name.  If we removed
+                 * the last element:
+                 * [ 4, 3, 2, 7 ]
+                 * this path refers to the whole field declaration (from the beginning
+                 * of the label to the terminating semicolon).
                  * @type {Array.<number>}
                  */
                 $prototype.path = $protobuf.util.emptyArray;
 
                 /**
-                 * Location span.
+                 * Always has exactly three or four elements: start line, start column,
+                 * end line (optional, otherwise assumed same as start line), end column.
+                 * These are packed into a single field for efficiency.  Note that line
+                 * and column numbers are zero-based -- typically you will want to add
+                 * 1 to each before displaying to a user.
                  * @type {Array.<number>}
                  */
                 $prototype.span = $protobuf.util.emptyArray;
 
                 /**
-                 * Location leadingComments.
+                 * If this SourceCodeInfo represents a complete declaration, these are any
+                 * comments appearing before and after the declaration which appear to be
+                 * attached to the declaration.
+                 * 
+                 * A series of line comments appearing on consecutive lines, with no other
+                 * tokens appearing on those lines, will be treated as a single comment.
+                 * 
+                 * leading_detached_comments will keep paragraphs of comments that appear
+                 * before (but not connected to) the current element. Each paragraph,
+                 * separated by empty lines, will be one comment element in the repeated
+                 * field.
+                 * 
+                 * Only the comment content is provided; comment markers (e.g.) are
+                 * stripped out.  For block comments, leading whitespace and an asterisk
+                 * will be stripped from the beginning of each line other than the first.
+                 * Newlines are included in the output.
+                 * 
+                 * Examples:
+                 * 
+                 * optional int32 foo = 1;Comment attached to foo.
+                 * Comment attached to bar.
+                 * optional int32 bar = 2;
+                 * 
+                 * optional string baz = 3;
+                 * Comment attached to baz.
+                 * Another line attached to baz.
+                 * 
+                 * Comment attached to qux.
+                 * 
+                 * Another line attached to qux.
+                 * optional double qux = 4;
+                 * 
+                 * Detached comment for corge. This is not leading or trailing comments
+                 * to qux or corge because there are blank lines separating it from
+                 * both.
+                 * 
+                 * Detached comment for corge paragraph 2.
+                 * 
+                 * optional string corge = 5;
+                 * Block comment attached
+                 * to corge.  Leading asterisks
+                 * will be removed. * /
+                 * Block comment attached to
+                 * grault. * /
+                 * optional int32 grault = 6;
+                 * 
+                 * ignored detached comments.
                  * @type {string}
                  */
                 $prototype.leadingComments = "";
@@ -15196,6 +16393,9 @@ $root.google = (function() {
 
             /**
              * Constructs a new GeneratedCodeInfo.
+             * @classdesc Describes the relationship between generated code and its original source
+             * file. A GeneratedCodeInfo message is associated with only one generated
+             * source file, but may contain references to different source .proto files.
              * @exports google.protobuf.GeneratedCodeInfo
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -15212,7 +16412,8 @@ $root.google = (function() {
             var $prototype = GeneratedCodeInfo.prototype;
 
             /**
-             * GeneratedCodeInfo annotation.
+             * An Annotation connects some span of text in generated code to an element
+             * of its generating .proto file.
              * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation>}
              */
             $prototype.annotation = $protobuf.util.emptyArray;
@@ -15364,7 +16565,7 @@ $root.google = (function() {
                         if (message.annotation.length) {
                             object.annotation = [];
                             for (var j = 0; j < message.annotation.length; ++j) {
-                                object.annotation[j] = types[0].ctor.prototype.toObject.call(message.annotation[j], options);
+                                object.annotation[j] = types[0].toObject(message.annotation[j], options);
                             }
                         }
                         break;
@@ -15414,25 +16615,29 @@ $root.google = (function() {
                 var $prototype = Annotation.prototype;
 
                 /**
-                 * Annotation path.
+                 * Identifies the element in the original source .proto file. This field
+                 * is formatted the same as SourceCodeInfo.Location.path.
                  * @type {Array.<number>}
                  */
                 $prototype.path = $protobuf.util.emptyArray;
 
                 /**
-                 * Annotation sourceFile.
+                 * Identifies the filesystem path to the original source .proto.
                  * @type {string}
                  */
                 $prototype.sourceFile = "";
 
                 /**
-                 * Annotation begin.
+                 * Identifies the starting offset in bytes in the generated code
+                 * that relates to the identified object.
                  * @type {number}
                  */
                 $prototype.begin = 0;
 
                 /**
-                 * Annotation end.
+                 * Identifies the ending offset in bytes in the generated code that
+                 * relates to the identified offset. The end offset should be one past
+                 * the last relevant byte (so the length of the text = end - begin).
                  * @type {number}
                  */
                 $prototype.end = 0;

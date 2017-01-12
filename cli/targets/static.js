@@ -74,11 +74,15 @@ function push(line) {
 function pushComment(lines) {
     if (!config.comments)
         return;
+    var split = [];
+    for (var i = 0; i < lines.length; ++i)
+        if (lines[i] !== null)
+            Array.prototype.push.apply(split, lines[i].split(/\r?\n/g));
     push("/**");
-    lines.forEach(function(line) {
+    split.forEach(function(line) {
         if (line === null)
             return;
-        push(" * " + line);
+        push(" * " + line.replace(/\*\//g, "* /"));
     });
     push(" */");
 }
@@ -175,7 +179,7 @@ function beautify(code) {
 function buildFunction(type, functionName, gen, scope) {
     var code = gen.str(functionName)
         .replace(/\(this.ctor\)/g, " $root" + type.fullName) // types: construct directly instead of using reflected ctor
-        .replace(/(types\[\d+])(\.values)/g,"$1"); // enums: use types[N] instead of reflected types[N].values
+        .replace(/(types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
 
     if (config.beautify)
         code = beautify(code);
@@ -237,6 +241,7 @@ function buildType(ref, type) {
     push("");
     pushComment([
         "Constructs a new " + type.name + ".",
+        type.comment ? "@classdesc " + type.comment : null,
         "@exports " + fullName,
         "@constructor",
         "@param {Object} [properties] Properties to set"
@@ -274,7 +279,7 @@ function buildType(ref, type) {
         if (config.comments) {
             push("");
             pushComment([
-                type.name + " " + field.name + ".",
+                field.comment || type.name + " " + field.name + ".",
                 prop.charAt(0) !== "." ? "@name " + fullName + "#" + field.name : null,
                 "@type {" + jsType + "}"
             ]);
@@ -300,7 +305,7 @@ function buildType(ref, type) {
         oneof.resolve();
         push("");
         pushComment([
-            type.name + " " + oneof.name + ".",
+            oneof.comment || type.name + " " + oneof.name + ".",
             "@name " + fullName + "#" + name(oneof.name),
             "@type {string|undefined}"
         ]);
@@ -537,6 +542,7 @@ function buildService(ref, service) {
     push("");
     pushComment([
         "Constructs a new " + service.name + " service.",
+        service.comment ? "@classdesc " + service.comment : null,
         "@exports " + fullName,
         "@constructor",
         "@param {RPCImpl} rpc RPC implementation",
@@ -581,7 +587,7 @@ function buildService(ref, service) {
         ]);
         push("");
         pushComment([
-            "Calls " + method.name + ".",
+            method.comment || "Calls " + method.name + ".",
             "@param {" + method.resolvedRequestType.fullName.substring(1) + "|Object} request " + method.resolvedRequestType.name + " message or plain object",
             "@param {" + cbName + "} callback Node-style callback called with the error, if any, and " + method.resolvedResponseType.name,
             "@returns {undefined}"
@@ -630,19 +636,23 @@ function buildService(ref, service) {
 function buildEnum(ref, enm) {
     var parentFullName = enm.parent.fullName.substring(1);
     push("");
-    var comment = parentFullName.length ? [
-        enm.name + " enum.",
-        "@name " + name(enm.name),
-        "@memberof " + parentFullName,
-        "@enum {number}"
-    ] : [
-        enm.name + " enum.",
-        "@exports " + name(enm.name),
-        "@enum {number}"
+    var comment = [
+        enm.comment || enm.name + " enum.",
     ];
+    if (parentFullName.length) // member
+        comment.push(
+            "@name " + name(enm.name),
+            "@memberof " + parentFullName,
+            "@enum {number}"
+        );
+    else // export
+        comment.push(
+            "@exports " + name(enm.name),
+            "@enum {number}"
+        );
     Object.keys(enm.values).forEach(function(key) {
         var val = enm.values[key];
-        comment.push("@property {number} " + key + "=" + val + " " + key + " value");
+        comment.push("@property {number} " + key + "=" + val + " " + (enm.comments[key] ? enm.comments[key] : key + " value"));
     });
     pushComment(comment);
     push(name(ref) + "." + name(enm.name) + " = (function() {");
