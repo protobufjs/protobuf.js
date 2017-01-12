@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 23:28:43 UTC
+ * Compiled Thu, 12 Jan 2017 23:33:00 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3532,14 +3532,9 @@ function parse(source, root, options) {
             throw illegal(name, "name");
         name = applyCase(name);
         skip("=");
-        var line = tn.line(),
-            field = new Field(name, parseId(next()), type, rule, extend);
+        var field = new Field(name, parseId(next()), type, rule, extend);
         field.comment = cmnt();
         parseInlineOptions(field);
-        if (!field.comment) {
-            peek();
-            field.comment = cmnt(/* if on */ line);
-        }
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
         if (field.repeated && types.packed[type] !== undefined && !isProto3)
@@ -3671,15 +3666,9 @@ function parse(source, root, options) {
 
         var name = token;
         skip("=");
-        var value = parseId(next(), true),
-            comment = cmnt(),
-            line = tn.line();
-        parent.add(name, value, comment);
+        var value = parseId(next(), true);
+        parent.add(name, value, cmnt());
         parseInlineOptions({}); // skips enum value options
-        if (!comment) {
-            peek();
-            parent.comments[name] = cmnt(/* if on */ line);
-        }
     }
 
     function parseOption(parent, token) {
