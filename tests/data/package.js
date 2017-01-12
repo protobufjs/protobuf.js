@@ -119,7 +119,7 @@ $root.Package = (function() {
     $prototype.devDependencies = $protobuf.util.emptyObject;
 
     /**
-     * map<string, bool>   browser = 16;
+     * Package types.
      * @type {string}
      */
     $prototype.types = "";

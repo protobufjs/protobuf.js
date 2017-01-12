@@ -147,15 +147,8 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Empty.toObject = (function() { return function toObject(message, options) {
-                if (!options) {
-                    options = {};
-                }
-                var object = {};
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {}
-                }
-                return object;
+            Empty.toObject = (function() { return function toObject() {
+                return {};
             };})();
 
             /**
@@ -658,7 +651,6 @@ $root.jspb = (function() {
 
             /**
              * Constructs a new Simple2.
-             * @classdesc A message that differs from Simple1 only by name
              * @exports jspb.test.Simple2
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -908,7 +900,7 @@ $root.jspb = (function() {
             $prototype.normal = "";
 
             /**
-             * Examples of Js reserved names that are converted to pb_<name>.
+             * SpecialCases default.
              * @name jspb.test.SpecialCases#default
              * @type {string}
              */
@@ -2740,15 +2732,8 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            OuterMessage.toObject = (function() { return function toObject(message, options) {
-                if (!options) {
-                    options = {};
-                }
-                var object = {};
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {}
-                }
-                return object;
+            OuterMessage.toObject = (function() { return function toObject() {
+                return {};
             };})();
 
             /**
@@ -2776,7 +2761,6 @@ $root.jspb = (function() {
 
                 /**
                  * Constructs a new Complex.
-                 * @classdesc Make sure this doesn't conflict with the other Complex message.
                  * @exports jspb.test.OuterMessage.Complex
                  * @constructor
                  * @param {Object} [properties] Properties to set
@@ -3266,15 +3250,8 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            IndirectExtension.toObject = (function() { return function toObject(message, options) {
-                if (!options) {
-                    options = {};
-                }
-                var object = {};
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {}
-                }
-                return object;
+            IndirectExtension.toObject = (function() { return function toObject() {
+                return {};
             };})();
 
             /**
@@ -6120,15 +6097,8 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            TestReservedNamesExtension.toObject = (function() { return function toObject(message, options) {
-                if (!options) {
-                    options = {};
-                }
-                var object = {};
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {}
-                }
-                return object;
+            TestReservedNamesExtension.toObject = (function() { return function toObject() {
+                return {};
             };})();
 
             /**
@@ -8023,15 +7993,8 @@ $root.jspb = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Deeply.toObject = (function() { return function toObject(message, options) {
-                if (!options) {
-                    options = {};
-                }
-                var object = {};
-                for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                    switch (keys[i]) {}
-                }
-                return object;
+            Deeply.toObject = (function() { return function toObject() {
+                return {};
             };})();
 
             /**
@@ -8175,15 +8138,8 @@ $root.jspb = (function() {
                  * @param {$protobuf.ConversionOptions} [options] Conversion options
                  * @returns {Object.<string,*>} Plain object
                  */
-                Nested.toObject = (function() { return function toObject(message, options) {
-                    if (!options) {
-                        options = {};
-                    }
-                    var object = {};
-                    for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-                        switch (keys[i]) {}
-                    }
-                    return object;
+                Nested.toObject = (function() { return function toObject() {
+                    return {};
                 };})();
 
                 /**
@@ -8426,8 +8382,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new FileDescriptorSet.
-             * @classdesc The protocol compiler can output a FileDescriptorSet containing the .proto
-             * files it parses.
              * @exports google.protobuf.FileDescriptorSet
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -8633,7 +8587,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new FileDescriptorProto.
-             * @classdesc Describes a complete .proto file.
              * @exports google.protobuf.FileDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -8656,33 +8609,32 @@ $root.google = (function() {
             $prototype.name = "";
 
             /**
-             * file name, relative to root of source tree
+             * FileDescriptorProto package.
              * @name google.protobuf.FileDescriptorProto#package
              * @type {string}
              */
             $prototype["package"] = "";
 
             /**
-             * Names of files imported by this file.
+             * FileDescriptorProto dependency.
              * @type {Array.<string>}
              */
             $prototype.dependency = $protobuf.util.emptyArray;
 
             /**
-             * Indexes of the public imported files in the dependency list above.
+             * FileDescriptorProto publicDependency.
              * @type {Array.<number>}
              */
             $prototype.publicDependency = $protobuf.util.emptyArray;
 
             /**
-             * Indexes of the weak imported files in the dependency list.
-             * For Google-internal migration only. Do not use.
+             * FileDescriptorProto weakDependency.
              * @type {Array.<number>}
              */
             $prototype.weakDependency = $protobuf.util.emptyArray;
 
             /**
-             * All top-level definitions in this file.
+             * FileDescriptorProto messageType.
              * @type {Array.<google.protobuf.DescriptorProto>}
              */
             $prototype.messageType = $protobuf.util.emptyArray;
@@ -8712,17 +8664,13 @@ $root.google = (function() {
             $prototype.options = null;
 
             /**
-             * This field contains optional information about the original source code.
-             * You may safely remove this entire field without harming runtime
-             * functionality of the descriptors -- the information is needed only by
-             * development tools.
+             * FileDescriptorProto sourceCodeInfo.
              * @type {google.protobuf.SourceCodeInfo}
              */
             $prototype.sourceCodeInfo = null;
 
             /**
-             * The syntax of the proto file.
-             * The supported values are "proto2" and "proto3".
+             * FileDescriptorProto syntax.
              * @type {string}
              */
             $prototype.syntax = "";
@@ -9270,7 +9218,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new DescriptorProto.
-             * @classdesc Describes a message type.
              * @exports google.protobuf.DescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -9341,8 +9288,7 @@ $root.google = (function() {
             $prototype.reservedRange = $protobuf.util.emptyArray;
 
             /**
-             * Reserved field names, which may not be used by fields in the same message.
-             * A given name may only be reserved once.
+             * DescriptorProto reservedName.
              * @type {Array.<string>}
              */
             $prototype.reservedName = $protobuf.util.emptyArray;
@@ -10060,9 +10006,6 @@ $root.google = (function() {
 
                 /**
                  * Constructs a new ReservedRange.
-                 * @classdesc Range of reserved tag numbers. Reserved tag numbers may not be used by
-                 * fields or extension ranges in the same message. Reserved ranges may
-                 * not overlap.
                  * @exports google.protobuf.DescriptorProto.ReservedRange
                  * @constructor
                  * @param {Object} [properties] Properties to set
@@ -10085,7 +10028,7 @@ $root.google = (function() {
                 $prototype.start = 0;
 
                 /**
-                 * Inclusive.
+                 * ReservedRange end.
                  * @type {number}
                  */
                 $prototype.end = 0;
@@ -10279,7 +10222,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new FieldDescriptorProto.
-             * @classdesc Describes a field within a message.
              * @exports google.protobuf.FieldDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -10314,51 +10256,37 @@ $root.google = (function() {
             $prototype.label = 1;
 
             /**
-             * If type_name is set, this need not be set.  If both this and type_name
-             * are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or TYPE_GROUP.
+             * FieldDescriptorProto type.
              * @type {number}
              */
             $prototype.type = 1;
 
             /**
-             * For message and enum types, this is the name of the type.  If the name
-             * starts with a '.', it is fully-qualified.  Otherwise, C++-like scoping
-             * rules are used to find the type (i.e. first the nested types within this
-             * message are searched, then within the parent, on up to the root
-             * namespace).
+             * FieldDescriptorProto typeName.
              * @type {string}
              */
             $prototype.typeName = "";
 
             /**
-             * For extensions, this is the name of the type being extended.  It is
-             * resolved in the same manner as type_name.
+             * FieldDescriptorProto extendee.
              * @type {string}
              */
             $prototype.extendee = "";
 
             /**
-             * For numeric types, contains the original text representation of the value.
-             * For booleans, "true" or "false".
-             * For strings, contains the default text contents (not escaped in any way).
-             * For bytes, contains the C escaped value.  All bytes >= 128 are escaped.
-             * TODO(kenton):  Base-64 encode?
+             * FieldDescriptorProto defaultValue.
              * @type {string}
              */
             $prototype.defaultValue = "";
 
             /**
-             * If set, gives the index of a oneof in the containing type's oneof_decl
-             * list.  This field is a member of that oneof.
+             * FieldDescriptorProto oneofIndex.
              * @type {number}
              */
             $prototype.oneofIndex = 0;
 
             /**
-             * JSON name of this field. The value is set by protocol compiler. If the
-             * user has set a "json_name" option on this field, that option's value
-             * will be used. Otherwise, it's deduced from the field's name by converting
-             * it to camelCase.
+             * FieldDescriptorProto jsonName.
              * @type {string}
              */
             $prototype.jsonName = "";
@@ -10861,8 +10789,7 @@ $root.google = (function() {
              * @name Type
              * @memberof google.protobuf.FieldDescriptorProto
              * @enum {number}
-             * @property {number} TYPE_DOUBLE=1 0 is reserved for errors.
-             * Order is weird for historical reasons.
+             * @property {number} TYPE_DOUBLE=1 TYPE_DOUBLE value
              * @property {number} TYPE_FLOAT=2 TYPE_FLOAT value
              * @property {number} TYPE_INT64=3 TYPE_INT64 value
              * @property {number} TYPE_UINT64=4 TYPE_UINT64 value
@@ -10871,15 +10798,15 @@ $root.google = (function() {
              * @property {number} TYPE_FIXED32=7 TYPE_FIXED32 value
              * @property {number} TYPE_BOOL=8 TYPE_BOOL value
              * @property {number} TYPE_STRING=9 TYPE_STRING value
-             * @property {number} TYPE_GROUP=10 Tag-delimited aggregate.
+             * @property {number} TYPE_GROUP=10 TYPE_GROUP value
              * @property {number} TYPE_MESSAGE=11 TYPE_MESSAGE value
              * @property {number} TYPE_BYTES=12 TYPE_BYTES value
              * @property {number} TYPE_UINT32=13 TYPE_UINT32 value
              * @property {number} TYPE_ENUM=14 TYPE_ENUM value
              * @property {number} TYPE_SFIXED32=15 TYPE_SFIXED32 value
              * @property {number} TYPE_SFIXED64=16 TYPE_SFIXED64 value
-             * @property {number} TYPE_SINT32=17 Uses ZigZag encoding.
-             * @property {number} TYPE_SINT64=18 Uses ZigZag encoding.
+             * @property {number} TYPE_SINT32=17 TYPE_SINT32 value
+             * @property {number} TYPE_SINT64=18 TYPE_SINT64 value
              */
             FieldDescriptorProto.Type = (function() {
                 var valuesById = {},
@@ -10910,7 +10837,7 @@ $root.google = (function() {
              * @name Label
              * @memberof google.protobuf.FieldDescriptorProto
              * @enum {number}
-             * @property {number} LABEL_OPTIONAL=1 0 is reserved for errors
+             * @property {number} LABEL_OPTIONAL=1 LABEL_OPTIONAL value
              * @property {number} LABEL_REQUIRED=2 LABEL_REQUIRED value
              * @property {number} LABEL_REPEATED=3 LABEL_REPEATED value
              */
@@ -10930,7 +10857,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new OneofDescriptorProto.
-             * @classdesc Describes a oneof.
              * @exports google.protobuf.OneofDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -11148,7 +11074,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new EnumDescriptorProto.
-             * @classdesc Describes an enum type.
              * @exports google.protobuf.EnumDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -11413,7 +11338,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new EnumValueDescriptorProto.
-             * @classdesc Describes a value within an enum.
              * @exports google.protobuf.EnumValueDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -11659,7 +11583,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new ServiceDescriptorProto.
-             * @classdesc Describes a service.
              * @exports google.protobuf.ServiceDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -11924,7 +11847,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new MethodDescriptorProto.
-             * @classdesc Describes a method of a service.
              * @exports google.protobuf.MethodDescriptorProto
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -11947,8 +11869,7 @@ $root.google = (function() {
             $prototype.name = "";
 
             /**
-             * Input and output type names.  These are resolved in the same way as
-             * FieldDescriptorProto.type_name, but must refer to a message type.
+             * MethodDescriptorProto inputType.
              * @type {string}
              */
             $prototype.inputType = "";
@@ -11966,13 +11887,13 @@ $root.google = (function() {
             $prototype.options = null;
 
             /**
-             * Identifies if client streams multiple client messages
+             * MethodDescriptorProto clientStreaming.
              * @type {boolean}
              */
             $prototype.clientStreaming = false;
 
             /**
-             * Identifies if server streams multiple server messages
+             * MethodDescriptorProto serverStreaming.
              * @type {boolean}
              */
             $prototype.serverStreaming = false;
@@ -12271,48 +12192,31 @@ $root.google = (function() {
             var $prototype = FileOptions.prototype;
 
             /**
-             * Sets the Java package where classes generated from this .proto will be
-             * placed.  By default, the proto package is used, but this is often
-             * inappropriate because proto packages do not normally start with backwards
-             * domain names.
+             * FileOptions javaPackage.
              * @type {string}
              */
             $prototype.javaPackage = "";
 
             /**
-             * If set, all the classes from the .proto file are wrapped in a single
-             * outer class with the given name.  This applies to both Proto1
-             * (equivalent to the old "--one_java_file" option) and Proto2 (where
-             * a .proto always translates to a single class, but you may want to
-             * explicitly choose the class name).
+             * FileOptions javaOuterClassname.
              * @type {string}
              */
             $prototype.javaOuterClassname = "";
 
             /**
-             * If set true, then the Java code generator will generate a separate .java
-             * file for each top-level message, enum, and service defined in the .proto
-             * file.  Thus, these types willnot* be nested inside the outer class
-             * named by java_outer_classname.  However, the outer class will still be
-             * generated to contain the file's getDescriptor() method as well as any
-             * top-level extensions defined in the file.
+             * FileOptions javaMultipleFiles.
              * @type {boolean}
              */
             $prototype.javaMultipleFiles = false;
 
             /**
-             * This option does nothing.
+             * FileOptions javaGenerateEqualsAndHash.
              * @type {boolean}
              */
             $prototype.javaGenerateEqualsAndHash = false;
 
             /**
-             * If set true, then the Java2 code generator will generate code that
-             * throws an exception whenever an attempt is made to assign a non-UTF-8
-             * byte sequence to a string field.
-             * Message reflection will do the same.
-             * However, an extension field still accepts non-UTF-8 byte sequences.
-             * This option has no effect on when used with the lite runtime.
+             * FileOptions javaStringCheckUtf8.
              * @type {boolean}
              */
             $prototype.javaStringCheckUtf8 = false;
@@ -12324,26 +12228,13 @@ $root.google = (function() {
             $prototype.optimizeFor = undefined;
 
             /**
-             * Sets the Go package where structs generated from this .proto will be
-             * placed. If omitted, the Go package will be derived from the following:
-             * - The basename of the package import path, if provided.
-             * - Otherwise, the package statement in the .proto file, if present.
-             * - Otherwise, the basename of the .proto file, without extension.
+             * FileOptions goPackage.
              * @type {string}
              */
             $prototype.goPackage = "";
 
             /**
-             * Should generic services be generated in each language?  "Generic" services
-             * are not specific to any particular RPC system.  They are generated by the
-             * main code generators in each language (without additional plugins).
-             * Generic services were the only kind of service generation supported by
-             * early versions of google.protobuf.
-             * 
-             * Generic services are now considered deprecated in favor of using plugins
-             * that generate code specific to your particular RPC system.  Therefore,
-             * these default to false.  Old code which depends on generic services should
-             * explicitly set them to true.
+             * FileOptions ccGenericServices.
              * @type {boolean}
              */
             $prototype.ccGenericServices = false;
@@ -12361,36 +12252,31 @@ $root.google = (function() {
             $prototype.pyGenericServices = false;
 
             /**
-             * Is this file deprecated?
-             * Depending on the target platform, this can emit Deprecated annotations
-             * for everything in the file, or it will be completely ignored; in the very
-             * least, this is a formalization for deprecating files.
+             * FileOptions deprecated.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * Enables the use of arenas for the proto messages in this file. This applies
-             * only to generated classes for C++.
+             * FileOptions ccEnableArenas.
              * @type {boolean}
              */
             $prototype.ccEnableArenas = false;
 
             /**
-             * Sets the objective c class prefix which is prepended to all objective c
-             * generated classes from this .proto. There is no default.
+             * FileOptions objcClassPrefix.
              * @type {string}
              */
             $prototype.objcClassPrefix = "";
 
             /**
-             * Namespace for generated classes; defaults to the package.
+             * FileOptions csharpNamespace.
              * @type {string}
              */
             $prototype.csharpNamespace = "";
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * FileOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -12902,13 +12788,13 @@ $root.google = (function() {
             };
 
             /**
-             * Generated classes can be optimized for speed or code size.
+             * OptimizeMode enum.
              * @name OptimizeMode
              * @memberof google.protobuf.FileOptions
              * @enum {number}
              * @property {number} SPEED=1 SPEED value
-             * @property {number} CODE_SIZE=2 Use ReflectionOps to implement these methods.
-             * @property {number} LITE_RUNTIME=3 Generate code using MessageLite and the lite runtime.
+             * @property {number} CODE_SIZE=2 CODE_SIZE value
+             * @property {number} LITE_RUNTIME=3 LITE_RUNTIME value
              */
             FileOptions.OptimizeMode = (function() {
                 var valuesById = {},
@@ -12942,73 +12828,31 @@ $root.google = (function() {
             var $prototype = MessageOptions.prototype;
 
             /**
-             * Set true to use the old proto1 MessageSet wire format for extensions.
-             * This is provided for backwards-compatibility with the MessageSet wire
-             * format.  You should not use this for any other reason:  It's less
-             * efficient, has fewer features, and is more complicated.
-             * 
-             * The message must be defined exactly as follows:
-             * message Foo {
-             * option message_set_wire_format = true;
-             * extensions 4 to max;
-             * }
-             * Note that the message cannot have any defined fields; MessageSets only
-             * have extensions.
-             * 
-             * All extensions of your type must be singular messages; e.g. they cannot
-             * be int32s, enums, or repeated messages.
-             * 
-             * Because this is an option, the above two restrictions are not enforced by
-             * the protocol compiler.
+             * MessageOptions messageSetWireFormat.
              * @type {boolean}
              */
             $prototype.messageSetWireFormat = false;
 
             /**
-             * Disables the generation of the standard "descriptor()" accessor, which can
-             * conflict with a field of the same name.  This is meant to make migration
-             * from proto1 easier; new code should avoid fields named "descriptor".
+             * MessageOptions noStandardDescriptorAccessor.
              * @type {boolean}
              */
             $prototype.noStandardDescriptorAccessor = false;
 
             /**
-             * Is this message deprecated?
-             * Depending on the target platform, this can emit Deprecated annotations
-             * for the message, or it will be completely ignored; in the very least,
-             * this is a formalization for deprecating messages.
+             * MessageOptions deprecated.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * Whether the message is an automatically generated map entry type for the
-             * maps field.
-             * 
-             * For maps fields:
-             * map<KeyType, ValueType> map_field = 1;
-             * The parsed descriptor looks like:
-             * message MapFieldEntry {
-             * option map_entry = true;
-             * optional KeyType key = 1;
-             * optional ValueType value = 2;
-             * }
-             * repeated MapFieldEntry map_field = 1;
-             * 
-             * Implementations may choose not to generate the map_entry=true message, but
-             * use a native map in the target language to hold the keys and values.
-             * The reflection APIs in such implementions still need to work as
-             * if the field is a repeated message field.
-             * 
-             * NOTE: Do not set the option in .proto files. Always use the maps syntax
-             * instead. The option should only be implicitly set by the proto compiler
-             * parser.
+             * MessageOptions mapEntry.
              * @type {boolean}
              */
             $prototype.mapEntry = false;
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * MessageOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -13303,88 +13147,43 @@ $root.google = (function() {
             var $prototype = FieldOptions.prototype;
 
             /**
-             * The ctype option instructs the C++ code generator to use a different
-             * representation of the field than it normally would.  See the specific
-             * options below.  This option is not yet implemented in the open source
-             * release -- sorry, we'll try to include it in a future version!
+             * FieldOptions ctype.
              * @type {number}
              */
             $prototype.ctype = undefined;
 
             /**
-             * The packed option can be enabled for repeated primitive fields to enable
-             * a more efficient representation on the wire. Rather than repeatedly
-             * writing the tag and type for each element, the entire array is encoded as
-             * a single length-delimited blob. In proto3, only explicit setting it to
-             * false will avoid using packed encoding.
+             * FieldOptions packed.
              * @type {boolean}
              */
             $prototype.packed = false;
 
             /**
-             * The jstype option determines the JavaScript type used for values of the
-             * field.  The option is permitted only for 64 bit integral and fixed types
-             * (int64, uint64, sint64, fixed64, sfixed64).  By default these types are
-             * represented as JavaScript strings.  This avoids loss of precision that can
-             * happen when a large value is converted to a floating point JavaScript
-             * numbers.  Specifying JS_NUMBER for the jstype causes the generated
-             * JavaScript code to use the JavaScript "number" type instead of strings.
-             * This option is an enum to permit additional types to be added,
-             * e.g. goog.math.Integer.
+             * FieldOptions jstype.
              * @type {number}
              */
             $prototype.jstype = undefined;
 
             /**
-             * Should this field be parsed lazily?  Lazy applies only to message-type
-             * fields.  It means that when the outer message is initially parsed, the
-             * inner message's contents will not be parsed but instead stored in encoded
-             * form.  The inner message will actually be parsed when it is first accessed.
-             * 
-             * This is only a hint.  Implementations are free to choose whether to use
-             * eager or lazy parsing regardless of the value of this option.  However,
-             * setting this option true suggests that the protocol author believes that
-             * using lazy parsing on this field is worth the additional bookkeeping
-             * overhead typically needed to implement it.
-             * 
-             * This option does not affect the public interface of any generated code;
-             * all method signatures remain the same.  Furthermore, thread-safety of the
-             * interface is not affected by this option; const methods remain safe to
-             * call from multiple threads concurrently, while non-const methods continue
-             * to require exclusive access.
-             * 
-             * 
-             * Note that implementations may choose not to check required fields within
-             * a lazy sub-message.  That is, calling IsInitialized() on the outer message
-             * may return true even if the inner message has missing required fields.
-             * This is necessary because otherwise the inner message would have to be
-             * parsed in order to perform the check, defeating the purpose of lazy
-             * parsing.  An implementation which chooses not to check required fields
-             * must be consistent about it.  That is, for any particular sub-message, the
-             * implementation must eitheralways* check its required fields, or *never*
-             * check its required fields, regardless of whether or not the message has
-             * been parsed.
+             * FieldOptions lazy.
              * @type {boolean}
              */
             $prototype.lazy = false;
 
             /**
-             * Is this field deprecated?
-             * Depending on the target platform, this can emit Deprecated annotations
-             * for accessors, or it will be completely ignored; in the very least, this
-             * is a formalization for deprecating fields.
+             * FieldOptions deprecated.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * For Google-internal migration only. Do not use.
+             * FieldOptions weak.
              * @type {boolean}
              */
             $prototype.weak = false;
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * FieldOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -13743,7 +13542,7 @@ $root.google = (function() {
              * @name CType
              * @memberof google.protobuf.FieldOptions
              * @enum {number}
-             * @property {number} STRING=0 Default mode.
+             * @property {number} STRING=0 STRING value
              * @property {number} CORD=1 CORD value
              * @property {number} STRING_PIECE=2 STRING_PIECE value
              */
@@ -13761,9 +13560,9 @@ $root.google = (function() {
              * @name JSType
              * @memberof google.protobuf.FieldOptions
              * @enum {number}
-             * @property {number} JS_NORMAL=0 Use the default type.
-             * @property {number} JS_STRING=1 Use JavaScript strings.
-             * @property {number} JS_NUMBER=2 Use JavaScript numbers.
+             * @property {number} JS_NORMAL=0 JS_NORMAL value
+             * @property {number} JS_STRING=1 JS_STRING value
+             * @property {number} JS_NUMBER=2 JS_NUMBER value
              */
             FieldOptions.JSType = (function() {
                 var valuesById = {},
@@ -13797,7 +13596,7 @@ $root.google = (function() {
             var $prototype = OneofOptions.prototype;
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * OneofOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -14002,23 +13801,19 @@ $root.google = (function() {
             var $prototype = EnumOptions.prototype;
 
             /**
-             * Set this option to true to allow mapping different tag names to the same
-             * value.
+             * EnumOptions allowAlias.
              * @type {boolean}
              */
             $prototype.allowAlias = false;
 
             /**
-             * Is this enum deprecated?
-             * Depending on the target platform, this can emit Deprecated annotations
-             * for the enum, or it will be completely ignored; in the very least, this
-             * is a formalization for deprecating enums.
+             * EnumOptions deprecated.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * EnumOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -14298,16 +14093,13 @@ $root.google = (function() {
             var $prototype = EnumValueOptions.prototype;
 
             /**
-             * Is this enum value deprecated?
-             * Depending on the target platform, this can emit Deprecated annotations
-             * for the enum value, or it will be completely ignored; in the very least,
-             * this is a formalization for deprecating enum values.
+             * EnumValueOptions deprecated.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * EnumValueOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -14536,16 +14328,13 @@ $root.google = (function() {
             var $prototype = ServiceOptions.prototype;
 
             /**
-             * Is this service deprecated?
-             * Depending on the target platform, this can emit Deprecated annotations
-             * for the service, or it will be completely ignored; in the very least,
-             * this is a formalization for deprecating services.
+             * ServiceOptions deprecated.
              * @type {boolean}
              */
             $prototype.deprecated = false;
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * ServiceOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -14774,10 +14563,7 @@ $root.google = (function() {
             var $prototype = MethodOptions.prototype;
 
             /**
-             * Is this method deprecated?
-             * Depending on the target platform, this can emit Deprecated annotations
-             * for the method, or it will be completely ignored; in the very least,
-             * this is a formalization for deprecating methods.
+             * MethodOptions deprecated.
              * @type {boolean}
              */
             $prototype.deprecated = false;
@@ -14789,7 +14575,7 @@ $root.google = (function() {
             $prototype.idempotencyLevel = undefined;
 
             /**
-             * The parser stores options it doesn't recognize here. See above.
+             * MethodOptions uninterpretedOption.
              * @type {Array.<google.protobuf.UninterpretedOption>}
              */
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
@@ -15037,15 +14823,13 @@ $root.google = (function() {
             };
 
             /**
-             * Is this method side-effect-free (or safe in HTTP parlance), or idempotent,
-             * or neither? HTTP based RPC implementation may choose GET verb for safe
-             * methods, and PUT verb for idempotent methods instead of the default POST.
+             * IdempotencyLevel enum.
              * @name IdempotencyLevel
              * @memberof google.protobuf.MethodOptions
              * @enum {number}
              * @property {number} IDEMPOTENCY_UNKNOWN=0 IDEMPOTENCY_UNKNOWN value
-             * @property {number} NO_SIDE_EFFECTS=1 implies idempotent
-             * @property {number} IDEMPOTENT=2 idempotent, but may have side effects
+             * @property {number} NO_SIDE_EFFECTS=1 NO_SIDE_EFFECTS value
+             * @property {number} IDEMPOTENT=2 IDEMPOTENT value
              */
             MethodOptions.IdempotencyLevel = (function() {
                 var valuesById = {},
@@ -15063,12 +14847,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new UninterpretedOption.
-             * @classdesc A message representing a option the parser does not recognize. This only
-             * appears in options protos created by the compiler::Parser class.
-             * DescriptorPool resolves these when building Descriptor objects. Therefore,
-             * options protos in descriptor objects (e.g. returned by Descriptor::options(),
-             * or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
-             * in them.
              * @exports google.protobuf.UninterpretedOption
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -15091,8 +14869,7 @@ $root.google = (function() {
             $prototype.name = $protobuf.util.emptyArray;
 
             /**
-             * The value of the uninterpreted option, in whatever type the tokenizer
-             * identified it as during parsing. Exactly one of these should be set.
+             * UninterpretedOption identifierValue.
              * @type {string}
              */
             $prototype.identifierValue = "";
@@ -15494,11 +15271,6 @@ $root.google = (function() {
 
                 /**
                  * Constructs a new NamePart.
-                 * @classdesc The name of the uninterpreted option.  Each string represents a segment in
-                 * a dot-separated name.  is_extension is true iff a segment represents an
-                 * extension (denoted with parentheses in options specs in .proto files).
-                 * E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false] } represents
-                 * "foo.(bar.baz).qux".
                  * @exports google.protobuf.UninterpretedOption.NamePart
                  * @constructor
                  * @param {Object} [properties] Properties to set
@@ -15707,8 +15479,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new SourceCodeInfo.
-             * @classdesc Encapsulates information about the original source file from which a
-             * FileDescriptorProto was generated.
              * @exports google.protobuf.SourceCodeInfo
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -15725,49 +15495,7 @@ $root.google = (function() {
             var $prototype = SourceCodeInfo.prototype;
 
             /**
-             * A Location identifies a piece of source code in a .proto file which
-             * corresponds to a particular definition.  This information is intended
-             * to be useful to IDEs, code indexers, documentation generators, and similar
-             * tools.
-             * 
-             * For example, say we have a file like:
-             * message Foo {
-             * optional string foo = 1;
-             * }
-             * Let's look at just the field definition:
-             * optional string foo = 1;
-             * ^       ^^     ^^  ^  ^^^
-             * a       bc     de  f  ghi
-             * We have the following locations:
-             * span   path               represents
-             * [a,i)  [ 4, 0, 2, 0 ]     The whole field definition.
-             * [a,b)  [ 4, 0, 2, 0, 4 ]  The label (optional).
-             * [c,d)  [ 4, 0, 2, 0, 5 ]  The type (string).
-             * [e,f)  [ 4, 0, 2, 0, 1 ]  The name (foo).
-             * [g,h)  [ 4, 0, 2, 0, 3 ]  The number (1).
-             * 
-             * Notes:
-             * - A location may refer to a repeated field itself (i.e. not to any
-             * particular index within it).  This is used whenever a set of elements are
-             * logically enclosed in a single code segment.  For example, an entire
-             * extend block (possibly containing multiple extension definitions) will
-             * have an outer location whose path refers to the "extensions" repeated
-             * field without an index.
-             * - Multiple locations may have the same path.  This happens when a single
-             * logical declaration is spread out across multiple places.  The most
-             * obvious example is the "extend" block again -- there may be multiple
-             * extend blocks in the same scope, each of which will have the same path.
-             * - A location's span is not always a subset of its parent's span.  For
-             * example, the "extendee" of an extension declaration appears at the
-             * beginning of the "extend" block and is shared by all extensions within
-             * the block.
-             * - Just because a location's span is a subset of some other location's span
-             * does not mean that it is a descendent.  For example, a "group" defines
-             * both a type and a field in a single declaration.  Thus, the locations
-             * corresponding to the type and field and their components will overlap.
-             * - Code which tries to interpret locations should probably be designed to
-             * ignore those that it doesn't understand, as more types of locations could
-             * be recorded in the future.
+             * SourceCodeInfo location.
              * @type {Array.<google.protobuf.SourceCodeInfo.Location>}
              */
             $prototype.location = $protobuf.util.emptyArray;
@@ -15969,91 +15697,19 @@ $root.google = (function() {
                 var $prototype = Location.prototype;
 
                 /**
-                 * Identifies which part of the FileDescriptorProto was defined at this
-                 * location.
-                 * 
-                 * Each element is a field number or an index.  They form a path from
-                 * the root FileDescriptorProto to the place where the definition.  For
-                 * example, this path:
-                 * [ 4, 3, 2, 7, 1 ]
-                 * refers to:
-                 * file.message_type(3)4, 3
-                 * .field(7)2, 7
-                 * .name()1
-                 * This is because FileDescriptorProto.message_type has field number 4:
-                 * repeated DescriptorProto message_type = 4;
-                 * and DescriptorProto.field has field number 2:
-                 * repeated FieldDescriptorProto field = 2;
-                 * and FieldDescriptorProto.name has field number 1:
-                 * optional string name = 1;
-                 * 
-                 * Thus, the above path gives the location of a field name.  If we removed
-                 * the last element:
-                 * [ 4, 3, 2, 7 ]
-                 * this path refers to the whole field declaration (from the beginning
-                 * of the label to the terminating semicolon).
+                 * Location path.
                  * @type {Array.<number>}
                  */
                 $prototype.path = $protobuf.util.emptyArray;
 
                 /**
-                 * Always has exactly three or four elements: start line, start column,
-                 * end line (optional, otherwise assumed same as start line), end column.
-                 * These are packed into a single field for efficiency.  Note that line
-                 * and column numbers are zero-based -- typically you will want to add
-                 * 1 to each before displaying to a user.
+                 * Location span.
                  * @type {Array.<number>}
                  */
                 $prototype.span = $protobuf.util.emptyArray;
 
                 /**
-                 * If this SourceCodeInfo represents a complete declaration, these are any
-                 * comments appearing before and after the declaration which appear to be
-                 * attached to the declaration.
-                 * 
-                 * A series of line comments appearing on consecutive lines, with no other
-                 * tokens appearing on those lines, will be treated as a single comment.
-                 * 
-                 * leading_detached_comments will keep paragraphs of comments that appear
-                 * before (but not connected to) the current element. Each paragraph,
-                 * separated by empty lines, will be one comment element in the repeated
-                 * field.
-                 * 
-                 * Only the comment content is provided; comment markers (e.g.) are
-                 * stripped out.  For block comments, leading whitespace and an asterisk
-                 * will be stripped from the beginning of each line other than the first.
-                 * Newlines are included in the output.
-                 * 
-                 * Examples:
-                 * 
-                 * optional int32 foo = 1;Comment attached to foo.
-                 * Comment attached to bar.
-                 * optional int32 bar = 2;
-                 * 
-                 * optional string baz = 3;
-                 * Comment attached to baz.
-                 * Another line attached to baz.
-                 * 
-                 * Comment attached to qux.
-                 * 
-                 * Another line attached to qux.
-                 * optional double qux = 4;
-                 * 
-                 * Detached comment for corge. This is not leading or trailing comments
-                 * to qux or corge because there are blank lines separating it from
-                 * both.
-                 * 
-                 * Detached comment for corge paragraph 2.
-                 * 
-                 * optional string corge = 5;
-                 * Block comment attached
-                 * to corge.  Leading asterisks
-                 * will be removed. * /
-                 * Block comment attached to
-                 * grault. * /
-                 * optional int32 grault = 6;
-                 * 
-                 * ignored detached comments.
+                 * Location leadingComments.
                  * @type {string}
                  */
                 $prototype.leadingComments = "";
@@ -16393,9 +16049,6 @@ $root.google = (function() {
 
             /**
              * Constructs a new GeneratedCodeInfo.
-             * @classdesc Describes the relationship between generated code and its original source
-             * file. A GeneratedCodeInfo message is associated with only one generated
-             * source file, but may contain references to different source .proto files.
              * @exports google.protobuf.GeneratedCodeInfo
              * @constructor
              * @param {Object} [properties] Properties to set
@@ -16412,8 +16065,7 @@ $root.google = (function() {
             var $prototype = GeneratedCodeInfo.prototype;
 
             /**
-             * An Annotation connects some span of text in generated code to an element
-             * of its generating .proto file.
+             * GeneratedCodeInfo annotation.
              * @type {Array.<google.protobuf.GeneratedCodeInfo.Annotation>}
              */
             $prototype.annotation = $protobuf.util.emptyArray;
@@ -16615,29 +16267,25 @@ $root.google = (function() {
                 var $prototype = Annotation.prototype;
 
                 /**
-                 * Identifies the element in the original source .proto file. This field
-                 * is formatted the same as SourceCodeInfo.Location.path.
+                 * Annotation path.
                  * @type {Array.<number>}
                  */
                 $prototype.path = $protobuf.util.emptyArray;
 
                 /**
-                 * Identifies the filesystem path to the original source .proto.
+                 * Annotation sourceFile.
                  * @type {string}
                  */
                 $prototype.sourceFile = "";
 
                 /**
-                 * Identifies the starting offset in bytes in the generated code
-                 * that relates to the identified object.
+                 * Annotation begin.
                  * @type {number}
                  */
                 $prototype.begin = 0;
 
                 /**
-                 * Identifies the ending offset in bytes in the generated code that
-                 * relates to the identified offset. The end offset should be one past
-                 * the last relevant byte (so the length of the text = end - begin).
+                 * Annotation end.
                  * @type {number}
                  */
                 $prototype.end = 0;

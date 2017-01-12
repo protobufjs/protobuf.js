@@ -313,9 +313,14 @@ function parse(source, root, options) {
             throw illegal(name, "name");
         name = applyCase(name);
         skip("=");
-        var id = parseId(next());
-        var field = parseInlineOptions(new Field(name, id, type, rule, extend));
+        var line = tn.line(),
+            field = new Field(name, parseId(next()), type, rule, extend);
         field.comment = cmnt();
+        parseInlineOptions(field);
+        if (!field.comment) {
+            peek();
+            field.comment = cmnt(/* if on */ line);
+        }
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
         if (field.repeated && types.packed[type] !== undefined && !isProto3)
@@ -379,8 +384,14 @@ function parse(source, root, options) {
         name = applyCase(name);
         skip("=");
         var id = parseId(next());
-        var field = parseInlineOptions(new MapField(name, id, keyType, valueType));
+        var field = new MapField(name, id, keyType, valueType);
+        var line = tn.line();
         field.comment = cmnt();
+        parseInlineOptions(field);
+        if (!field.comment) {
+            peek();
+            field.comment = cmnt(/* if on */ line);
+        }
         parent.add(field);
     }
 
@@ -447,7 +458,7 @@ function parse(source, root, options) {
         parent.add(name, value, comment);
         parseInlineOptions({}); // skips enum value options
         if (!comment) {
-            peek(); // trailing comment?
+            peek();
             parent.comments[name] = cmnt(/* if on */ line);
         }
     }

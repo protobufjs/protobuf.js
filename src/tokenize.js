@@ -43,8 +43,7 @@ function tokenize(source) {
         length = source.length,
         line = 1,
         comment = null,
-        commentLine = 0,
-        commentType = 0;
+        commentLine = 0;
 
 
     var stack = [];
@@ -96,23 +95,19 @@ function tokenize(source) {
      * @returns {undefined}
      * @inner
      */
-    function setComment(start, end, type) {
-        var count = 0;
+    function setComment(start, end) {
         var text = source
-            .substring(start, end)
+            .substring(start, end);
+        if (text.charAt(0) !== "*") // use /**-blocks only
+            return;
+        text = text
             .split(/\n/g)
             .map(function(line) {
-                ++count;
                 return line.replace(/ *[*/]+ */, "").trim();
             })
             .join("\n")
             .trim();
-        if (comment && commentLine === line - count && type === commentType)
-            comment += "\n" + text;
-        else {
-            comment = text;
-            commentType = type;
-        }
+        comment = text;
         commentLine = line;
     }
 
@@ -149,7 +144,6 @@ function tokenize(source) {
                         if (offset === length)
                             return null;
                     ++offset;
-                    setComment(start, offset - 1, 0);
                     ++line;
                     repeat = true;
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
@@ -234,13 +228,11 @@ function tokenize(source) {
      * @returns {?string} Comment, if any
      * @inner
      */
-    function cmnt(ifOnLine) {
-        var ret = (ifOnLine !== undefined
-            ? commentLine === ifOnLine
-            : commentLine === line - 1) && comment || null;
-        if (comment) {
+    function cmnt() {
+        var ret = commentLine === line - 1 && comment || null;
+        if (ret) {
             comment = null;
-            commentLine = -1;
+            commentLine = 0;
         }
         return ret;
     }

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 22:35:30 UTC
+ * Compiled Thu, 12 Jan 2017 23:28:43 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1071,6 +1071,8 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
+    if (!fields.length)
+        return util.codegen()("return {}");
     var gen = util.codegen("m", "o")
     ("if(!o)")
         ("o={}")

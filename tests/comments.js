@@ -7,16 +7,15 @@ tape.test("comments", function(test) {
         if (err)
             throw test.fail(err.message);
 
-        test.equal(root.lookup("Test1").comment, "Message\nwith\na\ncomment.", "should parse * blocks");
-        test.equal(root.lookup("Test2").comment, "Message\nwith\na\ncomment.", "should parse // blocks");
-        test.equal(root.lookup("Test3").comment, "a\ncomment.", "should parse the last coherent type of mixed blocks");
+        test.equal(root.lookup("Test1").comment, "Message\nwith\na\ncomment.", "should parse /**-blocks");
+        test.equal(root.lookup("Test2").comment, null, "should not parse //-blocks");
+        test.equal(root.lookup("Test3").comment, null, "should not parse /*-blocks");
 
         test.equal(root.lookup("Test1.field1").comment, "Field with a comment.", "should parse blocks for message fields");
-        test.equal(root.lookup("Test1.field2").comment, "Field with a comment.", "should parse lines for message fields");
+        test.equal(root.lookup("Test1.field2").comment, null, "should not parse lines for message fields");
 
         test.equal(root.lookup("Test3").comments.ONE, "Value with a comment.", "should parse blocks for enum values");
-        test.equal(root.lookup("Test3").comments.TWO, "Value with a comment.", "should parse lines for enum values");
-        test.equal(root.lookup("Test3").comments.THREE, "Value with a comment.", "should parse trailing lines for enum values");
+        test.equal(root.lookup("Test3").comments.TWO, null, "should not parse lines for enum values");
 
         test.end();
     });

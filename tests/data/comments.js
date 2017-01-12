@@ -39,7 +39,7 @@ $root.Test1 = (function() {
     $prototype.field1 = "";
 
     /**
-     * Field with a comment.
+     * Test1 field2.
      * @type {number}
      */
     $prototype.field2 = 0;
@@ -230,10 +230,6 @@ $root.Test2 = (function() {
 
     /**
      * Constructs a new Test2.
-     * @classdesc Message
-     * with
-     * a
-     * comment.
      * @exports Test2
      * @constructor
      * @param {Object} [properties] Properties to set
@@ -350,15 +346,8 @@ $root.Test2 = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Test2.toObject = (function() { return function toObject(message, options) {
-        if (!options) {
-            options = {};
-        }
-        var object = {};
-        for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
-            switch (keys[i]) {}
-        }
-        return object;
+    Test2.toObject = (function() { return function toObject() {
+        return {};
     };})();
 
     /**
@@ -386,20 +375,17 @@ $root.Test2 = (function() {
 })();
 
 /**
- * a
- * comment.
+ * Test3 enum.
  * @exports Test3
  * @enum {number}
  * @property {number} ONE=1 Value with a comment.
- * @property {number} TWO=2 Value with a comment.
- * @property {number} THREE=3 Value with a comment.
+ * @property {number} TWO=2 TWO value
  */
 $root.Test3 = (function() {
     var valuesById = {},
         values = Object.create(valuesById);
     values[valuesById[1] = "ONE"] = 1;
     values[valuesById[2] = "TWO"] = 2;
-    values[valuesById[3] = "THREE"] = 3;
     return values;
 })();
 

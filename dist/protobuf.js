@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 22:35:30 UTC
+ * Compiled Thu, 12 Jan 2017 23:28:43 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1289,6 +1289,8 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
+    if (!fields.length)
+        return util.codegen()("return {}");
     var gen = util.codegen("m", "o")
     ("if(!o)")
         ("o={}")
@@ -3530,9 +3532,14 @@ function parse(source, root, options) {
             throw illegal(name, "name");
         name = applyCase(name);
         skip("=");
-        var id = parseId(next());
-        var field = parseInlineOptions(new Field(name, id, type, rule, extend));
+        var line = tn.line(),
+            field = new Field(name, parseId(next()), type, rule, extend);
         field.comment = cmnt();
+        parseInlineOptions(field);
+        if (!field.comment) {
+            peek();
+            field.comment = cmnt(/* if on */ line);
+        }
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
         if (field.repeated && types.packed[type] !== undefined && !isProto3)
@@ -3596,8 +3603,14 @@ function parse(source, root, options) {
         name = applyCase(name);
         skip("=");
         var id = parseId(next());
-        var field = parseInlineOptions(new MapField(name, id, keyType, valueType));
+        var field = new MapField(name, id, keyType, valueType);
+        var line = tn.line();
         field.comment = cmnt();
+        parseInlineOptions(field);
+        if (!field.comment) {
+            peek();
+            field.comment = cmnt(/* if on */ line);
+        }
         parent.add(field);
     }
 
@@ -3664,7 +3677,7 @@ function parse(source, root, options) {
         parent.add(name, value, comment);
         parseInlineOptions({}); // skips enum value options
         if (!comment) {
-            peek(); // trailing comment?
+            peek();
             parent.comments[name] = cmnt(/* if on */ line);
         }
     }
@@ -5090,8 +5103,7 @@ function tokenize(source) {
         length = source.length,
         line = 1,
         comment = null,
-        commentLine = 0,
-        commentType = 0;
+        commentLine = 0;
 
 
     var stack = [];
@@ -5143,23 +5155,19 @@ function tokenize(source) {
      * @returns {undefined}
      * @inner
      */
-    function setComment(start, end, type) {
-        var count = 0;
+    function setComment(start, end) {
         var text = source
-            .substring(start, end)
+            .substring(start, end);
+        if (text.charAt(0) !== "*") // use /**-blocks only
+            return;
+        text = text
             .split(/\n/g)
             .map(function(line) {
-                ++count;
                 return line.replace(/ *[*/]+ */, "").trim();
             })
             .join("\n")
             .trim();
-        if (comment && commentLine === line - count && type === commentType)
-            comment += "\n" + text;
-        else {
-            comment = text;
-            commentType = type;
-        }
+        comment = text;
         commentLine = line;
     }
 
@@ -5196,7 +5204,6 @@ function tokenize(source) {
                         if (offset === length)
                             return null;
                     ++offset;
-                    setComment(start, offset - 1, 0);
                     ++line;
                     repeat = true;
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
@@ -5281,13 +5288,11 @@ function tokenize(source) {
      * @returns {?string} Comment, if any
      * @inner
      */
-    function cmnt(ifOnLine) {
-        var ret = (ifOnLine !== undefined
-            ? commentLine === ifOnLine
-            : commentLine === line - 1) && comment || null;
-        if (comment) {
+    function cmnt() {
+        var ret = commentLine === line - 1 && comment || null;
+        if (ret) {
             comment = null;
-            commentLine = -1;
+            commentLine = 0;
         }
         return ret;
     }

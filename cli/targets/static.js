@@ -652,7 +652,7 @@ function buildEnum(ref, enm) {
         );
     Object.keys(enm.values).forEach(function(key) {
         var val = enm.values[key];
-        comment.push("@property {number} " + key + "=" + val + " " + (enm.comments[key] ? enm.comments[key] : key + " value"));
+        comment.push("@property {number} " + key + "=" + val + " " + (enm.comments[key] || key + " value"));
     });
     pushComment(comment);
     push(name(ref) + "." + name(enm.name) + " = (function() {");

@@ -184,6 +184,8 @@ function genValuePartial_toObject(gen, field, fieldIndex, prop) {
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
+    if (!fields.length)
+        return util.codegen()("return {}");
     var gen = util.codegen("m", "o")
     ("if(!o)")
         ("o={}")
