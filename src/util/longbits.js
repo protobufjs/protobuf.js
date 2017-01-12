@@ -6,6 +6,8 @@ var util = require("../util/runtime");
 
 /**
  * Any compatible Long instance.
+ * 
+ * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
  * @typedef Long
  * @type {Object}
  * @property {number} low Low bits

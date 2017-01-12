@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 04:58:55 UTC
+ * Compiled Thu, 12 Jan 2017 17:03:48 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1113,12 +1113,20 @@ var converter = exports;
 var Enum = require(16),
     util = require(34);
 
-function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
+/**
+ * Generates a partial value fromObject conveter.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {number} fieldIndex Field index
+ * @param {string} prop Property reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
+function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) {
-            var values = field.resolvedType.values;
-            gen
+            var values = field.resolvedType.values; gen
             ("switch(d%s){", prop);
             Object.keys(values).forEach(function(key) {
                 if (field.repeated && values[key] === field.typeDefault) gen
@@ -1128,8 +1136,7 @@ function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
                 ("case %j:", values[key])
                     ("m%s=%j", prop, values[key])
                     ("break");
-            });
-            gen
+            }); gen
             ("}");
         } else gen
             ("m%s=types[%d].fromObject(d%s)", prop, fieldIndex, prop);
@@ -1182,6 +1189,7 @@ function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
                 break;
         }
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
@@ -1204,8 +1212,7 @@ converter.fromObject = function fromObject(mtype) {
     ("if(d%s){", prop, prop)
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
-            genConvertValue_fromObject(gen, field, i, prop + "[ks[i]]");
-            gen
+            genValuePartial_fromObject(gen, field, i, prop + "[ks[i]]")
         ("}")
     ("}");
 
@@ -1214,8 +1221,7 @@ converter.fromObject = function fromObject(mtype) {
     ("if(d%s){", prop)
         ("m%s=[]", prop)
         ("for(var i=0;i<d%s.length;++i){", prop);
-            genConvertValue_fromObject(gen, field, i, prop + "[i]");
-            gen
+            genValuePartial_fromObject(gen, field, i, prop + "[i]")
         ("}")
     ("}");
 
@@ -1223,17 +1229,25 @@ converter.fromObject = function fromObject(mtype) {
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!==undefined&&d%s!==null){", prop, prop);
-        genConvertValue_fromObject(gen, field, i, prop);
+        genValuePartial_fromObject(gen, field, i, prop);
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
-    }
-    return gen
+    } return gen
     ("return m");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-function genConvertValue_toObject(gen, field, fieldIndex, prop) {
+/**
+ * Generates a partial value toObject converter.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {number} fieldIndex Field index
+ * @param {string} prop Property reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
+function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
@@ -1263,6 +1277,7 @@ function genConvertValue_toObject(gen, field, fieldIndex, prop) {
                 break;
         }
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
@@ -1284,8 +1299,7 @@ converter.toObject = function toObject(mtype) {
         fields.forEach(function(field) {
             if (field.resolve().repeated) gen
         ("d%s=[]", field._prop);
-        });
-        gen
+        }); gen
     ("}");
     }
     var mapFields = fields.filter(function(field) { return field.map; });
@@ -1294,8 +1308,7 @@ converter.toObject = function toObject(mtype) {
         fields.forEach(function(field) {
             if (field.map) gen
         ("d%s={}", field._prop);
-        });
-        gen
+        }); gen
     ("}");
     }
     var otherFields = fields.filter(function(field) { return !(field.repeated || field.map); });
@@ -1316,41 +1329,34 @@ converter.toObject = function toObject(mtype) {
         ("d%s=o.bytes===String?%j:%s", field._prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
             else gen
         ("d%s=%j", field._prop, field.typeDefault); // also messages (=null)
-        });
-        gen
+        }); gen
     ("}");
-    }
-    gen
+    } gen
     ("for(var ks=Object.keys(m),i=0;i<ks.length;++i){")
         ("switch(ks[i]){");
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
-            prop  = field._prop;
-        gen
+            prop  = field._prop; gen
         ("case%j:", field.name);
         if (field.map) { gen
             ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
                 ("d%s={}", prop)
                 ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genConvertValue_toObject(gen, field, i, prop + "[ks2[j]]");
-            gen
+            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
                 ("}")
             ("}");
         } else if (field.repeated) { gen
             ("if(m%s.length){", prop)
                 ("d%s=[]", prop)
                 ("for(var j=0;j<m%s.length;++j){", prop);
-            genConvertValue_toObject(gen, field, i, prop + "[j]");
-            gen
+            genValuePartial_toObject(gen, field, i, prop + "[j]")
                 ("}")
             ("}");
         } else { gen
             ("if(m%s!==undefined&&m%s!==null){", prop, prop);
-            genConvertValue_toObject(gen, field, i, prop);
-            gen
+            genValuePartial_toObject(gen, field, i, prop)
             ("}");
-        }
-        gen
+        } gen
             ("break");
     }
     return gen
@@ -1394,15 +1400,13 @@ function decoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            ref   = "m" + field._prop;
-        gen
+            ref   = "m" + field._prop; gen
             ("case %d:", field.id);
 
         // Map fields
         if (field.map) {
 
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            gen
+            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
                 ("r.skip().pos++") // assumes id 1 + key wireType
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
@@ -1448,6 +1452,7 @@ function decoder(mtype) {
             ("default:")
                 ("r.skipType(t&7)")
                 ("break")
+
         ("}")
     ("}")
     ("return m");
@@ -1462,7 +1467,16 @@ var Enum     = require(16),
     types    = require(33),
     util     = require(34);
 
-function genEncodeType(gen, field, fieldIndex, ref) {
+/**
+ * Generates a partial message type encoder.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {number} fieldIndex Field index
+ * @param {string} ref Variable reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
+function genTypePartial(gen, field, fieldIndex, ref) {
     return field.resolvedType.group
         ? gen("types[%d].encode(%s,w.uint32(%d)).uint32(%d)", fieldIndex, ref, (field.id << 3 | 3) >>> 0, (field.id << 3 | 4) >>> 0)
         : gen("types[%d].encode(%s,w.uint32(%d).fork()).ldelim()", fieldIndex, ref, (field.id << 3 | 2) >>> 0);
@@ -1490,8 +1504,7 @@ function encoder(mtype) {
 
         // Map fields
         if (field.map) {
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            gen
+            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
     ("if(%s&&%s!==util.emptyObject){", ref, ref)
         ("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)
             ("w.uint32(%d).fork().uint32(%d).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[keyType], keyType);
@@ -1522,10 +1535,10 @@ function encoder(mtype) {
     ("if(%s){", ref)
         ("for(var i=0;i<%s.length;++i)", ref);
                 if (wireType === undefined)
-            genEncodeType(gen, field, i, ref + "[i]");
+            genTypePartial(gen, field, i, ref + "[i]");
                 else gen
             ("w.uint32(%d).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
-            gen
+                gen
     ("}");
 
             }
@@ -1544,7 +1557,7 @@ function encoder(mtype) {
             }
 
             if (wireType === undefined)
-        genEncodeType(gen, field, i, ref);
+        genTypePartial(gen, field, i, ref);
             else gen
         ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
 
@@ -1553,30 +1566,25 @@ function encoder(mtype) {
 
     // oneofs
     for (var i = 0; i < oneofs.length; ++i) {
-        var oneof = oneofs[i];
-        gen
+        var oneof = oneofs[i]; gen
         ("switch(%s){", "m" + oneof._prop);
         var oneofFields = oneof.fieldsArray;
         for (var j = 0; j < oneofFields.length; ++j) {
             var field    = oneofFields[j],
                 type     = field.resolvedType instanceof Enum ? "uint32" : field.type,
                 wireType = types.basic[type];
-                ref      = "m" + field._prop;
-            gen
+                ref      = "m" + field._prop; gen
             ("case%j:", field.name);
-
             if (wireType === undefined)
-                genEncodeType(gen, field, fields.indexOf(field), ref);
+                genTypePartial(gen, field, fields.indexOf(field), ref);
             else gen
                 ("w.uint32(%d).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
-
             gen
                 ("break");
-
         } gen
         ("}");
     }
-
+    
     return gen
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
@@ -5640,13 +5648,13 @@ TypePrototype.from = TypePrototype.fromObject;
  * @type {Object}
  * @property {*} [longs] Long conversion type.
  * Valid values are `String` and `Number` (the global types).
- * Defaults to copy the present value, which is a possibly unsafe number without and a Long with a long library.
+ * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
  * @property {*} [enums] Enum value conversion type.
  * Only valid value is `String` (the global type).
  * Defaults to copy the present value, which is the numeric id.
  * @property {*} [bytes] Bytes value conversion type.
- * Valid values are `Array` and `String` (the global types).
- * Defaults to copy the present value, which usually is Buffer under node and an Uint8Array in the browser.
+ * Valid values are `Array` and (a base64 encoded) `String` (the global types).
+ * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
  * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`
@@ -5925,6 +5933,8 @@ var util = require(36);
 
 /**
  * Any compatible Long instance.
+ * 
+ * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
  * @typedef Long
  * @type {Object}
  * @property {number} low Low bits
@@ -6326,6 +6336,15 @@ function invalid(field, expected) {
     return field.fullName.substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
 
+/**
+ * Generates a partial value verifier.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {number} fieldIndex Field index
+ * @param {string} ref Variable reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
 function genVerifyValue(gen, field, fieldIndex, ref) {
     /* eslint-disable no-unexpected-multiline */
     if (field.resolvedType) {
@@ -6380,9 +6399,18 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 break;
         }
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline */
 }
 
+/**
+ * Generates a partial key verifier.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {string} ref Variable reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
 function genVerifyKey(gen, field, ref) {
     /* eslint-disable no-unexpected-multiline */
     switch (field.keyType) {
@@ -6407,6 +6435,7 @@ function genVerifyKey(gen, field, ref) {
                 ("return%j", invalid(field, "boolean key"));
             break;
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline */
 }
 
@@ -6434,8 +6463,7 @@ function verifier(mtype) {
                 ("var k=Object.keys(%s)", ref)
                 ("for(var i=0;i<k.length;++i){");
                     genVerifyKey(gen, field, "k[i]");
-                    genVerifyValue(gen, field, i, ref + "[k[i]]");
-                gen
+                    genVerifyValue(gen, field, i, ref + "[k[i]]")
                 ("}")
             ("}");
 
@@ -6445,7 +6473,7 @@ function verifier(mtype) {
                 ("if(!Array.isArray(%s))", ref)
                     ("return%j", invalid(field, "array"))
                 ("for(var i=0;i<%s.length;++i){", ref);
-                    genVerifyValue(gen, field, i, ref + "[i]"); gen
+                    genVerifyValue(gen, field, i, ref + "[i]")
                 ("}")
             ("}");
 
@@ -6461,8 +6489,7 @@ function verifier(mtype) {
             if (!field.required) gen
             ("}");
         }
-    }
-    return gen
+    } return gen
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }

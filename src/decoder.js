@@ -31,15 +31,13 @@ function decoder(mtype) {
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i].resolve(),
             type  = field.resolvedType instanceof Enum ? "uint32" : field.type,
-            ref   = "m" + field._prop;
-        gen
+            ref   = "m" + field._prop; gen
             ("case %d:", field.id);
 
         // Map fields
         if (field.map) {
 
-            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType;
-            gen
+            var keyType = field.resolvedKeyType /* only valid is enum */ ? "uint32" : field.keyType; gen
                 ("r.skip().pos++") // assumes id 1 + key wireType
                 ("if(%s===util.emptyObject)", ref)
                     ("%s={}", ref)
@@ -85,6 +83,7 @@ function decoder(mtype) {
             ("default:")
                 ("r.skipType(t&7)")
                 ("break")
+
         ("}")
     ("}")
     ("return m");

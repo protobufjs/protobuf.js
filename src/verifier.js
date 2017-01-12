@@ -8,6 +8,15 @@ function invalid(field, expected) {
     return field.fullName.substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
 
+/**
+ * Generates a partial value verifier.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {number} fieldIndex Field index
+ * @param {string} ref Variable reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
 function genVerifyValue(gen, field, fieldIndex, ref) {
     /* eslint-disable no-unexpected-multiline */
     if (field.resolvedType) {
@@ -62,9 +71,18 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                 break;
         }
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline */
 }
 
+/**
+ * Generates a partial key verifier.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {string} ref Variable reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
 function genVerifyKey(gen, field, ref) {
     /* eslint-disable no-unexpected-multiline */
     switch (field.keyType) {
@@ -89,6 +107,7 @@ function genVerifyKey(gen, field, ref) {
                 ("return%j", invalid(field, "boolean key"));
             break;
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline */
 }
 
@@ -116,8 +135,7 @@ function verifier(mtype) {
                 ("var k=Object.keys(%s)", ref)
                 ("for(var i=0;i<k.length;++i){");
                     genVerifyKey(gen, field, "k[i]");
-                    genVerifyValue(gen, field, i, ref + "[k[i]]");
-                gen
+                    genVerifyValue(gen, field, i, ref + "[k[i]]")
                 ("}")
             ("}");
 
@@ -127,7 +145,7 @@ function verifier(mtype) {
                 ("if(!Array.isArray(%s))", ref)
                     ("return%j", invalid(field, "array"))
                 ("for(var i=0;i<%s.length;++i){", ref);
-                    genVerifyValue(gen, field, i, ref + "[i]"); gen
+                    genVerifyValue(gen, field, i, ref + "[i]")
                 ("}")
             ("}");
 
@@ -143,8 +161,7 @@ function verifier(mtype) {
             if (!field.required) gen
             ("}");
         }
-    }
-    return gen
+    } return gen
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }

@@ -8,12 +8,20 @@ var converter = exports;
 var Enum = require("./enum"),
     util = require("./util");
 
-function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
+/**
+ * Generates a partial value fromObject conveter.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {number} fieldIndex Field index
+ * @param {string} prop Property reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
+function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) {
-            var values = field.resolvedType.values;
-            gen
+            var values = field.resolvedType.values; gen
             ("switch(d%s){", prop);
             Object.keys(values).forEach(function(key) {
                 if (field.repeated && values[key] === field.typeDefault) gen
@@ -23,8 +31,7 @@ function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
                 ("case %j:", values[key])
                     ("m%s=%j", prop, values[key])
                     ("break");
-            });
-            gen
+            }); gen
             ("}");
         } else gen
             ("m%s=types[%d].fromObject(d%s)", prop, fieldIndex, prop);
@@ -77,6 +84,7 @@ function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
                 break;
         }
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
@@ -99,8 +107,7 @@ converter.fromObject = function fromObject(mtype) {
     ("if(d%s){", prop, prop)
         ("m%s={}", prop)
         ("for(var ks=Object.keys(d%s),i=0;i<ks.length;++i){", prop);
-            genConvertValue_fromObject(gen, field, i, prop + "[ks[i]]");
-            gen
+            genValuePartial_fromObject(gen, field, i, prop + "[ks[i]]")
         ("}")
     ("}");
 
@@ -109,8 +116,7 @@ converter.fromObject = function fromObject(mtype) {
     ("if(d%s){", prop)
         ("m%s=[]", prop)
         ("for(var i=0;i<d%s.length;++i){", prop);
-            genConvertValue_fromObject(gen, field, i, prop + "[i]");
-            gen
+            genValuePartial_fromObject(gen, field, i, prop + "[i]")
         ("}")
     ("}");
 
@@ -118,17 +124,25 @@ converter.fromObject = function fromObject(mtype) {
         } else {
             if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
     ("if(d%s!==undefined&&d%s!==null){", prop, prop);
-        genConvertValue_fromObject(gen, field, i, prop);
+        genValuePartial_fromObject(gen, field, i, prop);
             if (!(field.resolvedType instanceof Enum)) gen
     ("}");
         }
-    }
-    return gen
+    } return gen
     ("return m");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-function genConvertValue_toObject(gen, field, fieldIndex, prop) {
+/**
+ * Generates a partial value toObject converter.
+ * @param {Codegen} gen Codegen instance
+ * @param {Field} field Reflected field
+ * @param {number} fieldIndex Field index
+ * @param {string} prop Property reference
+ * @returns {Codegen} Codegen instance
+ * @ignore
+ */
+function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
         if (field.resolvedType instanceof Enum) gen
@@ -158,6 +172,7 @@ function genConvertValue_toObject(gen, field, fieldIndex, prop) {
                 break;
         }
     }
+    return gen;
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
@@ -179,8 +194,7 @@ converter.toObject = function toObject(mtype) {
         fields.forEach(function(field) {
             if (field.resolve().repeated) gen
         ("d%s=[]", field._prop);
-        });
-        gen
+        }); gen
     ("}");
     }
     var mapFields = fields.filter(function(field) { return field.map; });
@@ -189,8 +203,7 @@ converter.toObject = function toObject(mtype) {
         fields.forEach(function(field) {
             if (field.map) gen
         ("d%s={}", field._prop);
-        });
-        gen
+        }); gen
     ("}");
     }
     var otherFields = fields.filter(function(field) { return !(field.repeated || field.map); });
@@ -211,41 +224,34 @@ converter.toObject = function toObject(mtype) {
         ("d%s=o.bytes===String?%j:%s", field._prop, String.fromCharCode.apply(String, field.typeDefault), "[" + Array.prototype.slice.call(field.typeDefault).join(",") + "]");
             else gen
         ("d%s=%j", field._prop, field.typeDefault); // also messages (=null)
-        });
-        gen
+        }); gen
     ("}");
-    }
-    gen
+    } gen
     ("for(var ks=Object.keys(m),i=0;i<ks.length;++i){")
         ("switch(ks[i]){");
     for (var i = 0; i < fields.length; ++i) {
         var field = fields[i],
-            prop  = field._prop;
-        gen
+            prop  = field._prop; gen
         ("case%j:", field.name);
         if (field.map) { gen
             ("if(m%s&&m%s!==util.emptyObject){", prop, prop)
                 ("d%s={}", prop)
                 ("for(var ks2=Object.keys(m%s),j=0;j<ks2.length;++j){", prop);
-            genConvertValue_toObject(gen, field, i, prop + "[ks2[j]]");
-            gen
+            genValuePartial_toObject(gen, field, i, prop + "[ks2[j]]")
                 ("}")
             ("}");
         } else if (field.repeated) { gen
             ("if(m%s.length){", prop)
                 ("d%s=[]", prop)
                 ("for(var j=0;j<m%s.length;++j){", prop);
-            genConvertValue_toObject(gen, field, i, prop + "[j]");
-            gen
+            genValuePartial_toObject(gen, field, i, prop + "[j]")
                 ("}")
             ("}");
         } else { gen
             ("if(m%s!==undefined&&m%s!==null){", prop, prop);
-            genConvertValue_toObject(gen, field, i, prop);
-            gen
+            genValuePartial_toObject(gen, field, i, prop)
             ("}");
-        }
-        gen
+        } gen
             ("break");
     }
     return gen

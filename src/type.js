@@ -426,13 +426,13 @@ TypePrototype.from = TypePrototype.fromObject;
  * @type {Object}
  * @property {*} [longs] Long conversion type.
  * Valid values are `String` and `Number` (the global types).
- * Defaults to copy the present value, which is a possibly unsafe number without and a Long with a long library.
+ * Defaults to copy the present value, which is a possibly unsafe number without and a {@link Long} with a long library.
  * @property {*} [enums] Enum value conversion type.
  * Only valid value is `String` (the global type).
  * Defaults to copy the present value, which is the numeric id.
  * @property {*} [bytes] Bytes value conversion type.
- * Valid values are `Array` and `String` (the global types).
- * Defaults to copy the present value, which usually is Buffer under node and an Uint8Array in the browser.
+ * Valid values are `Array` and (a base64 encoded) `String` (the global types).
+ * Defaults to copy the present value, which usually is a Buffer under node and an Uint8Array in the browser.
  * @property {boolean} [defaults=false] Also sets default values on the resulting object
  * @property {boolean} [arrays=false] Sets empty arrays for missing repeated fields even if `defaults=false`
  * @property {boolean} [objects=false] Sets empty objects for missing map fields even if `defaults=false`

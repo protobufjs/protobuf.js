@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 04:58:55 UTC
+ * Compiled Thu, 12 Jan 2017 17:03:48 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -903,6 +903,8 @@ var util = require(9);
 
 /**
  * Any compatible Long instance.
+ * 
+ * This is a minimal stand-alone definition of a Long instance. The actual type is that exported by long.js.
  * @typedef Long
  * @type {Object}
  * @property {number} low Low bits

@@ -167,28 +167,7 @@ Custom classes are automatically populated with static `encode`, `encodeDelimite
 
 ### Using the Reader/Writer interface directly
 
-While only useful for the adventurous cherishing an aversion to [generated static code](https://github.com/dcodeIO/protobuf.js#command-line), it's also possible to use the Reader/Writer interface directly using just the [minimal runtime](https://github.com/dcodeIO/protobuf.js/tree/master/dist/runtime) to build custom encoders and decoders that work accross modern to ancient browsers and, of course, node:
-
-```js
-var writer = protobuf.Writer.create();
-var buffer = writer
-    .uint32(/* id */ 1 << 3 | /* wireType */ 2)
-    .string("hello world!")
-    .finish();
-
-var reader = protobuf.Reader.create(buffer);
-while (reader.pos < reader.len) {
-    var tag = reader.uint32();
-    switch (/* id */ tag >>> 3) {
-        case 1:
-            console.log(reader.string());
-            break;
-        default:
-            reader.skipType(/* wireType */ tag & 7);
-            break;
-    }
-}
-```
+While only useful for the adventurous cherishing an aversion to [generated static code](https://github.com/dcodeIO/protobuf.js#command-line), it's also possible to use the Reader/Writer interface directly depending just on the [minimal runtime](https://github.com/dcodeIO/protobuf.js/tree/master/dist/runtime) ([basic example](https://github.com/dcodeIO/protobuf.js/blob/master/examples/reader-writer.js)).
 
 Easy ways to obtain example code snippets are either setting `protobuf.util.codegen.verbose = true` while watching the magic as it happens, or simply inspecting generated static code.
 
@@ -196,6 +175,8 @@ Easy ways to obtain example code snippets are either setting `protobuf.util.code
 
 ```protobuf
 // greeter.proto
+syntax = "proto3";
+
 service Greeter {
     rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
