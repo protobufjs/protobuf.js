@@ -511,21 +511,39 @@ $root.Package = (function() {
      */
     Package.fromObject = (function(types) { return function fromObject(object) {
         var message = new $root.Package();
-        message.name = String(object.name);
-        message.version = String(object.version);
-        message.description = String(object.description);
-        message.author = String(object.author);
-        message.license = String(object.license);
-        message.repository = types[5].fromObject(object.repository);
-        message.bugs = String(object.bugs);
-        message.homepage = String(object.homepage);
+        if (object.name !== undefined && object.name !== null) {
+            message.name = String(object.name);
+        }
+        if (object.version !== undefined && object.version !== null) {
+            message.version = String(object.version);
+        }
+        if (object.description !== undefined && object.description !== null) {
+            message.description = String(object.description);
+        }
+        if (object.author !== undefined && object.author !== null) {
+            message.author = String(object.author);
+        }
+        if (object.license !== undefined && object.license !== null) {
+            message.license = String(object.license);
+        }
+        if (object.repository !== undefined && object.repository !== null) {
+            message.repository = types[5].fromObject(object.repository);
+        }
+        if (object.bugs !== undefined && object.bugs !== null) {
+            message.bugs = String(object.bugs);
+        }
+        if (object.homepage !== undefined && object.homepage !== null) {
+            message.homepage = String(object.homepage);
+        }
         if (object.keywords) {
             message.keywords = [];
             for (var i = 0; i < object.keywords.length; ++i) {
                 message.keywords[i] = String(object.keywords[i]);
             }
         }
-        message.main = String(object.main);
+        if (object.main !== undefined && object.main !== null) {
+            message.main = String(object.main);
+        }
         if (object.bin) {
             message.bin = {};
             for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i) {
@@ -556,7 +574,9 @@ $root.Package = (function() {
                 message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
             }
         }
-        message.types = String(object.types);
+        if (object.types !== undefined && object.types !== null) {
+            message.types = String(object.types);
+        }
         if (object.cliDependencies) {
             message.cliDependencies = [];
             for (var i = 0; i < object.cliDependencies.length; ++i) {
@@ -897,8 +917,12 @@ $root.Package = (function() {
          */
         Repository.fromObject = (function() { return function fromObject(object) {
             var message = new $root.Package.Repository();
-            message.type = String(object.type);
-            message.url = String(object.url);
+            if (object.type !== undefined && object.type !== null) {
+                message.type = String(object.type);
+            }
+            if (object.url !== undefined && object.url !== null) {
+                message.url = String(object.url);
+            }
             return message;
         };})();
 

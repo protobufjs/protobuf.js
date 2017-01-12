@@ -129,7 +129,9 @@ $root.A = (function() {
      */
     A.fromObject = (function() { return function fromObject(object) {
         var message = new $root.A();
-        message.whatever = String(object.whatever);
+        if (object.whatever !== undefined && object.whatever !== null) {
+            message.whatever = String(object.whatever);
+        }
         return message;
     };})();
 
@@ -316,7 +318,9 @@ $root.B = (function() {
      */
     B.fromObject = (function(types) { return function fromObject(object) {
         var message = new $root.B();
-        message.A = types[0].fromObject(object.A);
+        if (object.A !== undefined && object.A !== null) {
+            message.A = types[0].fromObject(object.A);
+        }
         return message;
     };})($types);
 

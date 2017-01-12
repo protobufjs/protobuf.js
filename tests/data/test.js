@@ -326,18 +326,16 @@ $root.jspb = (function() {
              */
             EnumContainer.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.EnumContainer();
-                if (object.outerEnum !== undefined && object.outerEnum !== null) {
-                    switch (object.outerEnum) {
-                    case "FOO":
-                    case 1:
-                        message.outerEnum = 1;
-                        break;
+                switch (object.outerEnum) {
+                case "FOO":
+                case 1:
+                    message.outerEnum = 1;
+                    break;
 
-                    case "BAR":
-                    case 2:
-                        message.outerEnum = 2;
-                        break;
-                    }
+                case "BAR":
+                case 2:
+                    message.outerEnum = 2;
+                    break;
                 }
                 return message;
             };})();
@@ -563,14 +561,18 @@ $root.jspb = (function() {
              */
             Simple1.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.Simple1();
-                message.aString = String(object.aString);
+                if (object.aString !== undefined && object.aString !== null) {
+                    message.aString = String(object.aString);
+                }
                 if (object.aRepeatedString) {
                     message.aRepeatedString = [];
                     for (var i = 0; i < object.aRepeatedString.length; ++i) {
                         message.aRepeatedString[i] = String(object.aRepeatedString[i]);
                     }
                 }
-                message.aBoolean = Boolean(object.aBoolean);
+                if (object.aBoolean !== undefined && object.aBoolean !== null) {
+                    message.aBoolean = Boolean(object.aBoolean);
+                }
                 return message;
             };})();
 
@@ -796,7 +798,9 @@ $root.jspb = (function() {
              */
             Simple2.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.Simple2();
-                message.aString = String(object.aString);
+                if (object.aString !== undefined && object.aString !== null) {
+                    message.aString = String(object.aString);
+                }
                 if (object.aRepeatedString) {
                     message.aRepeatedString = [];
                     for (var i = 0; i < object.aRepeatedString.length; ++i) {
@@ -1038,10 +1042,18 @@ $root.jspb = (function() {
              */
             SpecialCases.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.SpecialCases();
-                message.normal = String(object.normal);
-                message["default"] = String(object["default"]);
-                message["function"] = String(object["function"]);
-                message["var"] = String(object["var"]);
+                if (object.normal !== undefined && object.normal !== null) {
+                    message.normal = String(object.normal);
+                }
+                if (object["default"] !== undefined && object["default"] !== null) {
+                    message["default"] = String(object["default"]);
+                }
+                if (object["function"] !== undefined && object["function"] !== null) {
+                    message["function"] = String(object["function"]);
+                }
+                if (object["var"] !== undefined && object["var"] !== null) {
+                    message["var"] = String(object["var"]);
+                }
                 return message;
             };})();
 
@@ -1338,9 +1350,15 @@ $root.jspb = (function() {
              */
             OptionalFields.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.jspb.test.OptionalFields();
-                message.aString = String(object.aString);
-                message.aBool = Boolean(object.aBool);
-                message.aNestedMessage = types[2].fromObject(object.aNestedMessage);
+                if (object.aString !== undefined && object.aString !== null) {
+                    message.aString = String(object.aString);
+                }
+                if (object.aBool !== undefined && object.aBool !== null) {
+                    message.aBool = Boolean(object.aBool);
+                }
+                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
+                    message.aNestedMessage = types[2].fromObject(object.aNestedMessage);
+                }
                 if (object.aRepeatedMessage) {
                     message.aRepeatedMessage = [];
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
@@ -1568,7 +1586,9 @@ $root.jspb = (function() {
                  */
                 Nested.fromObject = (function() { return function fromObject(object) {
                     var message = new $root.jspb.test.OptionalFields.Nested();
-                    message.anInt = object.anInt | 0;
+                    if (object.anInt !== undefined && object.anInt !== null) {
+                        message.anInt = object.anInt | 0;
+                    }
                     return message;
                 };})();
 
@@ -1931,12 +1951,24 @@ $root.jspb = (function() {
              */
             HasExtensions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.jspb.test.HasExtensions();
-                message.str1 = String(object.str1);
-                message.str2 = String(object.str2);
-                message.str3 = String(object.str3);
-                message[".jspb.test.IsExtension.extField"] = types[3].fromObject(object[".jspb.test.IsExtension.extField"]);
-                message[".jspb.test.IndirectExtension.simple"] = types[4].fromObject(object[".jspb.test.IndirectExtension.simple"]);
-                message[".jspb.test.IndirectExtension.str"] = String(object[".jspb.test.IndirectExtension.str"]);
+                if (object.str1 !== undefined && object.str1 !== null) {
+                    message.str1 = String(object.str1);
+                }
+                if (object.str2 !== undefined && object.str2 !== null) {
+                    message.str2 = String(object.str2);
+                }
+                if (object.str3 !== undefined && object.str3 !== null) {
+                    message.str3 = String(object.str3);
+                }
+                if (object[".jspb.test.IsExtension.extField"] !== undefined && object[".jspb.test.IsExtension.extField"] !== null) {
+                    message[".jspb.test.IsExtension.extField"] = types[3].fromObject(object[".jspb.test.IsExtension.extField"]);
+                }
+                if (object[".jspb.test.IndirectExtension.simple"] !== undefined && object[".jspb.test.IndirectExtension.simple"] !== null) {
+                    message[".jspb.test.IndirectExtension.simple"] = types[4].fromObject(object[".jspb.test.IndirectExtension.simple"]);
+                }
+                if (object[".jspb.test.IndirectExtension.str"] !== undefined && object[".jspb.test.IndirectExtension.str"] !== null) {
+                    message[".jspb.test.IndirectExtension.str"] = String(object[".jspb.test.IndirectExtension.str"]);
+                }
                 if (object[".jspb.test.IndirectExtension.repeatedStr"]) {
                     message[".jspb.test.IndirectExtension.repeatedStr"] = [];
                     for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedStr"].length; ++i) {
@@ -1949,7 +1981,9 @@ $root.jspb = (function() {
                         message[".jspb.test.IndirectExtension.repeatedSimple"][i] = types[7].fromObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i]);
                     }
                 }
-                message[".jspb.test.simple1"] = types[8].fromObject(object[".jspb.test.simple1"]);
+                if (object[".jspb.test.simple1"] !== undefined && object[".jspb.test.simple1"] !== null) {
+                    message[".jspb.test.simple1"] = types[8].fromObject(object[".jspb.test.simple1"]);
+                }
                 return message;
             };})($types);
 
@@ -2285,9 +2319,15 @@ $root.jspb = (function() {
              */
             Complex.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.jspb.test.Complex();
-                message.aString = String(object.aString);
-                message.anOutOfOrderBool = Boolean(object.anOutOfOrderBool);
-                message.aNestedMessage = types[2].fromObject(object.aNestedMessage);
+                if (object.aString !== undefined && object.aString !== null) {
+                    message.aString = String(object.aString);
+                }
+                if (object.anOutOfOrderBool !== undefined && object.anOutOfOrderBool !== null) {
+                    message.anOutOfOrderBool = Boolean(object.anOutOfOrderBool);
+                }
+                if (object.aNestedMessage !== undefined && object.aNestedMessage !== null) {
+                    message.aNestedMessage = types[2].fromObject(object.aNestedMessage);
+                }
                 if (object.aRepeatedMessage) {
                     message.aRepeatedMessage = [];
                     for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
@@ -2511,7 +2551,9 @@ $root.jspb = (function() {
                  */
                 Nested.fromObject = (function() { return function fromObject(object) {
                     var message = new $root.jspb.test.Complex.Nested();
-                    message.anInt = object.anInt | 0;
+                    if (object.anInt !== undefined && object.anInt !== null) {
+                        message.anInt = object.anInt | 0;
+                    }
                     return message;
                 };})();
 
@@ -2849,7 +2891,9 @@ $root.jspb = (function() {
                  */
                 Complex.fromObject = (function() { return function fromObject(object) {
                     var message = new $root.jspb.test.OuterMessage.Complex();
-                    message.innerComplexField = object.innerComplexField | 0;
+                    if (object.innerComplexField !== undefined && object.innerComplexField !== null) {
+                        message.innerComplexField = object.innerComplexField | 0;
+                    }
                     return message;
                 };})();
 
@@ -3035,7 +3079,9 @@ $root.jspb = (function() {
              */
             IsExtension.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.IsExtension();
-                message.ext1 = String(object.ext1);
+                if (object.ext1 !== undefined && object.ext1 !== null) {
+                    message.ext1 = String(object.ext1);
+                }
                 return message;
             };})();
 
@@ -3471,42 +3517,50 @@ $root.jspb = (function() {
              */
             DefaultValues.fromObject = (function(util) { return function fromObject(object) {
                 var message = new $root.jspb.test.DefaultValues();
-                message.stringField = String(object.stringField);
-                message.boolField = Boolean(object.boolField);
-                if (util.Long) {
-                    (message.intField = util.Long.fromValue(object.intField)).unsigned = false;
-                } else {
-                    if (typeof object.intField === "string") {
-                        message.intField = parseInt(object.intField, 10);
+                if (object.stringField !== undefined && object.stringField !== null) {
+                    message.stringField = String(object.stringField);
+                }
+                if (object.boolField !== undefined && object.boolField !== null) {
+                    message.boolField = Boolean(object.boolField);
+                }
+                if (object.intField !== undefined && object.intField !== null) {
+                    if (util.Long) {
+                        (message.intField = util.Long.fromValue(object.intField)).unsigned = false;
                     } else {
-                        if (typeof object.intField === "number") {
-                            message.intField = object.intField;
+                        if (typeof object.intField === "string") {
+                            message.intField = parseInt(object.intField, 10);
                         } else {
-                            if (typeof object.intField === "object") {
-                                message.intField = new util.LongBits(object.intField.low, object.intField.high).toNumber();
+                            if (typeof object.intField === "number") {
+                                message.intField = object.intField;
+                            } else {
+                                if (typeof object.intField === "object") {
+                                    message.intField = new util.LongBits(object.intField.low, object.intField.high).toNumber();
+                                }
                             }
                         }
                     }
                 }
-                if (object.enumField !== undefined && object.enumField !== null) {
-                    switch (object.enumField) {
-                    case "E1":
-                    case 13:
-                        message.enumField = 13;
-                        break;
+                switch (object.enumField) {
+                case "E1":
+                case 13:
+                    message.enumField = 13;
+                    break;
 
-                    case "E2":
-                    case 77:
-                        message.enumField = 77;
-                        break;
-                    }
+                case "E2":
+                case 77:
+                    message.enumField = 77;
+                    break;
                 }
-                message.emptyField = String(object.emptyField);
-                if (typeof object.bytesField === "string") {
-                    util.base64.decode(object.bytesField, message.bytesField = util.newBuffer(util.base64.length(object.bytesField)), 0);
-                } else {
-                    if (object.bytesField && object.bytesField.length) {
-                        message.bytesField = object.bytesField;
+                if (object.emptyField !== undefined && object.emptyField !== null) {
+                    message.emptyField = String(object.emptyField);
+                }
+                if (object.bytesField !== undefined && object.bytesField !== null) {
+                    if (typeof object.bytesField === "string") {
+                        util.base64.decode(object.bytesField, message.bytesField = util.newBuffer(util.base64.length(object.bytesField)), 0);
+                    } else {
+                        if (object.bytesField && object.bytesField.length) {
+                            message.bytesField = object.bytesField;
+                        }
                     }
                 }
                 return message;
@@ -3903,24 +3957,36 @@ $root.jspb = (function() {
              */
             FloatingPointFields.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.FloatingPointFields();
-                message.optionalFloatField = Number(object.optionalFloatField);
-                message.requiredFloatField = Number(object.requiredFloatField);
+                if (object.optionalFloatField !== undefined && object.optionalFloatField !== null) {
+                    message.optionalFloatField = Number(object.optionalFloatField);
+                }
+                if (object.requiredFloatField !== undefined && object.requiredFloatField !== null) {
+                    message.requiredFloatField = Number(object.requiredFloatField);
+                }
                 if (object.repeatedFloatField) {
                     message.repeatedFloatField = [];
                     for (var i = 0; i < object.repeatedFloatField.length; ++i) {
                         message.repeatedFloatField[i] = Number(object.repeatedFloatField[i]);
                     }
                 }
-                message.defaultFloatField = Number(object.defaultFloatField);
-                message.optionalDoubleField = Number(object.optionalDoubleField);
-                message.requiredDoubleField = Number(object.requiredDoubleField);
+                if (object.defaultFloatField !== undefined && object.defaultFloatField !== null) {
+                    message.defaultFloatField = Number(object.defaultFloatField);
+                }
+                if (object.optionalDoubleField !== undefined && object.optionalDoubleField !== null) {
+                    message.optionalDoubleField = Number(object.optionalDoubleField);
+                }
+                if (object.requiredDoubleField !== undefined && object.requiredDoubleField !== null) {
+                    message.requiredDoubleField = Number(object.requiredDoubleField);
+                }
                 if (object.repeatedDoubleField) {
                     message.repeatedDoubleField = [];
                     for (var i = 0; i < object.repeatedDoubleField.length; ++i) {
                         message.repeatedDoubleField[i] = Number(object.repeatedDoubleField[i]);
                     }
                 }
-                message.defaultDoubleField = Number(object.defaultDoubleField);
+                if (object.defaultDoubleField !== undefined && object.defaultDoubleField !== null) {
+                    message.defaultDoubleField = Number(object.defaultDoubleField);
+                }
                 return message;
             };})();
 
@@ -4267,23 +4333,33 @@ $root.jspb = (function() {
              */
             TestClone.fromObject = (function(util, types) { return function fromObject(object) {
                 var message = new $root.jspb.test.TestClone();
-                message.str = String(object.str);
-                message.simple1 = types[1].fromObject(object.simple1);
+                if (object.str !== undefined && object.str !== null) {
+                    message.str = String(object.str);
+                }
+                if (object.simple1 !== undefined && object.simple1 !== null) {
+                    message.simple1 = types[1].fromObject(object.simple1);
+                }
                 if (object.simple2) {
                     message.simple2 = [];
                     for (var i = 0; i < object.simple2.length; ++i) {
                         message.simple2[i] = types[2].fromObject(object.simple2[i]);
                     }
                 }
-                if (typeof object.bytesField === "string") {
-                    util.base64.decode(object.bytesField, message.bytesField = util.newBuffer(util.base64.length(object.bytesField)), 0);
-                } else {
-                    if (object.bytesField && object.bytesField.length) {
-                        message.bytesField = object.bytesField;
+                if (object.bytesField !== undefined && object.bytesField !== null) {
+                    if (typeof object.bytesField === "string") {
+                        util.base64.decode(object.bytesField, message.bytesField = util.newBuffer(util.base64.length(object.bytesField)), 0);
+                    } else {
+                        if (object.bytesField && object.bytesField.length) {
+                            message.bytesField = object.bytesField;
+                        }
                     }
                 }
-                message.unused = String(object.unused);
-                message[".jspb.test.CloneExtension.extField"] = types[5].fromObject(object[".jspb.test.CloneExtension.extField"]);
+                if (object.unused !== undefined && object.unused !== null) {
+                    message.unused = String(object.unused);
+                }
+                if (object[".jspb.test.CloneExtension.extField"] !== undefined && object[".jspb.test.CloneExtension.extField"] !== null) {
+                    message[".jspb.test.CloneExtension.extField"] = types[5].fromObject(object[".jspb.test.CloneExtension.extField"]);
+                }
                 return message;
             };})($protobuf.util, $types);
 
@@ -4506,7 +4582,9 @@ $root.jspb = (function() {
              */
             CloneExtension.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.CloneExtension();
-                message.ext = String(object.ext);
+                if (object.ext !== undefined && object.ext !== null) {
+                    message.ext = String(object.ext);
+                }
                 return message;
             };})();
 
@@ -4726,9 +4804,15 @@ $root.jspb = (function() {
              */
             TestGroup.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.jspb.test.TestGroup();
-                message.id = String(object.id);
-                message.requiredSimple = types[1].fromObject(object.requiredSimple);
-                message.optionalSimple = types[2].fromObject(object.optionalSimple);
+                if (object.id !== undefined && object.id !== null) {
+                    message.id = String(object.id);
+                }
+                if (object.requiredSimple !== undefined && object.requiredSimple !== null) {
+                    message.requiredSimple = types[1].fromObject(object.requiredSimple);
+                }
+                if (object.optionalSimple !== undefined && object.optionalSimple !== null) {
+                    message.optionalSimple = types[2].fromObject(object.optionalSimple);
+                }
                 return message;
             };})($types);
 
@@ -4944,8 +5028,12 @@ $root.jspb = (function() {
              */
             TestReservedNames.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.TestReservedNames();
-                message.extension = object.extension | 0;
-                message[".jspb.test.TestReservedNamesExtension.foo"] = object[".jspb.test.TestReservedNamesExtension.foo"] | 0;
+                if (object.extension !== undefined && object.extension !== null) {
+                    message.extension = object.extension | 0;
+                }
+                if (object[".jspb.test.TestReservedNamesExtension.foo"] !== undefined && object[".jspb.test.TestReservedNamesExtension.foo"] !== null) {
+                    message[".jspb.test.TestReservedNamesExtension.foo"] = object[".jspb.test.TestReservedNamesExtension.foo"] | 0;
+                }
                 return message;
             };})();
 
@@ -5562,21 +5650,39 @@ $root.jspb = (function() {
              */
             TestMessageWithOneof.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.jspb.test.TestMessageWithOneof();
-                message.pone = String(object.pone);
-                message.pthree = String(object.pthree);
-                message.rone = types[2].fromObject(object.rone);
-                message.rtwo = String(object.rtwo);
-                message.normalField = Boolean(object.normalField);
+                if (object.pone !== undefined && object.pone !== null) {
+                    message.pone = String(object.pone);
+                }
+                if (object.pthree !== undefined && object.pthree !== null) {
+                    message.pthree = String(object.pthree);
+                }
+                if (object.rone !== undefined && object.rone !== null) {
+                    message.rone = types[2].fromObject(object.rone);
+                }
+                if (object.rtwo !== undefined && object.rtwo !== null) {
+                    message.rtwo = String(object.rtwo);
+                }
+                if (object.normalField !== undefined && object.normalField !== null) {
+                    message.normalField = Boolean(object.normalField);
+                }
                 if (object.repeatedField) {
                     message.repeatedField = [];
                     for (var i = 0; i < object.repeatedField.length; ++i) {
                         message.repeatedField[i] = String(object.repeatedField[i]);
                     }
                 }
-                message.aone = object.aone | 0;
-                message.atwo = object.atwo | 0;
-                message.bone = object.bone | 0;
-                message.btwo = object.btwo | 0;
+                if (object.aone !== undefined && object.aone !== null) {
+                    message.aone = object.aone | 0;
+                }
+                if (object.atwo !== undefined && object.atwo !== null) {
+                    message.atwo = object.atwo | 0;
+                }
+                if (object.bone !== undefined && object.bone !== null) {
+                    message.bone = object.bone | 0;
+                }
+                if (object.btwo !== undefined && object.btwo !== null) {
+                    message.btwo = object.btwo | 0;
+                }
                 return message;
             };})($types);
 
@@ -5845,12 +5951,16 @@ $root.jspb = (function() {
              */
             TestEndsWithBytes.fromObject = (function(util) { return function fromObject(object) {
                 var message = new $root.jspb.test.TestEndsWithBytes();
-                message.value = object.value | 0;
-                if (typeof object.data === "string") {
-                    util.base64.decode(object.data, message.data = util.newBuffer(util.base64.length(object.data)), 0);
-                } else {
-                    if (object.data && object.data.length) {
-                        message.data = object.data;
+                if (object.value !== undefined && object.value !== null) {
+                    message.value = object.value | 0;
+                }
+                if (object.data !== undefined && object.data !== null) {
+                    if (typeof object.data === "string") {
+                        util.base64.decode(object.data, message.data = util.newBuffer(util.base64.length(object.data)), 0);
+                    } else {
+                        if (object.data && object.data.length) {
+                            message.data = object.data;
+                        }
                     }
                 }
                 return message;
@@ -6506,7 +6616,9 @@ $root.jspb = (function() {
                         message.mapBoolString[keys[i]] = String(object.mapBoolString[keys[i]]);
                     }
                 }
-                message.testMapFields = types[10].fromObject(object.testMapFields);
+                if (object.testMapFields !== undefined && object.testMapFields !== null) {
+                    message.testMapFields = types[10].fromObject(object.testMapFields);
+                }
                 if (object.mapStringTestmapfields) {
                     message.mapStringTestmapfields = {};
                     for (var keys = Object.keys(object.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
@@ -6829,7 +6941,9 @@ $root.jspb = (function() {
              */
             MapValueMessageNoBinary.fromObject = (function() { return function fromObject(object) {
                 var message = new $root.jspb.test.MapValueMessageNoBinary();
-                message.foo = object.foo | 0;
+                if (object.foo !== undefined && object.foo !== null) {
+                    message.foo = object.foo | 0;
+                }
                 return message;
             };})();
 
@@ -7316,7 +7430,9 @@ $root.jspb = (function() {
                      */
                     Message.fromObject = (function() { return function fromObject(object) {
                         var message = new $root.jspb.test.Deeply.Nested.Message();
-                        message.count = object.count | 0;
+                        if (object.count !== undefined && object.count !== null) {
+                            message.count = object.count | 0;
+                        }
                         return message;
                     };})();
 
@@ -8026,8 +8142,12 @@ $root.google = (function() {
              */
             FileDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.FileDescriptorProto();
-                message.name = String(object.name);
-                message["package"] = String(object["package"]);
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
+                if (object["package"] !== undefined && object["package"] !== null) {
+                    message["package"] = String(object["package"]);
+                }
                 if (object.dependency) {
                     message.dependency = [];
                     for (var i = 0; i < object.dependency.length; ++i) {
@@ -8070,9 +8190,15 @@ $root.google = (function() {
                         message.extension[i] = types[8].fromObject(object.extension[i]);
                     }
                 }
-                message.options = types[9].fromObject(object.options);
-                message.sourceCodeInfo = types[10].fromObject(object.sourceCodeInfo);
-                message.syntax = String(object.syntax);
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[9].fromObject(object.options);
+                }
+                if (object.sourceCodeInfo !== undefined && object.sourceCodeInfo !== null) {
+                    message.sourceCodeInfo = types[10].fromObject(object.sourceCodeInfo);
+                }
+                if (object.syntax !== undefined && object.syntax !== null) {
+                    message.syntax = String(object.syntax);
+                }
                 return message;
             };})($types);
 
@@ -8608,7 +8734,9 @@ $root.google = (function() {
              */
             DescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.DescriptorProto();
-                message.name = String(object.name);
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
                 if (object.field) {
                     message.field = [];
                     for (var i = 0; i < object.field.length; ++i) {
@@ -8645,7 +8773,9 @@ $root.google = (function() {
                         message.oneofDecl[i] = types[6].fromObject(object.oneofDecl[i]);
                     }
                 }
-                message.options = types[7].fromObject(object.options);
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[7].fromObject(object.options);
+                }
                 if (object.reservedRange) {
                     message.reservedRange = [];
                     for (var i = 0; i < object.reservedRange.length; ++i) {
@@ -8944,8 +9074,12 @@ $root.google = (function() {
                  */
                 ExtensionRange.fromObject = (function() { return function fromObject(object) {
                     var message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
-                    message.start = object.start | 0;
-                    message.end = object.end | 0;
+                    if (object.start !== undefined && object.start !== null) {
+                        message.start = object.start | 0;
+                    }
+                    if (object.end !== undefined && object.end !== null) {
+                        message.end = object.end | 0;
+                    }
                     return message;
                 };})();
 
@@ -9153,8 +9287,12 @@ $root.google = (function() {
                  */
                 ReservedRange.fromObject = (function() { return function fromObject(object) {
                     var message = new $root.google.protobuf.DescriptorProto.ReservedRange();
-                    message.start = object.start | 0;
-                    message.end = object.end | 0;
+                    if (object.start !== undefined && object.start !== null) {
+                        message.start = object.start | 0;
+                    }
+                    if (object.end !== undefined && object.end !== null) {
+                        message.end = object.end | 0;
+                    }
                     return message;
                 };})();
 
@@ -9540,125 +9678,137 @@ $root.google = (function() {
              */
             FieldDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.FieldDescriptorProto();
-                message.name = String(object.name);
-                message.number = object.number | 0;
-                if (object.label !== undefined && object.label !== null) {
-                    switch (object.label) {
-                    case "LABEL_OPTIONAL":
-                    case 1:
-                        message.label = 1;
-                        break;
-
-                    case "LABEL_REQUIRED":
-                    case 2:
-                        message.label = 2;
-                        break;
-
-                    case "LABEL_REPEATED":
-                    case 3:
-                        message.label = 3;
-                        break;
-                    }
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
                 }
-                if (object.type !== undefined && object.type !== null) {
-                    switch (object.type) {
-                    case "TYPE_DOUBLE":
-                    case 1:
-                        message.type = 1;
-                        break;
-
-                    case "TYPE_FLOAT":
-                    case 2:
-                        message.type = 2;
-                        break;
-
-                    case "TYPE_INT64":
-                    case 3:
-                        message.type = 3;
-                        break;
-
-                    case "TYPE_UINT64":
-                    case 4:
-                        message.type = 4;
-                        break;
-
-                    case "TYPE_INT32":
-                    case 5:
-                        message.type = 5;
-                        break;
-
-                    case "TYPE_FIXED64":
-                    case 6:
-                        message.type = 6;
-                        break;
-
-                    case "TYPE_FIXED32":
-                    case 7:
-                        message.type = 7;
-                        break;
-
-                    case "TYPE_BOOL":
-                    case 8:
-                        message.type = 8;
-                        break;
-
-                    case "TYPE_STRING":
-                    case 9:
-                        message.type = 9;
-                        break;
-
-                    case "TYPE_GROUP":
-                    case 10:
-                        message.type = 10;
-                        break;
-
-                    case "TYPE_MESSAGE":
-                    case 11:
-                        message.type = 11;
-                        break;
-
-                    case "TYPE_BYTES":
-                    case 12:
-                        message.type = 12;
-                        break;
-
-                    case "TYPE_UINT32":
-                    case 13:
-                        message.type = 13;
-                        break;
-
-                    case "TYPE_ENUM":
-                    case 14:
-                        message.type = 14;
-                        break;
-
-                    case "TYPE_SFIXED32":
-                    case 15:
-                        message.type = 15;
-                        break;
-
-                    case "TYPE_SFIXED64":
-                    case 16:
-                        message.type = 16;
-                        break;
-
-                    case "TYPE_SINT32":
-                    case 17:
-                        message.type = 17;
-                        break;
-
-                    case "TYPE_SINT64":
-                    case 18:
-                        message.type = 18;
-                        break;
-                    }
+                if (object.number !== undefined && object.number !== null) {
+                    message.number = object.number | 0;
                 }
-                message.typeName = String(object.typeName);
-                message.extendee = String(object.extendee);
-                message.defaultValue = String(object.defaultValue);
-                message.oneofIndex = object.oneofIndex | 0;
-                message.jsonName = String(object.jsonName);
-                message.options = types[9].fromObject(object.options);
+                switch (object.label) {
+                case "LABEL_OPTIONAL":
+                case 1:
+                    message.label = 1;
+                    break;
+
+                case "LABEL_REQUIRED":
+                case 2:
+                    message.label = 2;
+                    break;
+
+                case "LABEL_REPEATED":
+                case 3:
+                    message.label = 3;
+                    break;
+                }
+                switch (object.type) {
+                case "TYPE_DOUBLE":
+                case 1:
+                    message.type = 1;
+                    break;
+
+                case "TYPE_FLOAT":
+                case 2:
+                    message.type = 2;
+                    break;
+
+                case "TYPE_INT64":
+                case 3:
+                    message.type = 3;
+                    break;
+
+                case "TYPE_UINT64":
+                case 4:
+                    message.type = 4;
+                    break;
+
+                case "TYPE_INT32":
+                case 5:
+                    message.type = 5;
+                    break;
+
+                case "TYPE_FIXED64":
+                case 6:
+                    message.type = 6;
+                    break;
+
+                case "TYPE_FIXED32":
+                case 7:
+                    message.type = 7;
+                    break;
+
+                case "TYPE_BOOL":
+                case 8:
+                    message.type = 8;
+                    break;
+
+                case "TYPE_STRING":
+                case 9:
+                    message.type = 9;
+                    break;
+
+                case "TYPE_GROUP":
+                case 10:
+                    message.type = 10;
+                    break;
+
+                case "TYPE_MESSAGE":
+                case 11:
+                    message.type = 11;
+                    break;
+
+                case "TYPE_BYTES":
+                case 12:
+                    message.type = 12;
+                    break;
+
+                case "TYPE_UINT32":
+                case 13:
+                    message.type = 13;
+                    break;
+
+                case "TYPE_ENUM":
+                case 14:
+                    message.type = 14;
+                    break;
+
+                case "TYPE_SFIXED32":
+                case 15:
+                    message.type = 15;
+                    break;
+
+                case "TYPE_SFIXED64":
+                case 16:
+                    message.type = 16;
+                    break;
+
+                case "TYPE_SINT32":
+                case 17:
+                    message.type = 17;
+                    break;
+
+                case "TYPE_SINT64":
+                case 18:
+                    message.type = 18;
+                    break;
+                }
+                if (object.typeName !== undefined && object.typeName !== null) {
+                    message.typeName = String(object.typeName);
+                }
+                if (object.extendee !== undefined && object.extendee !== null) {
+                    message.extendee = String(object.extendee);
+                }
+                if (object.defaultValue !== undefined && object.defaultValue !== null) {
+                    message.defaultValue = String(object.defaultValue);
+                }
+                if (object.oneofIndex !== undefined && object.oneofIndex !== null) {
+                    message.oneofIndex = object.oneofIndex | 0;
+                }
+                if (object.jsonName !== undefined && object.jsonName !== null) {
+                    message.jsonName = String(object.jsonName);
+                }
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[9].fromObject(object.options);
+                }
                 return message;
             };})($types);
 
@@ -9992,8 +10142,12 @@ $root.google = (function() {
              */
             OneofDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.OneofDescriptorProto();
-                message.name = String(object.name);
-                message.options = types[1].fromObject(object.options);
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[1].fromObject(object.options);
+                }
                 return message;
             };})($types);
 
@@ -10234,14 +10388,18 @@ $root.google = (function() {
              */
             EnumDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.EnumDescriptorProto();
-                message.name = String(object.name);
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
                 if (object.value) {
                     message.value = [];
                     for (var i = 0; i < object.value.length; ++i) {
                         message.value[i] = types[1].fromObject(object.value[i]);
                     }
                 }
-                message.options = types[2].fromObject(object.options);
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[2].fromObject(object.options);
+                }
                 return message;
             };})($types);
 
@@ -10483,9 +10641,15 @@ $root.google = (function() {
              */
             EnumValueDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.EnumValueDescriptorProto();
-                message.name = String(object.name);
-                message.number = object.number | 0;
-                message.options = types[2].fromObject(object.options);
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
+                if (object.number !== undefined && object.number !== null) {
+                    message.number = object.number | 0;
+                }
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[2].fromObject(object.options);
+                }
                 return message;
             };})($types);
 
@@ -10733,14 +10897,18 @@ $root.google = (function() {
              */
             ServiceDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.ServiceDescriptorProto();
-                message.name = String(object.name);
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
                 if (object.method) {
                     message.method = [];
                     for (var i = 0; i < object.method.length; ++i) {
                         message.method[i] = types[1].fromObject(object.method[i]);
                     }
                 }
-                message.options = types[2].fromObject(object.options);
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[2].fromObject(object.options);
+                }
                 return message;
             };})($types);
 
@@ -11036,12 +11204,24 @@ $root.google = (function() {
              */
             MethodDescriptorProto.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.MethodDescriptorProto();
-                message.name = String(object.name);
-                message.inputType = String(object.inputType);
-                message.outputType = String(object.outputType);
-                message.options = types[3].fromObject(object.options);
-                message.clientStreaming = Boolean(object.clientStreaming);
-                message.serverStreaming = Boolean(object.serverStreaming);
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
+                if (object.inputType !== undefined && object.inputType !== null) {
+                    message.inputType = String(object.inputType);
+                }
+                if (object.outputType !== undefined && object.outputType !== null) {
+                    message.outputType = String(object.outputType);
+                }
+                if (object.options !== undefined && object.options !== null) {
+                    message.options = types[3].fromObject(object.options);
+                }
+                if (object.clientStreaming !== undefined && object.clientStreaming !== null) {
+                    message.clientStreaming = Boolean(object.clientStreaming);
+                }
+                if (object.serverStreaming !== undefined && object.serverStreaming !== null) {
+                    message.serverStreaming = Boolean(object.serverStreaming);
+                }
                 return message;
             };})($types);
 
@@ -11531,37 +11711,61 @@ $root.google = (function() {
              */
             FileOptions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.FileOptions();
-                message.javaPackage = String(object.javaPackage);
-                message.javaOuterClassname = String(object.javaOuterClassname);
-                message.javaMultipleFiles = Boolean(object.javaMultipleFiles);
-                message.javaGenerateEqualsAndHash = Boolean(object.javaGenerateEqualsAndHash);
-                message.javaStringCheckUtf8 = Boolean(object.javaStringCheckUtf8);
-                if (object.optimizeFor !== undefined && object.optimizeFor !== null) {
-                    switch (object.optimizeFor) {
-                    case "SPEED":
-                    case 1:
-                        message.optimizeFor = 1;
-                        break;
-
-                    case "CODE_SIZE":
-                    case 2:
-                        message.optimizeFor = 2;
-                        break;
-
-                    case "LITE_RUNTIME":
-                    case 3:
-                        message.optimizeFor = 3;
-                        break;
-                    }
+                if (object.javaPackage !== undefined && object.javaPackage !== null) {
+                    message.javaPackage = String(object.javaPackage);
                 }
-                message.goPackage = String(object.goPackage);
-                message.ccGenericServices = Boolean(object.ccGenericServices);
-                message.javaGenericServices = Boolean(object.javaGenericServices);
-                message.pyGenericServices = Boolean(object.pyGenericServices);
-                message.deprecated = Boolean(object.deprecated);
-                message.ccEnableArenas = Boolean(object.ccEnableArenas);
-                message.objcClassPrefix = String(object.objcClassPrefix);
-                message.csharpNamespace = String(object.csharpNamespace);
+                if (object.javaOuterClassname !== undefined && object.javaOuterClassname !== null) {
+                    message.javaOuterClassname = String(object.javaOuterClassname);
+                }
+                if (object.javaMultipleFiles !== undefined && object.javaMultipleFiles !== null) {
+                    message.javaMultipleFiles = Boolean(object.javaMultipleFiles);
+                }
+                if (object.javaGenerateEqualsAndHash !== undefined && object.javaGenerateEqualsAndHash !== null) {
+                    message.javaGenerateEqualsAndHash = Boolean(object.javaGenerateEqualsAndHash);
+                }
+                if (object.javaStringCheckUtf8 !== undefined && object.javaStringCheckUtf8 !== null) {
+                    message.javaStringCheckUtf8 = Boolean(object.javaStringCheckUtf8);
+                }
+                switch (object.optimizeFor) {
+                case "SPEED":
+                case 1:
+                    message.optimizeFor = 1;
+                    break;
+
+                case "CODE_SIZE":
+                case 2:
+                    message.optimizeFor = 2;
+                    break;
+
+                case "LITE_RUNTIME":
+                case 3:
+                    message.optimizeFor = 3;
+                    break;
+                }
+                if (object.goPackage !== undefined && object.goPackage !== null) {
+                    message.goPackage = String(object.goPackage);
+                }
+                if (object.ccGenericServices !== undefined && object.ccGenericServices !== null) {
+                    message.ccGenericServices = Boolean(object.ccGenericServices);
+                }
+                if (object.javaGenericServices !== undefined && object.javaGenericServices !== null) {
+                    message.javaGenericServices = Boolean(object.javaGenericServices);
+                }
+                if (object.pyGenericServices !== undefined && object.pyGenericServices !== null) {
+                    message.pyGenericServices = Boolean(object.pyGenericServices);
+                }
+                if (object.deprecated !== undefined && object.deprecated !== null) {
+                    message.deprecated = Boolean(object.deprecated);
+                }
+                if (object.ccEnableArenas !== undefined && object.ccEnableArenas !== null) {
+                    message.ccEnableArenas = Boolean(object.ccEnableArenas);
+                }
+                if (object.objcClassPrefix !== undefined && object.objcClassPrefix !== null) {
+                    message.objcClassPrefix = String(object.objcClassPrefix);
+                }
+                if (object.csharpNamespace !== undefined && object.csharpNamespace !== null) {
+                    message.csharpNamespace = String(object.csharpNamespace);
+                }
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
@@ -11957,10 +12161,18 @@ $root.google = (function() {
              */
             MessageOptions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.MessageOptions();
-                message.messageSetWireFormat = Boolean(object.messageSetWireFormat);
-                message.noStandardDescriptorAccessor = Boolean(object.noStandardDescriptorAccessor);
-                message.deprecated = Boolean(object.deprecated);
-                message.mapEntry = Boolean(object.mapEntry);
+                if (object.messageSetWireFormat !== undefined && object.messageSetWireFormat !== null) {
+                    message.messageSetWireFormat = Boolean(object.messageSetWireFormat);
+                }
+                if (object.noStandardDescriptorAccessor !== undefined && object.noStandardDescriptorAccessor !== null) {
+                    message.noStandardDescriptorAccessor = Boolean(object.noStandardDescriptorAccessor);
+                }
+                if (object.deprecated !== undefined && object.deprecated !== null) {
+                    message.deprecated = Boolean(object.deprecated);
+                }
+                if (object.mapEntry !== undefined && object.mapEntry !== null) {
+                    message.mapEntry = Boolean(object.mapEntry);
+                }
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
@@ -12316,46 +12528,50 @@ $root.google = (function() {
              */
             FieldOptions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.FieldOptions();
-                if (object.ctype !== undefined && object.ctype !== null) {
-                    switch (object.ctype) {
-                    case "STRING":
-                    case 0:
-                        message.ctype = 0;
-                        break;
+                switch (object.ctype) {
+                case "STRING":
+                case 0:
+                    message.ctype = 0;
+                    break;
 
-                    case "CORD":
-                    case 1:
-                        message.ctype = 1;
-                        break;
+                case "CORD":
+                case 1:
+                    message.ctype = 1;
+                    break;
 
-                    case "STRING_PIECE":
-                    case 2:
-                        message.ctype = 2;
-                        break;
-                    }
+                case "STRING_PIECE":
+                case 2:
+                    message.ctype = 2;
+                    break;
                 }
-                message.packed = Boolean(object.packed);
-                if (object.jstype !== undefined && object.jstype !== null) {
-                    switch (object.jstype) {
-                    case "JS_NORMAL":
-                    case 0:
-                        message.jstype = 0;
-                        break;
-
-                    case "JS_STRING":
-                    case 1:
-                        message.jstype = 1;
-                        break;
-
-                    case "JS_NUMBER":
-                    case 2:
-                        message.jstype = 2;
-                        break;
-                    }
+                if (object.packed !== undefined && object.packed !== null) {
+                    message.packed = Boolean(object.packed);
                 }
-                message.lazy = Boolean(object.lazy);
-                message.deprecated = Boolean(object.deprecated);
-                message.weak = Boolean(object.weak);
+                switch (object.jstype) {
+                case "JS_NORMAL":
+                case 0:
+                    message.jstype = 0;
+                    break;
+
+                case "JS_STRING":
+                case 1:
+                    message.jstype = 1;
+                    break;
+
+                case "JS_NUMBER":
+                case 2:
+                    message.jstype = 2;
+                    break;
+                }
+                if (object.lazy !== undefined && object.lazy !== null) {
+                    message.lazy = Boolean(object.lazy);
+                }
+                if (object.deprecated !== undefined && object.deprecated !== null) {
+                    message.deprecated = Boolean(object.deprecated);
+                }
+                if (object.weak !== undefined && object.weak !== null) {
+                    message.weak = Boolean(object.weak);
+                }
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
@@ -12901,15 +13117,21 @@ $root.google = (function() {
              */
             EnumOptions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.EnumOptions();
-                message.allowAlias = Boolean(object.allowAlias);
-                message.deprecated = Boolean(object.deprecated);
+                if (object.allowAlias !== undefined && object.allowAlias !== null) {
+                    message.allowAlias = Boolean(object.allowAlias);
+                }
+                if (object.deprecated !== undefined && object.deprecated !== null) {
+                    message.deprecated = Boolean(object.deprecated);
+                }
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
                         message.uninterpretedOption[i] = types[2].fromObject(object.uninterpretedOption[i]);
                     }
                 }
-                message[".jspb.test.IsExtension.simpleOption"] = String(object[".jspb.test.IsExtension.simpleOption"]);
+                if (object[".jspb.test.IsExtension.simpleOption"] !== undefined && object[".jspb.test.IsExtension.simpleOption"] !== null) {
+                    message[".jspb.test.IsExtension.simpleOption"] = String(object[".jspb.test.IsExtension.simpleOption"]);
+                }
                 return message;
             };})($types);
 
@@ -13150,7 +13372,9 @@ $root.google = (function() {
              */
             EnumValueOptions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.EnumValueOptions();
-                message.deprecated = Boolean(object.deprecated);
+                if (object.deprecated !== undefined && object.deprecated !== null) {
+                    message.deprecated = Boolean(object.deprecated);
+                }
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
@@ -13383,7 +13607,9 @@ $root.google = (function() {
              */
             ServiceOptions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.ServiceOptions();
-                message.deprecated = Boolean(object.deprecated);
+                if (object.deprecated !== undefined && object.deprecated !== null) {
+                    message.deprecated = Boolean(object.deprecated);
+                }
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
                     for (var i = 0; i < object.uninterpretedOption.length; ++i) {
@@ -13640,24 +13866,24 @@ $root.google = (function() {
              */
             MethodOptions.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.google.protobuf.MethodOptions();
-                message.deprecated = Boolean(object.deprecated);
-                if (object.idempotencyLevel !== undefined && object.idempotencyLevel !== null) {
-                    switch (object.idempotencyLevel) {
-                    case "IDEMPOTENCY_UNKNOWN":
-                    case 0:
-                        message.idempotencyLevel = 0;
-                        break;
+                if (object.deprecated !== undefined && object.deprecated !== null) {
+                    message.deprecated = Boolean(object.deprecated);
+                }
+                switch (object.idempotencyLevel) {
+                case "IDEMPOTENCY_UNKNOWN":
+                case 0:
+                    message.idempotencyLevel = 0;
+                    break;
 
-                    case "NO_SIDE_EFFECTS":
-                    case 1:
-                        message.idempotencyLevel = 1;
-                        break;
+                case "NO_SIDE_EFFECTS":
+                case 1:
+                    message.idempotencyLevel = 1;
+                    break;
 
-                    case "IDEMPOTENT":
-                    case 2:
-                        message.idempotencyLevel = 2;
-                        break;
-                    }
+                case "IDEMPOTENT":
+                case 2:
+                    message.idempotencyLevel = 2;
+                    break;
                 }
                 if (object.uninterpretedOption) {
                     message.uninterpretedOption = [];
@@ -14012,46 +14238,58 @@ $root.google = (function() {
                         message.name[i] = types[0].fromObject(object.name[i]);
                     }
                 }
-                message.identifierValue = String(object.identifierValue);
-                if (util.Long) {
-                    (message.positiveIntValue = util.Long.fromValue(object.positiveIntValue)).unsigned = true;
-                } else {
-                    if (typeof object.positiveIntValue === "string") {
-                        message.positiveIntValue = parseInt(object.positiveIntValue, 10);
+                if (object.identifierValue !== undefined && object.identifierValue !== null) {
+                    message.identifierValue = String(object.identifierValue);
+                }
+                if (object.positiveIntValue !== undefined && object.positiveIntValue !== null) {
+                    if (util.Long) {
+                        (message.positiveIntValue = util.Long.fromValue(object.positiveIntValue)).unsigned = true;
                     } else {
-                        if (typeof object.positiveIntValue === "number") {
-                            message.positiveIntValue = object.positiveIntValue;
+                        if (typeof object.positiveIntValue === "string") {
+                            message.positiveIntValue = parseInt(object.positiveIntValue, 10);
                         } else {
-                            if (typeof object.positiveIntValue === "object") {
-                                message.positiveIntValue = new util.LongBits(object.positiveIntValue.low, object.positiveIntValue.high).toNumber(true);
+                            if (typeof object.positiveIntValue === "number") {
+                                message.positiveIntValue = object.positiveIntValue;
+                            } else {
+                                if (typeof object.positiveIntValue === "object") {
+                                    message.positiveIntValue = new util.LongBits(object.positiveIntValue.low, object.positiveIntValue.high).toNumber(true);
+                                }
                             }
                         }
                     }
                 }
-                if (util.Long) {
-                    (message.negativeIntValue = util.Long.fromValue(object.negativeIntValue)).unsigned = false;
-                } else {
-                    if (typeof object.negativeIntValue === "string") {
-                        message.negativeIntValue = parseInt(object.negativeIntValue, 10);
+                if (object.negativeIntValue !== undefined && object.negativeIntValue !== null) {
+                    if (util.Long) {
+                        (message.negativeIntValue = util.Long.fromValue(object.negativeIntValue)).unsigned = false;
                     } else {
-                        if (typeof object.negativeIntValue === "number") {
-                            message.negativeIntValue = object.negativeIntValue;
+                        if (typeof object.negativeIntValue === "string") {
+                            message.negativeIntValue = parseInt(object.negativeIntValue, 10);
                         } else {
-                            if (typeof object.negativeIntValue === "object") {
-                                message.negativeIntValue = new util.LongBits(object.negativeIntValue.low, object.negativeIntValue.high).toNumber();
+                            if (typeof object.negativeIntValue === "number") {
+                                message.negativeIntValue = object.negativeIntValue;
+                            } else {
+                                if (typeof object.negativeIntValue === "object") {
+                                    message.negativeIntValue = new util.LongBits(object.negativeIntValue.low, object.negativeIntValue.high).toNumber();
+                                }
                             }
                         }
                     }
                 }
-                message.doubleValue = Number(object.doubleValue);
-                if (typeof object.stringValue === "string") {
-                    util.base64.decode(object.stringValue, message.stringValue = util.newBuffer(util.base64.length(object.stringValue)), 0);
-                } else {
-                    if (object.stringValue && object.stringValue.length) {
-                        message.stringValue = object.stringValue;
+                if (object.doubleValue !== undefined && object.doubleValue !== null) {
+                    message.doubleValue = Number(object.doubleValue);
+                }
+                if (object.stringValue !== undefined && object.stringValue !== null) {
+                    if (typeof object.stringValue === "string") {
+                        util.base64.decode(object.stringValue, message.stringValue = util.newBuffer(util.base64.length(object.stringValue)), 0);
+                    } else {
+                        if (object.stringValue && object.stringValue.length) {
+                            message.stringValue = object.stringValue;
+                        }
                     }
                 }
-                message.aggregateValue = String(object.aggregateValue);
+                if (object.aggregateValue !== undefined && object.aggregateValue !== null) {
+                    message.aggregateValue = String(object.aggregateValue);
+                }
                 return message;
             };})($protobuf.util, $types);
 
@@ -14306,8 +14544,12 @@ $root.google = (function() {
                  */
                 NamePart.fromObject = (function() { return function fromObject(object) {
                     var message = new $root.google.protobuf.UninterpretedOption.NamePart();
-                    message.namePart = String(object.namePart);
-                    message.isExtension = Boolean(object.isExtension);
+                    if (object.namePart !== undefined && object.namePart !== null) {
+                        message.namePart = String(object.namePart);
+                    }
+                    if (object.isExtension !== undefined && object.isExtension !== null) {
+                        message.isExtension = Boolean(object.isExtension);
+                    }
                     return message;
                 };})();
 
@@ -14834,8 +15076,12 @@ $root.google = (function() {
                             message.span[i] = object.span[i] | 0;
                         }
                     }
-                    message.leadingComments = String(object.leadingComments);
-                    message.trailingComments = String(object.trailingComments);
+                    if (object.leadingComments !== undefined && object.leadingComments !== null) {
+                        message.leadingComments = String(object.leadingComments);
+                    }
+                    if (object.trailingComments !== undefined && object.trailingComments !== null) {
+                        message.trailingComments = String(object.trailingComments);
+                    }
                     if (object.leadingDetachedComments) {
                         message.leadingDetachedComments = [];
                         for (var i = 0; i < object.leadingDetachedComments.length; ++i) {
@@ -15347,9 +15593,15 @@ $root.google = (function() {
                             message.path[i] = object.path[i] | 0;
                         }
                     }
-                    message.sourceFile = String(object.sourceFile);
-                    message.begin = object.begin | 0;
-                    message.end = object.end | 0;
+                    if (object.sourceFile !== undefined && object.sourceFile !== null) {
+                        message.sourceFile = String(object.sourceFile);
+                    }
+                    if (object.begin !== undefined && object.begin !== null) {
+                        message.begin = object.begin | 0;
+                    }
+                    if (object.end !== undefined && object.end !== null) {
+                        message.end = object.end | 0;
+                    }
                     return message;
                 };})();
 

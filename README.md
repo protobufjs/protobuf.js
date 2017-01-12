@@ -21,7 +21,7 @@
 Features
 --------
 * Optimized [for performance](#performance)
-* Exhaustive [browser support](#compatibility)
+* Excellent [browser support](#compatibility)
 * Managed [TypeScript definitions](#usage-with-typescript)
 * Elaborate [API documentation](#documentation)
 * Convenient [CLI utilities](#command-line)
@@ -36,23 +36,20 @@ Contents
 * [Examples](#examples)<br />
   A few examples to get you started.
 
-* [Module Structure](#module-structure)<br />
-  A brief introduction to the structure of the exported module.
-
 * [Documentation](#documentation)<br />
   A list of available documentation resources.
 
 * [Command line](#command-line)<br />
   How to use the command line utility.
 
-* [Building](#building)<br />
-  How to build the library and its components yourself.
-
 * [Performance](#performance)<br />
   A few internals and a benchmark on performance.
 
 * [Compatibility](#compatibility)<br />
   Notes on compatibility regarding browsers and optional libraries.
+
+* [Building](#building)<br />
+  How to build the library and its components yourself.
 
 Usage
 ---------------
@@ -247,70 +244,6 @@ See also: [Generating your own TypeScript definitions](https://github.com/dcodeI
 
 Additional configuration might be necessary when not utilizing node, i.e. reference [protobuf.js.d.ts](https://github.com/dcodeIO/protobuf.js/blob/master/index.d.ts) and [long.js.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/types-2.0/long/index.d.ts).
 
-Module Structure
-----------------
-The library exports a flat `protobuf` namespace including but not restricted to the following members, ordered by category:
-
-### Parser
-
-* **load(filename: `string|string[]`, [root: `Root`], [callback: `function(err: Error, [root: Root])`]): `Promise|undefined`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
-  Loads one or multiple .proto or preprocessed .json files into a common root namespace.
-
-* **loadSync(filename: `string|string[]`, [root: `Root`]): `Root`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/index.js)]<br />
-  Synchronously loads one or multiple .proto or preprocessed .json files into a common root namespace (node only).
-
-* **parse(source: `string`): `Object`** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/parse.js)]<br />
-  Parses the given .proto source and returns an object with the parsed contents.
-
-### Serialization
-
-* **Writer** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/writer.js)]<br />
-  Wire format writer using `Uint8Array` if available, otherwise `Array`.
-
-* **Reader** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/reader.js)]<br />
-  Wire format reader using `Uint8Array` if available, otherwise `Array`.
-
-### Reflection
-
-* **Namespace** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/namespace.js)]<br />
-  Base class of all reflection objects containing nested objects.
-
-* **Root** _extends **Namespace**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/root.js)]<br />
-  Root namespace.
-
-* **Type** _extends **Namespace**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/type.js)]<br />
-  Reflected message type.
-
-* **Field** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/field.js)]<br />
-  Reflected message field.
-
-* **MapField** _extends **Field**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/mapfield.js)]<br />
-  Reflected message map field.
-
-* **Enum** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/enum.js)]<br />
-  Reflected enum.
-
-* **Service** _extends **Namespace**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/service.js)]<br />
-  Reflected service.
-
-* **Method** _extends **ReflectionObject**_ [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/method.js)]<br />
-  Reflected service method.
-
-### Runtime
-
-* **Class** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/class.js)]<br />
-  Runtime class providing the tools to create your own custom classes.
-
-* **Message** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/message.js)]<br />
-  Abstract runtime message.
-
-### Utility
-
-* **util** [[source](https://github.com/dcodeIO/protobuf.js/blob/master/src/util.js)]<br />
-  Various utility functions.
-
-For less common members, see the API documentation.
-
 Documentation
 -------------
 
@@ -345,27 +278,32 @@ Consolidates imports and converts between file formats.
   -w, --wrap      Specifies the wrapper to use. Also accepts a path to require a custom wrapper.
 
                   default   Default wrapper supporting both CommonJS and AMD
-                  commonjs  CommonJS only wrapper
-                  amd       AMD only wrapper
+                  commonjs  CommonJS wrapper
+                  amd       AMD wrapper
+                  es6       ES6 wrapper
 
   -r, --root      Specifies an alternative protobuf.roots name.
 
+  -l, --lint      Linter configuration. Defaults to protobuf.js-compatible rules:
+
+                  eslint-disable block-scoped-var, no-redeclare, no-control-regex
+
   Proto sources only:
 
-  --keep-case     Keeps field casing instead of converting to camel case (not recommended).
+  --keep-case     Keeps field casing instead of converting to camel case.
 
   Static targets only:
 
-  --no-create     Does not generate create functions used for runtime compatibility.
+  --no-create     Does not generate create functions used for reflection compatibility.
   --no-encode     Does not generate encode functions.
   --no-decode     Does not generate decode functions.
   --no-verify     Does not generate verify functions.
-  --no-convert    Does not generate convert functions like asJSON and from.
+  --no-convert    Does not generate convert functions like from/toObject
   --no-delimited  Does not generate delimited encode/decode functions.
   --no-beautify   Does not beautify generated code.
   --no-comments   Does not output any JSDoc comments.
 
-usage: pbjs [options] file1.proto file2.json ...
+usage: pbjs [options] file1.proto file2.json ...  (or)  other | pbjs [options] -
 ```
 
 For production environments it is recommended to bundle all your .proto files to a single .json file, which reduces the number of network requests and parser invocations required:
@@ -405,7 +343,7 @@ Generates TypeScript definitions from annotated JavaScript files.
 
   --no-comments   Does not output any JSDoc comments.
 
-usage: pbts [options] file1.js file2.js ...
+usage: pbts [options] file1.js file2.js ...  (or)  other | pbts [options] -
 ```
 
 ### Using pbjs and pbts programmatically
@@ -435,42 +373,6 @@ Additionally, JSON modules can be used with TypeScript definitions generated for
 1. Use `SomeMessage.create(...)` instead of `new SomeMessage(...)` (reflection does not provide such a constructor).
 2. Types, services and enums must start with an uppercase letter to become available as properties of the reflected types as well.
 3. When using a TypeScript definition with custom code, `resolveAll()` must be called once on the root instance to populate these additional properties (JSON modules do this automatically).
-
-Building
---------
-
-To build the library or its components yourself, clone it from GitHub and install the development dependencies:
-
-```
-$> git clone https://github.com/dcodeIO/protobuf.js.git
-$> cd protobuf.js
-$> npm install
-```
-
-Building the development and production versions with their respective source maps to `dist/`:
-
-```
-$> npm run build
-```
-
-Building the documentation to `docs/`:
-
-```
-$> npm run docs
-```
-
-Building the TypeScript definition to `index.d.ts`:
-
-```
-$> npm run types
-```
-
-### Browserify integration
-
-By default, protobuf.js integrates into your browserify build-process without requiring any optional modules. Hence:
-
-* If you need int64 support, explicitly require the `long` module somewhere in your project. It will be excluded otherwise.
-* If you have any special requirements, there is [the bundler](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js) as a reference.
 
 Performance
 -----------
@@ -545,5 +447,41 @@ Compatibility
 * Support for pre-ES5 environments (except IE8) can be achieved by [using a polyfill](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/polyfill.js).
 * Support for [Content Security Policy](https://w3c.github.io/webappsec-csp/)-restricted environments (like Chrome extensions without [unsafe-eval](https://developer.chrome.com/extensions/contentSecurityPolicy#relaxing-eval)) can be achieved by generating and using static code instead.
 * If you need a proper way to work with 64 bit values (uint64, int64 etc.), you can install [long.js](https://github.com/dcodeIO/long.js) alongside this library. All 64 bit numbers will then be returned as a `Long` instance instead of a possibly unsafe JavaScript number ([see](https://github.com/dcodeIO/long.js)).
+
+Building
+--------
+
+To build the library or its components yourself, clone it from GitHub and install the development dependencies:
+
+```
+$> git clone https://github.com/dcodeIO/protobuf.js.git
+$> cd protobuf.js
+$> npm install
+```
+
+Building the development and production versions with their respective source maps to `dist/`:
+
+```
+$> npm run build
+```
+
+Building the documentation to `docs/`:
+
+```
+$> npm run docs
+```
+
+Building the TypeScript definition to `index.d.ts`:
+
+```
+$> npm run types
+```
+
+### Browserify integration
+
+By default, protobuf.js integrates into your browserify build-process without requiring any optional modules. Hence:
+
+* If you need int64 support, explicitly require the `long` module somewhere in your project. It will be excluded otherwise.
+* If you have any special requirements, there is [the bundler](https://github.com/dcodeIO/protobuf.js/blob/master/scripts/bundle.js) as a reference.
 
 **License:** [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)

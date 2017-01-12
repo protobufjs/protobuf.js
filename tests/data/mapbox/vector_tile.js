@@ -468,55 +468,69 @@ $root.vector_tile = (function() {
              */
             Value.fromObject = (function(util) { return function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Value();
-                message.stringValue = String(object.stringValue);
-                message.floatValue = Number(object.floatValue);
-                message.doubleValue = Number(object.doubleValue);
-                if (util.Long) {
-                    (message.intValue = util.Long.fromValue(object.intValue)).unsigned = false;
-                } else {
-                    if (typeof object.intValue === "string") {
-                        message.intValue = parseInt(object.intValue, 10);
+                if (object.stringValue !== undefined && object.stringValue !== null) {
+                    message.stringValue = String(object.stringValue);
+                }
+                if (object.floatValue !== undefined && object.floatValue !== null) {
+                    message.floatValue = Number(object.floatValue);
+                }
+                if (object.doubleValue !== undefined && object.doubleValue !== null) {
+                    message.doubleValue = Number(object.doubleValue);
+                }
+                if (object.intValue !== undefined && object.intValue !== null) {
+                    if (util.Long) {
+                        (message.intValue = util.Long.fromValue(object.intValue)).unsigned = false;
                     } else {
-                        if (typeof object.intValue === "number") {
-                            message.intValue = object.intValue;
+                        if (typeof object.intValue === "string") {
+                            message.intValue = parseInt(object.intValue, 10);
                         } else {
-                            if (typeof object.intValue === "object") {
-                                message.intValue = new util.LongBits(object.intValue.low, object.intValue.high).toNumber();
+                            if (typeof object.intValue === "number") {
+                                message.intValue = object.intValue;
+                            } else {
+                                if (typeof object.intValue === "object") {
+                                    message.intValue = new util.LongBits(object.intValue.low, object.intValue.high).toNumber();
+                                }
                             }
                         }
                     }
                 }
-                if (util.Long) {
-                    (message.uintValue = util.Long.fromValue(object.uintValue)).unsigned = true;
-                } else {
-                    if (typeof object.uintValue === "string") {
-                        message.uintValue = parseInt(object.uintValue, 10);
+                if (object.uintValue !== undefined && object.uintValue !== null) {
+                    if (util.Long) {
+                        (message.uintValue = util.Long.fromValue(object.uintValue)).unsigned = true;
                     } else {
-                        if (typeof object.uintValue === "number") {
-                            message.uintValue = object.uintValue;
+                        if (typeof object.uintValue === "string") {
+                            message.uintValue = parseInt(object.uintValue, 10);
                         } else {
-                            if (typeof object.uintValue === "object") {
-                                message.uintValue = new util.LongBits(object.uintValue.low, object.uintValue.high).toNumber(true);
+                            if (typeof object.uintValue === "number") {
+                                message.uintValue = object.uintValue;
+                            } else {
+                                if (typeof object.uintValue === "object") {
+                                    message.uintValue = new util.LongBits(object.uintValue.low, object.uintValue.high).toNumber(true);
+                                }
                             }
                         }
                     }
                 }
-                if (util.Long) {
-                    (message.sintValue = util.Long.fromValue(object.sintValue)).unsigned = false;
-                } else {
-                    if (typeof object.sintValue === "string") {
-                        message.sintValue = parseInt(object.sintValue, 10);
+                if (object.sintValue !== undefined && object.sintValue !== null) {
+                    if (util.Long) {
+                        (message.sintValue = util.Long.fromValue(object.sintValue)).unsigned = false;
                     } else {
-                        if (typeof object.sintValue === "number") {
-                            message.sintValue = object.sintValue;
+                        if (typeof object.sintValue === "string") {
+                            message.sintValue = parseInt(object.sintValue, 10);
                         } else {
-                            if (typeof object.sintValue === "object") {
-                                message.sintValue = new util.LongBits(object.sintValue.low, object.sintValue.high).toNumber();
+                            if (typeof object.sintValue === "number") {
+                                message.sintValue = object.sintValue;
+                            } else {
+                                if (typeof object.sintValue === "object") {
+                                    message.sintValue = new util.LongBits(object.sintValue.low, object.sintValue.high).toNumber();
+                                }
                             }
                         }
                     }
                 }
-                message.boolValue = Boolean(object.boolValue);
+                if (object.boolValue !== undefined && object.boolValue !== null) {
+                    message.boolValue = Boolean(object.boolValue);
+                }
                 return message;
             };})($protobuf.util);
 
@@ -870,17 +884,19 @@ $root.vector_tile = (function() {
              */
             Feature.fromObject = (function(util) { return function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Feature();
-                if (util.Long) {
-                    (message.id = util.Long.fromValue(object.id)).unsigned = true;
-                } else {
-                    if (typeof object.id === "string") {
-                        message.id = parseInt(object.id, 10);
+                if (object.id !== undefined && object.id !== null) {
+                    if (util.Long) {
+                        (message.id = util.Long.fromValue(object.id)).unsigned = true;
                     } else {
-                        if (typeof object.id === "number") {
-                            message.id = object.id;
+                        if (typeof object.id === "string") {
+                            message.id = parseInt(object.id, 10);
                         } else {
-                            if (typeof object.id === "object") {
-                                message.id = new util.LongBits(object.id.low, object.id.high).toNumber(true);
+                            if (typeof object.id === "number") {
+                                message.id = object.id;
+                            } else {
+                                if (typeof object.id === "object") {
+                                    message.id = new util.LongBits(object.id.low, object.id.high).toNumber(true);
+                                }
                             }
                         }
                     }
@@ -891,28 +907,26 @@ $root.vector_tile = (function() {
                         message.tags[i] = object.tags[i] >>> 0;
                     }
                 }
-                if (object.type !== undefined && object.type !== null) {
-                    switch (object.type) {
-                    case "UNKNOWN":
-                    case 0:
-                        message.type = 0;
-                        break;
+                switch (object.type) {
+                case "UNKNOWN":
+                case 0:
+                    message.type = 0;
+                    break;
 
-                    case "POINT":
-                    case 1:
-                        message.type = 1;
-                        break;
+                case "POINT":
+                case 1:
+                    message.type = 1;
+                    break;
 
-                    case "LINESTRING":
-                    case 2:
-                        message.type = 2;
-                        break;
+                case "LINESTRING":
+                case 2:
+                    message.type = 2;
+                    break;
 
-                    case "POLYGON":
-                    case 3:
-                        message.type = 3;
-                        break;
-                    }
+                case "POLYGON":
+                case 3:
+                    message.type = 3;
+                    break;
                 }
                 if (object.geometry) {
                     message.geometry = [];
@@ -1257,8 +1271,12 @@ $root.vector_tile = (function() {
              */
             Layer.fromObject = (function(types) { return function fromObject(object) {
                 var message = new $root.vector_tile.Tile.Layer();
-                message.version = object.version >>> 0;
-                message.name = String(object.name);
+                if (object.version !== undefined && object.version !== null) {
+                    message.version = object.version >>> 0;
+                }
+                if (object.name !== undefined && object.name !== null) {
+                    message.name = String(object.name);
+                }
                 if (object.features) {
                     message.features = [];
                     for (var i = 0; i < object.features.length; ++i) {
@@ -1277,7 +1295,9 @@ $root.vector_tile = (function() {
                         message.values[i] = types[4].fromObject(object.values[i]);
                     }
                 }
-                message.extent = object.extent >>> 0;
+                if (object.extent !== undefined && object.extent !== null) {
+                    message.extent = object.extent >>> 0;
+                }
                 return message;
             };})($types);
 

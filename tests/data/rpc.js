@@ -221,7 +221,9 @@ $root.MyRequest = (function() {
      */
     MyRequest.fromObject = (function() { return function fromObject(object) {
         var message = new $root.MyRequest();
-        message.path = String(object.path);
+        if (object.path !== undefined && object.path !== null) {
+            message.path = String(object.path);
+        }
         return message;
     };})();
 
@@ -404,7 +406,9 @@ $root.MyResponse = (function() {
      */
     MyResponse.fromObject = (function() { return function fromObject(object) {
         var message = new $root.MyResponse();
-        message.status = object.status | 0;
+        if (object.status !== undefined && object.status !== null) {
+            message.status = object.status | 0;
+        }
         return message;
     };})();
 

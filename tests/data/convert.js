@@ -358,24 +358,28 @@ $root.Message = (function() {
      */
     Message.fromObject = (function(util) { return function fromObject(object) {
         var message = new $root.Message();
-        message.stringVal = String(object.stringVal);
+        if (object.stringVal !== undefined && object.stringVal !== null) {
+            message.stringVal = String(object.stringVal);
+        }
         if (object.stringRepeated) {
             message.stringRepeated = [];
             for (var i = 0; i < object.stringRepeated.length; ++i) {
                 message.stringRepeated[i] = String(object.stringRepeated[i]);
             }
         }
-        if (util.Long) {
-            (message.uint64Val = util.Long.fromValue(object.uint64Val)).unsigned = true;
-        } else {
-            if (typeof object.uint64Val === "string") {
-                message.uint64Val = parseInt(object.uint64Val, 10);
+        if (object.uint64Val !== undefined && object.uint64Val !== null) {
+            if (util.Long) {
+                (message.uint64Val = util.Long.fromValue(object.uint64Val)).unsigned = true;
             } else {
-                if (typeof object.uint64Val === "number") {
-                    message.uint64Val = object.uint64Val;
+                if (typeof object.uint64Val === "string") {
+                    message.uint64Val = parseInt(object.uint64Val, 10);
                 } else {
-                    if (typeof object.uint64Val === "object") {
-                        message.uint64Val = new util.LongBits(object.uint64Val.low, object.uint64Val.high).toNumber(true);
+                    if (typeof object.uint64Val === "number") {
+                        message.uint64Val = object.uint64Val;
+                    } else {
+                        if (typeof object.uint64Val === "object") {
+                            message.uint64Val = new util.LongBits(object.uint64Val.low, object.uint64Val.high).toNumber(true);
+                        }
                     }
                 }
             }
@@ -400,11 +404,13 @@ $root.Message = (function() {
                 }
             }
         }
-        if (typeof object.bytesVal === "string") {
-            util.base64.decode(object.bytesVal, message.bytesVal = util.newBuffer(util.base64.length(object.bytesVal)), 0);
-        } else {
-            if (object.bytesVal && object.bytesVal.length) {
-                message.bytesVal = object.bytesVal;
+        if (object.bytesVal !== undefined && object.bytesVal !== null) {
+            if (typeof object.bytesVal === "string") {
+                util.base64.decode(object.bytesVal, message.bytesVal = util.newBuffer(util.base64.length(object.bytesVal)), 0);
+            } else {
+                if (object.bytesVal && object.bytesVal.length) {
+                    message.bytesVal = object.bytesVal;
+                }
             }
         }
         if (object.bytesRepeated) {
@@ -419,18 +425,16 @@ $root.Message = (function() {
                 }
             }
         }
-        if (object.enumVal !== undefined && object.enumVal !== null) {
-            switch (object.enumVal) {
-            case "ONE":
-            case 1:
-                message.enumVal = 1;
-                break;
+        switch (object.enumVal) {
+        case "ONE":
+        case 1:
+            message.enumVal = 1;
+            break;
 
-            case "TWO":
-            case 2:
-                message.enumVal = 2;
-                break;
-            }
+        case "TWO":
+        case 2:
+            message.enumVal = 2;
+            break;
         }
         if (object.enumRepeated) {
             message.enumRepeated = [];
