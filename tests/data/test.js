@@ -6353,7 +6353,7 @@ $root.jspb = (function() {
                     }
                     var key = Object.keys(message.mapInt32String);
                     for (var i = 0; i < key.length; ++i) {
-                        if (!/^-?(?:0|[1-9]\object*)$/.test(key[i])) {
+                        if (!/^-?(?:0|[1-9][0-9]*)$/.test(key[i])) {
                             return "jspb.test.TestMapFieldsNoBinary.mapInt32String: integer key{key:int32} expected";
                         }
                         if (!util.isString(message.mapInt32String[key[i]])) {
@@ -6367,7 +6367,7 @@ $root.jspb = (function() {
                     }
                     var key = Object.keys(message.mapInt64String);
                     for (var i = 0; i < key.length; ++i) {
-                        if (!/^(?:[\x00-\xff]{8}|-?(?:0|[1-9]\object*))$/.test(key[i])) {
+                        if (!/^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/.test(key[i])) {
                             return "jspb.test.TestMapFieldsNoBinary.mapInt64String: integer|Long key{key:int64} expected";
                         }
                         if (!util.isString(message.mapInt64String[key[i]])) {

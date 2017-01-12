@@ -118,6 +118,27 @@ export class Class {
 export function common(name: string, json: { [k: string]: any }): void;
 
 /**
+ * Runtime message from/to plain object converters.
+ * @namespace
+ */
+export namespace converter {
+
+    /**
+     * Generates a plain object to runtime message converter specific to the specified message type.
+     * @param {Type} mtype Message type
+     * @returns {Codegen} Codegen instance
+     */
+    function fromObject(mtype: Type): Codegen;
+
+    /**
+     * Generates a runtime message to plain object converter specific to the specified message type.
+     * @param {Type} mtype Message type
+     * @returns {Codegen} Codegen instance
+     */
+    function toObject(mtype: Type): Codegen;
+}
+
+/**
  * Generates a decoder specific to the specified message type.
  * @param {Type} mtype Message type
  * @returns {Codegen} Codegen instance

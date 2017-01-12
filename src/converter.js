@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Runtime message from/to plain object converters.
+ * @namespace
+ */
 var converter = exports;
 
 var Enum = require("./enum"),
@@ -76,6 +80,11 @@ function genConvertValue_fromObject(gen, field, fieldIndex, prop) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
+/**
+ * Generates a plain object to runtime message converter specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
@@ -152,6 +161,11 @@ function genConvertValue_toObject(gen, field, fieldIndex, prop) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
 
+/**
+ * Generates a runtime message to plain object converter specific to the specified message type.
+ * @param {Type} mtype Message type
+ * @returns {Codegen} Codegen instance
+ */
 converter.toObject = function toObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;

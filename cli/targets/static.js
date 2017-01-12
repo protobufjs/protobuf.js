@@ -145,21 +145,21 @@ function buildNamespace(ref, ns) {
 
 function beautify(code) {
     return UglifyJS.minify(code
-        .replace(/\br\b/g, "reader")
-        .replace(/\bw\b/g, "writer")
-        .replace(/\bm\b/g, "message")
-        .replace(/\bt\b/g, "tag")
-        .replace(/\bl\b/g, "len")
-        .replace(/\bc\b/g, "end")
-        .replace(/\bc2\b/g, "end2")
-        .replace(/\bk\b/g, "key")
-        .replace(/\bks\b/g, "keys")
-        .replace(/\bks2\b/g, "keys2")
-        .replace(/\be\b/g, "err")
-        .replace(/\bf\b/g, "impl")
-        .replace(/\bo\b/g, "options")
-        .replace(/\bd\b/g, "object")
-        .replace(/\bn\b/g, "long"),
+        .replace(/\b(?!\\)r\b/g, "reader")
+        .replace(/\b(?!\\)w\b/g, "writer")
+        .replace(/\b(?!\\)m\b/g, "message")
+        .replace(/\b(?!\\)t\b/g, "tag")
+        .replace(/\b(?!\\)l\b/g, "len")
+        .replace(/\b(?!\\)c\b/g, "end")
+        .replace(/\b(?!\\)c2\b/g, "end2")
+        .replace(/\b(?!\\)k\b/g, "key")
+        .replace(/\b(?!\\)ks\b/g, "keys")
+        .replace(/\b(?!\\)ks2\b/g, "keys2")
+        .replace(/\b(?!\\)e\b/g, "err")
+        .replace(/\b(?!\\)f\b/g, "impl")
+        .replace(/\b(?!\\)o\b/g, "options")
+        .replace(/\b(?!\\)d\b/g, "object")
+        .replace(/\b(?!\\)n\b/g, "long"),
         {
             fromString: true,
             compress: false,
