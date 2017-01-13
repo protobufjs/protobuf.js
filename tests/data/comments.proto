@@ -7,12 +7,16 @@ a
  ** comment.
  */
 message Test1 {
+
     /**
      * Field with a comment.
      */
     string field1 = 1;
+
     // Field with no comment.
     uint32 field2 = 2;
+
+    bool field3 = 3; /// Field with a comment.
 }
 
 // Message
@@ -35,4 +39,6 @@ enum Test3 {
 
     // Value with no comment.
     TWO = 2;
+
+    THREE = 3; /// Value with a comment.
 }

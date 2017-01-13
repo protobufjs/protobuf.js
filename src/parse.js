@@ -313,9 +313,12 @@ function parse(source, root, options) {
             throw illegal(name, "name");
         name = applyCase(name);
         skip("=");
-        var field = new Field(name, parseId(next()), type, rule, extend);
+        var field = new Field(name, parseId(next()), type, rule, extend),
+            trailingLine = tn.line();
         field.comment = cmnt();
         parseInlineOptions(field);
+        if (!field.comment)
+            field.comment = cmnt(trailingLine);
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
         if (field.repeated && types.packed[type] !== undefined && !isProto3)
@@ -378,15 +381,12 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         skip("=");
-        var id = parseId(next());
-        var field = new MapField(name, id, keyType, valueType);
-        var line = tn.line();
+        var field = new MapField(name, parseId(next()), keyType, valueType),
+            trailingLine = tn.line();
         field.comment = cmnt();
         parseInlineOptions(field);
-        if (!field.comment) {
-            peek();
-            field.comment = cmnt(/* if on */ line);
-        }
+        if (!field.comment)
+            field.comment = cmnt(trailingLine);
         parent.add(field);
     }
 
@@ -398,7 +398,8 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         name = applyCase(name);
-        var oneof = new OneOf(name);
+        var oneof = new OneOf(name),
+            trailingLine = tn.line();
         oneof.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
@@ -411,8 +412,11 @@ function parse(source, root, options) {
                 }
             }
             skip(";", true);
-        } else
+        } else {
             skip(";");
+            if (!oneof.comment)
+                oneof.comment = cmnt(trailingLine);
+        }
         parent.add(oneof);
     }
 
@@ -447,9 +451,12 @@ function parse(source, root, options) {
 
         var name = token;
         skip("=");
-        var value = parseId(next(), true);
+        var value = parseId(next(), true),
+            trailingLine = tn.line();
         parent.add(name, value, cmnt());
         parseInlineOptions({}); // skips enum value options
+        if (!parent.comments[name])
+            parent.comments[name] = cmnt(trailingLine);
     }
 
     function parseOption(parent, token) {
@@ -568,7 +575,8 @@ function parse(source, root, options) {
 
         responseType = token;
         skip(")");
-        var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
+        var method = new Method(name, type, requestType, responseType, requestStream, responseStream),
+            trailingLine = tn.line();
         method.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
@@ -585,8 +593,11 @@ function parse(source, root, options) {
                 }
             }
             skip(";", true);
-        } else
+        } else {
             skip(";");
+            if (!method.comment)
+                method.comment = cmnt(trailingLine);
+        }
         parent.add(method);
     }
 

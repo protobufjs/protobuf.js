@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Thu, 12 Jan 2017 23:33:00 UTC
+ * Compiled Fri, 13 Jan 2017 00:48:40 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -3532,9 +3532,12 @@ function parse(source, root, options) {
             throw illegal(name, "name");
         name = applyCase(name);
         skip("=");
-        var field = new Field(name, parseId(next()), type, rule, extend);
+        var field = new Field(name, parseId(next()), type, rule, extend),
+            trailingLine = tn.line();
         field.comment = cmnt();
         parseInlineOptions(field);
+        if (!field.comment)
+            field.comment = cmnt(trailingLine);
         // JSON defaults to packed=true if not set so we have to set packed=false explicity when
         // parsing proto2 descriptors without the option, where applicable.
         if (field.repeated && types.packed[type] !== undefined && !isProto3)
@@ -3597,15 +3600,12 @@ function parse(source, root, options) {
 
         name = applyCase(name);
         skip("=");
-        var id = parseId(next());
-        var field = new MapField(name, id, keyType, valueType);
-        var line = tn.line();
+        var field = new MapField(name, parseId(next()), keyType, valueType),
+            trailingLine = tn.line();
         field.comment = cmnt();
         parseInlineOptions(field);
-        if (!field.comment) {
-            peek();
-            field.comment = cmnt(/* if on */ line);
-        }
+        if (!field.comment)
+            field.comment = cmnt(trailingLine);
         parent.add(field);
     }
 
@@ -3617,7 +3617,8 @@ function parse(source, root, options) {
             throw illegal(name, "name");
 
         name = applyCase(name);
-        var oneof = new OneOf(name);
+        var oneof = new OneOf(name),
+            trailingLine = tn.line();
         oneof.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
@@ -3630,8 +3631,11 @@ function parse(source, root, options) {
                 }
             }
             skip(";", true);
-        } else
+        } else {
             skip(";");
+            if (!oneof.comment)
+                oneof.comment = cmnt(trailingLine);
+        }
         parent.add(oneof);
     }
 
@@ -3666,9 +3670,12 @@ function parse(source, root, options) {
 
         var name = token;
         skip("=");
-        var value = parseId(next(), true);
+        var value = parseId(next(), true),
+            trailingLine = tn.line();
         parent.add(name, value, cmnt());
         parseInlineOptions({}); // skips enum value options
+        if (!parent.comments[name])
+            parent.comments[name] = cmnt(trailingLine);
     }
 
     function parseOption(parent, token) {
@@ -3787,7 +3794,8 @@ function parse(source, root, options) {
 
         responseType = token;
         skip(")");
-        var method = new Method(name, type, requestType, responseType, requestStream, responseStream);
+        var method = new Method(name, type, requestType, responseType, requestStream, responseStream),
+            trailingLine = tn.line();
         method.comment = cmnt();
         if (skip("{", true)) {
             while ((token = next()) !== "}") {
@@ -3804,8 +3812,11 @@ function parse(source, root, options) {
                 }
             }
             skip(";", true);
-        } else
+        } else {
             skip(";");
+            if (!method.comment)
+                method.comment = cmnt(trailingLine);
+        }
         parent.add(method);
     }
 
@@ -5076,7 +5087,7 @@ function unescape(str) {
  * @property {function():?string} peek Peeks for the next token (`null` on eof)
  * @property {function(string)} push Pushes a token back to the stack
  * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- * @property {function():?string} cmnt Gets the comment on the previous line, if any
+ * @property {function(number=):?string} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
  */
 
 /**
@@ -5091,9 +5102,9 @@ function tokenize(source) {
     var offset = 0,
         length = source.length,
         line = 1,
-        comment = null,
+        commentType = null,
+        commentText = null,
         commentLine = 0;
-
 
     var stack = [];
 
@@ -5138,26 +5149,23 @@ function tokenize(source) {
     }
 
     /**
-     * Remembers the comment between start and end.
+     * Sets the current comment text.
      * @param {number} start Start offset
      * @param {number} end End offset
      * @returns {undefined}
      * @inner
      */
     function setComment(start, end) {
-        var text = source
-            .substring(start, end);
-        if (text.charAt(0) !== "*") // use /**-blocks only
-            return;
-        text = text
+        commentType = source.charAt(start++);
+        commentLine = line;
+        commentText = source
+            .substring(start, end)
             .split(/\n/g)
             .map(function(line) {
                 return line.replace(/ *[*/]+ */, "").trim();
             })
             .join("\n")
             .trim();
-        comment = text;
-        commentLine = line;
     }
 
     /**
@@ -5173,7 +5181,8 @@ function tokenize(source) {
         var repeat,
             prev,
             curr,
-            start;
+            start,
+            isComment;
         do {
             if (offset === length)
                 return null;
@@ -5188,15 +5197,17 @@ function tokenize(source) {
                 if (++offset === length)
                     throw illegal("comment");
                 if (charAt(offset) === "/") { // Line
-                    start = offset + 1;
+                    isComment = charAt(start = offset + 1) === "/";
                     while (charAt(++offset) !== "\n")
                         if (offset === length)
                             return null;
                     ++offset;
+                    if (isComment)
+                        setComment(start, offset - 1);
                     ++line;
                     repeat = true;
                 } else if ((curr = charAt(offset)) === "*") { /* Block */
-                    start = offset + 1;
+                    isComment = charAt(start = offset + 1) === "*";
                     do {
                         if (curr === "\n")
                             ++line;
@@ -5206,7 +5217,8 @@ function tokenize(source) {
                         curr = charAt(offset);
                     } while (prev !== "*" || curr !== "/");
                     ++offset;
-                    setComment(start, offset - 2, 1);
+                    if (isComment)
+                        setComment(start, offset - 2);
                     repeat = true;
                 } else
                     return "/";
@@ -5272,27 +5284,29 @@ function tokenize(source) {
         return false;
     }
 
-    /**
-     * Gets the comment on the previous line.
-     * @returns {?string} Comment, if any
-     * @inner
-     */
-    function cmnt() {
-        var ret = commentLine === line - 1 && comment || null;
-        if (ret) {
-            comment = null;
-            commentLine = 0;
-        }
-        return ret;
-    }
-
     return {
-        line: function() { return line; },
         next: next,
         peek: peek,
         push: push,
         skip: skip,
-        cmnt: cmnt
+        line: function() {
+            return line;
+        },
+        cmnt: function(trailingLine) {
+            var ret;
+            if (trailingLine === undefined)
+                ret = commentLine === line - 1 && commentText || null;
+            else {
+                if (!commentText)
+                    peek();
+                ret = commentLine === trailingLine && commentType === "/" && commentText || null;
+            }
+            if (ret) {
+                commentType = commentText = null;
+                commentLine = 0;
+            }
+            return ret;
+        }
     };
     /* eslint-enable callback-return */
 }

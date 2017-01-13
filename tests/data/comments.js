@@ -45,6 +45,12 @@ $root.Test1 = (function() {
     $prototype.field2 = 0;
 
     /**
+     * Field with a comment.
+     * @type {boolean}
+     */
+    $prototype.field3 = false;
+
+    /**
      * Creates a new Test1 instance using the specified properties.
      * @param {Object} [properties] Properties to set
      * @returns {Test1} Test1 instance
@@ -69,6 +75,9 @@ $root.Test1 = (function() {
         }
         if (message.field2 !== undefined && message.field2 !== 0) {
             writer.uint32(16).uint32(message.field2);
+        }
+        if (message.field3 !== undefined && message.field3 !== false) {
+            writer.uint32(24).bool(message.field3);
         }
         return writer;
     };})($protobuf.Writer);
@@ -106,6 +115,10 @@ $root.Test1 = (function() {
                 message.field2 = reader.uint32();
                 break;
 
+            case 3:
+                message.field3 = reader.bool();
+                break;
+
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -141,6 +154,11 @@ $root.Test1 = (function() {
                 return "Test1.field2: integer expected";
             }
         }
+        if (message.field3 !== undefined) {
+            if (typeof message.field3 !== "boolean") {
+                return "Test1.field3: boolean expected";
+            }
+        }
         return null;
     };})($protobuf.util);
 
@@ -156,6 +174,9 @@ $root.Test1 = (function() {
         }
         if (object.field2 !== undefined && object.field2 !== null) {
             message.field2 = object.field2 >>> 0;
+        }
+        if (object.field3 !== undefined && object.field3 !== null) {
+            message.field3 = Boolean(object.field3);
         }
         return message;
     };})();
@@ -183,6 +204,7 @@ $root.Test1 = (function() {
         if (options.defaults) {
             object.field1 = "";
             object.field2 = 0;
+            object.field3 = false;
         }
         for (var keys = Object.keys(message), i = 0; i < keys.length; ++i) {
             switch (keys[i]) {
@@ -195,6 +217,12 @@ $root.Test1 = (function() {
             case "field2":
                 if (message.field2 !== undefined && message.field2 !== null) {
                     object.field2 = message.field2;
+                }
+                break;
+
+            case "field3":
+                if (message.field3 !== undefined && message.field3 !== null) {
+                    object.field3 = message.field3;
                 }
                 break;
             }
@@ -380,12 +408,14 @@ $root.Test2 = (function() {
  * @enum {number}
  * @property {number} ONE=1 Value with a comment.
  * @property {number} TWO=2 TWO value
+ * @property {number} THREE=3 Value with a comment.
  */
 $root.Test3 = (function() {
     var valuesById = {},
         values = Object.create(valuesById);
     values[valuesById[1] = "ONE"] = 1;
     values[valuesById[2] = "TWO"] = 2;
+    values[valuesById[3] = "THREE"] = 3;
     return values;
 })();
 

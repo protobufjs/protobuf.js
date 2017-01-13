@@ -1519,7 +1519,7 @@ type RPCCallback = (error: Error, responseData?: Uint8Array) => void;
  * @property {function():?string} peek Peeks for the next token (`null` on eof)
  * @property {function(string)} push Pushes a token back to the stack
  * @property {function(string, boolean=):boolean} skip Skips a token, returns its presence and advances or, if non-optional and not present, throws
- * @property {function():?string} cmnt Gets the comment on the previous line, if any
+ * @property {function(number=):?string} cmnt Gets the comment on the previous line or the line comment on the specified line, if any
  */
 type TokenizerHandle = { [k: string]: any };
 
