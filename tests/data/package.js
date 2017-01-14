@@ -25,112 +25,109 @@ $root.Package = (function() {
         }
     }
 
-    /** @alias Package.prototype */
-    var $prototype = Package.prototype;
-
     /**
      * Package name.
      * @type {string}
      */
-    $prototype.name = "";
+    Package.prototype.name = "";
 
     /**
      * Package version.
      * @type {string}
      */
-    $prototype.version = "";
+    Package.prototype.version = "";
 
     /**
      * Package description.
      * @type {string}
      */
-    $prototype.description = "";
+    Package.prototype.description = "";
 
     /**
      * Package author.
      * @type {string}
      */
-    $prototype.author = "";
+    Package.prototype.author = "";
 
     /**
      * Package license.
      * @type {string}
      */
-    $prototype.license = "";
+    Package.prototype.license = "";
 
     /**
      * Package repository.
      * @type {Package.Repository}
      */
-    $prototype.repository = null;
+    Package.prototype.repository = null;
 
     /**
      * Package bugs.
      * @type {string}
      */
-    $prototype.bugs = "";
+    Package.prototype.bugs = "";
 
     /**
      * Package homepage.
      * @type {string}
      */
-    $prototype.homepage = "";
+    Package.prototype.homepage = "";
 
     /**
      * Package keywords.
      * @type {Array.<string>}
      */
-    $prototype.keywords = $protobuf.util.emptyArray;
+    Package.prototype.keywords = $protobuf.util.emptyArray;
 
     /**
      * Package main.
      * @type {string}
      */
-    $prototype.main = "";
+    Package.prototype.main = "";
 
     /**
      * Package bin.
      * @type {Object.<string,string>}
      */
-    $prototype.bin = $protobuf.util.emptyObject;
+    Package.prototype.bin = $protobuf.util.emptyObject;
 
     /**
      * Package scripts.
      * @type {Object.<string,string>}
      */
-    $prototype.scripts = $protobuf.util.emptyObject;
+    Package.prototype.scripts = $protobuf.util.emptyObject;
 
     /**
      * Package dependencies.
      * @type {Object.<string,string>}
      */
-    $prototype.dependencies = $protobuf.util.emptyObject;
+    Package.prototype.dependencies = $protobuf.util.emptyObject;
 
     /**
      * Package optionalDependencies.
      * @type {Object.<string,string>}
      */
-    $prototype.optionalDependencies = $protobuf.util.emptyObject;
+    Package.prototype.optionalDependencies = $protobuf.util.emptyObject;
 
     /**
      * Package devDependencies.
      * @type {Object.<string,string>}
      */
-    $prototype.devDependencies = $protobuf.util.emptyObject;
+    Package.prototype.devDependencies = $protobuf.util.emptyObject;
 
     /**
      * Package types.
      * @type {string}
      */
-    $prototype.types = "";
+    Package.prototype.types = "";
 
     /**
      * Package cliDependencies.
      * @type {Array.<string>}
      */
-    $prototype.cliDependencies = $protobuf.util.emptyArray;
+    Package.prototype.cliDependencies = $protobuf.util.emptyArray;
 
-    // Referenced types
+    // Lazily resolved referenced types
     var $types = {5:"Package.Repository"}; $lazyTypes.push($types);
 
     /**
@@ -763,7 +760,7 @@ $root.Package = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    $prototype.toObject = function toObject(options) {
+    Package.prototype.toObject = function toObject(options) {
         return this.constructor.toObject(this, options);
     };
 
@@ -771,7 +768,7 @@ $root.Package = (function() {
      * Converts this Package to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.toJSON = function toJSON() {
+    Package.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
@@ -791,20 +788,17 @@ $root.Package = (function() {
             }
         }
 
-        /** @alias Package.Repository.prototype */
-        var $prototype = Repository.prototype;
-
         /**
          * Repository type.
          * @type {string}
          */
-        $prototype.type = "";
+        Repository.prototype.type = "";
 
         /**
          * Repository url.
          * @type {string}
          */
-        $prototype.url = "";
+        Repository.prototype.url = "";
 
         /**
          * Creates a new Repository instance using the specified properties.
@@ -911,7 +905,7 @@ $root.Package = (function() {
          * @param {Object.<string,*>} object Plain object
          * @returns {Package.Repository} Repository
          */
-        Repository.fromObject = (function() { return function fromObject(object) {
+        Repository.fromObject = function fromObject(object) {
             var message = new $root.Package.Repository();
             if (object.type !== undefined && object.type !== null) {
                 message.type = String(object.type);
@@ -920,7 +914,7 @@ $root.Package = (function() {
                 message.url = String(object.url);
             }
             return message;
-        };})();
+        };
 
         /**
          * Creates a Repository message from a plain object. Also converts values to their respective internal types.
@@ -937,7 +931,7 @@ $root.Package = (function() {
          * @param {$protobuf.ConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        Repository.toObject = (function() { return function toObject(message, options) {
+        Repository.toObject = function toObject(message, options) {
             if (!options) {
                 options = {};
             }
@@ -962,14 +956,14 @@ $root.Package = (function() {
                 }
             }
             return object;
-        };})();
+        };
 
         /**
          * Creates a plain object from this Repository message. Also converts values to other types if specified.
          * @param {$protobuf.ConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        $prototype.toObject = function toObject(options) {
+        Repository.prototype.toObject = function toObject(options) {
             return this.constructor.toObject(this, options);
         };
 
@@ -977,7 +971,7 @@ $root.Package = (function() {
          * Converts this Repository to JSON.
          * @returns {Object.<string,*>} JSON object
          */
-        $prototype.toJSON = function toJSON() {
+        Repository.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 

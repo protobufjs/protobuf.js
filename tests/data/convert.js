@@ -25,64 +25,61 @@ $root.Message = (function() {
         }
     }
 
-    /** @alias Message.prototype */
-    var $prototype = Message.prototype;
-
     /**
      * Message stringVal.
      * @type {string}
      */
-    $prototype.stringVal = "";
+    Message.prototype.stringVal = "";
 
     /**
      * Message stringRepeated.
      * @type {Array.<string>}
      */
-    $prototype.stringRepeated = $protobuf.util.emptyArray;
+    Message.prototype.stringRepeated = $protobuf.util.emptyArray;
 
     /**
      * Message uint64Val.
      * @type {number|$protobuf.Long}
      */
-    $prototype.uint64Val = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
+    Message.prototype.uint64Val = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
 
     /**
      * Message uint64Repeated.
      * @type {Array.<number|$protobuf.Long>}
      */
-    $prototype.uint64Repeated = $protobuf.util.emptyArray;
+    Message.prototype.uint64Repeated = $protobuf.util.emptyArray;
 
     /**
      * Message bytesVal.
      * @type {Uint8Array}
      */
-    $prototype.bytesVal = $protobuf.util.newBuffer([]);
+    Message.prototype.bytesVal = $protobuf.util.newBuffer([]);
 
     /**
      * Message bytesRepeated.
      * @type {Array.<Uint8Array>}
      */
-    $prototype.bytesRepeated = $protobuf.util.emptyArray;
+    Message.prototype.bytesRepeated = $protobuf.util.emptyArray;
 
     /**
      * Message enumVal.
      * @type {number}
      */
-    $prototype.enumVal = 1;
+    Message.prototype.enumVal = 1;
 
     /**
      * Message enumRepeated.
      * @type {Array.<number>}
      */
-    $prototype.enumRepeated = $protobuf.util.emptyArray;
+    Message.prototype.enumRepeated = $protobuf.util.emptyArray;
 
     /**
      * Message int64Map.
      * @type {Object.<string,number|$protobuf.Long>}
      */
-    $prototype.int64Map = $protobuf.util.emptyObject;
+    Message.prototype.int64Map = $protobuf.util.emptyObject;
 
-    // Referenced types
+    // Lazily resolved referenced types
     var $types = {6:"Message.SomeEnum",7:"Message.SomeEnum"}; $lazyTypes.push($types);
 
     /**
@@ -608,7 +605,7 @@ $root.Message = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    $prototype.toObject = function toObject(options) {
+    Message.prototype.toObject = function toObject(options) {
         return this.constructor.toObject(this, options);
     };
 
@@ -616,7 +613,7 @@ $root.Message = (function() {
      * Converts this Message to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.toJSON = function toJSON() {
+    Message.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 

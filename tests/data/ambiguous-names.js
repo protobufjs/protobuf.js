@@ -25,14 +25,11 @@ $root.A = (function() {
         }
     }
 
-    /** @alias A.prototype */
-    var $prototype = A.prototype;
-
     /**
      * A whatever.
      * @type {string}
      */
-    $prototype.whatever = "";
+    A.prototype.whatever = "";
 
     /**
      * Creates a new A instance using the specified properties.
@@ -127,13 +124,13 @@ $root.A = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {A} A
      */
-    A.fromObject = (function() { return function fromObject(object) {
+    A.fromObject = function fromObject(object) {
         var message = new $root.A();
         if (object.whatever !== undefined && object.whatever !== null) {
             message.whatever = String(object.whatever);
         }
         return message;
-    };})();
+    };
 
     /**
      * Creates a A message from a plain object. Also converts values to their respective internal types.
@@ -150,7 +147,7 @@ $root.A = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    A.toObject = (function() { return function toObject(message, options) {
+    A.toObject = function toObject(message, options) {
         if (!options) {
             options = {};
         }
@@ -168,14 +165,14 @@ $root.A = (function() {
             }
         }
         return object;
-    };})();
+    };
 
     /**
      * Creates a plain object from this A message. Also converts values to other types if specified.
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    $prototype.toObject = function toObject(options) {
+    A.prototype.toObject = function toObject(options) {
         return this.constructor.toObject(this, options);
     };
 
@@ -183,7 +180,7 @@ $root.A = (function() {
      * Converts this A to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.toJSON = function toJSON() {
+    A.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
@@ -206,16 +203,13 @@ $root.B = (function() {
         }
     }
 
-    /** @alias B.prototype */
-    var $prototype = B.prototype;
-
     /**
      * B A.
      * @type {A}
      */
-    $prototype.A = null;
+    B.prototype.A = null;
 
-    // Referenced types
+    // Lazily resolved referenced types
     var $types = {0:"A"}; $lazyTypes.push($types);
 
     /**
@@ -360,7 +354,7 @@ $root.B = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    $prototype.toObject = function toObject(options) {
+    B.prototype.toObject = function toObject(options) {
         return this.constructor.toObject(this, options);
     };
 
@@ -368,7 +362,7 @@ $root.B = (function() {
      * Converts this B to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.toJSON = function toJSON() {
+    B.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 

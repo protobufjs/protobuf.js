@@ -117,14 +117,11 @@ $root.MyRequest = (function() {
         }
     }
 
-    /** @alias MyRequest.prototype */
-    var $prototype = MyRequest.prototype;
-
     /**
      * MyRequest path.
      * @type {string}
      */
-    $prototype.path = "";
+    MyRequest.prototype.path = "";
 
     /**
      * Creates a new MyRequest instance using the specified properties.
@@ -219,13 +216,13 @@ $root.MyRequest = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {MyRequest} MyRequest
      */
-    MyRequest.fromObject = (function() { return function fromObject(object) {
+    MyRequest.fromObject = function fromObject(object) {
         var message = new $root.MyRequest();
         if (object.path !== undefined && object.path !== null) {
             message.path = String(object.path);
         }
         return message;
-    };})();
+    };
 
     /**
      * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
@@ -242,7 +239,7 @@ $root.MyRequest = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    MyRequest.toObject = (function() { return function toObject(message, options) {
+    MyRequest.toObject = function toObject(message, options) {
         if (!options) {
             options = {};
         }
@@ -260,14 +257,14 @@ $root.MyRequest = (function() {
             }
         }
         return object;
-    };})();
+    };
 
     /**
      * Creates a plain object from this MyRequest message. Also converts values to other types if specified.
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    $prototype.toObject = function toObject(options) {
+    MyRequest.prototype.toObject = function toObject(options) {
         return this.constructor.toObject(this, options);
     };
 
@@ -275,7 +272,7 @@ $root.MyRequest = (function() {
      * Converts this MyRequest to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.toJSON = function toJSON() {
+    MyRequest.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
@@ -298,14 +295,11 @@ $root.MyResponse = (function() {
         }
     }
 
-    /** @alias MyResponse.prototype */
-    var $prototype = MyResponse.prototype;
-
     /**
      * MyResponse status.
      * @type {number}
      */
-    $prototype.status = 0;
+    MyResponse.prototype.status = 0;
 
     /**
      * Creates a new MyResponse instance using the specified properties.
@@ -400,13 +394,13 @@ $root.MyResponse = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {MyResponse} MyResponse
      */
-    MyResponse.fromObject = (function() { return function fromObject(object) {
+    MyResponse.fromObject = function fromObject(object) {
         var message = new $root.MyResponse();
         if (object.status !== undefined && object.status !== null) {
             message.status = object.status | 0;
         }
         return message;
-    };})();
+    };
 
     /**
      * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
@@ -423,7 +417,7 @@ $root.MyResponse = (function() {
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    MyResponse.toObject = (function() { return function toObject(message, options) {
+    MyResponse.toObject = function toObject(message, options) {
         if (!options) {
             options = {};
         }
@@ -441,14 +435,14 @@ $root.MyResponse = (function() {
             }
         }
         return object;
-    };})();
+    };
 
     /**
      * Creates a plain object from this MyResponse message. Also converts values to other types if specified.
      * @param {$protobuf.ConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    $prototype.toObject = function toObject(options) {
+    MyResponse.prototype.toObject = function toObject(options) {
         return this.constructor.toObject(this, options);
     };
 
@@ -456,7 +450,7 @@ $root.MyResponse = (function() {
      * Converts this MyResponse to JSON.
      * @returns {Object.<string,*>} JSON object
      */
-    $prototype.toJSON = function toJSON() {
+    MyResponse.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 

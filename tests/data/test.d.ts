@@ -12,9 +12,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Empty;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Empty;
             static verify(message: (jspb.test.Empty|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.Empty;
             static from(object: { [k: string]: any }): jspb.test.Empty;
-            static toObject: any;
+            static toObject(message: jspb.test.Empty, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -33,7 +33,7 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.EnumContainer;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.EnumContainer;
             static verify(message: (jspb.test.EnumContainer|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.EnumContainer;
             static from(object: { [k: string]: any }): jspb.test.EnumContainer;
             static toObject: any;
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
@@ -51,9 +51,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple1;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Simple1;
             static verify(message: (jspb.test.Simple1|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.Simple1;
             static from(object: { [k: string]: any }): jspb.test.Simple1;
-            static toObject: any;
+            static toObject(message: jspb.test.Simple1, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -68,9 +68,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Simple2;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Simple2;
             static verify(message: (jspb.test.Simple2|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.Simple2;
             static from(object: { [k: string]: any }): jspb.test.Simple2;
-            static toObject: any;
+            static toObject(message: jspb.test.Simple2, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -87,9 +87,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.SpecialCases;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.SpecialCases;
             static verify(message: (jspb.test.SpecialCases|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.SpecialCases;
             static from(object: { [k: string]: any }): jspb.test.SpecialCases;
-            static toObject: any;
+            static toObject(message: jspb.test.SpecialCases, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -125,9 +125,9 @@ export namespace jspb {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OptionalFields.Nested;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.OptionalFields.Nested;
                 static verify(message: (jspb.test.OptionalFields.Nested|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): jspb.test.OptionalFields.Nested;
                 static from(object: { [k: string]: any }): jspb.test.OptionalFields.Nested;
-                static toObject: any;
+                static toObject(message: jspb.test.OptionalFields.Nested, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -182,9 +182,9 @@ export namespace jspb {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Complex.Nested;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Complex.Nested;
                 static verify(message: (jspb.test.Complex.Nested|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): jspb.test.Complex.Nested;
                 static from(object: { [k: string]: any }): jspb.test.Complex.Nested;
-                static toObject: any;
+                static toObject(message: jspb.test.Complex.Nested, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -198,9 +198,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.OuterMessage;
             static verify(message: (jspb.test.OuterMessage|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage;
             static from(object: { [k: string]: any }): jspb.test.OuterMessage;
-            static toObject: any;
+            static toObject(message: jspb.test.OuterMessage, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -216,9 +216,9 @@ export namespace jspb {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.OuterMessage.Complex;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.OuterMessage.Complex;
                 static verify(message: (jspb.test.OuterMessage.Complex|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): jspb.test.OuterMessage.Complex;
                 static from(object: { [k: string]: any }): jspb.test.OuterMessage.Complex;
-                static toObject: any;
+                static toObject(message: jspb.test.OuterMessage.Complex, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -233,9 +233,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IsExtension;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.IsExtension;
             static verify(message: (jspb.test.IsExtension|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.IsExtension;
             static from(object: { [k: string]: any }): jspb.test.IsExtension;
-            static toObject: any;
+            static toObject(message: jspb.test.IsExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -248,9 +248,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.IndirectExtension;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.IndirectExtension;
             static verify(message: (jspb.test.IndirectExtension|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.IndirectExtension;
             static from(object: { [k: string]: any }): jspb.test.IndirectExtension;
-            static toObject: any;
+            static toObject(message: jspb.test.IndirectExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -300,9 +300,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.FloatingPointFields;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.FloatingPointFields;
             static verify(message: (jspb.test.FloatingPointFields|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.FloatingPointFields;
             static from(object: { [k: string]: any }): jspb.test.FloatingPointFields;
-            static toObject: any;
+            static toObject(message: jspb.test.FloatingPointFields, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -336,9 +336,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.CloneExtension;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.CloneExtension;
             static verify(message: (jspb.test.CloneExtension|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.CloneExtension;
             static from(object: { [k: string]: any }): jspb.test.CloneExtension;
-            static toObject: any;
+            static toObject(message: jspb.test.CloneExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -376,9 +376,9 @@ export namespace jspb {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RepeatedGroup;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.RepeatedGroup;
                 static verify(message: (jspb.test.TestGroup.RepeatedGroup|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RepeatedGroup;
                 static from(object: { [k: string]: any }): jspb.test.TestGroup.RepeatedGroup;
-                static toObject: any;
+                static toObject(message: jspb.test.TestGroup.RepeatedGroup, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -392,9 +392,9 @@ export namespace jspb {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.RequiredGroup;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.RequiredGroup;
                 static verify(message: (jspb.test.TestGroup.RequiredGroup|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.RequiredGroup;
                 static from(object: { [k: string]: any }): jspb.test.TestGroup.RequiredGroup;
-                static toObject: any;
+                static toObject(message: jspb.test.TestGroup.RequiredGroup, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -408,9 +408,9 @@ export namespace jspb {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestGroup.OptionalGroup;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestGroup.OptionalGroup;
                 static verify(message: (jspb.test.TestGroup.OptionalGroup|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): jspb.test.TestGroup.OptionalGroup;
                 static from(object: { [k: string]: any }): jspb.test.TestGroup.OptionalGroup;
-                static toObject: any;
+                static toObject(message: jspb.test.TestGroup.OptionalGroup, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -441,9 +441,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNames;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestReservedNames;
             static verify(message: (jspb.test.TestReservedNames|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNames;
             static from(object: { [k: string]: any }): jspb.test.TestReservedNames;
-            static toObject: any;
+            static toObject(message: jspb.test.TestReservedNames, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -456,9 +456,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.TestReservedNamesExtension;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.TestReservedNamesExtension;
             static verify(message: (jspb.test.TestReservedNamesExtension|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.TestReservedNamesExtension;
             static from(object: { [k: string]: any }): jspb.test.TestReservedNamesExtension;
-            static toObject: any;
+            static toObject(message: jspb.test.TestReservedNamesExtension, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -551,9 +551,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.MapValueMessageNoBinary;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.MapValueMessageNoBinary;
             static verify(message: (jspb.test.MapValueMessageNoBinary|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.MapValueMessageNoBinary;
             static from(object: { [k: string]: any }): jspb.test.MapValueMessageNoBinary;
-            static toObject: any;
+            static toObject(message: jspb.test.MapValueMessageNoBinary, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -566,9 +566,9 @@ export namespace jspb {
             static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply;
             static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply;
             static verify(message: (jspb.test.Deeply|Object)): string;
-            static fromObject: any;
+            static fromObject(object: { [k: string]: any }): jspb.test.Deeply;
             static from(object: { [k: string]: any }): jspb.test.Deeply;
-            static toObject: any;
+            static toObject(message: jspb.test.Deeply, options?: $protobuf.ConversionOptions): { [k: string]: any };
             toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
             toJSON(): { [k: string]: any };
         }
@@ -583,9 +583,9 @@ export namespace jspb {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply.Nested;
                 static verify(message: (jspb.test.Deeply.Nested|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested;
                 static from(object: { [k: string]: any }): jspb.test.Deeply.Nested;
-                static toObject: any;
+                static toObject(message: jspb.test.Deeply.Nested, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -601,9 +601,9 @@ export namespace jspb {
                     static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): jspb.test.Deeply.Nested.Message;
                     static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): jspb.test.Deeply.Nested.Message;
                     static verify(message: (jspb.test.Deeply.Nested.Message|Object)): string;
-                    static fromObject: any;
+                    static fromObject(object: { [k: string]: any }): jspb.test.Deeply.Nested.Message;
                     static from(object: { [k: string]: any }): jspb.test.Deeply.Nested.Message;
-                    static toObject: any;
+                    static toObject(message: jspb.test.Deeply.Nested.Message, options?: $protobuf.ConversionOptions): { [k: string]: any };
                     toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                     toJSON(): { [k: string]: any };
                 }
@@ -696,9 +696,9 @@ export namespace google {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ExtensionRange;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto.ExtensionRange;
                 static verify(message: (google.protobuf.DescriptorProto.ExtensionRange|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ExtensionRange;
                 static from(object: { [k: string]: any }): google.protobuf.DescriptorProto.ExtensionRange;
-                static toObject: any;
+                static toObject(message: google.protobuf.DescriptorProto.ExtensionRange, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -713,9 +713,9 @@ export namespace google {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.DescriptorProto.ReservedRange;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.DescriptorProto.ReservedRange;
                 static verify(message: (google.protobuf.DescriptorProto.ReservedRange|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): google.protobuf.DescriptorProto.ReservedRange;
                 static from(object: { [k: string]: any }): google.protobuf.DescriptorProto.ReservedRange;
-                static toObject: any;
+                static toObject(message: google.protobuf.DescriptorProto.ReservedRange, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -1093,9 +1093,9 @@ export namespace google {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.UninterpretedOption.NamePart;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.UninterpretedOption.NamePart;
                 static verify(message: (google.protobuf.UninterpretedOption.NamePart|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): google.protobuf.UninterpretedOption.NamePart;
                 static from(object: { [k: string]: any }): google.protobuf.UninterpretedOption.NamePart;
-                static toObject: any;
+                static toObject(message: google.protobuf.UninterpretedOption.NamePart, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -1132,9 +1132,9 @@ export namespace google {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.SourceCodeInfo.Location;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.SourceCodeInfo.Location;
                 static verify(message: (google.protobuf.SourceCodeInfo.Location|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): google.protobuf.SourceCodeInfo.Location;
                 static from(object: { [k: string]: any }): google.protobuf.SourceCodeInfo.Location;
-                static toObject: any;
+                static toObject(message: google.protobuf.SourceCodeInfo.Location, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }
@@ -1170,9 +1170,9 @@ export namespace google {
                 static decode(readerOrBuffer: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.GeneratedCodeInfo.Annotation;
                 static decodeDelimited(readerOrBuffer: ($protobuf.Reader|Uint8Array)): google.protobuf.GeneratedCodeInfo.Annotation;
                 static verify(message: (google.protobuf.GeneratedCodeInfo.Annotation|Object)): string;
-                static fromObject: any;
+                static fromObject(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo.Annotation;
                 static from(object: { [k: string]: any }): google.protobuf.GeneratedCodeInfo.Annotation;
-                static toObject: any;
+                static toObject(message: google.protobuf.GeneratedCodeInfo.Annotation, options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toObject(options?: $protobuf.ConversionOptions): { [k: string]: any };
                 toJSON(): { [k: string]: any };
             }

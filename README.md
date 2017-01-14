@@ -345,7 +345,7 @@ pbjs.main([ "--target", "json-module", "path/to/myproto.proto" ], function(err, 
 
 ### Descriptors vs. static modules
 
-While .proto and JSON files require the full library (about 17.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
+While .proto and JSON files require the full library (about 18.5kb gzipped), pretty much all code but the relatively short descriptors is shared and all features including reflection and the parser are available.
 
 Static code, on the other hand, requires just the minimal runtime (about 5.5kb gzipped), but generates additional, albeit editable, source code without any reflection features.
 

@@ -176,9 +176,14 @@ function buildFunction(type, functionName, gen, scope) {
             delete scope[key];
     });
 
+    var hasScope = Object.keys(scope).length;
+
     // enclose all but the first and last line in an iife returning our properly scoped function
     var lines = code.split(/\n/g);
-    push(name(type.name) + "." + functionName + " = (function(" + Object.keys(scope).join(", ") + ") { return " + lines[0]);
+    if (hasScope)
+        push(name(type.name) + "." + functionName + " = (function(" + Object.keys(scope).join(", ") + ") { return " + lines[0]);
+    else
+        push(name(type.name) + "." + functionName + " = " + lines[0]);
     lines.slice(1, lines.length - 1).forEach(function(line) {
         var prev = indent;
         var i = 0;
@@ -187,7 +192,10 @@ function buildFunction(type, functionName, gen, scope) {
         push(line.trim());
         indent = prev;
     });
-    push("};})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + ");");
+    if (hasScope)
+        push("};})(" + Object.keys(scope).map(function(key) { return scope[key]; }).join(", ") + ");");
+    else
+        push("};");
 }
 
 function toJsType(field) {
@@ -246,14 +254,8 @@ function buildType(ref, type) {
         --indent;
     push("}");
 
-    if (type.fieldsArray.length || type.oneofsArray.length || config.convert) {
-        push("");
-        if (config.comments)
-            push("/** @alias " + fullName + ".prototype */");
-        push("var $prototype = " + name(type.name) + ".prototype;");
-    }
-
     // default values
+    var firstField = true;
     type.fieldsArray.forEach(function(field) {
         field.resolve();
         var jsType = toJsType(field);
@@ -269,21 +271,24 @@ function buildType(ref, type) {
                 prop.charAt(0) !== "." ? "@name " + fullName + "#" + field.name : null,
                 "@type {" + jsType + "}"
             ]);
+        } else if (firstField) {
+            push("");
+            firstField = false;
         }
         if (field.repeated)
-            push("$prototype" + prop + " = $protobuf.util.emptyArray;");
+            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.emptyArray;");
         else if (field.map)
-            push("$prototype" + prop + " = $protobuf.util.emptyObject;");
+            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.emptyObject;");
         else if (field.long)
-            push("$prototype" + prop + " = $protobuf.util.Long ? $protobuf.util.Long.fromBits("
+            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.Long ? $protobuf.util.Long.fromBits("
                     + JSON.stringify(field.typeDefault.low) + ","
                     + JSON.stringify(field.typeDefault.high) + ","
                     + JSON.stringify(field.typeDefault.unsigned)
                 + ") : " + field.typeDefault.toNumber(field.type.charAt(0) === "u") + ";");
         else if (field.bytes) {
-            push("$prototype" + prop + " = $protobuf.util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
+            push(name(type.name) + ".prototype" + prop + " = $protobuf.util.newBuffer(" + JSON.stringify(Array.prototype.slice.call(field.typeDefault)) + ");");
         } else
-            push("$prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
+            push(name(type.name) + ".prototype" + prop + " = " + JSON.stringify(field.typeDefault) + ";");
     });
 
     // virtual oneof fields
@@ -303,7 +308,7 @@ function buildType(ref, type) {
             "@name " + fullName + "#" + name(oneof.name),
             "@type {string|undefined}"
         ]);
-        push("Object.defineProperty($prototype, " + JSON.stringify(oneof.name) +", {");
+        push("Object.defineProperty(" + name(type.name) + ".prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
             push("get: $protobuf.util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");
             push("set: $protobuf.util.oneOfSetter($oneOfFields)");
@@ -323,7 +328,7 @@ function buildType(ref, type) {
     if (hasTypes && (config.encode || config.decode || config.verify || config.convert)) {
         push("");
         if (config.comments)
-            push("// Referenced types");
+            push("// Lazily resolved referenced types");
         push("var $types = {" + types.join(",") + "}; $lazyTypes.push($types);");
     }
 
@@ -461,7 +466,7 @@ function buildType(ref, type) {
             "@param {$protobuf.ConversionOptions} [options] Conversion options",
             "@returns {Object.<string,*>} Plain object"
         ]);
-        push("$prototype.toObject = function toObject(options) {");
+        push(name(type.name) + ".prototype.toObject = function toObject(options) {");
         ++indent;
             push("return this.constructor.toObject(this, options);");
         --indent;
@@ -472,7 +477,7 @@ function buildType(ref, type) {
             "Converts this " + type.name + " to JSON.",
             "@returns {Object.<string,*>} JSON object"
         ]);
-        push("$prototype.toJSON = function toJSON() {");
+        push(name(type.name) + ".prototype.toJSON = function toJSON() {");
         ++indent;
             push("return this.constructor.toObject(this, $protobuf.util.toJSONOptions);");
         --indent;

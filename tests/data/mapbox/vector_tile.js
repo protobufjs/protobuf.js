@@ -34,16 +34,13 @@ $root.vector_tile = (function() {
             }
         }
 
-        /** @alias vector_tile.Tile.prototype */
-        var $prototype = Tile.prototype;
-
         /**
          * Tile layers.
          * @type {Array.<vector_tile.Tile.Layer>}
          */
-        $prototype.layers = $protobuf.util.emptyArray;
+        Tile.prototype.layers = $protobuf.util.emptyArray;
 
-        // Referenced types
+        // Lazily resolved referenced types
         var $types = {0:"vector_tile.Tile.Layer"}; $lazyTypes.push($types);
 
         /**
@@ -204,7 +201,7 @@ $root.vector_tile = (function() {
          * @param {$protobuf.ConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        $prototype.toObject = function toObject(options) {
+        Tile.prototype.toObject = function toObject(options) {
             return this.constructor.toObject(this, options);
         };
 
@@ -212,7 +209,7 @@ $root.vector_tile = (function() {
          * Converts this Tile to JSON.
          * @returns {Object.<string,*>} JSON object
          */
-        $prototype.toJSON = function toJSON() {
+        Tile.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
@@ -252,50 +249,47 @@ $root.vector_tile = (function() {
                 }
             }
 
-            /** @alias vector_tile.Tile.Value.prototype */
-            var $prototype = Value.prototype;
-
             /**
              * Value stringValue.
              * @type {string}
              */
-            $prototype.stringValue = "";
+            Value.prototype.stringValue = "";
 
             /**
              * Value floatValue.
              * @type {number}
              */
-            $prototype.floatValue = 0;
+            Value.prototype.floatValue = 0;
 
             /**
              * Value doubleValue.
              * @type {number}
              */
-            $prototype.doubleValue = 0;
+            Value.prototype.doubleValue = 0;
 
             /**
              * Value intValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.intValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.intValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value uintValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.uintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
+            Value.prototype.uintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Value sintValue.
              * @type {number|$protobuf.Long}
              */
-            $prototype.sintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
+            Value.prototype.sintValue = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Value boolValue.
              * @type {boolean}
              */
-            $prototype.boolValue = false;
+            Value.prototype.boolValue = false;
 
             /**
              * Creates a new Value instance using the specified properties.
@@ -639,7 +633,7 @@ $root.vector_tile = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            $prototype.toObject = function toObject(options) {
+            Value.prototype.toObject = function toObject(options) {
                 return this.constructor.toObject(this, options);
             };
 
@@ -647,7 +641,7 @@ $root.vector_tile = (function() {
              * Converts this Value to JSON.
              * @returns {Object.<string,*>} JSON object
              */
-            $prototype.toJSON = function toJSON() {
+            Value.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
@@ -670,34 +664,31 @@ $root.vector_tile = (function() {
                 }
             }
 
-            /** @alias vector_tile.Tile.Feature.prototype */
-            var $prototype = Feature.prototype;
-
             /**
              * Feature id.
              * @type {number|$protobuf.Long}
              */
-            $prototype.id = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
+            Feature.prototype.id = $protobuf.util.Long ? $protobuf.util.Long.fromBits(0,0,true) : 0;
 
             /**
              * Feature tags.
              * @type {Array.<number>}
              */
-            $prototype.tags = $protobuf.util.emptyArray;
+            Feature.prototype.tags = $protobuf.util.emptyArray;
 
             /**
              * Feature type.
              * @type {number}
              */
-            $prototype.type = undefined;
+            Feature.prototype.type = undefined;
 
             /**
              * Feature geometry.
              * @type {Array.<number>}
              */
-            $prototype.geometry = $protobuf.util.emptyArray;
+            Feature.prototype.geometry = $protobuf.util.emptyArray;
 
-            // Referenced types
+            // Lazily resolved referenced types
             var $types = {2:"vector_tile.Tile.GeomType"}; $lazyTypes.push($types);
 
             /**
@@ -1007,7 +998,7 @@ $root.vector_tile = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            $prototype.toObject = function toObject(options) {
+            Feature.prototype.toObject = function toObject(options) {
                 return this.constructor.toObject(this, options);
             };
 
@@ -1015,7 +1006,7 @@ $root.vector_tile = (function() {
              * Converts this Feature to JSON.
              * @returns {Object.<string,*>} JSON object
              */
-            $prototype.toJSON = function toJSON() {
+            Feature.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
@@ -1038,46 +1029,43 @@ $root.vector_tile = (function() {
                 }
             }
 
-            /** @alias vector_tile.Tile.Layer.prototype */
-            var $prototype = Layer.prototype;
-
             /**
              * Layer version.
              * @type {number}
              */
-            $prototype.version = 1;
+            Layer.prototype.version = 1;
 
             /**
              * Layer name.
              * @type {string}
              */
-            $prototype.name = "";
+            Layer.prototype.name = "";
 
             /**
              * Layer features.
              * @type {Array.<vector_tile.Tile.Feature>}
              */
-            $prototype.features = $protobuf.util.emptyArray;
+            Layer.prototype.features = $protobuf.util.emptyArray;
 
             /**
              * Layer keys.
              * @type {Array.<string>}
              */
-            $prototype.keys = $protobuf.util.emptyArray;
+            Layer.prototype.keys = $protobuf.util.emptyArray;
 
             /**
              * Layer values.
              * @type {Array.<vector_tile.Tile.Value>}
              */
-            $prototype.values = $protobuf.util.emptyArray;
+            Layer.prototype.values = $protobuf.util.emptyArray;
 
             /**
              * Layer extent.
              * @type {number}
              */
-            $prototype.extent = 4096;
+            Layer.prototype.extent = 4096;
 
-            // Referenced types
+            // Lazily resolved referenced types
             var $types = {2:"vector_tile.Tile.Feature",4:"vector_tile.Tile.Value"}; $lazyTypes.push($types);
 
             /**
@@ -1375,7 +1363,7 @@ $root.vector_tile = (function() {
              * @param {$protobuf.ConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            $prototype.toObject = function toObject(options) {
+            Layer.prototype.toObject = function toObject(options) {
                 return this.constructor.toObject(this, options);
             };
 
@@ -1383,7 +1371,7 @@ $root.vector_tile = (function() {
              * Converts this Layer to JSON.
              * @returns {Object.<string,*>} JSON object
              */
-            $prototype.toJSON = function toJSON() {
+            Layer.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
