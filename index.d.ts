@@ -1378,7 +1378,9 @@ export class Root extends NamespaceBase {
     load(filename: (string|string[]), options?: ParseOptions): Promise<Root>;
 
     /**
-     * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
+     * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
+     * @name Root#loadSync
+     * @function
      * @param {string|string[]} filename Names of one or multiple files to load
      * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
      * @returns {Root} Root namespace
@@ -2357,6 +2359,20 @@ export namespace util {
      * @returns {Object.<string,*>} Destination object
      */
     function merge(dst: { [k: string]: any }, src: { [k: string]: any }, ifNotSet?: boolean): { [k: string]: any };
+
+    /**
+     * Builds a getter for a oneof's present field name.
+     * @param {string[]} fieldNames Field names
+     * @returns {function():string|undefined} Unbound getter
+     */
+    function oneOfGetter(fieldNames: string[]): () => any;
+
+    /**
+     * Builds a setter for a oneof's present field name.
+     * @param {string[]} fieldNames Field names
+     * @returns {function(?string):undefined} Unbound setter
+     */
+    function oneOfSetter(fieldNames: string[]): () => any;
 
     /**
      * A minimal UTF8 implementation for number arrays.

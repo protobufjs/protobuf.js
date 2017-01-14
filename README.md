@@ -307,7 +307,7 @@ protobuf.load("bundle.json", function(err, root) {
 });
 ```
 
-**ProTip!** Documenting your .proto files with `/** ... */`-blocks translates to generated static code.
+**ProTip!** Documenting your .proto files with `/** ... */`-blocks or (trailing) `/// ...` lines translates to generated static code.
 
 ### Generating TypeScript definitions from static modules
 

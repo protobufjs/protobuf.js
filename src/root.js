@@ -224,13 +224,17 @@ RootPrototype.load = function load(filename, options, callback) {
 // function load(filename:string, [options:ParseOptions]):Promise<Root>
 
 /**
- * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
+ * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
+ * @name Root#loadSync
+ * @function
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */
 RootPrototype.loadSync = function loadSync(filename, options) {
+    if (!util.isNode)
+        throw Error("not supported");
     return this.load(filename, options, SYNC);
 };
 

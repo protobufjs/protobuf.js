@@ -1,3 +1,7 @@
+/**
+ * File with a comment. (TODO)
+ */
+
 syntax = "proto3";
 
 /**

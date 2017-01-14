@@ -6204,25 +6204,17 @@ $root.jspb = (function() {
              */
             $prototype.btwo = 1234;
 
+            // OneOf field names bound to virtual getters and setters
+            var $oneOfFields;
+
             /**
              * TestMessageWithOneof partialOneof.
              * @name jspb.test.TestMessageWithOneof#partialOneof
              * @type {string|undefined}
              */
             Object.defineProperty($prototype, "partialOneof", {
-                get: function() {
-                    if (this["pone"] !== undefined)
-                        return "pone";
-                    if (this["pthree"] !== undefined)
-                        return "pthree";
-                    return undefined;
-                },
-                set: function(value) {
-                    if (value !== "pone")
-                        delete this["pone"];
-                    if (value !== "pthree")
-                        delete this["pthree"];
-                }
+                get: $protobuf.util.oneOfGetter($oneOfFields = ["pone", "pthree"]),
+                set: $protobuf.util.oneOfSetter($oneOfFields)
             });
 
             /**
@@ -6231,19 +6223,8 @@ $root.jspb = (function() {
              * @type {string|undefined}
              */
             Object.defineProperty($prototype, "recursiveOneof", {
-                get: function() {
-                    if (this["rone"] !== undefined)
-                        return "rone";
-                    if (this["rtwo"] !== undefined)
-                        return "rtwo";
-                    return undefined;
-                },
-                set: function(value) {
-                    if (value !== "rone")
-                        delete this["rone"];
-                    if (value !== "rtwo")
-                        delete this["rtwo"];
-                }
+                get: $protobuf.util.oneOfGetter($oneOfFields = ["rone", "rtwo"]),
+                set: $protobuf.util.oneOfSetter($oneOfFields)
             });
 
             /**
@@ -6252,19 +6233,8 @@ $root.jspb = (function() {
              * @type {string|undefined}
              */
             Object.defineProperty($prototype, "defaultOneofA", {
-                get: function() {
-                    if (this["aone"] !== undefined)
-                        return "aone";
-                    if (this["atwo"] !== undefined)
-                        return "atwo";
-                    return undefined;
-                },
-                set: function(value) {
-                    if (value !== "aone")
-                        delete this["aone"];
-                    if (value !== "atwo")
-                        delete this["atwo"];
-                }
+                get: $protobuf.util.oneOfGetter($oneOfFields = ["aone", "atwo"]),
+                set: $protobuf.util.oneOfSetter($oneOfFields)
             });
 
             /**
@@ -6273,19 +6243,8 @@ $root.jspb = (function() {
              * @type {string|undefined}
              */
             Object.defineProperty($prototype, "defaultOneofB", {
-                get: function() {
-                    if (this["bone"] !== undefined)
-                        return "bone";
-                    if (this["btwo"] !== undefined)
-                        return "btwo";
-                    return undefined;
-                },
-                set: function(value) {
-                    if (value !== "bone")
-                        delete this["bone"];
-                    if (value !== "btwo")
-                        delete this["btwo"];
-                }
+                get: $protobuf.util.oneOfGetter($oneOfFields = ["bone", "btwo"]),
+                set: $protobuf.util.oneOfSetter($oneOfFields)
             });
 
             // Referenced types

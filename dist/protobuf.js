@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Fri, 13 Jan 2017 00:48:40 UTC
+ * Compiled Sat, 14 Jan 2017 04:19:13 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -790,18 +790,8 @@ function create(type, ctor) {
     // Messages have non-enumerable getters and setters for each virtual oneof field
     type.oneofsArray.forEach(function(oneof) {
         Object.defineProperty(prototype, oneof.resolve().name, {
-            get: function() {
-                // > If the parser encounters multiple members of the same oneof on the wire, only the last member seen is used in the parsed message.
-                for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
-                    if (oneof.oneof.indexOf(keys[i]) > -1)
-                        return keys[i];
-                return undefined;
-            },
-            set: function(value) {
-                for (var keys = oneof.oneof, i = 0; i < keys.length; ++i)
-                    if (keys[i] !== value)
-                        delete this[keys[i]];
-            }
+            get: util.oneOfGetter(oneof.oneof),
+            set: util.oneOfSetter(oneof.oneof)
         });
     });
 
@@ -4695,13 +4685,17 @@ RootPrototype.load = function load(filename, options, callback) {
 // function load(filename:string, [options:ParseOptions]):Promise<Root>
 
 /**
- * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace.
+ * Synchronously loads one or multiple .proto or preprocessed .json files into this root namespace (node only).
+ * @name Root#loadSync
+ * @function
  * @param {string|string[]} filename Names of one or multiple files to load
  * @param {ParseOptions} [options] Parse options. Defaults to {@link parse.defaults} when omitted.
  * @returns {Root} Root namespace
  * @throws {Error} If synchronous fetching is not supported (i.e. in browsers) or if a file's syntax is invalid
  */
 RootPrototype.loadSync = function loadSync(filename, options) {
+    if (!util.isNode)
+        throw Error("not supported");
     return this.load(filename, options, SYNC);
 };
 
@@ -6412,6 +6406,48 @@ util.merge = function merge(dst, src, ifNotSet) { // used by converters
             if (dst[keys[i]] === undefined || !ifNotSet)
                 dst[keys[i]] = src[keys[i]];
     return dst;
+};
+
+/**
+ * Builds a getter for a oneof's present field name.
+ * @param {string[]} fieldNames Field names
+ * @returns {function():string|undefined} Unbound getter
+ */
+util.oneOfGetter = function getOneOf(fieldNames) {
+    var fieldMap = {};
+    fieldNames.forEach(function(name) {
+        fieldMap[name] = 1;
+    });
+    /**
+     * @returns {string|undefined} Set field name, if any
+     * @this Object
+     * @ignore
+     */
+    return function() {
+        for (var keys = Object.keys(this), i = keys.length - 1; i > -1; --i)
+            if (fieldMap[keys[i]] === 1 && this[keys[i]] !== undefined && this[keys[i]] !== null)
+                return keys[i];
+        return undefined;
+    };
+};
+
+/**
+ * Builds a setter for a oneof's present field name.
+ * @param {string[]} fieldNames Field names
+ * @returns {function(?string):undefined} Unbound setter
+ */
+util.oneOfSetter = function setOneOf(fieldNames) {
+    /**
+     * @param {string} name Field name
+     * @returns {undefined}
+     * @this Object
+     * @ignore
+     */
+    return function(name) {
+        for (var i = 0; i < fieldNames.length; ++i)
+            if (fieldNames[i] !== name)
+                delete this[fieldNames[i]];
+    };
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

@@ -25,8 +25,12 @@ function static_target(root, options, callback) {
             push("// Lazily resolved type references");
         push("var $lazyTypes = [];");
         push("");
-        if (config.comments)
-            push("// Exported root namespace");
+        if (config.comments) {
+            if (root.comment)
+                pushComment("@fileoverview " + root.comment);
+            else
+                push("// Exported root namespace");
+        }
         push("var $root = {};");
         buildNamespace(null, root);
         push("");
@@ -76,7 +80,7 @@ function pushComment(lines) {
         return;
     var split = [];
     for (var i = 0; i < lines.length; ++i)
-        if (lines[i] !== null)
+        if (lines[i] !== null && lines[i].substring(0, 8) !== "@exclude")
             Array.prototype.push.apply(split, lines[i].split(/\r?\n/g));
     push("/**");
     split.forEach(function(line) {
@@ -126,7 +130,7 @@ function buildNamespace(ref, ns) {
     else if (ns.name !== "") {
         push("");
         pushComment([
-            "Namespace " + ns.name + ".",
+            ns.comment || "Namespace " + ns.name + ".",
             "@exports " + ns.fullName.substring(1),
             "@namespace"
         ]);
@@ -301,7 +305,15 @@ function buildType(ref, type) {
     });
 
     // virtual oneof fields
+    var firstOneOf = true;;
     type.oneofsArray.forEach(function(oneof) {
+        if (firstOneOf) {
+            firstOneOf = false;
+            push("");
+            if (config.comments)
+                push("// OneOf field names bound to virtual getters and setters");
+            push("var $oneOfFields;");
+        }
         oneof.resolve();
         push("");
         pushComment([
@@ -311,27 +323,8 @@ function buildType(ref, type) {
         ]);
         push("Object.defineProperty($prototype, " + JSON.stringify(oneof.name) +", {");
         ++indent;
-            push("get: function() {");
-            ++indent;
-            oneof.oneof.forEach(function(name) {
-                push("if (this[" + JSON.stringify(name) + "] !== undefined)");
-                ++indent;
-                    push("return " + JSON.stringify(name) + ";");
-                --indent;
-            });
-            push("return undefined;");
-            --indent;
-            push("},");
-            push("set: function(value) {");
-            ++indent;
-            oneof.oneof.forEach(function(name) {
-                push("if (value !== " + JSON.stringify(name) + ")");
-                ++indent;
-                    push("delete this[" + JSON.stringify(name) + "];");
-                --indent;
-            });
-            --indent;
-            push("}");
+            push("get: $protobuf.util.oneOfGetter($oneOfFields = [" + oneof.oneof.map(JSON.stringify).join(", ") + "]),");
+            push("set: $protobuf.util.oneOfSetter($oneOfFields)");
         --indent;
         push("});");
     });
