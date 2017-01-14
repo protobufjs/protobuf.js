@@ -131,7 +131,7 @@ $root.Package = (function() {
     $prototype.cliDependencies = $protobuf.util.emptyArray;
 
     // Referenced types
-    var $types = [null, null, null, null, null, "Package.Repository", null, null, null, null, null, null, null, null, null, null, null]; $lazyTypes.push($types);
+    var $types = {5:"Package.Repository"}; $lazyTypes.push($types);
 
     /**
      * Creates a new Package instance using the specified properties.
@@ -377,127 +377,127 @@ $root.Package = (function() {
     Package.verify = (function(util, types) { return function verify(message) {
         if (message.name !== undefined) {
             if (!util.isString(message.name)) {
-                return "Package.name: string expected";
+                return "name: string expected";
             }
         }
         if (message.version !== undefined) {
             if (!util.isString(message.version)) {
-                return "Package.version: string expected";
+                return "version: string expected";
             }
         }
         if (message.description !== undefined) {
             if (!util.isString(message.description)) {
-                return "Package.description: string expected";
+                return "description: string expected";
             }
         }
         if (message.author !== undefined) {
             if (!util.isString(message.author)) {
-                return "Package.author: string expected";
+                return "author: string expected";
             }
         }
         if (message.license !== undefined) {
             if (!util.isString(message.license)) {
-                return "Package.license: string expected";
+                return "license: string expected";
             }
         }
         if (message.repository !== undefined && message.repository !== null) {
-            var err;
-            if (err = types[5].verify(message.repository)) {
-                return err;
+            var err = types[5].verify(message.repository);
+            if (err) {
+                return "repository." + err;
             }
         }
         if (message.bugs !== undefined) {
             if (!util.isString(message.bugs)) {
-                return "Package.bugs: string expected";
+                return "bugs: string expected";
             }
         }
         if (message.homepage !== undefined) {
             if (!util.isString(message.homepage)) {
-                return "Package.homepage: string expected";
+                return "homepage: string expected";
             }
         }
         if (message.keywords !== undefined) {
             if (!Array.isArray(message.keywords)) {
-                return "Package.keywords: array expected";
+                return "keywords: array expected";
             }
             for (var i = 0; i < message.keywords.length; ++i) {
                 if (!util.isString(message.keywords[i])) {
-                    return "Package.keywords: string[] expected";
+                    return "keywords: string[] expected";
                 }
             }
         }
         if (message.main !== undefined) {
             if (!util.isString(message.main)) {
-                return "Package.main: string expected";
+                return "main: string expected";
             }
         }
         if (message.bin !== undefined) {
             if (!util.isObject(message.bin)) {
-                return "Package.bin: object expected";
+                return "bin: object expected";
             }
             var key = Object.keys(message.bin);
             for (var i = 0; i < key.length; ++i) {
                 if (!util.isString(message.bin[key[i]])) {
-                    return "Package.bin: string{key:string} expected";
+                    return "bin: string{key:string} expected";
                 }
             }
         }
         if (message.scripts !== undefined) {
             if (!util.isObject(message.scripts)) {
-                return "Package.scripts: object expected";
+                return "scripts: object expected";
             }
             var key = Object.keys(message.scripts);
             for (var i = 0; i < key.length; ++i) {
                 if (!util.isString(message.scripts[key[i]])) {
-                    return "Package.scripts: string{key:string} expected";
+                    return "scripts: string{key:string} expected";
                 }
             }
         }
         if (message.dependencies !== undefined) {
             if (!util.isObject(message.dependencies)) {
-                return "Package.dependencies: object expected";
+                return "dependencies: object expected";
             }
             var key = Object.keys(message.dependencies);
             for (var i = 0; i < key.length; ++i) {
                 if (!util.isString(message.dependencies[key[i]])) {
-                    return "Package.dependencies: string{key:string} expected";
+                    return "dependencies: string{key:string} expected";
                 }
             }
         }
         if (message.optionalDependencies !== undefined) {
             if (!util.isObject(message.optionalDependencies)) {
-                return "Package.optionalDependencies: object expected";
+                return "optionalDependencies: object expected";
             }
             var key = Object.keys(message.optionalDependencies);
             for (var i = 0; i < key.length; ++i) {
                 if (!util.isString(message.optionalDependencies[key[i]])) {
-                    return "Package.optionalDependencies: string{key:string} expected";
+                    return "optionalDependencies: string{key:string} expected";
                 }
             }
         }
         if (message.devDependencies !== undefined) {
             if (!util.isObject(message.devDependencies)) {
-                return "Package.devDependencies: object expected";
+                return "devDependencies: object expected";
             }
             var key = Object.keys(message.devDependencies);
             for (var i = 0; i < key.length; ++i) {
                 if (!util.isString(message.devDependencies[key[i]])) {
-                    return "Package.devDependencies: string{key:string} expected";
+                    return "devDependencies: string{key:string} expected";
                 }
             }
         }
         if (message.types !== undefined) {
             if (!util.isString(message.types)) {
-                return "Package.types: string expected";
+                return "types: string expected";
             }
         }
         if (message.cliDependencies !== undefined) {
             if (!Array.isArray(message.cliDependencies)) {
-                return "Package.cliDependencies: array expected";
+                return "cliDependencies: array expected";
             }
             for (var i = 0; i < message.cliDependencies.length; ++i) {
                 if (!util.isString(message.cliDependencies[i])) {
-                    return "Package.cliDependencies: string[] expected";
+                    return "cliDependencies: string[] expected";
                 }
             }
         }
@@ -772,11 +772,7 @@ $root.Package = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     Package.Repository = (function() {
@@ -899,12 +895,12 @@ $root.Package = (function() {
         Repository.verify = (function(util) { return function verify(message) {
             if (message.type !== undefined) {
                 if (!util.isString(message.type)) {
-                    return "Package.Repository.type: string expected";
+                    return "type: string expected";
                 }
             }
             if (message.url !== undefined) {
                 if (!util.isString(message.url)) {
-                    return "Package.Repository.url: string expected";
+                    return "url: string expected";
                 }
             }
             return null;
@@ -982,11 +978,7 @@ $root.Package = (function() {
          * @returns {Object.<string,*>} JSON object
          */
         $prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, {
-                longs: String,
-                enums: String,
-                bytes: String
-            });
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
         return Repository;
@@ -995,18 +987,8 @@ $root.Package = (function() {
     return Package;
 })();
 
-// Resolve lazy types
-$lazyTypes.forEach(function(types) {
-    types.forEach(function(path, i) {
-        if (!path)
-            return;
-        path = path.split(".");
-        var ptr = $root;
-        while (path.length)
-            ptr = ptr[path.shift()];
-        types[i] = ptr;
-    });
-});
+// Resolve lazy type names to actual types
+$protobuf.util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_package"] = $root;
 

@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 14 Jan 2017 04:19:13 UTC
+ * Compiled Sat, 14 Jan 2017 21:49:58 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -973,6 +973,8 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
 converter.fromObject = function fromObject(mtype) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     var fields = mtype.fieldsArray;
+    if (!fields.length)
+        return util.codegen()("return new(this.ctor)");
     var gen = util.codegen("d")
     ("var m=new(this.ctor)");
     for (var i = 0; i < fields.length; ++i) {
@@ -1888,6 +1890,8 @@ MapFieldPrototype.resolve = function resolve() {
 "use strict";
 module.exports = Message;
 
+var util = require(31);
+
 /**
  * Constructs a new message instance.
  *
@@ -2014,14 +2018,10 @@ Message.prototype.toObject = function toObject(options) {
  * @returns {Object.<string,*>} JSON object
  */
 Message.prototype.toJSON = function toJSON() {
-    return this.$type.toObject(this, {
-        longs: String,
-        enums: String,
-        bytes: String
-    });
+    return this.$type.toObject(this, util.toJSONOptions);
 };
 
-},{}],19:[function(require,module,exports){
+},{"31":31}],19:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
@@ -5279,6 +5279,34 @@ util.oneOfSetter = function setOneOf(fieldNames) {
     };
 };
 
+/**
+ * Lazily resolves fully qualified type names against the specified root.
+ * @param {Root} root Root instanceof
+ * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
+ * @returns {undefined}
+ */
+util.lazyResolve = function lazyResolve(root, lazyTypes) {
+    lazyTypes.forEach(function(types) {
+        Object.keys(types).forEach(function(index) {
+            var path = types[index |= 0].split("."),
+                ptr  = root;
+            while (path.length)
+                ptr = ptr[path.shift()];
+            types[index] = ptr || null;
+        });
+    });
+};
+
+/**
+ * Default conversion options used for toJSON implementations.
+ * @type {ConversionOptions}
+ */
+util.toJSONOptions = {
+    longs: String,
+    enums: String,
+    bytes: String
+};
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"10":10,"2":2,"32":32,"7":7,"9":9}],34:[function(require,module,exports){
@@ -5289,7 +5317,7 @@ var Enum      = require(15),
     util      = require(31);
 
 function invalid(field, expected) {
-    return field.fullName.substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
+    return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
 
 /**
@@ -5315,9 +5343,9 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                     ("break")
             ("}");
         } else gen
-            ("var e;")
-            ("if(e=types[%d].verify(%s))", fieldIndex, ref)
-                ("return e");
+            ("var e=types[%d].verify(%s);", fieldIndex, ref)
+            ("if(e)")
+                ("return%j+e", field.name + ".");
     } else {
         switch (field.type) {
             case "int32":

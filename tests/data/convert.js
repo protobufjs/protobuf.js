@@ -83,7 +83,7 @@ $root.Message = (function() {
     $prototype.int64Map = $protobuf.util.emptyObject;
 
     // Referenced types
-    var $types = [null, null, null, null, null, null, "Message.SomeEnum", "Message.SomeEnum", null]; $lazyTypes.push($types);
+    var $types = {6:"Message.SomeEnum",7:"Message.SomeEnum"}; $lazyTypes.push($types);
 
     /**
      * Creates a new Message instance using the specified properties.
@@ -269,53 +269,53 @@ $root.Message = (function() {
     Message.verify = (function(util) { return function verify(message) {
         if (message.stringVal !== undefined) {
             if (!util.isString(message.stringVal)) {
-                return "Message.stringVal: string expected";
+                return "stringVal: string expected";
             }
         }
         if (message.stringRepeated !== undefined) {
             if (!Array.isArray(message.stringRepeated)) {
-                return "Message.stringRepeated: array expected";
+                return "stringRepeated: array expected";
             }
             for (var i = 0; i < message.stringRepeated.length; ++i) {
                 if (!util.isString(message.stringRepeated[i])) {
-                    return "Message.stringRepeated: string[] expected";
+                    return "stringRepeated: string[] expected";
                 }
             }
         }
         if (message.uint64Val !== undefined) {
             if (!util.isInteger(message.uint64Val) && !(message.uint64Val && util.isInteger(message.uint64Val.low) && util.isInteger(message.uint64Val.high))) {
-                return "Message.uint64Val: integer|Long expected";
+                return "uint64Val: integer|Long expected";
             }
         }
         if (message.uint64Repeated !== undefined) {
             if (!Array.isArray(message.uint64Repeated)) {
-                return "Message.uint64Repeated: array expected";
+                return "uint64Repeated: array expected";
             }
             for (var i = 0; i < message.uint64Repeated.length; ++i) {
                 if (!util.isInteger(message.uint64Repeated[i]) && !(message.uint64Repeated[i] && util.isInteger(message.uint64Repeated[i].low) && util.isInteger(message.uint64Repeated[i].high))) {
-                    return "Message.uint64Repeated: integer|Long[] expected";
+                    return "uint64Repeated: integer|Long[] expected";
                 }
             }
         }
         if (message.bytesVal !== undefined) {
             if (!(message.bytesVal && typeof message.bytesVal.length === "number" || util.isString(message.bytesVal))) {
-                return "Message.bytesVal: buffer expected";
+                return "bytesVal: buffer expected";
             }
         }
         if (message.bytesRepeated !== undefined) {
             if (!Array.isArray(message.bytesRepeated)) {
-                return "Message.bytesRepeated: array expected";
+                return "bytesRepeated: array expected";
             }
             for (var i = 0; i < message.bytesRepeated.length; ++i) {
                 if (!(message.bytesRepeated[i] && typeof message.bytesRepeated[i].length === "number" || util.isString(message.bytesRepeated[i]))) {
-                    return "Message.bytesRepeated: buffer[] expected";
+                    return "bytesRepeated: buffer[] expected";
                 }
             }
         }
         if (message.enumVal !== undefined) {
             switch (message.enumVal) {
             default:
-                return "Message.enumVal: enum value expected";
+                return "enumVal: enum value expected";
 
             case 1:
             case 2:
@@ -324,12 +324,12 @@ $root.Message = (function() {
         }
         if (message.enumRepeated !== undefined) {
             if (!Array.isArray(message.enumRepeated)) {
-                return "Message.enumRepeated: array expected";
+                return "enumRepeated: array expected";
             }
             for (var i = 0; i < message.enumRepeated.length; ++i) {
                 switch (message.enumRepeated[i]) {
                 default:
-                    return "Message.enumRepeated: enum value[] expected";
+                    return "enumRepeated: enum value[] expected";
 
                 case 1:
                 case 2:
@@ -339,12 +339,12 @@ $root.Message = (function() {
         }
         if (message.int64Map !== undefined) {
             if (!util.isObject(message.int64Map)) {
-                return "Message.int64Map: object expected";
+                return "int64Map: object expected";
             }
             var key = Object.keys(message.int64Map);
             for (var i = 0; i < key.length; ++i) {
                 if (!util.isInteger(message.int64Map[key[i]]) && !(message.int64Map[key[i]] && util.isInteger(message.int64Map[key[i]].low) && util.isInteger(message.int64Map[key[i]].high))) {
-                    return "Message.int64Map: integer|Long{key:string} expected";
+                    return "int64Map: integer|Long{key:string} expected";
                 }
             }
         }
@@ -617,11 +617,7 @@ $root.Message = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     /**
@@ -643,18 +639,8 @@ $root.Message = (function() {
     return Message;
 })();
 
-// Resolve lazy types
-$lazyTypes.forEach(function(types) {
-    types.forEach(function(path, i) {
-        if (!path)
-            return;
-        path = path.split(".");
-        var ptr = $root;
-        while (path.length)
-            ptr = ptr[path.shift()];
-        types[i] = ptr;
-    });
-});
+// Resolve lazy type names to actual types
+$protobuf.util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_convert"] = $root;
 

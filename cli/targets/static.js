@@ -35,26 +35,8 @@ function static_target(root, options, callback) {
         buildNamespace(null, root);
         push("");
         if (config.comments)
-            push("// Resolve lazy types");
-        push("$lazyTypes.forEach(function(types) {");
-            ++indent;
-            push("types.forEach(function(path, i) {");
-                ++indent;
-                push("if (!path)");
-                    ++indent;
-                    push("return;");
-                    --indent;
-                push("path = path.split(\".\");");
-                push("var ptr = $root;");
-                push("while (path.length)");
-                    ++indent;
-                    push("ptr = ptr[path.shift()];");
-                    --indent;
-                push("types[i] = ptr;");
-                --indent;
-            push("});");
-            --indent;
-        push("});");
+            push("// Resolve lazy type names to actual types");
+        push("$protobuf.util.lazyResolve($root, $lazyTypes);");
         return callback(null, out.join("\n"));
     } catch (err) {
         return callback(err);
@@ -330,19 +312,19 @@ function buildType(ref, type) {
     });
 
     var hasTypes = false;
-    var types = type.fieldsArray.map(function(field) {
+    var types = [];
+    type.fieldsArray.forEach(function(field, index) {
         if (field.resolve().resolvedType) { // including enums!
             hasTypes = true;
-            return JSON.stringify(field.resolvedType.fullName.substring(1));
+            types.push(index + ":"+JSON.stringify(field.resolvedType.fullName.substring(1)));
         }
-        return "null";
-    }).join(", ");
+    });
 
     if (hasTypes && (config.encode || config.decode || config.verify || config.convert)) {
         push("");
         if (config.comments)
             push("// Referenced types");
-        push("var $types = [" + types + "]; $lazyTypes.push($types);");
+        push("var $types = {" + types.join(",") + "}; $lazyTypes.push($types);");
     }
 
     if (config.create) {
@@ -492,13 +474,7 @@ function buildType(ref, type) {
         ]);
         push("$prototype.toJSON = function toJSON() {");
         ++indent;
-            push("return this.constructor.toObject(this, {");
-            ++indent;
-                push("longs: String,");
-                push("enums: String,");
-                push("bytes: String");
-            --indent;
-            push("});");
+            push("return this.constructor.toObject(this, $protobuf.util.toJSONOptions);");
         --indent;
         push("};");
     }

@@ -1,6 +1,8 @@
 "use strict";
 module.exports = Message;
 
+var util = require("./util");
+
 /**
  * Constructs a new message instance.
  *
@@ -127,9 +129,5 @@ Message.prototype.toObject = function toObject(options) {
  * @returns {Object.<string,*>} JSON object
  */
 Message.prototype.toJSON = function toJSON() {
-    return this.$type.toObject(this, {
-        longs: String,
-        enums: String,
-        bytes: String
-    });
+    return this.$type.toObject(this, util.toJSONOptions);
 };

@@ -5,7 +5,7 @@ var Enum      = require("./enum"),
     util      = require("./util");
 
 function invalid(field, expected) {
-    return field.fullName.substring(1) + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
+    return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
 }
 
 /**
@@ -31,9 +31,9 @@ function genVerifyValue(gen, field, fieldIndex, ref) {
                     ("break")
             ("}");
         } else gen
-            ("var e;")
-            ("if(e=types[%d].verify(%s))", fieldIndex, ref)
-                ("return e");
+            ("var e=types[%d].verify(%s);", fieldIndex, ref)
+            ("if(e)")
+                ("return%j+e", field.name + ".");
     } else {
         switch (field.type) {
             case "int32":

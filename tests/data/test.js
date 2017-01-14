@@ -127,9 +127,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Empty} Empty
              */
-            Empty.fromObject = (function() { return function fromObject(object) {
-                var message = new $root.jspb.test.Empty();
-                return message;
+            Empty.fromObject = (function() { return function fromObject() {
+                return new $root.jspb.test.Empty();
             };})();
 
             /**
@@ -165,11 +164,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return Empty;
@@ -217,7 +212,7 @@ $root.jspb = (function() {
             $prototype.outerEnum = 1;
 
             // Referenced types
-            var $types = ["jspb.test.OuterEnum"]; $lazyTypes.push($types);
+            var $types = {0:"jspb.test.OuterEnum"}; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumContainer instance using the specified properties.
@@ -302,7 +297,7 @@ $root.jspb = (function() {
                 if (message.outerEnum !== undefined) {
                     switch (message.outerEnum) {
                     default:
-                        return "jspb.test.EnumContainer.outerEnum: enum value expected";
+                        return "outerEnum: enum value expected";
 
                     case 1:
                     case 2:
@@ -382,11 +377,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return EnumContainer;
@@ -527,21 +518,21 @@ $root.jspb = (function() {
              */
             Simple1.verify = (function(util) { return function verify(message) {
                 if (!util.isString(message.aString)) {
-                    return "jspb.test.Simple1.aString: string expected";
+                    return "aString: string expected";
                 }
                 if (message.aRepeatedString !== undefined) {
                     if (!Array.isArray(message.aRepeatedString)) {
-                        return "jspb.test.Simple1.aRepeatedString: array expected";
+                        return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
                         if (!util.isString(message.aRepeatedString[i])) {
-                            return "jspb.test.Simple1.aRepeatedString: string[] expected";
+                            return "aRepeatedString: string[] expected";
                         }
                     }
                 }
                 if (message.aBoolean !== undefined) {
                     if (typeof message.aBoolean !== "boolean") {
-                        return "jspb.test.Simple1.aBoolean: boolean expected";
+                        return "aBoolean: boolean expected";
                     }
                 }
                 return null;
@@ -637,11 +628,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return Simple1;
@@ -769,15 +756,15 @@ $root.jspb = (function() {
              */
             Simple2.verify = (function(util) { return function verify(message) {
                 if (!util.isString(message.aString)) {
-                    return "jspb.test.Simple2.aString: string expected";
+                    return "aString: string expected";
                 }
                 if (message.aRepeatedString !== undefined) {
                     if (!Array.isArray(message.aRepeatedString)) {
-                        return "jspb.test.Simple2.aRepeatedString: array expected";
+                        return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
                         if (!util.isString(message.aRepeatedString[i])) {
-                            return "jspb.test.Simple2.aRepeatedString: string[] expected";
+                            return "aRepeatedString: string[] expected";
                         }
                     }
                 }
@@ -864,11 +851,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return Simple2;
@@ -1014,16 +997,16 @@ $root.jspb = (function() {
              */
             SpecialCases.verify = (function(util) { return function verify(message) {
                 if (!util.isString(message.normal)) {
-                    return "jspb.test.SpecialCases.normal: string expected";
+                    return "normal: string expected";
                 }
                 if (!util.isString(message["default"])) {
-                    return "jspb.test.SpecialCases.default: string expected";
+                    return "default: string expected";
                 }
                 if (!util.isString(message["function"])) {
-                    return "jspb.test.SpecialCases.function: string expected";
+                    return "function: string expected";
                 }
                 if (!util.isString(message["var"])) {
-                    return "jspb.test.SpecialCases.var: string expected";
+                    return "var: string expected";
                 }
                 return null;
             };})($protobuf.util);
@@ -1120,11 +1103,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return SpecialCases;
@@ -1180,7 +1159,7 @@ $root.jspb = (function() {
             $prototype.aRepeatedString = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, null, "jspb.test.OptionalFields.Nested", "jspb.test.OptionalFields.Nested", null]; $lazyTypes.push($types);
+            var $types = {2:"jspb.test.OptionalFields.Nested",3:"jspb.test.OptionalFields.Nested"}; $lazyTypes.push($types);
 
             /**
              * Creates a new OptionalFields instance using the specified properties.
@@ -1300,36 +1279,36 @@ $root.jspb = (function() {
             OptionalFields.verify = (function(util, types) { return function verify(message) {
                 if (message.aString !== undefined) {
                     if (!util.isString(message.aString)) {
-                        return "jspb.test.OptionalFields.aString: string expected";
+                        return "aString: string expected";
                     }
                 }
                 if (typeof message.aBool !== "boolean") {
-                    return "jspb.test.OptionalFields.aBool: boolean expected";
+                    return "aBool: boolean expected";
                 }
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    var err;
-                    if (err = types[2].verify(message.aNestedMessage)) {
-                        return err;
+                    var err = types[2].verify(message.aNestedMessage);
+                    if (err) {
+                        return "aNestedMessage." + err;
                     }
                 }
                 if (message.aRepeatedMessage !== undefined) {
                     if (!Array.isArray(message.aRepeatedMessage)) {
-                        return "jspb.test.OptionalFields.aRepeatedMessage: array expected";
+                        return "aRepeatedMessage: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        var err;
-                        if (err = types[3].verify(message.aRepeatedMessage[i])) {
-                            return err;
+                        var err = types[3].verify(message.aRepeatedMessage[i]);
+                        if (err) {
+                            return "aRepeatedMessage." + err;
                         }
                     }
                 }
                 if (message.aRepeatedString !== undefined) {
                     if (!Array.isArray(message.aRepeatedString)) {
-                        return "jspb.test.OptionalFields.aRepeatedString: array expected";
+                        return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
                         if (!util.isString(message.aRepeatedString[i])) {
-                            return "jspb.test.OptionalFields.aRepeatedString: string[] expected";
+                            return "aRepeatedString: string[] expected";
                         }
                     }
                 }
@@ -1452,11 +1431,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             OptionalFields.Nested = (function() {
@@ -1566,7 +1541,7 @@ $root.jspb = (function() {
                 Nested.verify = (function(util) { return function verify(message) {
                     if (message.anInt !== undefined) {
                         if (!util.isInteger(message.anInt)) {
-                            return "jspb.test.OptionalFields.Nested.anInt: integer expected";
+                            return "anInt: integer expected";
                         }
                     }
                     return null;
@@ -1634,11 +1609,7 @@ $root.jspb = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return Nested;
@@ -1727,7 +1698,7 @@ $root.jspb = (function() {
             $prototype[".jspb.test.simple1"] = null;
 
             // Referenced types
-            var $types = [null, null, null, "jspb.test.IsExtension", "jspb.test.Simple1", null, null, "jspb.test.Simple1", "jspb.test.Simple1"]; $lazyTypes.push($types);
+            var $types = {3:"jspb.test.IsExtension",4:"jspb.test.Simple1",7:"jspb.test.Simple1",8:"jspb.test.Simple1"}; $lazyTypes.push($types);
 
             /**
              * Creates a new HasExtensions instance using the specified properties.
@@ -1877,61 +1848,61 @@ $root.jspb = (function() {
             HasExtensions.verify = (function(util, types) { return function verify(message) {
                 if (message.str1 !== undefined) {
                     if (!util.isString(message.str1)) {
-                        return "jspb.test.HasExtensions.str1: string expected";
+                        return "str1: string expected";
                     }
                 }
                 if (message.str2 !== undefined) {
                     if (!util.isString(message.str2)) {
-                        return "jspb.test.HasExtensions.str2: string expected";
+                        return "str2: string expected";
                     }
                 }
                 if (message.str3 !== undefined) {
                     if (!util.isString(message.str3)) {
-                        return "jspb.test.HasExtensions.str3: string expected";
+                        return "str3: string expected";
                     }
                 }
                 if (message[".jspb.test.IsExtension.extField"] !== undefined && message[".jspb.test.IsExtension.extField"] !== null) {
-                    var err;
-                    if (err = types[3].verify(message[".jspb.test.IsExtension.extField"])) {
-                        return err;
+                    var err = types[3].verify(message[".jspb.test.IsExtension.extField"]);
+                    if (err) {
+                        return ".jspb.test.IsExtension.extField." + err;
                     }
                 }
                 if (message[".jspb.test.IndirectExtension.simple"] !== undefined && message[".jspb.test.IndirectExtension.simple"] !== null) {
-                    var err;
-                    if (err = types[4].verify(message[".jspb.test.IndirectExtension.simple"])) {
-                        return err;
+                    var err = types[4].verify(message[".jspb.test.IndirectExtension.simple"]);
+                    if (err) {
+                        return ".jspb.test.IndirectExtension.simple." + err;
                     }
                 }
                 if (message[".jspb.test.IndirectExtension.str"] !== undefined) {
                     if (!util.isString(message[".jspb.test.IndirectExtension.str"])) {
-                        return "jspb.test.HasExtensions..jspb.test.IndirectExtension.str: string expected";
+                        return ".jspb.test.IndirectExtension.str: string expected";
                     }
                 }
                 if (message[".jspb.test.IndirectExtension.repeatedStr"] !== undefined) {
                     if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedStr"])) {
-                        return "jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr: array expected";
+                        return ".jspb.test.IndirectExtension.repeatedStr: array expected";
                     }
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++i) {
                         if (!util.isString(message[".jspb.test.IndirectExtension.repeatedStr"][i])) {
-                            return "jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr: string[] expected";
+                            return ".jspb.test.IndirectExtension.repeatedStr: string[] expected";
                         }
                     }
                 }
                 if (message[".jspb.test.IndirectExtension.repeatedSimple"] !== undefined) {
                     if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedSimple"])) {
-                        return "jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: array expected";
+                        return ".jspb.test.IndirectExtension.repeatedSimple: array expected";
                     }
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        var err;
-                        if (err = types[7].verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i])) {
-                            return err;
+                        var err = types[7].verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]);
+                        if (err) {
+                            return ".jspb.test.IndirectExtension.repeatedSimple." + err;
                         }
                     }
                 }
                 if (message[".jspb.test.simple1"] !== undefined && message[".jspb.test.simple1"] !== null) {
-                    var err;
-                    if (err = types[8].verify(message[".jspb.test.simple1"])) {
-                        return err;
+                    var err = types[8].verify(message[".jspb.test.simple1"]);
+                    if (err) {
+                        return ".jspb.test.simple1." + err;
                     }
                 }
                 return null;
@@ -2093,11 +2064,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return HasExtensions;
@@ -2153,7 +2120,7 @@ $root.jspb = (function() {
             $prototype.aRepeatedString = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, null, "jspb.test.Complex.Nested", "jspb.test.Complex.Nested", null]; $lazyTypes.push($types);
+            var $types = {2:"jspb.test.Complex.Nested",3:"jspb.test.Complex.Nested"}; $lazyTypes.push($types);
 
             /**
              * Creates a new Complex instance using the specified properties.
@@ -2270,35 +2237,35 @@ $root.jspb = (function() {
              */
             Complex.verify = (function(util, types) { return function verify(message) {
                 if (!util.isString(message.aString)) {
-                    return "jspb.test.Complex.aString: string expected";
+                    return "aString: string expected";
                 }
                 if (typeof message.anOutOfOrderBool !== "boolean") {
-                    return "jspb.test.Complex.anOutOfOrderBool: boolean expected";
+                    return "anOutOfOrderBool: boolean expected";
                 }
                 if (message.aNestedMessage !== undefined && message.aNestedMessage !== null) {
-                    var err;
-                    if (err = types[2].verify(message.aNestedMessage)) {
-                        return err;
+                    var err = types[2].verify(message.aNestedMessage);
+                    if (err) {
+                        return "aNestedMessage." + err;
                     }
                 }
                 if (message.aRepeatedMessage !== undefined) {
                     if (!Array.isArray(message.aRepeatedMessage)) {
-                        return "jspb.test.Complex.aRepeatedMessage: array expected";
+                        return "aRepeatedMessage: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        var err;
-                        if (err = types[3].verify(message.aRepeatedMessage[i])) {
-                            return err;
+                        var err = types[3].verify(message.aRepeatedMessage[i]);
+                        if (err) {
+                            return "aRepeatedMessage." + err;
                         }
                     }
                 }
                 if (message.aRepeatedString !== undefined) {
                     if (!Array.isArray(message.aRepeatedString)) {
-                        return "jspb.test.Complex.aRepeatedString: array expected";
+                        return "aRepeatedString: array expected";
                     }
                     for (var i = 0; i < message.aRepeatedString.length; ++i) {
                         if (!util.isString(message.aRepeatedString[i])) {
-                            return "jspb.test.Complex.aRepeatedString: string[] expected";
+                            return "aRepeatedString: string[] expected";
                         }
                     }
                 }
@@ -2421,11 +2388,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             Complex.Nested = (function() {
@@ -2532,7 +2495,7 @@ $root.jspb = (function() {
                  */
                 Nested.verify = (function(util) { return function verify(message) {
                     if (!util.isInteger(message.anInt)) {
-                        return "jspb.test.Complex.Nested.anInt: integer expected";
+                        return "anInt: integer expected";
                     }
                     return null;
                 };})($protobuf.util);
@@ -2599,11 +2562,7 @@ $root.jspb = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return Nested;
@@ -2712,9 +2671,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.OuterMessage} OuterMessage
              */
-            OuterMessage.fromObject = (function() { return function fromObject(object) {
-                var message = new $root.jspb.test.OuterMessage();
-                return message;
+            OuterMessage.fromObject = (function() { return function fromObject() {
+                return new $root.jspb.test.OuterMessage();
             };})();
 
             /**
@@ -2750,11 +2708,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             OuterMessage.Complex = (function() {
@@ -2864,7 +2818,7 @@ $root.jspb = (function() {
                 Complex.verify = (function(util) { return function verify(message) {
                     if (message.innerComplexField !== undefined) {
                         if (!util.isInteger(message.innerComplexField)) {
-                            return "jspb.test.OuterMessage.Complex.innerComplexField: integer expected";
+                            return "innerComplexField: integer expected";
                         }
                     }
                     return null;
@@ -2932,11 +2886,7 @@ $root.jspb = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return Complex;
@@ -3052,7 +3002,7 @@ $root.jspb = (function() {
             IsExtension.verify = (function(util) { return function verify(message) {
                 if (message.ext1 !== undefined) {
                     if (!util.isString(message.ext1)) {
-                        return "jspb.test.IsExtension.ext1: string expected";
+                        return "ext1: string expected";
                     }
                 }
                 return null;
@@ -3120,11 +3070,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return IsExtension;
@@ -3230,9 +3176,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.IndirectExtension} IndirectExtension
              */
-            IndirectExtension.fromObject = (function() { return function fromObject(object) {
-                var message = new $root.jspb.test.IndirectExtension();
-                return message;
+            IndirectExtension.fromObject = (function() { return function fromObject() {
+                return new $root.jspb.test.IndirectExtension();
             };})();
 
             /**
@@ -3268,11 +3213,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return IndirectExtension;
@@ -3334,7 +3275,7 @@ $root.jspb = (function() {
             $prototype.bytesField = $protobuf.util.newBuffer([109,111,111]);
 
             // Referenced types
-            var $types = [null, null, null, "jspb.test.DefaultValues.Enum", null, null]; $lazyTypes.push($types);
+            var $types = {3:"jspb.test.DefaultValues.Enum"}; $lazyTypes.push($types);
 
             /**
              * Creates a new DefaultValues instance using the specified properties.
@@ -3453,23 +3394,23 @@ $root.jspb = (function() {
             DefaultValues.verify = (function(util) { return function verify(message) {
                 if (message.stringField !== undefined) {
                     if (!util.isString(message.stringField)) {
-                        return "jspb.test.DefaultValues.stringField: string expected";
+                        return "stringField: string expected";
                     }
                 }
                 if (message.boolField !== undefined) {
                     if (typeof message.boolField !== "boolean") {
-                        return "jspb.test.DefaultValues.boolField: boolean expected";
+                        return "boolField: boolean expected";
                     }
                 }
                 if (message.intField !== undefined) {
                     if (!util.isInteger(message.intField) && !(message.intField && util.isInteger(message.intField.low) && util.isInteger(message.intField.high))) {
-                        return "jspb.test.DefaultValues.intField: integer|Long expected";
+                        return "intField: integer|Long expected";
                     }
                 }
                 if (message.enumField !== undefined) {
                     switch (message.enumField) {
                     default:
-                        return "jspb.test.DefaultValues.enumField: enum value expected";
+                        return "enumField: enum value expected";
 
                     case 13:
                     case 77:
@@ -3478,12 +3419,12 @@ $root.jspb = (function() {
                 }
                 if (message.emptyField !== undefined) {
                     if (!util.isString(message.emptyField)) {
-                        return "jspb.test.DefaultValues.emptyField: string expected";
+                        return "emptyField: string expected";
                     }
                 }
                 if (message.bytesField !== undefined) {
                     if (!(message.bytesField && typeof message.bytesField.length === "number" || util.isString(message.bytesField))) {
-                        return "jspb.test.DefaultValues.bytesField: buffer expected";
+                        return "bytesField: buffer expected";
                     }
                 }
                 return null;
@@ -3638,11 +3579,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             /**
@@ -3882,48 +3819,48 @@ $root.jspb = (function() {
             FloatingPointFields.verify = (function() { return function verify(message) {
                 if (message.optionalFloatField !== undefined) {
                     if (typeof message.optionalFloatField !== "number") {
-                        return "jspb.test.FloatingPointFields.optionalFloatField: number expected";
+                        return "optionalFloatField: number expected";
                     }
                 }
                 if (typeof message.requiredFloatField !== "number") {
-                    return "jspb.test.FloatingPointFields.requiredFloatField: number expected";
+                    return "requiredFloatField: number expected";
                 }
                 if (message.repeatedFloatField !== undefined) {
                     if (!Array.isArray(message.repeatedFloatField)) {
-                        return "jspb.test.FloatingPointFields.repeatedFloatField: array expected";
+                        return "repeatedFloatField: array expected";
                     }
                     for (var i = 0; i < message.repeatedFloatField.length; ++i) {
                         if (typeof message.repeatedFloatField[i] !== "number") {
-                            return "jspb.test.FloatingPointFields.repeatedFloatField: number[] expected";
+                            return "repeatedFloatField: number[] expected";
                         }
                     }
                 }
                 if (message.defaultFloatField !== undefined) {
                     if (typeof message.defaultFloatField !== "number") {
-                        return "jspb.test.FloatingPointFields.defaultFloatField: number expected";
+                        return "defaultFloatField: number expected";
                     }
                 }
                 if (message.optionalDoubleField !== undefined) {
                     if (typeof message.optionalDoubleField !== "number") {
-                        return "jspb.test.FloatingPointFields.optionalDoubleField: number expected";
+                        return "optionalDoubleField: number expected";
                     }
                 }
                 if (typeof message.requiredDoubleField !== "number") {
-                    return "jspb.test.FloatingPointFields.requiredDoubleField: number expected";
+                    return "requiredDoubleField: number expected";
                 }
                 if (message.repeatedDoubleField !== undefined) {
                     if (!Array.isArray(message.repeatedDoubleField)) {
-                        return "jspb.test.FloatingPointFields.repeatedDoubleField: array expected";
+                        return "repeatedDoubleField: array expected";
                     }
                     for (var i = 0; i < message.repeatedDoubleField.length; ++i) {
                         if (typeof message.repeatedDoubleField[i] !== "number") {
-                            return "jspb.test.FloatingPointFields.repeatedDoubleField: number[] expected";
+                            return "repeatedDoubleField: number[] expected";
                         }
                     }
                 }
                 if (message.defaultDoubleField !== undefined) {
                     if (typeof message.defaultDoubleField !== "number") {
-                        return "jspb.test.FloatingPointFields.defaultDoubleField: number expected";
+                        return "defaultDoubleField: number expected";
                     }
                 }
                 return null;
@@ -4075,11 +4012,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return FloatingPointFields;
@@ -4142,7 +4075,7 @@ $root.jspb = (function() {
             $prototype[".jspb.test.CloneExtension.extField"] = null;
 
             // Referenced types
-            var $types = [null, "jspb.test.Simple1", "jspb.test.Simple1", null, null, "jspb.test.CloneExtension"]; $lazyTypes.push($types);
+            var $types = {1:"jspb.test.Simple1",2:"jspb.test.Simple1",5:"jspb.test.CloneExtension"}; $lazyTypes.push($types);
 
             /**
              * Creates a new TestClone instance using the specified properties.
@@ -4266,40 +4199,40 @@ $root.jspb = (function() {
             TestClone.verify = (function(util, types) { return function verify(message) {
                 if (message.str !== undefined) {
                     if (!util.isString(message.str)) {
-                        return "jspb.test.TestClone.str: string expected";
+                        return "str: string expected";
                     }
                 }
                 if (message.simple1 !== undefined && message.simple1 !== null) {
-                    var err;
-                    if (err = types[1].verify(message.simple1)) {
-                        return err;
+                    var err = types[1].verify(message.simple1);
+                    if (err) {
+                        return "simple1." + err;
                     }
                 }
                 if (message.simple2 !== undefined) {
                     if (!Array.isArray(message.simple2)) {
-                        return "jspb.test.TestClone.simple2: array expected";
+                        return "simple2: array expected";
                     }
                     for (var i = 0; i < message.simple2.length; ++i) {
-                        var err;
-                        if (err = types[2].verify(message.simple2[i])) {
-                            return err;
+                        var err = types[2].verify(message.simple2[i]);
+                        if (err) {
+                            return "simple2." + err;
                         }
                     }
                 }
                 if (message.bytesField !== undefined) {
                     if (!(message.bytesField && typeof message.bytesField.length === "number" || util.isString(message.bytesField))) {
-                        return "jspb.test.TestClone.bytesField: buffer expected";
+                        return "bytesField: buffer expected";
                     }
                 }
                 if (message.unused !== undefined) {
                     if (!util.isString(message.unused)) {
-                        return "jspb.test.TestClone.unused: string expected";
+                        return "unused: string expected";
                     }
                 }
                 if (message[".jspb.test.CloneExtension.extField"] !== undefined && message[".jspb.test.CloneExtension.extField"] !== null) {
-                    var err;
-                    if (err = types[5].verify(message[".jspb.test.CloneExtension.extField"])) {
-                        return err;
+                    var err = types[5].verify(message[".jspb.test.CloneExtension.extField"]);
+                    if (err) {
+                        return ".jspb.test.CloneExtension.extField." + err;
                     }
                 }
                 return null;
@@ -4431,11 +4364,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return TestClone;
@@ -4548,7 +4477,7 @@ $root.jspb = (function() {
             CloneExtension.verify = (function(util) { return function verify(message) {
                 if (message.ext !== undefined) {
                     if (!util.isString(message.ext)) {
-                        return "jspb.test.CloneExtension.ext: string expected";
+                        return "ext: string expected";
                     }
                 }
                 return null;
@@ -4616,11 +4545,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return CloneExtension;
@@ -4682,7 +4607,7 @@ $root.jspb = (function() {
             $prototype.optionalSimple = null;
 
             // Referenced types
-            var $types = ["jspb.test.TestGroup.RepeatedGroup", "jspb.test.TestGroup.RequiredGroup", "jspb.test.TestGroup.OptionalGroup", null, "jspb.test.Simple2", "jspb.test.Simple2"]; $lazyTypes.push($types);
+            var $types = {0:"jspb.test.TestGroup.RepeatedGroup",1:"jspb.test.TestGroup.RequiredGroup",2:"jspb.test.TestGroup.OptionalGroup",4:"jspb.test.Simple2",5:"jspb.test.Simple2"}; $lazyTypes.push($types);
 
             /**
              * Creates a new TestGroup instance using the specified properties.
@@ -4802,38 +4727,38 @@ $root.jspb = (function() {
             TestGroup.verify = (function(util, types) { return function verify(message) {
                 if (message.repeatedGroup !== undefined) {
                     if (!Array.isArray(message.repeatedGroup)) {
-                        return "jspb.test.TestGroup.repeatedGroup: array expected";
+                        return "repeatedGroup: array expected";
                     }
                     for (var i = 0; i < message.repeatedGroup.length; ++i) {
-                        var err;
-                        if (err = types[0].verify(message.repeatedGroup[i])) {
-                            return err;
+                        var err = types[0].verify(message.repeatedGroup[i]);
+                        if (err) {
+                            return "repeatedGroup." + err;
                         }
                     }
                 }
-                var err;
-                if (err = types[1].verify(message.requiredGroup)) {
-                    return err;
+                var err = types[1].verify(message.requiredGroup);
+                if (err) {
+                    return "requiredGroup." + err;
                 }
                 if (message.optionalGroup !== undefined && message.optionalGroup !== null) {
-                    var err;
-                    if (err = types[2].verify(message.optionalGroup)) {
-                        return err;
+                    var err = types[2].verify(message.optionalGroup);
+                    if (err) {
+                        return "optionalGroup." + err;
                     }
                 }
                 if (message.id !== undefined) {
                     if (!util.isString(message.id)) {
-                        return "jspb.test.TestGroup.id: string expected";
+                        return "id: string expected";
                     }
                 }
-                var err;
-                if (err = types[4].verify(message.requiredSimple)) {
-                    return err;
+                var err = types[4].verify(message.requiredSimple);
+                if (err) {
+                    return "requiredSimple." + err;
                 }
                 if (message.optionalSimple !== undefined && message.optionalSimple !== null) {
-                    var err;
-                    if (err = types[5].verify(message.optionalSimple)) {
-                        return err;
+                    var err = types[5].verify(message.optionalSimple);
+                    if (err) {
+                        return "optionalSimple." + err;
                     }
                 }
                 return null;
@@ -4959,11 +4884,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             TestGroup.RepeatedGroup = (function() {
@@ -5098,15 +5019,15 @@ $root.jspb = (function() {
                  */
                 RepeatedGroup.verify = (function(util) { return function verify(message) {
                     if (!util.isString(message.id)) {
-                        return "jspb.test.TestGroup.RepeatedGroup.id: string expected";
+                        return "id: string expected";
                     }
                     if (message.someBool !== undefined) {
                         if (!Array.isArray(message.someBool)) {
-                            return "jspb.test.TestGroup.RepeatedGroup.someBool: array expected";
+                            return "someBool: array expected";
                         }
                         for (var i = 0; i < message.someBool.length; ++i) {
                             if (typeof message.someBool[i] !== "boolean") {
-                                return "jspb.test.TestGroup.RepeatedGroup.someBool: boolean[] expected";
+                                return "someBool: boolean[] expected";
                             }
                         }
                     }
@@ -5193,11 +5114,7 @@ $root.jspb = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return RepeatedGroup;
@@ -5310,7 +5227,7 @@ $root.jspb = (function() {
                  */
                 RequiredGroup.verify = (function(util) { return function verify(message) {
                     if (!util.isString(message.id)) {
-                        return "jspb.test.TestGroup.RequiredGroup.id: string expected";
+                        return "id: string expected";
                     }
                     return null;
                 };})($protobuf.util);
@@ -5377,11 +5294,7 @@ $root.jspb = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return RequiredGroup;
@@ -5494,7 +5407,7 @@ $root.jspb = (function() {
                  */
                 OptionalGroup.verify = (function(util) { return function verify(message) {
                     if (!util.isString(message.id)) {
-                        return "jspb.test.TestGroup.OptionalGroup.id: string expected";
+                        return "id: string expected";
                     }
                     return null;
                 };})($protobuf.util);
@@ -5561,11 +5474,7 @@ $root.jspb = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return OptionalGroup;
@@ -5600,7 +5509,7 @@ $root.jspb = (function() {
             $prototype.group = null;
 
             // Referenced types
-            var $types = ["jspb.test.TestGroup.RepeatedGroup"]; $lazyTypes.push($types);
+            var $types = {0:"jspb.test.TestGroup.RepeatedGroup"}; $lazyTypes.push($types);
 
             /**
              * Creates a new TestGroup1 instance using the specified properties.
@@ -5683,9 +5592,9 @@ $root.jspb = (function() {
              */
             TestGroup1.verify = (function(types) { return function verify(message) {
                 if (message.group !== undefined && message.group !== null) {
-                    var err;
-                    if (err = types[0].verify(message.group)) {
-                        return err;
+                    var err = types[0].verify(message.group);
+                    if (err) {
+                        return "group." + err;
                     }
                 }
                 return null;
@@ -5753,11 +5662,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return TestGroup1;
@@ -5884,12 +5789,12 @@ $root.jspb = (function() {
             TestReservedNames.verify = (function(util) { return function verify(message) {
                 if (message.extension !== undefined) {
                     if (!util.isInteger(message.extension)) {
-                        return "jspb.test.TestReservedNames.extension: integer expected";
+                        return "extension: integer expected";
                     }
                 }
                 if (message[".jspb.test.TestReservedNamesExtension.foo"] !== undefined) {
                     if (!util.isInteger(message[".jspb.test.TestReservedNamesExtension.foo"])) {
-                        return "jspb.test.TestReservedNames..jspb.test.TestReservedNamesExtension.foo: integer expected";
+                        return ".jspb.test.TestReservedNamesExtension.foo: integer expected";
                     }
                 }
                 return null;
@@ -5967,11 +5872,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return TestReservedNames;
@@ -6077,9 +5978,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.TestReservedNamesExtension} TestReservedNamesExtension
              */
-            TestReservedNamesExtension.fromObject = (function() { return function fromObject(object) {
-                var message = new $root.jspb.test.TestReservedNamesExtension();
-                return message;
+            TestReservedNamesExtension.fromObject = (function() { return function fromObject() {
+                return new $root.jspb.test.TestReservedNamesExtension();
             };})();
 
             /**
@@ -6115,11 +6015,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return TestReservedNamesExtension;
@@ -6248,7 +6144,7 @@ $root.jspb = (function() {
             });
 
             // Referenced types
-            var $types = [null, null, "jspb.test.TestMessageWithOneof", null, null, null, null, null, null, null]; $lazyTypes.push($types);
+            var $types = {2:"jspb.test.TestMessageWithOneof"}; $lazyTypes.push($types);
 
             /**
              * Creates a new TestMessageWithOneof instance using the specified properties.
@@ -6412,58 +6308,58 @@ $root.jspb = (function() {
             TestMessageWithOneof.verify = (function(util, types) { return function verify(message) {
                 if (message.pone !== undefined) {
                     if (!util.isString(message.pone)) {
-                        return "jspb.test.TestMessageWithOneof.pone: string expected";
+                        return "pone: string expected";
                     }
                 }
                 if (message.pthree !== undefined) {
                     if (!util.isString(message.pthree)) {
-                        return "jspb.test.TestMessageWithOneof.pthree: string expected";
+                        return "pthree: string expected";
                     }
                 }
                 if (message.rone !== undefined && message.rone !== null) {
-                    var err;
-                    if (err = types[2].verify(message.rone)) {
-                        return err;
+                    var err = types[2].verify(message.rone);
+                    if (err) {
+                        return "rone." + err;
                     }
                 }
                 if (message.rtwo !== undefined) {
                     if (!util.isString(message.rtwo)) {
-                        return "jspb.test.TestMessageWithOneof.rtwo: string expected";
+                        return "rtwo: string expected";
                     }
                 }
                 if (message.normalField !== undefined) {
                     if (typeof message.normalField !== "boolean") {
-                        return "jspb.test.TestMessageWithOneof.normalField: boolean expected";
+                        return "normalField: boolean expected";
                     }
                 }
                 if (message.repeatedField !== undefined) {
                     if (!Array.isArray(message.repeatedField)) {
-                        return "jspb.test.TestMessageWithOneof.repeatedField: array expected";
+                        return "repeatedField: array expected";
                     }
                     for (var i = 0; i < message.repeatedField.length; ++i) {
                         if (!util.isString(message.repeatedField[i])) {
-                            return "jspb.test.TestMessageWithOneof.repeatedField: string[] expected";
+                            return "repeatedField: string[] expected";
                         }
                     }
                 }
                 if (message.aone !== undefined) {
                     if (!util.isInteger(message.aone)) {
-                        return "jspb.test.TestMessageWithOneof.aone: integer expected";
+                        return "aone: integer expected";
                     }
                 }
                 if (message.atwo !== undefined) {
                     if (!util.isInteger(message.atwo)) {
-                        return "jspb.test.TestMessageWithOneof.atwo: integer expected";
+                        return "atwo: integer expected";
                     }
                 }
                 if (message.bone !== undefined) {
                     if (!util.isInteger(message.bone)) {
-                        return "jspb.test.TestMessageWithOneof.bone: integer expected";
+                        return "bone: integer expected";
                     }
                 }
                 if (message.btwo !== undefined) {
                     if (!util.isInteger(message.btwo)) {
-                        return "jspb.test.TestMessageWithOneof.btwo: integer expected";
+                        return "btwo: integer expected";
                     }
                 }
                 return null;
@@ -6629,11 +6525,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return TestMessageWithOneof;
@@ -6759,12 +6651,12 @@ $root.jspb = (function() {
             TestEndsWithBytes.verify = (function(util) { return function verify(message) {
                 if (message.value !== undefined) {
                     if (!util.isInteger(message.value)) {
-                        return "jspb.test.TestEndsWithBytes.value: integer expected";
+                        return "value: integer expected";
                     }
                 }
                 if (message.data !== undefined) {
                     if (!(message.data && typeof message.data.length === "number" || util.isString(message.data))) {
-                        return "jspb.test.TestEndsWithBytes.data: buffer expected";
+                        return "data: buffer expected";
                     }
                 }
                 return null;
@@ -6848,11 +6740,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return TestEndsWithBytes;
@@ -6950,7 +6838,7 @@ $root.jspb = (function() {
             $prototype.mapStringTestmapfields = $protobuf.util.emptyObject;
 
             // Referenced types
-            var $types = [null, null, null, null, null, "jspb.test.MapValueEnumNoBinary", "jspb.test.MapValueMessageNoBinary", null, null, null, "jspb.test.TestMapFieldsNoBinary", "jspb.test.TestMapFieldsNoBinary"]; $lazyTypes.push($types);
+            var $types = {5:"jspb.test.MapValueEnumNoBinary",6:"jspb.test.MapValueMessageNoBinary",10:"jspb.test.TestMapFieldsNoBinary",11:"jspb.test.TestMapFieldsNoBinary"}; $lazyTypes.push($types);
 
             /**
              * Creates a new TestMapFieldsNoBinary instance using the specified properties.
@@ -7201,68 +7089,68 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.verify = (function(util, types) { return function verify(message) {
                 if (message.mapStringString !== undefined) {
                     if (!util.isObject(message.mapStringString)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringString: object expected";
+                        return "mapStringString: object expected";
                     }
                     var key = Object.keys(message.mapStringString);
                     for (var i = 0; i < key.length; ++i) {
                         if (!util.isString(message.mapStringString[key[i]])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapStringString: string{key:string} expected";
+                            return "mapStringString: string{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringInt32 !== undefined) {
                     if (!util.isObject(message.mapStringInt32)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringInt32: object expected";
+                        return "mapStringInt32: object expected";
                     }
                     var key = Object.keys(message.mapStringInt32);
                     for (var i = 0; i < key.length; ++i) {
                         if (!util.isInteger(message.mapStringInt32[key[i]])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapStringInt32: integer{key:string} expected";
+                            return "mapStringInt32: integer{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringInt64 !== undefined) {
                     if (!util.isObject(message.mapStringInt64)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringInt64: object expected";
+                        return "mapStringInt64: object expected";
                     }
                     var key = Object.keys(message.mapStringInt64);
                     for (var i = 0; i < key.length; ++i) {
                         if (!util.isInteger(message.mapStringInt64[key[i]]) && !(message.mapStringInt64[key[i]] && util.isInteger(message.mapStringInt64[key[i]].low) && util.isInteger(message.mapStringInt64[key[i]].high))) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapStringInt64: integer|Long{key:string} expected";
+                            return "mapStringInt64: integer|Long{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringBool !== undefined) {
                     if (!util.isObject(message.mapStringBool)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringBool: object expected";
+                        return "mapStringBool: object expected";
                     }
                     var key = Object.keys(message.mapStringBool);
                     for (var i = 0; i < key.length; ++i) {
                         if (typeof message.mapStringBool[key[i]] !== "boolean") {
-                            return "jspb.test.TestMapFieldsNoBinary.mapStringBool: boolean{key:string} expected";
+                            return "mapStringBool: boolean{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringDouble !== undefined) {
                     if (!util.isObject(message.mapStringDouble)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringDouble: object expected";
+                        return "mapStringDouble: object expected";
                     }
                     var key = Object.keys(message.mapStringDouble);
                     for (var i = 0; i < key.length; ++i) {
                         if (typeof message.mapStringDouble[key[i]] !== "number") {
-                            return "jspb.test.TestMapFieldsNoBinary.mapStringDouble: number{key:string} expected";
+                            return "mapStringDouble: number{key:string} expected";
                         }
                     }
                 }
                 if (message.mapStringEnum !== undefined) {
                     if (!util.isObject(message.mapStringEnum)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringEnum: object expected";
+                        return "mapStringEnum: object expected";
                     }
                     var key = Object.keys(message.mapStringEnum);
                     for (var i = 0; i < key.length; ++i) {
                         switch (message.mapStringEnum[key[i]]) {
                         default:
-                            return "jspb.test.TestMapFieldsNoBinary.mapStringEnum: enum value{key:string} expected";
+                            return "mapStringEnum: enum value{key:string} expected";
 
                         case 0:
                         case 1:
@@ -7273,73 +7161,73 @@ $root.jspb = (function() {
                 }
                 if (message.mapStringMsg !== undefined) {
                     if (!util.isObject(message.mapStringMsg)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected";
+                        return "mapStringMsg: object expected";
                     }
                     var key = Object.keys(message.mapStringMsg);
                     for (var i = 0; i < key.length; ++i) {
-                        var err;
-                        if (err = types[6].verify(message.mapStringMsg[key[i]])) {
-                            return err;
+                        var err = types[6].verify(message.mapStringMsg[key[i]]);
+                        if (err) {
+                            return "mapStringMsg." + err;
                         }
                     }
                 }
                 if (message.mapInt32String !== undefined) {
                     if (!util.isObject(message.mapInt32String)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapInt32String: object expected";
+                        return "mapInt32String: object expected";
                     }
                     var key = Object.keys(message.mapInt32String);
                     for (var i = 0; i < key.length; ++i) {
                         if (!/^-?(?:0|[1-9][0-9]*)$/.test(key[i])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapInt32String: integer key{key:int32} expected";
+                            return "mapInt32String: integer key{key:int32} expected";
                         }
                         if (!util.isString(message.mapInt32String[key[i]])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapInt32String: string{key:int32} expected";
+                            return "mapInt32String: string{key:int32} expected";
                         }
                     }
                 }
                 if (message.mapInt64String !== undefined) {
                     if (!util.isObject(message.mapInt64String)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapInt64String: object expected";
+                        return "mapInt64String: object expected";
                     }
                     var key = Object.keys(message.mapInt64String);
                     for (var i = 0; i < key.length; ++i) {
                         if (!/^(?:[\x00-\xff]{8}|-?(?:0|[1-9][0-9]*))$/.test(key[i])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapInt64String: integer|Long key{key:int64} expected";
+                            return "mapInt64String: integer|Long key{key:int64} expected";
                         }
                         if (!util.isString(message.mapInt64String[key[i]])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapInt64String: string{key:int64} expected";
+                            return "mapInt64String: string{key:int64} expected";
                         }
                     }
                 }
                 if (message.mapBoolString !== undefined) {
                     if (!util.isObject(message.mapBoolString)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapBoolString: object expected";
+                        return "mapBoolString: object expected";
                     }
                     var key = Object.keys(message.mapBoolString);
                     for (var i = 0; i < key.length; ++i) {
                         if (!/^true|false|0|1$/.test(key[i])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapBoolString: boolean key{key:bool} expected";
+                            return "mapBoolString: boolean key{key:bool} expected";
                         }
                         if (!util.isString(message.mapBoolString[key[i]])) {
-                            return "jspb.test.TestMapFieldsNoBinary.mapBoolString: string{key:bool} expected";
+                            return "mapBoolString: string{key:bool} expected";
                         }
                     }
                 }
                 if (message.testMapFields !== undefined && message.testMapFields !== null) {
-                    var err;
-                    if (err = types[10].verify(message.testMapFields)) {
-                        return err;
+                    var err = types[10].verify(message.testMapFields);
+                    if (err) {
+                        return "testMapFields." + err;
                     }
                 }
                 if (message.mapStringTestmapfields !== undefined) {
                     if (!util.isObject(message.mapStringTestmapfields)) {
-                        return "jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected";
+                        return "mapStringTestmapfields: object expected";
                     }
                     var key = Object.keys(message.mapStringTestmapfields);
                     for (var i = 0; i < key.length; ++i) {
-                        var err;
-                        if (err = types[11].verify(message.mapStringTestmapfields[key[i]])) {
-                            return err;
+                        var err = types[11].verify(message.mapStringTestmapfields[key[i]]);
+                        if (err) {
+                            return "mapStringTestmapfields." + err;
                         }
                     }
                 }
@@ -7619,11 +7507,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return TestMapFieldsNoBinary;
@@ -7754,7 +7638,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.verify = (function(util) { return function verify(message) {
                 if (message.foo !== undefined) {
                     if (!util.isInteger(message.foo)) {
-                        return "jspb.test.MapValueMessageNoBinary.foo: integer expected";
+                        return "foo: integer expected";
                     }
                 }
                 return null;
@@ -7822,11 +7706,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return MapValueMessageNoBinary;
@@ -7932,9 +7812,8 @@ $root.jspb = (function() {
              * @param {Object.<string,*>} object Plain object
              * @returns {jspb.test.Deeply} Deeply
              */
-            Deeply.fromObject = (function() { return function fromObject(object) {
-                var message = new $root.jspb.test.Deeply();
-                return message;
+            Deeply.fromObject = (function() { return function fromObject() {
+                return new $root.jspb.test.Deeply();
             };})();
 
             /**
@@ -7970,11 +7849,7 @@ $root.jspb = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             Deeply.Nested = (function() {
@@ -8077,9 +7952,8 @@ $root.jspb = (function() {
                  * @param {Object.<string,*>} object Plain object
                  * @returns {jspb.test.Deeply.Nested} Nested
                  */
-                Nested.fromObject = (function() { return function fromObject(object) {
-                    var message = new $root.jspb.test.Deeply.Nested();
-                    return message;
+                Nested.fromObject = (function() { return function fromObject() {
+                    return new $root.jspb.test.Deeply.Nested();
                 };})();
 
                 /**
@@ -8115,11 +7989,7 @@ $root.jspb = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 Nested.Message = (function() {
@@ -8229,7 +8099,7 @@ $root.jspb = (function() {
                     Message.verify = (function(util) { return function verify(message) {
                         if (message.count !== undefined) {
                             if (!util.isInteger(message.count)) {
-                                return "jspb.test.Deeply.Nested.Message.count: integer expected";
+                                return "count: integer expected";
                             }
                         }
                         return null;
@@ -8297,11 +8167,7 @@ $root.jspb = (function() {
                      * @returns {Object.<string,*>} JSON object
                      */
                     $prototype.toJSON = function toJSON() {
-                        return this.constructor.toObject(this, {
-                            longs: String,
-                            enums: String,
-                            bytes: String
-                        });
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                     };
 
                     return Message;
@@ -8363,7 +8229,7 @@ $root.google = (function() {
             $prototype.file = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = ["google.protobuf.FileDescriptorProto"]; $lazyTypes.push($types);
+            var $types = {0:"google.protobuf.FileDescriptorProto"}; $lazyTypes.push($types);
 
             /**
              * Creates a new FileDescriptorSet instance using the specified properties.
@@ -8452,12 +8318,12 @@ $root.google = (function() {
             FileDescriptorSet.verify = (function(types) { return function verify(message) {
                 if (message.file !== undefined) {
                     if (!Array.isArray(message.file)) {
-                        return "google.protobuf.FileDescriptorSet.file: array expected";
+                        return "file: array expected";
                     }
                     for (var i = 0; i < message.file.length; ++i) {
-                        var err;
-                        if (err = types[0].verify(message.file[i])) {
-                            return err;
+                        var err = types[0].verify(message.file[i]);
+                        if (err) {
+                            return "file." + err;
                         }
                     }
                 }
@@ -8532,11 +8398,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return FileDescriptorSet;
@@ -8635,7 +8497,7 @@ $root.google = (function() {
             $prototype.syntax = "";
 
             // Referenced types
-            var $types = [null, null, null, null, null, "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.ServiceDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.FileOptions", "google.protobuf.SourceCodeInfo", null]; $lazyTypes.push($types);
+            var $types = {5:"google.protobuf.DescriptorProto",6:"google.protobuf.EnumDescriptorProto",7:"google.protobuf.ServiceDescriptorProto",8:"google.protobuf.FieldDescriptorProto",9:"google.protobuf.FileOptions",10:"google.protobuf.SourceCodeInfo"}; $lazyTypes.push($types);
 
             /**
              * Creates a new FileDescriptorProto instance using the specified properties.
@@ -8845,103 +8707,103 @@ $root.google = (function() {
             FileDescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.FileDescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message["package"] !== undefined) {
                     if (!util.isString(message["package"])) {
-                        return "google.protobuf.FileDescriptorProto.package: string expected";
+                        return "package: string expected";
                     }
                 }
                 if (message.dependency !== undefined) {
                     if (!Array.isArray(message.dependency)) {
-                        return "google.protobuf.FileDescriptorProto.dependency: array expected";
+                        return "dependency: array expected";
                     }
                     for (var i = 0; i < message.dependency.length; ++i) {
                         if (!util.isString(message.dependency[i])) {
-                            return "google.protobuf.FileDescriptorProto.dependency: string[] expected";
+                            return "dependency: string[] expected";
                         }
                     }
                 }
                 if (message.publicDependency !== undefined) {
                     if (!Array.isArray(message.publicDependency)) {
-                        return "google.protobuf.FileDescriptorProto.publicDependency: array expected";
+                        return "publicDependency: array expected";
                     }
                     for (var i = 0; i < message.publicDependency.length; ++i) {
                         if (!util.isInteger(message.publicDependency[i])) {
-                            return "google.protobuf.FileDescriptorProto.publicDependency: integer[] expected";
+                            return "publicDependency: integer[] expected";
                         }
                     }
                 }
                 if (message.weakDependency !== undefined) {
                     if (!Array.isArray(message.weakDependency)) {
-                        return "google.protobuf.FileDescriptorProto.weakDependency: array expected";
+                        return "weakDependency: array expected";
                     }
                     for (var i = 0; i < message.weakDependency.length; ++i) {
                         if (!util.isInteger(message.weakDependency[i])) {
-                            return "google.protobuf.FileDescriptorProto.weakDependency: integer[] expected";
+                            return "weakDependency: integer[] expected";
                         }
                     }
                 }
                 if (message.messageType !== undefined) {
                     if (!Array.isArray(message.messageType)) {
-                        return "google.protobuf.FileDescriptorProto.messageType: array expected";
+                        return "messageType: array expected";
                     }
                     for (var i = 0; i < message.messageType.length; ++i) {
-                        var err;
-                        if (err = types[5].verify(message.messageType[i])) {
-                            return err;
+                        var err = types[5].verify(message.messageType[i]);
+                        if (err) {
+                            return "messageType." + err;
                         }
                     }
                 }
                 if (message.enumType !== undefined) {
                     if (!Array.isArray(message.enumType)) {
-                        return "google.protobuf.FileDescriptorProto.enumType: array expected";
+                        return "enumType: array expected";
                     }
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        var err;
-                        if (err = types[6].verify(message.enumType[i])) {
-                            return err;
+                        var err = types[6].verify(message.enumType[i]);
+                        if (err) {
+                            return "enumType." + err;
                         }
                     }
                 }
                 if (message.service !== undefined) {
                     if (!Array.isArray(message.service)) {
-                        return "google.protobuf.FileDescriptorProto.service: array expected";
+                        return "service: array expected";
                     }
                     for (var i = 0; i < message.service.length; ++i) {
-                        var err;
-                        if (err = types[7].verify(message.service[i])) {
-                            return err;
+                        var err = types[7].verify(message.service[i]);
+                        if (err) {
+                            return "service." + err;
                         }
                     }
                 }
                 if (message.extension !== undefined) {
                     if (!Array.isArray(message.extension)) {
-                        return "google.protobuf.FileDescriptorProto.extension: array expected";
+                        return "extension: array expected";
                     }
                     for (var i = 0; i < message.extension.length; ++i) {
-                        var err;
-                        if (err = types[8].verify(message.extension[i])) {
-                            return err;
+                        var err = types[8].verify(message.extension[i]);
+                        if (err) {
+                            return "extension." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[9].verify(message.options)) {
-                        return err;
+                    var err = types[9].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 if (message.sourceCodeInfo !== undefined && message.sourceCodeInfo !== null) {
-                    var err;
-                    if (err = types[10].verify(message.sourceCodeInfo)) {
-                        return err;
+                    var err = types[10].verify(message.sourceCodeInfo);
+                    if (err) {
+                        return "sourceCodeInfo." + err;
                     }
                 }
                 if (message.syntax !== undefined) {
                     if (!util.isString(message.syntax)) {
-                        return "google.protobuf.FileDescriptorProto.syntax: string expected";
+                        return "syntax: string expected";
                     }
                 }
                 return null;
@@ -9163,11 +9025,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return FileDescriptorProto;
@@ -9253,7 +9111,7 @@ $root.google = (function() {
             $prototype.reservedName = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, "google.protobuf.FieldDescriptorProto", "google.protobuf.FieldDescriptorProto", "google.protobuf.DescriptorProto", "google.protobuf.EnumDescriptorProto", "google.protobuf.DescriptorProto.ExtensionRange", "google.protobuf.OneofDescriptorProto", "google.protobuf.MessageOptions", "google.protobuf.DescriptorProto.ReservedRange", null]; $lazyTypes.push($types);
+            var $types = {1:"google.protobuf.FieldDescriptorProto",2:"google.protobuf.FieldDescriptorProto",3:"google.protobuf.DescriptorProto",4:"google.protobuf.EnumDescriptorProto",5:"google.protobuf.DescriptorProto.ExtensionRange",6:"google.protobuf.OneofDescriptorProto",7:"google.protobuf.MessageOptions",8:"google.protobuf.DescriptorProto.ReservedRange"}; $lazyTypes.push($types);
 
             /**
              * Creates a new DescriptorProto instance using the specified properties.
@@ -9440,99 +9298,99 @@ $root.google = (function() {
             DescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.DescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message.field !== undefined) {
                     if (!Array.isArray(message.field)) {
-                        return "google.protobuf.DescriptorProto.field: array expected";
+                        return "field: array expected";
                     }
                     for (var i = 0; i < message.field.length; ++i) {
-                        var err;
-                        if (err = types[1].verify(message.field[i])) {
-                            return err;
+                        var err = types[1].verify(message.field[i]);
+                        if (err) {
+                            return "field." + err;
                         }
                     }
                 }
                 if (message.extension !== undefined) {
                     if (!Array.isArray(message.extension)) {
-                        return "google.protobuf.DescriptorProto.extension: array expected";
+                        return "extension: array expected";
                     }
                     for (var i = 0; i < message.extension.length; ++i) {
-                        var err;
-                        if (err = types[2].verify(message.extension[i])) {
-                            return err;
+                        var err = types[2].verify(message.extension[i]);
+                        if (err) {
+                            return "extension." + err;
                         }
                     }
                 }
                 if (message.nestedType !== undefined) {
                     if (!Array.isArray(message.nestedType)) {
-                        return "google.protobuf.DescriptorProto.nestedType: array expected";
+                        return "nestedType: array expected";
                     }
                     for (var i = 0; i < message.nestedType.length; ++i) {
-                        var err;
-                        if (err = types[3].verify(message.nestedType[i])) {
-                            return err;
+                        var err = types[3].verify(message.nestedType[i]);
+                        if (err) {
+                            return "nestedType." + err;
                         }
                     }
                 }
                 if (message.enumType !== undefined) {
                     if (!Array.isArray(message.enumType)) {
-                        return "google.protobuf.DescriptorProto.enumType: array expected";
+                        return "enumType: array expected";
                     }
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        var err;
-                        if (err = types[4].verify(message.enumType[i])) {
-                            return err;
+                        var err = types[4].verify(message.enumType[i]);
+                        if (err) {
+                            return "enumType." + err;
                         }
                     }
                 }
                 if (message.extensionRange !== undefined) {
                     if (!Array.isArray(message.extensionRange)) {
-                        return "google.protobuf.DescriptorProto.extensionRange: array expected";
+                        return "extensionRange: array expected";
                     }
                     for (var i = 0; i < message.extensionRange.length; ++i) {
-                        var err;
-                        if (err = types[5].verify(message.extensionRange[i])) {
-                            return err;
+                        var err = types[5].verify(message.extensionRange[i]);
+                        if (err) {
+                            return "extensionRange." + err;
                         }
                     }
                 }
                 if (message.oneofDecl !== undefined) {
                     if (!Array.isArray(message.oneofDecl)) {
-                        return "google.protobuf.DescriptorProto.oneofDecl: array expected";
+                        return "oneofDecl: array expected";
                     }
                     for (var i = 0; i < message.oneofDecl.length; ++i) {
-                        var err;
-                        if (err = types[6].verify(message.oneofDecl[i])) {
-                            return err;
+                        var err = types[6].verify(message.oneofDecl[i]);
+                        if (err) {
+                            return "oneofDecl." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[7].verify(message.options)) {
-                        return err;
+                    var err = types[7].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 if (message.reservedRange !== undefined) {
                     if (!Array.isArray(message.reservedRange)) {
-                        return "google.protobuf.DescriptorProto.reservedRange: array expected";
+                        return "reservedRange: array expected";
                     }
                     for (var i = 0; i < message.reservedRange.length; ++i) {
-                        var err;
-                        if (err = types[8].verify(message.reservedRange[i])) {
-                            return err;
+                        var err = types[8].verify(message.reservedRange[i]);
+                        if (err) {
+                            return "reservedRange." + err;
                         }
                     }
                 }
                 if (message.reservedName !== undefined) {
                     if (!Array.isArray(message.reservedName)) {
-                        return "google.protobuf.DescriptorProto.reservedName: array expected";
+                        return "reservedName: array expected";
                     }
                     for (var i = 0; i < message.reservedName.length; ++i) {
                         if (!util.isString(message.reservedName[i])) {
-                            return "google.protobuf.DescriptorProto.reservedName: string[] expected";
+                            return "reservedName: string[] expected";
                         }
                     }
                 }
@@ -9741,11 +9599,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             DescriptorProto.ExtensionRange = (function() {
@@ -9868,12 +9722,12 @@ $root.google = (function() {
                 ExtensionRange.verify = (function(util) { return function verify(message) {
                     if (message.start !== undefined) {
                         if (!util.isInteger(message.start)) {
-                            return "google.protobuf.DescriptorProto.ExtensionRange.start: integer expected";
+                            return "start: integer expected";
                         }
                     }
                     if (message.end !== undefined) {
                         if (!util.isInteger(message.end)) {
-                            return "google.protobuf.DescriptorProto.ExtensionRange.end: integer expected";
+                            return "end: integer expected";
                         }
                     }
                     return null;
@@ -9951,11 +9805,7 @@ $root.google = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return ExtensionRange;
@@ -10081,12 +9931,12 @@ $root.google = (function() {
                 ReservedRange.verify = (function(util) { return function verify(message) {
                     if (message.start !== undefined) {
                         if (!util.isInteger(message.start)) {
-                            return "google.protobuf.DescriptorProto.ReservedRange.start: integer expected";
+                            return "start: integer expected";
                         }
                     }
                     if (message.end !== undefined) {
                         if (!util.isInteger(message.end)) {
-                            return "google.protobuf.DescriptorProto.ReservedRange.end: integer expected";
+                            return "end: integer expected";
                         }
                     }
                     return null;
@@ -10164,11 +10014,7 @@ $root.google = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return ReservedRange;
@@ -10257,7 +10103,7 @@ $root.google = (function() {
             $prototype.options = null;
 
             // Referenced types
-            var $types = [null, null, "google.protobuf.FieldDescriptorProto.Label", "google.protobuf.FieldDescriptorProto.Type", null, null, null, null, null, "google.protobuf.FieldOptions"]; $lazyTypes.push($types);
+            var $types = {2:"google.protobuf.FieldDescriptorProto.Label",3:"google.protobuf.FieldDescriptorProto.Type",9:"google.protobuf.FieldOptions"}; $lazyTypes.push($types);
 
             /**
              * Creates a new FieldDescriptorProto instance using the specified properties.
@@ -10404,18 +10250,18 @@ $root.google = (function() {
             FieldDescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.FieldDescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message.number !== undefined) {
                     if (!util.isInteger(message.number)) {
-                        return "google.protobuf.FieldDescriptorProto.number: integer expected";
+                        return "number: integer expected";
                     }
                 }
                 if (message.label !== undefined) {
                     switch (message.label) {
                     default:
-                        return "google.protobuf.FieldDescriptorProto.label: enum value expected";
+                        return "label: enum value expected";
 
                     case 1:
                     case 2:
@@ -10426,7 +10272,7 @@ $root.google = (function() {
                 if (message.type !== undefined) {
                     switch (message.type) {
                     default:
-                        return "google.protobuf.FieldDescriptorProto.type: enum value expected";
+                        return "type: enum value expected";
 
                     case 1:
                     case 2:
@@ -10451,33 +10297,33 @@ $root.google = (function() {
                 }
                 if (message.typeName !== undefined) {
                     if (!util.isString(message.typeName)) {
-                        return "google.protobuf.FieldDescriptorProto.typeName: string expected";
+                        return "typeName: string expected";
                     }
                 }
                 if (message.extendee !== undefined) {
                     if (!util.isString(message.extendee)) {
-                        return "google.protobuf.FieldDescriptorProto.extendee: string expected";
+                        return "extendee: string expected";
                     }
                 }
                 if (message.defaultValue !== undefined) {
                     if (!util.isString(message.defaultValue)) {
-                        return "google.protobuf.FieldDescriptorProto.defaultValue: string expected";
+                        return "defaultValue: string expected";
                     }
                 }
                 if (message.oneofIndex !== undefined) {
                     if (!util.isInteger(message.oneofIndex)) {
-                        return "google.protobuf.FieldDescriptorProto.oneofIndex: integer expected";
+                        return "oneofIndex: integer expected";
                     }
                 }
                 if (message.jsonName !== undefined) {
                     if (!util.isString(message.jsonName)) {
-                        return "google.protobuf.FieldDescriptorProto.jsonName: string expected";
+                        return "jsonName: string expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[9].verify(message.options)) {
-                        return err;
+                    var err = types[9].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 return null;
@@ -10736,11 +10582,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             /**
@@ -10844,7 +10686,7 @@ $root.google = (function() {
             $prototype.options = null;
 
             // Referenced types
-            var $types = [null, "google.protobuf.OneofOptions"]; $lazyTypes.push($types);
+            var $types = {1:"google.protobuf.OneofOptions"}; $lazyTypes.push($types);
 
             /**
              * Creates a new OneofDescriptorProto instance using the specified properties.
@@ -10935,13 +10777,13 @@ $root.google = (function() {
             OneofDescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.OneofDescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[1].verify(message.options)) {
-                        return err;
+                    var err = types[1].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 return null;
@@ -11019,11 +10861,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return OneofDescriptorProto;
@@ -11067,7 +10905,7 @@ $root.google = (function() {
             $prototype.options = null;
 
             // Referenced types
-            var $types = [null, "google.protobuf.EnumValueDescriptorProto", "google.protobuf.EnumOptions"]; $lazyTypes.push($types);
+            var $types = {1:"google.protobuf.EnumValueDescriptorProto",2:"google.protobuf.EnumOptions"}; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumDescriptorProto instance using the specified properties.
@@ -11170,24 +11008,24 @@ $root.google = (function() {
             EnumDescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.EnumDescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message.value !== undefined) {
                     if (!Array.isArray(message.value)) {
-                        return "google.protobuf.EnumDescriptorProto.value: array expected";
+                        return "value: array expected";
                     }
                     for (var i = 0; i < message.value.length; ++i) {
-                        var err;
-                        if (err = types[1].verify(message.value[i])) {
-                            return err;
+                        var err = types[1].verify(message.value[i]);
+                        if (err) {
+                            return "value." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[2].verify(message.options)) {
-                        return err;
+                    var err = types[2].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 return null;
@@ -11283,11 +11121,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return EnumDescriptorProto;
@@ -11331,7 +11165,7 @@ $root.google = (function() {
             $prototype.options = null;
 
             // Referenced types
-            var $types = [null, null, "google.protobuf.EnumValueOptions"]; $lazyTypes.push($types);
+            var $types = {2:"google.protobuf.EnumValueOptions"}; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumValueDescriptorProto instance using the specified properties.
@@ -11429,18 +11263,18 @@ $root.google = (function() {
             EnumValueDescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.EnumValueDescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message.number !== undefined) {
                     if (!util.isInteger(message.number)) {
-                        return "google.protobuf.EnumValueDescriptorProto.number: integer expected";
+                        return "number: integer expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[2].verify(message.options)) {
-                        return err;
+                    var err = types[2].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 return null;
@@ -11528,11 +11362,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return EnumValueDescriptorProto;
@@ -11576,7 +11406,7 @@ $root.google = (function() {
             $prototype.options = null;
 
             // Referenced types
-            var $types = [null, "google.protobuf.MethodDescriptorProto", "google.protobuf.ServiceOptions"]; $lazyTypes.push($types);
+            var $types = {1:"google.protobuf.MethodDescriptorProto",2:"google.protobuf.ServiceOptions"}; $lazyTypes.push($types);
 
             /**
              * Creates a new ServiceDescriptorProto instance using the specified properties.
@@ -11679,24 +11509,24 @@ $root.google = (function() {
             ServiceDescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.ServiceDescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message.method !== undefined) {
                     if (!Array.isArray(message.method)) {
-                        return "google.protobuf.ServiceDescriptorProto.method: array expected";
+                        return "method: array expected";
                     }
                     for (var i = 0; i < message.method.length; ++i) {
-                        var err;
-                        if (err = types[1].verify(message.method[i])) {
-                            return err;
+                        var err = types[1].verify(message.method[i]);
+                        if (err) {
+                            return "method." + err;
                         }
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[2].verify(message.options)) {
-                        return err;
+                    var err = types[2].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 return null;
@@ -11792,11 +11622,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return ServiceDescriptorProto;
@@ -11858,7 +11684,7 @@ $root.google = (function() {
             $prototype.serverStreaming = false;
 
             // Referenced types
-            var $types = [null, null, null, "google.protobuf.MethodOptions", null, null]; $lazyTypes.push($types);
+            var $types = {3:"google.protobuf.MethodOptions"}; $lazyTypes.push($types);
 
             /**
              * Creates a new MethodDescriptorProto instance using the specified properties.
@@ -11977,33 +11803,33 @@ $root.google = (function() {
             MethodDescriptorProto.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!util.isString(message.name)) {
-                        return "google.protobuf.MethodDescriptorProto.name: string expected";
+                        return "name: string expected";
                     }
                 }
                 if (message.inputType !== undefined) {
                     if (!util.isString(message.inputType)) {
-                        return "google.protobuf.MethodDescriptorProto.inputType: string expected";
+                        return "inputType: string expected";
                     }
                 }
                 if (message.outputType !== undefined) {
                     if (!util.isString(message.outputType)) {
-                        return "google.protobuf.MethodDescriptorProto.outputType: string expected";
+                        return "outputType: string expected";
                     }
                 }
                 if (message.options !== undefined && message.options !== null) {
-                    var err;
-                    if (err = types[3].verify(message.options)) {
-                        return err;
+                    var err = types[3].verify(message.options);
+                    if (err) {
+                        return "options." + err;
                     }
                 }
                 if (message.clientStreaming !== undefined) {
                     if (typeof message.clientStreaming !== "boolean") {
-                        return "google.protobuf.MethodDescriptorProto.clientStreaming: boolean expected";
+                        return "clientStreaming: boolean expected";
                     }
                 }
                 if (message.serverStreaming !== undefined) {
                     if (typeof message.serverStreaming !== "boolean") {
-                        return "google.protobuf.MethodDescriptorProto.serverStreaming: boolean expected";
+                        return "serverStreaming: boolean expected";
                     }
                 }
                 return null;
@@ -12121,11 +11947,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return MethodDescriptorProto;
@@ -12241,7 +12063,7 @@ $root.google = (function() {
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, null, null, null, null, "google.protobuf.FileOptions.OptimizeMode", null, null, null, null, null, null, null, null, "google.protobuf.UninterpretedOption"]; $lazyTypes.push($types);
+            var $types = {5:"google.protobuf.FileOptions.OptimizeMode",14:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new FileOptions instance using the specified properties.
@@ -12428,33 +12250,33 @@ $root.google = (function() {
             FileOptions.verify = (function(util, types) { return function verify(message) {
                 if (message.javaPackage !== undefined) {
                     if (!util.isString(message.javaPackage)) {
-                        return "google.protobuf.FileOptions.javaPackage: string expected";
+                        return "javaPackage: string expected";
                     }
                 }
                 if (message.javaOuterClassname !== undefined) {
                     if (!util.isString(message.javaOuterClassname)) {
-                        return "google.protobuf.FileOptions.javaOuterClassname: string expected";
+                        return "javaOuterClassname: string expected";
                     }
                 }
                 if (message.javaMultipleFiles !== undefined) {
                     if (typeof message.javaMultipleFiles !== "boolean") {
-                        return "google.protobuf.FileOptions.javaMultipleFiles: boolean expected";
+                        return "javaMultipleFiles: boolean expected";
                     }
                 }
                 if (message.javaGenerateEqualsAndHash !== undefined) {
                     if (typeof message.javaGenerateEqualsAndHash !== "boolean") {
-                        return "google.protobuf.FileOptions.javaGenerateEqualsAndHash: boolean expected";
+                        return "javaGenerateEqualsAndHash: boolean expected";
                     }
                 }
                 if (message.javaStringCheckUtf8 !== undefined) {
                     if (typeof message.javaStringCheckUtf8 !== "boolean") {
-                        return "google.protobuf.FileOptions.javaStringCheckUtf8: boolean expected";
+                        return "javaStringCheckUtf8: boolean expected";
                     }
                 }
                 if (message.optimizeFor !== undefined) {
                     switch (message.optimizeFor) {
                     default:
-                        return "google.protobuf.FileOptions.optimizeFor: enum value expected";
+                        return "optimizeFor: enum value expected";
 
                     case 1:
                     case 2:
@@ -12464,52 +12286,52 @@ $root.google = (function() {
                 }
                 if (message.goPackage !== undefined) {
                     if (!util.isString(message.goPackage)) {
-                        return "google.protobuf.FileOptions.goPackage: string expected";
+                        return "goPackage: string expected";
                     }
                 }
                 if (message.ccGenericServices !== undefined) {
                     if (typeof message.ccGenericServices !== "boolean") {
-                        return "google.protobuf.FileOptions.ccGenericServices: boolean expected";
+                        return "ccGenericServices: boolean expected";
                     }
                 }
                 if (message.javaGenericServices !== undefined) {
                     if (typeof message.javaGenericServices !== "boolean") {
-                        return "google.protobuf.FileOptions.javaGenericServices: boolean expected";
+                        return "javaGenericServices: boolean expected";
                     }
                 }
                 if (message.pyGenericServices !== undefined) {
                     if (typeof message.pyGenericServices !== "boolean") {
-                        return "google.protobuf.FileOptions.pyGenericServices: boolean expected";
+                        return "pyGenericServices: boolean expected";
                     }
                 }
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
-                        return "google.protobuf.FileOptions.deprecated: boolean expected";
+                        return "deprecated: boolean expected";
                     }
                 }
                 if (message.ccEnableArenas !== undefined) {
                     if (typeof message.ccEnableArenas !== "boolean") {
-                        return "google.protobuf.FileOptions.ccEnableArenas: boolean expected";
+                        return "ccEnableArenas: boolean expected";
                     }
                 }
                 if (message.objcClassPrefix !== undefined) {
                     if (!util.isString(message.objcClassPrefix)) {
-                        return "google.protobuf.FileOptions.objcClassPrefix: string expected";
+                        return "objcClassPrefix: string expected";
                     }
                 }
                 if (message.csharpNamespace !== undefined) {
                     if (!util.isString(message.csharpNamespace)) {
-                        return "google.protobuf.FileOptions.csharpNamespace: string expected";
+                        return "csharpNamespace: string expected";
                     }
                 }
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.FileOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[14].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[14].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
@@ -12739,11 +12561,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             /**
@@ -12817,7 +12635,7 @@ $root.google = (function() {
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, null, null, null, "google.protobuf.UninterpretedOption"]; $lazyTypes.push($types);
+            var $types = {4:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new MessageOptions instance using the specified properties.
@@ -12934,32 +12752,32 @@ $root.google = (function() {
             MessageOptions.verify = (function(types) { return function verify(message) {
                 if (message.messageSetWireFormat !== undefined) {
                     if (typeof message.messageSetWireFormat !== "boolean") {
-                        return "google.protobuf.MessageOptions.messageSetWireFormat: boolean expected";
+                        return "messageSetWireFormat: boolean expected";
                     }
                 }
                 if (message.noStandardDescriptorAccessor !== undefined) {
                     if (typeof message.noStandardDescriptorAccessor !== "boolean") {
-                        return "google.protobuf.MessageOptions.noStandardDescriptorAccessor: boolean expected";
+                        return "noStandardDescriptorAccessor: boolean expected";
                     }
                 }
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
-                        return "google.protobuf.MessageOptions.deprecated: boolean expected";
+                        return "deprecated: boolean expected";
                     }
                 }
                 if (message.mapEntry !== undefined) {
                     if (typeof message.mapEntry !== "boolean") {
-                        return "google.protobuf.MessageOptions.mapEntry: boolean expected";
+                        return "mapEntry: boolean expected";
                     }
                 }
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.MessageOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[4].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[4].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
@@ -13076,11 +12894,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return MessageOptions;
@@ -13148,7 +12962,7 @@ $root.google = (function() {
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = ["google.protobuf.FieldOptions.CType", null, "google.protobuf.FieldOptions.JSType", null, null, null, "google.protobuf.UninterpretedOption"]; $lazyTypes.push($types);
+            var $types = {0:"google.protobuf.FieldOptions.CType",2:"google.protobuf.FieldOptions.JSType",6:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new FieldOptions instance using the specified properties.
@@ -13280,7 +13094,7 @@ $root.google = (function() {
                 if (message.ctype !== undefined) {
                     switch (message.ctype) {
                     default:
-                        return "google.protobuf.FieldOptions.ctype: enum value expected";
+                        return "ctype: enum value expected";
 
                     case 0:
                     case 1:
@@ -13290,13 +13104,13 @@ $root.google = (function() {
                 }
                 if (message.packed !== undefined) {
                     if (typeof message.packed !== "boolean") {
-                        return "google.protobuf.FieldOptions.packed: boolean expected";
+                        return "packed: boolean expected";
                     }
                 }
                 if (message.jstype !== undefined) {
                     switch (message.jstype) {
                     default:
-                        return "google.protobuf.FieldOptions.jstype: enum value expected";
+                        return "jstype: enum value expected";
 
                     case 0:
                     case 1:
@@ -13306,27 +13120,27 @@ $root.google = (function() {
                 }
                 if (message.lazy !== undefined) {
                     if (typeof message.lazy !== "boolean") {
-                        return "google.protobuf.FieldOptions.lazy: boolean expected";
+                        return "lazy: boolean expected";
                     }
                 }
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
-                        return "google.protobuf.FieldOptions.deprecated: boolean expected";
+                        return "deprecated: boolean expected";
                     }
                 }
                 if (message.weak !== undefined) {
                     if (typeof message.weak !== "boolean") {
-                        return "google.protobuf.FieldOptions.weak: boolean expected";
+                        return "weak: boolean expected";
                     }
                 }
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.FieldOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[6].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[6].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
@@ -13489,11 +13303,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             /**
@@ -13561,7 +13371,7 @@ $root.google = (function() {
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = ["google.protobuf.UninterpretedOption"]; $lazyTypes.push($types);
+            var $types = {0:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new OneofOptions instance using the specified properties.
@@ -13650,12 +13460,12 @@ $root.google = (function() {
             OneofOptions.verify = (function(types) { return function verify(message) {
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.OneofOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[0].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[0].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
@@ -13730,11 +13540,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return OneofOptions;
@@ -13785,7 +13591,7 @@ $root.google = (function() {
             $prototype[".jspb.test.IsExtension.simpleOption"] = "";
 
             // Referenced types
-            var $types = [null, null, "google.protobuf.UninterpretedOption", null]; $lazyTypes.push($types);
+            var $types = {2:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumOptions instance using the specified properties.
@@ -13895,28 +13701,28 @@ $root.google = (function() {
             EnumOptions.verify = (function(util, types) { return function verify(message) {
                 if (message.allowAlias !== undefined) {
                     if (typeof message.allowAlias !== "boolean") {
-                        return "google.protobuf.EnumOptions.allowAlias: boolean expected";
+                        return "allowAlias: boolean expected";
                     }
                 }
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
-                        return "google.protobuf.EnumOptions.deprecated: boolean expected";
+                        return "deprecated: boolean expected";
                     }
                 }
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.EnumOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[2].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[2].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
                 if (message[".jspb.test.IsExtension.simpleOption"] !== undefined) {
                     if (!util.isString(message[".jspb.test.IsExtension.simpleOption"])) {
-                        return "google.protobuf.EnumOptions..jspb.test.IsExtension.simpleOption: string expected";
+                        return ".jspb.test.IsExtension.simpleOption: string expected";
                     }
                 }
                 return null;
@@ -14022,11 +13828,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return EnumOptions;
@@ -14064,7 +13866,7 @@ $root.google = (function() {
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, "google.protobuf.UninterpretedOption"]; $lazyTypes.push($types);
+            var $types = {1:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new EnumValueOptions instance using the specified properties.
@@ -14160,17 +13962,17 @@ $root.google = (function() {
             EnumValueOptions.verify = (function(types) { return function verify(message) {
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
-                        return "google.protobuf.EnumValueOptions.deprecated: boolean expected";
+                        return "deprecated: boolean expected";
                     }
                 }
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.EnumValueOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[1].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[1].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
@@ -14257,11 +14059,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return EnumValueOptions;
@@ -14299,7 +14097,7 @@ $root.google = (function() {
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, "google.protobuf.UninterpretedOption"]; $lazyTypes.push($types);
+            var $types = {1:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new ServiceOptions instance using the specified properties.
@@ -14395,17 +14193,17 @@ $root.google = (function() {
             ServiceOptions.verify = (function(types) { return function verify(message) {
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
-                        return "google.protobuf.ServiceOptions.deprecated: boolean expected";
+                        return "deprecated: boolean expected";
                     }
                 }
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.ServiceOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[1].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[1].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
@@ -14492,11 +14290,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return ServiceOptions;
@@ -14540,7 +14334,7 @@ $root.google = (function() {
             $prototype.uninterpretedOption = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, "google.protobuf.MethodOptions.IdempotencyLevel", "google.protobuf.UninterpretedOption"]; $lazyTypes.push($types);
+            var $types = {1:"google.protobuf.MethodOptions.IdempotencyLevel",2:"google.protobuf.UninterpretedOption"}; $lazyTypes.push($types);
 
             /**
              * Creates a new MethodOptions instance using the specified properties.
@@ -14643,13 +14437,13 @@ $root.google = (function() {
             MethodOptions.verify = (function(types) { return function verify(message) {
                 if (message.deprecated !== undefined) {
                     if (typeof message.deprecated !== "boolean") {
-                        return "google.protobuf.MethodOptions.deprecated: boolean expected";
+                        return "deprecated: boolean expected";
                     }
                 }
                 if (message.idempotencyLevel !== undefined) {
                     switch (message.idempotencyLevel) {
                     default:
-                        return "google.protobuf.MethodOptions.idempotencyLevel: enum value expected";
+                        return "idempotencyLevel: enum value expected";
 
                     case 0:
                     case 1:
@@ -14659,12 +14453,12 @@ $root.google = (function() {
                 }
                 if (message.uninterpretedOption !== undefined) {
                     if (!Array.isArray(message.uninterpretedOption)) {
-                        return "google.protobuf.MethodOptions.uninterpretedOption: array expected";
+                        return "uninterpretedOption: array expected";
                     }
                     for (var i = 0; i < message.uninterpretedOption.length; ++i) {
-                        var err;
-                        if (err = types[2].verify(message.uninterpretedOption[i])) {
-                            return err;
+                        var err = types[2].verify(message.uninterpretedOption[i]);
+                        if (err) {
+                            return "uninterpretedOption." + err;
                         }
                     }
                 }
@@ -14774,11 +14568,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             /**
@@ -14864,7 +14654,7 @@ $root.google = (function() {
             $prototype.aggregateValue = "";
 
             // Referenced types
-            var $types = ["google.protobuf.UninterpretedOption.NamePart", null, null, null, null, null, null]; $lazyTypes.push($types);
+            var $types = {0:"google.protobuf.UninterpretedOption.NamePart"}; $lazyTypes.push($types);
 
             /**
              * Creates a new UninterpretedOption instance using the specified properties.
@@ -14995,43 +14785,43 @@ $root.google = (function() {
             UninterpretedOption.verify = (function(util, types) { return function verify(message) {
                 if (message.name !== undefined) {
                     if (!Array.isArray(message.name)) {
-                        return "google.protobuf.UninterpretedOption.name: array expected";
+                        return "name: array expected";
                     }
                     for (var i = 0; i < message.name.length; ++i) {
-                        var err;
-                        if (err = types[0].verify(message.name[i])) {
-                            return err;
+                        var err = types[0].verify(message.name[i]);
+                        if (err) {
+                            return "name." + err;
                         }
                     }
                 }
                 if (message.identifierValue !== undefined) {
                     if (!util.isString(message.identifierValue)) {
-                        return "google.protobuf.UninterpretedOption.identifierValue: string expected";
+                        return "identifierValue: string expected";
                     }
                 }
                 if (message.positiveIntValue !== undefined) {
                     if (!util.isInteger(message.positiveIntValue) && !(message.positiveIntValue && util.isInteger(message.positiveIntValue.low) && util.isInteger(message.positiveIntValue.high))) {
-                        return "google.protobuf.UninterpretedOption.positiveIntValue: integer|Long expected";
+                        return "positiveIntValue: integer|Long expected";
                     }
                 }
                 if (message.negativeIntValue !== undefined) {
                     if (!util.isInteger(message.negativeIntValue) && !(message.negativeIntValue && util.isInteger(message.negativeIntValue.low) && util.isInteger(message.negativeIntValue.high))) {
-                        return "google.protobuf.UninterpretedOption.negativeIntValue: integer|Long expected";
+                        return "negativeIntValue: integer|Long expected";
                     }
                 }
                 if (message.doubleValue !== undefined) {
                     if (typeof message.doubleValue !== "number") {
-                        return "google.protobuf.UninterpretedOption.doubleValue: number expected";
+                        return "doubleValue: number expected";
                     }
                 }
                 if (message.stringValue !== undefined) {
                     if (!(message.stringValue && typeof message.stringValue.length === "number" || util.isString(message.stringValue))) {
-                        return "google.protobuf.UninterpretedOption.stringValue: buffer expected";
+                        return "stringValue: buffer expected";
                     }
                 }
                 if (message.aggregateValue !== undefined) {
                     if (!util.isString(message.aggregateValue)) {
-                        return "google.protobuf.UninterpretedOption.aggregateValue: string expected";
+                        return "aggregateValue: string expected";
                     }
                 }
                 return null;
@@ -15219,11 +15009,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             UninterpretedOption.NamePart = (function() {
@@ -15341,10 +15127,10 @@ $root.google = (function() {
                  */
                 NamePart.verify = (function(util) { return function verify(message) {
                     if (!util.isString(message.namePart)) {
-                        return "google.protobuf.UninterpretedOption.NamePart.namePart: string expected";
+                        return "namePart: string expected";
                     }
                     if (typeof message.isExtension !== "boolean") {
-                        return "google.protobuf.UninterpretedOption.NamePart.isExtension: boolean expected";
+                        return "isExtension: boolean expected";
                     }
                     return null;
                 };})($protobuf.util);
@@ -15421,11 +15207,7 @@ $root.google = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return NamePart;
@@ -15460,7 +15242,7 @@ $root.google = (function() {
             $prototype.location = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = ["google.protobuf.SourceCodeInfo.Location"]; $lazyTypes.push($types);
+            var $types = {0:"google.protobuf.SourceCodeInfo.Location"}; $lazyTypes.push($types);
 
             /**
              * Creates a new SourceCodeInfo instance using the specified properties.
@@ -15549,12 +15331,12 @@ $root.google = (function() {
             SourceCodeInfo.verify = (function(types) { return function verify(message) {
                 if (message.location !== undefined) {
                     if (!Array.isArray(message.location)) {
-                        return "google.protobuf.SourceCodeInfo.location: array expected";
+                        return "location: array expected";
                     }
                     for (var i = 0; i < message.location.length; ++i) {
-                        var err;
-                        if (err = types[0].verify(message.location[i])) {
-                            return err;
+                        var err = types[0].verify(message.location[i]);
+                        if (err) {
+                            return "location." + err;
                         }
                     }
                 }
@@ -15629,11 +15411,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             SourceCodeInfo.Location = (function() {
@@ -15828,41 +15606,41 @@ $root.google = (function() {
                 Location.verify = (function(util) { return function verify(message) {
                     if (message.path !== undefined) {
                         if (!Array.isArray(message.path)) {
-                            return "google.protobuf.SourceCodeInfo.Location.path: array expected";
+                            return "path: array expected";
                         }
                         for (var i = 0; i < message.path.length; ++i) {
                             if (!util.isInteger(message.path[i])) {
-                                return "google.protobuf.SourceCodeInfo.Location.path: integer[] expected";
+                                return "path: integer[] expected";
                             }
                         }
                     }
                     if (message.span !== undefined) {
                         if (!Array.isArray(message.span)) {
-                            return "google.protobuf.SourceCodeInfo.Location.span: array expected";
+                            return "span: array expected";
                         }
                         for (var i = 0; i < message.span.length; ++i) {
                             if (!util.isInteger(message.span[i])) {
-                                return "google.protobuf.SourceCodeInfo.Location.span: integer[] expected";
+                                return "span: integer[] expected";
                             }
                         }
                     }
                     if (message.leadingComments !== undefined) {
                         if (!util.isString(message.leadingComments)) {
-                            return "google.protobuf.SourceCodeInfo.Location.leadingComments: string expected";
+                            return "leadingComments: string expected";
                         }
                     }
                     if (message.trailingComments !== undefined) {
                         if (!util.isString(message.trailingComments)) {
-                            return "google.protobuf.SourceCodeInfo.Location.trailingComments: string expected";
+                            return "trailingComments: string expected";
                         }
                     }
                     if (message.leadingDetachedComments !== undefined) {
                         if (!Array.isArray(message.leadingDetachedComments)) {
-                            return "google.protobuf.SourceCodeInfo.Location.leadingDetachedComments: array expected";
+                            return "leadingDetachedComments: array expected";
                         }
                         for (var i = 0; i < message.leadingDetachedComments.length; ++i) {
                             if (!util.isString(message.leadingDetachedComments[i])) {
-                                return "google.protobuf.SourceCodeInfo.Location.leadingDetachedComments: string[] expected";
+                                return "leadingDetachedComments: string[] expected";
                             }
                         }
                     }
@@ -15991,11 +15769,7 @@ $root.google = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return Location;
@@ -16030,7 +15804,7 @@ $root.google = (function() {
             $prototype.annotation = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = ["google.protobuf.GeneratedCodeInfo.Annotation"]; $lazyTypes.push($types);
+            var $types = {0:"google.protobuf.GeneratedCodeInfo.Annotation"}; $lazyTypes.push($types);
 
             /**
              * Creates a new GeneratedCodeInfo instance using the specified properties.
@@ -16119,12 +15893,12 @@ $root.google = (function() {
             GeneratedCodeInfo.verify = (function(types) { return function verify(message) {
                 if (message.annotation !== undefined) {
                     if (!Array.isArray(message.annotation)) {
-                        return "google.protobuf.GeneratedCodeInfo.annotation: array expected";
+                        return "annotation: array expected";
                     }
                     for (var i = 0; i < message.annotation.length; ++i) {
-                        var err;
-                        if (err = types[0].verify(message.annotation[i])) {
-                            return err;
+                        var err = types[0].verify(message.annotation[i]);
+                        if (err) {
+                            return "annotation." + err;
                         }
                     }
                 }
@@ -16199,11 +15973,7 @@ $root.google = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             GeneratedCodeInfo.Annotation = (function() {
@@ -16366,27 +16136,27 @@ $root.google = (function() {
                 Annotation.verify = (function(util) { return function verify(message) {
                     if (message.path !== undefined) {
                         if (!Array.isArray(message.path)) {
-                            return "google.protobuf.GeneratedCodeInfo.Annotation.path: array expected";
+                            return "path: array expected";
                         }
                         for (var i = 0; i < message.path.length; ++i) {
                             if (!util.isInteger(message.path[i])) {
-                                return "google.protobuf.GeneratedCodeInfo.Annotation.path: integer[] expected";
+                                return "path: integer[] expected";
                             }
                         }
                     }
                     if (message.sourceFile !== undefined) {
                         if (!util.isString(message.sourceFile)) {
-                            return "google.protobuf.GeneratedCodeInfo.Annotation.sourceFile: string expected";
+                            return "sourceFile: string expected";
                         }
                     }
                     if (message.begin !== undefined) {
                         if (!util.isInteger(message.begin)) {
-                            return "google.protobuf.GeneratedCodeInfo.Annotation.begin: integer expected";
+                            return "begin: integer expected";
                         }
                     }
                     if (message.end !== undefined) {
                         if (!util.isInteger(message.end)) {
-                            return "google.protobuf.GeneratedCodeInfo.Annotation.end: integer expected";
+                            return "end: integer expected";
                         }
                     }
                     return null;
@@ -16492,11 +16262,7 @@ $root.google = (function() {
                  * @returns {Object.<string,*>} JSON object
                  */
                 $prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, {
-                        longs: String,
-                        enums: String,
-                        bytes: String
-                    });
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
                 };
 
                 return Annotation;
@@ -16511,18 +16277,8 @@ $root.google = (function() {
     return google;
 })();
 
-// Resolve lazy types
-$lazyTypes.forEach(function(types) {
-    types.forEach(function(path, i) {
-        if (!path)
-            return;
-        path = path.split(".");
-        var ptr = $root;
-        while (path.length)
-            ptr = ptr[path.shift()];
-        types[i] = ptr;
-    });
-});
+// Resolve lazy type names to actual types
+$protobuf.util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_test"] = $root;
 

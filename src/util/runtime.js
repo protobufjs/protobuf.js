@@ -222,3 +222,31 @@ util.oneOfSetter = function setOneOf(fieldNames) {
                 delete this[fieldNames[i]];
     };
 };
+
+/**
+ * Lazily resolves fully qualified type names against the specified root.
+ * @param {Root} root Root instanceof
+ * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
+ * @returns {undefined}
+ */
+util.lazyResolve = function lazyResolve(root, lazyTypes) {
+    lazyTypes.forEach(function(types) {
+        Object.keys(types).forEach(function(index) {
+            var path = types[index |= 0].split("."),
+                ptr  = root;
+            while (path.length)
+                ptr = ptr[path.shift()];
+            types[index] = ptr || null;
+        });
+    });
+};
+
+/**
+ * Default conversion options used for toJSON implementations.
+ * @type {ConversionOptions}
+ */
+util.toJSONOptions = {
+    longs: String,
+    enums: String,
+    bytes: String
+};

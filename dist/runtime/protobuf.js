@@ -1,6 +1,6 @@
 /*!
  * protobuf.js v6.5.0 (c) 2016, Daniel Wirtz
- * Compiled Sat, 14 Jan 2017 04:19:13 UTC
+ * Compiled Sat, 14 Jan 2017 21:49:58 UTC
  * Licensed under the BSD-3-Clause License
  * see: https://github.com/dcodeIO/protobuf.js for details
  */
@@ -1333,6 +1333,34 @@ util.oneOfSetter = function setOneOf(fieldNames) {
             if (fieldNames[i] !== name)
                 delete this[fieldNames[i]];
     };
+};
+
+/**
+ * Lazily resolves fully qualified type names against the specified root.
+ * @param {Root} root Root instanceof
+ * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
+ * @returns {undefined}
+ */
+util.lazyResolve = function lazyResolve(root, lazyTypes) {
+    lazyTypes.forEach(function(types) {
+        Object.keys(types).forEach(function(index) {
+            var path = types[index |= 0].split("."),
+                ptr  = root;
+            while (path.length)
+                ptr = ptr[path.shift()];
+            types[index] = ptr || null;
+        });
+    });
+};
+
+/**
+ * Default conversion options used for toJSON implementations.
+ * @type {ConversionOptions}
+ */
+util.toJSONOptions = {
+    longs: String,
+    enums: String,
+    bytes: String
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

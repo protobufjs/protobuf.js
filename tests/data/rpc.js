@@ -208,7 +208,7 @@ $root.MyRequest = (function() {
     MyRequest.verify = (function(util) { return function verify(message) {
         if (message.path !== undefined) {
             if (!util.isString(message.path)) {
-                return "MyRequest.path: string expected";
+                return "path: string expected";
             }
         }
         return null;
@@ -276,11 +276,7 @@ $root.MyRequest = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     return MyRequest;
@@ -393,7 +389,7 @@ $root.MyResponse = (function() {
     MyResponse.verify = (function(util) { return function verify(message) {
         if (message.status !== undefined) {
             if (!util.isInteger(message.status)) {
-                return "MyResponse.status: integer expected";
+                return "status: integer expected";
             }
         }
         return null;
@@ -461,28 +457,14 @@ $root.MyResponse = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     return MyResponse;
 })();
 
-// Resolve lazy types
-$lazyTypes.forEach(function(types) {
-    types.forEach(function(path, i) {
-        if (!path)
-            return;
-        path = path.split(".");
-        var ptr = $root;
-        while (path.length)
-            ptr = ptr[path.shift()];
-        types[i] = ptr;
-    });
-});
+// Resolve lazy type names to actual types
+$protobuf.util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_rpc"] = $root;
 

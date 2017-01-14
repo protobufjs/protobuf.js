@@ -116,7 +116,7 @@ $root.A = (function() {
     A.verify = (function(util) { return function verify(message) {
         if (message.whatever !== undefined) {
             if (!util.isString(message.whatever)) {
-                return "A.whatever: string expected";
+                return "whatever: string expected";
             }
         }
         return null;
@@ -184,11 +184,7 @@ $root.A = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     return A;
@@ -220,7 +216,7 @@ $root.B = (function() {
     $prototype.A = null;
 
     // Referenced types
-    var $types = ["A"]; $lazyTypes.push($types);
+    var $types = {0:"A"}; $lazyTypes.push($types);
 
     /**
      * Creates a new B instance using the specified properties.
@@ -303,9 +299,9 @@ $root.B = (function() {
      */
     B.verify = (function(types) { return function verify(message) {
         if (message.A !== undefined && message.A !== null) {
-            var err;
-            if (err = types[0].verify(message.A)) {
-                return err;
+            var err = types[0].verify(message.A);
+            if (err) {
+                return "A." + err;
             }
         }
         return null;
@@ -373,28 +369,14 @@ $root.B = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     return B;
 })();
 
-// Resolve lazy types
-$lazyTypes.forEach(function(types) {
-    types.forEach(function(path, i) {
-        if (!path)
-            return;
-        path = path.split(".");
-        var ptr = $root;
-        while (path.length)
-            ptr = ptr[path.shift()];
-        types[i] = ptr;
-    });
-});
+// Resolve lazy type names to actual types
+$protobuf.util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_ambiguous-names"] = $root;
 

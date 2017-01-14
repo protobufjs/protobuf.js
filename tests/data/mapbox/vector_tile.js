@@ -44,7 +44,7 @@ $root.vector_tile = (function() {
         $prototype.layers = $protobuf.util.emptyArray;
 
         // Referenced types
-        var $types = ["vector_tile.Tile.Layer"]; $lazyTypes.push($types);
+        var $types = {0:"vector_tile.Tile.Layer"}; $lazyTypes.push($types);
 
         /**
          * Creates a new Tile instance using the specified properties.
@@ -133,12 +133,12 @@ $root.vector_tile = (function() {
         Tile.verify = (function(types) { return function verify(message) {
             if (message.layers !== undefined) {
                 if (!Array.isArray(message.layers)) {
-                    return "vector_tile.Tile.layers: array expected";
+                    return "layers: array expected";
                 }
                 for (var i = 0; i < message.layers.length; ++i) {
-                    var err;
-                    if (err = types[0].verify(message.layers[i])) {
-                        return err;
+                    var err = types[0].verify(message.layers[i]);
+                    if (err) {
+                        return "layers." + err;
                     }
                 }
             }
@@ -213,11 +213,7 @@ $root.vector_tile = (function() {
          * @returns {Object.<string,*>} JSON object
          */
         $prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, {
-                longs: String,
-                enums: String,
-                bytes: String
-            });
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
         /**
@@ -425,37 +421,37 @@ $root.vector_tile = (function() {
             Value.verify = (function(util) { return function verify(message) {
                 if (message.stringValue !== undefined) {
                     if (!util.isString(message.stringValue)) {
-                        return "vector_tile.Tile.Value.stringValue: string expected";
+                        return "stringValue: string expected";
                     }
                 }
                 if (message.floatValue !== undefined) {
                     if (typeof message.floatValue !== "number") {
-                        return "vector_tile.Tile.Value.floatValue: number expected";
+                        return "floatValue: number expected";
                     }
                 }
                 if (message.doubleValue !== undefined) {
                     if (typeof message.doubleValue !== "number") {
-                        return "vector_tile.Tile.Value.doubleValue: number expected";
+                        return "doubleValue: number expected";
                     }
                 }
                 if (message.intValue !== undefined) {
                     if (!util.isInteger(message.intValue) && !(message.intValue && util.isInteger(message.intValue.low) && util.isInteger(message.intValue.high))) {
-                        return "vector_tile.Tile.Value.intValue: integer|Long expected";
+                        return "intValue: integer|Long expected";
                     }
                 }
                 if (message.uintValue !== undefined) {
                     if (!util.isInteger(message.uintValue) && !(message.uintValue && util.isInteger(message.uintValue.low) && util.isInteger(message.uintValue.high))) {
-                        return "vector_tile.Tile.Value.uintValue: integer|Long expected";
+                        return "uintValue: integer|Long expected";
                     }
                 }
                 if (message.sintValue !== undefined) {
                     if (!util.isInteger(message.sintValue) && !(message.sintValue && util.isInteger(message.sintValue.low) && util.isInteger(message.sintValue.high))) {
-                        return "vector_tile.Tile.Value.sintValue: integer|Long expected";
+                        return "sintValue: integer|Long expected";
                     }
                 }
                 if (message.boolValue !== undefined) {
                     if (typeof message.boolValue !== "boolean") {
-                        return "vector_tile.Tile.Value.boolValue: boolean expected";
+                        return "boolValue: boolean expected";
                     }
                 }
                 return null;
@@ -652,11 +648,7 @@ $root.vector_tile = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return Value;
@@ -706,7 +698,7 @@ $root.vector_tile = (function() {
             $prototype.geometry = $protobuf.util.emptyArray;
 
             // Referenced types
-            var $types = [null, null, "vector_tile.Tile.GeomType", null]; $lazyTypes.push($types);
+            var $types = {2:"vector_tile.Tile.GeomType"}; $lazyTypes.push($types);
 
             /**
              * Creates a new Feature instance using the specified properties.
@@ -839,23 +831,23 @@ $root.vector_tile = (function() {
             Feature.verify = (function(util) { return function verify(message) {
                 if (message.id !== undefined) {
                     if (!util.isInteger(message.id) && !(message.id && util.isInteger(message.id.low) && util.isInteger(message.id.high))) {
-                        return "vector_tile.Tile.Feature.id: integer|Long expected";
+                        return "id: integer|Long expected";
                     }
                 }
                 if (message.tags !== undefined) {
                     if (!Array.isArray(message.tags)) {
-                        return "vector_tile.Tile.Feature.tags: array expected";
+                        return "tags: array expected";
                     }
                     for (var i = 0; i < message.tags.length; ++i) {
                         if (!util.isInteger(message.tags[i])) {
-                            return "vector_tile.Tile.Feature.tags: integer[] expected";
+                            return "tags: integer[] expected";
                         }
                     }
                 }
                 if (message.type !== undefined) {
                     switch (message.type) {
                     default:
-                        return "vector_tile.Tile.Feature.type: enum value expected";
+                        return "type: enum value expected";
 
                     case 0:
                     case 1:
@@ -866,11 +858,11 @@ $root.vector_tile = (function() {
                 }
                 if (message.geometry !== undefined) {
                     if (!Array.isArray(message.geometry)) {
-                        return "vector_tile.Tile.Feature.geometry: array expected";
+                        return "geometry: array expected";
                     }
                     for (var i = 0; i < message.geometry.length; ++i) {
                         if (!util.isInteger(message.geometry[i])) {
-                            return "vector_tile.Tile.Feature.geometry: integer[] expected";
+                            return "geometry: integer[] expected";
                         }
                     }
                 }
@@ -1024,11 +1016,7 @@ $root.vector_tile = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return Feature;
@@ -1090,7 +1078,7 @@ $root.vector_tile = (function() {
             $prototype.extent = 4096;
 
             // Referenced types
-            var $types = [null, null, "vector_tile.Tile.Feature", null, "vector_tile.Tile.Value", null]; $lazyTypes.push($types);
+            var $types = {2:"vector_tile.Tile.Feature",4:"vector_tile.Tile.Value"}; $lazyTypes.push($types);
 
             /**
              * Creates a new Layer instance using the specified properties.
@@ -1219,46 +1207,46 @@ $root.vector_tile = (function() {
              */
             Layer.verify = (function(util, types) { return function verify(message) {
                 if (!util.isInteger(message.version)) {
-                    return "vector_tile.Tile.Layer.version: integer expected";
+                    return "version: integer expected";
                 }
                 if (!util.isString(message.name)) {
-                    return "vector_tile.Tile.Layer.name: string expected";
+                    return "name: string expected";
                 }
                 if (message.features !== undefined) {
                     if (!Array.isArray(message.features)) {
-                        return "vector_tile.Tile.Layer.features: array expected";
+                        return "features: array expected";
                     }
                     for (var i = 0; i < message.features.length; ++i) {
-                        var err;
-                        if (err = types[2].verify(message.features[i])) {
-                            return err;
+                        var err = types[2].verify(message.features[i]);
+                        if (err) {
+                            return "features." + err;
                         }
                     }
                 }
                 if (message.keys !== undefined) {
                     if (!Array.isArray(message.keys)) {
-                        return "vector_tile.Tile.Layer.keys: array expected";
+                        return "keys: array expected";
                     }
                     for (var i = 0; i < message.keys.length; ++i) {
                         if (!util.isString(message.keys[i])) {
-                            return "vector_tile.Tile.Layer.keys: string[] expected";
+                            return "keys: string[] expected";
                         }
                     }
                 }
                 if (message.values !== undefined) {
                     if (!Array.isArray(message.values)) {
-                        return "vector_tile.Tile.Layer.values: array expected";
+                        return "values: array expected";
                     }
                     for (var i = 0; i < message.values.length; ++i) {
-                        var err;
-                        if (err = types[4].verify(message.values[i])) {
-                            return err;
+                        var err = types[4].verify(message.values[i]);
+                        if (err) {
+                            return "values." + err;
                         }
                     }
                 }
                 if (message.extent !== undefined) {
                     if (!util.isInteger(message.extent)) {
-                        return "vector_tile.Tile.Layer.extent: integer expected";
+                        return "extent: integer expected";
                     }
                 }
                 return null;
@@ -1396,11 +1384,7 @@ $root.vector_tile = (function() {
              * @returns {Object.<string,*>} JSON object
              */
             $prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, {
-                    longs: String,
-                    enums: String,
-                    bytes: String
-                });
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
             return Layer;
@@ -1412,18 +1396,8 @@ $root.vector_tile = (function() {
     return vector_tile;
 })();
 
-// Resolve lazy types
-$lazyTypes.forEach(function(types) {
-    types.forEach(function(path, i) {
-        if (!path)
-            return;
-        path = path.split(".");
-        var ptr = $root;
-        while (path.length)
-            ptr = ptr[path.shift()];
-        types[i] = ptr;
-    });
-});
+// Resolve lazy type names to actual types
+$protobuf.util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_vector_tile"] = $root;
 

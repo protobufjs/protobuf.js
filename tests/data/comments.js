@@ -146,17 +146,17 @@ $root.Test1 = (function() {
     Test1.verify = (function(util) { return function verify(message) {
         if (message.field1 !== undefined) {
             if (!util.isString(message.field1)) {
-                return "Test1.field1: string expected";
+                return "field1: string expected";
             }
         }
         if (message.field2 !== undefined) {
             if (!util.isInteger(message.field2)) {
-                return "Test1.field2: integer expected";
+                return "field2: integer expected";
             }
         }
         if (message.field3 !== undefined) {
             if (typeof message.field3 !== "boolean") {
-                return "Test1.field3: boolean expected";
+                return "field3: boolean expected";
             }
         }
         return null;
@@ -244,11 +244,7 @@ $root.Test1 = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     return Test1;
@@ -354,9 +350,8 @@ $root.Test2 = (function() {
      * @param {Object.<string,*>} object Plain object
      * @returns {Test2} Test2
      */
-    Test2.fromObject = (function() { return function fromObject(object) {
-        var message = new $root.Test2();
-        return message;
+    Test2.fromObject = (function() { return function fromObject() {
+        return new $root.Test2();
     };})();
 
     /**
@@ -392,11 +387,7 @@ $root.Test2 = (function() {
      * @returns {Object.<string,*>} JSON object
      */
     $prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, {
-            longs: String,
-            enums: String,
-            bytes: String
-        });
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     return Test2;
@@ -419,18 +410,8 @@ $root.Test3 = (function() {
     return values;
 })();
 
-// Resolve lazy types
-$lazyTypes.forEach(function(types) {
-    types.forEach(function(path, i) {
-        if (!path)
-            return;
-        path = path.split(".");
-        var ptr = $root;
-        while (path.length)
-            ptr = ptr[path.shift()];
-        types[i] = ptr;
-    });
-});
+// Resolve lazy type names to actual types
+$protobuf.util.lazyResolve($root, $lazyTypes);
 
 $protobuf.roots["test_comments"] = $root;
 

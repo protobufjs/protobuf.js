@@ -2375,6 +2375,20 @@ export namespace util {
     function oneOfSetter(fieldNames: string[]): () => any;
 
     /**
+     * Lazily resolves fully qualified type names against the specified root.
+     * @param {Root} root Root instanceof
+     * @param {Object.<number,string|ReflectionObject>} lazyTypes Type names
+     * @returns {undefined}
+     */
+    function lazyResolve(root: Root, lazyTypes: { [k: number]: (string|ReflectionObject) }): void;
+
+    /**
+     * Default conversion options used for toJSON implementations.
+     * @type {ConversionOptions}
+     */
+    var toJSONOptions: ConversionOptions;
+
+    /**
      * A minimal UTF8 implementation for number arrays.
      * @memberof util
      * @namespace
